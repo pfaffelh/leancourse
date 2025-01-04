@@ -1,0 +1,37 @@
+{"Verso.Genre.Manual.section":
+ {"title": "Sections or chapters of the manual",
+  "description": null,
+  "contents":
+  {"lean-markup":
+   [{"id": "lean-markup",
+     "data":
+     ["Interactive Theorem Proving using Lean, Summer 2025",
+      "First steps using logic",
+      "Lean Markup"],
+     "address": "/"}],
+   "genres":
+   [{"id": "genres",
+     "data": ["Interactive Theorem Proving using Lean, Summer 2025", "Genres"],
+     "address": "/"}],
+   "docstrings":
+   [{"id": "docstrings",
+     "data":
+     ["Interactive Theorem Proving using Lean, Summer 2025", "Docstrings"],
+     "address": "/"}]}},
+ "Verso.Genre.Manual.doc.tactic.conv":
+ {"title": "Conversion Tactics",
+  "description": "Tatics for performing targeted rewriting of subterms",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.tactic":
+ {"title": "Tactic Documentation",
+  "description": "Detailed descriptions of tactics",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.option":
+ {"title": "Compiler options", "description": null, "contents": {}},
+ "Verso.Genre.Manual.doc":
+ {"title": "Lean constant reference",
+  "description": "Documentation for Lean constants",
+  "contents":
+  {"List.forM": [{"id": "List___forM", "data": null, "address": "/"}],
+   "Lean.Parser.Tactic.intro":
+   [{"id": "Lean___Parser___Tactic___intro", "data": null, "address": "/"}]}}}

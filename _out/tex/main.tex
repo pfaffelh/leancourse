@@ -1,0 +1,321 @@
+
+\documentclass{memoir}
+
+\usepackage{sourcecodepro}
+\usepackage{sourcesanspro}
+\usepackage{sourceserifpro}
+
+\makechapterstyle{lean}{%
+\renewcommand*{\chaptitlefont}{\sffamily\HUGE}
+\renewcommand*{\chapnumfont}{\chaptitlefont}
+% allow for 99 chapters!
+\settowidth{\chapindent}{\chapnumfont 999}
+\renewcommand*{\printchaptername}{}
+\renewcommand*{\chapternamenum}{}
+\renewcommand*{\chapnumfont}{\chaptitlefont}
+\renewcommand*{\printchapternum}{%
+\noindent\llap{\makebox[\chapindent][l]{%
+\chapnumfont \thechapter}}}
+\renewcommand*{\afterchapternum}{}
+}
+
+\chapterstyle{lean}
+
+\setsecheadstyle{\sffamily\bfseries\Large}
+\setsubsecheadstyle{\sffamily\bfseries\large}
+\setsubsubsecheadstyle{\sffamily\bfseries}
+
+\renewcommand{\cftchapterfont}{\normalfont\sffamily}
+\renewcommand{\cftsectionfont}{\normalfont\sffamily}
+\renewcommand{\cftchapterpagefont}{\normalfont\sffamily}
+\renewcommand{\cftsectionpagefont}{\normalfont\sffamily}
+
+\title{\sffamily Interactive Theorem Proving using Lean, Summer 2025}
+\author{\sffamily Peter Pfaffelhuber}
+\date{\sffamily }
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlingpage}
+\maketitle
+\end{titlingpage}
+
+\tableofcontents
+
+\mainmatter
+
+\chapter*{Introduction}
+These are some notes for the course on Lean at the University of Freiburg in Summer 2025.
+\chapter{First steps using logic}
+
+\begin{verbatim}
+variable (P Q R S T : Prop)
+
+\end{verbatim}
+
+
+
+\begin{verbatim}
+example : P → Q := by
+  intro h
+  sorry
+
+\end{verbatim}
+
+
+
+\begin{verbatim}
+Proof state   Command         New proof state
+
+⊢ P → Q       intro hP        hP : P
+                              ⊢ Q
+
+\end{verbatim}
+
+
+Assume we have \verb|⊢ Q|, then all makes sense!
+
+Introduces one or more hypotheses, optionally naming and/or pattern-matching them.
+For each hypothesis to be introduced, the remaining main goal's target type must
+be a \verb|let| or function type.\begin{itemize}
+\item \verb|intro| by itself introduces one anonymous hypothesis, which can be accessed
+by e.g. \verb|assumption|.\item \verb|intro x y| introduces two hypotheses and names them. Individual hypotheses
+can be anonymized via \verb|_|, or matched against a pattern:\begin{verbatim}
+-- ... ⊢ α × β → ...
+intro (a, b)
+-- ..., a : α, b : β ⊢ ...
+
+\end{verbatim}
+\item Alternatively, \verb|intro| can be combined with pattern matching much like \verb|fun|:\begin{verbatim}
+intro
+| n + 1, 0 => tac
+| ...
+
+\end{verbatim}
+
+\end{itemize}
+
+
+Documentation can take many forms:
+
+\begin{itemize}
+\item References\item Tutorials\item Etc
+\end{itemize}
+
+
+\begin{verbatim}
+example : 2 + 2 = 4 :=
+  by rfl
+
+\end{verbatim}
+
+
+
+
+
+\section{Lean Markup}
+
+Lean's documentation markup language is a close relative of Markdown, but it's not identical to it.
+
+
+
+\subsection{Design Principles}
+
+\begin{enumerate}
+\item Syntax errors - fail fast rather than producing unexpected output or having complicated rules\item Reduce lookahead - parsing should succeed or fail as locally as possible\item Extensibility - there should be dedicated features for compositionally adding new kinds of content, rather than relying on a collection of ad-hoc textual subformats\item Assume Unicode - Lean users are used to entering Unicode directly and have good tools for it, so there's no need to support alternative textual syntaxes for characters not on keyboards such as em dashes or typographical quotes\item Markdown compatibility - benefit from existing muscle memory and familiarity when it doesn't lead to violations of the other principles\item Pandoc and Djot compatibility - when Markdown doesn't have a syntax for a feature, attempt to be compatible with Pandoc Markdown or Djot
+\end{enumerate}
+
+
+
+
+\subsection{Syntax}
+
+Like Markdown, Lean's markup has three primary syntactic categories:
+
+\begin{description}
+\item[ Inline elements] The ordinary content of written text, such as text itself, bold or emphasized text, and hyperlinks.\item[ Block elements] The main organization of written text, including paragraphs, lists, and quotations. Some blocks may be nested: for example, lists may contain other lists.\item[ Document structure] Headers, footnote definitions, and named links give greater structure to a document. They may not be nested inside of blocks.
+\end{description}
+
+
+
+
+\subsubsection{Description}
+
+
+
+\paragraph{Inline Syntax}
+
+Emphasis is written with underscores:
+
+\begin{verbatim}
+Here's some _emphasized_ text
+
+\end{verbatim}
+\begin{verbatim}
+Here's some <emph>emphasized</emph> text
+
+\end{verbatim}
+
+
+Emphasis can be nested by using more underscores for the outer emphasis:
+
+\begin{verbatim}
+Here's some __emphasized text with _extra_ emphasis__ inside
+
+\end{verbatim}
+\begin{verbatim}
+Here's some <emph>emphasized text with <emph>extra</emph> emphasis</emph> inside
+
+\end{verbatim}
+
+
+Strong emphasis (bold) is written with asterisks:
+
+\begin{verbatim}
+Here's some *bold* text
+
+\end{verbatim}
+\begin{verbatim}
+Here's some <bold>bold</bold> text
+
+\end{verbatim}
+
+
+Hyperlinks consist of the link text in square brackets followed by the target in parentheses:
+
+\begin{verbatim}
+The [Lean website](https://lean-lang.org)
+
+\end{verbatim}
+\begin{verbatim}
+The <a href="https://lean-lang.org">Lean website</a>
+
+\end{verbatim}
+
+
+\begin{verbatim}
+The [Lean website][lean]
+
+[lean]: https://lean-lang.org
+
+\end{verbatim}
+\begin{verbatim}
+The <a href="(value of «lean»)">Lean website</a>
+
+where «lean» := https://lean-lang.org
+\end{verbatim}
+
+
+\begin{verbatim}
+The definition of `main`
+
+\end{verbatim}
+\begin{verbatim}
+The definition of <code>main</code>
+
+\end{verbatim}
+
+
+TeX math can be included using a single or double dollar sign followed by code. Two dollar signs results in display-mode math, so \verb|$`\sum_{i=0}^{10} i`| results in $\sum_{i=0}^{10} i$ while \verb|$$`\sum_{i=0}^{10} i`| results in: \[\sum_{i=0}^{10} i\]
+
+
+
+\paragraph{Block Syntax}
+
+
+
+\paragraph{Document Structure}
+
+
+
+\subsubsection{Differences from Markdown}
+
+This is a quick "cheat sheet" for those who are used to Markdown, documenting the differences.
+
+
+
+\paragraph{Syntax Errors}
+
+While Markdown includes a set of precedence rules to govern the meaning of mismatched delimiters (such as in \verb|what _is *bold_ or emph*?|), these are syntax errors in Lean's markup.
+Similarly, Markdown specifies that unmatched delimiters (such as \verb|*| or \verb|_|) should be included as characters, while Lean's markup requires explicit escaping of delimiters.
+
+This is based on the principle that, for long-form technical writing, it's better to catch typos while writing than while reviewing the text later.
+
+
+
+\paragraph{Reduced Lookahead}
+
+In Markdown, whether \verb|[this][here]| is a link depends on whether \verb|here| is defined as a link reference target somewhere in the document.
+In Lean's markup, it is always a link, and it is an error if \verb|here| is not defined as a link target.
+
+
+
+\paragraph{Header Nesting}
+
+In Lean's markup, every document already has a title, so there's no need to use the highest level header (\verb|#|) to specify one.
+Additionally, all documents are required to use \verb|#| for their top-level header, \verb|##| for the next level, and so forth, because a single file may represent a section, a chapter, or even a whole book.
+Authors should not need to maintain a global mapping from header levels to document structures, so Lean's markup automatically assigns these based on the structure of the document.
+
+
+
+\paragraph{Genre-Specific Extensions}
+
+Markdown has no standard way for specific tools or styles of writing to express domain- or genre
+-specific concepts.
+Lean's markup provides standard syntaxes to use for this purpose, enabling compositional extensions.
+
+
+
+
+
+\chapter{Genres}
+
+Documentation comes in many forms, and no one system is suitable for representing all of them.
+The needs of software documentation writers are not the same as the needs of textbook authors, researchers writing papers, bloggers, or poets.
+Thus, Lean's documentation system supports multiple \emph{genres}, each of which consists of:
+\begin{itemize}
+\item A global view of a document's structure, whether it be a document with subsections, a collection of interrelated documents such as a web site, or a single file of text\item A representation of cross-cutting state such as cross-references to figures, index entries, and named theorems\item Additions to the structure of the document - for instance, the blog genre supports the inclusion of raw HTML, and the manual genre supports grouping multiple top-level blocks into a single logical paragraph\item Procedures for resolving cross references and rendering the document to one or more output formats
+\end{itemize}
+
+All genres use the same markup syntax, and they can share extensions to the markup language that don't rely on incompatible document structure additions.
+Mixing incompatible features results in an ordinary Lean type error.
+
+
+
+
+
+\chapter{Docstrings}
+
+Docstrings can be included using the \verb|docstring| directive. For instance,
+
+\begin{verbatim}
+{docstring List.forM}
+
+\end{verbatim}
+
+
+\begin{verbatim}
+example : 2 + 2 = 4 :=
+  by rfl
+
+\end{verbatim}
+
+
+results in
+
+Applies the monadic action \verb|f| on every element in the list, left-to-right.See \verb|List.mapM| for the variant that collects results.
+See \verb|List.forA| for the variant that works with \verb|Applicative|.
+
+
+
+
+\chapter{Index}
+
+
+
+
+
+
+\end{document}

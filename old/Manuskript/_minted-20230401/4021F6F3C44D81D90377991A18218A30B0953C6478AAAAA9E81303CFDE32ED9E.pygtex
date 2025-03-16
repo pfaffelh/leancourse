@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{f} \PYG{o}{:} \PYG{n}{ℝ} \PYG{n+nb+bp}{→} \PYG{n}{ℝ}
+\PYG{n}{x} \PYG{n}{y} \PYG{n}{ε} \PYG{o}{:} \PYG{n}{ℝ}
+\PYG{n}{hε} \PYG{o}{:} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{\PYGZlt{}} \PYG{n}{ε}
+\PYG{n+nb+bp}{⊢} \PYG{n+nb+bp}{∃} \PYG{o}{(} \PYG{n}{δ} \PYG{o}{:} \PYG{n}{ℝ}\PYG{o}{)} \PYG{o}{(}\PYG{n}{H} \PYG{o}{:} \PYG{n}{δ} \PYG{n+nb+bp}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{o}{),} \PYG{n+nb+bp}{|}\PYG{n}{f} \PYG{n}{y} \PYG{n+nb+bp}{\PYGZhy{}} \PYG{n}{f} \PYG{n}{x}\PYG{n+nb+bp}{|} \PYG{n+nb+bp}{\PYGZlt{}} \PYG{n}{δ}
+\end{Verbatim}

@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{zero\PYGZus{}add}\PYG{o}{,} \PYG{n}{add\PYGZus{}zero}\PYG{o}{,} \PYG{n}{one\PYGZus{}mul}\PYG{o}{,} \PYG{n}{add\PYGZus{}assoc}\PYG{o}{,} \PYG{n}{succ\PYGZus{}ne\PYGZus{}zero}\PYG{o}{,} \PYG{n}{lt\PYGZus{}of\PYGZus{}succ\PYGZus{}le}\PYG{o}{,}\PYG{n+nb+bp}{...}
+\end{Verbatim}

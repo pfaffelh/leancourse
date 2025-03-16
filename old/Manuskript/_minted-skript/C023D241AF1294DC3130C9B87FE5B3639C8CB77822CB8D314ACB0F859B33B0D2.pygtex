@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+  \PYG{n}{lt\PYGZus{}of\PYGZus{}succ\PYGZus{}le} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{\PYGZob{}}\PYG{n}{a} \PYG{n}{b} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{\PYGZcb{},} \PYG{n}{a.succ} \PYG{n+nb+bp}{≤} \PYG{n}{b} \PYG{n+nb+bp}{→} \PYG{n}{a} \PYG{n+nb+bp}{\PYGZlt{}} \PYG{n}{b}
+\end{Verbatim}

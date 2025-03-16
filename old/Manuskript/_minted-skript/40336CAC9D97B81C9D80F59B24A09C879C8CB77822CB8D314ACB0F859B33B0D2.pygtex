@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kd}{inductive} \PYG{n}{bool} \PYG{o}{:} \PYG{k+kt}{Type}
+\PYG{n+nb+bp}{|} \PYG{n}{ff} \PYG{o}{:} \PYG{n}{bool}
+\PYG{n+nb+bp}{|} \PYG{n}{tt} \PYG{o}{:} \PYG{n}{bool}
+\end{Verbatim}

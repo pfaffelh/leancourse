@@ -1,0 +1,702 @@
+% please run using
+% lualatex --shell-escape skript.tex
+
+\documentclass[11pt]{article}
+\usepackage{a4wide}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{minted}
+\usepackage{emoji}
+\setemojifont{TwitterColorEmoji-SVGinOT.ttf}[Path=./]
+\setminted{encoding=utf-8}
+\usepackage{fontspec}
+\setmainfont{FreeSerif}
+\setmonofont{FreeMono}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{xcolor, graphics, svg, german}
+\definecolor{mygray}{rgb}{0.97,0.97,0.97}
+%→↔←
+%⟨⟩
+%⊢
+%∧∨¬
+%∩∪
+%∀∃
+%∈∉∅
+%ℕℝ
+\newcommand{\leanin}{\mintinline[bgcolor=mygray]{Lean}}
+\newcommand{\leanstate}{\mintinline[bgcolor=white]{Lean}}
+\newcommand{\tacsubsection}[1]{\subsection*{#1}\addcontentsline{toc}{subsection}{#1}}
+
+
+\renewcommand{\arraystretch}{1.2}
+\newcommand{\leantable}[1]{
+  \noindent
+  \begin{tabular}{|p{0.36\textwidth}|p{0.28\textwidth}|p{0.3\textwidth}|}     \hline
+    \vphantom{$\displaystyle\int$}
+    \bf Proof state & \bf Kommando & \bf Neuer proof state \\ \hline \hline 
+    #1
+    \hline
+  \end{tabular}
+}
+\newcommand{\intro}{    \leanstate{⊢ P → Q} & \leanin{intro hP} & \leanstate{hP : P} \\ && \leanstate{⊢ Q} \\ \hline \leanstate{f : α → Prop} & \leanin{intro x} & \leanstate{f: α → Prop} \\  \leanstate{⊢ ∀ {x : α}, f x} & & \leanstate{x : α} \\ && \leanstate{⊢ f x} \\}
+\newcommand{\triv}{\leanstate{⊢ true} & \leanin{triv} & \bf{goals accomplished \emoji{party-popper}} \\ }
+\newcommand{\exact}{\leanstate{h : P} & \leanin{exact h}  & \bf{goals accomplished \emoji{party-popper}} \\ \leanstate{⊢ P} &  &\\ }
+\newcommand{\assumption}{\leanstate{h : P} & \leanin{assumption} & \bf{goals accomplished \emoji{party-popper}} \\ \leanstate{⊢ P} & &\\ }
+\newcommand{\apply}{\leanstate{h : P → Q} & \leanin{apply h} & \leanstate{h : P → Q}  \\ \leanstate{⊢ Q} & & \leanstate{⊢ P}  \\}
+\newcommand{\intros}{\leanstate{⊢ P → Q → R} & \leanin{intros hP hQ} & \leanstate{hP : P} \\ & & \leanstate{hQ : Q} \\ && \leanstate{⊢ R} \\}
+\newcommand{\tauto}{\leanstate{⊢ P ∧ Q → P}\footnote{...oder ein anderes Statement, das mit Wahrheitstabellen lösbar ist.} & \leanin{tauto} oder \leanin{tauto!} &  \bf{goals accomplished \emoji{party-popper}} \\}
+\newcommand{\exfalso}{\leanstate{h : P} & \leanin{exfalso} & \leanstate{h : P}  \\ \leanstate{⊢ Q} & & \leanstate{⊢ false}  \\}
+\newcommand{\bycontra}{\leanstate{⊢ P} & \leanin{by_contra h} & \leanstate{h : ¬P} \\ & & \leanstate{⊢ false} \\}
+\newcommand{\bycases}{\leanstate{⊢ P} & \leanin{by_cases h : Q} & \leanstate{h : Q}  \\ & & \leanstate{⊢ P}  \\ & & \leanstate{h : ¬Q} \\ & & \leanstate{⊢ P} \\}
+\newcommand{\caseslean}{\leanstate{h : P ∧ Q} & \leanin{cases h with hP hQ} & \leanstate{hP : P}  \\ \leanstate{⊢ R} & & \leanstate{hQ : Q}  \\ & & \leanstate{⊢ R} \\ \hline
+\leanstate{h : P ∨ Q} & \leanin{cases h with hP hQ} & \leanstate{hP : P}  \\ \leanstate{⊢ R} & & \leanstate{⊢ R}  \\ & & \leanstate{hQ : Q} \\ & & \leanstate{⊢ R} \\ \hline
+\leanstate{h : false} & \leanin{cases h} & \bf{goals accomplished \emoji{party-popper}} \\ \leanstate{⊢ P} & & \\}
+\newcommand{\splitlean}{\leanstate{⊢ P ∧ Q} & \leanin{split} & \leanstate{⊢ P} \\ && \leanstate{⊢ Q} \\ \hline 
+\leanstate{⊢ P ↔ Q} & \leanin{split} & \leanstate{⊢ P → Q} \\ && \leanstate{⊢ Q → P} \\}
+\newcommand{\refl}{\leanstate{⊢ P ↔ P} oder & \leanin{refl} & \bf{goals accomplished \emoji{party-popper}} \\ \leanstate{⊢ P = P} & & \\}
+\newcommand{\rw}{\leanstate{h : P ↔ Q} & \leanin{rw h} & \leanstate{h : P ↔ Q} \\ \leanstate{⊢ P} && \leanstate{⊢ Q} \\\hline 
+\leanstate{h : P ↔ Q} & \leanin{rw ← h} & \leanstate{h : P ↔ Q} \\ \leanstate{⊢ Q} && \leanstate{⊢ P} \\ \hline 
+\leanstate{h : P ↔ Q} & \leanin{rw h at hP} & \leanstate{h : P ↔ Q}  \\ \leanstate{hP : P} & & \leanstate{hP : Q}  \\ \hline 
+\leanstate{h : P ↔ Q} & \leanin{rw ← h at hQ} & \leanstate{h : P ↔ Q}  \\ \leanstate{hQ : Q} & & \leanstate{hQ : P}  \\}
+\newcommand{\leftlean}{\leanstate{⊢ P ∨ Q} & \leanin{left} & \leanstate{⊢ P} \\}
+\newcommand{\rightlean}{\leanstate{⊢ P ∨ Q} & \leanin{right} & \leanstate{⊢ Q} \\}
+\newcommand{\normnum}{\leanstate{h : ⊢ 2 + 2 = 4}\footnote{...oder ein anderes Statement, das nur Rechnungen mit numerischen Werte beinhaltet.} & \leanin{norm_num} & \bf{goals accomplished \emoji{party-popper}} \\}
+\newcommand{\uselean}{\leanstate{f : α → Prop} & \leanin{use y} & \leanstate{f : α → Prop} \\ \leanstate{y : α} & & \leanstate{y : α} \\ \leanstate{⊢ ∃ (x : α), f x} && \leanstate{⊢ f y} \\ }
+\newcommand{\ring}{\leanstate{x y : ℝ} & \leanin{ring} & \bf{goals accomplished \emoji{party-popper}} \\  \leanstate{⊢ x + y = y + x}\footnote{...oder ein anderes Statement, das nur Rechenregeln von kommutativen Ringen verwendet. \leanin{ring} zieht Hypothesen nicht in Betracht.} & & \\}
+\newcommand{\linarith}{\leanstate{h1 : a < b} & \leanin{linarith} & \bf{goals accomplished \emoji{party-popper}} \\  \leanstate{h2 : b ≤ c} && \\ \leanstate{⊢ a < c}\footnote{...oder eine Aussage, die nur \leanstate{<}, \leanstate{≤}, \leanstate{≠} oder \leanstate{=} verwendet. \leanin{linarith} zieht Hypothesen in Betracht.}  & & \\ } 
+\newcommand{\clearlean}{\leanstate{h : P} & \leanin{clear h} & \leanstate{⊢ Q} \\ \leanstate{⊢ Q} & &  \\ }
+\newcommand{\specialize}{\leanstate{f : ℕ → Prop} & \leanin{specialize h 13} & \leanstate{f: ℕ → Prop} \\ \leanstate{h : ∀ (n : ℕ), f n} & & \leanstate{h : f 13} \\ \leanstate{⊢ P} & &\leanstate{⊢ P} \\}
+\newcommand{\obtain}{\leanstate{f : ℕ → ℕ → Prop} & \leanin{obtain ⟨ m, hm ⟩} & \leanstate{f: ℕ → ℕ → Prop} \\ \leanstate{h : ∀ (n : ℕ), } & \leanin{    := h 27} & \leanstate{h : ∀ (n : ℕ), } \\ \leanstate{    ∃ (m : ℕ), f n m} & $=$  & \leanstate{    ∃ (m : ℕ), f n m} \\}
+\newcommand{\have}{\leanin{have h1 : ∃ m,}   &\leanstate{m : ℕ} \\ & \leanin{      f 27 m, ...} & \leanstate{hm: f 27 m} \\ & \leanin{cases h1 with m hm} & \leanstate{⊢ P} \\}
+\newcommand{\librarysearch}{\leanstate{h1 : a < b} & \leanin{library_search} & \bf{goals accomplished \emoji{party-popper}} \\ \leanstate{h2 : b < c} && \leanstate{Try this: } \\ \leanstate{⊢ a < c} && \leanstate{exact lt_trans h1 h2}\\}
+\newcommand{\refine}{\leanstate{hQ : Q} & \leanin{refine ⟨ _, hQ ⟩} & \leanstate{hQ : Q} \\ \leanstate{⊢ P ∧ Q} && \leanstate{⊢ P} \\}
+\newcommand{\rintro}{\leanstate{⊢ P ∨ Q → R} & \leanin{rintro ( hP | hQ )} & \leanstate{hP : P} \\ & $=$ & \leanstate{⊢ P} \\ & \leanin{intro h}, & \leanstate{hQ : Q} \\ &\leanin{cases h with hP hQ} & \leanstate{⊢ Q} \\ \hline 
+\leanstate{⊢ P ∧ Q → R} & \leanin{rintro ⟨ hP , hQ ⟩} & \leanstate{hP : P} \\ & $=$ & \leanstate{hQ : Q} \\ & \leanin{intro h}, & \leanstate{⊢ Q} \\ & \leanin{cases h with h1 h2}  & \\}
+\newcommand{\rcases}{\parbox[t]{0.36\textwidth}{\leanstate{h : P ∧ Q ∨ P ∧ R} \\ \leanstate{⊢ P}} & \parbox[t]{0.28\textwidth}{\leanin{rcases h with} \\ \leanin{(⟨hP1,hQ⟩|⟨hP2,hR⟩)}} & \parbox[t]{0.3\textwidth}{\leanstate{hP1 : P} \\ \leanstate{hQ : Q} \\ \leanstate{⊢ P} \\ \leanstate{hP2 : P } \\ \leanstate{hR : R} \\ \leanstate{⊢ P}} \\}
+\newcommand{\simp}{ \parbox[t]{0.36\textwidth}{\leanstate{⊢ n + 0 = n} \footnote{...\label{foot:simp}oder ein anderes Statement, das sich durch Äquivalenz-Aussagen der Bibliothek vereinfachen lassen.}} & \parbox[t]{0.28\textwidth}{\leanin{simp}} & \parbox[t]{0.3\textwidth}{\bf{goals accomplished \emoji{party-popper}}} \\  \hline
+\parbox[t]{0.36\textwidth}{\leanstate{h : n + 0 = m} $\mbox{}^\text{\ref{foot:simp}}$\\ \leanstate{⊢ P}}  & \parbox[t]{0.28\textwidth}{\leanin{simp at h}} & \parbox[t]{0.3\textwidth}{\leanstate{h : n = m} \\ \leanstate{⊢ P} } \\}
+
+
+\begin{document}
+\begin{titlepage}
+	\centering
+	{\scshape\LARGE Schulmathematik mit dem \par} 
+	\vspace{1.5cm}
+	\includesvg[width=0.5\textwidth]{lean_logo2}\par\vspace{1cm}
+	\vspace{1cm}
+	\vspace{2cm}
+	{\Large Peter Pfaffelhuber}\par
+	{\Large Sommersemester 2023}\par
+	\vspace{0.5cm}
+	\vfill
+        \parbox[b]{0.5\textwidth}{\includegraphics[width=0.5\textwidth]{UFR-vorlage-designsystem-typo-farben-V1.92.png}\vspace*{-7ex}\mbox{} } \hspace{0cm}
+%        \parbox[b]{0.2\textwidth}{\includegraphics[width=0.2\textwidth]{Logo_PH.jpg}}\par
+	\vfill
+	{\large \today\par} % heutige Datum
+\end{titlepage}
+
+\title{Schulmathematik mit dem Lean Theorem Prover}\date{}
+\maketitle
+\tableofcontents % Inhaltsverzeichnis anlegen
+
+\newpage
+
+\setcounter{section}{-1}
+\section{Vorbereitung zur Nutzung des Skriptes}
+\label{S:vorbereitung}
+Dies sind die Notizen zu einem Kurs zum formalen Beweisen mit dem interaktiven Theorem-Prover Lean3 (im folgenden schreiben wir nur Lean) im Sommersemester 2023 an der Universität Freiburg. Um den Kurs sinnvoll durcharbeiten zu können, sind folgende technische Vorbereitungen zu treffen:
+\begin{enumerate}
+\item Lokale Installation von Lean und der dazugehörigen Tools: Folgen Sie bitte den Hinweisen auf \url{https://leanprover-community.github.io/get_started.html}.
+\item Installation von {\tt vscode}. Bitte befolgen Sie die Download-Hinweise auf \url{https://code.visualstudio.com/download}.
+\item Installation des Repositories des Kurses: Navigieren Sie zu einem Ort, wo Sie die Kursunterlagen ablegen möchten und verwenden Sie \\
+  \leanstate{leanproject get https://github.com/pfaffelh/schulmathematik_mit_lean}
+  \\
+  \sloppy Dies sollte die Kursunterlagen herunterladen. Anschließend finden Sie das Manuskript unter {\tt Manuskript/skript.pdf}, und Sie können die Übungen mit \leanstate{code schulmathematik_mit_lean} öffnen. Die Übungen befinden sich dabei in {\tt src}. Wir empfehlen, dieses Verzeichnis zunächst zu kopieren, etwa nach {\tt mysrc}. Andernfalls kann es sein, dass durch ein Update des Repositories die lokalen Dateien überschrieben werden. Um die Kursunterlagen auf den neuesten Stand zu bringen, geben Sie {\tt git pull} im Verzeichnis \leanstate{schulmathematik_mit_lean} ein.
+\end{enumerate}
+
+\section{Einleitung}
+Der Kurs hat einen Fokus auf das Lehramts-Studium Mathematik an Gymnasien und hat mindestens zwei Ziele:
+\begin{itemize}
+\item \sloppy Erlernen der Techniken zum interaktiven, formalen Beweisen mit Hilfe der funktionalen Programmiersprache Lean: In den letzten Jahren haben in der Mathematik Bemühungen drastisch zugenommen, computergestützte Beweise zu führen. Während vor ein paar Jahrzehnten eher das konsequente Abarbeiten vieler Fälle dem Computer überlassen wurde, sind interaktive Theorem-Prover anders. Hier kann ein sehr kleiner Kern dazu verwendet werden, alle logischen Schlüsse eines mathematischen Beweises nachzuvollziehen oder interaktiv zu generieren. Der Computer berichtet dann interaktiv über den Fortschritt im Beweis und wann alle Schritte vollzogen wurden. 
+\item Herstellung von Verbindungen zur Schulmathematik: Manchmal geht im Mathematik-Studium der Bezug zur Schulmathematik verloren. Dieser Kurs ist der Versuch, diesen einerseits wieder herzustellen, und auf dem Weg ein tieferes Verständnis für die bereits verinnerlichte Mathematik zu bekommen. Um einem Computer zu {\it erklären}, wie ein Beweis (oder eine Rechnung oder ein anderweitiges Argument) funktioniert, muss man ihn erstmal selbst sehr gut verstanden haben. Außerdem muss man den Beweis -- zumindest wenn er ein paar Zeilen übersteigt -- gut planen, damit die eingegebenen Befehle (die wir Taktiken nennen werden) zusammenpassen.
+\end{itemize}
+
+\subsubsection*{Formalisierung in der Mathematik}
+\sloppy Obwohl Mathematik den Anspruch hat, sauber zu argumentieren, finden sich in mathematischen Veröffentlichungen Fehler. Oftmals sind diese nicht entscheidend für die Richtigkeit der Aussage, die zu beweisen war. Manchmal wird eine Voraussetzung vergessen, und manchmal gibt es auch echte Fehler. Stellt ein Theorem Prover die Richtigkeit eines Beweises fest, so ist die Glaubwürdigkeit deutlich größer. Zwar muss man sich immer noch auf die Fehlerfreiheit des Kerns (also etwa 10000 Zeilen Code) der Programmiersprache verlassen, sonst jedoch nur noch darauf, dass man die zu beweisende Aussage auch versteht und richtig interpretiert. 
+
+Heute wächst die Anzahl an Aussagen, die formal bewiesen werden, immer noch deutlich langsamer als die Anzahl an Veröffentlichungen in der Mathematik. Andererseits gibt es mittlerweile eine Community des formalen Beweisens, die von der Zukunftsfähigkeit von Theorem Provers überzeugt ist. 
+
+\subsubsection*{Interactive Theorem Prover}
+Mittlerweile gibt es einige Theorem Prover. Wir werden hier Lean (von Microsoft Research) verwenden. Grund für diese Wahl ist vor allem, dass es hier die größte Anzahl an Mathematikern gibt, die die \leanstate&mathlib&, also die mathematische Bibliothek, die auf formal bewiesenen Aussagen mit dem Theorem Prover besteht, weiterentwickeln. 
+
+Momentan steht der Wechsel von Lean3 zu Lean4 an. Da  insbesondere noch nicht die gesamte \leanin&mathlib& in Lean4 zur Verfügung steht, werden wir Lean3 verwenden. 
+
+\subsubsection*{Zum Inhalt}
+Dieses Manuskript gliedert sich in drei Abschnitte. In Kapitel~\ref{S:mathe} werden wir die Mathematik besprechen, die wir in den Übungen formal beweisen werden. Dies wird mit einfachen logischen Schlüssen anfangen, und am Ende werden einige Aussagen der Schulmathematik formal bewiesen. Dieser Teil ist der einzige Teil, den man von vorne nach hinten entlang der Übungsaufgaben abarbeiten sollte. Kapitel~\ref{S:lean} gibt nützliche Hinweise zu Lean und \leanstate{vscode}, von der Installation, über die Syntax, bis hin zu verwendetetn GLeichheitsbegriffen. Im Kapitel~\ref{S:tactics} werden wir alle verwendeten Befehle (also die {\em Taktiken}) besprechen. Diese werden hier als Nachschlagewerk zur Verfügung gestellt, wobei in den Übungen jeweils darauf verwiesen wird, welche neuen Taktiken gerade zu erlernen sind.
+
+\section{Mathematik}
+\label{S:mathe}
+
+\subsection{Logik}
+Wir beginnen mit einfachen logischen Aussagen. Wir unterscheiden immer (wie auch in jedem mathematischen Theorem) zwischen den Hypothesen und der Aussage. Um unsere Hypothesen einzuführen, führen wir sie in allen \leanstate{lean}-Dateien auf einmal mit \leanin{variables (P Q R S T: Prop)} ein. Für die Lean-Syntax bemerken wir, dass hier kein üblicher Doppelpfeil $\Longrightarrow$ verwendet wird, sondern ein einfacher \leanstate{→}. Wir gehen hier folgende logische Schlüsse durch:
+\begin{itemize}
+\item Blatt 01-a: \\
+  Die Aussage \leanstate{⊢ P → Q} (d.h. aus \leanstate{P} folgt \leanstate{Q}) bedeutet ja, dass \leanstate{Q} gilt, falls man annehmen darf, dass die Hypothese \leanstate{P} richtig ist. Dieser Übergang von \leanstate{⊢ P → Q} zur Hypothese \leanstate{hP : P} mit Ziel \leanstate{⊢ Q} erfolgt mittels \leanin{intro hP}. Mehrere \leanstate{intro}-Befehle kann man mittels \leanstate{intros h1 h2...} abkürzen.
+  \\
+  Gilt die Hypothese \leanstate{hP : P}, und wir wollen \leanstate{⊢ P} beweisen, so müssen wir ja nur \leanstate{hP} auf das Ziel anwenden. Ist Ziel und Hypothese identisch, so geschieht dies mit \leanin{exact hP}. Etwas allgemeiner sucht \leanin{assumption} alle Hypothesen danach durch, ob sie mit dem Ziel definitorisch gleich sind. 
+\item Blatt 01-b: \\
+  Will man \leanstate{⊢ Q} beweisen, und weiß, dass \leanstate{hPQ : P → Q} gilt, so genügt es, \leanstate{⊢ P} zu beweisen (da mit \leanstate{hPQ} daraus dann \leanstate{⊢ Q} folgt). Mit \leanin{apply hPQ} wird in diesem Fall das Ziel nach \leanstate{⊢ P} geändert. \\
+  Hinter einer Äquivalenz-Aussage \leanstate{⊢ P ↔ Q} stehen eigentlich die beiden Aussagen \leanstate{⊢ P → Q} und  \leanstate{⊢ Q → P}. Mittels \leanin{split} wandelt man das Ziel \leanstate{⊢ P ↔ Q} in zwei Ziele für die beiden Richtungen um. \\
+  Die logische Verneinung wird in Lean mit \leanstate{¬} notiert. Die Aussage \leanstate{¬P} ist dabei definitorisch gleich \leanstate{P → false}, wobei \leanstate{false} für eine falsche Aussage steht.   
+\item Blatt 01-c: \\
+
+  exfalso
+  
+  Bei einem Beweis durch Widerspruch beweist man statt \leanstate{⊢ P} die Aussage \leanstate{⊢ ¬P → false}. (Dies ist logisch korrekt, da \leanstate{P} genau dann wahr ist, wenn \leanstate{¬P} auf einen Widerspruch, also eine falsche Aussage, führt.) Die Umwandlung des Goals auf diese Art und Weise erreicht man mit der Taktik \leanin{by_contra}. 
+\item Blatt 01-d: \\
+  Für {\em und}- bzw.\ {\em oder}-Verknüpfungen von Aussagen stellt Lean die üblichen Bezeichnungen \leanstate{∧} bzw.\ \leanstate{∨} zur Verfügung. Mit diesen Verbindungen verknüpfte Aussagen können sowohl in einer Hypothese als auch im Ziel vorkommen. Nun gibt es folgende vier Fälle:\\
+  \leanstate{⊢ P ∧ Q} Hier müssen also die beiden Aussagen \leanstate{P} und \leanstate{Q} bewiesen werden. Mit \leanin{split} werden genau diese beiden Ziele (mit denselben Voraussetzungen) erzeugt, also \leanstate{⊢ P} und \leanstate{⊢ Q}. Sind diese beiden nämlich gezeigt, ist offebar auch \leanstate{⊢ P ∧ Q} gezeigt. \\
+  \leanstate{⊢ P ∨ Q} Um dies zu zeigen, genügt es ja, entweder \leanstate{P} zu zeigen, oder \leanstate{Q} zu zeigen. Im ersten Fall wird mit \leanin{left} das Ziel durch \leanstate{⊢ P} ersetzt, mit \leanin{right} wird das Ziel mit \leanstate{⊢ Q}. 
+  \leanstate{h : P ∧ Q} Offenbar zerfällt die Hypothese \leanstate{h} in zwei Hypothesen, die beide gelten müssen. Mittels \leanin{cases h with hP hQ} wird aus \leanstate{h : P ∧ Q } zwei Hypothesen generiert, nämlich \leanstate{hP : P} und leanstate{hQ : Q}.\\
+  \leanstate{h : P ∨ Q} Ähnlich wie im letzten Fall erzeugt \leanin{cases h with hP hQ} nun zwei neue Goals, nämlich eines bei dem \leanstate{h : P ∨ Q} durch \leanstate{hP : P} ersetzt wurde, und eines bei dem \leanstate{h : P ∨ Q} durch \leanstate{hQ : Q} ersetze wurde. Dies ist logisch in Ordnung, weil man ja so gerade die Fälle, bei denen \leanstate{P} oder \leanstate{Q} gelten, voneinander treffen kann. \\
+\end{itemize}
+%∧∨¬
+
+\subsubsection*{Blatt 01}
+. 
+
+Wir müssen uns zunächst einmal die Syntax ansehen, in der Lean mathematische Aussage, sowie deren Beweise darstellt. Wir beginnen mit einer Übersetzungstabelle:
+
+\begin{tabular}{ll}
+  \leanstate&P : Prop& & {\tt P} ist eine Aussage, die wahr oder falsch sein kann. \\
+  \leanstate&hP : P& & {\tt P} ist wahr, und diese Aussage heißt {\tt hP} bzw.\  {\tt hP} ist ein Beweis für {\tt P}.
+\end{tabular}
+
+In Lean unterscheiden wir zwischen Termen (die links von {\tt : } stehen), und Typen (die rechts vom {\tt : } stehen). Dies ist sehr ähnlich zu Mengen, die man ja gewohnt ist. Ein Term ist dann so etwas wie ein Element, und ein Typ ist eine Menge. Ein besonderer Typ ist \leanstate&Prop&. Dieser umfasst alle Aussagen, die wahr oder falsch sein können.
+
+
+
+
+
+\subsection{Mengen}
+Seien nun
+\begin{minted}[mathescape, numbersep=5pt, framesep=5mm, bgcolor=mygray]{Lean}
+  variables (X Y : Type) (f : X → Y) (S : set X) (T : set Y)
+\end{minted}
+Wir wollen nun die Bildmenge $f(S)$ und das Urbild $f^{-1}(T)$ definieren, in Lean ist das
+\begin{align*}
+  f(S) & := \text{\leanstate&f '' S&} := \text{\leanstate& {y : Y | ∃ x : X, x ∈ S ∧ f x = y}&},\\
+  f^{-1}(T) & := \text{\leanstate&f⁻¹ ' T&} := \text{\leanstate& {x : X | f x ∈ T} &}.
+\end{align*}
+\sloppy In der ersten Zeile bemerken wir, dass der Term \leanstate&f(S)& für Lean keinen Sinn ergibt, weil \leanstate&f& nur Terme vom Typ \leanstate&X& verarbeiten kann, und \leanstate&S& vom Typ \leanstate&set X& ist. Deshalb verwenden wir die Notation $f(S):=$\leanstate&f '' S&. Dies ist die Notation für die Bildmenge (\leanstate&set.image&). Analog würde die Notation \leanstate&f⁻¹(T)& in Lean keinen Sinn ergeben, da \leanstate&x⁻¹& die Notation für  \leanstate&has_inv.inv x& ist, und Typ \leanstate&α → α& hat. Anders gesagt muss \leanstate&x⁻¹& denselben Typ haben wir \leanstate&x&. Die Notation \leanstate&f ⁻¹' T& ist für \leanstate&set.preimage&.
+
+
+\section{Hinweise zu Lean und vscode}
+\label{S:lean}
+In Abschnitt~\ref{S:vorbereitung} haben wir uns bereits mit der Installation von Lean und {\tt vscode} befasst. Hier folgt eine kurze, unzusammenhängende Einführung. 
+
+\subsection{Dependent type theory}
+Lean ist eine funktionale Programmiersprache (d.h.\ es besteht eigentlich nur aus Funktionen) und basiert auf der {\em dependent type theory}. Typen in Programmiersprachen wir etwa Python sind {\tt bool}, {\tt int}, {\tt double} etc. Lean lebt davon, eigene Typen zu definieren und zu verwenden. Wir werden sehen imd Verlauf des Kurses sehen, dass man über die entstehenden Typen wie Mengen denken kann. Der Typ \leanstate{ℕ} wird etwa die Menge der natürlichen Zahlen, und \leanstate{ℝ} die Menge der reellen Zahlen sein. Allerdings steht \leanstate{ℕ} in der Tat für eine unendliche Menge, die dadurch charakterisiert ist, dass sie \leanstate{0} enthält, und wenn sie \leanstate{n} enthält, so enthält sie auch den Nachfolger von \leanstate{n} (der mitt \leanstate{succ n} dargestellt wird). Entsprechend sind die reellen Zahlen durch eine Äquivalenzrelation auf Cauchy-Folgen definiert, was schon recht aufwändig ist. Typen können dabei von anderen Typen abhängen, und deshalb sprechen wir von {\em depoendent types}. Etwa ist der Raum $\mathbb R^n$ abhängig von der Dimension $n$. Wie wir sehen werden, sind mathematische Aussagen ebenfalls solche Typen.
+\begin{minted}[mathescape, numbersep=5pt, framesep=5mm, bgcolor=mygray]{Lean}
+example : P → P := 
+begin
+  sorry,
+end
+\end{minted}
+
+Zur Notation: Bei Mengen sind wir gewohnt, etwa $n\in\mathbb N$ zu schreiben, falls $n$ eine natürliche Zahl ist. In der Typentheorie schreiben wir \leanstate{n : ℕ} und sagen, dass \leanstate{n} ein Term (Ausdruck) vom Typ \leanstate{ℕ} ist. Etwas allgemeiner hat jeder Ausdruck einen Typ und bei der Einführung jedes Ausdrucks überprüft Lean dessen Typ. 
+
+
+
+Sehen wir uns den rechten Teil des vscode-Fensters an. Dieser heißt aktueller {\em proof state}.
+\subsection{Von Universen, Typen und Termen}
+In Lean gibt es drei Ebenen von Objelten: Universen, Typen und Terme. Wir befassen uns hier mit den letzten beiden. Von besonderem Interesse ist der Typ {\tt Prop}, der aus Aussagen besteht, die wahr oder falsch sein können. Er umfasst mathematische Aussagen, also entweder die Hypothesen, oder das Goal dessen, was zu beweisen ist.  Eine Hypothese in Lean hat die Form \leanstate{hP : P}, was soviel sagt wie \leanstate{P} gilt, und diese Aussage heißt \leanstate{hP}. Es kann auch bedeuten, dass \leanstate{P} gilt und \leanstate{hP} ein Beweis von \leanstate{P} ist. Dabei haben die Hypothesen hier Namen \leanstate{P Q R S}, und die Namen der Hypothesen \leanstate{hP hQ hR hS}. Alle Namen können beliebig sein. Weiter gibt es Hypothesen der Form \leanstate{P → Q}, also die Aussage, dass aus \leanstate{P} die Aussage \leanstate{Q} folgt. 
+
+\subsection{Gleichheit}
+In Lean gibt es drei Arten von Gleichheit:
+\begin{itemize}
+\item Syntaktische Gleichheit: Wenn zwei Terme Buchstabe für Buchstabe gleich sind, so sind sie syntaktisch gleich. Allerdings gibt es noch ein paar weitere Situationen, in denen zwei Terme syntaktisch gleich sind. Ist nämlich ein Term nur eine Abkürzung für den anderen (etwa ist \leanstate{x=y} eine Abkürzung für \leanstate{eq x y}), so sind diese beiden Terme syntaktisch gleich. Ebenfalls gleich sind Terme, bei denen global quantifizierte Variablen andere Buchstababen habe. Etwa sind \leanstate{∀ x, ∃ y, f x y} und \leanstate{∀ y, ∃ x, f y x} syntaktisch gleich.
+\item Definitorische Gleichheit: Manche Terme sind in Lean per Definition gleich. Für \leanstate{x : ℕ} ist \leanstate{x + 0} per Definition identisch zu \leanstate{x}. Allerdings ist  \leanstate{0 + x} nicht definitorisch identisch zu \leanstate{x}. Dies hat offenbar nur mit der internen Definition der Addition natürlicher Zahlen in Lean zu tun.
+\item Propositionelle Gleichheit: Falls es einen Beweis von \leanstate{x = y} gibt, so heißen \leanstate{x} und \leanstate{y} und  propositionell gleich. Analog heißen Terme \leanstate{P} und  \leanstate{Q} propositionell gleich, wenn man \leanstate{P ↔ Q} beweisen kann. 
+\end{itemize}
+rw ist für syntaktische Gleichheit
+
+Viele Taktiken arbeiten bis hin zur definitorischen Gleichheit.
+
+xxx Extensionalität
+
+
+Terms of Types
+
+sorry-Taktik
+
+Wir beginnen mit der Beschreibung zweier grundlegender Taktiken, nämlich \leanin{intro} und \leanin{exact}; bitte in Kapitel~\ref{S:tactics} nachlesen. Das denkbar einfachste Beispiel ist die Aussage \leanstate{P → P}, d.h.\ aus \leanstate{P} folgt\leanstate{P}. In Lean sieht das dann so aus:
+
+\begin{minted}[mathescape, numbersep=5pt, framesep=5mm, bgcolor=mygray]{Lean}
+example : P → P := 
+begin
+  sorry,
+end
+\end{minted}
+Der {\em proof state} verändert sich je nachdem, wo der cursor innerhalb des \leanstate{begin end}-Blockes steht. Ist der Cursor diirekt nach \leanstate{begin}, so ist der {\em proof-state}
+\begin{minted}[mathescape, numbersep=5pt, framesep=5mm, bgcolor=white]{Lean}
+P : Prop
+⊢ P → P
+\end{minted}
+Hier ist wichtig zu wissen, dass hinter \leanstate{⊢} die Behauptung steht, und alles darüber Hypothesen sind. (Im gezeigten Fall ist dies nur die Tatsache, dass \leanstate{P} eine Behauptung/Proposition ist. Diese Darstellung entspricht also genau der Behauptung. Ist der Cursor nach dem \leanin{sorry}, so steht nun zwar {\bf goals accomplished \emoji{party-popper}}, allerdings ist die \leanin{sorry}-Taktik nur da, um erst einmal unbewiesene Behauptungen ohne weitere Handlung beweisen zu können und es erfolgt eine Warnung in {\tt vscode}. Löscht man das \leanin{sorry} und ersetzt es durch ein \leanin{intro hP}, so erhält man
+\begin{minted}[mathescape, numbersep=5pt, framesep=5mm, bgcolor=mygray]{Lean}
+P : Prop
+hP : P
+⊢ P
+\end{minted}
+Wir haben also die Aussage \leanstate{P → P} überführt in einen Zustand, bei dem wir \leanstate{hP : P} annehmen, und \leanstate{P} folgern müssen. Dies lässt sich nun leicht mittels \leanin{assumption,} lösen (bitte das Komma nicht vergessen), und es erscheint das gewünschte {\bf goals accomplished \emoji{party-popper}}. Die \leanin{assumption}-Taktik such nach einer Hypothese, die identisch mit der Aussage ist und schließt den Beweis. Etwas anders ist es mit der \leanin{exact}-Taktik. Hier muss man wissen, welche Hypothese genau gemeint und, und kann hier mit \leanin{exact hP} den Beweis schließen
+
+
+Klammerung: In Lean wird die Anwendung von Funktionen, oder die Anwendung von Hypothesen, meist ohne Klammern geschrieben, also etwa \leanstate{f x} anstatt $f(x)$. Eine interne Klammerung erfolgt dabei immer nach rechts, d.h.\ \leanstate{g f x} ist eigentlich \leanstate{g (f x)}. Analog ist bei Aussagen \leanstate{P → Q → R} zu lesen als \leanstate{P → (Q → R)}. 
+
+\subsection{Hinweise zu {\tt vscode}}
+Hinweise zu vscode
+
+Warnungen und Fehler
+
+Eingabe von Sonderzeichen
+
+Klammerung anzeigen lassen
+
+(In {\tt vscode} gibt man diese mit \leanstate{\wedge} bzw.\ \leanstate{\vee} ein.)
+
+
+\section{Taktiken}
+\label{S:tactics}
+ % swap to change order of proofs
+
+\subsection{Cheatsheet}
+Binäre Operatoren wir {\em und} (\leanstate&∧&), {\em oder} (\leanstate&∨&), {\em Schnitt}mengen (\leanstate&∩&) und {\em Vereinigung}smengen (\leanstate&∪&) sind rechts-assoziativ, also z.B.\ \leanstate&P ∧ Q ∧ R& $:=$  \leanstate&P ∧ (Q ∧ R)&. 
+
+%\leantable{
+%  \intro \hline 
+%  \triv} 
+
+\begin{longtable}{|p{0.36\textwidth}|p{0.28\textwidth}|p{0.3\textwidth}|}
+  \hline
+  \multicolumn{1}{|p{0.36\textwidth}|}{\textbf{\vphantom{$\displaystyle\int$}Proof state}} &
+  \multicolumn{1}{p{0.28\textwidth}|}{\textbf{Kommando}} &
+  \multicolumn{1}{p{0.3\textwidth}|}{\textbf{Neuer proof state}} \\ \hline\hline
+\endhead
+
+\hline 
+\endfoot
+\endlastfoot
+
+\intro \hline
+\exact \hline
+\assumption \hline
+\apply \hline 
+\intros\hline
+\tauto\hline\hline
+\triv \hline
+\exfalso \hline \hline 
+\bycontra \hline
+\bycases\hline \hline
+\caseslean \hline \hline
+\splitlean \hline \hline
+\refl \hline \hline
+\rw  \hline \hline
+\leftlean \hline 
+\rightlean \hline \hline
+\normnum \hline
+\uselean \hline
+\ring \hline
+\intro \hline \hline 
+\linarith \hline
+\clearlean \hline
+\specialize \hline
+\obtain\hline
+\have \hline
+\librarysearch \hline
+\refine \hline 
+\rintro  \hline
+\rcases \hline
+\simp   \hline 
+\end{longtable}
+
+
+xxx change
+xxx let
+
+\leanin&def f : ℕ → ℝ := λ n, n^2 + 3&
+
+%→↔←
+%⟨⟩
+%⊢
+%∧∨¬
+%∩∪
+%∀∃
+%∈∉∅
+%ℕℝ
+
+\tacsubsection{\leanin{apply}}
+\leantable{\apply \hline} 
+\subsubsection*{Zusammenfassung}
+Das Goal ist zunächst, \leanstate{⊢ Q} zu beweisen, wobei bereits ein Beweis für \leanstate{h : P→Q} zur Verfügung steht. Deshalb braucht man nur noch einen Beweis für \leanstate{⊢ P} zu finden. Diese Umwandlung passiert mit \leanin{apply h}. \leanin{apply} arbeitet dabei bis hin zur definitorischen Gleichheit. 
+
+\subsubsection*{Beispiele}
+Da \leanin{apply} bis zur definitorischen Gleichheit arbeitet, liefert folgendes einen Fortschritt, da \leanstate{¬P} per Definition gleich \leanstate{P → false} ist:\\
+\leantable{\leanstate{h : ¬P} & \leanin{apply h} & \leanstate{h : ¬P}  \\ \leanstate{⊢ false} & & \leanstate{⊢ P}  \\ \hline}
+
+~
+
+\noindent
+Die Taktik \leanin{apply} wendet sich iterativ an. Das bedeutet: liefert \leanin{apply h} (identisch mit \leanin{refine h _}) keinen Fortschritt, so wird es mit \leanin{refine h _ _} versucht:
+
+\leantable{\parbox[t]{0.36\textwidth}{\leanstate{h : P → Q → R} \\ \leanstate{⊢ R}} & \parbox[t]{0.28\textwidth}{\leanin{apply h}} & \parbox[t]{0.3\textwidth}{\leanstate{h : P → Q → R} \\ \leanstate{⊢ P} \\ \leanstate{h : P → Q → R} \\ \leanstate{⊢ Q} } \\  \hline}
+
+
+\subsubsection*{Anmerkungen}
+\begin{enumerate}
+\item \leanin{apply h} ist identisch zu \leanin{refine h _}, bzw.\ (wie im zweiten Beispiel oben) zu \leanin{refine h _ _}.
+\end{enumerate}
+
+\tacsubsection{\leanin{assumption}}
+\leantable{\assumption \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+
+\tacsubsection{\leanin{bycases}}
+\leantable{\bycases\hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{bycontra}}
+\leantable{\bycontra \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{cases}}
+\leantable{\caseslean \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{change}}
+xxx add table
+\subsubsection*{Zusammenfassung}
+Ändert eine Hypothese bzw.\ das Goal in eine Hypothese bzw.\ das Goal, das definitorisch gleich ist.
+
+\subsubsection*{Beispiele}
+Ist etwa
+\begin{minted}[mathescape, numbersep=5pt, framesep=5mm, bgcolor=mygray]{Lean}
+  f: α → β
+  s: set α
+  x: α
+  xs: x ∈ s
+  ⊢ x ∈ f ⁻¹' (f '' s)
+\end{minted}
+so ändert \leanstate&change f x ∈ f '' s,& das Goal zu \leanstate&⊢ f x ∈ f '' s&.
+
+\leanstate&change& funktioniert auch bei Hypothesen. Ist eine Hypothese \leanstate&h : x ∈ f ⁻¹' (f '' s)&, dann ist nach \leanstate&change f x ∈ f '' s at h& die Hypothese \leanstate&h : f x ∈ f '' s&.
+
+\subsubsection*{Anmerkungen}
+Da viele Taktiken sowieso auf definitorische Gleichheit testen, ist \leanstate&change& oftmals nicht nötig. 
+
+
+
+\tacsubsection{\leanin{clear}}
+\leantable{\clearlean \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{exact}}
+\leantable{\exact \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{exfalso}}
+\leantable{\exfalso \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{have}}
+\leantable{\have \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{intro}}
+\leantable{\intro \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\leantable{\parbox[t]{0.36\textwidth}{\leanstate{⊢ ∀a, a + 1 = succ a}} & \parbox[t]{0.28\textwidth}{\leanin{intro x}} & \parbox[t]{0.3\textwidth}{\leanstate{x : X} \\ \leanstate{⊢ x + 1 = succ x}} \\  \hline}
+
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{intros}}
+\leantable{\intros\hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{left}}
+\leantable{\leftlean \hline }
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{library_search}}
+\leantable{\librarysearch \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{linarith}}
+\leantable{\linarith \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{norm_num}}
+\leantable{\normnum \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{obtain}}
+\leantable{\obtain\hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{rcases}}
+\leantable{\rcases \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{refine}}
+\leantable{\refine \hline }
+\subsubsection*{Zusammenfassung}
+Die \leanstate&refine&-Taktik ist wie \leanstate&exact& mit Löchern. Etwas genauer: Wenn das Goal darin besteht, eine Kombination aus Hypothesen anzuwenden, so kann man das mittels \leanstate&refine& machen und für jeden offene Term \leanstate&_& schreiben. Dann erhält man jeden \leanstate&_& als neues Ziel zurück (wobei solche mit definitorischer Gleichheit sofort gelöst werden).
+
+\subsubsection*{Beispiele}
+Angenommen, folgendes ist zu zeigen:
+\begin{minted}[mathescape, numbersep=5pt, framesep=5mm, bgcolor=mygray]{Lean}
+f : ℝ → ℝ
+x y ε : ℝ
+hε : 0 < ε 
+⊢ ∃ ( δ : ℝ) (H : δ > 0), |f y - f x| < δ
+\end{minted}
+\sloppy Dann wird mit \leanstate&refine ⟨ε^2, by nlinarith, _ ⟩& das neue Goal zu \leanstate&⊢ |f y - f x| < ε ^ 2 &. Hier haben wir die \leanstate&nlinarith&-Taktik verwendet, um \leanstate&ε^2 > 0& aus \leanstate&0 < ε& zu beweisen.
+\subsubsection*{Anmerkungen}
+
+
+\tacsubsection{\leanin{refl}}
+\leantable{\refl \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{right}}
+\leantable{\rightlean \hline }
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{ring}}
+\leantable{\ring \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{rintro}}
+\leantable{\rintro  \hline}
+\subsubsection*{Zusammenfassung}
+Die \leanin&rintro&-Taktik wird dazu verwendet, mehrere \leanin&intro&- und \leanin&cases&-Taktiken in einer Zeile zu verarbeiten.
+\subsubsection*{Beispiele}
+Für
+\begin{minted}[mathescape, numbersep=5pt, framesep=5mm, bgcolor=mygray]{Lean}
+hP : P
+hQ : Q
+hR : R
+⊢ S
+\end{minted}
+ist \leanin&intro hP, intro h, cases h with hQ hR,& identisch mit \leanin&rintro hP ⟨ hQ, hR ⟩,&
+
+Für
+\begin{minted}[mathescape, numbersep=5pt, framesep=5mm, bgcolor=mygray]{Lean}
+⊢ P ∨ Q → R
+\end{minted}
+ist \leanin{intro h, cases h with hP hQ} identisch mit \leanin{rintro (hP | hQ)}.
+\subsubsection*{Anmerkungen}
+Hier können auch mehr als zwei \leanstate{∨} in einem Schritt in Fälle aufgeteilt werden: Bei \leanstate{A ∨ B ∨ C} werden mit \leanin{rintro (A | B | C)} drei Goals eingeführt. 
+\subsubsection*{Anmerkungen}
+
+
+
+\tacsubsection{\leanin{rw}}
+\leantable{\rw  \hline}
+\subsubsection*{Zusammenfassung}
+Mit \leanin{rw ← h} wird \leanin{rw} von rechts nach links angewendet.
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{simp}}
+\leantable{\simp   \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{specialize}}
+\leantable{\specialize \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{split}}
+\leantable{\splitlean \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\tacsubsection{\leanin{tauto}}
+\leantable{\tauto\hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+
+\tacsubsection{\leanin{triv}}
+\leantable{\triv \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+
+\tacsubsection{\leanin{use}}
+\leantable{\uselean \hline}
+\subsubsection*{Zusammenfassung}
+\subsubsection*{Beispiele}
+\subsubsection*{Anmerkungen}
+
+\end{document}
+
+\section{Beweisbeispiele aus der Schulmathematik}
+\begin{enumerate}
+\item $\forall n \in \mathbb N \exists k \in \mathbb N, a_0, ..., a_k \in \{0,...,9\}: (a_k\neq 0) \wedge (n = \sum_{i=0}^ka_i 10^i)$
+\item Eindeutigkeit in 1.
+\item $\forall n = \sum_{k=0}^\infty a_k 10^k \in \mathbb N : 2 | n \iff a_0 \in \{0,2,4,6,8\}.$
+\item $\forall n = \sum_{k=0}^\infty a_k 10^k \in \mathbb N : 3 | n \iff 3 | \sum_{i=0}^k a_i.$
+\item Sei $\mathbb P$ die Menge aller Primzahlen. Dann gilt \\
+  $\forall n \in \mathbb N, p \in \mathbb P : p | n^2 \iff p | n.$
+\item $\sqrt 2 \notin \mathbb Q$
+\item Für $n\in\mathbb N$ sei $T_n := \{k \in \mathbb N: k>1 \wedge k | n\}$. Dann gilt $\min T_n \in \mathbb P$
+\item $|\mathbb P| = \infty$.
+\item Formalisierung von $m/n$ kann gekürzt werden.
+\item Sei $f: x\mapsto x^n$ Dann ist $f'(x) = nx^{n-1}$.
+\item Zwischenwertsatz.
+\end{enumerate}
+Aus Fundamente | der Mathematik | Baden-Württemberg Gymnasium 8,
+S. 33:
+
+Beispiel 1: Die Summe aus einer geraden natürlichen Zahl und ihrem Nachfolger ist stets
+ungerade. Begründe, dass die Aussage wahr ist.
+
+5 . Formuliere die Voraussetzung und die Behauptung mit Variablen und beweise dann die
+Aussage für natürliche Zahlen.
+a) Die Summe von zwei aufeinanderfolgenden geraden Zahlen ist immer gerade.
+b) Das Produkt von zwei aufeinanderfolgenden geraden Zahlen ist immer durch 4 teilbar.
+c) Jede durch 15 teilbare Zahl ist auch durch 5 teilbar.
+d) Das Produkt des Vorgängers und Nachfolgers einer Zahl ist kleiner als das Quadrat
+dieser Zahl.
+e) Das Quadrat jeder ungeraden Zahl ist ungerade.
+
+6 . Die folgenden Aussagen sind falsch. Beweise dies durch ein Gegenbeispiel.
+a) Die Summe von vier aufeinanderfolgenden natürlichen Zahlen ist durch 4 teilbar.
+b) Die Summe von sechs aufeinanderfolgenden natürlichen Zahlen ist durch 6 teilbar.
+c) Wenn eine Zahl durch 3 teilbar ist, dann ist sie auch durch 6 teilbar.
+
+8 . Forschungsauftrag: Beweise sind in der mathematischen
+Forschung von großer Bedeutung. Informiere dich über
+die Goldbachsche Vermutung. Recherchiere auch zu den
+Hilbertschen Problemen.
+
+S. 86 ff:
+
+Beispiel 1: Beweise folgende Aussage mit einem indirekten Beweis:
+Wenn das Quadrat einer natürlichen Zahl ungerade ist, dann ist auch die Zahl selbst
+ungerade.
+
+Klasse 9, S. 41:
+Beweise: Für $a > 0$ und $b > 0$ gilt immer: $\sqrt{a+b} ​​ < \sqrt a + \sqrt b$.
+
+S. 46:
+
+20 Beweise nachfolgende Regeln für $a > 0; m, n \neq 0; m, n$ natürliche Zahlen.
+$\sqrt[m]{a}\sqrt[n]{a} = \sqrt[mn]{a^{m+n}}$
+
+12. Rechenregeln für Binomialkoeffizienten:
+
+
+
+
+\end{document}
+
+
+\begin{tabular}{|p{0.36\textwidth}|p{0.28\textwidth}|p{0.3\textwidth}|}
+  \hline
+  \vphantom{$\displaystyle\int$}
+  Proof state & Kommando & Neuer proof state \\ \hline \hline 
+  \leanstate&⊢ P → Q& & \leanin&intro hP& & \leanstate&hP : P& \\ && \leanstate&⊢ Q& \\\hline
+  \leanstate&h : P& & \leanin&exact h& oder & \bf{goals accomplished \emoji{party-popper}} \\ \leanstate&⊢ P& & \leanin&assumption& &  \\ \hline 
+  \leanstate&h : P → Q& & \leanin&apply h& & \leanstate&h : P → Q&  \\ \leanstate&⊢ Q& & & \leanstate&⊢ P&  \\ \hline 
+  \leanstate&⊢ P → Q → R& & \leanin&intros hP hQ& & \leanstate&hP : P& \\ && \leanstate&hQ : Q& \\ && \leanstate&⊢ R& \\\hline
+  \leanstate&⊢ P ∧ Q → P&\footnotemark & \leanin&tauto& oder \leanin&tauto!& &  \bf{goals accomplished \emoji{party-popper}} \\\hline\hline
+  %
+  \leanstate&⊢ true& & \leanin&triv& & \bf{goals accomplished \emoji{party-popper}} \\ \hline
+  \leanstate&h : P& & \leanin&exfalso& & \leanstate&h : P&  \\ \leanstate&⊢ Q& & & \leanstate&⊢ false&  \\ \hline \hline 
+  %
+  \leanstate&⊢ P& & \leanin&by_contra h& & \leanstate&h : ¬P& \\ & & \leanstate&⊢ false& \\ \hline
+  \leanstate&⊢ P& & \leanin&by_cases h : Q& & \leanstate&h : Q&  \\ & & \leanstate&⊢ P&  \\ & & \leanstate&h : ¬Q& \\ & & \leanstate&⊢ P& \\ \hline 
+  %
+  \leanstate&h : P ∧ Q& & \leanin&cases h with hP hQ& & \leanstate&hP : P&  \\ \leanstate&⊢ R& & & \leanstate&hQ : Q&  \\ & & \leanstate&⊢ R& \\ \hline
+  \leanstate&h : P ∨ Q& & \leanin&cases h with hP hQ& & \leanstate&hP : P&  \\ \leanstate&⊢ R& & & \leanstate&⊢ R&  \\ & & \leanstate&hQ : Q& \\ & & \leanstate&⊢ R& \\ \hline 
+  \leanstate&⊢ P ∧ Q& & \leanin&split& & \leanstate&⊢ P& \\ && \leanstate&⊢ Q& \\ \hline \hline
+  \leanstate&⊢ P ↔ Q& & \leanin&split& & \leanstate&⊢ P → Q& \\ && \leanstate&⊢ Q → P& \\ \hline \hline
+  %
+  \leanstate&h : false& & \leanin&cases h& & \bf{goals accomplished \emoji{party-popper}} \\ \leanstate&⊢ P& & & \\ \hline
+  \leanstate&h : P& & \leanin&clear h& & \leanstate&⊢ Q& \\ \leanstate&⊢ Q& & &  \\\hline
+  \leanstate&f : α → Prop& & \leanin&intro x& & \leanstate&f: α → Prop& \\  \leanstate&⊢ ∀ {x : α}, f x& & & \leanstate&x : α& \\ && \leanstate&⊢ f x& \\ \hline
+  \leanstate&⊢ true& & \leanin&triv& & \bf{goals accomplished \emoji{party-popper}} \\ \hline
+  \leanstate&f : α → Prop& & \leanin&use y& & \leanstate&f : α → Prop& \\ \leanstate&y : α& & & \leanstate&y : α& \\ \leanstate&⊢ ∃ (x : α), f x& && \leanstate&⊢ f y& \\\hline
+  \leanstate&⊢ P ∧ Q& & \leanin&split& & \leanstate&⊢ P& \\ && \leanstate&⊢ Q& \\ \hline 
+  \leanstate&⊢ P ∨ Q& & \leanin&left& & \leanstate&⊢ P& \\ \hline 
+  \leanstate&⊢ P ∨ Q& & \leanin&right& & \leanstate&⊢ Q& \\ \hline 
+  \leanstate&h : P ↔ Q& & \leanin&rw h& & \leanstate&h : P ↔ Q&  \\ 
+  \leanstate&⊢ P& & & \leanstate&⊢ Q&  \\ \hline 
+  \leanstate&h : P ↔ Q& & \leanin&rw ← h& & \leanstate&h : P ↔ Q&  \\ 
+  \leanstate&⊢ Q& & & \leanstate&⊢ P&  \\ \hline 
+\end{tabular}
+
+
+
+%% \noindent
+%% \begin{tabular}{|p{0.36\textwidth}|p{0.28\textwidth}|p{0.3\textwidth}|}
+%%   \hline
+%%   \vphantom{$\displaystyle\int$}
+%%   Ausdruck \leanline&x&& Wenn \leanline&x& im Goal \leanline&⊢&& Wenn \leanline&x& in Hypothese \leanline&h& \\ \hline \hline 
+%%   \leanline&P → Q& & \leanline&intro hP& & \leanline&apply h& \\ && falls \leanline&⊢ Q& \\\hline
+%%   \leanline&true&  & \leanline&triv& & hat keinen Einfluss \\\hline
+%%   \leanline&false&  & \leanline&apply h& & \leanline&cases h&\\ & falls \leanline&h : ¬P& &  \\\hline
+%%   \leanline&¬P& ($:=$ \leanline&P → false&)& \leanline&intro hP& & \leanline&apply h& \\&& falls \leanline&⊢ false& \\ \hline
+%%   \leanline&P ∧ Q& & \leanline&split& & \leanline&cases h with hP hQ& \\ \hline
+%%   \leanline&P ↔ Q& ($:=$\leanline&P → Q ∧ Q → P&)& \leanline&split& & \leanline&cases h& oder \leanline&rw h& \\ \hline
+%%   \leanline&P ∨ Q& & \leanline&left& or \leanline&right& & \leanline&cases h with hP hQ& \\ \hline
+%%   \leanline&∀ (a : X), ...& & \leanline&intro x& & \leanline&specialize h x& \\ \hline
+%%   \leanline&∃ (a : X), ...& & \leanline&use x& & \leanline&cases h with x hx& \\ \hline
+%% \end{tabular}

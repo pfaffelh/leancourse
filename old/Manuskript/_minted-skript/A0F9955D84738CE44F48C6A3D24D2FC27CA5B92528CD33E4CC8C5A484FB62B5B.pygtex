@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{simp} \PYG{n}{only} \PYG{o}{[}\PYG{n}{add\PYGZus{}zero}\PYG{o}{]}
+\end{Verbatim}

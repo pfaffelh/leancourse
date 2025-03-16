@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{rcases} \PYG{n}{h} \PYG{k}{with} \PYG{o}{(⟨}\PYG{n}{hP1}\PYG{o}{,}\PYG{n}{hQ}\PYG{o}{⟩} \PYG{n+nb+bp}{|} \PYG{o}{⟨}\PYG{n}{hP2}\PYG{o}{,}\PYG{n}{hR}\PYG{o}{⟩)}
+\end{Verbatim}

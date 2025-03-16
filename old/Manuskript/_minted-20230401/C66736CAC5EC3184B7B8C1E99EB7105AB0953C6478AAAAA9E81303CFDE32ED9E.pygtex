@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+  \PYG{k+kd}{variables} \PYG{o}{(}\PYG{n}{X} \PYG{n}{Y} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{(}\PYG{n}{f} \PYG{o}{:} \PYG{n}{X} \PYG{n+nb+bp}{→} \PYG{n}{Y}\PYG{o}{)} \PYG{o}{(}\PYG{n}{S} \PYG{o}{:} \PYG{n}{set} \PYG{n}{X}\PYG{o}{)} \PYG{o}{(}\PYG{n}{T} \PYG{o}{:} \PYG{n}{set} \PYG{n}{Y}\PYG{o}{)}
+\end{Verbatim}

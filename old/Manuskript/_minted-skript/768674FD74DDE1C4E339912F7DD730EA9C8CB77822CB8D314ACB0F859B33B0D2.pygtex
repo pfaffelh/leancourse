@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{P} \PYG{o}{:} \PYG{k+kt}{Prop}
+\PYG{n+nb+bp}{⊢} \PYG{n}{P} \PYG{n+nb+bp}{→} \PYG{n}{P}
+\end{Verbatim}

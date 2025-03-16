@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o}{(}\PYG{n}{x} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{x} \PYG{o}{:} \PYG{n}{ℤ}\PYG{o}{)}
+\end{Verbatim}

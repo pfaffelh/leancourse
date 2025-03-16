@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+      \PYG{k+kd}{lemma} \PYG{n}{dvd\PYGZus{}iff\PYGZus{}dvd\PYGZus{}digits\PYGZus{}sum} \PYG{o}{(}\PYG{n}{b} \PYG{n}{b\PYGZsq{}} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)} \PYG{o}{(}\PYG{n}{h} \PYG{o}{:} \PYG{n}{b\PYGZsq{}} \PYG{n+nb+bp}{\PYGZpc{}} \PYG{n}{b} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1}\PYG{o}{)} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)} \PYG{o}{:}
+      \PYG{n}{b} \PYG{n+nb+bp}{∣} \PYG{n}{n} \PYG{n+nb+bp}{↔} \PYG{n}{b} \PYG{n+nb+bp}{∣} \PYG{o}{(}\PYG{n}{digits} \PYG{n}{b\PYGZsq{}} \PYG{n}{n}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{sum}
+\end{Verbatim}

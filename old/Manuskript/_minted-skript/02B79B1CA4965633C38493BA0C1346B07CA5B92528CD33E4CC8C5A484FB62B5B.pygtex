@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{leanproject} \PYG{n}{get} \PYG{n}{https}\PYG{o}{:}\PYG{n+nb+bp}{//}\PYG{n}{github.com}\PYG{n+nb+bp}{/}\PYG{n}{pfaffelh}\PYG{n+nb+bp}{/}\PYG{n}{schulmathematik\PYGZus{}mit\PYGZus{}lean}
+\end{Verbatim}

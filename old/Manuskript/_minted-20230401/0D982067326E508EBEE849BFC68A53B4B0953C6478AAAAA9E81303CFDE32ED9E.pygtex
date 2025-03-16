@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+  \PYG{n}{f}\PYG{o}{:} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{β}
+  \PYG{n}{s}\PYG{o}{:} \PYG{n}{set} \PYG{n}{α}
+  \PYG{n}{x}\PYG{o}{:} \PYG{n}{α}
+  \PYG{n}{xs}\PYG{o}{:} \PYG{n}{x} \PYG{n+nb+bp}{∈} \PYG{n}{s}
+  \PYG{n+nb+bp}{⊢} \PYG{n}{x} \PYG{n+nb+bp}{∈} \PYG{n}{f} \PYG{n+nb+bp}{⁻¹\PYGZsq{}} \PYG{o}{(}\PYG{n}{f} \PYG{n+nb+bp}{\PYGZsq{}\PYGZsq{}} \PYG{n}{s}\PYG{o}{)}
+\end{Verbatim}

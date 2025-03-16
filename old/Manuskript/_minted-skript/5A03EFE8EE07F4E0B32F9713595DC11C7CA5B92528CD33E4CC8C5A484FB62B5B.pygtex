@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{zero}\PYG{o}{,} \PYG{n}{one}\PYG{o}{,} \PYG{n}{mul}\PYG{o}{,} \PYG{n}{add}\PYG{o}{,} \PYG{n}{succ}\PYG{o}{,}\PYG{n+nb+bp}{...}
+\end{Verbatim}

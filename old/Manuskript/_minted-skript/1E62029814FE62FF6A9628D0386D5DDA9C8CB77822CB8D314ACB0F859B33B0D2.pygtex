@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{gt\PYGZus{}iff\PYGZus{}lt} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u\PYGZus{}1}\PYG{o}{\PYGZcb{}} \PYG{o}{[}\PYG{n}{\PYGZus{}inst\PYGZus{}1} \PYG{o}{:} \PYG{n}{has\PYGZus{}lt} \PYG{n}{α}\PYG{o}{]} \PYG{o}{\PYGZob{}}\PYG{n}{a} \PYG{n}{b} \PYG{o}{:} \PYG{n}{α}\PYG{o}{\PYGZcb{},} \PYG{n}{a} \PYG{n+nb+bp}{\PYGZgt{}} \PYG{n}{b} \PYG{n+nb+bp}{↔} \PYG{n}{b} \PYG{n+nb+bp}{\PYGZlt{}} \PYG{n}{a}
+\end{Verbatim}

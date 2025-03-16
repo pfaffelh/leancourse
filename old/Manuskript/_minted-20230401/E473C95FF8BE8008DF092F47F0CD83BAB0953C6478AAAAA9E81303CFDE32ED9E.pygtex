@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kd}{def} \PYG{n}{condexp} \PYG{o}{(}\PYG{n}{ℬ} \PYG{o}{:} \PYG{n}{measurable\PYGZus{}space} \PYG{n+nb+bp}{Ω}\PYG{o}{)}
+  \PYG{o}{\PYGZob{}} \PYG{o}{:} \PYG{n}{measurable\PYGZus{}space} \PYG{n+nb+bp}{Ω}\PYG{o}{\PYGZcb{}}
+  \PYG{o}{(}\PYG{n}{μ} \PYG{o}{:} \PYG{n}{measure} \PYG{n+nb+bp}{Ω}\PYG{o}{)} \PYG{o}{(}\PYG{n}{f} \PYG{o}{:} \PYG{n+nb+bp}{Ω} \PYG{n+nb+bp}{→} \PYG{n}{E}\PYG{o}{)} \PYG{o}{:} \PYG{n+nb+bp}{Ω} \PYG{n+nb+bp}{→} \PYG{n}{E} \PYG{o}{:=}
+\PYG{k}{if} \PYG{n}{hm} \PYG{o}{:} \PYG{n}{ℬ} \PYG{n+nb+bp}{≤}
+  \PYG{k}{then} \PYG{k}{if} \PYG{n}{h} \PYG{o}{:} \PYG{n}{sigma\PYGZus{}finite} \PYG{o}{(}\PYG{n}{μ.trim} \PYG{n}{hm}\PYG{o}{)} \PYG{n+nb+bp}{∧} \PYG{n}{integrable} \PYG{n}{f} \PYG{n}{μ}
+    \PYG{k}{then} \PYG{k}{if} \PYG{n}{strongly\PYGZus{}measurable}\PYG{o}{[}\PYG{n}{ℬ}\PYG{o}{]} \PYG{n}{f} \PYG{k}{then} \PYG{n}{f}
+      \PYG{k}{else} \PYG{o}{(}\PYG{n+nb+bp}{@}\PYG{n}{ae\PYGZus{}strongly\PYGZus{}measurable\PYGZsq{}\PYGZus{}condexp\PYGZus{}L1} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{ℬ}  \PYG{n}{μ} \PYG{n}{hm} \PYG{n}{h.1} \PYG{n}{\PYGZus{}}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{mk} \PYG{o}{(}\PYG{n+nb+bp}{@}\PYG{n}{condexp\PYGZus{}L1} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}} \PYG{n}{hm} \PYG{n}{μ} \PYG{n}{h.1} \PYG{n}{f}\PYG{o}{)}
+    \PYG{k}{else} \PYG{l+m+mi}{0}
+  \PYG{k}{else} \PYG{l+m+mi}{0}
+\end{Verbatim}

@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{have} \PYG{n}{hP} \PYG{o}{:} \PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n+nb+bp}{¬} \PYG{n}{P}\PYG{o}{,} \PYG{n}{exact} \PYG{n}{em} \PYG{n}{P}\PYG{o}{,} \PYG{n}{cases} \PYG{n}{hP}\PYG{o}{,}
+\end{Verbatim}

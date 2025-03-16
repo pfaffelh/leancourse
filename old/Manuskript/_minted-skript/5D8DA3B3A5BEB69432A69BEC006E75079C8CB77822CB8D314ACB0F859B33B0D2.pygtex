@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kd}{notation} \PYG{n+nb+bp}{`}\PYG{n}{ℕ}\PYG{n+nb+bp}{`} \PYG{o}{:=} \PYG{n}{nat}
+\end{Verbatim}

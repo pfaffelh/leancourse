@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+  \PYG{n}{add\PYGZus{}comm} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{\PYGZob{}}\PYG{n}{G} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{[}\PYG{n}{\PYGZus{}inst\PYGZus{}1} \PYG{o}{:} \PYG{n}{add\PYGZus{}comm\PYGZus{}semigroup} \PYG{n}{G}\PYG{o}{]} \PYG{o}{(}\PYG{n}{a} \PYG{n}{b} \PYG{o}{:} \PYG{n}{G}\PYG{o}{),}
+                                                               \PYG{n}{a} \PYG{n+nb+bp}{+} \PYG{n}{b} \PYG{n+nb+bp}{=} \PYG{n}{b} \PYG{n+nb+bp}{+} \PYG{n}{a}
+  \PYG{n}{add\PYGZus{}zero} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{\PYGZob{}}\PYG{n}{M} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{[}\PYG{n}{\PYGZus{}inst\PYGZus{}1} \PYG{o}{:} \PYG{n}{add\PYGZus{}zero\PYGZus{}class} \PYG{n}{M}\PYG{o}{]} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{M}\PYG{o}{),} \PYG{n}{a} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{a}
+\end{Verbatim}

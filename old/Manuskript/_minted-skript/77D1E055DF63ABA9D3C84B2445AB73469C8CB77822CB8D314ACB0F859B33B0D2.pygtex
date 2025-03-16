@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{P} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)} \PYG{o}{:} \PYG{n}{P} \PYG{n+nb+bp}{→} \PYG{n}{P} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+  \PYG{g+gr}{sorry}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{Verbatim}

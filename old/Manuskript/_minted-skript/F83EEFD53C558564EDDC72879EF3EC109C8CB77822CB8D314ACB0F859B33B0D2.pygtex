@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kd}{inductive} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{zero} \PYG{o}{:} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{succ} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)} \PYG{o}{:} \PYG{n}{nat}
+\end{Verbatim}

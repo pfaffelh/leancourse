@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{):} \PYG{o}{(}\PYG{n}{n}\PYG{n+nb+bp}{+}\PYG{l+m+mi}{1}\PYG{o}{)}\PYG{n+nb+bp}{\PYGZca{}}\PYG{l+m+mi}{2} \PYG{n+nb+bp}{=} \PYG{n}{n}\PYG{n+nb+bp}{\PYGZca{}}\PYG{l+m+mi}{2} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{2}\PYG{n+nb+bp}{*}\PYG{n}{n} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{1} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+  \PYG{k}{have} \PYG{n}{h} \PYG{o}{:} \PYG{n}{n} \PYG{n+nb+bp}{+} \PYG{n}{n} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{2}\PYG{n+nb+bp}{*}\PYG{n}{n}\PYG{o}{,} \PYG{k+kd}{by} \PYG{o}{\PYGZob{}} \PYG{n}{nth\PYGZus{}rewrite} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{←} \PYG{n}{one\PYGZus{}mul} \PYG{n}{n}\PYG{o}{,}
+        \PYG{n}{nth\PYGZus{}rewrite} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{←} \PYG{n}{one\PYGZus{}mul} \PYG{n}{n}\PYG{o}{,} \PYG{n}{rw} \PYG{n+nb+bp}{←} \PYG{n}{add\PYGZus{}mul}\PYG{o}{,} \PYG{o}{\PYGZcb{},}
+  \PYG{n}{rw} \PYG{o}{[}\PYG{n}{pow\PYGZus{}two}\PYG{o}{,} \PYG{n}{mul\PYGZus{}add}\PYG{o}{,} \PYG{n}{add\PYGZus{}mul}\PYG{o}{,} \PYG{n}{mul\PYGZus{}one} \PYG{o}{(}\PYG{n}{n}\PYG{n+nb+bp}{+}\PYG{l+m+mi}{1}\PYG{o}{),} \PYG{n}{one\PYGZus{}mul}\PYG{o}{,}
+    \PYG{n+nb+bp}{←} \PYG{n}{pow\PYGZus{}two}\PYG{o}{,}  \PYG{n}{add\PYGZus{}assoc}\PYG{o}{,} \PYG{n+nb+bp}{←} \PYG{n}{add\PYGZus{}assoc} \PYG{n}{n} \PYG{n}{n} \PYG{l+m+mi}{1}\PYG{o}{,}
+    \PYG{n+nb+bp}{←} \PYG{n}{add\PYGZus{}assoc}\PYG{o}{,} \PYG{n+nb+bp}{←} \PYG{n}{h}\PYG{o}{],}
+\PYG{k+kd}{end}
+\end{Verbatim}

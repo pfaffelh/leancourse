@@ -5,22 +5,41 @@
   {"lean-markup":
    [{"id": "lean-markup",
      "data":
-     ["Interactive Theorem Proving using Lean, Summer 2025",
-      "First steps using logic",
-      "Lean Markup"],
+     {"title": "Lean Markup",
+      "sectionNum": "2.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "First steps using logic", "number": "2"},
+       {"title": "Lean Markup", "number": "1"}]},
      "address": "/"}],
    "genres":
    [{"id": "genres",
-     "data": ["Interactive Theorem Proving using Lean, Summer 2025", "Genres"],
+     "data":
+     {"title": "Genres",
+      "sectionNum": "3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Genres", "number": "3"}]},
      "address": "/"}],
    "docstrings":
    [{"id": "docstrings",
      "data":
-     ["Interactive Theorem Proving using Lean, Summer 2025", "Docstrings"],
+     {"title": "Docstrings",
+      "sectionNum": "4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Docstrings", "number": "4"}]},
      "address": "/"}]}},
+ "Verso.Genre.Manual.doc.tech":
+ {"title": "Terminology",
+  "description": "Definitions of technical terms",
+  "contents": {}},
  "Verso.Genre.Manual.doc.tactic.conv":
  {"title": "Conversion Tactics",
-  "description": "Tatics for performing targeted rewriting of subterms",
+  "description": "Tactics for performing targeted rewriting of subterms",
   "contents": {}},
  "Verso.Genre.Manual.doc.tactic":
  {"title": "Tactic Documentation",
@@ -33,5 +52,5 @@
   "description": "Documentation for Lean constants",
   "contents":
   {"List.forM": [{"id": "List___forM", "data": null, "address": "/"}],
-   "Lean.Parser.Tactic.intro":
-   [{"id": "Lean___Parser___Tactic___intro", "data": null, "address": "/"}]}}}
+   "Lean.Parser.Tactic.apply":
+   [{"id": "Lean___Parser___Tactic___apply", "data": null, "address": "/"}]}}}

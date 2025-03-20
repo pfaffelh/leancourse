@@ -12,126 +12,12 @@
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <title>Interactive Theorem Proving using Lean, Summer 2025</title><link rel="stylesheet" href="book.css">
     <script>
-      
-function saveCheckboxesInit() {
-  for (checkbox of document.querySelectorAll('#toc input[type="checkbox"]')) {
-    const value = localStorage.getItem(checkbox.id);
-
-    // Treat the ToC toggle specially, because it should always default to
-    // closed on mobile-width screens but respect user preference on desktop-width.
-    if (checkbox.id === "toggle-toc" && window.matchMedia("(max-width: 700px)").matches) {
-        checkbox.checked = false;
-    } else if (value === "true") {
-        checkbox.checked = true;
-    } else if (value === "false") {
-        checkbox.checked = false;
-    } // if not found, do nothing
-
-    checkbox.addEventListener("change", persistCheckbox);
-  }
-}
-
-function persistCheckbox() {
-  const value = this.checked; // in a handler, 'this' is the element with the handler on it
-  const id = this.id;
-  localStorage.setItem(this.id, value ? "true" : "false");
-}
-
-window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
-</script>
-    <script>
       const __versoSiteRoot = "./"</script>
     <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
     <script src="-verso-js/popper.js"></script>
     <script src="-verso-js/tippy.js"></script>
     <link rel="stylesheet" href="-verso-css/tippy-border.css">
     <style>
-    main .theIndex {
-      padding-left: 0;
-      font-family: var(--verso-text-font-family);
-    }
-
-    main .theIndex nav {
-      position: sticky;
-      top: 0;
-      background: white;
-      font-family: var(--verso-structure-font-family);
-      font-size: 1.25rem;
-    }
-
-    main .theIndex nav ol {
-      padding: 0;
-    }
-
-    main .theIndex nav ol li {
-      display: inline-block;
-    }
-
-    main .theIndex nav ol li a {
-      /* Padding instead of margin to have a bigger click target */
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
-    /* Increase the size of the touch target on phones */
-    @media screen and (max-width: 700px) {
-      main .theIndex nav ol li a {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
-    }
-
-    main .theIndex nav ol li:first-child a {
-      padding-left: 0;
-    }
-
-    main .theIndex nav ol li + li:before {
-      content: "|";
-    }
-
-    main .theIndex h1,
-    main .theIndex h2,
-    main .theIndex h3,
-    main .theIndex h4,
-    main .theIndex h5,
-    main .theIndex h6 {
-      margin-top: 0;
-    }
-
-    main .theIndex ol {
-      list-style-type: none;
-    }
-
-    main .theIndex .division > ol {
-      padding-left: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem 3rem;
-      overflow-wrap: break-word;
-    }
-
-    @media screen and (max-width: 700px) {
-      main .theindex .division > ol {
-        flex-direction: column;
-        flex-wrap: nowrap;
-        gap: 1rem;
-      }
-    }
-
-   main .theIndex .division > ol > li {
-      margin-bottom: 0.5rem;
-    }
-
-    main .theIndex .division ol ol {
-      padding-left: 1rem;
-    }
-
-    main .theIndex .division {
-      break-inside: avoid;
-      counter-reset: none;
-      max-width: none;
-      width: auto;
-    }
-    </style><style>
 
 .hl.lean {
   white-space: pre;
@@ -239,7 +125,7 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 }
 
 @media (hover: hover) {
-  .hl.lean .token.binding-hl, .hl.lean .literal.string:hover {
+  .hl.lean .token.binding-hl, .hl.lean .literal.string:hover, .hl.lean .token.typed:hover {
     background-color: #eee;
     border-radius: 2px;
     transition: none;
@@ -250,7 +136,7 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 .hl.lean .has-info {
   text-decoration-style: wavy;
   text-decoration-line: underline;
-  text-decoration-thickness: 0.1rem;
+  text-decoration-thickness: from-font;
 }
 
 .hl.lean .has-info .hover-info {
@@ -342,6 +228,10 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 
 .hl.lean div.docstring > :last-child {
   margin-bottom: 0;
+}
+
+.hl.lean div.docstring > :first-child {
+  margin-top: 0;
 }
 
 .hl.lean .hover-info .sep {
@@ -663,9 +553,14 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 }
 
 .namedocs .text {
+  /* Causes margins on child elements to collapse inside the element, such
+     that the margins don't extend into parent with the background color.
+     The effect is that weird borders in the definition box don't happen anymore. */
+  display: flow-root;
   background-color: white;
-  padding: 1.5rem;
-  margin-top: 0.5rem;
+  /* Add a padding. this is the same as the margin applied to the first and last child.
+     The effect is that the padding looks the same size on all sides. */
+  padding: 0 1.5rem;
 }
 
 .namedocs .text > pre {
@@ -674,7 +569,6 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 
 .namedocs .signature {
   font-family: var(--verso-code-font-family);
-  font-size: larger;
   margin-top: 0 !important;
   margin-left: 1.5rem !important;
   margin-right: 1.5rem;
@@ -701,25 +595,49 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
   font-size: inherit;
   font-weight: bold;
 }
-.namedocs > .text > .constructors {
-  text-indent: -1ex;
+
+.namedocs > .text .constructor {
+  padding-left: 0.5rem;
+  padding-top: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 }
-.namedocs > .text > .constructors > li {
+
+.namedocs > .text .constructor::before {
+  content: '| ';
   display: block;
+  font-family: var(--verso-code-font-family);
+  font-weight: bold;
+  float: left;
+  width: 0.5rem;
+  white-space: pre;
 }
-.namedocs > .text > .constructors > li::before {
-  content: '|';
-  width: 1ex;
-  display: inline-block;
-  font-size: larger;
+
+.namedocs > .text .constructor .name-and-type {
+  padding-left: 0.5rem;
+  float: left;
+  margin-top: 0;
+  max-width: calc(100% - 1rem);
 }
-.namedocs > .text > .constructors > li > .doc {
-  text-indent: 0;
+.namedocs > .text .constructor .docs {
+  clear: both;
+  padding-left: 1rem;
 }
+
+/* These margins work together with the padding on .text */
+.namedocs .text > :first-child {
+  margin-top: 1.5rem;
+}
+.namedocs .text > :last-child {
+  margin-bottom: 1.5rem;
+}
+
 .namedocs .methods td, .namedocs .fields td {
   vertical-align: top;
 }
-.namedocs .inheritance td {
+.namedocs .inheritance {
   vertical-align: top;
   font-size: smaller;
   font-family: var(--verso-structure-font-family);
@@ -755,613 +673,728 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
   padding-right: 1rem;
 }
 
-.namedocs:has(input[data-parent-idx]) tr[data-inherited-from] {
+.namedocs .subdocs .name-and-type {
+  font-size: 1rem;
+  margin-left: 0;
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0.5rem;
+}
+
+.namedocs .subdocs .docs {
+  margin-left: 1.5rem;
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0.5rem;
+}
+
+.namedocs:has(input[data-parent-idx]) [data-inherited-from] {
   transition-property: opacity, display;
   transition-duration: 0.4s;
   transition-behavior: allow-discrete;
   @starting-style { opacity: 0 !important; }
 }
-.namedocs:has(input[data-parent-idx="0"]) tr[data-inherited-from="0"] {
+
+#this-page-items .tactic-name { font-weight: bold; }
+.namedocs:has(input[data-parent-idx="0"]) [data-inherited-from="0"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="0"]:checked) tr[data-inherited-from="0"] {
+.namedocs:has(input[data-parent-idx="0"]:checked) [data-inherited-from="0"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="0"]:checked):has(tr.inheritance[data-inherited-from="0"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="0"]) {
+.namedocs:has(input[data-parent-idx="0"]:checked):has(.inheritance[data-inherited-from="0"]:hover) [data-inherited-from]:not([data-inherited-from="0"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="1"]) tr[data-inherited-from="1"] {
+.namedocs:has(input[data-parent-idx="1"]) [data-inherited-from="1"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="1"]:checked) tr[data-inherited-from="1"] {
+.namedocs:has(input[data-parent-idx="1"]:checked) [data-inherited-from="1"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="1"]:checked):has(tr.inheritance[data-inherited-from="1"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="1"]) {
+.namedocs:has(input[data-parent-idx="1"]:checked):has(.inheritance[data-inherited-from="1"]:hover) [data-inherited-from]:not([data-inherited-from="1"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="2"]) tr[data-inherited-from="2"] {
+.namedocs:has(input[data-parent-idx="2"]) [data-inherited-from="2"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="2"]:checked) tr[data-inherited-from="2"] {
+.namedocs:has(input[data-parent-idx="2"]:checked) [data-inherited-from="2"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="2"]:checked):has(tr.inheritance[data-inherited-from="2"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="2"]) {
+.namedocs:has(input[data-parent-idx="2"]:checked):has(.inheritance[data-inherited-from="2"]:hover) [data-inherited-from]:not([data-inherited-from="2"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="3"]) tr[data-inherited-from="3"] {
+.namedocs:has(input[data-parent-idx="3"]) [data-inherited-from="3"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="3"]:checked) tr[data-inherited-from="3"] {
+.namedocs:has(input[data-parent-idx="3"]:checked) [data-inherited-from="3"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="3"]:checked):has(tr.inheritance[data-inherited-from="3"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="3"]) {
+.namedocs:has(input[data-parent-idx="3"]:checked):has(.inheritance[data-inherited-from="3"]:hover) [data-inherited-from]:not([data-inherited-from="3"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="4"]) tr[data-inherited-from="4"] {
+.namedocs:has(input[data-parent-idx="4"]) [data-inherited-from="4"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="4"]:checked) tr[data-inherited-from="4"] {
+.namedocs:has(input[data-parent-idx="4"]:checked) [data-inherited-from="4"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="4"]:checked):has(tr.inheritance[data-inherited-from="4"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="4"]) {
+.namedocs:has(input[data-parent-idx="4"]:checked):has(.inheritance[data-inherited-from="4"]:hover) [data-inherited-from]:not([data-inherited-from="4"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="5"]) tr[data-inherited-from="5"] {
+.namedocs:has(input[data-parent-idx="5"]) [data-inherited-from="5"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="5"]:checked) tr[data-inherited-from="5"] {
+.namedocs:has(input[data-parent-idx="5"]:checked) [data-inherited-from="5"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="5"]:checked):has(tr.inheritance[data-inherited-from="5"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="5"]) {
+.namedocs:has(input[data-parent-idx="5"]:checked):has(.inheritance[data-inherited-from="5"]:hover) [data-inherited-from]:not([data-inherited-from="5"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="6"]) tr[data-inherited-from="6"] {
+.namedocs:has(input[data-parent-idx="6"]) [data-inherited-from="6"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="6"]:checked) tr[data-inherited-from="6"] {
+.namedocs:has(input[data-parent-idx="6"]:checked) [data-inherited-from="6"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="6"]:checked):has(tr.inheritance[data-inherited-from="6"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="6"]) {
+.namedocs:has(input[data-parent-idx="6"]:checked):has(.inheritance[data-inherited-from="6"]:hover) [data-inherited-from]:not([data-inherited-from="6"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="7"]) tr[data-inherited-from="7"] {
+.namedocs:has(input[data-parent-idx="7"]) [data-inherited-from="7"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="7"]:checked) tr[data-inherited-from="7"] {
+.namedocs:has(input[data-parent-idx="7"]:checked) [data-inherited-from="7"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="7"]:checked):has(tr.inheritance[data-inherited-from="7"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="7"]) {
+.namedocs:has(input[data-parent-idx="7"]:checked):has(.inheritance[data-inherited-from="7"]:hover) [data-inherited-from]:not([data-inherited-from="7"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="8"]) tr[data-inherited-from="8"] {
+.namedocs:has(input[data-parent-idx="8"]) [data-inherited-from="8"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="8"]:checked) tr[data-inherited-from="8"] {
+.namedocs:has(input[data-parent-idx="8"]:checked) [data-inherited-from="8"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="8"]:checked):has(tr.inheritance[data-inherited-from="8"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="8"]) {
+.namedocs:has(input[data-parent-idx="8"]:checked):has(.inheritance[data-inherited-from="8"]:hover) [data-inherited-from]:not([data-inherited-from="8"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="9"]) tr[data-inherited-from="9"] {
+.namedocs:has(input[data-parent-idx="9"]) [data-inherited-from="9"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="9"]:checked) tr[data-inherited-from="9"] {
+.namedocs:has(input[data-parent-idx="9"]:checked) [data-inherited-from="9"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="9"]:checked):has(tr.inheritance[data-inherited-from="9"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="9"]) {
+.namedocs:has(input[data-parent-idx="9"]:checked):has(.inheritance[data-inherited-from="9"]:hover) [data-inherited-from]:not([data-inherited-from="9"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="10"]) tr[data-inherited-from="10"] {
+.namedocs:has(input[data-parent-idx="10"]) [data-inherited-from="10"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="10"]:checked) tr[data-inherited-from="10"] {
+.namedocs:has(input[data-parent-idx="10"]:checked) [data-inherited-from="10"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="10"]:checked):has(tr.inheritance[data-inherited-from="10"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="10"]) {
+.namedocs:has(input[data-parent-idx="10"]:checked):has(.inheritance[data-inherited-from="10"]:hover) [data-inherited-from]:not([data-inherited-from="10"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="11"]) tr[data-inherited-from="11"] {
+.namedocs:has(input[data-parent-idx="11"]) [data-inherited-from="11"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="11"]:checked) tr[data-inherited-from="11"] {
+.namedocs:has(input[data-parent-idx="11"]:checked) [data-inherited-from="11"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="11"]:checked):has(tr.inheritance[data-inherited-from="11"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="11"]) {
+.namedocs:has(input[data-parent-idx="11"]:checked):has(.inheritance[data-inherited-from="11"]:hover) [data-inherited-from]:not([data-inherited-from="11"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="12"]) tr[data-inherited-from="12"] {
+.namedocs:has(input[data-parent-idx="12"]) [data-inherited-from="12"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="12"]:checked) tr[data-inherited-from="12"] {
+.namedocs:has(input[data-parent-idx="12"]:checked) [data-inherited-from="12"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="12"]:checked):has(tr.inheritance[data-inherited-from="12"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="12"]) {
+.namedocs:has(input[data-parent-idx="12"]:checked):has(.inheritance[data-inherited-from="12"]:hover) [data-inherited-from]:not([data-inherited-from="12"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="13"]) tr[data-inherited-from="13"] {
+.namedocs:has(input[data-parent-idx="13"]) [data-inherited-from="13"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="13"]:checked) tr[data-inherited-from="13"] {
+.namedocs:has(input[data-parent-idx="13"]:checked) [data-inherited-from="13"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="13"]:checked):has(tr.inheritance[data-inherited-from="13"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="13"]) {
+.namedocs:has(input[data-parent-idx="13"]:checked):has(.inheritance[data-inherited-from="13"]:hover) [data-inherited-from]:not([data-inherited-from="13"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="14"]) tr[data-inherited-from="14"] {
+.namedocs:has(input[data-parent-idx="14"]) [data-inherited-from="14"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="14"]:checked) tr[data-inherited-from="14"] {
+.namedocs:has(input[data-parent-idx="14"]:checked) [data-inherited-from="14"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="14"]:checked):has(tr.inheritance[data-inherited-from="14"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="14"]) {
+.namedocs:has(input[data-parent-idx="14"]:checked):has(.inheritance[data-inherited-from="14"]:hover) [data-inherited-from]:not([data-inherited-from="14"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="15"]) tr[data-inherited-from="15"] {
+.namedocs:has(input[data-parent-idx="15"]) [data-inherited-from="15"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="15"]:checked) tr[data-inherited-from="15"] {
+.namedocs:has(input[data-parent-idx="15"]:checked) [data-inherited-from="15"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="15"]:checked):has(tr.inheritance[data-inherited-from="15"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="15"]) {
+.namedocs:has(input[data-parent-idx="15"]:checked):has(.inheritance[data-inherited-from="15"]:hover) [data-inherited-from]:not([data-inherited-from="15"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="16"]) tr[data-inherited-from="16"] {
+.namedocs:has(input[data-parent-idx="16"]) [data-inherited-from="16"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="16"]:checked) tr[data-inherited-from="16"] {
+.namedocs:has(input[data-parent-idx="16"]:checked) [data-inherited-from="16"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="16"]:checked):has(tr.inheritance[data-inherited-from="16"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="16"]) {
+.namedocs:has(input[data-parent-idx="16"]:checked):has(.inheritance[data-inherited-from="16"]:hover) [data-inherited-from]:not([data-inherited-from="16"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="17"]) tr[data-inherited-from="17"] {
+.namedocs:has(input[data-parent-idx="17"]) [data-inherited-from="17"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="17"]:checked) tr[data-inherited-from="17"] {
+.namedocs:has(input[data-parent-idx="17"]:checked) [data-inherited-from="17"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="17"]:checked):has(tr.inheritance[data-inherited-from="17"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="17"]) {
+.namedocs:has(input[data-parent-idx="17"]:checked):has(.inheritance[data-inherited-from="17"]:hover) [data-inherited-from]:not([data-inherited-from="17"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="18"]) tr[data-inherited-from="18"] {
+.namedocs:has(input[data-parent-idx="18"]) [data-inherited-from="18"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="18"]:checked) tr[data-inherited-from="18"] {
+.namedocs:has(input[data-parent-idx="18"]:checked) [data-inherited-from="18"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="18"]:checked):has(tr.inheritance[data-inherited-from="18"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="18"]) {
+.namedocs:has(input[data-parent-idx="18"]:checked):has(.inheritance[data-inherited-from="18"]:hover) [data-inherited-from]:not([data-inherited-from="18"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="19"]) tr[data-inherited-from="19"] {
+.namedocs:has(input[data-parent-idx="19"]) [data-inherited-from="19"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="19"]:checked) tr[data-inherited-from="19"] {
+.namedocs:has(input[data-parent-idx="19"]:checked) [data-inherited-from="19"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="19"]:checked):has(tr.inheritance[data-inherited-from="19"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="19"]) {
+.namedocs:has(input[data-parent-idx="19"]:checked):has(.inheritance[data-inherited-from="19"]:hover) [data-inherited-from]:not([data-inherited-from="19"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="20"]) tr[data-inherited-from="20"] {
+.namedocs:has(input[data-parent-idx="20"]) [data-inherited-from="20"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="20"]:checked) tr[data-inherited-from="20"] {
+.namedocs:has(input[data-parent-idx="20"]:checked) [data-inherited-from="20"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="20"]:checked):has(tr.inheritance[data-inherited-from="20"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="20"]) {
+.namedocs:has(input[data-parent-idx="20"]:checked):has(.inheritance[data-inherited-from="20"]:hover) [data-inherited-from]:not([data-inherited-from="20"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="21"]) tr[data-inherited-from="21"] {
+.namedocs:has(input[data-parent-idx="21"]) [data-inherited-from="21"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="21"]:checked) tr[data-inherited-from="21"] {
+.namedocs:has(input[data-parent-idx="21"]:checked) [data-inherited-from="21"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="21"]:checked):has(tr.inheritance[data-inherited-from="21"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="21"]) {
+.namedocs:has(input[data-parent-idx="21"]:checked):has(.inheritance[data-inherited-from="21"]:hover) [data-inherited-from]:not([data-inherited-from="21"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="22"]) tr[data-inherited-from="22"] {
+.namedocs:has(input[data-parent-idx="22"]) [data-inherited-from="22"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="22"]:checked) tr[data-inherited-from="22"] {
+.namedocs:has(input[data-parent-idx="22"]:checked) [data-inherited-from="22"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="22"]:checked):has(tr.inheritance[data-inherited-from="22"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="22"]) {
+.namedocs:has(input[data-parent-idx="22"]:checked):has(.inheritance[data-inherited-from="22"]:hover) [data-inherited-from]:not([data-inherited-from="22"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="23"]) tr[data-inherited-from="23"] {
+.namedocs:has(input[data-parent-idx="23"]) [data-inherited-from="23"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="23"]:checked) tr[data-inherited-from="23"] {
+.namedocs:has(input[data-parent-idx="23"]:checked) [data-inherited-from="23"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="23"]:checked):has(tr.inheritance[data-inherited-from="23"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="23"]) {
+.namedocs:has(input[data-parent-idx="23"]:checked):has(.inheritance[data-inherited-from="23"]:hover) [data-inherited-from]:not([data-inherited-from="23"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="24"]) tr[data-inherited-from="24"] {
+.namedocs:has(input[data-parent-idx="24"]) [data-inherited-from="24"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="24"]:checked) tr[data-inherited-from="24"] {
+.namedocs:has(input[data-parent-idx="24"]:checked) [data-inherited-from="24"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="24"]:checked):has(tr.inheritance[data-inherited-from="24"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="24"]) {
+.namedocs:has(input[data-parent-idx="24"]:checked):has(.inheritance[data-inherited-from="24"]:hover) [data-inherited-from]:not([data-inherited-from="24"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="25"]) tr[data-inherited-from="25"] {
+.namedocs:has(input[data-parent-idx="25"]) [data-inherited-from="25"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="25"]:checked) tr[data-inherited-from="25"] {
+.namedocs:has(input[data-parent-idx="25"]:checked) [data-inherited-from="25"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="25"]:checked):has(tr.inheritance[data-inherited-from="25"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="25"]) {
+.namedocs:has(input[data-parent-idx="25"]:checked):has(.inheritance[data-inherited-from="25"]:hover) [data-inherited-from]:not([data-inherited-from="25"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="26"]) tr[data-inherited-from="26"] {
+.namedocs:has(input[data-parent-idx="26"]) [data-inherited-from="26"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="26"]:checked) tr[data-inherited-from="26"] {
+.namedocs:has(input[data-parent-idx="26"]:checked) [data-inherited-from="26"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="26"]:checked):has(tr.inheritance[data-inherited-from="26"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="26"]) {
+.namedocs:has(input[data-parent-idx="26"]:checked):has(.inheritance[data-inherited-from="26"]:hover) [data-inherited-from]:not([data-inherited-from="26"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="27"]) tr[data-inherited-from="27"] {
+.namedocs:has(input[data-parent-idx="27"]) [data-inherited-from="27"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="27"]:checked) tr[data-inherited-from="27"] {
+.namedocs:has(input[data-parent-idx="27"]:checked) [data-inherited-from="27"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="27"]:checked):has(tr.inheritance[data-inherited-from="27"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="27"]) {
+.namedocs:has(input[data-parent-idx="27"]:checked):has(.inheritance[data-inherited-from="27"]:hover) [data-inherited-from]:not([data-inherited-from="27"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="28"]) tr[data-inherited-from="28"] {
+.namedocs:has(input[data-parent-idx="28"]) [data-inherited-from="28"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="28"]:checked) tr[data-inherited-from="28"] {
+.namedocs:has(input[data-parent-idx="28"]:checked) [data-inherited-from="28"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="28"]:checked):has(tr.inheritance[data-inherited-from="28"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="28"]) {
+.namedocs:has(input[data-parent-idx="28"]:checked):has(.inheritance[data-inherited-from="28"]:hover) [data-inherited-from]:not([data-inherited-from="28"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="29"]) tr[data-inherited-from="29"] {
+.namedocs:has(input[data-parent-idx="29"]) [data-inherited-from="29"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="29"]:checked) tr[data-inherited-from="29"] {
+.namedocs:has(input[data-parent-idx="29"]:checked) [data-inherited-from="29"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="29"]:checked):has(tr.inheritance[data-inherited-from="29"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="29"]) {
+.namedocs:has(input[data-parent-idx="29"]:checked):has(.inheritance[data-inherited-from="29"]:hover) [data-inherited-from]:not([data-inherited-from="29"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="30"]) tr[data-inherited-from="30"] {
+.namedocs:has(input[data-parent-idx="30"]) [data-inherited-from="30"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="30"]:checked) tr[data-inherited-from="30"] {
+.namedocs:has(input[data-parent-idx="30"]:checked) [data-inherited-from="30"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="30"]:checked):has(tr.inheritance[data-inherited-from="30"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="30"]) {
+.namedocs:has(input[data-parent-idx="30"]:checked):has(.inheritance[data-inherited-from="30"]:hover) [data-inherited-from]:not([data-inherited-from="30"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="31"]) tr[data-inherited-from="31"] {
+.namedocs:has(input[data-parent-idx="31"]) [data-inherited-from="31"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="31"]:checked) tr[data-inherited-from="31"] {
+.namedocs:has(input[data-parent-idx="31"]:checked) [data-inherited-from="31"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="31"]:checked):has(tr.inheritance[data-inherited-from="31"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="31"]) {
+.namedocs:has(input[data-parent-idx="31"]:checked):has(.inheritance[data-inherited-from="31"]:hover) [data-inherited-from]:not([data-inherited-from="31"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="32"]) tr[data-inherited-from="32"] {
+.namedocs:has(input[data-parent-idx="32"]) [data-inherited-from="32"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="32"]:checked) tr[data-inherited-from="32"] {
+.namedocs:has(input[data-parent-idx="32"]:checked) [data-inherited-from="32"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="32"]:checked):has(tr.inheritance[data-inherited-from="32"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="32"]) {
+.namedocs:has(input[data-parent-idx="32"]:checked):has(.inheritance[data-inherited-from="32"]:hover) [data-inherited-from]:not([data-inherited-from="32"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="33"]) tr[data-inherited-from="33"] {
+.namedocs:has(input[data-parent-idx="33"]) [data-inherited-from="33"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="33"]:checked) tr[data-inherited-from="33"] {
+.namedocs:has(input[data-parent-idx="33"]:checked) [data-inherited-from="33"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="33"]:checked):has(tr.inheritance[data-inherited-from="33"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="33"]) {
+.namedocs:has(input[data-parent-idx="33"]:checked):has(.inheritance[data-inherited-from="33"]:hover) [data-inherited-from]:not([data-inherited-from="33"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="34"]) tr[data-inherited-from="34"] {
+.namedocs:has(input[data-parent-idx="34"]) [data-inherited-from="34"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="34"]:checked) tr[data-inherited-from="34"] {
+.namedocs:has(input[data-parent-idx="34"]:checked) [data-inherited-from="34"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="34"]:checked):has(tr.inheritance[data-inherited-from="34"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="34"]) {
+.namedocs:has(input[data-parent-idx="34"]:checked):has(.inheritance[data-inherited-from="34"]:hover) [data-inherited-from]:not([data-inherited-from="34"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="35"]) tr[data-inherited-from="35"] {
+.namedocs:has(input[data-parent-idx="35"]) [data-inherited-from="35"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="35"]:checked) tr[data-inherited-from="35"] {
+.namedocs:has(input[data-parent-idx="35"]:checked) [data-inherited-from="35"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="35"]:checked):has(tr.inheritance[data-inherited-from="35"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="35"]) {
+.namedocs:has(input[data-parent-idx="35"]:checked):has(.inheritance[data-inherited-from="35"]:hover) [data-inherited-from]:not([data-inherited-from="35"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="36"]) tr[data-inherited-from="36"] {
+.namedocs:has(input[data-parent-idx="36"]) [data-inherited-from="36"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="36"]:checked) tr[data-inherited-from="36"] {
+.namedocs:has(input[data-parent-idx="36"]:checked) [data-inherited-from="36"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="36"]:checked):has(tr.inheritance[data-inherited-from="36"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="36"]) {
+.namedocs:has(input[data-parent-idx="36"]:checked):has(.inheritance[data-inherited-from="36"]:hover) [data-inherited-from]:not([data-inherited-from="36"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="37"]) tr[data-inherited-from="37"] {
+.namedocs:has(input[data-parent-idx="37"]) [data-inherited-from="37"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="37"]:checked) tr[data-inherited-from="37"] {
+.namedocs:has(input[data-parent-idx="37"]:checked) [data-inherited-from="37"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="37"]:checked):has(tr.inheritance[data-inherited-from="37"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="37"]) {
+.namedocs:has(input[data-parent-idx="37"]:checked):has(.inheritance[data-inherited-from="37"]:hover) [data-inherited-from]:not([data-inherited-from="37"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="38"]) tr[data-inherited-from="38"] {
+.namedocs:has(input[data-parent-idx="38"]) [data-inherited-from="38"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="38"]:checked) tr[data-inherited-from="38"] {
+.namedocs:has(input[data-parent-idx="38"]:checked) [data-inherited-from="38"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="38"]:checked):has(tr.inheritance[data-inherited-from="38"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="38"]) {
+.namedocs:has(input[data-parent-idx="38"]:checked):has(.inheritance[data-inherited-from="38"]:hover) [data-inherited-from]:not([data-inherited-from="38"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="39"]) tr[data-inherited-from="39"] {
+.namedocs:has(input[data-parent-idx="39"]) [data-inherited-from="39"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="39"]:checked) tr[data-inherited-from="39"] {
+.namedocs:has(input[data-parent-idx="39"]:checked) [data-inherited-from="39"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="39"]:checked):has(tr.inheritance[data-inherited-from="39"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="39"]) {
+.namedocs:has(input[data-parent-idx="39"]:checked):has(.inheritance[data-inherited-from="39"]:hover) [data-inherited-from]:not([data-inherited-from="39"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="40"]) tr[data-inherited-from="40"] {
+.namedocs:has(input[data-parent-idx="40"]) [data-inherited-from="40"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="40"]:checked) tr[data-inherited-from="40"] {
+.namedocs:has(input[data-parent-idx="40"]:checked) [data-inherited-from="40"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="40"]:checked):has(tr.inheritance[data-inherited-from="40"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="40"]) {
+.namedocs:has(input[data-parent-idx="40"]:checked):has(.inheritance[data-inherited-from="40"]:hover) [data-inherited-from]:not([data-inherited-from="40"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="41"]) tr[data-inherited-from="41"] {
+.namedocs:has(input[data-parent-idx="41"]) [data-inherited-from="41"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="41"]:checked) tr[data-inherited-from="41"] {
+.namedocs:has(input[data-parent-idx="41"]:checked) [data-inherited-from="41"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="41"]:checked):has(tr.inheritance[data-inherited-from="41"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="41"]) {
+.namedocs:has(input[data-parent-idx="41"]:checked):has(.inheritance[data-inherited-from="41"]:hover) [data-inherited-from]:not([data-inherited-from="41"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="42"]) tr[data-inherited-from="42"] {
+.namedocs:has(input[data-parent-idx="42"]) [data-inherited-from="42"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="42"]:checked) tr[data-inherited-from="42"] {
+.namedocs:has(input[data-parent-idx="42"]:checked) [data-inherited-from="42"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="42"]:checked):has(tr.inheritance[data-inherited-from="42"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="42"]) {
+.namedocs:has(input[data-parent-idx="42"]:checked):has(.inheritance[data-inherited-from="42"]:hover) [data-inherited-from]:not([data-inherited-from="42"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="43"]) tr[data-inherited-from="43"] {
+.namedocs:has(input[data-parent-idx="43"]) [data-inherited-from="43"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="43"]:checked) tr[data-inherited-from="43"] {
+.namedocs:has(input[data-parent-idx="43"]:checked) [data-inherited-from="43"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="43"]:checked):has(tr.inheritance[data-inherited-from="43"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="43"]) {
+.namedocs:has(input[data-parent-idx="43"]:checked):has(.inheritance[data-inherited-from="43"]:hover) [data-inherited-from]:not([data-inherited-from="43"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="44"]) tr[data-inherited-from="44"] {
+.namedocs:has(input[data-parent-idx="44"]) [data-inherited-from="44"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="44"]:checked) tr[data-inherited-from="44"] {
+.namedocs:has(input[data-parent-idx="44"]:checked) [data-inherited-from="44"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="44"]:checked):has(tr.inheritance[data-inherited-from="44"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="44"]) {
+.namedocs:has(input[data-parent-idx="44"]:checked):has(.inheritance[data-inherited-from="44"]:hover) [data-inherited-from]:not([data-inherited-from="44"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="45"]) tr[data-inherited-from="45"] {
+.namedocs:has(input[data-parent-idx="45"]) [data-inherited-from="45"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="45"]:checked) tr[data-inherited-from="45"] {
+.namedocs:has(input[data-parent-idx="45"]:checked) [data-inherited-from="45"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="45"]:checked):has(tr.inheritance[data-inherited-from="45"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="45"]) {
+.namedocs:has(input[data-parent-idx="45"]:checked):has(.inheritance[data-inherited-from="45"]:hover) [data-inherited-from]:not([data-inherited-from="45"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="46"]) tr[data-inherited-from="46"] {
+.namedocs:has(input[data-parent-idx="46"]) [data-inherited-from="46"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="46"]:checked) tr[data-inherited-from="46"] {
+.namedocs:has(input[data-parent-idx="46"]:checked) [data-inherited-from="46"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="46"]:checked):has(tr.inheritance[data-inherited-from="46"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="46"]) {
+.namedocs:has(input[data-parent-idx="46"]:checked):has(.inheritance[data-inherited-from="46"]:hover) [data-inherited-from]:not([data-inherited-from="46"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="47"]) tr[data-inherited-from="47"] {
+.namedocs:has(input[data-parent-idx="47"]) [data-inherited-from="47"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="47"]:checked) tr[data-inherited-from="47"] {
+.namedocs:has(input[data-parent-idx="47"]:checked) [data-inherited-from="47"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="47"]:checked):has(tr.inheritance[data-inherited-from="47"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="47"]) {
+.namedocs:has(input[data-parent-idx="47"]:checked):has(.inheritance[data-inherited-from="47"]:hover) [data-inherited-from]:not([data-inherited-from="47"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="48"]) tr[data-inherited-from="48"] {
+.namedocs:has(input[data-parent-idx="48"]) [data-inherited-from="48"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="48"]:checked) tr[data-inherited-from="48"] {
+.namedocs:has(input[data-parent-idx="48"]:checked) [data-inherited-from="48"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="48"]:checked):has(tr.inheritance[data-inherited-from="48"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="48"]) {
+.namedocs:has(input[data-parent-idx="48"]:checked):has(.inheritance[data-inherited-from="48"]:hover) [data-inherited-from]:not([data-inherited-from="48"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="49"]) tr[data-inherited-from="49"] {
+.namedocs:has(input[data-parent-idx="49"]) [data-inherited-from="49"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="49"]:checked) tr[data-inherited-from="49"] {
+.namedocs:has(input[data-parent-idx="49"]:checked) [data-inherited-from="49"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="49"]:checked):has(tr.inheritance[data-inherited-from="49"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="49"]) {
+.namedocs:has(input[data-parent-idx="49"]:checked):has(.inheritance[data-inherited-from="49"]:hover) [data-inherited-from]:not([data-inherited-from="49"]) {
   opacity: 0.5;
 }
-</style><script>
+</style><style>
+    main .theIndex {
+      padding-left: 0;
+      font-family: var(--verso-text-font-family);
+    }
+
+    main .theIndex nav {
+      position: sticky;
+      top: var(--verso-header-height);
+      background: white;
+      font-family: var(--verso-structure-font-family);
+    }
+
+    main .theIndex [id] {
+      /* This needs the combined height of the index header and the page header. We
+         know the height of the page header, but the index header height varies, so
+         we use the maximum height it gets which also works well for readers with
+         wide screens */
+      scroll-margin-top: calc(var(--verso-header-height) + 7.5rem);
+    }
+
+    @media screen and (max-width: 700px) {
+      /* On mobile, the sticky index takes up half the screen. */
+      main .theIndex nav {
+        position: static;
+      }
+
+      main .theIndex [id] {
+        /* On mobile, the index header is not sticky, so we just need to
+        be below the page header. */
+        scroll-margin-top: var(--verso-header-height);
+      }
+    }
+
+    main .theIndex nav ol {
+      padding: 0;
+    }
+
+    main .theIndex nav ol li {
+      display: inline-block;
+    }
+
+    main .theIndex nav ol li a {
+      /* Padding instead of margin to have a bigger click target */
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+    /* Increase the size of the touch target on phones */
+    @media screen and (max-width: 700px) {
+      main .theIndex nav ol li a {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+    }
+
+    main .theIndex nav ol li:first-child a {
+      padding-left: 0;
+    }
+
+    main .theIndex nav ol li + li:before {
+      content: "|";
+    }
+
+    main .theIndex h1,
+    main .theIndex h2,
+    main .theIndex h3,
+    main .theIndex h4,
+    main .theIndex h5,
+    main .theIndex h6 {
+      margin-top: 0;
+    }
+
+    main .theIndex ol {
+      list-style-type: none;
+    }
+
+    main .theIndex .division > ol {
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      overflow-wrap: break-word;
+    }
+
+   main .theIndex .division > ol > li {
+      margin-bottom: 0.5rem;
+    }
+
+    main .theIndex .division ol ol {
+      padding-left: 1rem;
+    }
+
+    main .theIndex .division {
+      break-inside: avoid;
+      counter-reset: none;
+      max-width: none;
+      width: auto;
+    }
+    </style><script>
       
 window.onload = () => {
 
@@ -1492,7 +1525,7 @@ window.onload = () => {
       const addTippy = (selector, props) => {
         tippy(selector, Object.assign({}, defaultTippyProps, props));
       };
-      addTippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token', {theme: 'lean'});
+      addTippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token', {theme: 'lean'});
       addTippy('.hl.lean .has-info.warning', {theme: 'warning message'});
       addTippy('.hl.lean .has-info.info', {theme: 'info message'});
       addTippy('.hl.lean .has-info.error', {theme: 'error message'});
@@ -1528,15 +1561,24 @@ window.onload = () => {
 </script>
     </head>
   <body>
+    <header>
+      <div class="header-logo-wrapper"></div>
+      <div class="header-title-wrapper">
+        <a href="" class="header-title"><h1>
+            Interactive Theorem Proving using Lean, Summer 2025</h1>
+          </a></div>
+      </header>
     <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
       <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
       <nav id="toc">
-        <input type="checkbox" id="toggle-toc" checked="checked"><div class="first">
-          <div class="split-tocs">
+        <input type="checkbox" id="toggle-toc"><div class="first">
+          <a href="" class="toc-title"><h1>
+              Interactive Theorem Proving using Lean, Summer 2025</h1>
+            </a><div class="split-tocs">
             <div class="split-toc book">
               <div class="title">
-                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class=""><a href="">Interactive Theorem Proving using Lean, Summer 2025</a></span></div>
-              <table><tr class="numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#genres">Genres</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#docstrings">Docstrings</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
+                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class="">Table of Contents</span></div>
+              <table><tr class="numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#genres">Genres</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#docstrings">Docstrings</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
@@ -1548,161 +1590,192 @@ window.onload = () => {
             </ul>
           </div>
         </nav>
-      <main><section>
-          <div class="titlepage">
-            <h1>
-              Interactive Theorem Proving using Lean, Summer 2025</h1>
-            <div class="authors">
-              <span class="author">Peter Pfaffelhuber</span></div>
-            <p>
-              These are some notes for the course on Lean at the University of Freiburg in Summer 2025.</p>
-            </div>
+      <main><div class="content-wrapper">
           <section>
-            <h2>
-              Table of Contents</h2>
-            <ol class="section-toc">
-              <li>
-                <a href=""><span class="number">1.</span> First steps using logic</a><ol>
-                  <li>
-                    <a href=""><span class="number">1.1.</span> Lean Markup</a></li>
-                  </ol>
-                </li>
-              <li>
-                <a href=""><span class="number">2.</span> Genres</a></li>
-              <li>
-                <a href=""><span class="number">3.</span> Docstrings</a></li>
-              <li>
-                <a href=""><span class="unnumbered"></span>Index</a></li>
-              </ol>
-            </section>
-          <section>
-            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">
-              1. First steps using logic</h2>
-            <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.variable-431" data-verso-hover="0">variable</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.12" data-verso-hover="1">P</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="1">Q</span> <span class="var token" data-binding="var-_uniq.16" data-verso-hover="1">R</span> <span class="var token" data-binding="var-_uniq.18" data-verso-hover="1">S</span> <span class="var token" data-binding="var-_uniq.20" data-verso-hover="1">T</span> <span class="unknown token" data-binding="">:</span> <span class="sort token" data-binding="">Prop</span><span class="unknown token" data-binding="">)</span>
-<span class="unknown token" data-binding=""></span></code><code class="hl lean block" data-lean-context="exercises"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-472">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="2">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="3">Q</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-16301083633924625230-493-495"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-493" data-verso-hover="4">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-16301083633924625230-493-495"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="5">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="6">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.14</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="5">P</span> → <span class="var token" data-binding="var-_uniq.20" data-verso-hover="6">Q</span></span></span></span></span></span>
-  <span class="tactic"><label for="tactic-state-18068729823697111787-498-505"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-498" data-verso-hover="7">intro</span> <span class="var token" data-binding="var-_uniq.22" data-verso-hover="8">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-18068729823697111787-498-505"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="5">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="6">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="8">h</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="5">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="6">Q</span></span></span></span></span></span>
-  <span class="tactic"><label for="tactic-state-7-508-513"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-508" data-verso-hover="9">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-508-513"><span class="tactic-state">All goals completed! 🐙</span></span>
-<span class="unknown token" data-binding=""></span></code><pre>Proof state   Command         New proof state
+            <div class="titlepage">
+              <h1>
+                Interactive Theorem Proving using Lean, Summer 2025</h1>
+              <div class="authors">
+                <span class="author">Peter Pfaffelhuber</span></div>
+              <p>
+                These are the notes for a course on formal proving with the interactive theorem prover Lean4 (in the following we just write Lean) in the summer semester of 2025 at the University of Freiburg. To be able to work through the course in a meaningful way, the following technical preparations are to be made:</p>
+              <ul>
+                <li>
+                  <p>
+                    Installation of <a href="https://code.visualstudio.com/">vscode</a>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Local installation of Lean and the associated tools: Please follow these <a href="https://github.com/leanprover-community/mathlib4/wiki/Using-mathlib4-as-a-dependency">instructions</a>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Installing the course repository: Navigate to a location where you would like to put the course materials and use <code>git clone get https://github.com/pfaffelh/leancourse</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    After <code>cd leancourse</code> and <code>code .</code>, you should see some code which looks a bit like mathematics. On the left hand side of the <code>vscode</code> window, you can click and install an extension for <code>Lean</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    The directory <code>Exercises</code> contains the material for the course. We recommend that you first copy this directory, for example to <code>myExercises</code>. Otherwise, an update of the repository may overwrite the local files.</p>
+                  </li>
+                <li>
+                  <p>
+                    To update the course materials, enter <code>git pull</code> from within the <code>leancourse</code>directory.</p>
+                  </li>
+                </ul>
+              </div>
+            <section>
+              <h2>
+                Table of Contents</h2>
+              <ol class="section-toc">
+                <li>
+                  <a href=""><span class="number">1.</span> Introduction</a></li>
+                <li>
+                  <a href=""><span class="number">2.</span> First steps using logic</a></li>
+                <li>
+                  <a href=""><span class="number">3.</span> Genres</a></li>
+                <li>
+                  <a href=""><span class="number">4.</span> Docstrings</a></li>
+                <li>
+                  <a href=""><span class="unnumbered"></span>Index</a></li>
+                </ol>
+              </section>
+            <section>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">
+                1. Introduction</h2>
+              <p>
+                The course is designed for mathematics students and has at least two goals:</p>
+              <ul>
+                <li>
+                  <p>
+                    Learning the techniques for interactive formal Theorem proofing using Lean: In recent years, efforts to prove mathematical theorems with the help of computers have increased dramatically. While a few decades ago, it was more a matter of consistently processing many cases that were left to the computer, interactive theorem provers are different. Here, a very small core can be used to understand or interactively generate all the logical conclusions of a mathematical proof. The computer then reports interactively on the progress of the proof and when all the steps have been completed.</p>
+                  </li>
+                <li>
+                  <p>
+                    Establishing connections to some mathematical material: On the one hand, the mathematical details needed in this course should not be the main issue of this course. On the other hand, in order to <em>explain</em> how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well -- at least if it exceeds a few lines -- so that the commands you enter (which we will call tactics) fit together.</p>
+                  </li>
+                </ul>
+              </section>
+            <section>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">
+                2. First steps using logic</h2>
+              <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.variable-2724" data-verso-hover="0">variable</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.12" data-verso-hover="1">P</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="1">Q</span> <span class="var token" data-binding="var-_uniq.16" data-verso-hover="1">R</span> <span class="var token" data-binding="var-_uniq.18" data-verso-hover="1">S</span> <span class="var token" data-binding="var-_uniq.20" data-verso-hover="1">T</span> <span class="unknown token" data-binding="">:</span> <span class="sort token" data-binding="" data-verso-hover="2">Prop</span><span class="unknown token" data-binding="">)</span>
+<span class="unknown token" data-binding=""></span></code><code class="hl lean block" data-lean-context="exercises"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-2765">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="3">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="4">Q</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-15760998142638333933-2786-2788"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-2786" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-15760998142638333933-2786-2788"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span> → <span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-3890625420743027176-2791-2798"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-2791" data-verso-hover="9">intro</span> <span class="var token" data-binding="var-_uniq.22" data-verso-hover="10">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-3890625420743027176-2791-2798"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="10">h</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-2801-2806"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-2801" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-2801-2806"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-2820">example</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.4" data-verso-hover="3">P</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.4" data-verso-hover="3">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.13" data-verso-hover="4">Q</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.13" data-verso-hover="4">Q</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-4549295739499299463-2858-2860"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-2858" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4549295739499299463-2858-2860"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.19</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">(<span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span> → <span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span>) → <span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-4858652245710148113-2863-2872"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-2863" data-verso-hover="9">intro</span> <span class="var token" data-binding="var-_uniq.31" data-verso-hover="13">hPQ</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4858652245710148113-2863-2872"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.19</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.31" data-verso-hover="13">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span> → <span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-2875-2887"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.exact-2875" data-verso-hover="14">exact</span> <span class="var token" data-binding="var-_uniq.31" data-verso-hover="13">hPQ</span> <span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-2875-2887"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                | Proof state | Command  | New proof state        |
+|------------|---------|------------------------|
+| ⊢ P → Q    | intro hP | hP : P                 |
+|            |         | ⊢ Q                    |</p>
+              <pre>Proof state   Command         New proof state
 
 ⊢ P → Q       intro hP        hP : P
                               ⊢ Q
 </pre><p>
-              Assume we have <code>⊢ Q</code>, then all makes sense!</p>
-            <div class="namedocs" id="Lean___Parser___Tactic___intro">
-              <span class="permalink-widget block"><a href="find/?domain=Verso.Genre.Manual.doc&name=Lean.Parser.Tactic.intro" title="Permalink">🔗</a></span><span class="label">def</span><pre class="signature hl lean block">Lean.Parser.Tactic.intro : <span class="const token" data-binding="const-Lean.ParserDescr" data-verso-hover="10">Lean.ParserDescr</span></pre><div class="text">
-                <p>
-                  Introduces one or more hypotheses, optionally naming and/or pattern-matching them.
-For each hypothesis to be introduced, the remaining main goal's target type must
-be a <code>let</code> or function type.</p>
-                <ul>
-                  <li>
-                    <p>
-                      <code>intro</code> by itself introduces one anonymous hypothesis, which can be accessed
-by e.g. <code>assumption</code>.</p>
-                    </li>
-                  <li>
-                    <p>
-                      <code>intro x y</code> introduces two hypotheses and names them. Individual hypotheses
-can be anonymized via <code>_</code>, or matched against a pattern:</p>
-                    <pre>-- ... ⊢ α × β → ...
-intro (a, b)
--- ..., a : α, b : β ⊢ ...
-</pre></li>
-                  <li>
-                    <p>
-                      Alternatively, <code>intro</code> can be combined with pattern matching much like <code>fun</code>:</p>
-                    <pre>intro
-| n + 1, 0 =&gt; tac
-| ...
-</pre></li>
-                  </ul>
+                Assume we have <code>⊢ Q</code>, then all makes sense!</p>
+              <div class="namedocs" id="Lean___Parser___Tactic___apply">
+                <span class="permalink-widget block"><a href="find/?domain=Verso.Genre.Manual.doc&name=Lean.Parser.Tactic.apply" title="Permalink">🔗</a></span><span class="label">def</span><pre class="signature hl lean block">Lean.Parser.Tactic.apply : <span class="const token" data-binding="const-Lean.ParserDescr" data-verso-hover="15">Lean.ParserDescr</span></pre><div class="text">
+                  <p>
+                    <code class="hl lean inline" data-lean-context="docstring-examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.apply-0" data-verso-hover="16">apply</span> <span class="unknown token" data-binding="">e</span></code> tries to match the current goal against the conclusion of <code class="hl lean inline" data-lean-context="docstring-examples"><span class="unknown token" data-binding="">e</span></code>'s type.
+If it succeeds, then the tactic returns as many subgoals as the number of premises that
+have not been fixed by type inference or type class resolution.
+Non-dependent premises are added before dependent ones.</p>
+                  <p>
+                    The <code class="hl lean inline" data-lean-context="docstring-examples"><span class="keyword token" data-binding="" data-verso-hover="16">apply</span></code> tactic uses higher-order pattern matching, type class resolution,
+and first-order unification with dependent types.</p>
+                  </div>
                 </div>
-              </div>
-            <p>
-              Documentation can take many forms:</p>
-            <ul>
-              <li>
-                <p>
-                  References</p>
-                </li>
-              <li>
-                <p>
-                  Tutorials</p>
-                </li>
-              <li>
-                <p>
-                  Etc</p>
-                </li>
-              </ul>
-            <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-816">example</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">2</span> <span class="unknown token" data-binding="">+</span> <span class="unknown token" data-binding="">2</span> <span class="unknown token" data-binding="">=</span> <span class="unknown token" data-binding="">4</span> <span class="unknown token" data-binding="">:=</span>
-  <span class="tactic"><label for="tactic-state-9050582774618512387-841-843"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-841" data-verso-hover="4">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-9050582774618512387-841-843"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">2<span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="11"> + </span>2<span class="const token" data-binding="const-Eq" data-verso-hover="12"> = </span>4</span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-844-847"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticRfl-844" data-verso-hover="13">rfl</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-844-847"><span class="tactic-state">All goals completed! 🐙</span></span>
-<span class="unknown token" data-binding=""></span></code><section>
-              <h3 id="lean-markup">
-                1.1. Lean Markup<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=lean-markup" title="Permalink">🔗</a></span></h3>
               <p>
-                Lean's documentation markup language is a close relative of Markdown, but it's not identical to it.</p>
-              <section>
-                <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Design-Principles">
-                  1.1.1. Design Principles</h4>
-                <ol start="1">
-                  <li>
-                    <p>
-                      Syntax errors - fail fast rather than producing unexpected output or having complicated rules</p>
-                    </li>
-                  <li>
-                    <p>
-                      Reduce lookahead - parsing should succeed or fail as locally as possible</p>
-                    </li>
-                  <li>
-                    <p>
-                      Extensibility - there should be dedicated features for compositionally adding new kinds of content, rather than relying on a collection of ad-hoc textual subformats</p>
-                    </li>
-                  <li>
-                    <p>
-                      Assume Unicode - Lean users are used to entering Unicode directly and have good tools for it, so there's no need to support alternative textual syntaxes for characters not on keyboards such as em dashes or typographical quotes</p>
-                    </li>
-                  <li>
-                    <p>
-                      Markdown compatibility - benefit from existing muscle memory and familiarity when it doesn't lead to violations of the other principles</p>
-                    </li>
-                  <li>
-                    <p>
-                      Pandoc and Djot compatibility - when Markdown doesn't have a syntax for a feature, attempt to be compatible with Pandoc Markdown or Djot</p>
-                    </li>
-                  </ol>
-                </section>
-              <section>
-                <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax">
-                  1.1.2. Syntax</h4>
+                Documentation can take many forms:</p>
+              <ul>
+                <li>
+                  <p>
+                    References</p>
+                  </li>
+                <li>
+                  <p>
+                    Tutorials</p>
+                  </li>
+                <li>
+                  <p>
+                    Etc</p>
+                  </li>
+                </ul>
+              <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-3402">example</span> <span class="unknown token" data-binding="">:</span> <span class="typed token" data-binding="" data-verso-hover="17">2</span> <span class="unknown token" data-binding="">+</span> <span class="typed token" data-binding="" data-verso-hover="17">2</span> <span class="unknown token" data-binding="">=</span> <span class="typed token" data-binding="" data-verso-hover="17">4</span> <span class="unknown token" data-binding="">:=</span>
+  <span class="tactic"><label for="tactic-state-8495602883594765203-3427-3429"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-3427" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8495602883594765203-3427-3429"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">2<span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="18"> + </span>2<span class="const token" data-binding="const-Eq" data-verso-hover="19"> = </span>4</span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-3430-3433"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticRfl-3430" data-verso-hover="20">rfl</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-3430-3433"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><section>
+                <h3 id="lean-markup">
+                  2.1. Lean Markup<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=lean-markup" title="Permalink">🔗</a></span></h3>
                 <p>
-                  Like Markdown, Lean's markup has three primary syntactic categories:</p>
-                <dl><dt> Inline elements</dt><dd><p>
-                      The ordinary content of written text, such as text itself, bold or emphasized text, and hyperlinks.</p>
-                    </dd><dt> Block elements</dt><dd><p>
-                      The main organization of written text, including paragraphs, lists, and quotations. Some blocks may be nested: for example, lists may contain other lists.</p>
-                    </dd><dt> Document structure</dt><dd><p>
-                      Headers, footnote definitions, and named links give greater structure to a document. They may not be nested inside of blocks.</p>
-                    </dd></dl><section>
-                  <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description">
-                    1.1.2.1. Description</h5>
-                  <section>
-                    <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Inline-Syntax">
-                      1.1.2.1.1. Inline Syntax</h6>
-                    <p>
-                      Emphasis is written with underscores:</p>
-                    <pre>Here's some _emphasized_ text
+                  Lean's documentation markup language is a close relative of Markdown, but it's not identical to it.</p>
+                <section>
+                  <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Design-Principles">
+                    2.1.1. Design Principles</h4>
+                  <ol start="1">
+                    <li>
+                      <p>
+                        Syntax errors - fail fast rather than producing unexpected output or having complicated rules</p>
+                      </li>
+                    <li>
+                      <p>
+                        Reduce lookahead - parsing should succeed or fail as locally as possible</p>
+                      </li>
+                    <li>
+                      <p>
+                        Extensibility - there should be dedicated features for compositionally adding new kinds of content, rather than relying on a collection of ad-hoc textual subformats</p>
+                      </li>
+                    <li>
+                      <p>
+                        Assume Unicode - Lean users are used to entering Unicode directly and have good tools for it, so there's no need to support alternative textual syntaxes for characters not on keyboards such as em dashes or typographical quotes</p>
+                      </li>
+                    <li>
+                      <p>
+                        Markdown compatibility - benefit from existing muscle memory and familiarity when it doesn't lead to violations of the other principles</p>
+                      </li>
+                    <li>
+                      <p>
+                        Pandoc and Djot compatibility - when Markdown doesn't have a syntax for a feature, attempt to be compatible with Pandoc Markdown or Djot</p>
+                      </li>
+                    </ol>
+                  </section>
+                <section>
+                  <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax">
+                    2.1.2. Syntax</h4>
+                  <p>
+                    Like Markdown, Lean's markup has three primary syntactic categories:</p>
+                  <dl><dt> Inline elements</dt><dd><p>
+                        The ordinary content of written text, such as text itself, bold or emphasized text, and hyperlinks.</p>
+                      </dd><dt> Block elements</dt><dd><p>
+                        The main organization of written text, including paragraphs, lists, and quotations. Some blocks may be nested: for example, lists may contain other lists.</p>
+                      </dd><dt> Document structure</dt><dd><p>
+                        Headers, footnote definitions, and named links give greater structure to a document. They may not be nested inside of blocks.</p>
+                      </dd></dl><section>
+                    <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description">
+                      2.1.2.1. Description</h5>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Inline-Syntax">
+                        2.1.2.1.1. Inline Syntax</h6>
+                      <p>
+                        Emphasis is written with underscores:</p>
+                      <pre>Here's some _emphasized_ text
 </pre><pre>Here's some &lt;emph&gt;emphasized&lt;/emph&gt; text
 </pre><p>
-                      Emphasis can be nested by using more underscores for the outer emphasis:</p>
-                    <pre>Here's some __emphasized text with _extra_ emphasis__ inside
+                        Emphasis can be nested by using more underscores for the outer emphasis:</p>
+                      <pre>Here's some __emphasized text with _extra_ emphasis__ inside
 </pre><pre>Here's some &lt;emph&gt;emphasized text with &lt;emph&gt;extra&lt;/emph&gt; emphasis&lt;/emph&gt; inside
 </pre><p>
-                      Strong emphasis (bold) is written with asterisks:</p>
-                    <pre>Here's some *bold* text
+                        Strong emphasis (bold) is written with asterisks:</p>
+                      <pre>Here's some *bold* text
 </pre><pre>Here's some &lt;bold&gt;bold&lt;/bold&gt; text
 </pre><p>
-                      Hyperlinks consist of the link text in square brackets followed by the target in parentheses:</p>
-                    <pre>The [Lean website](https://lean-lang.org)
+                        Hyperlinks consist of the link text in square brackets followed by the target in parentheses:</p>
+                      <pre>The [Lean website](https://lean-lang.org)
 </pre><pre>The &lt;a href="https://lean-lang.org"&gt;Lean website&lt;/a&gt;
 </pre><pre>The [Lean website][lean]
 
@@ -1712,162 +1785,163 @@ intro (a, b)
 where «lean» := https://lean-lang.org</pre><pre>The definition of `main`
 </pre><pre>The definition of &lt;code&gt;main&lt;/code&gt;
 </pre><p>
-                      TeX math can be included using a single or double dollar sign followed by code. Two dollar signs results in display-mode math, so <code>$`\sum_{i=0}^{10} i`</code> results in <code class="math inline">\sum_{i=0}^{10} i</code> while <code>$$`\sum_{i=0}^{10} i`</code> results in: <code class="math display">\sum_{i=0}^{10} i</code></p>
+                        TeX math can be included using a single or double dollar sign followed by code. Two dollar signs results in display-mode math, so <code>$`\sum_{i=0}^{10} i`</code> results in <code class="math inline">\sum_{i=0}^{10} i</code> while <code>$$`\sum_{i=0}^{10} i`</code> results in: <code class="math display">\sum_{i=0}^{10} i</code></p>
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Block-Syntax">
+                        2.1.2.1.2. Block Syntax</h6>
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Document-Structure">
+                        2.1.2.1.3. Document Structure</h6>
+                      </section>
                     </section>
                   <section>
-                    <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Block-Syntax">
-                      1.1.2.1.2. Block Syntax</h6>
-                    </section>
-                  <section>
-                    <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Document-Structure">
-                      1.1.2.1.3. Document Structure</h6>
-                    </section>
-                  </section>
-                <section>
-                  <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown">
-                    1.1.2.2. Differences from Markdown</h5>
-                  <p>
-                    This is a quick "cheat sheet" for those who are used to Markdown, documenting the differences.</p>
-                  <section>
-                    <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Syntax-Errors">
-                      1.1.2.2.1. Syntax Errors</h6>
+                    <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown">
+                      2.1.2.2. Differences from Markdown</h5>
                     <p>
-                      While Markdown includes a set of precedence rules to govern the meaning of mismatched delimiters (such as in <code>what _is *bold_ or emph*?</code>), these are syntax errors in Lean's markup.
+                      This is a quick "cheat sheet" for those who are used to Markdown, documenting the differences.</p>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Syntax-Errors">
+                        2.1.2.2.1. Syntax Errors</h6>
+                      <p>
+                        While Markdown includes a set of precedence rules to govern the meaning of mismatched delimiters (such as in <code>what _is *bold_ or emph*?</code>), these are syntax errors in Lean's markup.
 Similarly, Markdown specifies that unmatched delimiters (such as <code>*</code> or <code>_</code>) should be included as characters, while Lean's markup requires explicit escaping of delimiters.</p>
-                    <p>
-                      This is based on the principle that, for long-form technical writing, it's better to catch typos while writing than while reviewing the text later.</p>
-                    </section>
-                  <section>
-                    <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Reduced-Lookahead">
-                      1.1.2.2.2. Reduced Lookahead</h6>
-                    <p>
-                      In Markdown, whether <code>[this][here]</code> is a link depends on whether <code>here</code> is defined as a link reference target somewhere in the document.
+                      <p>
+                        This is based on the principle that, for long-form technical writing, it's better to catch typos while writing than while reviewing the text later.</p>
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Reduced-Lookahead">
+                        2.1.2.2.2. Reduced Lookahead</h6>
+                      <p>
+                        In Markdown, whether <code>[this][here]</code> is a link depends on whether <code>here</code> is defined as a link reference target somewhere in the document.
 In Lean's markup, it is always a link, and it is an error if <code>here</code> is not defined as a link target.</p>
-                    </section>
-                  <section>
-                    <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Header-Nesting">
-                      1.1.2.2.3. Header Nesting</h6>
-                    <p>
-                      In Lean's markup, every document already has a title, so there's no need to use the highest level header (<code>#</code>) to specify one.
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Header-Nesting">
+                        2.1.2.2.3. Header Nesting</h6>
+                      <p>
+                        In Lean's markup, every document already has a title, so there's no need to use the highest level header (<code>#</code>) to specify one.
 Additionally, all documents are required to use <code>#</code> for their top-level header, <code>##</code> for the next level, and so forth, because a single file may represent a section, a chapter, or even a whole book.
 Authors should not need to maintain a global mapping from header levels to document structures, so Lean's markup automatically assigns these based on the structure of the document.</p>
-                    </section>
-                  <section>
-                    <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Genre-Specific-Extensions">
-                      1.1.2.2.4. Genre-Specific Extensions</h6>
-                    <p>
-                      Markdown has no standard way for specific tools or styles of writing to express domain- or <a href="#genres">genre</a>-specific concepts.
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Genre-Specific-Extensions">
+                        2.1.2.2.4. Genre-Specific Extensions</h6>
+                      <p>
+                        Markdown has no standard way for specific tools or styles of writing to express domain- or <a href="#genres">genre</a>-specific concepts.
 Lean's markup provides standard syntaxes to use for this purpose, enabling compositional extensions.
 </p>
+                      </section>
                     </section>
                   </section>
                 </section>
               </section>
-            </section>
-          <section>
-            <h2 id="genres">
-              2. Genres<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=genres" title="Permalink">🔗</a></span></h2>
-            <div class="paragraph">
-              <p>
-                Documentation comes in many forms, and no one system is suitable for representing all of them.
+            <section>
+              <h2 id="genres">
+                3. Genres<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=genres" title="Permalink">🔗</a></span></h2>
+              <div class="paragraph">
+                <p>
+                  Documentation comes in many forms, and no one system is suitable for representing all of them.
 The needs of software documentation writers are not the same as the needs of textbook authors, researchers writing papers, bloggers, or poets.
 Thus, Lean's documentation system supports multiple <em>genres</em>, each of which consists of:</p>
-              <ul>
-                <li>
-                  <p>
-                    A global view of a document's structure, whether it be a document with subsections, a collection of interrelated documents such as a web site, or a single file of text</p>
-                  </li>
-                <li>
-                  <p>
-                    A representation of cross-cutting state such as cross-references to figures, index entries, and named theorems</p>
-                  </li>
-                <li>
-                  <p>
-                    Additions to the structure of the document - for instance, the blog genre supports the inclusion of raw HTML, and the manual genre supports grouping multiple top-level blocks into a single logical paragraph</p>
-                  </li>
-                <li>
-                  <p>
-                    Procedures for resolving cross references and rendering the document to one or more output formats</p>
-                  </li>
-                </ul>
-              <p>
-                All genres use the same markup syntax, and they can share extensions to the markup language that don't rely on incompatible document structure additions.
+                <ul>
+                  <li>
+                    <p>
+                      A global view of a document's structure, whether it be a document with subsections, a collection of interrelated documents such as a web site, or a single file of text</p>
+                    </li>
+                  <li>
+                    <p>
+                      A representation of cross-cutting state such as cross-references to figures, index entries, and named theorems</p>
+                    </li>
+                  <li>
+                    <p>
+                      Additions to the structure of the document - for instance, the blog genre supports the inclusion of raw HTML, and the manual genre supports grouping multiple top-level blocks into a single logical paragraph</p>
+                    </li>
+                  <li>
+                    <p>
+                      Procedures for resolving cross references and rendering the document to one or more output formats</p>
+                    </li>
+                  </ul>
+                <p>
+                  All genres use the same markup syntax, and they can share extensions to the markup language that don't rely on incompatible document structure additions.
 Mixing incompatible features results in an ordinary Lean type error.</p>
-              </div>
-            </section>
-          <section>
-            <h2 id="docstrings">
-              3. Docstrings<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=docstrings" title="Permalink">🔗</a></span></h2>
-            <p>
-              Docstrings can be included using the <code>docstring</code> directive. For instance,</p>
-            <pre>{docstring List.forM}
+                </div>
+              </section>
+            <section>
+              <h2 id="docstrings">
+                4. Docstrings<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=docstrings" title="Permalink">🔗</a></span></h2>
+              <p>
+                Docstrings can be included using the <code>docstring</code> directive. For instance,</p>
+              <pre>{docstring List.forM}
 </pre><pre>example : 2 + 2 = 4 :=
   by rfl
 </pre><p>
-              results in</p>
-            <div class="namedocs" id="List___forM">
-              <span class="permalink-widget block"><a href="find/?domain=Verso.Genre.Manual.doc&name=List.forM" title="Permalink">🔗</a></span><span class="label">def</span><pre class="signature hl lean block">List.forM.{u, v, w} {m : <span class="sort token" data-binding="">Type</span><span class="sort token" data-binding=""> u</span> → <span class="sort token" data-binding="">Type</span><span class="sort token" data-binding=""> v</span>}
-    [<span class="const token" data-binding="const-Monad" data-verso-hover="14">Monad</span> <span class="var token" data-binding="var-_uniq.160" data-verso-hover="15">m</span>] {α : <span class="sort token" data-binding="">Type</span><span class="sort token" data-binding=""> w</span>} (as : <span class="const token" data-binding="const-List" data-verso-hover="16">List</span> <span class="var token" data-binding="var-_uniq.162" data-verso-hover="17">α</span>)
-    (f : <span class="var token" data-binding="var-_uniq.162" data-verso-hover="17">α</span> → <span class="var token" data-binding="var-_uniq.160" data-verso-hover="15">m</span> <span class="const token" data-binding="const-PUnit" data-verso-hover="18">PUnit</span>) : <span class="var token" data-binding="var-_uniq.160" data-verso-hover="15">m</span> <span class="const token" data-binding="const-PUnit" data-verso-hover="18">PUnit</span></pre><div class="text">
-                <p>
-                  Applies the monadic action <code>f</code> on every element in the list, left-to-right.</p>
-                <p>
-                  See <code>List.mapM</code> for the variant that collects results.
-See <code>List.forA</code> for the variant that works with <code>Applicative</code>.</p>
+                results in</p>
+              <div class="namedocs" id="List___forM">
+                <span class="permalink-widget block"><a href="find/?domain=Verso.Genre.Manual.doc&name=List.forM" title="Permalink">🔗</a></span><span class="label">def</span><pre class="signature hl lean block">List.forM.{u, v, w} {<span class="var token" data-binding="var-_uniq.203" data-verso-hover="21">m</span> : <span class="sort token" data-binding="" data-verso-hover="22">Type u</span> → <span class="sort token" data-binding="" data-verso-hover="22">Type v</span>}
+  [<span class="const token" data-binding="const-Monad" data-verso-hover="23">Monad</span> <span class="var token" data-binding="var-_uniq.203" data-verso-hover="21">m</span>] {<span class="var token" data-binding="var-_uniq.205" data-verso-hover="24">α</span> : <span class="sort token" data-binding="" data-verso-hover="22">Type w</span>} (<span class="var token" data-binding="var-_uniq.206" data-verso-hover="25">as</span> : <span class="const token" data-binding="const-List" data-verso-hover="26">List</span> <span class="var token" data-binding="var-_uniq.205" data-verso-hover="24">α</span>)
+  (<span class="var token" data-binding="var-_uniq.208" data-verso-hover="27">f</span> : <span class="var token" data-binding="var-_uniq.205" data-verso-hover="24">α</span> → <span class="var token" data-binding="var-_uniq.203" data-verso-hover="21">m</span> <span class="const token" data-binding="const-PUnit" data-verso-hover="28">PUnit</span>) : <span class="var token" data-binding="var-_uniq.203" data-verso-hover="21">m</span> <span class="const token" data-binding="const-PUnit" data-verso-hover="28">PUnit</span></pre><div class="text">
+                  <p>
+                    Applies the monadic action <code class="hl lean inline" data-lean-context="docstring-examples"><span class="var token" data-binding="var-_uniq.178" data-verso-hover="27">f</span></code> on every element in the list, left-to-right.</p>
+                  <p>
+                    See <code class="hl lean inline" data-lean-context="docstring-examples"><span class="const token" data-binding="const-List.mapM" data-verso-hover="29">List.mapM</span></code> for the variant that collects results.
+See <code class="hl lean inline" data-lean-context="docstring-examples"><span class="const token" data-binding="const-List.forA" data-verso-hover="30">List.forA</span></code> for the variant that works with <code class="hl lean inline" data-lean-context="docstring-examples"><span class="const token" data-binding="const-Applicative" data-verso-hover="31">Applicative</span></code>.</p>
+                  </div>
                 </div>
-              </div>
+              </section>
+            <section>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">
+                Index</h2>
+              <div class="theIndex">
+                <nav>
+                  <ol>
+                    <li>
+                      <a href="#---index-hdr-A">A</a></li>
+                    <li>
+                      <a href="#---index-hdr-F">F</a></li>
+                    <li>
+                      <a href="#---index-hdr-L">L</a></li>
+                    </ol>
+                  </nav>
+                <div class="division">
+                  <h3 id="---index-hdr-A">
+                    A</h3>
+                  <ol>
+                    <li>
+                      <span id="---entry-apply"><code>apply</code></span><ol>
+                        <li>
+                          <a href="#Lean___Parser___Tactic___apply"><span id="---entry-___key___---___k___"><code>Lean.<wbr>Parser.<wbr>Tactic.<wbr>apply</code></span></a></li>
+                        </ol>
+                      </li>
+                    </ol>
+                  </div>
+                <div class="division">
+                  <h3 id="---index-hdr-F">
+                    F</h3>
+                  <ol>
+                    <li>
+                      <span id="---entry-forM"><code>for&shy;M</code></span><ol>
+                        <li>
+                          <a href="#List___forM"><span id="---entry-___key___---___k___1"><code>List.<wbr>for&shy;M</code></span></a></li>
+                        </ol>
+                      </li>
+                    </ol>
+                  </div>
+                <div class="division">
+                  <h3 id="---index-hdr-L">
+                    L</h3>
+                  <ol>
+                    <li>
+                      <a href="#Lean___Parser___Tactic___apply"><span id="---entry-Lean___Parser___Tactic___apply"><code>Lean.<wbr>Parser.<wbr>Tactic.<wbr>apply</code></span></a></li>
+                    <li>
+                      <a href="#List___forM"><span id="---entry-List___forM"><code>List.<wbr>for&shy;M</code></span></a></li>
+                    </ol>
+                  </div>
+                </div>
+              </section>
             </section>
-          <section>
-            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">
-              Index</h2>
-            <div class="theIndex">
-              <nav>
-                <ol>
-                  <li>
-                    <a href="#---index-hdr-F">F</a></li>
-                  <li>
-                    <a href="#---index-hdr-I">I</a></li>
-                  <li>
-                    <a href="#---index-hdr-L">L</a></li>
-                  </ol>
-                </nav>
-              <div class="division">
-                <h3 id="---index-hdr-F">
-                  F</h3>
-                <ol>
-                  <li>
-                    <span id="---entry-forM"><code>for&shy;M</code></span><ol>
-                      <li>
-                        <a href="#List___forM"><span id="---entry-___key___---___k___1"><code>List.<wbr>for&shy;M</code></span></a></li>
-                      </ol>
-                    </li>
-                  </ol>
-                </div>
-              <div class="division">
-                <h3 id="---index-hdr-I">
-                  I</h3>
-                <ol>
-                  <li>
-                    <span id="---entry-intro"><code>intro</code></span><ol>
-                      <li>
-                        <a href="#Lean___Parser___Tactic___intro"><span id="---entry-___key___---___k___"><code>Lean.<wbr>Parser.<wbr>Tactic.<wbr>intro</code></span></a></li>
-                      </ol>
-                    </li>
-                  </ol>
-                </div>
-              <div class="division">
-                <h3 id="---index-hdr-L">
-                  L</h3>
-                <ol>
-                  <li>
-                    <a href="#Lean___Parser___Tactic___intro"><span id="---entry-Lean___Parser___Tactic___intro"><code>Lean.<wbr>Parser.<wbr>Tactic.<wbr>intro</code></span></a></li>
-                  <li>
-                    <a href="#List___forM"><span id="---entry-List___forM"><code>List.<wbr>for&shy;M</code></span></a></li>
-                  </ol>
-                </div>
-              </div>
-            </section>
-          </section>
+          </div>
         </main></div>
     </body>
   </html>

@@ -86,20 +86,6 @@ example : P → Q := by
 
 
 \begin{verbatim}
-example (hP : P) : (P → Q) → Q := by
-  intro hPQ
-  exact hPQ hP
-
-\end{verbatim}
-
-
-
-| Proof state | Command  | New proof state        |
-|------------|---------|------------------------|
-| ⊢ P → Q    | intro hP | hP : P                 |
-|            |         | ⊢ Q                    |
-
-\begin{verbatim}
 Proof state   Command         New proof state
 
 ⊢ P → Q       intro hP        hP : P

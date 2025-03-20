@@ -1,4 +1,5 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html>
   <head>
     <script>
       (function(){
@@ -9,13 +10,13 @@
 })()</script>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <title>Cross-Reference Redirection</title><link rel="stylesheet" href="../book.css">
+    <title>Interactive Theorem Proving using Lean, Summer 2025</title><link rel="stylesheet" href="book.css">
     <script>
-      const __versoSiteRoot = "./../"</script>
+      const __versoSiteRoot = "./"</script>
     <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
-    <script src="../-verso-js/popper.js"></script>
-    <script src="../-verso-js/tippy.js"></script>
-    <link rel="stylesheet" href="../-verso-css/tippy-border.css">
+    <script src="-verso-js/popper.js"></script>
+    <script src="-verso-js/tippy.js"></script>
+    <link rel="stylesheet" href="-verso-css/tippy-border.css">
     <style>
 
 .hl.lean {
@@ -227,10 +228,6 @@
 
 .hl.lean div.docstring > :last-child {
   margin-bottom: 0;
-}
-
-.hl.lean div.docstring > :first-child {
-  margin-top: 0;
 }
 
 .hl.lean .hover-info .sep {
@@ -618,7 +615,6 @@
   padding-left: 0.5rem;
   float: left;
   margin-top: 0;
-  max-width: calc(100% - 1rem);
 }
 .namedocs > .text .constructor .docs {
   clear: both;
@@ -1394,126 +1390,6 @@
       width: auto;
     }
     </style><script>
-      let xref = {"Verso.Genre.Manual.section":
- {"title": "Sections or chapters of the manual",
-  "description": null,
-  "contents":
-  {"lean-markup":
-   [{"id": "lean-markup",
-     "data":
-     {"title": "Lean Markup",
-      "sectionNum": "2.1.",
-      "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
-        "number": null},
-       {"title": "First steps using logic", "number": "2"},
-       {"title": "Lean Markup", "number": "1"}]},
-     "address": "/"}],
-   "genres":
-   [{"id": "genres",
-     "data":
-     {"title": "Genres",
-      "sectionNum": "3.",
-      "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
-        "number": null},
-       {"title": "Genres", "number": "3"}]},
-     "address": "/"}],
-   "docstrings":
-   [{"id": "docstrings",
-     "data":
-     {"title": "Docstrings",
-      "sectionNum": "4.",
-      "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
-        "number": null},
-       {"title": "Docstrings", "number": "4"}]},
-     "address": "/"}]}},
- "Verso.Genre.Manual.doc.tech":
- {"title": "Terminology",
-  "description": "Definitions of technical terms",
-  "contents": {}},
- "Verso.Genre.Manual.doc.tactic.conv":
- {"title": "Conversion Tactics",
-  "description": "Tactics for performing targeted rewriting of subterms",
-  "contents": {}},
- "Verso.Genre.Manual.doc.tactic":
- {"title": "Tactic Documentation",
-  "description": "Detailed descriptions of tactics",
-  "contents": {}},
- "Verso.Genre.Manual.doc.option":
- {"title": "Compiler options", "description": null, "contents": {}},
- "Verso.Genre.Manual.doc":
- {"title": "Lean constant reference",
-  "description": "Documentation for Lean constants",
-  "contents":
-  {"List.forM": [{"id": "List___forM", "data": null, "address": "/"}],
-   "Lean.Parser.Tactic.apply":
-   [{"id": "Lean___Parser___Tactic___apply", "data": null, "address": "/"}]}}};
-let params = new URLSearchParams(document.location.search);
-let domains = params.getAll("domain");
-let name = params.get("name");
-console.log("Domains: " + domains);
-console.log("name: " + name);
-if(name) {
-    let siteRoot = typeof __versoSiteRoot !== 'undefined' ? __versoSiteRoot : "";
-    let options = [];
-    if (domains && domains.length > 0) {
-        for (const i in domains) {
-            let domain = domains[i];
-            console.log('Considering domain ' + domain);
-            if (xref.hasOwnProperty(domain)) {
-                console.log('Found domain ' + domain);
-                let opts = xref[domain];
-                if (opts['contents'].hasOwnProperty(name)) {
-                    options = opts['contents'][name].map(x => Object.assign(x, {'domain': domain}));
-                }
-            }
-        }
-    } else {
-        for (const [dom, opts] of Object.entries(xref)) {
-            if (opts['contents'].hasOwnProperty(name)) {
-                for (const i of opts['contents'][name]) {
-                    options.push(Object.assign(i, {'domain': dom}));
-                }
-            }
-        }
-    }
-
-    if (options.length == 0) {
-        addEventListener('DOMContentLoaded', event => {
-            document.title = "Not found: '" + name + "'";
-            document.querySelector("#title").innerHTML = "Not found: name '" + name + "'";
-            let allDomains = [];
-            for (const d in xref) {
-                allDomains.push(d);
-            }
-            if (domains.length < 1) {
-                domains = allDomains;
-            }
-            document.querySelector("#message").innerHTML = "<p>Searched domains:</p>" + "<ul>" + domains.map(x => "<li><code>" + x + "</code>: " + xref[x]['title'] + "</li>\n").join('') + "</ul>";
-        });
-    } else if (options.length == 1) {
-        let addr = siteRoot + options[0]['address'] + "#" + options[0]['id'];
-        window.location.replace(addr);
-    } else {
-        addEventListener('DOMContentLoaded', event => {
-            document.title = "Ambiguous: '" + name + "'";
-            document.querySelector("#title").innerHTML = "Ambiguous: name '" + name + "'";
-            document.querySelector("#message").innerHTML = "<p>Options:</p><ul>" +
-                options.map((x, idx) => '<li><p><a href="' + siteRoot + x['address'] + '#' + x['id'] + '">From ' + xref[x['domain']]['title'] + '</a></p></li>').join('\n') +
-                "</ul>";
-        });
-    }
-} else {
-    addEventListener('DOMContentLoaded', event => {
-        document.title = "No name provided";
-        document.querySelector("#title").innerHTML = "No name provided";
-        document.querySelector("#message").innerHTML = "<p>This page expects a 'name' query parameter, along with documentation domains.</p>";
-    });
-}
-</script>
-    <script>
       
 window.onload = () => {
 
@@ -1683,21 +1559,21 @@ window.onload = () => {
     <header>
       <div class="header-logo-wrapper"></div>
       <div class="header-title-wrapper">
-        <a href="../" class="header-title"><h1>
-            Cross-Reference Redirection</h1>
+        <a href="" class="header-title"><h1>
+            Interactive Theorem Proving using Lean, Summer 2025</h1>
           </a></div>
       </header>
     <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
       <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
       <nav id="toc">
         <input type="checkbox" id="toggle-toc"><div class="first">
-          <a href="../" class="toc-title"><h1>
-              Cross-Reference Redirection</h1>
+          <a href="" class="toc-title"><h1>
+              Interactive Theorem Proving using Lean, Summer 2025</h1>
             </a><div class="split-tocs">
             <div class="split-toc book">
               <div class="title">
                 <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class="">Table of Contents</span></div>
-              <table><tr class="current numbered"><td class="num">1.</td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num">2.</td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="current numbered"><td class="num">3.</td><td><a href="../#genres">Genres</a></td></tr><tr class="current numbered"><td class="num">4.</td><td><a href="../#docstrings">Docstrings</a></td></tr><tr class="current unnumbered"><td class="num"><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="#genres">Genres</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="#docstrings">Docstrings</a></td></tr><tr class="unnumbered"><td class="num"><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
@@ -1710,19 +1586,352 @@ window.onload = () => {
           </div>
         </nav>
       <main><div class="content-wrapper">
-          <nav class="prev-next-buttons">
-            <div></div>
-            <div></div>
-            </nav>
+          <nav class="prev-next-buttons"></nav>
           <section>
-            <h1 id="title"></h1>
-            <div id="message"></div>
+            <div class="titlepage">
+              <h1>
+                 Interactive Theorem Proving using Lean, Summer 2025</h1>
+              <div class="authors">
+                <span class="author">Peter Pfaffelhuber</span></div>
+              <p>
+                These are the notes for a course on formal proving with the interactive theorem prover Lean4 (in the following we just write Lean) in the summer semester of 2025 at the University of Freiburg. To be able to work through the course in a meaningful way, the following technical preparations are to be made:</p>
+              <ul>
+                <li>
+                  <p>
+                    Installation of <a href="https://code.visualstudio.com/">vscode</a>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Local installation of Lean and the associated tools: Please follow these <a href="https://github.com/leanprover-community/mathlib4/wiki/Using-mathlib4-as-a-dependency">instructions</a>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Installing the course repository: Navigate to a location where you would like to put the course materials and use <code>git clone get https://github.com/pfaffelh/leancourse</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    After <code>cd leancourse</code> and <code>code .</code>, you should see some code which looks a bit like mathematics. On the left hand side of the <code>vscode</code> window, you can click and install an extension for <code>Lean</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    The directory <code>Exercises</code> contains the material for the course. We recommend that you first copy this directory, for example to <code>myExercises</code>. Otherwise, an update of the repository may overwrite the local files.</p>
+                  </li>
+                <li>
+                  <p>
+                    To update the course materials, enter <code>git pull</code> from within the <code>leancourse</code>directory.</p>
+                  </li>
+                </ul>
+              </div>
+            <section>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">
+                1. Introduction</h2>
+              <p>
+                The course is designed for mathematics students and has at least two goals:</p>
+              <ul>
+                <li>
+                  <p>
+                    Learning the techniques for interactive formal Theorem proofing using Lean: In recent years, efforts to prove mathematical theorems with the help of computers have increased dramatically. While a few decades ago, it was more a matter of consistently processing many cases that were left to the computer, interactive theorem provers are different. Here, a very small core can be used to understand or interactively generate all the logical conclusions of a mathematical proof. The computer then reports interactively on the progress of the proof and when all the steps have been completed.</p>
+                  </li>
+                <li>
+                  <p>
+                    Establishing connections to some mathematical material: On the one hand, the mathematical details needed in this course should not be the main issue of this course. On the other hand, in order to <em>explain</em> how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well -- at least if it exceeds a few lines -- so that the commands you enter (which we will call tactics) fit together.</p>
+                  </li>
+                </ul>
+              </section>
+            <section>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">
+                2. First steps using logic</h2>
+              <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.variable-2724" data-verso-hover="0">variable</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.12" data-verso-hover="1">P</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="1">Q</span> <span class="var token" data-binding="var-_uniq.16" data-verso-hover="1">R</span> <span class="var token" data-binding="var-_uniq.18" data-verso-hover="1">S</span> <span class="var token" data-binding="var-_uniq.20" data-verso-hover="1">T</span> <span class="unknown token" data-binding="">:</span> <span class="sort token" data-binding="">Prop</span><span class="unknown token" data-binding="">)</span>
+<span class="unknown token" data-binding=""></span></code><code class="hl lean block" data-lean-context="exercises"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-2765">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="2">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="3">Q</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-16301083633924625230-2786-2788"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-2786" data-verso-hover="4">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-16301083633924625230-2786-2788"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="5">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="6">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.14</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="5">P</span> → <span class="var token" data-binding="var-_uniq.20" data-verso-hover="6">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-18068729823697111787-2791-2798"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-2791" data-verso-hover="7">intro</span> <span class="var token" data-binding="var-_uniq.22" data-verso-hover="8">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-18068729823697111787-2791-2798"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="5">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="6">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="8">h</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="5">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="6">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-2801-2806"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-2801" data-verso-hover="9">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-2801-2806"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><pre>Proof state   Command         New proof state
+
+⊢ P → Q       intro hP        hP : P
+                              ⊢ Q
+</pre><p>
+                Assume we have <code>⊢ Q</code>, then all makes sense!</p>
+              <div class="namedocs" id="Lean___Parser___Tactic___apply">
+                <span class="permalink-widget block"><a href="find/?domain=Verso.Genre.Manual.doc&name=Lean.Parser.Tactic.apply" title="Permalink">🔗</a></span><span class="label">def</span><pre class="signature hl lean block">Lean.Parser.Tactic.apply : <span class="const token" data-binding="const-Lean.ParserDescr" data-verso-hover="10">Lean.ParserDescr</span></pre><div class="text">
+                  <p>
+                    <code class="hl lean inline" data-lean-context="docstring-examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.apply-0" data-verso-hover="11">apply</span> <span class="unknown token" data-binding="">e</span></code> tries to match the current goal against the conclusion of <code class="hl lean inline" data-lean-context="docstring-examples"><span class="unknown token" data-binding="">e</span></code>'s type.
+If it succeeds, then the tactic returns as many subgoals as the number of premises that
+have not been fixed by type inference or type class resolution.
+Non-dependent premises are added before dependent ones.</p>
+                  <p>
+                    The <code class="hl lean inline" data-lean-context="docstring-examples"><span class="keyword token" data-binding="" data-verso-hover="11">apply</span></code> tactic uses higher-order pattern matching, type class resolution,
+and first-order unification with dependent types.</p>
+                  </div>
+                </div>
+              <p>
+                Documentation can take many forms:</p>
+              <ul>
+                <li>
+                  <p>
+                    References</p>
+                  </li>
+                <li>
+                  <p>
+                    Tutorials</p>
+                  </li>
+                <li>
+                  <p>
+                    Etc</p>
+                  </li>
+                </ul>
+              <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-3109">example</span> <span class="unknown token" data-binding="">:</span> <span class="typed token" data-binding="" data-verso-hover="12">2</span> <span class="unknown token" data-binding="">+</span> <span class="typed token" data-binding="" data-verso-hover="12">2</span> <span class="unknown token" data-binding="">=</span> <span class="typed token" data-binding="" data-verso-hover="12">4</span> <span class="unknown token" data-binding="">:=</span>
+  <span class="tactic"><label for="tactic-state-8495602883594765203-3134-3136"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-3134" data-verso-hover="4">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8495602883594765203-3134-3136"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">2<span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="13"> + </span>2<span class="const token" data-binding="const-Eq" data-verso-hover="14"> = </span>4</span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-3137-3140"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticRfl-3137" data-verso-hover="15">rfl</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-3137-3140"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><section>
+                <h3 id="lean-markup">
+                  2.1. Lean Markup<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=lean-markup" title="Permalink">🔗</a></span></h3>
+                <p>
+                  Lean's documentation markup language is a close relative of Markdown, but it's not identical to it.</p>
+                <section>
+                  <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Design-Principles">
+                    2.1.1. Design Principles</h4>
+                  <ol start="1">
+                    <li>
+                      <p>
+                        Syntax errors - fail fast rather than producing unexpected output or having complicated rules</p>
+                      </li>
+                    <li>
+                      <p>
+                        Reduce lookahead - parsing should succeed or fail as locally as possible</p>
+                      </li>
+                    <li>
+                      <p>
+                        Extensibility - there should be dedicated features for compositionally adding new kinds of content, rather than relying on a collection of ad-hoc textual subformats</p>
+                      </li>
+                    <li>
+                      <p>
+                        Assume Unicode - Lean users are used to entering Unicode directly and have good tools for it, so there's no need to support alternative textual syntaxes for characters not on keyboards such as em dashes or typographical quotes</p>
+                      </li>
+                    <li>
+                      <p>
+                        Markdown compatibility - benefit from existing muscle memory and familiarity when it doesn't lead to violations of the other principles</p>
+                      </li>
+                    <li>
+                      <p>
+                        Pandoc and Djot compatibility - when Markdown doesn't have a syntax for a feature, attempt to be compatible with Pandoc Markdown or Djot</p>
+                      </li>
+                    </ol>
+                  </section>
+                <section>
+                  <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax">
+                    2.1.2. Syntax</h4>
+                  <p>
+                    Like Markdown, Lean's markup has three primary syntactic categories:</p>
+                  <dl><dt> Inline elements</dt><dd><p>
+                        The ordinary content of written text, such as text itself, bold or emphasized text, and hyperlinks.</p>
+                      </dd><dt> Block elements</dt><dd><p>
+                        The main organization of written text, including paragraphs, lists, and quotations. Some blocks may be nested: for example, lists may contain other lists.</p>
+                      </dd><dt> Document structure</dt><dd><p>
+                        Headers, footnote definitions, and named links give greater structure to a document. They may not be nested inside of blocks.</p>
+                      </dd></dl><section>
+                    <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description">
+                      2.1.2.1. Description</h5>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Inline-Syntax">
+                        2.1.2.1.1. Inline Syntax</h6>
+                      <p>
+                        Emphasis is written with underscores:</p>
+                      <pre>Here's some _emphasized_ text
+</pre><pre>Here's some &lt;emph&gt;emphasized&lt;/emph&gt; text
+</pre><p>
+                        Emphasis can be nested by using more underscores for the outer emphasis:</p>
+                      <pre>Here's some __emphasized text with _extra_ emphasis__ inside
+</pre><pre>Here's some &lt;emph&gt;emphasized text with &lt;emph&gt;extra&lt;/emph&gt; emphasis&lt;/emph&gt; inside
+</pre><p>
+                        Strong emphasis (bold) is written with asterisks:</p>
+                      <pre>Here's some *bold* text
+</pre><pre>Here's some &lt;bold&gt;bold&lt;/bold&gt; text
+</pre><p>
+                        Hyperlinks consist of the link text in square brackets followed by the target in parentheses:</p>
+                      <pre>The [Lean website](https://lean-lang.org)
+</pre><pre>The &lt;a href="https://lean-lang.org"&gt;Lean website&lt;/a&gt;
+</pre><pre>The [Lean website][lean]
+
+[lean]: https://lean-lang.org
+</pre><pre>The &lt;a href="(value of «lean»)"&gt;Lean website&lt;/a&gt;
+
+where «lean» := https://lean-lang.org</pre><pre>The definition of `main`
+</pre><pre>The definition of &lt;code&gt;main&lt;/code&gt;
+</pre><p>
+                        TeX math can be included using a single or double dollar sign followed by code. Two dollar signs results in display-mode math, so <code>$`\sum_{i=0}^{10} i`</code> results in <code class="math inline">\sum_{i=0}^{10} i</code> while <code>$$`\sum_{i=0}^{10} i`</code> results in: <code class="math display">\sum_{i=0}^{10} i</code></p>
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Block-Syntax">
+                        2.1.2.1.2. Block Syntax</h6>
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Document-Structure">
+                        2.1.2.1.3. Document Structure</h6>
+                      </section>
+                    </section>
+                  <section>
+                    <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown">
+                      2.1.2.2. Differences from Markdown</h5>
+                    <p>
+                      This is a quick "cheat sheet" for those who are used to Markdown, documenting the differences.</p>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Syntax-Errors">
+                        2.1.2.2.1. Syntax Errors</h6>
+                      <p>
+                        While Markdown includes a set of precedence rules to govern the meaning of mismatched delimiters (such as in <code>what _is *bold_ or emph*?</code>), these are syntax errors in Lean's markup.
+Similarly, Markdown specifies that unmatched delimiters (such as <code>*</code> or <code>_</code>) should be included as characters, while Lean's markup requires explicit escaping of delimiters.</p>
+                      <p>
+                        This is based on the principle that, for long-form technical writing, it's better to catch typos while writing than while reviewing the text later.</p>
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Reduced-Lookahead">
+                        2.1.2.2.2. Reduced Lookahead</h6>
+                      <p>
+                        In Markdown, whether <code>[this][here]</code> is a link depends on whether <code>here</code> is defined as a link reference target somewhere in the document.
+In Lean's markup, it is always a link, and it is an error if <code>here</code> is not defined as a link target.</p>
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Header-Nesting">
+                        2.1.2.2.3. Header Nesting</h6>
+                      <p>
+                        In Lean's markup, every document already has a title, so there's no need to use the highest level header (<code>#</code>) to specify one.
+Additionally, all documents are required to use <code>#</code> for their top-level header, <code>##</code> for the next level, and so forth, because a single file may represent a section, a chapter, or even a whole book.
+Authors should not need to maintain a global mapping from header levels to document structures, so Lean's markup automatically assigns these based on the structure of the document.</p>
+                      </section>
+                    <section>
+                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Genre-Specific-Extensions">
+                        2.1.2.2.4. Genre-Specific Extensions</h6>
+                      <p>
+                        Markdown has no standard way for specific tools or styles of writing to express domain- or <a href="#genres">genre</a>-specific concepts.
+Lean's markup provides standard syntaxes to use for this purpose, enabling compositional extensions.
+</p>
+                      </section>
+                    </section>
+                  </section>
+                </section>
+              </section>
+            <section>
+              <h2 id="genres">
+                3. Genres<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=genres" title="Permalink">🔗</a></span></h2>
+              <div class="paragraph">
+                <p>
+                  Documentation comes in many forms, and no one system is suitable for representing all of them.
+The needs of software documentation writers are not the same as the needs of textbook authors, researchers writing papers, bloggers, or poets.
+Thus, Lean's documentation system supports multiple <em>genres</em>, each of which consists of:</p>
+                <ul>
+                  <li>
+                    <p>
+                      A global view of a document's structure, whether it be a document with subsections, a collection of interrelated documents such as a web site, or a single file of text</p>
+                    </li>
+                  <li>
+                    <p>
+                      A representation of cross-cutting state such as cross-references to figures, index entries, and named theorems</p>
+                    </li>
+                  <li>
+                    <p>
+                      Additions to the structure of the document - for instance, the blog genre supports the inclusion of raw HTML, and the manual genre supports grouping multiple top-level blocks into a single logical paragraph</p>
+                    </li>
+                  <li>
+                    <p>
+                      Procedures for resolving cross references and rendering the document to one or more output formats</p>
+                    </li>
+                  </ul>
+                <p>
+                  All genres use the same markup syntax, and they can share extensions to the markup language that don't rely on incompatible document structure additions.
+Mixing incompatible features results in an ordinary Lean type error.</p>
+                </div>
+              </section>
+            <section>
+              <h2 id="docstrings">
+                4. Docstrings<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=docstrings" title="Permalink">🔗</a></span></h2>
+              <p>
+                Docstrings can be included using the <code>docstring</code> directive. For instance,</p>
+              <pre>{docstring List.forM}
+</pre><pre>example : 2 + 2 = 4 :=
+  by rfl
+</pre><p>
+                results in</p>
+              <div class="namedocs" id="List___forM">
+                <span class="permalink-widget block"><a href="find/?domain=Verso.Genre.Manual.doc&name=List.forM" title="Permalink">🔗</a></span><span class="label">def</span><pre class="signature hl lean block">List.forM.{u, v, w} {<span class="var token" data-binding="var-_uniq.203" data-verso-hover="16">m</span> : <span class="sort token" data-binding="">Type u</span> → <span class="sort token" data-binding="">Type v</span>}
+  [<span class="const token" data-binding="const-Monad" data-verso-hover="17">Monad</span> <span class="var token" data-binding="var-_uniq.203" data-verso-hover="16">m</span>] {<span class="var token" data-binding="var-_uniq.205" data-verso-hover="18">α</span> : <span class="sort token" data-binding="">Type w</span>} (<span class="var token" data-binding="var-_uniq.206" data-verso-hover="19">as</span> : <span class="const token" data-binding="const-List" data-verso-hover="20">List</span> <span class="var token" data-binding="var-_uniq.205" data-verso-hover="18">α</span>)
+  (<span class="var token" data-binding="var-_uniq.208" data-verso-hover="21">f</span> : <span class="var token" data-binding="var-_uniq.205" data-verso-hover="18">α</span> → <span class="var token" data-binding="var-_uniq.203" data-verso-hover="16">m</span> <span class="const token" data-binding="const-PUnit" data-verso-hover="22">PUnit</span>) : <span class="var token" data-binding="var-_uniq.203" data-verso-hover="16">m</span> <span class="const token" data-binding="const-PUnit" data-verso-hover="22">PUnit</span></pre><div class="text">
+                  <p>
+                    Applies the monadic action <code class="hl lean inline" data-lean-context="docstring-examples"><span class="var token" data-binding="var-_uniq.178" data-verso-hover="21">f</span></code> on every element in the list, left-to-right.</p>
+                  <p>
+                    See <code class="hl lean inline" data-lean-context="docstring-examples"><span class="const token" data-binding="const-List.mapM" data-verso-hover="23">List.mapM</span></code> for the variant that collects results.
+See <code class="hl lean inline" data-lean-context="docstring-examples"><span class="const token" data-binding="const-List.forA" data-verso-hover="24">List.forA</span></code> for the variant that works with <code class="hl lean inline" data-lean-context="docstring-examples"><span class="const token" data-binding="const-Applicative" data-verso-hover="25">Applicative</span></code>.</p>
+                  </div>
+                </div>
+              </section>
+            <section>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">
+                Index</h2>
+              <div class="theIndex">
+                <nav>
+                  <ol>
+                    <li>
+                      <a href="#---index-hdr-A">A</a></li>
+                    <li>
+                      <a href="#---index-hdr-F">F</a></li>
+                    <li>
+                      <a href="#---index-hdr-L">L</a></li>
+                    </ol>
+                  </nav>
+                <div class="division">
+                  <h3 id="---index-hdr-A">
+                    A</h3>
+                  <ol>
+                    <li>
+                      <span id="---entry-apply"><code>apply</code></span><ol>
+                        <li>
+                          <a href="#Lean___Parser___Tactic___apply"><span id="---entry-___key___---___k___"><code>Lean.<wbr>Parser.<wbr>Tactic.<wbr>apply</code></span></a></li>
+                        </ol>
+                      </li>
+                    </ol>
+                  </div>
+                <div class="division">
+                  <h3 id="---index-hdr-F">
+                    F</h3>
+                  <ol>
+                    <li>
+                      <span id="---entry-forM"><code>for&shy;M</code></span><ol>
+                        <li>
+                          <a href="#List___forM"><span id="---entry-___key___---___k___1"><code>List.<wbr>for&shy;M</code></span></a></li>
+                        </ol>
+                      </li>
+                    </ol>
+                  </div>
+                <div class="division">
+                  <h3 id="---index-hdr-L">
+                    L</h3>
+                  <ol>
+                    <li>
+                      <a href="#Lean___Parser___Tactic___apply"><span id="---entry-Lean___Parser___Tactic___apply"><code>Lean.<wbr>Parser.<wbr>Tactic.<wbr>apply</code></span></a></li>
+                    <li>
+                      <a href="#List___forM"><span id="---entry-List___forM"><code>List.<wbr>for&shy;M</code></span></a></li>
+                    </ol>
+                  </div>
+                </div>
+              </section>
+            <section>
+              <h2>
+                Contents</h2>
+              <ol class="section-toc">
+                <li>
+                  <a href=""><span class="number">1.</span> Introduction</a></li>
+                <li>
+                  <a href=""><span class="number">2.</span> First steps using logic</a></li>
+                <li>
+                  <a href=""><span class="number">3.</span> Genres</a></li>
+                <li>
+                  <a href=""><span class="number">4.</span> Docstrings</a></li>
+                <li>
+                  <a href=""><span class="unnumbered"></span>Index</a></li>
+                </ol>
+              </section>
             </section>
-          <nav class="prev-next-buttons">
-            <div></div>
-            <div></div>
-            </nav>
+          <nav class="prev-next-buttons"></nav>
           </div>
         </main></div>
     </body>
   </html>
+

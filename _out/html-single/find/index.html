@@ -11,126 +11,12 @@
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <title>Cross-Reference Redirection</title><link rel="stylesheet" href="../book.css">
     <script>
-      
-function saveCheckboxesInit() {
-  for (checkbox of document.querySelectorAll('#toc input[type="checkbox"]')) {
-    const value = localStorage.getItem(checkbox.id);
-
-    // Treat the ToC toggle specially, because it should always default to
-    // closed on mobile-width screens but respect user preference on desktop-width.
-    if (checkbox.id === "toggle-toc" && window.matchMedia("(max-width: 700px)").matches) {
-        checkbox.checked = false;
-    } else if (value === "true") {
-        checkbox.checked = true;
-    } else if (value === "false") {
-        checkbox.checked = false;
-    } // if not found, do nothing
-
-    checkbox.addEventListener("change", persistCheckbox);
-  }
-}
-
-function persistCheckbox() {
-  const value = this.checked; // in a handler, 'this' is the element with the handler on it
-  const id = this.id;
-  localStorage.setItem(this.id, value ? "true" : "false");
-}
-
-window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
-</script>
-    <script>
       const __versoSiteRoot = "./../"</script>
     <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
     <script src="../-verso-js/popper.js"></script>
     <script src="../-verso-js/tippy.js"></script>
     <link rel="stylesheet" href="../-verso-css/tippy-border.css">
     <style>
-    main .theIndex {
-      padding-left: 0;
-      font-family: var(--verso-text-font-family);
-    }
-
-    main .theIndex nav {
-      position: sticky;
-      top: 0;
-      background: white;
-      font-family: var(--verso-structure-font-family);
-      font-size: 1.25rem;
-    }
-
-    main .theIndex nav ol {
-      padding: 0;
-    }
-
-    main .theIndex nav ol li {
-      display: inline-block;
-    }
-
-    main .theIndex nav ol li a {
-      /* Padding instead of margin to have a bigger click target */
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
-    /* Increase the size of the touch target on phones */
-    @media screen and (max-width: 700px) {
-      main .theIndex nav ol li a {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
-    }
-
-    main .theIndex nav ol li:first-child a {
-      padding-left: 0;
-    }
-
-    main .theIndex nav ol li + li:before {
-      content: "|";
-    }
-
-    main .theIndex h1,
-    main .theIndex h2,
-    main .theIndex h3,
-    main .theIndex h4,
-    main .theIndex h5,
-    main .theIndex h6 {
-      margin-top: 0;
-    }
-
-    main .theIndex ol {
-      list-style-type: none;
-    }
-
-    main .theIndex .division > ol {
-      padding-left: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem 3rem;
-      overflow-wrap: break-word;
-    }
-
-    @media screen and (max-width: 700px) {
-      main .theindex .division > ol {
-        flex-direction: column;
-        flex-wrap: nowrap;
-        gap: 1rem;
-      }
-    }
-
-   main .theIndex .division > ol > li {
-      margin-bottom: 0.5rem;
-    }
-
-    main .theIndex .division ol ol {
-      padding-left: 1rem;
-    }
-
-    main .theIndex .division {
-      break-inside: avoid;
-      counter-reset: none;
-      max-width: none;
-      width: auto;
-    }
-    </style><style>
 
 .hl.lean {
   white-space: pre;
@@ -238,7 +124,7 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 }
 
 @media (hover: hover) {
-  .hl.lean .token.binding-hl, .hl.lean .literal.string:hover {
+  .hl.lean .token.binding-hl, .hl.lean .literal.string:hover, .hl.lean .token.typed:hover {
     background-color: #eee;
     border-radius: 2px;
     transition: none;
@@ -249,7 +135,7 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 .hl.lean .has-info {
   text-decoration-style: wavy;
   text-decoration-line: underline;
-  text-decoration-thickness: 0.1rem;
+  text-decoration-thickness: from-font;
 }
 
 .hl.lean .has-info .hover-info {
@@ -341,6 +227,10 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 
 .hl.lean div.docstring > :last-child {
   margin-bottom: 0;
+}
+
+.hl.lean div.docstring > :first-child {
+  margin-top: 0;
 }
 
 .hl.lean .hover-info .sep {
@@ -662,9 +552,14 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 }
 
 .namedocs .text {
+  /* Causes margins on child elements to collapse inside the element, such
+     that the margins don't extend into parent with the background color.
+     The effect is that weird borders in the definition box don't happen anymore. */
+  display: flow-root;
   background-color: white;
-  padding: 1.5rem;
-  margin-top: 0.5rem;
+  /* Add a padding. this is the same as the margin applied to the first and last child.
+     The effect is that the padding looks the same size on all sides. */
+  padding: 0 1.5rem;
 }
 
 .namedocs .text > pre {
@@ -673,7 +568,6 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 
 .namedocs .signature {
   font-family: var(--verso-code-font-family);
-  font-size: larger;
   margin-top: 0 !important;
   margin-left: 1.5rem !important;
   margin-right: 1.5rem;
@@ -700,25 +594,49 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
   font-size: inherit;
   font-weight: bold;
 }
-.namedocs > .text > .constructors {
-  text-indent: -1ex;
+
+.namedocs > .text .constructor {
+  padding-left: 0.5rem;
+  padding-top: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 }
-.namedocs > .text > .constructors > li {
+
+.namedocs > .text .constructor::before {
+  content: '| ';
   display: block;
+  font-family: var(--verso-code-font-family);
+  font-weight: bold;
+  float: left;
+  width: 0.5rem;
+  white-space: pre;
 }
-.namedocs > .text > .constructors > li::before {
-  content: '|';
-  width: 1ex;
-  display: inline-block;
-  font-size: larger;
+
+.namedocs > .text .constructor .name-and-type {
+  padding-left: 0.5rem;
+  float: left;
+  margin-top: 0;
+  max-width: calc(100% - 1rem);
 }
-.namedocs > .text > .constructors > li > .doc {
-  text-indent: 0;
+.namedocs > .text .constructor .docs {
+  clear: both;
+  padding-left: 1rem;
 }
+
+/* These margins work together with the padding on .text */
+.namedocs .text > :first-child {
+  margin-top: 1.5rem;
+}
+.namedocs .text > :last-child {
+  margin-bottom: 1.5rem;
+}
+
 .namedocs .methods td, .namedocs .fields td {
   vertical-align: top;
 }
-.namedocs .inheritance td {
+.namedocs .inheritance {
   vertical-align: top;
   font-size: smaller;
   font-family: var(--verso-structure-font-family);
@@ -754,613 +672,728 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
   padding-right: 1rem;
 }
 
-.namedocs:has(input[data-parent-idx]) tr[data-inherited-from] {
+.namedocs .subdocs .name-and-type {
+  font-size: 1rem;
+  margin-left: 0;
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0.5rem;
+}
+
+.namedocs .subdocs .docs {
+  margin-left: 1.5rem;
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0.5rem;
+}
+
+.namedocs:has(input[data-parent-idx]) [data-inherited-from] {
   transition-property: opacity, display;
   transition-duration: 0.4s;
   transition-behavior: allow-discrete;
   @starting-style { opacity: 0 !important; }
 }
-.namedocs:has(input[data-parent-idx="0"]) tr[data-inherited-from="0"] {
+
+#this-page-items .tactic-name { font-weight: bold; }
+.namedocs:has(input[data-parent-idx="0"]) [data-inherited-from="0"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="0"]:checked) tr[data-inherited-from="0"] {
+.namedocs:has(input[data-parent-idx="0"]:checked) [data-inherited-from="0"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="0"]:checked):has(tr.inheritance[data-inherited-from="0"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="0"]) {
+.namedocs:has(input[data-parent-idx="0"]:checked):has(.inheritance[data-inherited-from="0"]:hover) [data-inherited-from]:not([data-inherited-from="0"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="1"]) tr[data-inherited-from="1"] {
+.namedocs:has(input[data-parent-idx="1"]) [data-inherited-from="1"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="1"]:checked) tr[data-inherited-from="1"] {
+.namedocs:has(input[data-parent-idx="1"]:checked) [data-inherited-from="1"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="1"]:checked):has(tr.inheritance[data-inherited-from="1"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="1"]) {
+.namedocs:has(input[data-parent-idx="1"]:checked):has(.inheritance[data-inherited-from="1"]:hover) [data-inherited-from]:not([data-inherited-from="1"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="2"]) tr[data-inherited-from="2"] {
+.namedocs:has(input[data-parent-idx="2"]) [data-inherited-from="2"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="2"]:checked) tr[data-inherited-from="2"] {
+.namedocs:has(input[data-parent-idx="2"]:checked) [data-inherited-from="2"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="2"]:checked):has(tr.inheritance[data-inherited-from="2"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="2"]) {
+.namedocs:has(input[data-parent-idx="2"]:checked):has(.inheritance[data-inherited-from="2"]:hover) [data-inherited-from]:not([data-inherited-from="2"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="3"]) tr[data-inherited-from="3"] {
+.namedocs:has(input[data-parent-idx="3"]) [data-inherited-from="3"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="3"]:checked) tr[data-inherited-from="3"] {
+.namedocs:has(input[data-parent-idx="3"]:checked) [data-inherited-from="3"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="3"]:checked):has(tr.inheritance[data-inherited-from="3"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="3"]) {
+.namedocs:has(input[data-parent-idx="3"]:checked):has(.inheritance[data-inherited-from="3"]:hover) [data-inherited-from]:not([data-inherited-from="3"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="4"]) tr[data-inherited-from="4"] {
+.namedocs:has(input[data-parent-idx="4"]) [data-inherited-from="4"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="4"]:checked) tr[data-inherited-from="4"] {
+.namedocs:has(input[data-parent-idx="4"]:checked) [data-inherited-from="4"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="4"]:checked):has(tr.inheritance[data-inherited-from="4"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="4"]) {
+.namedocs:has(input[data-parent-idx="4"]:checked):has(.inheritance[data-inherited-from="4"]:hover) [data-inherited-from]:not([data-inherited-from="4"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="5"]) tr[data-inherited-from="5"] {
+.namedocs:has(input[data-parent-idx="5"]) [data-inherited-from="5"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="5"]:checked) tr[data-inherited-from="5"] {
+.namedocs:has(input[data-parent-idx="5"]:checked) [data-inherited-from="5"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="5"]:checked):has(tr.inheritance[data-inherited-from="5"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="5"]) {
+.namedocs:has(input[data-parent-idx="5"]:checked):has(.inheritance[data-inherited-from="5"]:hover) [data-inherited-from]:not([data-inherited-from="5"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="6"]) tr[data-inherited-from="6"] {
+.namedocs:has(input[data-parent-idx="6"]) [data-inherited-from="6"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="6"]:checked) tr[data-inherited-from="6"] {
+.namedocs:has(input[data-parent-idx="6"]:checked) [data-inherited-from="6"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="6"]:checked):has(tr.inheritance[data-inherited-from="6"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="6"]) {
+.namedocs:has(input[data-parent-idx="6"]:checked):has(.inheritance[data-inherited-from="6"]:hover) [data-inherited-from]:not([data-inherited-from="6"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="7"]) tr[data-inherited-from="7"] {
+.namedocs:has(input[data-parent-idx="7"]) [data-inherited-from="7"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="7"]:checked) tr[data-inherited-from="7"] {
+.namedocs:has(input[data-parent-idx="7"]:checked) [data-inherited-from="7"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="7"]:checked):has(tr.inheritance[data-inherited-from="7"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="7"]) {
+.namedocs:has(input[data-parent-idx="7"]:checked):has(.inheritance[data-inherited-from="7"]:hover) [data-inherited-from]:not([data-inherited-from="7"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="8"]) tr[data-inherited-from="8"] {
+.namedocs:has(input[data-parent-idx="8"]) [data-inherited-from="8"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="8"]:checked) tr[data-inherited-from="8"] {
+.namedocs:has(input[data-parent-idx="8"]:checked) [data-inherited-from="8"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="8"]:checked):has(tr.inheritance[data-inherited-from="8"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="8"]) {
+.namedocs:has(input[data-parent-idx="8"]:checked):has(.inheritance[data-inherited-from="8"]:hover) [data-inherited-from]:not([data-inherited-from="8"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="9"]) tr[data-inherited-from="9"] {
+.namedocs:has(input[data-parent-idx="9"]) [data-inherited-from="9"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="9"]:checked) tr[data-inherited-from="9"] {
+.namedocs:has(input[data-parent-idx="9"]:checked) [data-inherited-from="9"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="9"]:checked):has(tr.inheritance[data-inherited-from="9"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="9"]) {
+.namedocs:has(input[data-parent-idx="9"]:checked):has(.inheritance[data-inherited-from="9"]:hover) [data-inherited-from]:not([data-inherited-from="9"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="10"]) tr[data-inherited-from="10"] {
+.namedocs:has(input[data-parent-idx="10"]) [data-inherited-from="10"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="10"]:checked) tr[data-inherited-from="10"] {
+.namedocs:has(input[data-parent-idx="10"]:checked) [data-inherited-from="10"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="10"]:checked):has(tr.inheritance[data-inherited-from="10"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="10"]) {
+.namedocs:has(input[data-parent-idx="10"]:checked):has(.inheritance[data-inherited-from="10"]:hover) [data-inherited-from]:not([data-inherited-from="10"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="11"]) tr[data-inherited-from="11"] {
+.namedocs:has(input[data-parent-idx="11"]) [data-inherited-from="11"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="11"]:checked) tr[data-inherited-from="11"] {
+.namedocs:has(input[data-parent-idx="11"]:checked) [data-inherited-from="11"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="11"]:checked):has(tr.inheritance[data-inherited-from="11"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="11"]) {
+.namedocs:has(input[data-parent-idx="11"]:checked):has(.inheritance[data-inherited-from="11"]:hover) [data-inherited-from]:not([data-inherited-from="11"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="12"]) tr[data-inherited-from="12"] {
+.namedocs:has(input[data-parent-idx="12"]) [data-inherited-from="12"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="12"]:checked) tr[data-inherited-from="12"] {
+.namedocs:has(input[data-parent-idx="12"]:checked) [data-inherited-from="12"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="12"]:checked):has(tr.inheritance[data-inherited-from="12"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="12"]) {
+.namedocs:has(input[data-parent-idx="12"]:checked):has(.inheritance[data-inherited-from="12"]:hover) [data-inherited-from]:not([data-inherited-from="12"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="13"]) tr[data-inherited-from="13"] {
+.namedocs:has(input[data-parent-idx="13"]) [data-inherited-from="13"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="13"]:checked) tr[data-inherited-from="13"] {
+.namedocs:has(input[data-parent-idx="13"]:checked) [data-inherited-from="13"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="13"]:checked):has(tr.inheritance[data-inherited-from="13"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="13"]) {
+.namedocs:has(input[data-parent-idx="13"]:checked):has(.inheritance[data-inherited-from="13"]:hover) [data-inherited-from]:not([data-inherited-from="13"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="14"]) tr[data-inherited-from="14"] {
+.namedocs:has(input[data-parent-idx="14"]) [data-inherited-from="14"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="14"]:checked) tr[data-inherited-from="14"] {
+.namedocs:has(input[data-parent-idx="14"]:checked) [data-inherited-from="14"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="14"]:checked):has(tr.inheritance[data-inherited-from="14"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="14"]) {
+.namedocs:has(input[data-parent-idx="14"]:checked):has(.inheritance[data-inherited-from="14"]:hover) [data-inherited-from]:not([data-inherited-from="14"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="15"]) tr[data-inherited-from="15"] {
+.namedocs:has(input[data-parent-idx="15"]) [data-inherited-from="15"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="15"]:checked) tr[data-inherited-from="15"] {
+.namedocs:has(input[data-parent-idx="15"]:checked) [data-inherited-from="15"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="15"]:checked):has(tr.inheritance[data-inherited-from="15"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="15"]) {
+.namedocs:has(input[data-parent-idx="15"]:checked):has(.inheritance[data-inherited-from="15"]:hover) [data-inherited-from]:not([data-inherited-from="15"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="16"]) tr[data-inherited-from="16"] {
+.namedocs:has(input[data-parent-idx="16"]) [data-inherited-from="16"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="16"]:checked) tr[data-inherited-from="16"] {
+.namedocs:has(input[data-parent-idx="16"]:checked) [data-inherited-from="16"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="16"]:checked):has(tr.inheritance[data-inherited-from="16"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="16"]) {
+.namedocs:has(input[data-parent-idx="16"]:checked):has(.inheritance[data-inherited-from="16"]:hover) [data-inherited-from]:not([data-inherited-from="16"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="17"]) tr[data-inherited-from="17"] {
+.namedocs:has(input[data-parent-idx="17"]) [data-inherited-from="17"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="17"]:checked) tr[data-inherited-from="17"] {
+.namedocs:has(input[data-parent-idx="17"]:checked) [data-inherited-from="17"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="17"]:checked):has(tr.inheritance[data-inherited-from="17"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="17"]) {
+.namedocs:has(input[data-parent-idx="17"]:checked):has(.inheritance[data-inherited-from="17"]:hover) [data-inherited-from]:not([data-inherited-from="17"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="18"]) tr[data-inherited-from="18"] {
+.namedocs:has(input[data-parent-idx="18"]) [data-inherited-from="18"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="18"]:checked) tr[data-inherited-from="18"] {
+.namedocs:has(input[data-parent-idx="18"]:checked) [data-inherited-from="18"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="18"]:checked):has(tr.inheritance[data-inherited-from="18"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="18"]) {
+.namedocs:has(input[data-parent-idx="18"]:checked):has(.inheritance[data-inherited-from="18"]:hover) [data-inherited-from]:not([data-inherited-from="18"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="19"]) tr[data-inherited-from="19"] {
+.namedocs:has(input[data-parent-idx="19"]) [data-inherited-from="19"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="19"]:checked) tr[data-inherited-from="19"] {
+.namedocs:has(input[data-parent-idx="19"]:checked) [data-inherited-from="19"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="19"]:checked):has(tr.inheritance[data-inherited-from="19"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="19"]) {
+.namedocs:has(input[data-parent-idx="19"]:checked):has(.inheritance[data-inherited-from="19"]:hover) [data-inherited-from]:not([data-inherited-from="19"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="20"]) tr[data-inherited-from="20"] {
+.namedocs:has(input[data-parent-idx="20"]) [data-inherited-from="20"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="20"]:checked) tr[data-inherited-from="20"] {
+.namedocs:has(input[data-parent-idx="20"]:checked) [data-inherited-from="20"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="20"]:checked):has(tr.inheritance[data-inherited-from="20"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="20"]) {
+.namedocs:has(input[data-parent-idx="20"]:checked):has(.inheritance[data-inherited-from="20"]:hover) [data-inherited-from]:not([data-inherited-from="20"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="21"]) tr[data-inherited-from="21"] {
+.namedocs:has(input[data-parent-idx="21"]) [data-inherited-from="21"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="21"]:checked) tr[data-inherited-from="21"] {
+.namedocs:has(input[data-parent-idx="21"]:checked) [data-inherited-from="21"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="21"]:checked):has(tr.inheritance[data-inherited-from="21"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="21"]) {
+.namedocs:has(input[data-parent-idx="21"]:checked):has(.inheritance[data-inherited-from="21"]:hover) [data-inherited-from]:not([data-inherited-from="21"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="22"]) tr[data-inherited-from="22"] {
+.namedocs:has(input[data-parent-idx="22"]) [data-inherited-from="22"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="22"]:checked) tr[data-inherited-from="22"] {
+.namedocs:has(input[data-parent-idx="22"]:checked) [data-inherited-from="22"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="22"]:checked):has(tr.inheritance[data-inherited-from="22"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="22"]) {
+.namedocs:has(input[data-parent-idx="22"]:checked):has(.inheritance[data-inherited-from="22"]:hover) [data-inherited-from]:not([data-inherited-from="22"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="23"]) tr[data-inherited-from="23"] {
+.namedocs:has(input[data-parent-idx="23"]) [data-inherited-from="23"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="23"]:checked) tr[data-inherited-from="23"] {
+.namedocs:has(input[data-parent-idx="23"]:checked) [data-inherited-from="23"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="23"]:checked):has(tr.inheritance[data-inherited-from="23"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="23"]) {
+.namedocs:has(input[data-parent-idx="23"]:checked):has(.inheritance[data-inherited-from="23"]:hover) [data-inherited-from]:not([data-inherited-from="23"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="24"]) tr[data-inherited-from="24"] {
+.namedocs:has(input[data-parent-idx="24"]) [data-inherited-from="24"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="24"]:checked) tr[data-inherited-from="24"] {
+.namedocs:has(input[data-parent-idx="24"]:checked) [data-inherited-from="24"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="24"]:checked):has(tr.inheritance[data-inherited-from="24"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="24"]) {
+.namedocs:has(input[data-parent-idx="24"]:checked):has(.inheritance[data-inherited-from="24"]:hover) [data-inherited-from]:not([data-inherited-from="24"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="25"]) tr[data-inherited-from="25"] {
+.namedocs:has(input[data-parent-idx="25"]) [data-inherited-from="25"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="25"]:checked) tr[data-inherited-from="25"] {
+.namedocs:has(input[data-parent-idx="25"]:checked) [data-inherited-from="25"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="25"]:checked):has(tr.inheritance[data-inherited-from="25"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="25"]) {
+.namedocs:has(input[data-parent-idx="25"]:checked):has(.inheritance[data-inherited-from="25"]:hover) [data-inherited-from]:not([data-inherited-from="25"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="26"]) tr[data-inherited-from="26"] {
+.namedocs:has(input[data-parent-idx="26"]) [data-inherited-from="26"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="26"]:checked) tr[data-inherited-from="26"] {
+.namedocs:has(input[data-parent-idx="26"]:checked) [data-inherited-from="26"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="26"]:checked):has(tr.inheritance[data-inherited-from="26"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="26"]) {
+.namedocs:has(input[data-parent-idx="26"]:checked):has(.inheritance[data-inherited-from="26"]:hover) [data-inherited-from]:not([data-inherited-from="26"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="27"]) tr[data-inherited-from="27"] {
+.namedocs:has(input[data-parent-idx="27"]) [data-inherited-from="27"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="27"]:checked) tr[data-inherited-from="27"] {
+.namedocs:has(input[data-parent-idx="27"]:checked) [data-inherited-from="27"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="27"]:checked):has(tr.inheritance[data-inherited-from="27"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="27"]) {
+.namedocs:has(input[data-parent-idx="27"]:checked):has(.inheritance[data-inherited-from="27"]:hover) [data-inherited-from]:not([data-inherited-from="27"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="28"]) tr[data-inherited-from="28"] {
+.namedocs:has(input[data-parent-idx="28"]) [data-inherited-from="28"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="28"]:checked) tr[data-inherited-from="28"] {
+.namedocs:has(input[data-parent-idx="28"]:checked) [data-inherited-from="28"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="28"]:checked):has(tr.inheritance[data-inherited-from="28"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="28"]) {
+.namedocs:has(input[data-parent-idx="28"]:checked):has(.inheritance[data-inherited-from="28"]:hover) [data-inherited-from]:not([data-inherited-from="28"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="29"]) tr[data-inherited-from="29"] {
+.namedocs:has(input[data-parent-idx="29"]) [data-inherited-from="29"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="29"]:checked) tr[data-inherited-from="29"] {
+.namedocs:has(input[data-parent-idx="29"]:checked) [data-inherited-from="29"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="29"]:checked):has(tr.inheritance[data-inherited-from="29"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="29"]) {
+.namedocs:has(input[data-parent-idx="29"]:checked):has(.inheritance[data-inherited-from="29"]:hover) [data-inherited-from]:not([data-inherited-from="29"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="30"]) tr[data-inherited-from="30"] {
+.namedocs:has(input[data-parent-idx="30"]) [data-inherited-from="30"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="30"]:checked) tr[data-inherited-from="30"] {
+.namedocs:has(input[data-parent-idx="30"]:checked) [data-inherited-from="30"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="30"]:checked):has(tr.inheritance[data-inherited-from="30"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="30"]) {
+.namedocs:has(input[data-parent-idx="30"]:checked):has(.inheritance[data-inherited-from="30"]:hover) [data-inherited-from]:not([data-inherited-from="30"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="31"]) tr[data-inherited-from="31"] {
+.namedocs:has(input[data-parent-idx="31"]) [data-inherited-from="31"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="31"]:checked) tr[data-inherited-from="31"] {
+.namedocs:has(input[data-parent-idx="31"]:checked) [data-inherited-from="31"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="31"]:checked):has(tr.inheritance[data-inherited-from="31"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="31"]) {
+.namedocs:has(input[data-parent-idx="31"]:checked):has(.inheritance[data-inherited-from="31"]:hover) [data-inherited-from]:not([data-inherited-from="31"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="32"]) tr[data-inherited-from="32"] {
+.namedocs:has(input[data-parent-idx="32"]) [data-inherited-from="32"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="32"]:checked) tr[data-inherited-from="32"] {
+.namedocs:has(input[data-parent-idx="32"]:checked) [data-inherited-from="32"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="32"]:checked):has(tr.inheritance[data-inherited-from="32"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="32"]) {
+.namedocs:has(input[data-parent-idx="32"]:checked):has(.inheritance[data-inherited-from="32"]:hover) [data-inherited-from]:not([data-inherited-from="32"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="33"]) tr[data-inherited-from="33"] {
+.namedocs:has(input[data-parent-idx="33"]) [data-inherited-from="33"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="33"]:checked) tr[data-inherited-from="33"] {
+.namedocs:has(input[data-parent-idx="33"]:checked) [data-inherited-from="33"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="33"]:checked):has(tr.inheritance[data-inherited-from="33"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="33"]) {
+.namedocs:has(input[data-parent-idx="33"]:checked):has(.inheritance[data-inherited-from="33"]:hover) [data-inherited-from]:not([data-inherited-from="33"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="34"]) tr[data-inherited-from="34"] {
+.namedocs:has(input[data-parent-idx="34"]) [data-inherited-from="34"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="34"]:checked) tr[data-inherited-from="34"] {
+.namedocs:has(input[data-parent-idx="34"]:checked) [data-inherited-from="34"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="34"]:checked):has(tr.inheritance[data-inherited-from="34"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="34"]) {
+.namedocs:has(input[data-parent-idx="34"]:checked):has(.inheritance[data-inherited-from="34"]:hover) [data-inherited-from]:not([data-inherited-from="34"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="35"]) tr[data-inherited-from="35"] {
+.namedocs:has(input[data-parent-idx="35"]) [data-inherited-from="35"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="35"]:checked) tr[data-inherited-from="35"] {
+.namedocs:has(input[data-parent-idx="35"]:checked) [data-inherited-from="35"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="35"]:checked):has(tr.inheritance[data-inherited-from="35"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="35"]) {
+.namedocs:has(input[data-parent-idx="35"]:checked):has(.inheritance[data-inherited-from="35"]:hover) [data-inherited-from]:not([data-inherited-from="35"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="36"]) tr[data-inherited-from="36"] {
+.namedocs:has(input[data-parent-idx="36"]) [data-inherited-from="36"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="36"]:checked) tr[data-inherited-from="36"] {
+.namedocs:has(input[data-parent-idx="36"]:checked) [data-inherited-from="36"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="36"]:checked):has(tr.inheritance[data-inherited-from="36"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="36"]) {
+.namedocs:has(input[data-parent-idx="36"]:checked):has(.inheritance[data-inherited-from="36"]:hover) [data-inherited-from]:not([data-inherited-from="36"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="37"]) tr[data-inherited-from="37"] {
+.namedocs:has(input[data-parent-idx="37"]) [data-inherited-from="37"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="37"]:checked) tr[data-inherited-from="37"] {
+.namedocs:has(input[data-parent-idx="37"]:checked) [data-inherited-from="37"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="37"]:checked):has(tr.inheritance[data-inherited-from="37"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="37"]) {
+.namedocs:has(input[data-parent-idx="37"]:checked):has(.inheritance[data-inherited-from="37"]:hover) [data-inherited-from]:not([data-inherited-from="37"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="38"]) tr[data-inherited-from="38"] {
+.namedocs:has(input[data-parent-idx="38"]) [data-inherited-from="38"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="38"]:checked) tr[data-inherited-from="38"] {
+.namedocs:has(input[data-parent-idx="38"]:checked) [data-inherited-from="38"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="38"]:checked):has(tr.inheritance[data-inherited-from="38"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="38"]) {
+.namedocs:has(input[data-parent-idx="38"]:checked):has(.inheritance[data-inherited-from="38"]:hover) [data-inherited-from]:not([data-inherited-from="38"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="39"]) tr[data-inherited-from="39"] {
+.namedocs:has(input[data-parent-idx="39"]) [data-inherited-from="39"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="39"]:checked) tr[data-inherited-from="39"] {
+.namedocs:has(input[data-parent-idx="39"]:checked) [data-inherited-from="39"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="39"]:checked):has(tr.inheritance[data-inherited-from="39"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="39"]) {
+.namedocs:has(input[data-parent-idx="39"]:checked):has(.inheritance[data-inherited-from="39"]:hover) [data-inherited-from]:not([data-inherited-from="39"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="40"]) tr[data-inherited-from="40"] {
+.namedocs:has(input[data-parent-idx="40"]) [data-inherited-from="40"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="40"]:checked) tr[data-inherited-from="40"] {
+.namedocs:has(input[data-parent-idx="40"]:checked) [data-inherited-from="40"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="40"]:checked):has(tr.inheritance[data-inherited-from="40"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="40"]) {
+.namedocs:has(input[data-parent-idx="40"]:checked):has(.inheritance[data-inherited-from="40"]:hover) [data-inherited-from]:not([data-inherited-from="40"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="41"]) tr[data-inherited-from="41"] {
+.namedocs:has(input[data-parent-idx="41"]) [data-inherited-from="41"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="41"]:checked) tr[data-inherited-from="41"] {
+.namedocs:has(input[data-parent-idx="41"]:checked) [data-inherited-from="41"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="41"]:checked):has(tr.inheritance[data-inherited-from="41"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="41"]) {
+.namedocs:has(input[data-parent-idx="41"]:checked):has(.inheritance[data-inherited-from="41"]:hover) [data-inherited-from]:not([data-inherited-from="41"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="42"]) tr[data-inherited-from="42"] {
+.namedocs:has(input[data-parent-idx="42"]) [data-inherited-from="42"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="42"]:checked) tr[data-inherited-from="42"] {
+.namedocs:has(input[data-parent-idx="42"]:checked) [data-inherited-from="42"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="42"]:checked):has(tr.inheritance[data-inherited-from="42"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="42"]) {
+.namedocs:has(input[data-parent-idx="42"]:checked):has(.inheritance[data-inherited-from="42"]:hover) [data-inherited-from]:not([data-inherited-from="42"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="43"]) tr[data-inherited-from="43"] {
+.namedocs:has(input[data-parent-idx="43"]) [data-inherited-from="43"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="43"]:checked) tr[data-inherited-from="43"] {
+.namedocs:has(input[data-parent-idx="43"]:checked) [data-inherited-from="43"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="43"]:checked):has(tr.inheritance[data-inherited-from="43"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="43"]) {
+.namedocs:has(input[data-parent-idx="43"]:checked):has(.inheritance[data-inherited-from="43"]:hover) [data-inherited-from]:not([data-inherited-from="43"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="44"]) tr[data-inherited-from="44"] {
+.namedocs:has(input[data-parent-idx="44"]) [data-inherited-from="44"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="44"]:checked) tr[data-inherited-from="44"] {
+.namedocs:has(input[data-parent-idx="44"]:checked) [data-inherited-from="44"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="44"]:checked):has(tr.inheritance[data-inherited-from="44"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="44"]) {
+.namedocs:has(input[data-parent-idx="44"]:checked):has(.inheritance[data-inherited-from="44"]:hover) [data-inherited-from]:not([data-inherited-from="44"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="45"]) tr[data-inherited-from="45"] {
+.namedocs:has(input[data-parent-idx="45"]) [data-inherited-from="45"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="45"]:checked) tr[data-inherited-from="45"] {
+.namedocs:has(input[data-parent-idx="45"]:checked) [data-inherited-from="45"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="45"]:checked):has(tr.inheritance[data-inherited-from="45"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="45"]) {
+.namedocs:has(input[data-parent-idx="45"]:checked):has(.inheritance[data-inherited-from="45"]:hover) [data-inherited-from]:not([data-inherited-from="45"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="46"]) tr[data-inherited-from="46"] {
+.namedocs:has(input[data-parent-idx="46"]) [data-inherited-from="46"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="46"]:checked) tr[data-inherited-from="46"] {
+.namedocs:has(input[data-parent-idx="46"]:checked) [data-inherited-from="46"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="46"]:checked):has(tr.inheritance[data-inherited-from="46"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="46"]) {
+.namedocs:has(input[data-parent-idx="46"]:checked):has(.inheritance[data-inherited-from="46"]:hover) [data-inherited-from]:not([data-inherited-from="46"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="47"]) tr[data-inherited-from="47"] {
+.namedocs:has(input[data-parent-idx="47"]) [data-inherited-from="47"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="47"]:checked) tr[data-inherited-from="47"] {
+.namedocs:has(input[data-parent-idx="47"]:checked) [data-inherited-from="47"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="47"]:checked):has(tr.inheritance[data-inherited-from="47"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="47"]) {
+.namedocs:has(input[data-parent-idx="47"]:checked):has(.inheritance[data-inherited-from="47"]:hover) [data-inherited-from]:not([data-inherited-from="47"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="48"]) tr[data-inherited-from="48"] {
+.namedocs:has(input[data-parent-idx="48"]) [data-inherited-from="48"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="48"]:checked) tr[data-inherited-from="48"] {
+.namedocs:has(input[data-parent-idx="48"]:checked) [data-inherited-from="48"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="48"]:checked):has(tr.inheritance[data-inherited-from="48"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="48"]) {
+.namedocs:has(input[data-parent-idx="48"]:checked):has(.inheritance[data-inherited-from="48"]:hover) [data-inherited-from]:not([data-inherited-from="48"]) {
   opacity: 0.5;
 }
-.namedocs:has(input[data-parent-idx="49"]) tr[data-inherited-from="49"] {
+.namedocs:has(input[data-parent-idx="49"]) [data-inherited-from="49"] {
   display: none;
   opacity: 0;
 }
-.namedocs:has(input[data-parent-idx="49"]:checked) tr[data-inherited-from="49"] {
+.namedocs:has(input[data-parent-idx="49"]:checked) [data-inherited-from="49"] {
   display: table-row;
   transform: none;
   opacity: 1;
 }
-.namedocs:has(input[data-parent-idx="49"]:checked):has(tr.inheritance[data-inherited-from="49"] .parent:hover) tr[data-inherited-from]:not([data-inherited-from="49"]) {
+.namedocs:has(input[data-parent-idx="49"]:checked):has(.inheritance[data-inherited-from="49"]:hover) [data-inherited-from]:not([data-inherited-from="49"]) {
   opacity: 0.5;
 }
-</style><script>
+</style><style>
+    main .theIndex {
+      padding-left: 0;
+      font-family: var(--verso-text-font-family);
+    }
+
+    main .theIndex nav {
+      position: sticky;
+      top: var(--verso-header-height);
+      background: white;
+      font-family: var(--verso-structure-font-family);
+    }
+
+    main .theIndex [id] {
+      /* This needs the combined height of the index header and the page header. We
+         know the height of the page header, but the index header height varies, so
+         we use the maximum height it gets which also works well for readers with
+         wide screens */
+      scroll-margin-top: calc(var(--verso-header-height) + 7.5rem);
+    }
+
+    @media screen and (max-width: 700px) {
+      /* On mobile, the sticky index takes up half the screen. */
+      main .theIndex nav {
+        position: static;
+      }
+
+      main .theIndex [id] {
+        /* On mobile, the index header is not sticky, so we just need to
+        be below the page header. */
+        scroll-margin-top: var(--verso-header-height);
+      }
+    }
+
+    main .theIndex nav ol {
+      padding: 0;
+    }
+
+    main .theIndex nav ol li {
+      display: inline-block;
+    }
+
+    main .theIndex nav ol li a {
+      /* Padding instead of margin to have a bigger click target */
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+    /* Increase the size of the touch target on phones */
+    @media screen and (max-width: 700px) {
+      main .theIndex nav ol li a {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+    }
+
+    main .theIndex nav ol li:first-child a {
+      padding-left: 0;
+    }
+
+    main .theIndex nav ol li + li:before {
+      content: "|";
+    }
+
+    main .theIndex h1,
+    main .theIndex h2,
+    main .theIndex h3,
+    main .theIndex h4,
+    main .theIndex h5,
+    main .theIndex h6 {
+      margin-top: 0;
+    }
+
+    main .theIndex ol {
+      list-style-type: none;
+    }
+
+    main .theIndex .division > ol {
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      overflow-wrap: break-word;
+    }
+
+   main .theIndex .division > ol > li {
+      margin-bottom: 0.5rem;
+    }
+
+    main .theIndex .division ol ol {
+      padding-left: 1rem;
+    }
+
+    main .theIndex .division {
+      break-inside: avoid;
+      counter-reset: none;
+      max-width: none;
+      width: auto;
+    }
+    </style><script>
       let xref = {"Verso.Genre.Manual.section":
  {"title": "Sections or chapters of the manual",
   "description": null,
@@ -1368,22 +1401,41 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
   {"lean-markup":
    [{"id": "lean-markup",
      "data":
-     ["Interactive Theorem Proving using Lean, Summer 2025",
-      "First steps using logic",
-      "Lean Markup"],
+     {"title": "Lean Markup",
+      "sectionNum": "2.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "First steps using logic", "number": "2"},
+       {"title": "Lean Markup", "number": "1"}]},
      "address": "/"}],
    "genres":
    [{"id": "genres",
-     "data": ["Interactive Theorem Proving using Lean, Summer 2025", "Genres"],
+     "data":
+     {"title": "Genres",
+      "sectionNum": "3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Genres", "number": "3"}]},
      "address": "/"}],
    "docstrings":
    [{"id": "docstrings",
      "data":
-     ["Interactive Theorem Proving using Lean, Summer 2025", "Docstrings"],
+     {"title": "Docstrings",
+      "sectionNum": "4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Docstrings", "number": "4"}]},
      "address": "/"}]}},
+ "Verso.Genre.Manual.doc.tech":
+ {"title": "Terminology",
+  "description": "Definitions of technical terms",
+  "contents": {}},
  "Verso.Genre.Manual.doc.tactic.conv":
  {"title": "Conversion Tactics",
-  "description": "Tatics for performing targeted rewriting of subterms",
+  "description": "Tactics for performing targeted rewriting of subterms",
   "contents": {}},
  "Verso.Genre.Manual.doc.tactic":
  {"title": "Tactic Documentation",
@@ -1396,8 +1448,8 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
   "description": "Documentation for Lean constants",
   "contents":
   {"List.forM": [{"id": "List___forM", "data": null, "address": "/"}],
-   "Lean.Parser.Tactic.intro":
-   [{"id": "Lean___Parser___Tactic___intro", "data": null, "address": "/"}]}}};
+   "Lean.Parser.Tactic.apply":
+   [{"id": "Lean___Parser___Tactic___apply", "data": null, "address": "/"}]}}};
 let params = new URLSearchParams(document.location.search);
 let domains = params.getAll("domain");
 let name = params.get("name");
@@ -1592,7 +1644,7 @@ window.onload = () => {
       const addTippy = (selector, props) => {
         tippy(selector, Object.assign({}, defaultTippyProps, props));
       };
-      addTippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token', {theme: 'lean'});
+      addTippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token', {theme: 'lean'});
       addTippy('.hl.lean .has-info.warning', {theme: 'warning message'});
       addTippy('.hl.lean .has-info.info', {theme: 'info message'});
       addTippy('.hl.lean .has-info.error', {theme: 'error message'});
@@ -1628,17 +1680,24 @@ window.onload = () => {
 </script>
     </head>
   <body>
+    <header>
+      <div class="header-logo-wrapper"></div>
+      <div class="header-title-wrapper">
+        <a href="../" class="header-title"><h1>
+            Cross-Reference Redirection</h1>
+          </a></div>
+      </header>
     <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
       <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
       <nav id="toc">
-        <input type="checkbox" id="toggle-toc" checked="checked"><div class="first">
-          <nav id="local-buttons">
-            <span class="local-button inactive"><span class="arrow">←</span><span class="where">Prev</span></span><span class="local-button inactive"><span class="arrow">↑</span><span class="where">Up</span></span><span class="local-button inactive"><span class="where">Next</span><span class="arrow">→</span></span></nav>
-          <div class="split-tocs">
+        <input type="checkbox" id="toggle-toc"><div class="first">
+          <a href="../" class="toc-title"><h1>
+              Cross-Reference Redirection</h1>
+            </a><div class="split-tocs">
             <div class="split-toc book">
               <div class="title">
-                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot"></label><span class=""><a href="../">Cross-Reference Redirection</a></span></div>
-              <table><tr class="current numbered"><td class="num"></td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#genres">Genres</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#docstrings">Docstrings</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
+                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class="">Table of Contents</span></div>
+              <table><tr class="current numbered"><td class="num"></td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#genres">Genres</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#docstrings">Docstrings</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
@@ -1650,10 +1709,20 @@ window.onload = () => {
             </ul>
           </div>
         </nav>
-      <main><section>
-          <h1 id="title"></h1>
-          <div id="message"></div>
-          </section>
+      <main><div class="content-wrapper">
+          <nav class="prev-next-buttons">
+            <div></div>
+            <div></div>
+            </nav>
+          <section>
+            <h1 id="title"></h1>
+            <div id="message"></div>
+            </section>
+          <nav class="prev-next-buttons">
+            <div></div>
+            <div></div>
+            </nav>
+          </div>
         </main></div>
     </body>
   </html>

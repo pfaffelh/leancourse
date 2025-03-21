@@ -7,16 +7,42 @@
     window.location.replace(`${proto}//${hostName}${path}/${srch}${hsh}`);
   }
 })()</script>
-    <meta charset="utf-8">
+    <base href="./../"><meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <title>Cross-Reference Redirection</title><link rel="stylesheet" href="../book.css">
+    <title>Cross-Reference Redirection</title><link rel="stylesheet" href="book.css">
     <script>
-      const __versoSiteRoot = "./../"</script>
+      const __versoSiteRoot = document.baseURI;</script>
     <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
-    <script src="../-verso-js/popper.js"></script>
-    <script src="../-verso-js/tippy.js"></script>
-    <link rel="stylesheet" href="../-verso-css/tippy-border.css">
+    <script src="-verso-js/popper.js"></script>
+    <script src="-verso-js/tippy.js"></script>
+    <link rel="stylesheet" href="-verso-css/tippy-border.css">
     <style>
+table.tabular {
+  margin: auto;
+  border-spacing: 1rem;
+}
+table.tabular.left-align {
+  margin-right: auto;
+  margin-left: 0;
+}
+table.tabular.center-align {
+  margin: auto;
+}
+table.tabular.right-align {
+  margin-left auto;
+  margin-right: 0;
+}
+table.tabular td, table.tabular th {
+  text-align: left;
+  vertical-align: top;
+}
+table.tabular td > p:first-child, table.tabular th > p:first-child {
+  margin-top: 0;
+}
+table.tabular td > p:last-child, table.tabular th > p:first-child {
+  margin-bottom: 0;
+}
+</style><style>
 
 .hl.lean {
   white-space: pre;
@@ -1581,7 +1607,8 @@ window.onload = () => {
     }
     // Add hovers
     let siteRoot = typeof __versoSiteRoot !== 'undefined' ? __versoSiteRoot : "/";
-    fetch(siteRoot + "-verso-docs.json").then((resp) => resp.json()).then((versoDocData) => {
+    let docsJson = siteRoot + "-verso-docs.json";
+    fetch(docsJson).then((resp) => resp.json()).then((versoDocData) => {
 
       const defaultTippyProps = {
         /* DEBUG -- remove the space: * /
@@ -1683,7 +1710,7 @@ window.onload = () => {
     <header>
       <div class="header-logo-wrapper"></div>
       <div class="header-title-wrapper">
-        <a href="../" class="header-title"><h1>
+        <a href="" class="header-title"><h1>
             Cross-Reference Redirection</h1>
           </a></div>
       </header>
@@ -1691,13 +1718,13 @@ window.onload = () => {
       <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
       <nav id="toc">
         <input type="checkbox" id="toggle-toc"><div class="first">
-          <a href="../" class="toc-title"><h1>
+          <a href="" class="toc-title"><h1>
               Cross-Reference Redirection</h1>
             </a><div class="split-tocs">
             <div class="split-toc book">
               <div class="title">
                 <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class="">Table of Contents</span></div>
-              <table><tr class="current numbered"><td class="num"></td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#genres">Genres</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#docstrings">Docstrings</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="../#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
+              <table><tr class="current numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#genres">Genres</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#docstrings">Docstrings</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">

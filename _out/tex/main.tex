@@ -94,11 +94,6 @@ example (hP : P) : (P → Q) → Q := by
 
 
 
-| Proof state | Command  | New proof state        |
-|------------|---------|------------------------|
-| ⊢ P → Q    | intro hP | hP : P                 |
-|            |         | ⊢ Q                    |
-
 \begin{verbatim}
 Proof state   Command         New proof state
 
@@ -131,6 +126,8 @@ example : 2 + 2 = 4 :=
   by rfl
 
 \end{verbatim}
+
+
 
 
 

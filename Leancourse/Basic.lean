@@ -2,6 +2,7 @@ import Lean
 import VersoManual
 import DemoTextbook
 import UsersGuide.Markup
+import Leancourse.Meta.Table
 
 open Verso.Genre Manual
 open DemoTextbook.Exts
@@ -74,7 +75,18 @@ Documentation can take many forms:
 example : 2 + 2 = 4 :=
   by rfl
 ```
-
+:::table (header := true)
+* + Type
+  + First Projection
+  + Second Projection
+  + Dependent?
+  + Universe
+* + `Prod`
+  + `Type u`
+  + `Type v`
+  + ❌️
+  + `Type (max u v)`
+:::
 
 {include UsersGuide.Markup}
 

@@ -1321,121 +1321,12 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
 .namedocs:has(input[data-parent-idx="49"]:checked):has(.inheritance[data-inherited-from="49"]:hover) [data-inherited-from]:not([data-inherited-from="49"]) {
   opacity: 0.5;
 }
-</style><style>
-    main .theIndex {
-      padding-left: 0;
-      font-family: var(--verso-text-font-family);
-    }
-
-    main .theIndex nav {
-      position: sticky;
-      top: var(--verso-header-height);
-      background: white;
-      font-family: var(--verso-structure-font-family);
-    }
-
-    main .theIndex [id] {
-      /* This needs the combined height of the index header and the page header. We
-         know the height of the page header, but the index header height varies, so
-         we use the maximum height it gets which also works well for readers with
-         wide screens */
-      scroll-margin-top: calc(var(--verso-header-height) + 7.5rem);
-    }
-
-    @media screen and (max-width: 700px) {
-      /* On mobile, the sticky index takes up half the screen. */
-      main .theIndex nav {
-        position: static;
-      }
-
-      main .theIndex [id] {
-        /* On mobile, the index header is not sticky, so we just need to
-        be below the page header. */
-        scroll-margin-top: var(--verso-header-height);
-      }
-    }
-
-    main .theIndex nav ol {
-      padding: 0;
-    }
-
-    main .theIndex nav ol li {
-      display: inline-block;
-    }
-
-    main .theIndex nav ol li a {
-      /* Padding instead of margin to have a bigger click target */
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
-    /* Increase the size of the touch target on phones */
-    @media screen and (max-width: 700px) {
-      main .theIndex nav ol li a {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
-    }
-
-    main .theIndex nav ol li:first-child a {
-      padding-left: 0;
-    }
-
-    main .theIndex nav ol li + li:before {
-      content: "|";
-    }
-
-    main .theIndex h1,
-    main .theIndex h2,
-    main .theIndex h3,
-    main .theIndex h4,
-    main .theIndex h5,
-    main .theIndex h6 {
-      margin-top: 0;
-    }
-
-    main .theIndex ol {
-      list-style-type: none;
-    }
-
-    main .theIndex .division > ol {
-      padding-left: 0;
-      display: flex;
-      flex-direction: column;
-      gap: .5rem;
-      overflow-wrap: break-word;
-    }
-
-   main .theIndex .division > ol > li {
-      margin-bottom: 0.5rem;
-    }
-
-    main .theIndex .division ol ol {
-      padding-left: 1rem;
-    }
-
-    main .theIndex .division {
-      break-inside: avoid;
-      counter-reset: none;
-      max-width: none;
-      width: auto;
-    }
-    </style><script>
+</style><script>
       let xref = {"Verso.Genre.Manual.section":
  {"title": "Sections or chapters of the manual",
   "description": null,
   "contents":
-  {"lean-markup":
-   [{"id": "lean-markup",
-     "data":
-     {"title": "Lean Markup",
-      "sectionNum": "2.1.",
-      "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
-        "number": null},
-       {"title": "First steps using logic", "number": "2"},
-       {"title": "Lean Markup", "number": "1"}]},
-     "address": "/"}],
-   "genres":
+  {"genres":
    [{"id": "genres",
      "data":
      {"title": "Genres",
@@ -1473,8 +1364,7 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
  {"title": "Lean constant reference",
   "description": "Documentation for Lean constants",
   "contents":
-  {"List.forM": [{"id": "List___forM", "data": null, "address": "/"}],
-   "Lean.Parser.Tactic.apply":
+  {"Lean.Parser.Tactic.apply":
    [{"id": "Lean___Parser___Tactic___apply", "data": null, "address": "/"}]}}};
 let params = new URLSearchParams(document.location.search);
 let domains = params.getAll("domain");
@@ -1724,15 +1614,15 @@ window.onload = () => {
             <div class="split-toc book">
               <div class="title">
                 <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class="">Table of Contents</span></div>
-              <table><tr class="current numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#genres">Genres</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#docstrings">Docstrings</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
+              <table><tr class="current numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#genres">Genres</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#docstrings">Docstrings</a></td></tr><tr class="current numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics">Tactics</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
           <ul id="meta-links">
             <li>
-              <a href="https://github.com/leanprover/verso">Source Code</a></li>
+              <a href="https://github.com/pfaffelh/leancourse">Source Code</a></li>
             <li>
-              <a href="https://github.com/leanprover/verso/issues">Report Issues</a></li>
+              <a href="https://github.com/pfaffelh/leancourse/issues">Report Issues</a></li>
             </ul>
           </div>
         </nav>

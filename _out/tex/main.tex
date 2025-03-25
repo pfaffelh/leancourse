@@ -60,7 +60,7 @@ These are the notes for a course on formal proving with the interactive theorem 
 The course is designed for mathematics students and has at least two goals:
 
 \begin{itemize}
-\item Learning the techniques for interactive formal Theorem proofing using Lean: In recent years, efforts to prove mathematical theorems with the help of computers have increased dramatically. While a few decades ago, it was more a matter of consistently processing many cases that were left to the computer, interactive theorem provers are different. Here, a very small core can be used to understand or interactively generate all the logical conclusions of a mathematical proof. The computer then reports interactively on the progress of the proof and when all the steps have been completed.\item Establishing connections to some mathematical material: On the one hand, the mathematical details needed in this course should not be the main issue of this course. On the other hand, in order to \emph{explain} how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well -- at least if it exceeds a few lines -- so that the commands you enter (which we will call tactics) fit together.
+\item Learning the techniques for interactive formal Theorem proofing using Lean: In recent years, efforts to prove mathematical theorems with the help of computers have increased dramatically. While a few decades ago, it was more a matter of consistently processing many cases that were left to the computer, interactive theorem provers are different. Here, a very small core can be used to understand or interactively generate all the logical conclusions of a mathematical proof. The computer then reports interactively on the progress of the proof and when all the steps have been completed.\item Establishing connections to some mathematical material: On the one hand, the mathematical details needed in this course should not be the main issue of this course. On the other hand, in order to \emph{explain} how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well - at least if it exceeds a few lines - so that the commands you enter (which we will call tactics) fit together.
 \end{itemize}
 
 
@@ -68,6 +68,24 @@ The course is designed for mathematics students and has at least two goals:
 
 
 \chapter{First steps using logic}
+
+We start with simple logical statements. We always distinguish (as in every mathematical theorem) between the \emph{hypotheses} and the \emph{statement} (or \emph{assertion}, which we also call \emph{goal} or \emph{target}). To introduce our hypotheses, we write \Verb|variable (P Q R S T : Prop)|. Note that the lean syntax does not use the usual double arrow \Verb|=>| here, but a single \Verb|→|. We are going through the following logical inferences here:
+
+\begin{itemize}
+\item Exercises 01-a:
+  The statement \Verb|⊢ P → Q| (i.e. \Verb|P| implies \Verb|Q|) means that \Verb|Q| is valid if one may assume that the hypothesis \Verb|P| is correct. This transition from \Verb|⊢ P → Q| to the hypothesis \Verb|hP : P| with target \Verb|⊢ Q| is done using \Verb|intro hP|. Several \Verb|intro| commands can be abbreviated using \Verb|intro h1 h2...|.If the hypothesis \Verb|hP : P| holds and we want to prove \Verb|⊢ P|, then we just have to apply \Verb|hP| to the goal. If goal and hypothesis are identical, this is done with \Verb|exact hP|. In a more general way, \Verb|assumption| searches all hypotheses for those that are identical with the goal by definition.\item Exercises 01-b:If you want to prove \Verb|⊢ Q| and know that \Verb|hPQ : P → Q| is valid, then it is sufficient to prove \Verb|⊢ P| (since \Verb|hPQ| then implies \Verb|⊢ Q|). In this case, \Verb|apply hPQ| changes the goal to \Verb|⊢ P|.Behind an equivalence statement \Verb|⊢ P ↔ Q| (type the double arrow as \Verb|\iff|) there are actually the two statements \Verb|⊢ P → Q| and \Verb|⊢ Q → P|. Using \Verb|constructor| converts the goal \Verb|⊢ P ↔ Q| into two goals for the two directions.In Lean, logical negation is noted with \Verb|¬| (type \Verb|\neg|). The statement \Verb|¬P| is defined as \Verb|P → false|, where \Verb|false| stands for a \emph{false} statement.\item Sheet 01-c:\emph{false} implies anything. The actual statement is \Verb|⊢ false → P|. If the current target is \Verb|⊢ P|, and you apply the statement \Verb|⊢ false → P| using \Verb|apply|, this is equivalent to applying \Verb|exfalso|.The two expressions \Verb|False| and \Verb|True| represent two statements that are \emph{false} and \emph{true}, respectively. So \Verb|True| should be easy to prove. This is provided by the tactic \Verb|triv|.In a proof by contradiction, instead of \Verb|⊢ P|, you prove the statement \Verb|⊢ ¬P → false| (which, after \Verb|intro h|, leads to the assumption \Verb|h : ¬P| and the new goal \Verb|⊢ false|). This is logically correct, since \Verb|P| is true if and only if \Verb|¬P| leads to a contradiction, i.e. an false statement. The transformation of the goal in this way is achieved with the tactic \Verb|by_contra| or \Verb|by_contra h|.\item Exercises 01-e:For \emph{and} and \emph{or} links between statements, Lean provides the usual notations \Verb|∧| (type \Verb|\wedge|) and \Verb|∨| (type \Verb|\vee|). Statements linked with these connections can occur both in a hypothesis and in the goal. Now there are the following four cases:\begin{itemize}
+\item \Verb|⊢ P ∧ Q|: Here we must prove the two statements \Verb|P| and \Verb|Q|. With \Verb|constructor| exactly these two goals (with the same assumptions) are created, i.e. \Verb|⊢ P| and \Verb|⊢ Q|. If these two are shown, then obviously \Verb|⊢ P ∧ Q| is also shown.\item \Verb|⊢ P ∨ Q|: To show this, it is sufficient to either show \Verb|P| or to show \Verb|Q|. In the first case, the target is replaced by \Verb|⊢ P| with \Verb|left|, and by \Verb|⊢ Q| with \Verb|right|.\item \Verb|h : P ∧ Q|: Apparently, the hypothesis \Verb|h| breaks down into two hypotheses, both of which must hold. Using \Verb|cases' h with hP hQ|, \Verb|h : P ∧ Q| is transformed into two hypotheses, namely \Verb|hP : P| and \Verb|hQ : Q|.\item \Verb|h : P ∨ Q|: Similar to the last case, \Verb|cases' h with hP hQ| now generates two new goals, one where \Verb|h : P ∨ Q| has been replaced by \Verb|hP : P|, and one where \Verb|h : P ∨ Q| has been replaced by \Verb|hQ : Q|. This is logically correct, because this way you can distinguish the cases where \Verb|P| or \Verb|Q| apply.
+\end{itemize}
+\item Exercises 01-e:This is about introducing new hypotheses. With the \Verb|by_cases| tactic - applied to a hypothesis \Verb|h : P| - all possibilities are gone through that \Verb|P| can assume. These are that \Verb|P| is either \Verb|true| or \Verb|false|. So \Verb|by_cases h : P| introduces two new goals, one with the hypothesis \Verb|h : P| and one with the hypothesis \Verb|h : ¬P|.A very general tactic is \Verb|have|. Any hypotheses can be formulated here that must first be shown.\item Exercise 01-f:Now we come to abbreviations. First, we introduce the abbreviation \Verb|⟨ hP, hQ, hR ⟩| (type \Verb|\langle| and \Verb|\rangle|) for the \Verb|∧| conjunction of the statements \Verb|hP| \Verb|hQ| and \Verb|hR|. (This works with two or more than three hypotheses). Similarly, \Verb|(hP | hQ)| is a shorthand for \Verb|hP ∨ hQ|. These two shorthands can also be nested. The three tactics we discuss here are \Verb|rintro| for \Verb|intros| + \Verb|cases|, \Verb|rcases| for a more flexible version of \Verb|cases| that allows the notations just introduced, and \Verb|obtain| for \Verb|intro| + \Verb|have|.\item Exercise 01-g: QuantifiersQuantifiers such as \Verb|∀| (type \Verb|\forall|) and \Verb|∃| (type \Verb|\exists|) have been known since the first semester. These can also occur in \Verb|Lean|. We distinguish whether these quantifiers occur in the goal or in a hypothesis. The following is a small table of which tactics are appropriate in each case. Exact explanations are in \Verb|01-g.lean|.
+\end{itemize}
+
+
+
+
+\begin{itemize}
+\item Exercises 01-h:Slowly but surely, we are working our way towards applications with \emph{real} mathematics, but a few things are still missing. In this sheet, we learn to prove equalities using \emph{refl}. For later work with \Verb|=| or \Verb|↔| (type \Verb|\iff|) statements, \Verb|rw| is very important because here you can rewrite things, i.e. you can use propositional equalities. Since there are already a lot of statements in \Verb|Mathlib|, it is good to have a kind of search function. This is provided by \Verb|apply?|. We also learn how to define functions. This is done using the \Verb|fun| keyword. For example, \Verb|fun x ↦ 2*x| (type \Verb|\mapsto|, but \Verb|=>| works as well) represents the function \Verb|x ↦ 2x|. If you have \Verb|let f : X → X := fun x ↦ 2*x|, then \Verb|f 1| returns the function value for \Verb|x = 1|.
+\end{itemize}
+
 
 \begin{verbatim}
 variable (P Q R S T : Prop)
@@ -133,156 +151,8 @@ example : 2 + 2 = 4 :=
 
 
 
-\section{Lean Markup}
 
-Lean's documentation markup language is a close relative of Markdown, but it's not identical to it.
 
-
-
-\subsection{Design Principles}
-
-\begin{enumerate}
-\item Syntax errors - fail fast rather than producing unexpected output or having complicated rules\item Reduce lookahead - parsing should succeed or fail as locally as possible\item Extensibility - there should be dedicated features for compositionally adding new kinds of content, rather than relying on a collection of ad-hoc textual subformats\item Assume Unicode - Lean users are used to entering Unicode directly and have good tools for it, so there's no need to support alternative textual syntaxes for characters not on keyboards such as em dashes or typographical quotes\item Markdown compatibility - benefit from existing muscle memory and familiarity when it doesn't lead to violations of the other principles\item Pandoc and Djot compatibility - when Markdown doesn't have a syntax for a feature, attempt to be compatible with Pandoc Markdown or Djot
-\end{enumerate}
-
-
-
-
-\subsection{Syntax}
-
-Like Markdown, Lean's markup has three primary syntactic categories:
-
-\begin{description}
-\item[ Inline elements] The ordinary content of written text, such as text itself, bold or emphasized text, and hyperlinks.\item[ Block elements] The main organization of written text, including paragraphs, lists, and quotations. Some blocks may be nested: for example, lists may contain other lists.\item[ Document structure] Headers, footnote definitions, and named links give greater structure to a document. They may not be nested inside of blocks.
-\end{description}
-
-
-
-
-\subsubsection{Description}
-
-
-
-\paragraph{Inline Syntax}
-
-Emphasis is written with underscores:
-
-\begin{verbatim}
-Here's some _emphasized_ text
-
-\end{verbatim}
-\begin{verbatim}
-Here's some <emph>emphasized</emph> text
-
-\end{verbatim}
-
-
-Emphasis can be nested by using more underscores for the outer emphasis:
-
-\begin{verbatim}
-Here's some __emphasized text with _extra_ emphasis__ inside
-
-\end{verbatim}
-\begin{verbatim}
-Here's some <emph>emphasized text with <emph>extra</emph> emphasis</emph> inside
-
-\end{verbatim}
-
-
-Strong emphasis (bold) is written with asterisks:
-
-\begin{verbatim}
-Here's some *bold* text
-
-\end{verbatim}
-\begin{verbatim}
-Here's some <bold>bold</bold> text
-
-\end{verbatim}
-
-
-Hyperlinks consist of the link text in square brackets followed by the target in parentheses:
-
-\begin{verbatim}
-The [Lean website](https://lean-lang.org)
-
-\end{verbatim}
-\begin{verbatim}
-The <a href="https://lean-lang.org">Lean website</a>
-
-\end{verbatim}
-
-
-\begin{verbatim}
-The [Lean website][lean]
-
-[lean]: https://lean-lang.org
-
-\end{verbatim}
-\begin{verbatim}
-The <a href="(value of «lean»)">Lean website</a>
-
-where «lean» := https://lean-lang.org
-\end{verbatim}
-
-
-\begin{verbatim}
-The definition of `main`
-
-\end{verbatim}
-\begin{verbatim}
-The definition of <code>main</code>
-
-\end{verbatim}
-
-
-TeX math can be included using a single or double dollar sign followed by code. Two dollar signs results in display-mode math, so \Verb|$`\sum_{i=0}^{10} i`| results in $\sum_{i=0}^{10} i$ while \Verb|$$`\sum_{i=0}^{10} i`| results in: \[\sum_{i=0}^{10} i\]
-
-
-
-\paragraph{Block Syntax}
-
-
-
-\paragraph{Document Structure}
-
-
-
-\subsubsection{Differences from Markdown}
-
-This is a quick "cheat sheet" for those who are used to Markdown, documenting the differences.
-
-
-
-\paragraph{Syntax Errors}
-
-While Markdown includes a set of precedence rules to govern the meaning of mismatched delimiters (such as in \Verb|what _is *bold_ or emph*?|), these are syntax errors in Lean's markup.
-Similarly, Markdown specifies that unmatched delimiters (such as \Verb|*| or \Verb|_|) should be included as characters, while Lean's markup requires explicit escaping of delimiters.
-
-This is based on the principle that, for long-form technical writing, it's better to catch typos while writing than while reviewing the text later.
-
-
-
-\paragraph{Reduced Lookahead}
-
-In Markdown, whether \Verb|[this][here]| is a link depends on whether \Verb|here| is defined as a link reference target somewhere in the document.
-In Lean's markup, it is always a link, and it is an error if \Verb|here| is not defined as a link target.
-
-
-
-\paragraph{Header Nesting}
-
-In Lean's markup, every document already has a title, so there's no need to use the highest level header (\Verb|#|) to specify one.
-Additionally, all documents are required to use \Verb|#| for their top-level header, \Verb|##| for the next level, and so forth, because a single file may represent a section, a chapter, or even a whole book.
-Authors should not need to maintain a global mapping from header levels to document structures, so Lean's markup automatically assigns these based on the structure of the document.
-
-
-
-\paragraph{Genre-Specific Extensions}
-
-Markdown has no standard way for specific tools or styles of writing to express domain- or genre
--specific concepts.
-Lean's markup provides standard syntaxes to use for this purpose, enabling compositional extensions.
 
 
 
@@ -314,27 +184,47 @@ Docstrings can be included using the \Verb|docstring| directive. For instance,
 \end{verbatim}
 
 
+
+
+
+\chapter{Tactics}
+
+
+
+\section{Cheatsheet}
+
+
+
+
+
+\section{Summary of several tactics}
+
+
+
+\subsection{\Verb|apply|}
+
+\textbf{Summary:} If we have the goal \Verb|⊢ Q|, and a proof of \Verb|h : P → Q|, we only need to find a proof for \Verb|P|. This transition happens by \Verb|apply h|.
+
+
+
+The \Verb|apply|-tactics works iteratively. This means that if \Verb|apply h| makes no progress, it uses the placeholder \Verb|_| and tries to make \Verb|apply h _|.
+
 \begin{verbatim}
-example : 2 + 2 = 4 :=
-  by rfl
+example (hPQR : P → Q → R) : R := by
+  apply hPQR
+  · sorry
+  · sorry
 
 \end{verbatim}
 
 
-results in
 
-Applies the monadic action \Verb|f|
- on every element in the list, left-to-right.See \Verb|List.mapM|
- for the variant that collects results.
-See \Verb|List.forA|
- for the variant that works with \Verb|Applicative|
-.
+\textbf{Remarks:}
 
+\begin{itemize}
+\item \Verb|apply| works up to equality by definition. This can be seen in the example above, where \Verb|¬P ↔ (P → False)| is true by definition.\item \Verb|apply h| is frequently identical to \Verb|refine ?_|.\item If the use of \Verb|apply| closes the current goal, you might as well use \Verb|exact| instead of \Verb|apply|.
 
-
-
-\chapter{Index}
-
+\end{itemize}
 
 
 

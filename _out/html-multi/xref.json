@@ -2,18 +2,7 @@
  {"title": "Sections or chapters of the manual",
   "description": null,
   "contents":
-  {"lean-markup":
-   [{"id": "lean-markup",
-     "data":
-     {"title": "Lean Markup",
-      "sectionNum": "2.1.",
-      "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
-        "number": null},
-       {"title": "First steps using logic", "number": "2"},
-       {"title": "Lean Markup", "number": "1"}]},
-     "address": "/"}],
-   "genres":
+  {"genres":
    [{"id": "genres",
      "data":
      {"title": "Genres",
@@ -51,6 +40,5 @@
  {"title": "Lean constant reference",
   "description": "Documentation for Lean constants",
   "contents":
-  {"List.forM": [{"id": "List___forM", "data": null, "address": "/"}],
-   "Lean.Parser.Tactic.apply":
+  {"Lean.Parser.Tactic.apply":
    [{"id": "Lean___Parser___Tactic___apply", "data": null, "address": "/"}]}}}

@@ -1322,105 +1322,7 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
 .namedocs:has(input[data-parent-idx="49"]:checked):has(.inheritance[data-inherited-from="49"]:hover) [data-inherited-from]:not([data-inherited-from="49"]) {
   opacity: 0.5;
 }
-</style><style>
-    main .theIndex {
-      padding-left: 0;
-      font-family: var(--verso-text-font-family);
-    }
-
-    main .theIndex nav {
-      position: sticky;
-      top: var(--verso-header-height);
-      background: white;
-      font-family: var(--verso-structure-font-family);
-    }
-
-    main .theIndex [id] {
-      /* This needs the combined height of the index header and the page header. We
-         know the height of the page header, but the index header height varies, so
-         we use the maximum height it gets which also works well for readers with
-         wide screens */
-      scroll-margin-top: calc(var(--verso-header-height) + 7.5rem);
-    }
-
-    @media screen and (max-width: 700px) {
-      /* On mobile, the sticky index takes up half the screen. */
-      main .theIndex nav {
-        position: static;
-      }
-
-      main .theIndex [id] {
-        /* On mobile, the index header is not sticky, so we just need to
-        be below the page header. */
-        scroll-margin-top: var(--verso-header-height);
-      }
-    }
-
-    main .theIndex nav ol {
-      padding: 0;
-    }
-
-    main .theIndex nav ol li {
-      display: inline-block;
-    }
-
-    main .theIndex nav ol li a {
-      /* Padding instead of margin to have a bigger click target */
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
-    /* Increase the size of the touch target on phones */
-    @media screen and (max-width: 700px) {
-      main .theIndex nav ol li a {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
-    }
-
-    main .theIndex nav ol li:first-child a {
-      padding-left: 0;
-    }
-
-    main .theIndex nav ol li + li:before {
-      content: "|";
-    }
-
-    main .theIndex h1,
-    main .theIndex h2,
-    main .theIndex h3,
-    main .theIndex h4,
-    main .theIndex h5,
-    main .theIndex h6 {
-      margin-top: 0;
-    }
-
-    main .theIndex ol {
-      list-style-type: none;
-    }
-
-    main .theIndex .division > ol {
-      padding-left: 0;
-      display: flex;
-      flex-direction: column;
-      gap: .5rem;
-      overflow-wrap: break-word;
-    }
-
-   main .theIndex .division > ol > li {
-      margin-bottom: 0.5rem;
-    }
-
-    main .theIndex .division ol ol {
-      padding-left: 1rem;
-    }
-
-    main .theIndex .division {
-      break-inside: avoid;
-      counter-reset: none;
-      max-width: none;
-      width: auto;
-    }
-    </style><script>
+</style><script>
       
 window.onload = () => {
 
@@ -1605,15 +1507,15 @@ window.onload = () => {
             <div class="split-toc book">
               <div class="title">
                 <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class="">Table of Contents</span></div>
-              <table><tr class="numbered"><td class="num">1.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="#genres">Genres</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="#docstrings">Docstrings</a></td></tr><tr class="unnumbered"><td class="num"><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">Index</a></td></tr></table></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="#genres">Genres</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="#docstrings">Docstrings</a></td></tr><tr class="numbered"><td class="num">5.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics">Tactics</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
           <ul id="meta-links">
             <li>
-              <a href="https://github.com/leanprover/verso">Source Code</a></li>
+              <a href="https://github.com/pfaffelh/leancourse">Source Code</a></li>
             <li>
-              <a href="https://github.com/leanprover/verso/issues">Report Issues</a></li>
+              <a href="https://github.com/pfaffelh/leancourse/issues">Report Issues</a></li>
             </ul>
           </div>
         </nav>
@@ -1669,20 +1571,121 @@ window.onload = () => {
                   </li>
                 <li>
                   <p>
-                    Establishing connections to some mathematical material: On the one hand, the mathematical details needed in this course should not be the main issue of this course. On the other hand, in order to <em>explain</em> how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well -- at least if it exceeds a few lines -- so that the commands you enter (which we will call tactics) fit together.</p>
+                    Establishing connections to some mathematical material: On the one hand, the mathematical details needed in this course should not be the main issue of this course. On the other hand, in order to <em>explain</em> how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well - at least if it exceeds a few lines - so that the commands you enter (which we will call tactics) fit together.</p>
                   </li>
                 </ul>
               </section>
             <section>
               <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">
                 2. First steps using logic</h2>
-              <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.variable-2753" data-verso-hover="0">variable</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.12" data-verso-hover="1">P</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="1">Q</span> <span class="var token" data-binding="var-_uniq.16" data-verso-hover="1">R</span> <span class="var token" data-binding="var-_uniq.18" data-verso-hover="1">S</span> <span class="var token" data-binding="var-_uniq.20" data-verso-hover="1">T</span> <span class="unknown token" data-binding="">:</span> <span class="sort token" data-binding="" data-verso-hover="2">Prop</span><span class="unknown token" data-binding="">)</span>
-<span class="unknown token" data-binding=""></span></code><code class="hl lean block" data-lean-context="exercises"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-2794">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="3">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="4">Q</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-15760998142638333933-2815-2817"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-2815" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-15760998142638333933-2815-2817"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span> → <span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span></span></span></span></span>
-  <span class="tactic"><label for="tactic-state-3890625420743027176-2820-2827"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-2820" data-verso-hover="9">intro</span> <span class="var token" data-binding="var-_uniq.22" data-verso-hover="10">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-3890625420743027176-2820-2827"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="10">h</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span></span></span></span></span>
-  <span class="tactic"><label for="tactic-state-7-2830-2835"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-2830" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-2830-2835"><span class="tactic-state">All goals completed! 🐙</span></span>
-<span class="unknown token" data-binding=""></span></code><code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-2849">example</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.4" data-verso-hover="3">P</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.4" data-verso-hover="3">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.13" data-verso-hover="4">Q</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.13" data-verso-hover="4">Q</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-4549295739499299463-2887-2889"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-2887" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4549295739499299463-2887-2889"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.19</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">(<span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span> → <span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span>) → <span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span></span></span></span></span>
-  <span class="tactic"><label for="tactic-state-4858652245710148113-2892-2901"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-2892" data-verso-hover="9">intro</span> <span class="var token" data-binding="var-_uniq.31" data-verso-hover="13">hPQ</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4858652245710148113-2892-2901"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.19</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.31" data-verso-hover="13">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span> → <span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span></span></span></span></span>
-  <span class="tactic"><label for="tactic-state-7-2904-2916"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.exact-2904" data-verso-hover="14">exact</span> <span class="var token" data-binding="var-_uniq.31" data-verso-hover="13">hPQ</span> <span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-2904-2916"><span class="tactic-state">All goals completed! 🐙</span></span>
+              <p>
+                We start with simple logical statements. We always distinguish (as in every mathematical theorem) between the <em>hypotheses</em> and the <em>statement</em> (or <em>assertion</em>, which we also call <em>goal</em> or <em>target</em>). To introduce our hypotheses, we write <code>variable (P Q R S T : Prop)</code>. Note that the lean syntax does not use the usual double arrow <code>=&gt;</code> here, but a single <code>→</code>. We are going through the following logical inferences here:</p>
+              <ul>
+                <li>
+                  <p>
+                    Exercises 01-a:
+  The statement <code>⊢ P → Q</code> (i.e. <code>P</code> implies <code>Q</code>) means that <code>Q</code> is valid if one may assume that the hypothesis <code>P</code> is correct. This transition from <code>⊢ P → Q</code> to the hypothesis <code>hP : P</code> with target <code>⊢ Q</code> is done using <code>intro hP</code>. Several <code>intro</code> commands can be abbreviated using <code>intro h1 h2...</code>.</p>
+                  <p>
+                    If the hypothesis <code>hP : P</code> holds and we want to prove <code>⊢ P</code>, then we just have to apply <code>hP</code> to the goal. If goal and hypothesis are identical, this is done with <code>exact hP</code>. In a more general way, <code>assumption</code> searches all hypotheses for those that are identical with the goal by definition.</p>
+                  </li>
+                <li>
+                  <p>
+                    Exercises 01-b:</p>
+                  <p>
+                    If you want to prove <code>⊢ Q</code> and know that <code>hPQ : P → Q</code> is valid, then it is sufficient to prove <code>⊢ P</code> (since <code>hPQ</code> then implies <code>⊢ Q</code>). In this case, <code>apply hPQ</code> changes the goal to <code>⊢ P</code>.</p>
+                  <p>
+                    Behind an equivalence statement <code>⊢ P ↔ Q</code> (type the double arrow as <code>\iff</code>) there are actually the two statements <code>⊢ P → Q</code> and <code>⊢ Q → P</code>. Using <code>constructor</code> converts the goal <code>⊢ P ↔ Q</code> into two goals for the two directions.</p>
+                  <p>
+                    In Lean, logical negation is noted with <code>¬</code> (type <code>\neg</code>). The statement <code>¬P</code> is defined as <code>P → false</code>, where <code>false</code> stands for a <em>false</em> statement.</p>
+                  </li>
+                <li>
+                  <p>
+                    Sheet 01-c:</p>
+                  <p>
+                    <em>false</em> implies anything. The actual statement is <code>⊢ false → P</code>. If the current target is <code>⊢ P</code>, and you apply the statement <code>⊢ false → P</code> using <code>apply</code>, this is equivalent to applying <code>exfalso</code>.</p>
+                  <p>
+                    The two expressions <code>False</code> and <code>True</code> represent two statements that are <em>false</em> and <em>true</em>, respectively. So <code>True</code> should be easy to prove. This is provided by the tactic <code>triv</code>.</p>
+                  <p>
+                    In a proof by contradiction, instead of <code>⊢ P</code>, you prove the statement <code>⊢ ¬P → false</code> (which, after <code>intro h</code>, leads to the assumption <code>h : ¬P</code> and the new goal <code>⊢ false</code>). This is logically correct, since <code>P</code> is true if and only if <code>¬P</code> leads to a contradiction, i.e. an false statement. The transformation of the goal in this way is achieved with the tactic <code>by_contra</code> or <code>by_contra h</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Exercises 01-e:</p>
+                  <p>
+                    For <em>and</em> and <em>or</em> links between statements, Lean provides the usual notations <code>∧</code> (type <code>\wedge</code>) and <code>∨</code> (type <code>\vee</code>). Statements linked with these connections can occur both in a hypothesis and in the goal. Now there are the following four cases:</p>
+                  <ul>
+                    <li>
+                      <p>
+                        <code>⊢ P ∧ Q</code>: Here we must prove the two statements <code>P</code> and <code>Q</code>. With <code>constructor</code> exactly these two goals (with the same assumptions) are created, i.e. <code>⊢ P</code> and <code>⊢ Q</code>. If these two are shown, then obviously <code>⊢ P ∧ Q</code> is also shown.</p>
+                      </li>
+                    <li>
+                      <p>
+                        <code>⊢ P ∨ Q</code>: To show this, it is sufficient to either show <code>P</code> or to show <code>Q</code>. In the first case, the target is replaced by <code>⊢ P</code> with <code>left</code>, and by <code>⊢ Q</code> with <code>right</code>.</p>
+                      </li>
+                    <li>
+                      <p>
+                        <code>h : P ∧ Q</code>: Apparently, the hypothesis <code>h</code> breaks down into two hypotheses, both of which must hold. Using <code>cases' h with hP hQ</code>, <code>h : P ∧ Q</code> is transformed into two hypotheses, namely <code>hP : P</code> and <code>hQ : Q</code>.</p>
+                      </li>
+                    <li>
+                      <p>
+                        <code>h : P ∨ Q</code>: Similar to the last case, <code>cases' h with hP hQ</code> now generates two new goals, one where <code>h : P ∨ Q</code> has been replaced by <code>hP : P</code>, and one where <code>h : P ∨ Q</code> has been replaced by <code>hQ : Q</code>. This is logically correct, because this way you can distinguish the cases where <code>P</code> or <code>Q</code> apply.</p>
+                      </li>
+                    </ul>
+                  </li>
+                <li>
+                  <p>
+                    Exercises 01-e:</p>
+                  <p>
+                    This is about introducing new hypotheses. With the <code>by_cases</code> tactic - applied to a hypothesis <code>h : P</code> - all possibilities are gone through that <code>P</code> can assume. These are that <code>P</code> is either <code>true</code> or <code>false</code>. So <code>by_cases h : P</code> introduces two new goals, one with the hypothesis <code>h : P</code> and one with the hypothesis <code>h : ¬P</code>.</p>
+                  <p>
+                    A very general tactic is <code>have</code>. Any hypotheses can be formulated here that must first be shown.</p>
+                  </li>
+                <li>
+                  <p>
+                    Exercise 01-f:</p>
+                  <p>
+                    Now we come to abbreviations. First, we introduce the abbreviation <code>⟨ hP, hQ, hR ⟩</code> (type <code>\langle</code> and <code>\rangle</code>) for the <code>∧</code> conjunction of the statements <code>hP</code> <code>hQ</code> and <code>hR</code>. (This works with two or more than three hypotheses). Similarly, <code>(hP | hQ)</code> is a shorthand for <code>hP ∨ hQ</code>. These two shorthands can also be nested. The three tactics we discuss here are <code>rintro</code> for <code>intros</code> + <code>cases</code>, <code>rcases</code> for a more flexible version of <code>cases</code> that allows the notations just introduced, and <code>obtain</code> for <code>intro</code> + <code>have</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Exercise 01-g: Quantifiers</p>
+                  <p>
+                    Quantifiers such as <code>∀</code> (type <code>\forall</code>) and <code>∃</code> (type <code>\exists</code>) have been known since the first semester. These can also occur in <code>Lean</code>. We distinguish whether these quantifiers occur in the goal or in a hypothesis. The following is a small table of which tactics are appropriate in each case. Exact explanations are in <code>01-g.lean</code>.</p>
+                  </li>
+                </ul>
+              <table class="tabular left-align"><tr><th><p>
+                      Quantifier</p>
+                    </th><th><p>
+                      in goal</p>
+                    </th><th><p>
+                      in hypothesis <code>h</code></p>
+                    </th></tr><tr><td><p>
+                      <code>∀ (x : X), _</code></p>
+                    </td><td><p>
+                      <code>intro x</code></p>
+                    </td><td><p>
+                      <code>apply h _</code></p>
+                    </td></tr><tr><td><p>
+                      <code>∃ (x : X), _</code></p>
+                    </td><td><p>
+                      <code>use _</code></p>
+                    </td><td><p>
+                      <code>cases h</code></p>
+                    </td></tr></table><ul>
+                <li>
+                  <p>
+                    Exercises 01-h:</p>
+                  <p>
+                    Slowly but surely, we are working our way towards applications with <em>real</em> mathematics, but a few things are still missing. In this sheet, we learn to prove equalities using <em>refl</em>. For later work with <code>=</code> or <code>↔</code> (type <code>\iff</code>) statements, <code>rw</code> is very important because here you can rewrite things, i.e. you can use propositional equalities. Since there are already a lot of statements in <code>Mathlib</code>, it is good to have a kind of search function. This is provided by <code>apply?</code>. We also learn how to define functions. This is done using the <code>fun</code> keyword. For example, <code>fun x ↦ 2*x</code> (type <code>\mapsto</code>, but <code>=&gt;</code> works as well) represents the function <code>x ↦ 2x</code>. If you have <code>let f : X → X := fun x ↦ 2*x</code>, then <code>f 1</code> returns the function value for <code>x = 1</code>.</p>
+                  </li>
+                </ul>
+              <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.variable-9207" data-verso-hover="0">variable</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.12" data-verso-hover="1">P</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="1">Q</span> <span class="var token" data-binding="var-_uniq.16" data-verso-hover="1">R</span> <span class="var token" data-binding="var-_uniq.18" data-verso-hover="1">S</span> <span class="var token" data-binding="var-_uniq.20" data-verso-hover="1">T</span> <span class="unknown token" data-binding="">:</span> <span class="sort token" data-binding="" data-verso-hover="2">Prop</span><span class="unknown token" data-binding="">)</span>
+<span class="unknown token" data-binding=""></span></code><code class="hl lean block" data-lean-context="exercises"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-9248">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="3">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="4">Q</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-15760998142638333933-9269-9271"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-9269" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-15760998142638333933-9269-9271"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span> → <span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-3890625420743027176-9274-9281"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-9274" data-verso-hover="9">intro</span> <span class="var token" data-binding="var-_uniq.22" data-verso-hover="10">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-3890625420743027176-9274-9281"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.13</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="10">h</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.19" data-verso-hover="6">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.20" data-verso-hover="8">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-9284-9289"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-9284" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-9284-9289"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-9303">example</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.4" data-verso-hover="3">P</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.4" data-verso-hover="3">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.13" data-verso-hover="4">Q</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.13" data-verso-hover="4">Q</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-4549295739499299463-9341-9343"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-9341" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4549295739499299463-9341-9343"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.19</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">(<span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span> → <span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span>) → <span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-4858652245710148113-9346-9355"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-9346" data-verso-hover="9">intro</span> <span class="var token" data-binding="var-_uniq.31" data-verso-hover="13">hPQ</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4858652245710148113-9346-9355"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.14</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.19</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.31" data-verso-hover="13">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.27" data-verso-hover="8">P</span> → <span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.28" data-verso-hover="12">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-9358-9370"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.exact-9358" data-verso-hover="14">exact</span> <span class="var token" data-binding="var-_uniq.31" data-verso-hover="13">hPQ</span> <span class="var token" data-binding="var-_uniq.48" data-verso-hover="10">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-9358-9370"><span class="tactic-state">All goals completed! 🐙</span></span>
 <span class="unknown token" data-binding=""></span></code><pre>Proof state   Command         New proof state
 
 ⊢ P → Q       intro hP        hP : P
@@ -1717,9 +1720,33 @@ and first-order unification with dependent types.</p>
                     Etc</p>
                   </li>
                 </ul>
-              <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-3220">example</span> <span class="unknown token" data-binding="">:</span> <span class="typed token" data-binding="" data-verso-hover="17">2</span> <span class="unknown token" data-binding="">+</span> <span class="typed token" data-binding="" data-verso-hover="17">2</span> <span class="unknown token" data-binding="">=</span> <span class="typed token" data-binding="" data-verso-hover="17">4</span> <span class="unknown token" data-binding="">:=</span>
-  <span class="tactic"><label for="tactic-state-8495602883594765203-3245-3247"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-3245" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8495602883594765203-3245-3247"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">2<span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="18"> + </span>2<span class="const token" data-binding="const-Eq" data-verso-hover="19"> = </span>4</span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-3248-3251"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticRfl-3248" data-verso-hover="20">rfl</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-3248-3251"><span class="tactic-state">All goals completed! 🐙</span></span>
-<span class="unknown token" data-binding=""></span></code><table class="tabular"><tr><th><p>
+              <code class="hl lean block" data-lean-context="exercises"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-9674">example</span> <span class="unknown token" data-binding="">:</span> <span class="typed token" data-binding="" data-verso-hover="17">2</span> <span class="unknown token" data-binding="">+</span> <span class="typed token" data-binding="" data-verso-hover="17">2</span> <span class="unknown token" data-binding="">=</span> <span class="typed token" data-binding="" data-verso-hover="17">4</span> <span class="unknown token" data-binding="">:=</span>
+  <span class="tactic"><label for="tactic-state-8495602883594765203-9699-9701"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-9699" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8495602883594765203-9699-9701"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">2<span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="18"> + </span>2<span class="const token" data-binding="const-Eq" data-verso-hover="19"> = </span>4</span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-9702-9705"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticRfl-9702" data-verso-hover="20">rfl</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-9702-9705"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><table class="tabular left-align"><tr><th><p>
+                      proof state</p>
+                    </th><th><p>
+                      tactic</p>
+                    </th><th><p>
+                      new proof state</p>
+                    </th></tr><tr><td><p>
+                      <code>⊢ P → Q</code></p>
+                    </td><td><p>
+                      <code>intro hP</code></p>
+                    </td><td><p>
+                      <code>P</code><br><code>⊢ Q</code></p>
+                    </td></tr></table><table class="tabular"><tr><th><p>
+                      goal</p>
+                    </th><th><p>
+                      tactic</p>
+                    </th><th><p>
+                      new goal</p>
+                    </th></tr><tr><td><p>
+                      <code>Prod</code></p>
+                    </td><td><p>
+                      <code>Type u</code></p>
+                    </td><td><p>
+                      <code>Type v</code></p>
+                    </td></tr></table><table class="tabular"><tr><th><p>
                       Type</p>
                     </th><th><p>
                       First Projection</p>
@@ -1739,134 +1766,266 @@ and first-order unification with dependent types.</p>
                       ❌️</p>
                     </td><td><p>
                       <code>Type (max u v)</code></p>
-                    </td></tr></table><section>
-                <h3 id="lean-markup">
-                  2.1. Lean Markup<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=lean-markup" title="Permalink">🔗</a></span></h3>
-                <p>
-                  Lean's documentation markup language is a close relative of Markdown, but it's not identical to it.</p>
-                <section>
-                  <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Design-Principles">
-                    2.1.1. Design Principles</h4>
-                  <ol start="1">
-                    <li>
-                      <p>
-                        Syntax errors - fail fast rather than producing unexpected output or having complicated rules</p>
-                      </li>
-                    <li>
-                      <p>
-                        Reduce lookahead - parsing should succeed or fail as locally as possible</p>
-                      </li>
-                    <li>
-                      <p>
-                        Extensibility - there should be dedicated features for compositionally adding new kinds of content, rather than relying on a collection of ad-hoc textual subformats</p>
-                      </li>
-                    <li>
-                      <p>
-                        Assume Unicode - Lean users are used to entering Unicode directly and have good tools for it, so there's no need to support alternative textual syntaxes for characters not on keyboards such as em dashes or typographical quotes</p>
-                      </li>
-                    <li>
-                      <p>
-                        Markdown compatibility - benefit from existing muscle memory and familiarity when it doesn't lead to violations of the other principles</p>
-                      </li>
-                    <li>
-                      <p>
-                        Pandoc and Djot compatibility - when Markdown doesn't have a syntax for a feature, attempt to be compatible with Pandoc Markdown or Djot</p>
-                      </li>
-                    </ol>
-                  </section>
-                <section>
-                  <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax">
-                    2.1.2. Syntax</h4>
-                  <p>
-                    Like Markdown, Lean's markup has three primary syntactic categories:</p>
-                  <dl><dt> Inline elements</dt><dd><p>
-                        The ordinary content of written text, such as text itself, bold or emphasized text, and hyperlinks.</p>
-                      </dd><dt> Block elements</dt><dd><p>
-                        The main organization of written text, including paragraphs, lists, and quotations. Some blocks may be nested: for example, lists may contain other lists.</p>
-                      </dd><dt> Document structure</dt><dd><p>
-                        Headers, footnote definitions, and named links give greater structure to a document. They may not be nested inside of blocks.</p>
-                      </dd></dl><section>
-                    <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description">
-                      2.1.2.1. Description</h5>
-                    <section>
-                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Inline-Syntax">
-                        2.1.2.1.1. Inline Syntax</h6>
-                      <p>
-                        Emphasis is written with underscores:</p>
-                      <pre>Here's some _emphasized_ text
-</pre><pre>Here's some &lt;emph&gt;emphasized&lt;/emph&gt; text
-</pre><p>
-                        Emphasis can be nested by using more underscores for the outer emphasis:</p>
-                      <pre>Here's some __emphasized text with _extra_ emphasis__ inside
-</pre><pre>Here's some &lt;emph&gt;emphasized text with &lt;emph&gt;extra&lt;/emph&gt; emphasis&lt;/emph&gt; inside
-</pre><p>
-                        Strong emphasis (bold) is written with asterisks:</p>
-                      <pre>Here's some *bold* text
-</pre><pre>Here's some &lt;bold&gt;bold&lt;/bold&gt; text
-</pre><p>
-                        Hyperlinks consist of the link text in square brackets followed by the target in parentheses:</p>
-                      <pre>The [Lean website](https://lean-lang.org)
-</pre><pre>The &lt;a href="https://lean-lang.org"&gt;Lean website&lt;/a&gt;
-</pre><pre>The [Lean website][lean]
-
-[lean]: https://lean-lang.org
-</pre><pre>The &lt;a href="(value of «lean»)"&gt;Lean website&lt;/a&gt;
-
-where «lean» := https://lean-lang.org</pre><pre>The definition of `main`
-</pre><pre>The definition of &lt;code&gt;main&lt;/code&gt;
-</pre><p>
-                        TeX math can be included using a single or double dollar sign followed by code. Two dollar signs results in display-mode math, so <code>$`\sum_{i=0}^{10} i`</code> results in <code class="math inline">\sum_{i=0}^{10} i</code> while <code>$$`\sum_{i=0}^{10} i`</code> results in: <code class="math display">\sum_{i=0}^{10} i</code></p>
-                      </section>
-                    <section>
-                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Block-Syntax">
-                        2.1.2.1.2. Block Syntax</h6>
-                      </section>
-                    <section>
-                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Description--Document-Structure">
-                        2.1.2.1.3. Document Structure</h6>
-                      </section>
-                    </section>
-                  <section>
-                    <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown">
-                      2.1.2.2. Differences from Markdown</h5>
-                    <p>
-                      This is a quick "cheat sheet" for those who are used to Markdown, documenting the differences.</p>
-                    <section>
-                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Syntax-Errors">
-                        2.1.2.2.1. Syntax Errors</h6>
-                      <p>
-                        While Markdown includes a set of precedence rules to govern the meaning of mismatched delimiters (such as in <code>what _is *bold_ or emph*?</code>), these are syntax errors in Lean's markup.
-Similarly, Markdown specifies that unmatched delimiters (such as <code>*</code> or <code>_</code>) should be included as characters, while Lean's markup requires explicit escaping of delimiters.</p>
-                      <p>
-                        This is based on the principle that, for long-form technical writing, it's better to catch typos while writing than while reviewing the text later.</p>
-                      </section>
-                    <section>
-                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Reduced-Lookahead">
-                        2.1.2.2.2. Reduced Lookahead</h6>
-                      <p>
-                        In Markdown, whether <code>[this][here]</code> is a link depends on whether <code>here</code> is defined as a link reference target somewhere in the document.
-In Lean's markup, it is always a link, and it is an error if <code>here</code> is not defined as a link target.</p>
-                      </section>
-                    <section>
-                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Header-Nesting">
-                        2.1.2.2.3. Header Nesting</h6>
-                      <p>
-                        In Lean's markup, every document already has a title, so there's no need to use the highest level header (<code>#</code>) to specify one.
-Additionally, all documents are required to use <code>#</code> for their top-level header, <code>##</code> for the next level, and so forth, because a single file may represent a section, a chapter, or even a whole book.
-Authors should not need to maintain a global mapping from header levels to document structures, so Lean's markup automatically assigns these based on the structure of the document.</p>
-                      </section>
-                    <section>
-                      <h6 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Lean-Markup--Syntax--Differences-from-Markdown--Genre-Specific-Extensions">
-                        2.1.2.2.4. Genre-Specific Extensions</h6>
-                      <p>
-                        Markdown has no standard way for specific tools or styles of writing to express domain- or <a href="#genres">genre</a>-specific concepts.
-Lean's markup provides standard syntaxes to use for this purpose, enabling compositional extensions.
-</p>
-                      </section>
-                    </section>
-                  </section>
-                </section>
-              </section>
+                    </td></tr></table><table class="tabular left-align"><tr><th><p>
+                      Proof state</p>
+                    </th><th><p>
+                      Tactic</p>
+                    </th><th><p>
+                      New proof state</p>
+                    </th></tr><tr><td><p>
+                      <code>⊢ P → Q</code></p>
+                    </td><td><p>
+                      <code>intro hP</code></p>
+                    </td><td><p>
+                      <code>hP : P</code> <br> <code>⊢ Q</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P → Q → R</code></p>
+                    </td><td><p>
+                      <code>intro hP hQ</code></p>
+                    </td><td><p>
+                      <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                    </td></tr><tr><td><p>
+                      <code>p : α → Prop</code> <br> <code>⊢ ∀ (x : α), f x</code></p>
+                    </td><td><p>
+                      <code>intro x</code></p>
+                    </td><td><p>
+                      <code>f: α → Prop</code> <br> <code>x : α</code> <br> <code>⊢ p x</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P</code> <br> <code>⊢ P</code></p>
+                    </td><td><p>
+                      <code>exact h</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P</code> <br> <code>⊢ P</code></p>
+                    </td><td><p>
+                      <code>assumption</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P → Q</code> <br> <code>⊢ P</code></p>
+                    </td><td><p>
+                      <code>apply h</code></p>
+                    </td><td><p>
+                      <code>⊢ Q</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h₁ : P → Q</code> <br> <code>h₂ : Q → R</code>  <br> <code>⊢ R</code></p>
+                    </td><td><p>
+                      <code>apply h₂ h₁</code></p>
+                    </td><td><p>
+                      <code>h₁ : P → Q</code> <br> <code>h₂ : Q → R</code>  <br> <code>⊢ P</code></p>
+                    </td></tr><tr><td><p>
+                      ⊢ <code>P ∧ Q → P</code></p>
+                    </td><td><p>
+                      <code>tauto</code> or <code>tauto!</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ true</code></p>
+                    </td><td><p>
+                      <code>triv</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P</code> <br> <code>⊢ Q</code></p>
+                    </td><td><p>
+                      <code>exfalso</code></p>
+                    </td><td><p>
+                      <code>h : P</code> <br> <code>⊢ false</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P</code></p>
+                    </td><td><p>
+                      <code>by_contra h</code></p>
+                    </td><td><p>
+                      <code>h : ¬P</code> <br> <code>⊢ false</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P</code></p>
+                    </td><td><p>
+                      <code>by_cases h : Q</code></p>
+                    </td><td><p>
+                      <code>h : Q</code> <br> <code>⊢ P</code> <br> <code>h : ¬Q</code> <br> <code>⊢ P</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P ∧ Q</code> <br> <code>⊢ R</code></p>
+                    </td><td><p>
+                      <code>cases' h with hP hQ</code></p>
+                    </td><td><p>
+                      <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P ∧ Q</code> <br> <code>⊢ R</code></p>
+                    </td><td><p>
+                      <code>obtain ⟨hP, hQ⟩ := h</code></p>
+                    </td><td><p>
+                      <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P ∨ Q</code> <br> <code>⊢ R</code></p>
+                    </td><td><p>
+                      <code>cases' h with hP hQ</code></p>
+                    </td><td><p>
+                      <code>hP : P</code> <br> <code>⊢ R</code> <br> <code>hQ : Q ⊢ R</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : false</code> <br> <code>⊢ P</code></p>
+                    </td><td><p>
+                      <code>cases h</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P → false</code></p>
+                    </td><td><p>
+                      <code>change ¬P</code></p>
+                    </td><td><p>
+                      <code>⊢ ¬P</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P ∧ Q</code></p>
+                    </td><td><p>
+                      <code>constructor</code></p>
+                    </td><td><p>
+                      <code>⊢ P</code> <br> <code>⊢ Q</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P ↔ Q</code></p>
+                    </td><td><p>
+                      <code>constructor</code></p>
+                    </td><td><p>
+                      <code>⊢ P → Q</code> <br> <code>⊢ Q → P</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P ↔ P</code> or <br> <code>⊢ P = P</code></p>
+                    </td><td><p>
+                      <code>rfl</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P ↔ Q</code> <br> <code>⊢ P</code></p>
+                    </td><td><p>
+                      <code>rw [h]</code></p>
+                    </td><td><p>
+                      <code>h : P ↔ Q</code> <br> <code>⊢ Q</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P ↔ Q</code> <br> <code>hP : P</code></p>
+                    </td><td><p>
+                      <code>rw [h] at hP</code></p>
+                    </td><td><p>
+                      <code>h : P ↔ Q</code> <br> <code>hP : Q</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P ↔ Q</code> <br> <code>⊢ Q</code></p>
+                    </td><td><p>
+                      <code>rw [← h]</code></p>
+                    </td><td><p>
+                      <code>h : P ↔ Q</code> <br> <code>⊢ P</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P ↔ Q</code> <br> <code>hQ : Q</code></p>
+                    </td><td><p>
+                      <code>rw [← h] at hQ</code></p>
+                    </td><td><p>
+                      <code>h : P ↔ Q</code> <br> <code>hQ : P</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P ∨ Q</code></p>
+                    </td><td><p>
+                      <code>left</code></p>
+                    </td><td><p>
+                      <code>⊢ P</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P ∨ Q</code></p>
+                    </td><td><p>
+                      <code>right</code></p>
+                    </td><td><p>
+                      <code>⊢ Q</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ 2 + 2 &lt; 5</code></p>
+                    </td><td><p>
+                      <code>norm_num</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code></p>
+                    </td></tr><tr><td><p>
+                      <code>p : α → Prop</code> <br> <code>y : α</code> <br> <code>⊢ ∃ (x : α), p x</code></p>
+                    </td><td><p>
+                      <code>use y</code></p>
+                    </td><td><p>
+                      <code>p : α → Prop</code> <br> <code>y : α</code> <br>  <code>⊢ f y</code></p>
+                    </td></tr><tr><td><p>
+                      <code>x y : ℝ</code> <br> <code>⊢ x + y = y + x</code></p>
+                    </td><td><p>
+                      <code>ring</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code></p>
+                    </td></tr><tr><td><p>
+                      <code>p : α → Prop</code> <br> <code>⊢ ∀ (x : α), p x</code></p>
+                    </td><td><p>
+                      <code>intro x</code></p>
+                    </td><td><p>
+                      <code>p : α → Prop</code> <br> <code>x : α</code> <br> <code>p x</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h₁ : a &lt; b</code> <br> <code>h₂ : b ≤ c</code> <br> <code>⊢ a &lt; c</code></p>
+                    </td><td><p>
+                      <code>linarith</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P</code> <br> <code>⊢ Q</code></p>
+                    </td><td><p>
+                      <code>clear h</code></p>
+                    </td><td><p>
+                      <code>⊢ Q</code></p>
+                    </td></tr><tr><td><p>
+                      <code>p : ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), p n</code> <br> <code>⊢ P</code></p>
+                    </td><td><p>
+                      <code>specialize h 13</code></p>
+                    </td><td><p>
+                      <code>p : ℕ → Prop</code> <br> <code>h : p 13</code> <br>  <code>⊢ P</code></p>
+                    </td></tr><tr><td><p>
+                      <code>p : ℕ → ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), ∃ (m : ℕ), p n m</code></p>
+                    </td><td><p>
+                      <code>obtain ⟨m, hm⟩ := h 27</code></p>
+                    </td><td><p>
+                      <code>p : ℕ → ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), ∃ (m : ℕ), p n m</code> <br> <code>m : ℕ</code> <br> <code>hm : f 27 m</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ R</code></p>
+                    </td><td><p>
+                      <code>have h : P ↔ Q</code></p>
+                    </td><td><p>
+                      <code>⊢ P ↔ Q</code> <br> <code>h : P ↔ Q</code> <br> <code>⊢ R</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h₁ : a &lt; b</code> <br> <code>h₂ : b &lt; c</code> <br> <code>⊢ a &lt; c</code></p>
+                    </td><td><p>
+                      <code>apply?</code></p>
+                    </td><td><p>
+                      <code>no goals 🎉</code> <br> Try this: <br> <code>exact lt_trans h₁ h₂</code></p>
+                    </td></tr><tr><td><p>
+                      <code>hQ : Q</code> <br> <code>⊢ P ∧ Q</code></p>
+                    </td><td><p>
+                      <code>refine ⟨ _, hQ ⟩</code></p>
+                    </td><td><p>
+                      <code>hQ : Q</code> <br> <code>⊢ P</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P ∨ Q → R</code></p>
+                    </td><td><p>
+                      <code>rintro (hP | hQ)</code> <br> = <br> <code>intro h</code> <br> <code>cases' h with hP hQ</code></p>
+                    </td><td><p>
+                      <code>hP : P</code> <br> <code>⊢ R</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                    </td></tr><tr><td><p>
+                      <code>⊢ P ∧ Q → R</code></p>
+                    </td><td><p>
+                      <code>rintro ⟨hP , hQ⟩</code> <br> = <br> <code>intro h</code> <br>
+<code>cases' h with h1 h2</code></p>
+                    </td><td><p>
+                      <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : P ∧ Q ∨ P ∧ R</code> <br> <code>⊢ S</code></p>
+                    </td><td><p>
+                      <code>rcases h with (⟨hP1,hQ⟩|⟨hP2,hR⟩)</code></p>
+                    </td><td><p>
+                      <code>hP1 : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ S</code> <br> <code>hP2 : P</code> <br> <code>hR : R</code><br> <code>⊢ S</code></p>
+                    </td></tr><tr><td><p>
+                      <code>m n : ℕ</code> <br> <code>⊢ n + 0 = m</code></p>
+                    </td><td><p>
+                      <code>simp</code></p>
+                    </td><td><p>
+                      <code>m n : ℕ</code> <br> <code>n = m</code></p>
+                    </td></tr><tr><td><p>
+                      <code>h : n + 0 = m</code> <br> <code>⊢ P</code></p>
+                    </td><td><p>
+                      <code>simp at h</code></p>
+                    </td><td><p>
+                      <code>h : n = m</code> <br> <code>⊢ P</code></p>
+                    </td></tr></table></section>
             <section>
               <h2 id="genres">
                 3. Genres<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=genres" title="Permalink">🔗</a></span></h2>
@@ -1904,71 +2063,317 @@ Mixing incompatible features results in an ordinary Lean type error.</p>
               <p>
                 Docstrings can be included using the <code>docstring</code> directive. For instance,</p>
               <pre>{docstring List.forM}
-</pre><pre>example : 2 + 2 = 4 :=
-  by rfl
-</pre><p>
-                results in</p>
-              <div class="namedocs" id="List___forM">
-                <span class="permalink-widget block"><a href="find/?domain=Verso.Genre.Manual.doc&name=List.forM" title="Permalink">🔗</a></span><span class="label">def</span><pre class="signature hl lean block">List.forM.{u, v, w} {<span class="var token" data-binding="var-_uniq.203" data-verso-hover="21">m</span> : <span class="sort token" data-binding="" data-verso-hover="22">Type u</span> → <span class="sort token" data-binding="" data-verso-hover="22">Type v</span>}
-  [<span class="const token" data-binding="const-Monad" data-verso-hover="23">Monad</span> <span class="var token" data-binding="var-_uniq.203" data-verso-hover="21">m</span>] {<span class="var token" data-binding="var-_uniq.205" data-verso-hover="24">α</span> : <span class="sort token" data-binding="" data-verso-hover="22">Type w</span>} (<span class="var token" data-binding="var-_uniq.206" data-verso-hover="25">as</span> : <span class="const token" data-binding="const-List" data-verso-hover="26">List</span> <span class="var token" data-binding="var-_uniq.205" data-verso-hover="24">α</span>)
-  (<span class="var token" data-binding="var-_uniq.208" data-verso-hover="27">f</span> : <span class="var token" data-binding="var-_uniq.205" data-verso-hover="24">α</span> → <span class="var token" data-binding="var-_uniq.203" data-verso-hover="21">m</span> <span class="const token" data-binding="const-PUnit" data-verso-hover="28">PUnit</span>) : <span class="var token" data-binding="var-_uniq.203" data-verso-hover="21">m</span> <span class="const token" data-binding="const-PUnit" data-verso-hover="28">PUnit</span></pre><div class="text">
-                  <p>
-                    Applies the monadic action <code class="hl lean inline" data-lean-context="docstring-examples"><span class="var token" data-binding="var-_uniq.178" data-verso-hover="27">f</span></code> on every element in the list, left-to-right.</p>
-                  <p>
-                    See <code class="hl lean inline" data-lean-context="docstring-examples"><span class="const token" data-binding="const-List.mapM" data-verso-hover="29">List.mapM</span></code> for the variant that collects results.
-See <code class="hl lean inline" data-lean-context="docstring-examples"><span class="const token" data-binding="const-List.forA" data-verso-hover="30">List.forA</span></code> for the variant that works with <code class="hl lean inline" data-lean-context="docstring-examples"><span class="const token" data-binding="const-Applicative" data-verso-hover="31">Applicative</span></code>.</p>
-                  </div>
-                </div>
-              </section>
+</pre></section>
             <section>
-              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Index">
-                Index</h2>
-              <div class="theIndex">
-                <nav>
-                  <ol>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics">
+                5. Tactics</h2>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--Cheatsheet">
+                  5.1. Cheatsheet</h3>
+                <table class="tabular left-align"><tr><th><p>
+                        Proof state</p>
+                      </th><th><p>
+                        Tactic</p>
+                      </th><th><p>
+                        New proof state</p>
+                      </th></tr><tr><td><p>
+                        <code>⊢ P → Q</code></p>
+                      </td><td><p>
+                        <code>intro hP</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P → Q → R</code></p>
+                      </td><td><p>
+                        <code>intro hP hQ</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : α → Prop</code> <br> <code>⊢ ∀ (x : α), f x</code></p>
+                      </td><td><p>
+                        <code>intro x</code></p>
+                      </td><td><p>
+                        <code>f: α → Prop</code> <br> <code>x : α</code> <br> <code>⊢ p x</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>exact h</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>assumption</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P → Q</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>apply h</code></p>
+                      </td><td><p>
+                        <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h₁ : P → Q</code> <br> <code>h₂ : Q → R</code> <br> <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>apply h₂ h₁</code></p>
+                      </td><td><p>
+                        <code>h₁ : P → Q</code> <br> <code>h₂ : Q → R</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∧ Q → P</code></p>
+                      </td><td><p>
+                        <code>tauto</code> oder <code>tauto!</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ true</code></p>
+                      </td><td><p>
+                        <code>triv</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P</code> <br> <code>⊢ Q</code></p>
+                      </td><td><p>
+                        <code>exfalso</code></p>
+                      </td><td><p>
+                        <code>h : P</code> <br> <code>⊢ false</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>by_contra h</code></p>
+                      </td><td><p>
+                        <code>h : ¬P</code> <br> <code>⊢ false</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>by_cases h : Q</code></p>
+                      </td><td><p>
+                        <code>h : Q</code> <br> <code>⊢ P</code> <br> <code>h : ¬Q</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ∧ Q</code> <br> <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>cases' h with hP hQ</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ∧ Q</code> <br> <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>obtain ⟨hP, hQ⟩ := h</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ∨ Q</code> <br> <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>cases' h with hP hQ</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>⊢ R</code> <br> <code>hQ : Q ⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : false</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>cases h</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ : P → false</code></p>
+                      </td><td><p>
+                        <code>change ¬P</code></p>
+                      </td><td><p>
+                        <code>⊢ ¬P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∧ Q</code></p>
+                      </td><td><p>
+                        <code>constructor</code></p>
+                      </td><td><p>
+                        <code>⊢ P</code> <br> <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ↔ Q</code></p>
+                      </td><td><p>
+                        <code>constructor</code></p>
+                      </td><td><p>
+                        <code>⊢ P → Q</code> <br> <code>⊢ Q → P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ↔ P</code> oder <br> <code>⊢ P = P</code></p>
+                      </td><td><p>
+                        <code>rfl</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>rw h</code></p>
+                      </td><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>hP : P</code></p>
+                      </td><td><p>
+                        <code>rw h at hP</code></p>
+                      </td><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>hP : Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>⊢ Q</code></p>
+                      </td><td><p>
+                        <code>rw ← h</code></p>
+                      </td><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>hQ : Q</code></p>
+                      </td><td><p>
+                        <code>rw ← h at hQ</code></p>
+                      </td><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>hQ : P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∨ Q</code></p>
+                      </td><td><p>
+                        <code>left</code></p>
+                      </td><td><p>
+                        <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∨ Q</code></p>
+                      </td><td><p>
+                        <code>right</code></p>
+                      </td><td><p>
+                        <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ 2 + 2 &lt; 5</code></p>
+                      </td><td><p>
+                        <code>norm_num</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : α → Prop</code> <br> <code>y : α</code> <br> <code>⊢ ∃ (x : α), f x</code></p>
+                      </td><td><p>
+                        <code>use y</code></p>
+                      </td><td><p>
+                        <code>p : α → Prop</code> <br> <code>y : α</code> <br>  <code>⊢ f y</code></p>
+                      </td></tr><tr><td><p>
+                        <code>x y : ℝ</code> <br> <code>⊢ x + y = y + x</code></p>
+                      </td><td><p>
+                        <code>ring</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : α → Prop</code> <br> <code>⊢ ∀ (x : α), p x</code></p>
+                      </td><td><p>
+                        <code>intro x</code></p>
+                      </td><td><p>
+                        <code>p : α → Prop</code> <br> <code>x : α</code> <br> <code>p x</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h₁ : a &lt; b</code> <br> <code>h₂ : b ≤ c</code> <br> <code>⊢ a &lt; c</code></p>
+                      </td><td><p>
+                        <code>linarith</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P</code> <br> <code>⊢ Q</code></p>
+                      </td><td><p>
+                        <code>clear h</code></p>
+                      </td><td><p>
+                        <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), p n</code> <br>  <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>specialize h 13</code></p>
+                      </td><td><p>
+                        <code>p : ℕ → Prop</code> <br> <code>h : p 13</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : ℕ → ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), ∃ (m : ℕ), f n m</code></p>
+                      </td><td><p>
+                        <code>obtain ⟨m, hm⟩ := h 27</code></p>
+                      </td><td><p>
+                        <code>f : ℕ → ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), ∃ (m : ℕ), f n m</code> <br> <code>m : ℕ</code> <br> <code>hm : f 27 m</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>have h : P ↔ Q</code></p>
+                      </td><td><p>
+                        <code>⊢ P ↔ Q</code> <br> <code>h : P ↔ Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h₁ : a &lt; b</code> <br> <code>h₂ : b &lt; c</code> <br> <code>⊢ a &lt; c</code></p>
+                      </td><td><p>
+                        <code>apply?</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code> <br> Try this: <br>  <code>exact lt_trans h₁ h₂</code></p>
+                      </td></tr><tr><td><p>
+                        <code>hQ : Q</code> <br> <code>⊢ P ∧ Q</code></p>
+                      </td><td><p>
+                        <code>refine ⟨ _, hQ ⟩</code></p>
+                      </td><td><p>
+                        <code>hQ : Q</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∨ Q → R</code></p>
+                      </td><td><p>
+                        <code>rintro (hP | hQ)</code> <br> = <br> <code>intro h</code> <br> <code>cases h with hP hQ</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>⊢ R</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∧ Q → R</code></p>
+                      </td><td><p>
+                        <code>rintro ⟨hP , hQ⟩</code> <br> = <br> <code>intro h</code> <br> <code>cases h with h1 h2</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ∧ Q ∨ P ∧ R</code> <br> <code>⊢ S</code></p>
+                      </td><td><p>
+                        <code>rcases h with (⟨hP1,hQ⟩|⟨hP2,hR⟩)</code></p>
+                      </td><td><p>
+                        <code>hP1 : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ S</code> <br> <code>hP2 : P</code> <br> <code>hR : R</code> <br> <code>⊢ S</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ n + 0 = n</code></p>
+                      </td><td><p>
+                        <code>simp</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : n + 0 = m</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>simp at h</code></p>
+                      </td><td><p>
+                        <code>h : n = m</code> <br> <code>⊢ P</code></p>
+                      </td></tr></table></section>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--Summary-of-several-tactics">
+                  5.2. Summary of several tactics</h3>
+                <section>
+                  <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--Summary-of-several-tactics--apply">
+                    5.2.1. <code>apply</code></h4>
+                  <p>
+                    <strong>Summary:</strong> If we have the goal <code>⊢ Q</code>, and a proof of <code>h : P → Q</code>, we only need to find a proof for <code>P</code>. This transition happens by <code>apply h</code>.</p>
+                  <table class="tabular left-align"><tr><th><p>
+                          , h : P → Q <br> ⊢ P</p>
+                        </th><th><p>
+                          apply h</p>
+                        </th><th><p>
+                          ⊢Q</p>
+                        </th></tr><tr><td><p>
+                          h₁ : P → Q <br> h₂ : Q → R  <br> ⊢ R</p>
+                        </td><td><p>
+                          apply h₂ h₁</p>
+                        </td><td><p>
+                          h₁ : P → Q <br> h₂ : Q → R  <br> ⊢ P</p>
+                        </td></tr></table><p>
+                    The <code>apply</code>-tactics works iteratively. This means that if <code>apply h</code> makes no progress, it uses the placeholder <code>_</code> and tries to make <code>apply h _</code>.</p>
+                  <code class="hl lean block" data-lean-context="exercises"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-20057">example</span></span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.71" data-verso-hover="21">hPQR</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="3">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.12" data-verso-hover="4">Q</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.20" data-verso-hover="22">R</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.20" data-verso-hover="22">R</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-9126647981922100750-20095-20097"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-20095" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-9126647981922100750-20095-20097"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.71" data-verso-hover="21">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-2395313843506087369-20100-20110"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.apply-20100" data-verso-hover="16">apply</span> <span class="var token" data-binding="var-_uniq.71" data-verso-hover="21">hPQR</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-2395313843506087369-20100-20110"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-6" checked="checked"><span for="--verso-unique-6" class="goal-name">a</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.71" data-verso-hover="21">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span></span></span></span></span><span class="goal"><span class="labeled-case"><label class="case-label"><input type="checkbox" id="--verso-unique-7"><span for="--verso-unique-7" class="goal-name">a</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.71" data-verso-hover="21">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-10019989806101893703-20113-20115"><span class="unknown token" data-binding="">·</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-10019989806101893703-20113-20115"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-8" checked="checked"><span for="--verso-unique-8" class="goal-name">a</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.71" data-verso-hover="21">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span></span></span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-20116-20121"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-20116" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-20116-20121"><span class="tactic-state">All goals completed! 🐙</span></span>
+  <span class="tactic"><label for="tactic-state-15062850065492362889-20124-20126"><span class="unknown token" data-binding="">·</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-15062850065492362889-20124-20126"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-9" checked="checked"><span for="--verso-unique-9" class="goal-name">a</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="" data-verso-hover="7">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.71" data-verso-hover="21">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="23">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="25">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="24">Q</span></span></span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-20127-20132"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-20127" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-20127-20132"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    <strong>Remarks:</strong></p>
+                  <ul>
                     <li>
-                      <a href="#---index-hdr-A">A</a></li>
-                    <li>
-                      <a href="#---index-hdr-F">F</a></li>
-                    <li>
-                      <a href="#---index-hdr-L">L</a></li>
-                    </ol>
-                  </nav>
-                <div class="division">
-                  <h3 id="---index-hdr-A">
-                    A</h3>
-                  <ol>
-                    <li>
-                      <span id="---entry-apply"><code>apply</code></span><ol>
-                        <li>
-                          <a href="#Lean___Parser___Tactic___apply"><span id="---entry-___key___---___k___"><code>Lean.<wbr>Parser.<wbr>Tactic.<wbr>apply</code></span></a></li>
-                        </ol>
+                      <p>
+                        <code>apply</code> works up to equality by definition. This can be seen in the example above, where <code>¬P ↔ (P → False)</code> is true by definition.</p>
                       </li>
-                    </ol>
-                  </div>
-                <div class="division">
-                  <h3 id="---index-hdr-F">
-                    F</h3>
-                  <ol>
                     <li>
-                      <span id="---entry-forM"><code>for&shy;M</code></span><ol>
-                        <li>
-                          <a href="#List___forM"><span id="---entry-___key___---___k___1"><code>List.<wbr>for&shy;M</code></span></a></li>
-                        </ol>
+                      <p>
+                        <code>apply h</code> is frequently identical to <code>refine ?_</code>.</p>
                       </li>
-                    </ol>
-                  </div>
-                <div class="division">
-                  <h3 id="---index-hdr-L">
-                    L</h3>
-                  <ol>
                     <li>
-                      <a href="#Lean___Parser___Tactic___apply"><span id="---entry-Lean___Parser___Tactic___apply"><code>Lean.<wbr>Parser.<wbr>Tactic.<wbr>apply</code></span></a></li>
-                    <li>
-                      <a href="#List___forM"><span id="---entry-List___forM"><code>List.<wbr>for&shy;M</code></span></a></li>
-                    </ol>
-                  </div>
-                </div>
+                      <p>
+                        If the use of <code>apply</code> closes the current goal, you might as well use <code>exact</code> instead of <code>apply</code>.
+</p>
+                      </li>
+                    </ul>
+                  </section>
+                </section>
               </section>
             <section>
               <h2>
@@ -1983,7 +2388,7 @@ See <code class="hl lean inline" data-lean-context="docstring-examples"><span cl
                 <li>
                   <a href=""><span class="number">4.</span> Docstrings</a></li>
                 <li>
-                  <a href=""><span class="unnumbered"></span>Index</a></li>
+                  <a href=""><span class="number">5.</span> Tactics</a></li>
                 </ol>
               </section>
             </section>

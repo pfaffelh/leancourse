@@ -7,25 +7,12 @@
  "5":
  "<code class=\"docstring\">`by tac` constructs a term of the expected type by running the tactic(s) `tac`. </code>",
  "4": "<code>Sort u_2</code>",
- "31":
- "<code>Applicative.{u, v} (f : Type u → Type v) : Type (max (u + 1) v)</code><span class=\"sep\"></span><code class=\"docstring\">An [applicative functor](https://en.wikipedia.org/wiki/Applicative_functor) is\nan intermediate structure between `Functor` and `Monad`. It mainly consists of\ntwo operations:\n\n* `pure : α → F α`\n* `seq : F (α → β) → F α → F β` (written as `&lt;*&gt;`)\n\nThe `seq` operator gives a notion of evaluation order to the effects, where\nthe first argument is executed before the second, but unlike a monad the results\nof earlier computations cannot be used to define later actions.\n</code>",
- "30":
- "<code>List.forA.{u, v, w} {m : Type u → Type v} [Applicative m] {α : Type w} (as : List α) (f : α → m PUnit) : m PUnit</code><span class=\"sep\"></span><code class=\"docstring\">Applies the applicative action `f` on every element in the list, left-to-right.\n\nNB: If `m` is also a `Monad`, then using `forM` can be more efficient.\n\nSee `List.mapA` for the variant that collects results.\nSee `List.forM` for the variant that works with `Monad`.\n</code>",
  "3": "<code>Sort u_1</code>",
- "29":
- "<code>List.mapM.{u, v, w} {m : Type u → Type v} [Monad m] {α : Type w} {β : Type u} (f : α → m β) (as : List α) : m (List β)</code><span class=\"sep\"></span><code class=\"docstring\">Applies the monadic action `f` on every element in the list, left-to-right, and returns the list of\nresults.\n\nSee `List.forM` for the variant that discards the results.\nSee `List.mapA` for the variant that works with `Applicative`.\n</code>",
- "28":
- "<code>PUnit.{u} : Sort u</code><span class=\"sep\"></span><code class=\"docstring\">The unit type, the canonical type with one element, named `unit` or `()`.\nThis is the universe-polymorphic version of `Unit`; it is preferred to use\n`Unit` instead where applicable.\nFor more information about universe levels: [Types as objects](https://lean-lang.org/theorem_proving_in_lean4/dependent_type_theory.html#types-as-objects)\n</code>",
- "27": "<code>α → m PUnit</code>",
- "26":
- "<code>List.{u} (α : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">`List α` is the type of ordered lists with elements of type `α`.\nIt is implemented as a linked list.\n\n`List α` is isomorphic to `Array α`, but they are useful for different things:\n* `List α` is easier for reasoning, and\n  `Array α` is modeled as a wrapper around `List α`\n* `List α` works well as a persistent data structure, when many copies of the\n  tail are shared. When the value is not shared, `Array α` will have better\n  performance because it can do destructive updates.\n</code>",
- "25": "<code>List α</code>",
- "24": "<code>Type w</code>",
- "23":
- "<code>Monad.{u, v} (m : Type u → Type v) : Type (max (u + 1) v)</code><span class=\"sep\"></span><code class=\"docstring\">A [monad](https://en.wikipedia.org/wiki/Monad_(functional_programming)) is a\nstructure which abstracts the concept of sequential control flow.\nIt mainly consists of two operations:\n\n* `pure : α → F α`\n* `bind : F α → (α → F β) → F β` (written as `&gt;&gt;=`)\n\nLike many functional programming languages, Lean makes extensive use of monads\nfor structuring programs. In particular, the `do` notation is a very powerful\nsyntax over monad operations, and it depends on a `Monad` instance.\n\nSee [the `do` notation](https://lean-lang.org/lean4/doc/do.html)\nchapter of the manual for details.\n</code>",
- "22":
- "<code class=\"docstring\">A type universe. `Type ≡ Type 0`, `Type u ≡ Sort (u + 1)`. </code>",
- "21": "<code>Type u → Type v</code>",
+ "25": "<code>Sort ?u.25</code>",
+ "24": "<code>Sort ?u.24</code>",
+ "23": "<code>Sort ?u.22</code>",
+ "22": "<code>Sort u_3</code>",
+ "21": "<code>P → Q → R</code>",
  "20":
  "<code class=\"docstring\">This tactic applies to a goal whose target has the form `x ~ x`,\nwhere `~` is equality, heterogeneous equality or any relation that\nhas a reflexivity lemma tagged with the attribute @[refl].\n</code>",
  "2":

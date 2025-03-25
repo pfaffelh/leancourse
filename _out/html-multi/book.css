@@ -10,7 +10,7 @@
     /* The font family used for code */
     --verso-code-font-family: monospace;
     /* What's the maximum line width, for legibility? */
-    --verso-content-max-width: 70rem;
+    --verso-content-max-width: 45rem;
     /* Desktop font size */
     --verso-font-size: 16px;
     /* Mobile font size */

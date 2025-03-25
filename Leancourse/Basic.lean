@@ -487,6 +487,7 @@ Docstrings can be included using the `docstring` directive. For instance,
   + `h : n = m` {br}[] `⊢ P`
 :::
 
+
 ## Summary of several tactics
 
 ### `apply`
@@ -505,10 +506,10 @@ Docstrings can be included using the `docstring` directive. For instance,
 The `apply`-tactics works iteratively. This means that if `apply h` makes no progress, it uses the placeholder `_` and tries to make `apply h _`.
 
 ```lean
-example (hPQR : P → Q → R) : R := by
+example (hP : P) (hQ : Q) (hPQR : P → Q → R) : R := by
   apply hPQR
-  · sorry
-  · sorry
+  · exact hP
+  · exact hQ
 ```
 
 
@@ -516,3 +517,17 @@ example (hPQR : P → Q → R) : R := by
 * `apply` works up to equality by definition. This can be seen in the example above, where `¬P ↔ (P → False)` is true by definition.
 * `apply h` is frequently identical to `refine ?_`.
 * If the use of `apply` closes the current goal, you might as well use `exact` instead of `apply`.
+
+### `assumption`
+
+**Summary**: If the current goal is identical to a hypothesis, `assumption` closes the goal.
+
+
+**Remarks:**
+* Like other tactics, `assumtion` works up to equality by definition.
+* Here is a trick, which works well with `assumption`. If you write `<;>` after a tactic, the following command is applied to all goals.
+
+```lean
+example (hP : P) (hQ : Q) : P ∧ Q := by
+  constructor <;> assumption
+```

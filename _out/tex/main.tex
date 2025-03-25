@@ -210,10 +210,10 @@ Docstrings can be included using the \Verb|docstring| directive. For instance,
 The \Verb|apply|-tactics works iteratively. This means that if \Verb|apply h| makes no progress, it uses the placeholder \Verb|_| and tries to make \Verb|apply h _|.
 
 \begin{verbatim}
-example (hPQR : P → Q → R) : R := by
+example (hP : P) (hQ : Q) (hPQR : P → Q → R) : R := by
   apply hPQR
-  · sorry
-  · sorry
+  · exact hP
+  · exact hQ
 
 \end{verbatim}
 
@@ -223,8 +223,28 @@ example (hPQR : P → Q → R) : R := by
 
 \begin{itemize}
 \item \Verb|apply| works up to equality by definition. This can be seen in the example above, where \Verb|¬P ↔ (P → False)| is true by definition.\item \Verb|apply h| is frequently identical to \Verb|refine ?_|.\item If the use of \Verb|apply| closes the current goal, you might as well use \Verb|exact| instead of \Verb|apply|.
-
 \end{itemize}
+
+
+
+
+\subsection{\Verb|assumption|}
+
+\textbf{Summary}: If the current goal is identical to a hypothesis, \Verb|assumption| closes the goal.
+
+\textbf{Remarks:}
+
+\begin{itemize}
+\item Like other tactics, \Verb|assumtion| works up to equality by definition.\item Here is a trick, which works well with \Verb|assumption|. If you write \Verb|<;>| after a tactic, the following command is applied to all goals.
+\end{itemize}
+
+
+\begin{verbatim}
+example (hP : P) (hQ : Q) : P ∧ Q := by
+  constructor <;> assumption
+
+\end{verbatim}
+
 
 
 

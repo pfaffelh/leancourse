@@ -8,11 +8,18 @@
  "<code class=\"docstring\">`by tac` constructs a term of the expected type by running the tactic(s) `tac`. </code>",
  "4": "<code>Sort u_2</code>",
  "3": "<code>Sort u_1</code>",
+ "29":
+ "<code class=\"docstring\">`assumption` tries to solve the main goal using a hypothesis of compatible type, or else fails.\nNote also the `‹t›` term notation, which is a shorthand for `show t by assumption`.\n</code>",
+ "28":
+ "<code class=\"docstring\">If the main goal's target type is an inductive type, `constructor` solves it with\nthe first matching constructor, or else fails.\n</code>",
+ "27":
+ "<code>And (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`And a b`, or `a ∧ b`, is the conjunction of propositions. It can be\nconstructed and destructed like a pair: if `ha : a` and `hb : b` then\n`⟨ha, hb⟩ : a ∧ b`, and if `h : a ∧ b` then `h.left : a` and `h.right : b`.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∧` in identifiers is `and`.\n\n * The recommended spelling of `/\\` in identifiers is `and` (prefer `∧` over `/\\`).</code>",
+ "26": "<code>Sort ?u.31</code>",
  "25": "<code>Sort ?u.25</code>",
- "24": "<code>Sort ?u.24</code>",
- "23": "<code>Sort ?u.22</code>",
- "22": "<code>Sort u_3</code>",
- "21": "<code>P → Q → R</code>",
+ "24": "<code>Sort ?u.23</code>",
+ "23": "<code>Sort u_3</code>",
+ "22": "<code>P → Q → R</code>",
+ "21": "<code>Q</code>",
  "20":
  "<code class=\"docstring\">This tactic applies to a goal whose target has the form `x ~ x`,\nwhere `~` is equality, heterogeneous equality or any relation that\nhas a reflexivity lemma tagged with the attribute @[refl].\n</code>",
  "2":

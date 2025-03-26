@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      (function(){
+  const {protocol:proto, host:hostName, pathname:path, search:srch, hash:hsh} = window.location;
+  if (!(path.endsWith("/") || path.endsWith(".html"))) {
+    window.location.replace(`${proto}//${hostName}${path}/${srch}${hsh}`);
+  }
+})()</script>
+    <base href="./"><meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Interactive Theorem Proving using Lean, Summer 2025</title><link rel="stylesheet" href="book.css">
+    <script>
+      const __versoSiteRoot = document.baseURI;</script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
+    <style>
+table.tabular {
+  margin: auto;
+  border-spacing: 1rem;
+}
+table.tabular.left-align {
+  margin-right: auto;
+  margin-left: 0;
+}
+table.tabular.center-align {
+  margin: auto;
+}
+table.tabular.right-align {
+  margin-left auto;
+  margin-right: 0;
+}
+table.tabular td, table.tabular th {
+  text-align: left;
+  vertical-align: top;
+}
+table.tabular td > p:first-child, table.tabular th > p:first-child {
+  margin-top: 0;
+}
+table.tabular td > p:last-child, table.tabular th > p:first-child {
+  margin-bottom: 0;
+}
+</style></head>
+  <body>
+    <header>
+      <div class="header-logo-wrapper"></div>
+      <div class="header-title-wrapper">
+        <a href="" class="header-title"><h1>
+            Interactive Theorem Proving using Lean, Summer 2025</h1>
+          </a></div>
+      </header>
+    <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
+      <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
+      <nav id="toc">
+        <input type="checkbox" id="toggle-toc"><div class="first">
+          <a href="" class="toc-title"><h1>
+              Interactive Theorem Proving using Lean, Summer 2025</h1>
+            </a><div class="split-tocs">
+            <div class="split-toc book">
+              <div class="title">
+                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class="">Table of Contents</span></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">First steps using logic</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics">Tactics</a></td></tr></table></div>
+            </div>
+          </div>
+        <div class="last">
+          <ul id="meta-links">
+            <li>
+              <a href="https://github.com/pfaffelh/leancourse">Source Code</a></li>
+            <li>
+              <a href="https://github.com/pfaffelh/leancourse/issues">Report Issues</a></li>
+            </ul>
+          </div>
+        </nav>
+      <main><div class="content-wrapper">
+          <nav class="prev-next-buttons">
+            <div></div>
+            <div></div>
+            </nav>
+          <section>
+            <div class="titlepage">
+              <h1>
+                 Interactive Theorem Proving using Lean, Summer 2025</h1>
+              <div class="authors">
+                <span class="author">Peter Pfaffelhuber</span></div>
+              <p>
+                These are the notes for a course on formal proving with the interactive theorem prover Lean4 (in the following we just write Lean) in the summer semester of 2025 at the University of Freiburg. To be able to work through the course in a meaningful way, the following technical preparations are to be made:</p>
+              <ul>
+                <li>
+                  <p>
+                    Installation of <a href="https://code.visualstudio.com/">vscode</a>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Local installation of Lean and the associated tools: Please follow these <a href="https://github.com/leanprover-community/mathlib4/wiki/Using-mathlib4-as-a-dependency">instructions</a>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Installing the course repository: Navigate to a location where you would like to put the course materials and use <code>git clone https://github.com/pfaffelh/leancourse</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    After <code>cd leancourse</code> and <code>code .</code>, you should see some code which looks a bit like mathematics. On the left hand side of the <code>vscode</code> window, you can click and install an extension for <code>Lean</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    The directory <code>Leancourse/Exercises</code> contains the material for the course. We recommend that you first copy this directory, for example to <code>myExercises</code>. Otherwise, an update of the repository may overwrite the local files.</p>
+                  </li>
+                <li>
+                  <p>
+                    To update the course materials, enter <code>git pull</code> from within the <code>leancourse</code>directory.</p>
+                  </li>
+                </ul>
+              </div>
+            <section>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Introduction">
+                1. Introduction</h2>
+              <p>
+                The course is designed for mathematics students and has at least two goals:</p>
+              <ul>
+                <li>
+                  <p>
+                    Learning the techniques for interactive formal Theorem proofing using Lean: In recent years, efforts to prove mathematical theorems with the help of computers have increased dramatically. While a few decades ago, it was more a matter of consistently processing many cases that were left to the computer, interactive theorem provers are different. Here, a very small core can be used to understand or interactively generate all the logical conclusions of a mathematical proof. The computer then reports interactively on the progress of the proof and when all the steps have been completed.</p>
+                  </li>
+                <li>
+                  <p>
+                    Establishing connections to some mathematical material: On the one hand, the mathematical details needed in this course should not be the main issue of this course. On the other hand, in order to <em>explain</em> how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well - at least if it exceeds a few lines - so that the commands you enter (which we will call tactics) fit together.</p>
+                  </li>
+                </ul>
+              </section>
+            <section>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic">
+                2. First steps using logic</h2>
+              <p>
+                We start with simple logical statements. We always distinguish (as in every mathematical theorem) between the <em>hypotheses</em> and the <em>statement</em> (or <em>assertion</em>, which we also call <em>goal</em> or <em>target</em>). To introduce our hypotheses, we write <code>variable (P Q R S T : Prop)</code>. Note that the lean syntax does not use the usual double arrow <code>=&gt;</code> here, but a single <code>→</code>. We are going through the following logical inferences here:</p>
+              <ul>
+                <li>
+                  <p>
+                    Exercises 01-a:
+  The statement <code>⊢ P → Q</code> (i.e. <code>P</code> implies <code>Q</code>) means that <code>Q</code> is valid if one may assume that the hypothesis <code>P</code> is correct. This transition from <code>⊢ P → Q</code> to the hypothesis <code>hP : P</code> with target <code>⊢ Q</code> is done using <code>intro hP</code>. Several <code>intro</code> commands can be abbreviated using <code>intro h1 h2...</code>.</p>
+                  <p>
+                    If the hypothesis <code>hP : P</code> holds and we want to prove <code>⊢ P</code>, then we just have to apply <code>hP</code> to the goal. If goal and hypothesis are identical, this is done with <code>exact hP</code>. In a more general way, <code>assumption</code> searches all hypotheses for those that are identical with the goal by definition.</p>
+                  </li>
+                <li>
+                  <p>
+                    Exercises 01-b:</p>
+                  <p>
+                    If you want to prove <code>⊢ Q</code> and know that <code>hPQ : P → Q</code> is valid, then it is sufficient to prove <code>⊢ P</code> (since <code>hPQ</code> then implies <code>⊢ Q</code>). In this case, <code>apply hPQ</code> changes the goal to <code>⊢ P</code>.</p>
+                  <p>
+                    Behind an equivalence statement <code>⊢ P ↔ Q</code> (type the double arrow as <code>\iff</code>) there are actually the two statements <code>⊢ P → Q</code> and <code>⊢ Q → P</code>. Using <code>constructor</code> converts the goal <code>⊢ P ↔ Q</code> into two goals for the two directions.</p>
+                  <p>
+                    In Lean, logical negation is noted with <code>¬</code> (type <code>\neg</code>). The statement <code>¬P</code> is defined as <code>P → false</code>, where <code>false</code> stands for a <em>false</em> statement.</p>
+                  </li>
+                <li>
+                  <p>
+                    Sheet 01-c:</p>
+                  <p>
+                    <em>false</em> implies anything. The actual statement is <code>⊢ false → P</code>. If the current target is <code>⊢ P</code>, and you apply the statement <code>⊢ false → P</code> using <code>apply</code>, this is equivalent to applying <code>exfalso</code>.</p>
+                  <p>
+                    The two expressions <code>False</code> and <code>True</code> represent two statements that are <em>false</em> and <em>true</em>, respectively. So <code>True</code> should be easy to prove. This is provided by the tactic <code>triv</code>.</p>
+                  <p>
+                    In a proof by contradiction, instead of <code>⊢ P</code>, you prove the statement <code>⊢ ¬P → false</code> (which, after <code>intro h</code>, leads to the assumption <code>h : ¬P</code> and the new goal <code>⊢ false</code>). This is logically correct, since <code>P</code> is true if and only if <code>¬P</code> leads to a contradiction, i.e. an false statement. The transformation of the goal in this way is achieved with the tactic <code>by_contra</code> or <code>by_contra h</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Exercises 01-e:</p>
+                  <p>
+                    For <em>and</em> and <em>or</em> links between statements, Lean provides the usual notations <code>∧</code> (type <code>\wedge</code>) and <code>∨</code> (type <code>\vee</code>). Statements linked with these connections can occur both in a hypothesis and in the goal. Now there are the following four cases:</p>
+                  <ul>
+                    <li>
+                      <p>
+                        <code>⊢ P ∧ Q</code>: Here we must prove the two statements <code>P</code> and <code>Q</code>. With <code>constructor</code> exactly these two goals (with the same assumptions) are created, i.e. <code>⊢ P</code> and <code>⊢ Q</code>. If these two are shown, then obviously <code>⊢ P ∧ Q</code> is also shown.</p>
+                      </li>
+                    <li>
+                      <p>
+                        <code>⊢ P ∨ Q</code>: To show this, it is sufficient to either show <code>P</code> or to show <code>Q</code>. In the first case, the target is replaced by <code>⊢ P</code> with <code>left</code>, and by <code>⊢ Q</code> with <code>right</code>.</p>
+                      </li>
+                    <li>
+                      <p>
+                        <code>h : P ∧ Q</code>: Apparently, the hypothesis <code>h</code> breaks down into two hypotheses, both of which must hold. Using <code>cases' h with hP hQ</code>, <code>h : P ∧ Q</code> is transformed into two hypotheses, namely <code>hP : P</code> and <code>hQ : Q</code>.</p>
+                      </li>
+                    <li>
+                      <p>
+                        <code>h : P ∨ Q</code>: Similar to the last case, <code>cases' h with hP hQ</code> now generates two new goals, one where <code>h : P ∨ Q</code> has been replaced by <code>hP : P</code>, and one where <code>h : P ∨ Q</code> has been replaced by <code>hQ : Q</code>. This is logically correct, because this way you can distinguish the cases where <code>P</code> or <code>Q</code> apply.</p>
+                      </li>
+                    </ul>
+                  </li>
+                <li>
+                  <p>
+                    Exercises 01-e:</p>
+                  <p>
+                    This is about introducing new hypotheses. With the <code>by_cases</code> tactic - applied to a hypothesis <code>h : P</code> - all possibilities are gone through that <code>P</code> can assume. These are that <code>P</code> is either <code>true</code> or <code>false</code>. So <code>by_cases h : P</code> introduces two new goals, one with the hypothesis <code>h : P</code> and one with the hypothesis <code>h : ¬P</code>.</p>
+                  <p>
+                    A very general tactic is <code>have</code>. Any hypotheses can be formulated here that must first be shown.</p>
+                  </li>
+                <li>
+                  <p>
+                    Exercise 01-f:</p>
+                  <p>
+                    Now we come to abbreviations. First, we introduce the abbreviation <code>⟨ hP, hQ, hR ⟩</code> (type <code>\langle</code> and <code>\rangle</code>) for the <code>∧</code> conjunction of the statements <code>hP</code> <code>hQ</code> and <code>hR</code>. (This works with two or more than three hypotheses). Similarly, <code>(hP | hQ)</code> is a shorthand for <code>hP ∨ hQ</code>. These two shorthands can also be nested. The three tactics we discuss here are <code>rintro</code> for <code>intros</code> + <code>cases</code>, <code>rcases</code> for a more flexible version of <code>cases</code> that allows the notations just introduced, and <code>obtain</code> for <code>intro</code> + <code>have</code>.</p>
+                  </li>
+                <li>
+                  <p>
+                    Exercise 01-g: Quantifiers</p>
+                  <p>
+                    Quantifiers such as <code>∀</code> (type <code>\forall</code>) and <code>∃</code> (type <code>\exists</code>) have been known since the first semester. These can also occur in <code>Lean</code>. We distinguish whether these quantifiers occur in the goal or in a hypothesis. The following is a small table of which tactics are appropriate in each case. Exact explanations are in <code>01-g.lean</code>.</p>
+                  </li>
+                </ul>
+              <table class="tabular left-align"><tr><th><p>
+                      Quantifier</p>
+                    </th><th><p>
+                      in goal</p>
+                    </th><th><p>
+                      in hypothesis <code>h</code></p>
+                    </th></tr><tr><td><p>
+                      <code>∀ (x : X), _</code></p>
+                    </td><td><p>
+                      <code>intro x</code></p>
+                    </td><td><p>
+                      <code>apply h _</code></p>
+                    </td></tr><tr><td><p>
+                      <code>∃ (x : X), _</code></p>
+                    </td><td><p>
+                      <code>use _</code></p>
+                    </td><td><p>
+                      <code>cases h</code></p>
+                    </td></tr></table><ul>
+                <li>
+                  <p>
+                    Exercises 01-h:</p>
+                  <p>
+                    Slowly but surely, we are working our way towards applications with <em>real</em> mathematics, but a few things are still missing. In this sheet, we learn to prove equalities using <em>refl</em>. For later work with <code>=</code> or <code>↔</code> (type <code>\iff</code>) statements, <code>rw</code> is very important because here you can rewrite things, i.e. you can use propositional equalities. Since there are already a lot of statements in <code>Mathlib</code>, it is good to have a kind of search function. This is provided by <code>apply?</code>. We also learn how to define functions. This is done using the <code>fun</code> keyword. For example, <code>fun x ↦ 2*x</code> (type <code>\mapsto</code>, but <code>=&gt;</code> works as well) represents the function <code>x ↦ 2x</code>. If you have <code>let f : X → X := fun x ↦ 2*x</code>, then <code>f 1</code> returns the function value for <code>x = 1</code>.</p>
+                  </li>
+                </ul>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Natural-numbers">
+                  2.1. Natural numbers</h3>
+                <p>
+                  To get a little more mathematical, we now introduce the natural numbers. This type (abbreviated <code>ℕ</code>, type <code>\N</code>) is defined (see 02-a.lean) so that <code>0 : ℕ</code> and <code>succ (n : ℕ) : ℕ</code>, i.e. with <code>n</code> is also <code>succ n</code> a natural number. <code>succ n</code> stands for the successor of <code>n</code>. Furthermore, we will get to know the types <code>set ℕ</code> and <code>Finset ℕ</code> here. These are the subsets of <code>ℕ</code> and the finite subsets of <code>ℕ</code>.</p>
+                <ul>
+                  <li>
+                    <p>
+                      Sheet 02-a: Natural numbers and the <code>calc</code> mode:
+    After an introduction to how natural numbers are implemented in <code>Lean</code>, we introduce the <code>calc</code> mode. This allows us to perform calculations step by step, using previously proven statements. This way, we can, for example, prove binomial formulas. We also get to know the very powerful tactics <code>ring</code>, <code>norm_num</code>, <code>linarith</code> and <code>simp</code> can simplify a lot of work. Here we also learn the <code>fun</code> notation for defining functions.</p>
+                    </li>
+                  <li>
+                    <p>
+                      Page 02-b: divisibility:
+    For <code>m n : ℕ</code> (or <code>m n : ℤ</code>) <code>h : m | n</code> (type <code>\|</code>), means that <code>n</code> is divided by <code>m</code>. In other words, there is <code>a : ℕ</code> with <code>n = a * m</code>. With this definition, the goal of this sheet is to show the long known statement that a number is exactly divisible by 3 (or 9) if and only if its cross sum is divisible by 3 (or 9). Here we will only do this for numbers up to <code>10000</code>.
+<strong>Bonus task:</strong> An especially simple method of proving the divisibility rule by 3 in Lean is with the following Lean file (here, <code>\%</code> is the modulo sign and <code>digits 10</code> is the finite list of decimal representations of the
+  number <code>n</code>):</p>
+                    <pre>  open Nat
+  example (n : ℕ) : 3 ∣ n ↔ 3 ∣ (digits 10 n).sum := by
+    refine dvd_iff_dvd_digits_sum 3 10 _ n
+    norm_num
+</pre></li>
+                  </ul>
+                <p>
+                  This proof is based on the following statement:</p>
+                <pre>lemma dvd_iff_dvd_digits_sum (b b' : ℕ) (h : b' % b = 1) (n : ℕ) :
+b ∣ n ↔ b ∣ (digits b' n).sum
+</pre><p>
+                  Give a script proof of this statement.</p>
+                <ul>
+                  <li>
+                    <p>
+                      Page 02-c: <code>\sqrt 2</code>:
+     This is about the proof <code>√2 ∉ ℚ</code>. Here is the proof as you would find it in a script (or school book): Assuming that there are <code>m</code> and <code>n</code> such that <code>√2 = m/n</code>, then  <code>2n² = m²</code>. Let <code>m</code> and <code>n</code> be relatively prime. Then <code>2 ∣ m²</code>. Since <code>m²</code> is even, <code>m</code> must also be even, so <code>m = 2a</code> for some <code>a</code>. Thus <code>2*n² = 4 * a²</code> or <code>n² = 2 a²</code>. This means that <code>n²</code> is even, and as just argued, <code>n</code> would then be even. However, this contradicts the complementary division of <code>m</code> and <code>n</code>. This proof is formalized here. (Note that the proof given here only works for <code>√2</code>, but not for <code>√3</code>. The reason is that we use that for every <code>m ∈ ℕ</code> either <code>m</code> or <code>m+1</code> is even (i.e. divisible by 2). This is obviously false for <code>3</code>.)</p>
+                    </li>
+                  <li>
+                    <p>
+                      Page 02-d: induction
+    induction has been known since the first semester: If one shows for a statement <code>P : ℕ → Prop</code> both <code>P 0</code> and also <code>∀ d : ℕ, P d → P (d + 1)</code>, then one has <code>∀ n : ℕ, P n</code> shown. This is the so-called <strong>weak</strong>    induction that we will use here for a few statements. We will also show the well-ordering principle of <code>ℕ</code>, which states that every non-empty subset of ℕ contains a smallest element</p>
+                    </li>
+                  <li>
+                    <p>
+                      Sheet 02-e: Pigeonhole principle
+   If you distribute <code>m</code> balls among <code>n&lt;m</code> drawers, at least two balls end up in the same drawer. In more mathematical terms, there is no injective mapping of an <code>m</code>-element set into an <code>n&lt;m</code>-element one. To prove this, we first introduce introduce injective mappings and use an induction principle for <code>Finset</code>s.</p>
+                    </li>
+                  </ul>
+                </section>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Real-Numbers">
+                  2.2. Real Numbers</h3>
+                <p>
+                  We now come to real numbers without looking at their definition (which
+uses Cauchy sequences).</p>
+                <ul>
+                  <li>
+                    <p>
+                      Sheet 03-a: Lower Bounds on a Set
+   We introduce the set of lower bounds on a set <code>A \subsets \mathbb R</code> is introduced. The largest lower bound is then known to be the <code>\inf A</code>. To formulate the main result, we also introduce the limit of a sequence. Finally, we prove that <code>x = \inf A</code> holds if and only if there is a sequence in <code>A</code> that converges to <code>x</code>.</p>
+                    </li>
+                  <li>
+                    <p>
+                      Page 03-b: The derivative of <code>x\mapsto x^{n+1}</code>
+    As is well known, the derivative of <code>x\mapsto x^{n+1}</code> is given by     <code>x\mapsto (n+1)x^n</code>. To show this, we need the concept of the derivative (here as a sequence limit), as well as the product rule. We will reduce everything to the calculation rules for limits, such as the fact that the limit of the product of two convergent sequences is given by the product of the limits. After this preliminary work, we prove the formula by induction.
+# Notes on Lean</p>
+                    </li>
+                  </ul>
+                <p>
+                  In Section 1, we have already dealt with the installation of Lean and <code>vscode</code>. Here follows a short, incoherent introduction. We start with a very simple example. The tactics <code>intro</code> and <code>exact</code> can be found in
+Chapter. If we want to prove the statement <code>P → P</code> (i.e. <code>P</code> implies <code>P</code>) we enter the following on the left side in <code>vscode</code>:</p>
+                <pre>example (P : Prop) : P → P := by
+  sorry
+</pre><p>
+                  On the right side, depending on the position of the cursor, you will find the <strong>proof state</strong>. If the cursor is directly after <code>by</code>, the <strong>proof state</strong> is seen. It is important to know that behind <code>⊢</code> stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that <code>P</code> is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the <code>sorry</code>, there is now <strong>no goals</strong>, but the <code>sorry</code> tactic is only there to prove unproven assertions without further action, and a warning is issued in <code>vscode</code>. If you delete the <code>sorry</code> and replace it with an <code>intro hP</code>, we get</p>
+                <pre>P : Prop
+hP : P
+⊢ P
+</pre><p>
+                  So we have transformed the statement <code>P → P</code> into a state where we have to assume <code>hP : P</code> and conclude <code>P</code>. This can now easily be solved using <code>assumption</code>, and the desired <strong>no goals</strong> appears. The <code>assumption</code> tactic searches for a hypothesis that is identical to the statement and concludes the proof. The exact  tactic is somewhat different. Here you have to know exactly which hypothesis is meant and can use <code>exact hP</code> to conclude the proof.</p>
+                </section>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Dependent-type-theory">
+                  2.3. Dependent type theory</h3>
+                <p>
+                  Lean is a functional programming language (i.e. it actually only consists of functions) and is based on the <strong>dependent type theory</strong>. Types in programming languages like Python are <code>bool</code>, <code>int</code>, <code>double</code> etc. Lean thrives on defining and using your own types. We will see in the course of the course that you can think of the resulting types as sets. The type <code>ℕ</code> will be the set of natural numbers, and <code>ℝ</code> the set of real numbers. However, <code>ℕ</code> actually represents an infinite set that is characterized by containing <code>0</code>, and if it contains <code>n</code>, then it also contains the successor of <code>n</code> (represented by <code>succ n</code>). Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences,  which is quite elaborate. Types can depend on other types, and that is why we speak of <strong>dependent types</strong>. For example, the space <code>\mathbb R^n</code> depends on the dimension <code>n</code>. As we shall see mathematical statements are also types. Regarding the notation: for sets, we are used to writing <code>n\in\mathbb N</code> if <code>n</code> is a natural number. In type theory, we write <code>n : ℕ</code> and say that <code>n</code> is a term (expression) of type <code>ℕ</code>. More generally, every expression has a type and when introducing an expression, Lean checks its type. (Incidentally, this can be quite confusing: for example, the statement <code>(x : ℕ) → (x : ℤ)</code>, i.e. (every natural number is also an integer) is not at all comprehensible for <code>lean</code>. Because <code>x</code> is a term of type <code>ℕ</code> (and thus of no other type), so that <code>x : ℤ</code> makes no sense at all for <code>lean</code>. The solution is an 'invisible mapping' <code>coe : ℕ → ℤ</code>.)</p>
+                </section>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Universes___-Types-and-Terms">
+                  2.4. Universes, Types and Terms</h3>
+                <p>
+                  In Lean, there are three levels of objects: universes, types and terms. We are concerned here with the last two. Of particular interest is the type <code>Prop</code>, which consists of statements that can be true or false . It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form <code>hP : P</code>, which means <code>P</code> is true, and this statement is called <code>hP</code>. It can also mean that <code>P</code> is true and <code>hP</code> is a proof of <code>P</code>. The hypotheses here have names <code>P Q R S</code>, and the names of the hypotheses <code>hP hQ hR hS</code>. All names can be arbitrary. Furthermore, there are hypotheses of the form <code>P → Q</code>, which is the statement that <code>P</code> implies <code>Q</code>.</p>
+                </section>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Function-definitions">
+                  2.5. Function definitions</h3>
+                <p>
+                  In <code>Lean</code>, for example, the function <code>f : \mathbb N \to \mathbb N, x \mapsto 2x</code> is defined as</p>
+                <pre>  f : ℕ → ℕ := fun x ↦ 2*x
+</pre><p>
+                  or</p>
+                <pre>fun x ↦ 2*x
+</pre><p>
+                  (Write <code>\mapsto</code> for <code>↦</code>.) It is assumed that the <code>x</code> is only introduced to
+define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</code> is then done using <code>f x</code>. (The notation <code>f x</code> is an abbreviation for <code>f(x)</code>, since <code>Lean</code> is sparing with parenthesis.)</p>
+                </section>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Equality">
+                  2.6. Equality</h3>
+                <p>
+                  In Lean, there are three types of equality:</p>
+                <ul>
+                  <li>
+                    <p>
+                      Syntactic equality: If two terms are letter-for-letter equal, then they are syntactically equal. However, there are a few more situations in which two terms are syntactically equal. Namely, if one term is just an abbreviation for the other (for example, 'x=y' is an abbreviation for 'eq x y'), then these both terms are syntactically equal. Also equal are terms in which globally quantified variables have different letters. For example, <code>∀ x, ∃ y, f x y</code> and <code>∀ y, ∃ x, f y x</code> are syntactically equal.</p>
+                    </li>
+                  <li>
+                    <p>
+                      Definitional equality: Some terms are by definition equal in Lean. For <code>x : ℕ</code>, <code>x + 0</code> is by definition identical to <code>x</code>. However, <code>0 + x</code> is not   definitionally identical to <code>x</code>. This is apparently only due to the     internal definition of addition of natural numbers in Lean.</p>
+                    </li>
+                  <li>
+                    <p>
+                      Propositional equality: If there is a proof of <code>x = y</code>, then <code>x</code> and <code>y</code> are said to be propositionally equal. Similarly, terms <code>P</code> and <code>Q</code> are said to be propositionally equal if you can prove <code>P ↔ Q</code>. Some Lean Tactics only work up to syntactic equality (such as <code>rw</code>), others (most) work up to definitional equality (such as <code>apply</code>, <code>exact</code>,...) This means that the tactic automatically transforms terms if they are syntactically or definitional equality. There is a special kind of equality to be observed with sets and functions. For example, two functions are exactly the same if they return the same value for all values in the domain. This behavior is called <strong>extensionality</strong> in the theory of programming languages. (If extensionality applies, then, for example, two sorting algorithms are the same if they always produce the same result).</p>
+                    </li>
+                  </ul>
+                </section>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Different-parentheses-in--Lean">
+                  2.7. Different parentheses in <code>Lean</code></h3>
+                <p>
+                  There are (essentially) three different types of parentheses in <code>Lean</code> statements. The simplest is <code>(...)</code>, which, as in normal use, indicates parentheses in the sense of what belongs together. However, you have to learn how 'Lean' brackets internally when no '()' are given. Operators like <strong>and</strong> (<code>∧</code>), <strong>or</strong> (<code>∨</code>), are right-associative, so e.g. <code>P ∧ Q ∧ R := P ∧ (Q ∧ R)</code>. The application of functions in sequence, such as <code>f : ℕ → ℝ</code> and <code>g : : ℝ→ ℝ </code>, applied to <code>n : ℕ</code> is <code>g (f n)</code>, because <code>g</code> expects an input of type <code>ℝ</code>, and this is what <code>f n</code> provides. You cannot omit (...), i.e. in this case the parenthesis is left-associative.</p>
+                <p>
+                  Now let's comment on the parentheses <code>[...]</code> and <code>{...}</code>. For example, <code>#check@ gt_iff_lt</code> (the statement that <code>a&gt;b</code> holds if and only if <code>b&lt;a</code> holds), where both types occur. This yields</p>
+                <pre>gt_iff_lt : ∀ {α : Type u_1} [_inst_1 : has_lt α] {a b : α}, a &gt; b ↔ b &lt; a
+</pre><p>
+                  When this result is applied, the statements in <code>{...}</code> and <code>[...]</code> are added by <code>Lean</code> itself. The statements in <code>{...}</code> depend on the type of the objects that have to be given, and can therefore be inferred. (Above, when applying <code>gt_iff_lt</code>, the variables <code>a</code> and <code>b</code> have to be given.) Therefore, their type is also known, and one does not have to <code>α</code> is not explicitly specified. Since the application is made to a concrete <code>α</code> (for example, <code>ℕ</code>), and <code>Lean</code> knows a lot about the natural numbers, the type class system can look up many properties of <code>ℕ</code>, and also finds that <code>has_lt ℕ</code> holds (i.e. on <code>ℕ</code> at least a partial order is defined).</p>
+                </section>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--First-steps-using-logic--Names-of--Mathlib--Results">
+                  2.8. Names of <code>Mathlib</code> Results</h3>
+                <p>
+                  Names like <code>zero_add, add_zero, one_mul, add_assoc, succ_ne_zero, lt_of_succ_le,...</code> seem cryptic. It is clear that individual relatively understandable abbreviations (<code>zero, one, mul, add, succ,...</code>) are separated by <code>_</code>. In general, the following two rules apply to naming:</p>
+                <ul>
+                  <li>
+                    <p>
+                      The goal of the statement to be proven is described; if hypotheses are added in the name, then with <code>of_</code>. The statement <code>lt_of_succ_le</code> is therefore an <code>&lt;</code> statement, where <code>succ ≤</code> applies. In fact:</p>
+                    </li>
+                  </ul>
+                <pre>#check @lt_of_succ_le
+</pre><p>
+                  results in</p>
+                <pre>  lt_of_succ_le : ∀ {a b : ℕ}, a.succ ≤ b → a &lt; b
+</pre><p>
+                  This way, you can often guess the names of statements that you want to use.</p>
+                </section>
+              </section>
+            <section>
+              <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics">
+                3. Tactics</h2>
+              <section>
+                <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--Cheatsheet">
+                  3.1. Cheatsheet</h3>
+                <table class="tabular left-align"><tr><th><p>
+                        Proof state</p>
+                      </th><th><p>
+                        Tactic</p>
+                      </th><th><p>
+                        New proof state</p>
+                      </th></tr><tr><td><p>
+                        <code>⊢ P → Q</code></p>
+                      </td><td><p>
+                        <code>intro hP</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P → Q → R</code></p>
+                      </td><td><p>
+                        <code>intro hP hQ</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : α → Prop</code> <br> <code>⊢ ∀ (x : α), f x</code></p>
+                      </td><td><p>
+                        <code>intro x</code></p>
+                      </td><td><p>
+                        <code>f: α → Prop</code> <br> <code>x : α</code> <br> <code>⊢ p x</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>exact h</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>assumption</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P → Q</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>apply h</code></p>
+                      </td><td><p>
+                        <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h₁ : P → Q</code> <br> <code>h₂ : Q → R</code> <br> <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>apply h₂ h₁</code></p>
+                      </td><td><p>
+                        <code>h₁ : P → Q</code> <br> <code>h₂ : Q → R</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∧ Q → P</code></p>
+                      </td><td><p>
+                        <code>tauto</code> oder <code>tauto!</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ true</code></p>
+                      </td><td><p>
+                        <code>triv</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P</code> <br> <code>⊢ Q</code></p>
+                      </td><td><p>
+                        <code>exfalso</code></p>
+                      </td><td><p>
+                        <code>h : P</code> <br> <code>⊢ false</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>by_contra h</code></p>
+                      </td><td><p>
+                        <code>h : ¬P</code> <br> <code>⊢ false</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>by_cases h : Q</code></p>
+                      </td><td><p>
+                        <code>h : Q</code> <br> <code>⊢ P</code> <br> <code>h : ¬Q</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ∧ Q</code> <br> <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>cases' h with hP hQ</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ∧ Q</code> <br> <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>obtain ⟨hP, hQ⟩ := h</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ∨ Q</code> <br> <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>cases' h with hP hQ</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>⊢ R</code> <br> <code>hQ : Q ⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : false</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>cases h</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ : P → false</code></p>
+                      </td><td><p>
+                        <code>change ¬P</code></p>
+                      </td><td><p>
+                        <code>⊢ ¬P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∧ Q</code></p>
+                      </td><td><p>
+                        <code>constructor</code></p>
+                      </td><td><p>
+                        <code>⊢ P</code> <br> <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ↔ Q</code></p>
+                      </td><td><p>
+                        <code>constructor</code></p>
+                      </td><td><p>
+                        <code>⊢ P → Q</code> <br> <code>⊢ Q → P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ↔ P</code> oder <br> <code>⊢ P = P</code></p>
+                      </td><td><p>
+                        <code>rfl</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>rw h</code></p>
+                      </td><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>hP : P</code></p>
+                      </td><td><p>
+                        <code>rw h at hP</code></p>
+                      </td><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>hP : Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>⊢ Q</code></p>
+                      </td><td><p>
+                        <code>rw ← h</code></p>
+                      </td><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>hQ : Q</code></p>
+                      </td><td><p>
+                        <code>rw ← h at hQ</code></p>
+                      </td><td><p>
+                        <code>h : P ↔ Q</code> <br> <code>hQ : P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∨ Q</code></p>
+                      </td><td><p>
+                        <code>left</code></p>
+                      </td><td><p>
+                        <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∨ Q</code></p>
+                      </td><td><p>
+                        <code>right</code></p>
+                      </td><td><p>
+                        <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ 2 + 2 &lt; 5</code></p>
+                      </td><td><p>
+                        <code>norm_num</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : α → Prop</code> <br> <code>y : α</code> <br> <code>⊢ ∃ (x : α), f x</code></p>
+                      </td><td><p>
+                        <code>use y</code></p>
+                      </td><td><p>
+                        <code>p : α → Prop</code> <br> <code>y : α</code> <br>  <code>⊢ f y</code></p>
+                      </td></tr><tr><td><p>
+                        <code>x y : ℝ</code> <br> <code>⊢ x + y = y + x</code></p>
+                      </td><td><p>
+                        <code>ring</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : α → Prop</code> <br> <code>⊢ ∀ (x : α), p x</code></p>
+                      </td><td><p>
+                        <code>intro x</code></p>
+                      </td><td><p>
+                        <code>p : α → Prop</code> <br> <code>x : α</code> <br> <code>p x</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h₁ : a &lt; b</code> <br> <code>h₂ : b ≤ c</code> <br> <code>⊢ a &lt; c</code></p>
+                      </td><td><p>
+                        <code>linarith</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P</code> <br> <code>⊢ Q</code></p>
+                      </td><td><p>
+                        <code>clear h</code></p>
+                      </td><td><p>
+                        <code>⊢ Q</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), p n</code> <br>  <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>specialize h 13</code></p>
+                      </td><td><p>
+                        <code>p : ℕ → Prop</code> <br> <code>h : p 13</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>p : ℕ → ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), ∃ (m : ℕ), f n m</code></p>
+                      </td><td><p>
+                        <code>obtain ⟨m, hm⟩ := h 27</code></p>
+                      </td><td><p>
+                        <code>f : ℕ → ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), ∃ (m : ℕ), f n m</code> <br> <code>m : ℕ</code> <br> <code>hm : f 27 m</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ R</code></p>
+                      </td><td><p>
+                        <code>have h : P ↔ Q</code></p>
+                      </td><td><p>
+                        <code>⊢ P ↔ Q</code> <br> <code>h : P ↔ Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h₁ : a &lt; b</code> <br> <code>h₂ : b &lt; c</code> <br> <code>⊢ a &lt; c</code></p>
+                      </td><td><p>
+                        <code>apply?</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code> <br> Try this: <br>  <code>exact lt_trans h₁ h₂</code></p>
+                      </td></tr><tr><td><p>
+                        <code>hQ : Q</code> <br> <code>⊢ P ∧ Q</code></p>
+                      </td><td><p>
+                        <code>refine ⟨ _, hQ ⟩</code></p>
+                      </td><td><p>
+                        <code>hQ : Q</code> <br> <code>⊢ P</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∨ Q → R</code></p>
+                      </td><td><p>
+                        <code>rintro (hP | hQ)</code> <br> = <br> <code>intro h</code> <br> <code>cases h with hP hQ</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>⊢ R</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ P ∧ Q → R</code></p>
+                      </td><td><p>
+                        <code>rintro ⟨hP , hQ⟩</code> <br> = <br> <code>intro h</code> <br> <code>cases h with h1 h2</code></p>
+                      </td><td><p>
+                        <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : P ∧ Q ∨ P ∧ R</code> <br> <code>⊢ S</code></p>
+                      </td><td><p>
+                        <code>rcases h with (⟨hP1,hQ⟩|⟨hP2,hR⟩)</code></p>
+                      </td><td><p>
+                        <code>hP1 : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ S</code> <br> <code>hP2 : P</code> <br> <code>hR : R</code> <br> <code>⊢ S</code></p>
+                      </td></tr><tr><td><p>
+                        <code>⊢ n + 0 = n</code></p>
+                      </td><td><p>
+                        <code>simp</code></p>
+                      </td><td><p>
+                        <code>no goals 🎉</code></p>
+                      </td></tr><tr><td><p>
+                        <code>h : n + 0 = m</code> <br> <code>⊢ P</code></p>
+                      </td><td><p>
+                        <code>simp at h</code></p>
+                      </td><td><p>
+                        <code>h : n = m</code> <br> <code>⊢ P</code></p>
+                      </td></tr></table></section>
+              </section>
+            <section>
+              <h2>
+                Contents</h2>
+              <ol class="section-toc">
+                <li>
+                  <a href=""><span class="number">1.</span> Introduction</a></li>
+                <li>
+                  <a href=""><span class="number">2.</span> First steps using logic</a></li>
+                <li>
+                  <a href=""><span class="number">3.</span> Tactics</a></li>
+                </ol>
+              </section>
+            </section>
+          <nav class="prev-next-buttons">
+            <div></div>
+            <div></div>
+            </nav>
+          </div>
+        </main></div>
+    </body>
+  </html>
+

@@ -1,0 +1,271 @@
+
+\documentclass{memoir}
+
+\usepackage{sourcecodepro}
+\usepackage{sourcesanspro}
+\usepackage{sourceserifpro}
+
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+
+\makechapterstyle{lean}{%
+\renewcommand*{\chaptitlefont}{\sffamily\HUGE}
+\renewcommand*{\chapnumfont}{\chaptitlefont}
+% allow for 99 chapters!
+\settowidth{\chapindent}{\chapnumfont 999}
+\renewcommand*{\printchaptername}{}
+\renewcommand*{\chapternamenum}{}
+\renewcommand*{\chapnumfont}{\chaptitlefont}
+\renewcommand*{\printchapternum}{%
+\noindent\llap{\makebox[\chapindent][l]{%
+\chapnumfont \thechapter}}}
+\renewcommand*{\afterchapternum}{}
+}
+
+\chapterstyle{lean}
+
+\setsecheadstyle{\sffamily\bfseries\Large}
+\setsubsecheadstyle{\sffamily\bfseries\large}
+\setsubsubsecheadstyle{\sffamily\bfseries}
+
+\renewcommand{\cftchapterfont}{\normalfont\sffamily}
+\renewcommand{\cftsectionfont}{\normalfont\sffamily}
+\renewcommand{\cftchapterpagefont}{\normalfont\sffamily}
+\renewcommand{\cftsectionpagefont}{\normalfont\sffamily}
+
+\title{\sffamily Interactive Theorem Proving using Lean, Summer 2025}
+\author{\sffamily Peter Pfaffelhuber}
+\date{\sffamily }
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlingpage}
+\maketitle
+\end{titlingpage}
+
+\tableofcontents
+
+\mainmatter
+
+\chapter*{Introduction}
+These are the notes for a course on formal proving with the interactive theorem prover Lean4 (in the following we just write Lean) in the summer semester of 2025 at the University of Freiburg. To be able to work through the course in a meaningful way, the following technical preparations are to be made:
+\begin{itemize}
+\item Installation of \hyperlink{"https://code.visualstudio.com/"}{vscode}.\item Local installation of Lean and the associated tools: Please follow these \hyperlink{"https://github.com/leanprover-community/mathlib4/wiki/Using-mathlib4-as-a-dependency"}{instructions}.\item Installing the course repository: Navigate to a location where you would like to put the course materials and use \Verb|git clone https://github.com/pfaffelh/leancourse|.\item After \Verb|cd leancourse| and \Verb|code .|, you should see some code which looks a bit like mathematics. On the left hand side of the \Verb|vscode| window, you can click and install an extension for \Verb|Lean|.\item The directory \Verb|Leancourse/Exercises| contains the material for the course. We recommend that you first copy this directory, for example to \Verb|myExercises|. Otherwise, an update of the repository may overwrite the local files.\item To update the course materials, enter \Verb|git pull| from within the \Verb|leancourse|directory.
+\end{itemize}
+
+\chapter{Introduction}
+
+The course is designed for mathematics students and has at least two goals:
+
+\begin{itemize}
+\item Learning the techniques for interactive formal Theorem proofing using Lean: In recent years, efforts to prove mathematical theorems with the help of computers have increased dramatically. While a few decades ago, it was more a matter of consistently processing many cases that were left to the computer, interactive theorem provers are different. Here, a very small core can be used to understand or interactively generate all the logical conclusions of a mathematical proof. The computer then reports interactively on the progress of the proof and when all the steps have been completed.\item Establishing connections to some mathematical material: On the one hand, the mathematical details needed in this course should not be the main issue of this course. On the other hand, in order to \emph{explain} how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well - at least if it exceeds a few lines - so that the commands you enter (which we will call tactics) fit together.
+\end{itemize}
+
+
+
+
+
+\chapter{First steps using logic}
+
+We start with simple logical statements. We always distinguish (as in every mathematical theorem) between the \emph{hypotheses} and the \emph{statement} (or \emph{assertion}, which we also call \emph{goal} or \emph{target}). To introduce our hypotheses, we write \Verb|variable (P Q R S T : Prop)|. Note that the lean syntax does not use the usual double arrow \Verb|=>| here, but a single \Verb|→|. We are going through the following logical inferences here:
+
+\begin{itemize}
+\item Exercises 01-a:
+  The statement \Verb|⊢ P → Q| (i.e. \Verb|P| implies \Verb|Q|) means that \Verb|Q| is valid if one may assume that the hypothesis \Verb|P| is correct. This transition from \Verb|⊢ P → Q| to the hypothesis \Verb|hP : P| with target \Verb|⊢ Q| is done using \Verb|intro hP|. Several \Verb|intro| commands can be abbreviated using \Verb|intro h1 h2...|.If the hypothesis \Verb|hP : P| holds and we want to prove \Verb|⊢ P|, then we just have to apply \Verb|hP| to the goal. If goal and hypothesis are identical, this is done with \Verb|exact hP|. In a more general way, \Verb|assumption| searches all hypotheses for those that are identical with the goal by definition.\item Exercises 01-b:If you want to prove \Verb|⊢ Q| and know that \Verb|hPQ : P → Q| is valid, then it is sufficient to prove \Verb|⊢ P| (since \Verb|hPQ| then implies \Verb|⊢ Q|). In this case, \Verb|apply hPQ| changes the goal to \Verb|⊢ P|.Behind an equivalence statement \Verb|⊢ P ↔ Q| (type the double arrow as \Verb|\iff|) there are actually the two statements \Verb|⊢ P → Q| and \Verb|⊢ Q → P|. Using \Verb|constructor| converts the goal \Verb|⊢ P ↔ Q| into two goals for the two directions.In Lean, logical negation is noted with \Verb|¬| (type \Verb|\neg|). The statement \Verb|¬P| is defined as \Verb|P → false|, where \Verb|false| stands for a \emph{false} statement.\item Sheet 01-c:\emph{false} implies anything. The actual statement is \Verb|⊢ false → P|. If the current target is \Verb|⊢ P|, and you apply the statement \Verb|⊢ false → P| using \Verb|apply|, this is equivalent to applying \Verb|exfalso|.The two expressions \Verb|False| and \Verb|True| represent two statements that are \emph{false} and \emph{true}, respectively. So \Verb|True| should be easy to prove. This is provided by the tactic \Verb|triv|.In a proof by contradiction, instead of \Verb|⊢ P|, you prove the statement \Verb|⊢ ¬P → false| (which, after \Verb|intro h|, leads to the assumption \Verb|h : ¬P| and the new goal \Verb|⊢ false|). This is logically correct, since \Verb|P| is true if and only if \Verb|¬P| leads to a contradiction, i.e. an false statement. The transformation of the goal in this way is achieved with the tactic \Verb|by_contra| or \Verb|by_contra h|.\item Exercises 01-e:For \emph{and} and \emph{or} links between statements, Lean provides the usual notations \Verb|∧| (type \Verb|\wedge|) and \Verb|∨| (type \Verb|\vee|). Statements linked with these connections can occur both in a hypothesis and in the goal. Now there are the following four cases:\begin{itemize}
+\item \Verb|⊢ P ∧ Q|: Here we must prove the two statements \Verb|P| and \Verb|Q|. With \Verb|constructor| exactly these two goals (with the same assumptions) are created, i.e. \Verb|⊢ P| and \Verb|⊢ Q|. If these two are shown, then obviously \Verb|⊢ P ∧ Q| is also shown.\item \Verb|⊢ P ∨ Q|: To show this, it is sufficient to either show \Verb|P| or to show \Verb|Q|. In the first case, the target is replaced by \Verb|⊢ P| with \Verb|left|, and by \Verb|⊢ Q| with \Verb|right|.\item \Verb|h : P ∧ Q|: Apparently, the hypothesis \Verb|h| breaks down into two hypotheses, both of which must hold. Using \Verb|cases' h with hP hQ|, \Verb|h : P ∧ Q| is transformed into two hypotheses, namely \Verb|hP : P| and \Verb|hQ : Q|.\item \Verb|h : P ∨ Q|: Similar to the last case, \Verb|cases' h with hP hQ| now generates two new goals, one where \Verb|h : P ∨ Q| has been replaced by \Verb|hP : P|, and one where \Verb|h : P ∨ Q| has been replaced by \Verb|hQ : Q|. This is logically correct, because this way you can distinguish the cases where \Verb|P| or \Verb|Q| apply.
+\end{itemize}
+\item Exercises 01-e:This is about introducing new hypotheses. With the \Verb|by_cases| tactic - applied to a hypothesis \Verb|h : P| - all possibilities are gone through that \Verb|P| can assume. These are that \Verb|P| is either \Verb|true| or \Verb|false|. So \Verb|by_cases h : P| introduces two new goals, one with the hypothesis \Verb|h : P| and one with the hypothesis \Verb|h : ¬P|.A very general tactic is \Verb|have|. Any hypotheses can be formulated here that must first be shown.\item Exercise 01-f:Now we come to abbreviations. First, we introduce the abbreviation \Verb|⟨ hP, hQ, hR ⟩| (type \Verb|\langle| and \Verb|\rangle|) for the \Verb|∧| conjunction of the statements \Verb|hP| \Verb|hQ| and \Verb|hR|. (This works with two or more than three hypotheses). Similarly, \Verb|(hP | hQ)| is a shorthand for \Verb|hP ∨ hQ|. These two shorthands can also be nested. The three tactics we discuss here are \Verb|rintro| for \Verb|intros| + \Verb|cases|, \Verb|rcases| for a more flexible version of \Verb|cases| that allows the notations just introduced, and \Verb|obtain| for \Verb|intro| + \Verb|have|.\item Exercise 01-g: QuantifiersQuantifiers such as \Verb|∀| (type \Verb|\forall|) and \Verb|∃| (type \Verb|\exists|) have been known since the first semester. These can also occur in \Verb|Lean|. We distinguish whether these quantifiers occur in the goal or in a hypothesis. The following is a small table of which tactics are appropriate in each case. Exact explanations are in \Verb|01-g.lean|.
+\end{itemize}
+
+
+
+
+\begin{itemize}
+\item Exercises 01-h:Slowly but surely, we are working our way towards applications with \emph{real} mathematics, but a few things are still missing. In this sheet, we learn to prove equalities using \emph{refl}. For later work with \Verb|=| or \Verb|↔| (type \Verb|\iff|) statements, \Verb|rw| is very important because here you can rewrite things, i.e. you can use propositional equalities. Since there are already a lot of statements in \Verb|Mathlib|, it is good to have a kind of search function. This is provided by \Verb|apply?|. We also learn how to define functions. This is done using the \Verb|fun| keyword. For example, \Verb|fun x ↦ 2*x| (type \Verb|\mapsto|, but \Verb|=>| works as well) represents the function \Verb|x ↦ 2x|. If you have \Verb|let f : X → X := fun x ↦ 2*x|, then \Verb|f 1| returns the function value for \Verb|x = 1|.
+\end{itemize}
+
+
+
+
+\section{Natural numbers}
+
+To get a little more mathematical, we now introduce the natural numbers. This type (abbreviated \Verb|ℕ|, type \Verb|\N|) is defined (see 02-a.lean) so that \Verb|0 : ℕ| and \Verb|succ (n : ℕ) : ℕ|, i.e. with \Verb|n| is also \Verb|succ n| a natural number. \Verb|succ n| stands for the successor of \Verb|n|. Furthermore, we will get to know the types \Verb|set ℕ| and \Verb|Finset ℕ| here. These are the subsets of \Verb|ℕ| and the finite subsets of \Verb|ℕ|.
+
+\begin{itemize}
+\item Sheet 02-a: Natural numbers and the \Verb|calc| mode:
+    After an introduction to how natural numbers are implemented in \Verb|Lean|, we introduce the \Verb|calc| mode. This allows us to perform calculations step by step, using previously proven statements. This way, we can, for example, prove binomial formulas. We also get to know the very powerful tactics \Verb|ring|, \Verb|norm_num|, \Verb|linarith| and \Verb|simp| can simplify a lot of work. Here we also learn the \Verb|fun| notation for defining functions.\item Page 02-b: divisibility:
+    For \Verb|m n : ℕ| (or \Verb|m n : ℤ|) \Verb|h : m | n| (type \Verb|\||), means that \Verb|n| is divided by \Verb|m|. In other words, there is \Verb|a : ℕ| with \Verb|n = a * m|. With this definition, the goal of this sheet is to show the long known statement that a number is exactly divisible by 3 (or 9) if and only if its cross sum is divisible by 3 (or 9). Here we will only do this for numbers up to \Verb|10000|.
+\textbf{Bonus task:} An especially simple method of proving the divisibility rule by 3 in Lean is with the following Lean file (here, \Verb|\%| is the modulo sign and \Verb|digits 10| is the finite list of decimal representations of the
+  number \Verb|n|):\begin{verbatim}
+  open Nat
+  example (n : ℕ) : 3 ∣ n ↔ 3 ∣ (digits 10 n).sum := by
+    refine dvd_iff_dvd_digits_sum 3 10 _ n
+    norm_num
+
+\end{verbatim}
+
+\end{itemize}
+
+
+This proof is based on the following statement:
+
+\begin{verbatim}
+lemma dvd_iff_dvd_digits_sum (b b' : ℕ) (h : b' % b = 1) (n : ℕ) :
+b ∣ n ↔ b ∣ (digits b' n).sum
+
+\end{verbatim}
+
+
+Give a script proof of this statement.
+
+\begin{itemize}
+\item Page 02-c: \Verb|\sqrt 2|:
+     This is about the proof \Verb|√2 ∉ ℚ|. Here is the proof as you would find it in a script (or school book): Assuming that there are \Verb|m| and \Verb|n| such that \Verb|√2 = m/n|, then  \Verb|2n² = m²|. Let \Verb|m| and \Verb|n| be relatively prime. Then \Verb|2 ∣ m²|. Since \Verb|m²| is even, \Verb|m| must also be even, so \Verb|m = 2a| for some \Verb|a|. Thus \Verb|2*n² = 4 * a²| or \Verb|n² = 2 a²|. This means that \Verb|n²| is even, and as just argued, \Verb|n| would then be even. However, this contradicts the complementary division of \Verb|m| and \Verb|n|. This proof is formalized here. (Note that the proof given here only works for \Verb|√2|, but not for \Verb|√3|. The reason is that we use that for every \Verb|m ∈ ℕ| either \Verb|m| or \Verb|m+1| is even (i.e. divisible by 2). This is obviously false for \Verb|3|.)\item Page 02-d: induction
+    induction has been known since the first semester: If one shows for a statement \Verb|P : ℕ → Prop| both \Verb|P 0| and also \Verb|∀ d : ℕ, P d → P (d + 1)|, then one has \Verb|∀ n : ℕ, P n| shown. This is the so-called \textbf{weak}    induction that we will use here for a few statements. We will also show the well-ordering principle of \Verb|ℕ|, which states that every non-empty subset of ℕ contains a smallest element\item Sheet 02-e: Pigeonhole principle
+   If you distribute \Verb|m| balls among \Verb|n<m| drawers, at least two balls end up in the same drawer. In more mathematical terms, there is no injective mapping of an \Verb|m|-element set into an \Verb|n<m|-element one. To prove this, we first introduce introduce injective mappings and use an induction principle for \Verb|Finset|s.
+\end{itemize}
+
+
+
+
+\section{Real Numbers}
+
+We now come to real numbers without looking at their definition (which
+uses Cauchy sequences).
+
+\begin{itemize}
+\item Sheet 03-a: Lower Bounds on a Set
+   We introduce the set of lower bounds on a set \Verb|A \subsets \mathbb R| is introduced. The largest lower bound is then known to be the \Verb|\inf A|. To formulate the main result, we also introduce the limit of a sequence. Finally, we prove that \Verb|x = \inf A| holds if and only if there is a sequence in \Verb|A| that converges to \Verb|x|.\item Page 03-b: The derivative of \Verb|x\mapsto x^{n+1}|
+    As is well known, the derivative of \Verb|x\mapsto x^{n+1}| is given by     \Verb|x\mapsto (n+1)x^n|. To show this, we need the concept of the derivative (here as a sequence limit), as well as the product rule. We will reduce everything to the calculation rules for limits, such as the fact that the limit of the product of two convergent sequences is given by the product of the limits. After this preliminary work, we prove the formula by induction.
+# Notes on Lean
+\end{itemize}
+
+
+In Section 1, we have already dealt with the installation of Lean and \Verb|vscode|. Here follows a short, incoherent introduction. We start with a very simple example. The tactics \Verb|intro| and \Verb|exact| can be found in
+Chapter. If we want to prove the statement \Verb|P → P| (i.e. \Verb|P| implies \Verb|P|) we enter the following on the left side in \Verb|vscode|:
+
+\begin{verbatim}
+example (P : Prop) : P → P := by
+  sorry
+
+\end{verbatim}
+
+
+On the right side, depending on the position of the cursor, you will find the \textbf{proof state}. If the cursor is directly after \Verb|by|, the \textbf{proof state} is seen. It is important to know that behind \Verb|⊢| stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that \Verb|P| is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the \Verb|sorry|, there is now \textbf{no goals}, but the \Verb|sorry| tactic is only there to prove unproven assertions without further action, and a warning is issued in \Verb|vscode|. If you delete the \Verb|sorry| and replace it with an \Verb|intro hP|, we get
+
+\begin{verbatim}
+P : Prop
+hP : P
+⊢ P
+
+\end{verbatim}
+
+
+So we have transformed the statement \Verb|P → P| into a state where we have to assume \Verb|hP : P| and conclude \Verb|P|. This can now easily be solved using \Verb|assumption|, and the desired \textbf{no goals} appears. The \Verb|assumption| tactic searches for a hypothesis that is identical to the statement and concludes the proof. The exact  tactic is somewhat different. Here you have to know exactly which hypothesis is meant and can use \Verb|exact hP| to conclude the proof.
+
+
+
+\section{Dependent type theory}
+
+Lean is a functional programming language (i.e. it actually only consists of functions) and is based on the \textbf{dependent type theory}. Types in programming languages like Python are \Verb|bool|, \Verb|int|, \Verb|double| etc. Lean thrives on defining and using your own types. We will see in the course of the course that you can think of the resulting types as sets. The type \Verb|ℕ| will be the set of natural numbers, and \Verb|ℝ| the set of real numbers. However, \Verb|ℕ| actually represents an infinite set that is characterized by containing \Verb|0|, and if it contains \Verb|n|, then it also contains the successor of \Verb|n| (represented by \Verb|succ n|). Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences,  which is quite elaborate. Types can depend on other types, and that is why we speak of \textbf{dependent types}. For example, the space \Verb|\mathbb R^n| depends on the dimension \Verb|n|. As we shall see mathematical statements are also types. Regarding the notation: for sets, we are used to writing \Verb|n\in\mathbb N| if \Verb|n| is a natural number. In type theory, we write \Verb|n : ℕ| and say that \Verb|n| is a term (expression) of type \Verb|ℕ|. More generally, every expression has a type and when introducing an expression, Lean checks its type. (Incidentally, this can be quite confusing: for example, the statement \Verb|(x : ℕ) → (x : ℤ)|, i.e. (every natural number is also an integer) is not at all comprehensible for \Verb|lean|. Because \Verb|x| is a term of type \Verb|ℕ| (and thus of no other type), so that \Verb|x : ℤ| makes no sense at all for \Verb|lean|. The solution is an 'invisible mapping' \Verb|coe : ℕ → ℤ|.)
+
+
+
+\section{Universes, Types and Terms}
+
+In Lean, there are three levels of objects: universes, types and terms. We are concerned here with the last two. Of particular interest is the type \Verb|Prop|, which consists of statements that can be true or false . It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form \Verb|hP : P|, which means \Verb|P| is true, and this statement is called \Verb|hP|. It can also mean that \Verb|P| is true and \Verb|hP| is a proof of \Verb|P|. The hypotheses here have names \Verb|P Q R S|, and the names of the hypotheses \Verb|hP hQ hR hS|. All names can be arbitrary. Furthermore, there are hypotheses of the form \Verb|P → Q|, which is the statement that \Verb|P| implies \Verb|Q|.
+
+
+
+\section{Function definitions}
+
+In \Verb|Lean|, for example, the function \Verb|f : \mathbb N \to \mathbb N, x \mapsto 2x| is defined as
+
+\begin{verbatim}
+  f : ℕ → ℕ := fun x ↦ 2*x
+
+\end{verbatim}
+
+
+or
+
+\begin{verbatim}
+fun x ↦ 2*x
+
+\end{verbatim}
+
+
+(Write \Verb|\mapsto| for \Verb|↦|.) It is assumed that the \Verb|x| is only introduced to
+define \Verb|f|. The application of \Verb|f| to an \Verb|x : ℕ| is then done using \Verb|f x|. (The notation \Verb|f x| is an abbreviation for \Verb|f(x)|, since \Verb|Lean| is sparing with parenthesis.)
+
+
+
+\section{Equality}
+
+In Lean, there are three types of equality:
+
+\begin{itemize}
+\item Syntactic equality: If two terms are letter-for-letter equal, then they are syntactically equal. However, there are a few more situations in which two terms are syntactically equal. Namely, if one term is just an abbreviation for the other (for example, 'x=y' is an abbreviation for 'eq x y'), then these both terms are syntactically equal. Also equal are terms in which globally quantified variables have different letters. For example, \Verb|∀ x, ∃ y, f x y| and \Verb|∀ y, ∃ x, f y x| are syntactically equal.\item Definitional equality: Some terms are by definition equal in Lean. For \Verb|x : ℕ|, \Verb|x + 0| is by definition identical to \Verb|x|. However, \Verb|0 + x| is not   definitionally identical to \Verb|x|. This is apparently only due to the     internal definition of addition of natural numbers in Lean.\item Propositional equality: If there is a proof of \Verb|x = y|, then \Verb|x| and \Verb|y| are said to be propositionally equal. Similarly, terms \Verb|P| and \Verb|Q| are said to be propositionally equal if you can prove \Verb|P ↔ Q|. Some Lean Tactics only work up to syntactic equality (such as \Verb|rw|), others (most) work up to definitional equality (such as \Verb|apply|, \Verb|exact|,...) This means that the tactic automatically transforms terms if they are syntactically or definitional equality. There is a special kind of equality to be observed with sets and functions. For example, two functions are exactly the same if they return the same value for all values in the domain. This behavior is called \textbf{extensionality} in the theory of programming languages. (If extensionality applies, then, for example, two sorting algorithms are the same if they always produce the same result).
+\end{itemize}
+
+
+
+
+\section{Different parentheses in \Verb|Lean|}
+
+There are (essentially) three different types of parentheses in \Verb|Lean| statements. The simplest is \Verb|(...)|, which, as in normal use, indicates parentheses in the sense of what belongs together. However, you have to learn how 'Lean' brackets internally when no '()' are given. Operators like \textbf{and} (\Verb|∧|), \textbf{or} (\Verb|∨|), are right-associative, so e.g. \Verb|P ∧ Q ∧ R := P ∧ (Q ∧ R)|. The application of functions in sequence, such as \Verb|f : ℕ → ℝ| and \Verb|g : : ℝ→ ℝ |, applied to \Verb|n : ℕ| is \Verb|g (f n)|, because \Verb|g| expects an input of type \Verb|ℝ|, and this is what \Verb|f n| provides. You cannot omit (...), i.e. in this case the parenthesis is left-associative.
+
+Now let's comment on the parentheses \Verb|[...]| and \Verb|{...}|. For example, \Verb|#check@ gt_iff_lt| (the statement that \Verb|a>b| holds if and only if \Verb|b<a| holds), where both types occur. This yields
+
+\begin{verbatim}
+gt_iff_lt : ∀ {α : Type u_1} [_inst_1 : has_lt α] {a b : α}, a > b ↔ b < a
+
+\end{verbatim}
+
+
+When this result is applied, the statements in \Verb|{...}| and \Verb|[...]| are added by \Verb|Lean| itself. The statements in \Verb|{...}| depend on the type of the objects that have to be given, and can therefore be inferred. (Above, when applying \Verb|gt_iff_lt|, the variables \Verb|a| and \Verb|b| have to be given.) Therefore, their type is also known, and one does not have to \Verb|α| is not explicitly specified. Since the application is made to a concrete \Verb|α| (for example, \Verb|ℕ|), and \Verb|Lean| knows a lot about the natural numbers, the type class system can look up many properties of \Verb|ℕ|, and also finds that \Verb|has_lt ℕ| holds (i.e. on \Verb|ℕ| at least a partial order is defined).
+
+
+
+\section{Names of \Verb|Mathlib| Results}
+
+Names like \Verb|zero_add, add_zero, one_mul, add_assoc, succ_ne_zero, lt_of_succ_le,...| seem cryptic. It is clear that individual relatively understandable abbreviations (\Verb|zero, one, mul, add, succ,...|) are separated by \Verb|_|. In general, the following two rules apply to naming:
+
+\begin{itemize}
+\item The goal of the statement to be proven is described; if hypotheses are added in the name, then with \Verb|of_|. The statement \Verb|lt_of_succ_le| is therefore an \Verb|<| statement, where \Verb|succ ≤| applies. In fact:
+\end{itemize}
+
+
+\begin{verbatim}
+#check @lt_of_succ_le
+
+\end{verbatim}
+
+
+results in
+
+\begin{verbatim}
+  lt_of_succ_le : ∀ {a b : ℕ}, a.succ ≤ b → a < b
+
+\end{verbatim}
+
+
+This way, you can often guess the names of statements that you want to use.
+
+
+
+
+\chapter{Tactics}
+
+
+
+\section{Cheatsheet}
+
+
+
+
+
+
+\end{document}

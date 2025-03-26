@@ -508,16 +508,9 @@ However, this is much less readable.
 
 ## `cases`
 
-**Summary**
+**Summary:** If a hypothesis is composed, i.e. can be expanded into two or more cases, `cases'` delivers exactly that. This can be used not only used with hypotheses `h : P ∨ Q` or `h : P ∧ Q`, but also with structures that consist of several cases, such as `∃...` (here there is a variable and a statement) and `x : bool` or `n : ℕ`.
 
-If a hypothesis is composed, i.e. can be expanded into two or more
-cases, `cases` delivers exactly that. This can be used not
-only used with hypotheses `h : P ∨ Q` or `h : P ∧ Q`,
- but also with structures that consist of several cases,
-such as `∃...` (here there is a variable and a statement) and
-`x : bool` or `n : ℕ`.
-
-**Examples** {#beispiele-5 .unnumbered}
+**Examples:**
 
 +----------------------+----------------------+----------------------+
 | **Proof state** | **Command** | **New proof |
@@ -564,25 +557,18 @@ such as `∃...` (here there is a variable and a statement) and
 | `⊢ Q` | | |
 +----------------------+----------------------+----------------------+
 
-**Notes** {#notas-5 .unnumbered}
+**Notes:**
 
-1. The application `cases n` for `n : ℕ` is strictly
-weaker than complete induction (see `induction`).
-After all, `cases` only converts `n : ℕ` into the two cases
-`0` and `succ n`, but you cannot use the
-statement for `n-1` to prove the statement for `n`.
+* The application `cases' n` for `n : ℕ` is strictly weaker than complete induction (see `induction`). After all, `cases` only converts `n : ℕ` into the two cases `0` and `succ n`, but you cannot use the statement for `n-1` to prove the statement for `n`.
+* A more flexible version of `cases'` is `rcases`.
 
-3. A more flexible version of `cases` is
-`rcases`.
+## `change`
 
-## `change` {#change .unnumbered}
+**Summary:**
 
-**Summary** {#Summary-6 .unnumbered}
+Changes the goal (or a hypothesis) into a goal (or a hypothesis) that is defined the same.
 
-Changes the goal (or a hypothesis) into a goal (or a hypothesis)
-that is defined the same.
-
-**Examples** {#beispiele-6 .unnumbered}
+**Examples:**
 
 +---------------------------------+---------------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -602,48 +588,36 @@ that is defined the same.
 | `⊢ Q` | | |
 +---------------------------------+---------------------+-----------------------+
 
-**Notes** {#anmerkungen-6 .unnumbered}
+**Notes:**
 
-1. As can be seen from the penultimate example, `change` also works
-for hypotheses.
+* As can be seen from the penultimate example, `change` also works for hypotheses.
+* Since many tactics test for definitional equality anyway, `change` is often not necessary. However, it can help to make the proof more readable.
 
-2. Since many tactics test for definitional equality anyway,
-`change` is often not necessary. However, it can help to make the proof
-more readable.
+## `clear`
 
-## `clear` {#clear .unnumbered}
-
-**Summary** {#Summary-7 .unnumbered}
-
-With `clear h` the hypothesis `h` is removed from the goal state
+**Summary:** With `clear h` the hypothesis `h` is removed from the goal state
 (forgotten).
 
-**Examples** {#beispiele-7 .unnumbered}
+**Examples:**
 
 **Proof state** **Command** **New proof state**
 ----------------- ------------------- -----------------------
 `h : P` `clear h,` `⊢ Q`
 `⊢ Q`
 
-## `congr` {#congr .unnumbered}
+## `congr`
 
-**Summary** {#Summary-8 .unnumbered}
+**Summary:** If you have to show an equality `f x = f y`, then `congr` uses the statement that the equality is particularly true if `x = y`.
 
-If you have to show an equality `f x = f y`, then
-`congr` uses the statement that the equality is particularly true
-if `x = y`.
-
-**Examples** {#beispiele-8 .unnumbered}
+**Examples:**
 
 **Proof state** **command** **New proof state**
 ---------------------- ----------------- -----------------------
 `⊢ P x = P y` `congr,` `⊢ x = y`
 
-**Notes** {#notes-7 .unnumbered}
+**Notes:**
 
-The related tactic `congr'` uses another parameter that
-determines how many recursive layers are eliminated in the goal. This
-is helpful in the following examples:
+The related tactic `congr'` uses another parameter that determines how many recursive layers are eliminated in the goal. This is helpful in the following examples:
 
 
 
@@ -662,15 +636,11 @@ is helpful in the following examples:
 | `⊢ y = x` | | |
 +----------------------------------+--------------+-----------------------+
 
-## `exact` {#exact .unnumbered}
+## `exact`
 
-**Summary** {#Summary-9 .unnumbered}
+**Summary:** If the goal can be achieved with a single command, then it can be achieved with the `exact` tactic. Like many other tactics, `exact` also works with terms that are defined the same.
 
-If the goal can be achieved with a single command, then it can be achieved with the
-`exact` tactic. Like many other tactics,
-`exact` also works with terms that are defined the same.
-
-**Examples** {#beispiele-9.unnumbered}
+**Examples:**
 
 +----------------------------+-------------------+-------------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -692,24 +662,15 @@ If the goal can be achieved with a single command, then it can be achieved with 
 | **goals accomplished** | | |
 +----------------------------+-------------------+-------------------------+
 
-**Notes** {#anmerkungen-8 .unnumbered}
+**Notes:**
 
-In the third example, note the order in which
-the two hapotheses `hP` and `hnP` are applied.
-The first hypothesis after `exact` is always the one whose right
-side matches the goal. If the goal requires further input, it is
-appended afterwards.
+In the third example, note the order in which the two hapotheses `hP` and `hnP` are applied. The first hypothesis after `exact` is always the one whose right side matches the goal. If the goal requires further input, it is appended afterwards.
 
-## `exfalso` {#exfalso .unnumbered}
+## `exfalso`
 
-**Summary** {#Summary-10 .unnumbered}
+**Summary:** The statement `false → P` is true for all `P`. If the current goal is `⊢ P`, and you would apply this true statement using `apply`, the new goal would be `⊢ false`. This is exactly what the `exfalso` tactic does.
 
-The statement `false → P` is true for all `P`. If the
-current goal is `⊢ P`, and you would apply this true statement
-using `apply`, the new goal would be `⊢ false`.
-This is exactly what the `exfalso` tactic does.
-
-**Examples** {#beispiele-10 .unnumbered}
+**Examples:**
 
 +--------------------+-------------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -733,24 +694,15 @@ This is exactly what the `exfalso` tactic does.
 | `⊢ false` | | |
 +--------------------+-------------------+-----------------------+
 
-**Notes** {#notes-9 .unnumbered}
+**Notes:**
 
-If you use this tactic, you leave the realm of
-constructive mathematics. (This dispenses with the rule of the
-excluded middle.)
+If you use this tactic, you leave the realm of constructive mathematics. (This dispenses with the rule of the excluded middle.)
 
-## `have` {#have.unnumbered}
+## `have`
 
-**Summary** {#summary-11.unnumbered}
+**Summary:** By using `have` we introduce a new claim, which we have to prove first. Afterwards, it is available as a hypothesis in all further goals. This is identical to first proving a lemma `h` with the statement after `have h : ` and then reusing it at the appropriate place in the proof (for example with `apply` or `rw`).
 
-By using `have` we introduce a new claim, which we
-have to prove first. Afterwards, it is available as a hypothesis in all
-further goals. This is identical to first proving a
-lemma `h` with the statement after `have h : ` and
-then reusing it at the appropriate place in the proof (for example with
-`apply` or `rw`.
-
-**Examples** {#beispiele-11 .unnumbered}
+**Examples:**
 
 +----------------------+----------------------+----------------------+
 | **Proof state** | **Command** | **New proof |
@@ -781,22 +733,15 @@ then reusing it at the appropriate place in the proof (for example with
 | `⊢ P` | | |
 +----------------------+----------------------+----------------------+
 
-**Notes** {#notes-10 .unnumbered}
+**Notes:**
 
-1. Suppose we have two goals (let's call them `⊢1` and `⊢2`), and
-we need the statement of `⊢1` in the proof of `⊢2`.
-We can first introduce a third goal with `have h := ⊢1`
-(where `⊢1` is to be replaced by the statement).
-Then `⊢1` can be proved with `exact`, and
-has the statement `⊢1` available in the proof of `⊢2`.
+* Suppose we have two goals (let's call them `⊢1` and `⊢2`), and we need the statement of `⊢1` in the proof of `⊢2`. We can first introduce a third goal with `have h := ⊢ 1` (where `⊢1` is to be replaced by the statement). Then `⊢ 1` can be proved with `exact`, and has the statement `⊢ 1` available in the proof of `⊢ 2`.
 
-## `induction` {#induction .unnumbered}
+## `induction`
 
-**Summary** {#Summary-12 .unnumbered}
+**Summary:**
 
-Inductive types allow the possibility of proving statements about them by means of
-induction. This includes, for example, the usual case of
-complete induction over natural numbers.
+Inductive types allow the possibility of proving statements about them by means of induction. This includes, for example, the usual case of complete induction over natural numbers.
 
 **Examples** {#beispiele-12.unnumbered}
 

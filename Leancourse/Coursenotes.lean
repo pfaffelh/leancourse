@@ -751,14 +751,14 @@ Inductive types allow the possibility of proving statements about them by means 
 `⊢ n = 0 + n` `hd : d = 0 + d`
 `⊢ d.succ = 0 + d.succ,`
 
-## `intro` {#intro.unnumbered}
+## `intro`
 
-**Summary** {#Summary-13.unnumbered}
+**Summary**
 
-If the goal is of the form `⊢ P → Q` or `∀ (n : ℕ), P n`,
-you can proceed with `intro P` or `intro n`.
+If the goal is of the form `⊢ P → Q` or `∀ (n : ℕ), P n`, you can proceed with `intro P` or `intro n`. You can use several `intro` commands at the same time to summarize a single one. A little more precisely, `intro h1 h2 h3,` is identical to `intro h1; intro h2; intro h3`.
 
-**Examples** {#beispiele-13.unnumbered}
+
+**Examples**
 
 **Proof state** **Command** **New proof state**
 --------------------------- ------------------- -----------------------
@@ -767,25 +767,6 @@ you can proceed with `intro P` or `intro n`.
 `f : α → Prop` `intro x,` `f: α → Prop`
 `⊢ ∀ (x : α), f x` `x : α`
 `⊢ f x`
-
-**Notes** {#notes-11 .unnumbered}
-
-1. Several `intro` commands in a row are best combined
-with `intros`. Furthermore, `rintro` is a
-more flexible variant.
-
-2. A reversal of `intro` is `revert`.
-
-## `intros` {#intros .unnumbered}
-
-**Summary** {#Summary-14 .unnumbered}
-
-This is exactly the same as `intro`, but you can use
-several `intro` commands at the same time to summarize a single one.
-A little more precisely, `intros h1 h2 h3,` is identical to
-`intro h1, intro h2, intro h3`.
-
-**Examples** {#beispiele-14 .unnumbered}
 
 +-------------------------------+------------------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -810,22 +791,24 @@ A little more precisely, `intros h1 h2 h3,` is identical to
 | `hP: P n` `⊢ Q` | | |
 +-------------------------------+------------------------+-----------------------+
 
-**Notes** {#notes-12 .unnumbered}
 
-`rintro` is a more flexible variant that allows
-`cases` applications to be executed at the same time.
+**Notes**
 
-## `left` {#left .unnumbered}
+* Several `intro` commands in a row are best combined. Furthermore,  `rintro` is a more flexible variant.
+* A reversal of `intro` is `revert`.
 
-**Summary** {#summary-15 .unnumbered}
 
-The application of `left,` is identical to `apply h,` for
-`h : P → P ∨ Q`. So if you have a goal of the form
-`⊢ P ∨ Q`, `left,` causes you to have only the goal
-⊢ P`. After all, it is sufficient to show P` to
-close the goal.
 
-**Examples** {#beispiele-15 .unnumbered}
+
+
+
+## `left`
+
+**Summary:**
+
+The application of `left,` is identical to `apply h,` for `h : P → P ∨ Q`. So if you have a goal of the form `⊢ P ∨ Q`, `left,` causes you to have only the goal `⊢ P`. After all, it is sufficient to show `P` to close the goal.
+
+**Examples:**
 
 +-------------------------+----------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -844,13 +827,9 @@ close the goal.
 +-------------------------+----------------+-----------------------+
 
 
+The second example requires a little explanation. First of all, you have to understand that the goal `⊢ ℕ` is to show that there is a term of type `ℕ`, i.e. that there is a natural number. Now you have to know how `ℕ` is implemented in Lean. This is
 
-The second example requires a little explanation. First of all, you have to
-understand that the goal `⊢ ℕ` is to show that there is a term
-of type `ℕ`, i.e. that there is a natural number. Now you have to
-know how `ℕ` is implemented in Lean. This is
-
-{.Lean mathescape=“” numbersep=“5pt” framesep=“5mm” bgcolor=“mygray”}
+```
 inductive nat
 | zero : nat
 | succ (n : nat) : nat
@@ -858,39 +837,21 @@ inductive nat
 
 together with
 
-{.Lean mathescape=“” numbersep=“5pt” framesep=“5mm” bgcolor=“mygray”}
+```
 notation `ℕ` := nat
-{.Lean
+```
+This means: The type `ℕ` is defined by the fact that `zero` is a term of this type, and that there is a function `succ : ℕ → ℕ`. Thus, in the second example, the input `left,` is closed because by definition `zero : ℕ` holds, so in particular there is a term of type `ℕ`.
 
-This means: The type `ℕ` is defined by the fact that
-`zero` is a term of this type, and that there is a function
-`succ : ℕ → ℕ`. Thus, in the second example, the input `left,`
-is closed because by
-definition `zero : ℕ` holds, so in particular there is a term
-of type `ℕ`.
+**Notes:**
 
-**Notes** {#anmerkungen-13 .unnumbered}
+* See also `right,` for the equivalent tactic, which is apply h` for `h : Q → P ∨ Q`.
+* As in the second example, `left,` can always be applied when dealing with an inductive type with two constructors (such like `ℕ`).
 
-1. See also `right,` for the equivalent tactic, which is
-apply h` for `h : Q → P ∨ Q`.
+## `apply?`
 
-2. As in the second example, `left,` can always be
-applied when dealing with an inductive type with two constructors (such
-like `ℕ`).
+**Summary: ** There are already a lot of proven statements in `mathlib`. When using `apply?`, the `mathlib` is statements whose types correspond to those of the statement to be proved. If this is not successful, `Lean` reports a `timeout`. If successful, it also reports which command was found. If you click on it, this is inserted in place of `library_search`.
 
-## `library_search` {#library_search.unnumbered}
-
-**Summary** {#Summary-16.unnumbered}
-
-There are already a lot of proven statements in `mathlib`. When
-using `library_search`, the `mathlib` is
-statements whose types correspond to those of the statement to be proved.
- If this is not successful, `Lean` reports a
-`timeout`. If successful, it also reports
-which command was found. If you click on it, this is
-inserted in place of `library_search`.
-
-**Examples** {#beispiele-16 .unnumbered}
+**Examples**
 
 **Proof state** **Command** **New proof state**
 --------------------- -------------------------- -------------------------------
@@ -903,17 +864,11 @@ inserted in place of `library_search`.
 The tactic `suggest` is similar and also works if
 the goal cannot be closed.
 
-## `linarith` {#linarith .unnumbered}
+## `linarith`
 
-**Summary** {#Summary-17 .unnumbered}
+**Summary:** This tactic can prove equations and inequalities with the help of hypotheses. It is important that the hypotheses used are also only equations and inequalities. So here we are working mainly with the transitivity of `<` together with arithmetic rules.
 
-This tactic can prove equations and inequalities with the help of hypotheses.
- It is important that the hypotheses used
-are also only equations and inequalities. So here we are
-working mainly with the transitivity of `<` together with arithmetic rules
-.
-
-**Examples** {#beispiele-17 .unnumbered}
+**Examples:**
 
 **Proof state** **Command** **New proof state**
 ---------------------- -------------------- -------------------------
@@ -921,15 +876,11 @@ working mainly with the transitivity of `<` together with arithmetic rules
 `h2 : b ≤ c`
 `⊢ a < c`[^9]
 
-## `norm_num` {#norm_num .unnumbered}
+## `norm_num`
 
-**Summary** {#Summary-18 .unnumbered}
+**Summary:** As long as no variables are involved, `norm_num` can perform calculations involving `=`, `<`, `≤`, or '≠'.
 
-As long as no variables are involved, `norm_num` can
-perform calculations involving `=`, `<`, `≤`, or
-'≠'.
-
-**Examples** {#beispiele-18 .unnumbered}
+**Examples:**
 
 +----------------------------+--------------------+-------------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -947,28 +898,21 @@ perform calculations involving `=`, `<`, `≤`, or
 | **goals accomplished ** | | |
 +----------------------------+--------------------+-------------------------+
 
-**Notes** {#anmerkungen-15 .unnumbered}
+**Notes:**
 
-`norm_num` knows a few other arithmetic operations, such as the
-absolute value function, see the second example.
+`norm_num` knows a few other arithmetic operations, such as the absolute value function, see the second example.
 
-## `nth_rewrite` {#nth_rewrite .unnumbered}
+## `nth_rewrite`
 
 **Proof state** **Command** **New proof state**
 --------------------------- -------------------- -------------------------
 `⊢ 2 + 2 < 5`[^11] `norm_num,` **goals accomplished **
 
-**Summary** {#Summary-19 .unnumbered}
+**Summary:**
 
-This tactic is related to `rw`. The difference is that you can
-specify the occurrence number of the term to be replaced on which
-`rw` is to be applied. The exact syntax is
-`nth_rewrite k h`, where `k` is the number (starting with
-$0$) of the term to be replaced and `h` is the
-hypothesis to be replaced. As with `rw`, this must be in the form `h : x=y`
-or `h : A↔B`.
+This tactic is related to `rw`. The difference is that you can specify the occurrence number of the term to be replaced on which `rw` is to be applied. The exact syntax is `nth_rewrite k h`, where `k` is the number (starting with $0$) of the term to be replaced and `h` is the hypothesis to be replaced. As with `rw`, this must be in the form `h : x=y` or `h : A↔B`.
 
-**Examples** {#beispiele-19 .unnumbered}
+**Examples:**
 
 +----------------------------------+--------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -986,25 +930,13 @@ or `h : A↔B`.
 | `⊢ n = 0 + 0 + n` | | |
 +----------------------------------+--------------+-----------------------+
 
+In the above example, Lean sees three terms of the form `0 + _`: Number 0 is on the left-hand side, for numbers 1 and 2, on the right side (because of the parenthesis `0 + 0 + n = (0 + 0) + n`),  the second = is checked first. To the left of it is `0 + 0`, which is by definition identical to `0`. applying `rw zero_add` here, the term is converted to `n`. For number 2, you see `0 + 0`, determine that it is of the desired form and convert it to `0`.
 
+## `obtain`
 
-In the above example, Lean sees three terms of the form `0 + _`:
-Number 0 is on the left-hand side, for numbers 1 and 2, on the
-right side (because of the parenthesis `0 + 0 + n = (0 + 0) + n`),
- the second = is checked first. To the left of it is
-`0 + 0`, which is by definition identical to `0`.
-applying `rw zero_add` here, the term is converted to `n`.
- For number 2, you see `0 + 0`, determine that
-it is of the desired form and convert it to `0`.
+**Summary:** The `obtain` tactic can be used to merge `have` and `cases` into one command.
 
-## `obtain` {#obtain.unnumbered}
-
-**Summary** {#Summary-20 .unnumbered}
-
-The `obtain` tactic can be used to merge `have` and
-`cases` into one command.
-
-**Examples** {#beispiele-20.unnumbered}
+**Examples:**
 
 **Proof state** **Command** **New proof state**
 ------------------------------------------ --------------------------- -------------------------------------
@@ -1014,16 +946,11 @@ The `obtain` tactic can be used to merge `have` and
 `m : ℕ`
 `hm : f 27 m`
 
-## `push_neg` {#push_neg .unnumbered}
+## `push_neg`
 
-**Summary** {#Summary-21 .unnumbered}
+**Summary:** In many steps of a proof, a negation must be carried out. In order to process the corresponding quantifiers etc. as well and to better reusable, the tactic `push_neg` is available.
 
-In many steps of a proof, a negation must be carried out. In order to
-process the corresponding quantifiers etc. as well and to
-better reusable, the tactic `push_neg` is available.
-
-**Examples** {#beispiele-21.unnumbered}
-
+**Examples**
 +---------------------+--------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
 +:====================+:=============+:======================+
@@ -1038,11 +965,11 @@ better reusable, the tactic `push_neg` is available.
 | `⊢ ¬P ∧ ¬Q` | | |
 +---------------------+--------------+-----------------------+
 
-**Notes** {#anmerkungen-16 .unnumbered}
+**Notes:**
 
 This tactic also works with other objects, such as sets.
 
-## `rcases` {#rcases .unnumbered}
+## `rcases`
 
 +-------------------------------+--------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -1065,16 +992,9 @@ This tactic also works with other objects, such as sets.
 | `⊢ P` | | |
 +-------------------------------+--------------+-----------------------+
 
-**Summary** {#Summary-22 .unnumbered}
+**Summary:** `rcases` is a more flexible version of `cases`. Here, it is allowed to use `⟨ hP, hQ ⟩` (or `(hP | hQ)`) to to split the hypotheses `hP` and `hQ` into their cases.  As can be seen in the example above, it is also possible to nest `⟨.,.⟩` and `(.|.)`.
 
-`rcases` is a more flexible version of `cases`. Here,
-it is allowed to use `⟨ hP, hQ ⟩`
-(or `(hP | hQ)`) to
-to split the hypotheses `hP` and `hQ` into their cases.
- As can be seen in the example above, it is also possible to
-nest `⟨.,.⟩` and `(.|.)`.
-
-**Examples** {#beispiele-22 .unnumbered}
+**Examples:**
 
 +----------------------------+--------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -1094,26 +1014,15 @@ nest `⟨.,.⟩` and `(.|.)`.
 | `⊢ R` | | |
 +----------------------------+--------------+-----------------------+
 
+**Notes:**
 
+The last example shows how to use `rcases` to directly resolve a `∃` quantifier in a hypothesis that has more than one constraint (here: `0 ≤ m)` and `m < n` can be resolved directly.
 
-**Notes** {#anmerkungen-17 .unnumbered}
+## `refine`
 
-The last example shows how to use `rcases` to
-directly resolve a `∃` quantifier in a hypothesis that has more than one constraint
-(here: `0 ≤ m)` and `m < n` can be resolved directly.
+**Summary:** The `refine` tactic is like `exact` with holes. More precisely: if the goal is to apply a combination of hypotheses, you can do that with 'refine' and write an open term '_' for each. You then get each '_' back as a new goal (where those with definitional equality are solved immediately).
 
-## `refine` {#refine .unnumbered}
-
-**Summary** {#Summary-23 .unnumbered}
-
-The `refine` tactic is like `exact` with holes.
-more precisely: if the goal is to apply a combination of hypotheses,
- you can do that with 'refine' and write an
-open term '_' for each. You then get each '_' back as a
-new goal (where those with definitional equality are solved immediately
-).
-
-**Examples** {#beispiele-23.unnumbered}
+**Examples:**
 
 +----------------------+----------------------+----------------------+
 | **Proof state** | **Command** | **New proof |
@@ -1140,14 +1049,11 @@ new goal (where those with definitional equality are solved immediately
 | `⊢ 3 > 0` | | |
 +----------------------+----------------------+----------------------+
 
-## `refl` {#refl .unnumbered}
+## `refl`
 
-**Summary** {#Summary-24 .unnumbered}
+**Summary:** This tactic proves the equality (or equivalence) of two definitionally equal terms.
 
-This tactic proves the equality (or equivalence) of two
-definitionally equal terms.
-
-**Examples** {#beispiele-24.unnumbered}
+**Examples:**
 
 +-------------------------+----------------+-------------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -1167,20 +1073,15 @@ definitionally equal terms.
 | **goals accomplished ** | | |
 +-------------------------+----------------+-------------------------+
 
-**Notes** {#anmerkungen-18 .unnumbered}
+**Notes:**
 
-The second example works because both sides
-are by definition equal to `succ succ succ 0`.
+The second example works because both sides are by definition equal to `succ succ succ 0`.
 
-## `revert` {#revert .unnumbered}
+## `revert`
 
-**Summary** {#Summary-25.unnumbered}
+**Summary:** `revert` is the opposite of `intro`: It takes a hypothesis from the local context and inserts it as a precondition into the goal.
 
-`revert` is the opposite of `intro`: It takes a
-hypothesis from the local context and inserts it as a precondition into the
-goal.
-
-**Examples** {#beispiele-25 .unnumbered}
+**Examples**
 
 +--------------------+--------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -1197,32 +1098,25 @@ goal.
 | `⊢ P → Q` | | |
 +--------------------+--------------+-----------------------+
 
-**Notes** {#anmerkungen-19 .unnumbered}
+**Notes:**
 
-`revert` is rarely needed; actually only when you
-want to apply an already proven result exactly and first want to establish the correct
-form of the goal.
+`revert` is rarely needed; actually only when you want to apply an already proven result exactly and first want to establish the correct form of the goal.
 
-## `right` {#right .unnumbered}
+## `right`
 
-**Summary** {#Summary-26.unnumbered}
+**Summary:** See `left`, where the adjustments are obvious.
 
-See `left`, where the adjustments are obvious.
-
-**Examples** {#beispiele-26 .unnumbered}
+**Examples**
 
 **Proof state** **command** **New proof state**
 ------------------ ----------------- -----------------------
 `⊢ P ∨ Q` `right,` `⊢ Q`
 
-## `ring` {#ring .unnumbered}
+## `ring`
 
-**Summary** {#Summary-27 .unnumbered}
+**Summary:** The `ring` uses rules of calculation such as associativity, commutativity, and distributivity to achieve the goal.
 
-The `ring` uses rules of calculation such as associativity,
-commutativity, and distributivity to achieve the goal.
-
-**Examples** {#beispiele-27 .unnumbered}
+**Examples**
 
 +------------------------------------+----------------+-------------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -1243,23 +1137,17 @@ commutativity, and distributivity to achieve the goal.
 | **goals accomplished ** | | |
 +------------------------------------+----------------+-------------------------+
 
-**Notes** {#notes-20 .unnumbered}
+**Notes:**
 
-1. The second example works even though `ℕ` is not a ring
-(but only a half-ring). It would also work with `n : ℝ`
-(since `ℝ` has more calculation rules than
-`ℕ`.
+* The second example works even though `ℕ` is not a ring (but only a half-ring). It would also work with `n : ℝ` (since `ℝ` has more calculation rules than `ℕ`).
+* `ring` is only used to close the goal.
 
-2. `ring` is only used to close the goal.
 
-## `rintro` {#rintro .unnumbered}
+## `rintro`
 
-**Summary** {#Summary-28 .unnumbered}
+**Summary:** The `rintro` tactic is used to process several `intro` and `cases` tactics on one line.
 
-The `rintro` tactic is used to process several `intro`
-and `cases` tactics on one line.
-
-**Examples** {#beispiele-28.unnumbered}
+**Examples**
 
 **Proof state** **Command** **New proof state**
 ---------------------- ------------------------------ -----------------------
@@ -1272,27 +1160,15 @@ $=$ `hQ : Q`
 `intro h,` `⊢ Q`
 `cases h with h1 h2,`
 
-**Notes** {#anmerkungen-21 .unnumbered}
+**Notes:**
 
-Here, more than two `∨` can also be split into cases in one step
-: With `A ∨ B ∨ C`,
-`rintro (A | B | C)` introduces three goals.
+Here, more than two `∨` can also be split into cases in one step: With `A ∨ B ∨ C`, `rintro (A | B | C)` introduces three goals.
 
-## `rw` {#rw .unnumbered}
+## `rw`
 
-**Summary** {#Summary-29 .unnumbered}
+**Summary:** `rw` stands for *rewrite*. For `rw h` to work, `h` must be an expression of the type `h : x=y` or `h : A↔B`. In this case, `rw h`  replaces every term that is syntactically identical to `x` (or `A`) is replaced by `y` (or `B`). This also works if `h` is an already proven result (i.e. a `lemma` or `theorem`). With `rw ← h` is applied from right to left. (In the above example, `y` is replaced by `x` and `B` by `A`.)
 
-`rw` stands for *rewrite*. For `rw h` to work, `h` must be an
-expression of the type `h : x=y` or `h : A↔B`. In this
-case, `rw h` replaces every term that is syntactically identical to
-`x` (or `A`) is replaced by `y` (or `B`).
- This also works if `h` is an already proven
-result (i.e. a `lemma` or `theorem`). With
-`rw ← h` is applied from right to left. (In
-the above example, `y` is replaced by `x` and `B`
-by `A`.)
-
-**Examples** {#beispiele-29 .unnumbered}
+**Examples**
 
 +----------------------+----------------------+----------------------+
 | **Proof state** | **Command** | **New proof |
@@ -1333,62 +1209,29 @@ by `A`.)
 | = m + k + 0` | | |
 +----------------------+----------------------+----------------------+
 
+For the last four examples, you first need to know that `add_comm` and `add_zero` are the statements
 
-
-For the last four examples, you first need to know that
-`add_comm` and `add_zero` are the statements
-
-``` {.Lean mathescape=“” numbersep=“5pt” framesep=“5mm” bgcolor=“mygray”}
+```
 add_comm : ∀ {G : Type} [_inst_1 : add_comm_semigroup G] (a b : G),
 a + b = b + a
 add_zero : ∀ {M : Type} [_inst_1 : add_zero_class M] (a : M), a + 0 = a
-.
+```
 
-In the first of the four examples, `rw` applies to the first
-occurrence of a term of type `a + b`. Due to the internal
-bracketing, `(k + m) + 0` is on the left side, so that the
-`rw` results in a `0 + k + m`. If you want to use the
-commutativity in the term `k + m`, you need the
-second (or third) example, where `rw add_comm k m` leads to the
-desired progress. In the last example, the
-two `+ 0` terms are first eliminated by `rw add_zero`.
+In the first of the four examples, `rw` applies to the first occurrence of a term of type `a + b`. Due to the internal bracketing, `(k + m) + 0` is on the left side, so that the `rw` results in a `0 + k + m`. If you want to use the commutativity in the term `k + m`, you need the second (or third) example, where `rw add_comm k m` leads to the desired progress. In the last example, the two `+ 0` terms are first eliminated by `rw add_zero`.
 
-**Notes** {#anmerkungen-22 .unnumbered}
+**Notes**
 
-1. `rw` is used very often in practice to apply statements from the
-`mathlib` (at least if they are of the type `=`
-or `↔`).
+* `rw` is used very often in practice to apply statements from the `mathlib` (at least if they are of the type `=` or `↔`).
+* If you want to combine several `rw` commands, you can do so in square brackets, for example `rw [h1, h2]` or `rw [h1, ←h2, h3]`.
+* `rw` immediately executes a `refl` after its application. This leads to the second and third examples of the applications of `add_comm` and `add_zero` that the new proof state is not as specified, but **no goals**.
+* If you do not want to perform a `rw` in sequence (as in the double elimination of the `+0` above), you can use `nth_rewrite` to rewrite the second occurrence of a term.
+* The `rw` tactic does not work when it comes after a *binder*, which could be a `∀ ∃ ∑`. In this case, `simp_rw` will hopefully help.
 
-2. If you want to combine several `rw` commands, you can do so
-in square brackets, for example `rw [h1, h2]` or
-`rw [h1, ←h2, h3]`.
+## `simp`
 
-3. `rw` immediately executes a `refl` after its application.
- This leads to the second and third examples of the applications of
-`add_comm` and `add_zero` that the new proof
-state is not as specified, but **goals accomplished**
+**Summary:** In `mathlib` there are many lemmas with `=` or `↔` statements that can be applied with `rw` and are marked with `@[simp]`. These marked lemmas have the property that the right side is a simplified form of the left side. With `simp`, `lean` looks for matching lemmas and tries to apply them.
 
-4. If you do not want to perform a `rw` in sequence (as
-in the double elimination of the `+0` above), you can
-use `nth_rewrite` to rewrite the second occurrence of a
-term.
-
-5. The `rw` tactic does not work when it comes after a
-*binder*, which could be a `∀ ∃ ∑`. In this
-case, `simp_rw` will hopefully help.
-
-## `simp` {#simp .unnumbered}
-
-**Summary** {#Summary-30 .unnumbered}
-
-In `mathlib` there are many lemmas with `=` or
-`↔` statements that can be applied with `rw` and
-are marked with `@[simp]`. These marked lemmas
-have the property that the right side is a simplified form
-of the left side. With `simp`, `lean` looks for
-matching lemmas and tries to apply them.
-
-**Examples** {#beispiele-30 .unnumbered}
+**Examples**
 
 +----------------------------+--------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -1404,10 +1247,9 @@ matching lemmas and tries to apply them.
 | **goals accomplished ** | | |
 +----------------------------+--------------+-----------------------+
 
-**Notes** {#anmerkungen-23 .unnumbered}
+**Notes:**
 
-If you want to know which lemmas were used, try
-'simp?` or 'squeeze_simp`. This provides clues.
+If you want to know which lemmas were used, try 'simp?` or 'squeeze_simp`. This provides clues.
 
 +---------------------------------+--------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -1426,7 +1268,7 @@ If you want to know which lemmas were used, try
 | ` eq_self_iff_true]` | | |
 +---------------------------------+--------------+-----------------------+
 
-## `specialize` {#specialize .unnumbered}
+## `specialize`
 
 **Proof state** **Command** **New proof state**
 ----------------------------- --------------------------- -----------------------
@@ -1434,13 +1276,7 @@ If you want to know which lemmas were used, try
 `h : ∀ (n : ℕ), f n` `h : f 13`
 `⊢ P` `⊢ P`
 
-**Summary** {#Summary-31 .unnumbered}
-
-In a hypothesis `h : ∀ n, ...`, `...` applies to all
-`n`, but for the proof of the goal, you may only need
-a specific `n`. If you specify `specialize h` followed by
-the value for which `h` is needed, the hypothesis changes
-accordingly.
+**Summary:** In a hypothesis `h : ∀ n, ...`, `...` applies to all `n`, but for the proof of the goal, you may only need a specific `n`. If you specify `specialize h` followed by the value for which `h` is needed, the hypothesis changes accordingly.
 
 **Examples** {#beispiele-31 .unnumbered}
 
@@ -1461,22 +1297,14 @@ accordingly.
 | `⊢ 0 < 1` | | |
 +-----------------------------------+--------------+-----------------------+
 
-**Notes** {#anmerkungen-24 .unnumbered}
+**Notes**
 
-1. Just as with `use`, you have to be careful that the goal
-remains provable.
+* Just as with `use`, you have to be careful that the goal remains provable.
+* If you want to use two values of the hypothesis `h`, then `let h' := h` first provides a duplication of the hypothesis, so that you can then apply `specialize` to `h` and `h'`.
 
-2. If you want to use two values of the hypothesis `h`, then
-`let h' := h` first provides a duplication of the hypothesis, so
-that you can then apply `specialize` to `h` and
-`h'`.
+## `constructor`
 
-## `split` {#split .unnumbered}
-
-**Summary** {#Summary-32 .unnumbered}
-
-If the goal is of the type `⊢ P ∧ Q`, it is replaced by `split`
-into two goals `⊢ P` and `⊢ Q`.
+**Summary:** If the goal is of the type `⊢ P ∧ Q`, it is replaced by `constructor` into two goals `⊢ P` and `⊢ Q`.
 
 **Examples** {#beispiele-32 .unnumbered}
 
@@ -1487,19 +1315,15 @@ into two goals `⊢ P` and `⊢ Q`.
 `⊢ P ↔ Q` `split,` `⊢ P → Q`
 `⊢ Q → P`
 
-**Notes** {#notes-25 .unnumbered}
+**Notes**
 
-Note that `⊢ P ↔ Q` is identical to
-`⊢ (P → Q) ∧ (Q → P)`.
+Note that `⊢ P ↔ Q` is identical to `⊢ (P → Q) ∧ (Q → P)`.
 
-## `tauto` {#tauto .unnumbered}
+## `tauto`
 
-**Summary** {#Summary-33 .unnumbered}
+**Summary:** `tauto` solves all goals that can be solved with a truth table.
 
-`tauto` solves all goals that can be solved with a truth table
-.
-
-**Examples** {#beispiele-33.unnumbered}
+**Examples**
 
 +----------------------+----------------------+----------------------+
 | **Proof state** | **Command** | **New proof |
@@ -1521,9 +1345,7 @@ Note that `⊢ P ↔ Q` is identical to
 | ** | | |
 +----------------------+----------------------+----------------------+
 
-The truth tables for `¬P`, `P ∧ Q`
-and `P ∨ Q` are as follows; if more terms of type
-`Prop` are involved, there are more lines.
+The truth tables for `¬P`, `P ∧ Q` and `P ∨ Q` are as follows; if more terms of type `Prop` are involved, there are more lines.
 
 ::: center
 `P` `¬P`
@@ -1546,22 +1368,18 @@ and `P ∨ Q` are as follows; if more terms of type
 `false` `false` `false`
 :::
 
-**Notes** {#anmerkungen-26 .unnumbered}
+**Notes**
 
-The difference between `tauto` and `tauto!` is that
-in the latter tactic, the rule of the excluded middle is allowed.
- The second example can therefore only be solved with `tauto!`, but not
-with `tauto`.
+The difference between `tauto` and `tauto!` is that in the latter tactic, the rule of the excluded middle is allowed.  The second example can therefore only be solved with `tauto!`, but not with `tauto`.
 
-## `triv` {#triv.unnumbered}
+## `triv`
 
-**Summary** {#Summary-34.unnumbered}
+**Summary**
 
-`triv` solves an objective that is, by definition, identical to
-`true`. It also solves objectives that can be solved with `refl`
+`triv` solves an objective that is, by definition, identical to `true`. It also solves objectives that can be solved with `refl`
 .
 
-**Examples** {#beispiele-34 .unnumbered}
+**Examples**
 
 +-------------------------+----------------+-------------------------+
 | **Proof state** | **Command** | **New proof state** |
@@ -1579,7 +1397,7 @@ with `tauto`.
 | **goals accomplished ** | | |
 +-------------------------+----------------+-------------------------+
 
-## `use` {#use .unnumbered}
+## `use`
 
 **Proof state** **Command** **New proof state**
 --------------------------- ----------------- -----------------------
@@ -1587,13 +1405,9 @@ with `tauto`.
 `y : α` `y : α`
 ⊢ ∃ (x : α), f x` ⊢ f y`
 
-**Summary** {#Summary-35 .unnumbered}
+**Summary:** The `use` tactic is used for goals that begin with ∃. Here, parameters are used to indicate which object quantified by ∃ is to be reused in the proof.
 
-The `use` tactic is used for goals that begin with ∃.
-Here, parameters are used to indicate which object quantified by ∃
-is to be reused in the proof.
-
-**Examples** {#beispiele-35 .unnumbered}
+**Examples**
 
 +----------------------------------+--------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |

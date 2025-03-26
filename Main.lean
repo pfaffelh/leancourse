@@ -9,4 +9,4 @@ def config : Config := {
   issueLink := some "https://github.com/pfaffelh/leancourse/issues"
 }
 
-def main := manualMain (%doc Leancourse.Basic) (config := config)
+def main := manualMain (%doc Leancourse.Coursenotes) (config := config)

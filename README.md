@@ -11,3 +11,20 @@ pkill python3; lake build; lake exe leancourse --output _out/; python3 -m http.s
 
 https://pfaffelh.github.io/leancourse/
 shows 
+
+
+This is how to include docstrings
+
+{docstring Lean.Parser.Tactic.apply}
+
+
+Lean examples take the form
+
+```lean
+example : 2 + 2 = 4 :=
+  by rfl
+```
+
+New paragraphs start with
+
+:::paragraph

@@ -1,7 +1,7 @@
 import tactic -- lade lean-Taktiken
 
 -- Dies sind Namen für alle verwendeten Aussagen
-variables (P Q R S T: Prop) 
+variables (P Q R S T: Prop)
 
 example (h : P → Q → R) : R :=
 begin
@@ -10,48 +10,48 @@ begin
 end
 
 
-/- 
+/-
 Mit intro verwandelt man die Aussage links des ersten → in eine Hypothese und die restliche Aussage in das neue Ziel.
-Stimmt ein Ziel mit einer Hypothese überein, so genügt assumption für das Schließen des Ziels. Alterantiv liefert exact den Schluss: 
+Stimmt ein Ziel mit einer Hypothese überein, so genügt assumption für das Schließen des Ziels. Alterantiv liefert exact den Schluss:
  -/
 
-example : P → P := 
+example : P → P :=
 begin
-  intro hP, 
+  intro hP,
   assumption,
 end
 
-example : P → P := 
+example : P → P :=
 begin
-  intro hP, 
+  intro hP,
   exact hP,
 end
 
-/- 
+/-
 Ab hier folgen die Aufgaben: -/
--- Aufgabe 1) Wenn P gilt, dann folgt P aus P. 
+-- Aufgabe 1) Wenn P gilt, dann folgt P aus P.
 -- Ersetzen Sie das sorry durch geeignete Befehle mit intro und exact.
-example : P → (P → P):= 
+example : P → (P → P):=
 begin
   intro hP1,
-  intro hP2, 
+  intro hP2,
   exact hP2,
 end
 
--- Aufgabe 2) 
+-- Aufgabe 2)
 -- Hier beginnt der Beweis gleich mit einer Hypothese, ohne sie mit intro erzeugt zu haben.
-example (hQ : Q) : (P → Q) := 
+example (hQ : Q) : (P → Q) :=
 begin
-  intro hP, 
-  exact hQ, 
+  intro hP,
+  exact hQ,
 end
 
--- Aufgabe 3) Versuchen Sie doch mal, mit 
+-- Aufgabe 3) Versuchen Sie doch mal, mit
 -- intros hP hPQ
 -- anzufangen. Dies kürzt ein wenig ab.
 example : P → (P → Q) → Q :=
 begin
-  intros hP hPQ, -- ersetzt intro hP, introhPQ 
+  intros hP hPQ, -- ersetzt intro hP, introhPQ
   exact hPQ hP,
 end
 
@@ -63,12 +63,12 @@ end
 
 example : P → P → Q :=
 begin
-  sorry, -- stimmt nicht 
+  sorry, -- stimmt nicht
 end
 
 example : P → Q → Q :=
 begin
-  intros hP hQ, 
+  intros hP hQ,
   exact hQ,
 end
 
@@ -86,22 +86,22 @@ end
 example (hP : P) (hPQ : P → Q) (hQR : Q → R) : R :=
 begin
   exact hQR (hPQ hP),
---  apply hQR (hPQ hP), 
---  refine hQR (hPQ hP), 
---  refine hQR (hPQ _), 
+--  apply hQR (hPQ hP),
+--  refine hQR (hPQ hP),
+--  refine hQR (hPQ _),
 end
 
 --change a bit
 example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T → P) (hRT : R → T) : ( (Q ↔ R) ∧ (R ↔ T)) :=
 begin
-  split, 
-  { 
+  split,
+  {
     split,
     exact hQR,
-    intro hR, 
+    intro hR,
     exact hPQ (hTP (hRT hR)),
   },
-  split, 
+  split,
   exact hRT,
   intro hT,
   exact hQR (hPQ (hTP hT)),
@@ -113,78 +113,78 @@ end
 -- split, exact, intro
 example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T → P) (hRT : R → T) : ( (Q ↔ R) ∧ (R ↔ T)) :=
 begin
-  split, 
-  { 
+  split,
+  {
     split,
     exact hQR,
-    intro hR, 
+    intro hR,
     exact hPQ (hTP (hRT hR)),
   },
-  split, 
+  split,
   exact hRT,
   intro hT,
   exact hQR (hPQ (hTP hT)),
 end
 
-example : (P ∧ Q) → (P ∨ Q) := 
+example : (P ∧ Q) → (P ∨ Q) :=
 begin
-intro h, left, 
-cases h with hP hQ, 
---  rintro ⟨ hP, hQ ⟩, 
+intro h, left,
+cases h with hP hQ,
+--  rintro ⟨ hP, hQ ⟩,
 exact hP,
 end
 
-example : (P ∨ Q) ↔ (P ∨ (¬Q → P)) := 
+example : (P ∨ Q) ↔ (P ∨ (¬Q → P)) :=
 begin
   split,
-  intro h, 
-  cases h with hP hQ, 
-  left, exact hP, 
-  by_cases P, 
-  left, exact h, 
-  right, 
-  intro nQ, 
-  exfalso, apply nQ, exact hQ, 
-  sorry, 
+  intro h,
+  cases h with hP hQ,
+  left, exact hP,
+  by_cases P,
+  left, exact h,
+  right,
+  intro nQ,
+  exfalso, apply nQ, exact hQ,
+  sorry,
 end
 
 
 
 -- 1d) add exfalso, triv, negation, by_cases
 -- intro, exfalso, exact
-example : (¬ P ↔ (P → false)) := 
+example : (¬ P ↔ (P → false)) :=
 begin
   split,
-  { 
-    intros h1 h2, 
-    apply h1, 
+  {
+    intros h1 h2,
+    apply h1,
     exact h2,
   },
-  { 
-    intro h1, 
---    change P → false, 
-    exact h1, 
+  {
+    intro h1,
+--    change P → false,
+    exact h1,
   }
 end
 
 example : (P ∨ ¬P) → true :=
 begin
   rintro (hP | hnP);
-  triv,  
+  triv,
 end
 
  -- intro, cases
 example : (P ∧ ¬P) → false :=
 begin
-  intro h, cases h with hP hnP, 
---  rintro ⟨hP, hnP⟩, 
+  intro h, cases h with hP hnP,
+--  rintro ⟨hP, hnP⟩,
   apply hnP,
-  exact hP, 
+  exact hP,
 end
 
 example : false → P :=
 begin
-  intro h, 
+  intro h,
   exfalso,
   exact h,
 end
@@ -193,45 +193,45 @@ end
 example : P → true :=
 begin
   intro hP,
-  triv, 
+  triv,
 end
 
 example : (P → Q) ↔ (¬ Q → ¬ P) :=
 begin
-  split,  
+  split,
   intros hPQ hnQ hP,
   exact hnQ (hPQ hP),
 --  apply hnQ,
 --  exact hPQ hP,
   intros h1 hP,
-  by_contra, 
+  by_contra,
   exact h1 h hP,
 end
 
 -- intro, by_cases, left, exact, cases, apply, exfalso
 example : (P → Q) ↔ (Q ∨ ¬ P) :=
 begin
-  split, 
+  split,
   {
-    intro hPQ, 
+    intro hPQ,
     by_cases P,
-    { 
-      left, 
-      exact hPQ h, 
+    {
+      left,
+      exact hPQ h,
     },
     {
-      right, 
-      exact h, 
-    }, 
+      right,
+      exact h,
+    },
   },
-  { 
+  {
     intros hPQ hP,
     cases hPQ,
     {
       exact hPQ,
     },
     {
-      exfalso, 
+      exfalso,
       apply hPQ,
       exact hP,
     },
@@ -244,43 +244,43 @@ example : true ↔ ¬ false :=
 begin
   split,
   {
-    intros h1 h2, 
-    exact h2,   
+    intros h1 h2,
+    exact h2,
   },
   {
-    intros h1, 
-    triv, 
+    intros h1,
+    triv,
   },
 end
 
 
 -- by_contra
-example : P ↔ ¬¬P := 
+example : P ↔ ¬¬P :=
 begin
-  split, 
+  split,
   intros hP hnP,
   apply hnP, exact hP,
   intro hnnP,
-  by_contra, 
+  by_contra,
   apply hnnP,
-  exact h, 
+  exact h,
 end
 
-example : (P → Q) ↔ (¬Q → ¬P) := 
+example : (P → Q) ↔ (¬Q → ¬P) :=
 begin
-  split, intro h, by_contra, 
+  split, intro h, by_contra,
 end
 
 
 -- 1f) refl
-example : P ↔ P := 
+example : P ↔ P :=
 begin
   refl,
 end
 
 example : P = P :=
 begin
-  refl, 
+  refl,
 end
 
 
@@ -294,7 +294,7 @@ end
 
 -- 2) have
 
-example : P → P := 
+example : P → P :=
 begin
   have h : P ↔ P, refl, apply h.1,
 end
@@ -304,20 +304,20 @@ end
 -- 3) Abkürzzungen
 -- 3a) rintro(s), rcases, obtain
 
-example : (P → Q) ∧ (Q → R) → (P → R) := 
+example : (P → Q) ∧ (Q → R) → (P → R) :=
 begin
   rintro ⟨ hPQ, hQR ⟩ hP,
-  exact hQR (hPQ hP), 
+  exact hQR (hPQ hP),
 end
 
 -- intro, cases, exact
--- rintro 
+-- rintro
 
 example (hPQ : P → Q) (hnPQ : ¬P → Q) : Q :=
 begin
   by_cases P,
-  exact hPQ h, 
-  exact hnPQ h,  
+  exact hPQ h,
+  exact hnPQ h,
 end
 
 -- obtain
@@ -327,17 +327,17 @@ begin
   intro hP,
   obtain hQ := hPQ hP,
   obtain hnQ := hPnQ hP,
-  apply hnQ, 
+  apply hnQ,
   exact hQ,
 end
 
-example : (P ∨ Q) → (¬Q → P) := 
+example : (P ∨ Q) → (¬Q → P) :=
 begin
-  rintros (hP | hQ) h, 
+  rintros (hP | hQ) h,
   exact hP,
-  exfalso, 
-  apply h, 
-  exact hQ, 
+  exfalso,
+  apply h,
+  exact hQ,
 end
 
 
@@ -360,39 +360,39 @@ end
 -- split, exact, intro
 example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T → P) (hRT : R → T) : ( (Q ↔ R) ∧ (R ↔ T)) :=
 begin
-  split, 
-  { 
+  split,
+  {
     split,
     exact hQR,
-    intro hR, 
+    intro hR,
     exact hPQ (hTP (hRT hR)),
   },
-  split, 
+  split,
   exact hRT,
   intro hT,
   exact hQR (hPQ (hTP hT)),
 end
 
-example : (P ∧ Q) → (P ∨ Q) := 
+example : (P ∧ Q) → (P ∨ Q) :=
 begin
-intro h, left, 
-cases h with hP hQ, 
---  rintro ⟨ hP, hQ ⟩, 
+intro h, left,
+cases h with hP hQ,
+--  rintro ⟨ hP, hQ ⟩,
 exact hP,
 end
 
-example : (P ∨ Q) ↔ (P ∨ (¬Q → P)) := 
+example : (P ∨ Q) ↔ (P ∨ (¬Q → P)) :=
 begin
   split,
-  intro h, 
-  cases h with hP hQ, 
-  left, exact hP, 
-  by_cases P, 
-  left, exact h, 
-  right, 
-  intro nQ, 
-  exfalso, apply nQ, exact hQ, 
-  sorry, 
+  intro h,
+  cases h with hP hQ,
+  left, exact hP,
+  by_cases P,
+  left, exact h,
+  right,
+  intro nQ,
+  exfalso, apply nQ, exact hQ,
+  sorry,
 end
 
 
@@ -403,16 +403,16 @@ end
 example : (P ∨ ¬P) → true :=
 begin
   rintro (hP | hnP);
-  triv,  
+  triv,
 end
 
  -- intro, cases
 example : (P ∧ ¬P) → false :=
 begin
-  intro h, cases h with hP hnP, 
---  rintro ⟨hP, hnP⟩, 
+  intro h, cases h with hP hnP,
+--  rintro ⟨hP, hnP⟩,
   apply hnP,
-  exact hP, 
+  exact hP,
 end
 
 
@@ -432,7 +432,7 @@ begin
   right, exact h,
 end
 
-example : P → P := 
+example : P → P :=
 begin
   have h : P ↔ P, refl, apply h.1,
 end
@@ -443,34 +443,34 @@ end
 
 
 -- 1f) refl, rw
-example : P ↔ P := 
+example : P ↔ P :=
 begin
   refl,
 end
 
 example : P = P :=
 begin
-  refl, 
+  refl,
 end
 
 -- 3a) rintro(s), rcases, obtain
 
 
 
-example : (P → Q) ∧ (Q → R) → (P → R) := 
+example : (P → Q) ∧ (Q → R) → (P → R) :=
 begin
   rintro ⟨ hPQ, hQR ⟩ hP,
-  exact hQR (hPQ hP), 
+  exact hQR (hPQ hP),
 end
 
 -- intro, cases, exact
--- rintro 
+-- rintro
 
 example (hPQ : P → Q) (hnPQ : ¬P → Q) : Q :=
 begin
   by_cases P,
-  exact hPQ h, 
-  exact hnPQ h,  
+  exact hPQ h,
+  exact hnPQ h,
 end
 
 -- obtain
@@ -480,7 +480,7 @@ begin
   intro hP,
   obtain hQ := hPQ hP,
   obtain hnQ := hPnQ hP,
-  apply hnQ, 
+  apply hnQ,
   exact hQ,
 end
 
@@ -539,14 +539,14 @@ end
 --change a bit
 example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T → P) (hRT : R → T) : ( (Q ↔ R) ∧ (R ↔ T)) :=
 begin
-  split, 
-  { 
+  split,
+  {
     split,
     exact hQR,
-    intro hR, 
+    intro hR,
     exact hPQ (hTP (hRT hR)),
   },
-  split, 
+  split,
   exact hRT,
   intro hT,
   exact hQR (hPQ (hTP hT)),
@@ -556,13 +556,13 @@ example : (P ∧ ¬P) ↔ false :=
 begin
   split,
   rintro ⟨ hP, hnP ⟩,
-  exact hnP hP, 
+  exact hnP hP,
   intro h, cases h,
 end
 
 
 
--- 
+--
 
 lemma l3 : (P → Q) ↔ (Q ∨ ¬P) :=
 begin
@@ -600,31 +600,12 @@ end
 
 
 -- 1f) refl, push_neg, change, refine
-example : P ↔ P := 
+example : P ↔ P :=
 begin
   refl,
 end
 
 example : P = P :=
 begin
-  refl, 
+  refl,
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

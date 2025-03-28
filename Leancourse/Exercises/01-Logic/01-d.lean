@@ -51,69 +51,46 @@ example (hPQ : P ∧ Q) : P := by
   exact hPQ.1
 
 /-
-  Ist die Hypothese h : P ↔ Q (was ja P → Q ∧ Q → P bedeutet), so kann man stattdessen auch h.mp und h.mpr anwenden:
+  If the hypothesis is `h : P ↔ Q` (which is equivalent to `(P → Q) ∧ (Q → P)`=, we can also write `h.mp` (_modus ponens_, for the forward direction) and `h.mpr` (_modus ponens reverse_, for the backward direction):
 -/
-example (hP : P) (hPQ : P ↔ Q) : Q :=
-begin
-  apply hPQ.mp,
-  exact hP,
-end
+example (hP : P) (hPQ : P ↔ Q) : Q := by
+  apply hPQ.mp
+  exact hP
 
-example (hQ : Q) (hPQ : P ↔ Q) : P :=
-begin
-  apply hPQ.mpr,
-  exact hQ,
-end
+example (hQ : Q) (hPQ : P ↔ Q) : P := by
+  apply hPQ.mpr
+  exact hQ
 
 /-
-  Bei einer Verknüpfung h : P ∨ Q entstehen durch _cases_ zwei Ziele. Bei einem gilt P, bei der anderen Q. Da ja unter beiden Bedingungen das Ziel erreicht werden muss, ist dies identisch mit der Ausgangshypothese.
+  With a hypothesis `h : P ∨ Q`, we have to prove the goal in two cases: if `P` holds, or if `Q` holds. With `cases' h` this is done. For the two remaining goals, one has the hypothesis `h : P`, while the other has `h : Q`.
 -/
-example (hPQ : P ∨ Q) : Q ∨ P :=
-begin
-  cases hPQ with hP hQ,
-  {
-    right,
-    exact hP,
-  },
-  {
-    left,
-    exact hQ,
-  },
-end
+example (hPQ : P ∨ Q) : Q ∨ P := by
+  cases' hPQ with hP hQ
+  · right
+    exact hP
+  · left
+    exact hQ
 
--- Aufgabe 4) Ein einfacher logischer Schluss.
-example : (P ∧ Q) → (P ∨ Q) :=
-begin
-  sorry,
-end
+-- Exercise 4) A simple conclusion for `∧` and `∨`.
+example : (P ∧ Q) → (P ∨ Q) := by
+  sorry
 
--- Aufgabe 5) P und ¬P können nicht gleichzeitig gelten...
-example : (P ∧ ¬P) ↔ false :=
-begin
-  sorry,
-end
+-- Exercise 5) `P` and `¬P` cannot hold at the same time.
+example : (P ∧ ¬P) ↔ false := by
+  sorry
 
--- Aufgabe 6a) eine deMorgan'sche Regel für die Negation:
-example : ¬(P ∨ Q) ↔ (¬P ∧ ¬ Q) :=
-begin
-  sorry,
-end
+-- Exercise 6a) One of the deMorgan's rules for negation:
+example : ¬(P ∨ Q) ↔ (¬P ∧ ¬ Q) := by
+  sorry
 
+-- Exercise 6b) Another deMorgan's rule for negation:
+example : ¬(P ∧ Q) ↔ (¬P ∨ ¬ Q) := by
+  sorry
 
--- Aufgabe 6b) eine weitere deMorgan'sche Regel für die Negation:
-example : ¬(P ∧ Q) ↔ (¬P ∨ ¬ Q) :=
-begin
-  sorry,
-end
+-- Exercise 7a) Now we can prove deMorgan's rules for `∧` and `∨`. Here is the first:
+example : P ∨ (Q ∧ R) ↔ (P ∨ Q) ∧ (P ∨ R) := by
+  sorry
 
--- Aufgabe 7a) Jetzt könnten wir die deMorgan'schen Regeln für ∧ und ∨ beweisen. Hier die erste:
-example : P ∨ (Q ∧ R) ↔ (P ∨ Q) ∧ (P ∨ R) :=
-begin
-  sorry,
-end
-
--- Aufgabe 7b) Hier die zweite:
-example : P ∧ (Q ∨ R) ↔ (P ∧ Q) ∨ (P ∧ R) :=
-begin
-  sorry,
-end
+-- Exercise 7b) Here is the second:
+example : P ∧ (Q ∨ R) ↔ (P ∧ Q) ∨ (P ∧ R) := by
+  sorry

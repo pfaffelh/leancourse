@@ -40,7 +40,8 @@ These are the notes for a course on formal proving with the interactive theorem 
 * Installation of [vscode](https://code.visualstudio.com/).
 * Local installation of Lean and the associated tools: Please follow these [instructions](https://leanprover-community.github.io/get_started.html#regular-install).
 * Installing the course repository: Navigate to a location where you would like to put the course materials and use
-```git clone https://github.com/pfaffelh/leancourse`
+```
+git clone https://github.com/pfaffelh/leancourse`
 cd leancourse
 lake exe cache get
 ```

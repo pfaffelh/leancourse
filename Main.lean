@@ -1,5 +1,3 @@
-import VersoManual
-
 import Leancourse
 
 open Verso.Genre.Manual
@@ -9,4 +7,4 @@ def config : Config := {
   issueLink := some "https://github.com/pfaffelh/leancourse/issues"
 }
 
-def main := manualMain (%doc Leancourse.Coursenotes) (config := config)
+def main := manualMain (%doc Leancourse) (config := config)

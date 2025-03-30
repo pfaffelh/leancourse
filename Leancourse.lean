@@ -1,3 +1,44 @@
 -- This module serves as the root of the `Leancourse` library.
 -- Import modules here that should be built as part of the library.
-import «Leancourse».Coursenotes
+import VersoManual
+
+import «Leancourse».Coursenotes.«Introduction»
+import «Leancourse».Coursenotes.«01-Math».«01-Logic»
+import «Leancourse».Coursenotes.«01-Math».«02-NandR»
+import «Leancourse».Coursenotes.«01-Math».«03-Sets»
+import «Leancourse».Coursenotes.«02-Lean».«01-Notes»
+import «Leancourse».Coursenotes.«03-Tactics»
+
+open Verso.Genre Manual
+
+#doc (Manual) "Interactive Theorem Proving using Lean, Summer 2025" =>
+
+%%%
+authors := ["Peter Pfaffelhuber"]
+%%%
+
+These are the notes for a course on formal proving with the interactive theorem prover Lean4 (in the following we just write Lean) in the summer semester of 2025 at the University of Freiburg. To be able to work through the course in a meaningful way, the following technical preparations are to be made:
+
+* Installation of [vscode](https://code.visualstudio.com/).
+* Local installation of Lean and the associated tools: Please follow these [instructions](https://leanprover-community.github.io/get_started.html#regular-install).
+* Installing the course repository: Navigate to a location where you would like to put the course materials and use
+```
+git clone https://github.com/pfaffelh/leancourse`
+cd leancourse
+lake exe cache get
+```
+When you type `code .` within the `leancourse` folder, you should see some code which looks a bit like mathematics.
+* The directory `Leancourse/Exercises` contains the material for the course. We recommend that you first copy this directory, for example to `myExercises`. Otherwise, an update of the repository may overwrite the local files.
+* To update the course materials, enter `git pull` from within the `leancourse`directory.
+
+{include 0 «Leancourse».Coursenotes.«Introduction»}
+
+{include 0 «Leancourse».Coursenotes.«01-Math».«01-Logic»}
+
+{include 0 «Leancourse».Coursenotes.«01-Math».«02-NandR»}
+
+{include 0 «Leancourse».Coursenotes.«01-Math».«03-Sets»}
+
+{include 0 «Leancourse».Coursenotes.«02-Lean».«01-Notes»}
+
+{include 0 «Leancourse».Coursenotes.«03-Tactics»}

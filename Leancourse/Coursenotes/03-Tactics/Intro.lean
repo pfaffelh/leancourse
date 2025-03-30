@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`intro`" =>
+%%%
+tag := "intro"
+%%%
 
 **Summary**
 

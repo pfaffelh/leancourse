@@ -2,7 +2,40 @@
  {"title": "Sections or chapters of the manual",
   "description": null,
   "contents":
-  {"tactics":
+  {"use":
+   [{"id": "use",
+     "data":
+     {"title": "use",
+      "sectionNum": "6.34.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "use", "number": "34"}]},
+     "address": "/"}],
+   "triv":
+   [{"id": "triv",
+     "data":
+     {"title": "triv",
+      "sectionNum": "6.33.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "triv", "number": "33"}]},
+     "address": "/"}],
+   "tauto":
+   [{"id": "tauto",
+     "data":
+     {"title": "tauto",
+      "sectionNum": "6.32.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "tauto", "number": "32"}]},
+     "address": "/"}],
+   "tactics":
    [{"id": "tactics",
      "data":
      {"title": "Tactics",
@@ -11,7 +44,139 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Tactics", "number": "6"}]},
-     "address": "/Tactics/"}],
+     "address": "/"}],
+   "specialize":
+   [{"id": "specialize",
+     "data":
+     {"title": "specialize",
+      "sectionNum": "6.31.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "specialize", "number": "31"}]},
+     "address": "/"}],
+   "simp":
+   [{"id": "simp",
+     "data":
+     {"title": "simp",
+      "sectionNum": "6.30.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "simp", "number": "30"}]},
+     "address": "/"}],
+   "rw":
+   [{"id": "rw",
+     "data":
+     {"title": "rw",
+      "sectionNum": "6.29.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "rw", "number": "29"}]},
+     "address": "/"}],
+   "rintro":
+   [{"id": "rintro",
+     "data":
+     {"title": "rintro",
+      "sectionNum": "6.28.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "rintro", "number": "28"}]},
+     "address": "/"}],
+   "ring":
+   [{"id": "ring",
+     "data":
+     {"title": "ring",
+      "sectionNum": "6.27.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "ring", "number": "27"}]},
+     "address": "/"}],
+   "right":
+   [{"id": "right",
+     "data":
+     {"title": "right",
+      "sectionNum": "6.26.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "right", "number": "26"}]},
+     "address": "/"}],
+   "rfl":
+   [{"id": "rfl",
+     "data":
+     {"title": "rfl",
+      "sectionNum": "6.25.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "rfl", "number": "25"}]},
+     "address": "/"}],
+   "revert":
+   [{"id": "revert",
+     "data":
+     {"title": "revert",
+      "sectionNum": "6.24.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "revert", "number": "24"}]},
+     "address": "/"}],
+   "refine":
+   [{"id": "refine",
+     "data":
+     {"title": "refine",
+      "sectionNum": "6.23.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "refine", "number": "23"}]},
+     "address": "/"}],
+   "rcases":
+   [{"id": "rcases",
+     "data":
+     {"title": "rcases",
+      "sectionNum": "6.22.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "rcases", "number": "22"}]},
+     "address": "/"}],
+   "push_neg":
+   [{"id": "push_neg",
+     "data":
+     {"title": "push_neg",
+      "sectionNum": "6.21.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "push_neg", "number": "21"}]},
+     "address": "/"}],
+   "obtain":
+   [{"id": "obtain",
+     "data":
+     {"title": "obtain",
+      "sectionNum": "6.20.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "obtain", "number": "20"}]},
+     "address": "/"}],
    "numbers":
    [{"id": "numbers",
      "data":
@@ -21,7 +186,18 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "ℕ and ℝ", "number": "3"}]},
-     "address": "/___-and-___/"}],
+     "address": "/"}],
+   "nth_rewrite":
+   [{"id": "nth_rewrite",
+     "data":
+     {"title": "nth_rewrite",
+      "sectionNum": "6.19.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "nth_rewrite", "number": "19"}]},
+     "address": "/"}],
    "logic":
    [{"id": "logic",
      "data":
@@ -31,7 +207,29 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "First steps using Logic", "number": "2"}]},
-     "address": "/First-steps-using-Logic/"}],
+     "address": "/"}],
+   "linearith":
+   [{"id": "linearith",
+     "data":
+     {"title": "linarith",
+      "sectionNum": "6.18.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "linarith", "number": "18"}]},
+     "address": "/"}],
+   "left":
+   [{"id": "left",
+     "data":
+     {"title": "left",
+      "sectionNum": "6.17.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "left", "number": "17"}]},
+     "address": "/"}],
    "lean":
    [{"id": "lean",
      "data":
@@ -41,7 +239,7 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Notes on Lean", "number": "5"}]},
-     "address": "/Notes-on-Lean/"}],
+     "address": "/"}],
    "introduction":
    [{"id": "introduction",
      "data":
@@ -51,7 +249,95 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Introduction", "number": "1"}]},
-     "address": "/Introduction/"}],
+     "address": "/"}],
+   "intro":
+   [{"id": "intro",
+     "data":
+     {"title": "intro",
+      "sectionNum": "6.16.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "intro", "number": "16"}]},
+     "address": "/"}],
+   "induction":
+   [{"id": "induction",
+     "data":
+     {"title": "induction",
+      "sectionNum": "6.15.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "induction", "number": "15"}]},
+     "address": "/"}],
+   "have":
+   [{"id": "have",
+     "data":
+     {"title": "have",
+      "sectionNum": "6.14.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "have", "number": "14"}]},
+     "address": "/"}],
+   "exfalso":
+   [{"id": "exfalso",
+     "data":
+     {"title": "exfalso",
+      "sectionNum": "6.13.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "exfalso", "number": "13"}]},
+     "address": "/"}],
+   "exact":
+   [{"id": "exact",
+     "data":
+     {"title": "exact",
+      "sectionNum": "6.12.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "exact", "number": "12"}]},
+     "address": "/"}],
+   "constructor":
+   [{"id": "constructor",
+     "data":
+     {"title": "constructor",
+      "sectionNum": "6.11.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "constructor", "number": "11"}]},
+     "address": "/"}],
+   "congr":
+   [{"id": "congr",
+     "data":
+     {"title": "congr",
+      "sectionNum": "6.10.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "congr", "number": "10"}]},
+     "address": "/"}],
+   "clear":
+   [{"id": "clear",
+     "data":
+     {"title": "clear",
+      "sectionNum": "6.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "clear", "number": "9"}]},
+     "address": "/"}],
    "cheatsheet":
    [{"id": "cheatsheet",
      "data":
@@ -62,7 +348,84 @@
         "number": null},
        {"title": "Tactics", "number": "6"},
        {"title": "Tactics Cheatsheet", "number": "1"}]},
-     "address": "/Tactics/"}],
+     "address": "/"}],
+   "change":
+   [{"id": "change",
+     "data":
+     {"title": "change",
+      "sectionNum": "6.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "change", "number": "8"}]},
+     "address": "/"}],
+   "cases":
+   [{"id": "cases",
+     "data":
+     {"title": "cases'",
+      "sectionNum": "6.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "cases'", "number": "7"}]},
+     "address": "/"}],
+   "calc":
+   [{"id": "calc",
+     "data":
+     {"title": "calc",
+      "sectionNum": "6.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "calc", "number": "6"}]},
+     "address": "/"}],
+   "by_contra":
+   [{"id": "by_contra",
+     "data":
+     {"title": "by_contra",
+      "sectionNum": "6.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "by_contra", "number": "5"}]},
+     "address": "/"}],
+   "by_cases":
+   [{"id": "by_cases",
+     "data":
+     {"title": "by_cases",
+      "sectionNum": "6.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "by_cases", "number": "4"}]},
+     "address": "/"}],
+   "apply?":
+   [{"id": "apply___",
+     "data":
+     {"title": "apply?",
+      "sectionNum": "6.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "apply?", "number": "3"}]},
+     "address": "/"}],
+   "apply":
+   [{"id": "apply",
+     "data":
+     {"title": "apply",
+      "sectionNum": "6.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Tactics", "number": "6"},
+       {"title": "apply", "number": "2"}]},
+     "address": "/"}],
    "Sets":
    [{"id": "Sets",
      "data":
@@ -72,7 +435,14 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Dealing with Sets", "number": "4"}]},
-     "address": "/Dealing-with-Sets/"}]}},
+     "address": "/"}]}},
+ "Verso.Genre.Manual.example":
+ {"title": "Verso.Genre.Manual.example",
+  "description": null,
+  "contents":
+  {"myBool.True": [{"id": "myBool___False", "data": null, "address": "/"}],
+   "myBool.False": [{"id": "myBool___False", "data": null, "address": "/"}],
+   "myBool": [{"id": "myBool___False", "data": null, "address": "/"}]}},
  "Verso.Genre.Manual.doc.tech":
  {"title": "Terminology",
   "description": "Definitions of technical terms",

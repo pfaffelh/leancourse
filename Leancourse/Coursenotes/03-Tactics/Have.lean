@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`have`" =>
+%%%
+tag := "have"
+%%%
 
 **Summary:** By using `have` we introduce a new claim, which we have to prove first. Afterwards, it is available as a hypothesis in all further goals. This is identical to first proving a lemma `h` with the statement after `have h : ` and then reusing it at the appropriate place in the proof (for example with `apply` or `rw`).
 

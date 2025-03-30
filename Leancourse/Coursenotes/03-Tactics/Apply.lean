@@ -7,22 +7,31 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`apply`" =>
+%%%
+tag := "apply"
+%%%
 
 **Summary:** If we have the goal `⊢ Q`, and a proof of `h : P → Q`, we only need to find a proof for `P`. This transition happens by `apply h`.
 
 :::table (align := left) (header := true)
-* + , h : P → Q {br}[] ⊢ P
-  + apply h
-  + ⊢Q
-* + h₁ : P → Q {br}[] h₂ : Q → R  {br}[] ⊢ R
-  + apply h₂ h₁
-  + h₁ : P → Q {br}[] h₂ : Q → R  {br}[] ⊢ P
+* + Proof state
+  + Tactic
+  + New proof state
+* + `h : P → Q` {br}[] `⊢ Q`
+  + `apply h`
+  + `h : P → Q` {br}[] `⊢ P`
+* + `h : ¬P` {br}[] `⊢ False`
+  + `apply h`
+  + `h : ¬P` {br}[] `⊢ P`
+* + `h₁ : P → Q` {br}[] `h₂ : Q → R`  {br}[] `⊢ R`
+  + `apply h₂ h₁`
+  + `h₁ : P → Q` {br}[] `h₂ : Q → R`  {br}[] `⊢ P`
 :::
 
 The `apply`-tactics works iteratively. This means that if `apply h` makes no progress, it uses the placeholder `_` and tries to make `apply h _`.
 
 ```lean
-example (hPQR : P → Q → R) : R := by
+example (hP : P) (hPQ : P → Q) (hPQR : P → Q → R) : R := by
   apply hPQR
   · sorry
   · sorry

@@ -8,7 +8,6 @@ set_option pp.rawOnError true
 
 #doc (Manual) "Tactics Cheatsheet" =>
 %%%
-htmlSplit := .never
 tag := "cheatsheet"
 %%%
 

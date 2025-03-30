@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`obtain`" =>
+%%%
+tag := "obtain"
+%%%
 
 **Summary:** The `obtain` tactic can be used to merge `have` and `cases` into one command.
 

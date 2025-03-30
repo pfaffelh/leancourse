@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`change`" =>
+%%%
+tag := "change"
+%%%
 
 Changes the goal (or a hypothesis) into a goal (or a hypothesis) that is defined the same.
 

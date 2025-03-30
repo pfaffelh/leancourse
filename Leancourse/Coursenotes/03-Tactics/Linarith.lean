@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`linarith`" =>
+%%%
+tag := "linearith"
+%%%
 
 **Summary:** This tactic can prove equations and inequalities with the help of hypotheses. It is important that the hypotheses used are also only equations and inequalities. So here we are working mainly with the transitivity of `<` together with arithmetic rules.
 

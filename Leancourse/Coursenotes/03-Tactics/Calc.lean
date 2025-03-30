@@ -1,12 +1,16 @@
 import VersoManual
 import Manual.Meta
 import Leancourse.Misc.Defs
+import Mathlib
 
 open Verso.Genre Manual
 
 set_option pp.rawOnError true
 
 #doc (Manual) "`calc`" =>
+%%%
+tag := "calc"
+%%%
 
 **Summary:** As the word suggests, `calc` is about concrete calculations. This is not a tactic, but a `lean` mode. This means that you can enter this mode (with the word `calc`) and enter calculation steps and proofs that each individual calculation step is correct.
 
@@ -44,3 +48,17 @@ example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 := by
 However, this is much less readable.
 
 **Notes**
+
+* The exact notation is important in `calc` mode.
+* In order to generate a proof in `calc` mode, one can do it as follows: here with an example of proving `⊢ n + n = 2 * n`: Start by giving the exact calculation steps without proof:
+
+```lean
+example (n : ℕ) : n + n = 2*n := by
+  calc n + n = 1 * n + 1 * n := by sorry
+  _ = (1 + 1) * n := by sorry
+  _ = 2 * n := by sorry
+```
+
+Afterwards one can fill in the proofs which are left over.
+* The `calc` mode not only works for equalities, but also for inequalities, subset-relations etc.
+* The example above can be solved easily using `linarith` or `ring`.

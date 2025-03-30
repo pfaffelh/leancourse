@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`tauto`" =>
+%%%
+tag := "tauto"
+%%%
 
 **Summary:** `tauto` solves all goals that can be solved with a truth table.
 

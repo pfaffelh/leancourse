@@ -11,6 +11,9 @@ open DemoTextbook.Exts
 set_option pp.rawOnError true
 
 #doc (Manual) "`congr`" =>
+%%%
+tag := "congr"
+%%%
 
 **Summary:** If you have to show an equality `f x = f y`, then `congr` uses the statement that the equality is particularly true if `x = y`.
 

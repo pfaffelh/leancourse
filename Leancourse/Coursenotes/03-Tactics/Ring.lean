@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`ring`" =>
+%%%
+tag := "ring"
+%%%
 
 **Summary:** The `ring` uses rules of calculation such as associativity, commutativity, and distributivity to achieve the goal.
 

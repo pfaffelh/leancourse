@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`rintro`" =>
+%%%
+tag := "rintro"
+%%%
 
 **Summary:** The `rintro` tactic is used to process several `intro` and `cases` tactics on one line.
 

@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`rfl`" =>
+%%%
+tag := "rfl"
+%%%
 
 **Summary:** This tactic proves the equality (or equivalence) of two definitionally equal terms.
 

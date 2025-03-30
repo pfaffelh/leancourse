@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`use`" =>
+%%%
+tag := "use"
+%%%
 
 **Proof state** **Command** **New proof state**
 --------------------------- ----------------- -----------------------

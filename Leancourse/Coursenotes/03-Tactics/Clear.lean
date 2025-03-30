@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`clear`" =>
+%%%
+tag := "clear"
+%%%
 
 
 **Summary:** With `clear h` the hypothesis `h` is removed from the goal state

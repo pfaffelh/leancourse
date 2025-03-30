@@ -7,6 +7,9 @@ open Verso.Genre Manual
 set_option pp.rawOnError true
 
 #doc (Manual) "`by_contra`" =>
+%%%
+tag := "by_contra"
+%%%
 
 **Summary**
 
@@ -14,26 +17,17 @@ The `by_contra` tactic provides a proof by contradiction. It is therefore assume
 
 **Examples**
 
-+---------------------------+-----------------------+-----------------------+
-| **Proof state** | **Command** | **New proof state** |
-+:==========================+:======================+:======================+
-| `⊢ P` | `by_contra h,` | `h : ¬P` |
-+---------------------------+-----------------------+-----------------------+
-| | | `⊢ false` |
-+---------------------------+-----------------------+-----------------------+
-| `h: ¬¬P`\ | | |
-| `⊢ P` | | |
-| | | |
-| & | | |
-| | | |
-| `by_contra hnegP,` | | |
-| | | |
-| & | | |
-| | | |
-| `h: ¬¬P`\ | | |
-| `hnegP: ¬P`\ | | |
-| `⊢ false` | | |
-+---------------------------+-----------------------+-----------------------+
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + `⊢ P`
+  + `by_contra h`
+  + `h : ¬P` {br}[] `⊢ False`
+* + `h: ¬¬P` {br}[] `⊢ P`
+  + `by_contra hnegP`
+  + `h: ¬¬P` {br}[] `hnegP: ¬P` {br}[] `⊢ False`
+:::
 
 **Notes**
 

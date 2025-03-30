@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      (function(){
+  const {protocol:proto, host:hostName, pathname:path, search:srch, hash:hsh} = window.location;
+  if (!(path.endsWith("/") || path.endsWith(".html"))) {
+    window.location.replace(`${proto}//${hostName}${path}/${srch}${hsh}`);
+  }
+})()</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Notes on Lean</title><link rel="stylesheet" href="../book.css">
+    <script>
+      
+function saveCheckboxesInit() {
+  for (checkbox of document.querySelectorAll('#toc input[type="checkbox"]')) {
+    const value = localStorage.getItem(checkbox.id);
+
+    // Treat the ToC toggle specially, because it should always default to
+    // closed on mobile-width screens but respect user preference on desktop-width.
+    if (checkbox.id === "toggle-toc" && window.matchMedia("(max-width: 700px)").matches) {
+        checkbox.checked = false;
+    } else if (value === "true") {
+        checkbox.checked = true;
+    } else if (value === "false") {
+        checkbox.checked = false;
+    } // if not found, do nothing
+
+    checkbox.addEventListener("change", persistCheckbox);
+  }
+}
+
+function persistCheckbox() {
+  const value = this.checked; // in a handler, 'this' is the element with the handler on it
+  const id = this.id;
+  localStorage.setItem(this.id, value ? "true" : "false");
+}
+
+window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
+</script>
+    <script>
+      const __versoSiteRoot = "./../"</script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
+    <script src="../static/katex/katex.min.js"></script>
+    <script src="../static/math.js"></script>
+    <script src="../static/search/fuzzysort.js"></script>
+    <script src="../static/print.js"></script>
+    <script src="../-verso-js/popper.js"></script>
+    <script src="../-verso-js/tippy.js"></script>
+    <link rel="stylesheet" href="../static/katex/katex.min.css">
+    <link rel="stylesheet" href="../static/colors.css">
+    <link rel="stylesheet" href="../static/theme.css">
+    <link rel="stylesheet" href="../static/print.css">
+    <link rel="stylesheet" href="../static/search/search-box.css">
+    <link rel="stylesheet" href="../static/fonts/source-serif/source-serif-text.css">
+    <link rel="stylesheet" href="../static/fonts/source-code-pro/source-code-pro.css">
+    <link rel="stylesheet" href="../-verso-css/tippy-border.css">
+    <style>
+
+.hl.lean {
+  white-space: pre;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.hl.lean .keyword {
+  font-weight : bold;
+}
+
+.hl.lean .var {
+  font-style: italic;
+  position: relative;
+}
+
+.hover-container {
+  width: 0;
+  height: 0;
+  position: relative;
+  display: inline;
+}
+
+.hl.lean a {
+  color: inherit;
+  text-decoration: currentcolor underline dotted;
+}
+
+.hl.lean a:hover {
+  text-decoration: currentcolor underline solid;
+}
+
+.hl.lean .hover-info {
+  white-space: normal;
+}
+
+.hl.lean .token .hover-info {
+  display: none;
+  position: absolute;
+  background-color: #e5e5e5;
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 300;
+  font-size: inherit;
+}
+
+.hl.lean .hover-info.messages {
+  max-height: 10rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding: 0 0.5rem 0 0;
+  display: block;
+}
+
+.hl.lean .hover-info code {
+  white-space: pre-wrap;
+}
+
+.hl.lean .hover-info.messages > code {
+  padding: 0.5rem;
+  display: block;
+  width: fit-content;
+}
+
+.hl.lean .hover-info.messages > code:only-child {
+  margin: 0;
+}
+
+.hl.lean .hover-info.messages > code {
+  margin: 0.1rem;
+}
+
+.hl.lean .hover-info.messages > code:not(:first-child) {
+  margin-top: 0rem;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .has-info:hover > .hover-container > .hover-info:not(.tactic *),
+  .hl.lean .tactic:has(> .tactic-toggle:checked) .has-info:hover > .hover-container > .hover-info,
+  .hl.lean .token:hover > .hover-container > .hover-info:not(.has-info *):not(.tactic *),
+  .hl.lean .tactic:has(> .tactic-toggle:checked) .token:hover > .hover-container > .hover-info:not(.has-info *) {
+    display: inline-block;
+    position: absolute;
+    top: 1rem;
+    font-weight: normal;
+    font-style: normal;
+    width: min-content;
+  }
+}
+*/
+
+.hl.lean.block {
+  display: block;
+}
+
+.hl.lean.inline {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+.hl.lean .token {
+  transition: all 0.25s; /* Slight fade for highlights */
+}
+
+@media (hover: hover) {
+  .hl.lean .token.binding-hl, .hl.lean .literal.string:hover, .hl.lean .token.typed:hover {
+    background-color: #eee;
+    border-radius: 2px;
+    transition: none;
+  }
+}
+
+
+.hl.lean .has-info {
+  text-decoration-style: wavy;
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.1rem;
+}
+
+.hl.lean .has-info .hover-info {
+  display: none;
+  position: absolute;
+  transform: translate(0.25rem, 0.3rem);
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 400;
+  text-align: left;
+}
+
+.hl.lean .has-info.error {
+  text-decoration-color: red;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.error:hover {
+    background-color: #ffb3b3;
+  }
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #ffb3b3;
+}
+
+.tippy-box[data-theme~='error'] .hl.lean .hover-info.messages > code.error {
+  background: none;
+  border: none;
+}
+
+.error pre {
+    color: red;
+}
+
+.hl.lean .has-info.warning {
+  text-decoration-color: #efd871;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.warning:hover {
+    background-color: #efd871;
+  }
+}
+
+.hl.lean .hover-info.messages > code.warning {
+  background-color: #efd871;
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #efd871;
+}
+
+.tippy-box[data-theme~='warning'] .hl.lean .hover-info.messages > code.warning {
+  background: none;
+  border: none;
+}
+
+
+.hl.lean .has-info.info {
+  text-decoration-color: blue;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.info:hover {
+    background-color: #4777ff;
+  }
+}
+
+
+.hl.lean .hover-info.messages > code.info {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #4777ff;
+}
+
+.tippy-box[data-theme~='info'] .hl.lean .hover-info.messages > code.info {
+  background: none;
+  border: none;
+}
+
+.hl.lean div.docstring {
+  font-family: sans-serif;
+  white-space: normal;
+  max-width: 40rem;
+  width: max-content;
+}
+
+.hl.lean div.docstring > :last-child {
+  margin-bottom: 0;
+}
+
+.hl.lean .hover-info .sep {
+  display: block;
+  width: auto;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  height: 1px;
+  border-top: 1px solid #ccc;
+}
+
+.hl.lean code {
+  font-family: monospace;
+}
+
+.hl.lean .tactic-state {
+  display: none;
+  position: relative;
+  left: 2rem;
+  width: fit-content;
+  border: 1px solid #888888;
+  border-radius: 0.1rem;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+  z-index: 200;
+}
+
+.hl.lean.popup .tactic-state {
+  position: static;
+  display: block;
+  width: auto;
+  border: none;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+
+
+.hl.lean .tactic {
+  position: relative;
+}
+
+.hl.lean .tactic-toggle:checked ~ .tactic-state {
+  display: block;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .tactic:hover > .tactic-toggle:not(:checked) ~ .tactic-state {
+    display: block;
+    position: absolute;
+    left: 0;
+    transform: translate(0.25rem, 0);
+    z-index: 250;
+  }
+}
+*/
+
+.hl.lean .tactic > label {
+  position: relative;
+  transition: all 0.5s;
+}
+
+@media (hover: hover) {
+  .hl.lean .tactic > label:hover {
+    border-bottom: 1px dotted #bbbbbb;
+  }
+}
+
+.hl.lean .tactic-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .tactic > label::after {
+  content: "";
+  border: 1px solid #bbbbbb;
+  border-radius: 1rem;
+  height: 0.25rem;
+  vertical-align: middle;
+  width: 0.6rem;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+  display: inline-block;
+  transition: all 0.5s;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .tactic > label:hover::after {
+    border: 1px solid #aaaaaa;
+    background-color: #aaaaaa;
+    transition: all 0.5s;
+  }
+}
+*/
+
+.hl.lean .tactic > label:has(+ .tactic-toggle:checked)::after {
+  border: 1px solid #999999;
+  background-color: #999999;
+  transition: all 0.5s;
+}
+
+.hl.lean .tactic-state .goal + .goal {
+  margin-top: 1.5rem;
+}
+
+.hl.lean .tactic-state summary {
+  margin-left: -0.5rem;
+}
+
+.hl.lean .tactic-state details {
+  padding-left: 0.5rem;
+}
+
+.hl.lean .case-label {
+  display: block;
+  position: relative;
+}
+
+.hl.lean .case-label input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"])::before {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  background-color: black;
+  content: ' ';
+  transition: ease 0.2s;
+  margin-right: 0.7rem;
+  clip-path: polygon(100% 0, 0 0, 50% 100%);
+  width: 0.6rem;
+  height: 0.6rem;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:not(:checked))::before {
+  transform: rotate(-90deg);
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]) {
+
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:checked) {
+
+}
+
+
+.hl.lean .tactic-state .labeled-case > :not(:first-child) {
+  max-height: 0px;
+  display: block;
+  overflow: hidden;
+  transition: max-height 0.1s ease-in;
+  margin-left: 0.5rem;
+  margin-top: 0.1rem;
+}
+
+.hl.lean .labeled-case:has(.case-label input[type="checkbox"]:checked) > :not(:first-child) {
+  max-height: 100%;
+}
+
+
+.hl.lean .tactic-state .goal-name::before {
+  font-style: normal;
+  content: "case ";
+}
+
+.hl.lean .tactic-state .goal-name {
+  font-style: italic;
+  font-family: monospace;
+}
+
+.hl.lean .tactic-state .hypotheses {
+  display: table;
+}
+
+.hl.lean .tactic-state .hypothesis {
+  display: table-row;
+}
+
+.hl.lean .tactic-state .hypothesis > * {
+  display: table-cell;
+}
+
+
+.hl.lean .tactic-state .hypotheses .colon {
+  text-align: center;
+  min-width: 1rem;
+}
+
+.hl.lean .tactic-state .hypotheses .name {
+  text-align: right;
+}
+
+.hl.lean .tactic-state .hypotheses .name,
+.hl.lean .tactic-state .hypotheses .type,
+.hl.lean .tactic-state .conclusion .type {
+  font-family: monospace;
+}
+
+.tippy-box[data-theme~='lean'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='lean'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::after {
+  bottom: -11px;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::after {
+  top: -11px;
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+  border-width: 11px 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::after {
+  right: -11px;
+  border-width: 11px 0 11px 11px;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+  border-width: 11px 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::after {
+  left: -11px;
+  border-width: 11px 11px 11px 0;
+}
+
+
+
+.tippy-box[data-theme~='warning'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #efd871;
+}
+
+.tippy-box[data-theme~='error'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #f7a7af;
+}
+
+.tippy-box[data-theme~='info'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #99b3c2;
+}
+
+
+
+.tippy-box[data-theme~='tactic'] {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: white;
+}
+
+</style><style>
+table.tabular {
+  margin: auto;
+  border-spacing: 1rem;
+}
+table.tabular.left-align {
+  margin-right: auto;
+  margin-left: 0;
+}
+table.tabular.center-align {
+  margin: auto;
+}
+table.tabular.right-align {
+  margin-left auto;
+  margin-right: 0;
+}
+table.tabular td, table.tabular th {
+  text-align: left;
+  vertical-align: top;
+}
+table.tabular td > p:first-child, table.tabular th > p:first-child {
+  margin-top: 0;
+}
+table.tabular td > p:last-child, table.tabular th > p:first-child {
+  margin-bottom: 0;
+}
+</style><script>
+      
+window.onload = () => {
+
+    // Don't show hovers inside of closed tactic states
+    function blockedByTactic(elem) {
+      let parent = elem.parentNode;
+      while (parent && "classList" in parent) {
+        if (parent.classList.contains("tactic")) {
+          const toggle = parent.querySelector("input.tactic-toggle");
+          if (toggle) {
+            return !toggle.checked;
+          }
+        }
+        parent = parent.parentNode;
+      }
+      return false;
+    }
+
+    function blockedByTippy(elem) {
+      // Don't show a new hover until the old ones are all closed.
+      // Scoped to the nearest "top-level block" to avoid being O(n) in the size of the document.
+      var block = elem;
+      const topLevel = new Set(["section", "body", "html", "nav", "header"]);
+      while (block.parentNode && !topLevel.has(block.parentNode.nodeName.toLowerCase())) {
+        block = block.parentNode;
+      }
+      for (const child of block.querySelectorAll(".token, .has-info")) {
+        if (child._tippy && child._tippy.state.isVisible) { return true };
+      }
+      return false;
+    }
+
+    for (const c of document.querySelectorAll(".hl.lean .token")) {
+        if (c.dataset.binding != "") {
+            c.addEventListener("mouseover", (event) => {
+                if (blockedByTactic(c)) {return;}
+                const context = c.closest(".hl.lean").dataset.leanContext;
+                for (const example of document.querySelectorAll(".hl.lean")) {
+                    if (example.dataset.leanContext == context) {
+                        for (const tok of example.querySelectorAll(".token")) {
+                            if (c.dataset.binding == tok.dataset.binding) {
+                                tok.classList.add("binding-hl");
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        c.addEventListener("mouseout", (event) => {
+            for (const tok of document.querySelectorAll(".hl.lean .token")) {
+                tok.classList.remove("binding-hl");
+            }
+        });
+    }
+    /* Render docstrings */
+    if ('undefined' !== typeof marked) {
+        for (const d of document.querySelectorAll("code.docstring, pre.docstring")) {
+            const str = d.innerText;
+            const html = marked.parse(str);
+            const rendered = document.createElement("div");
+            rendered.classList.add("docstring");
+            rendered.innerHTML = html;
+            d.parentNode.replaceChild(rendered, d);
+        }
+    }
+    // Add hovers
+    let siteRoot = typeof __versoSiteRoot !== 'undefined' ? __versoSiteRoot : "/";
+    fetch(siteRoot + "-verso-docs.json").then((resp) => resp.json()).then((versoDocData) => {
+
+      const defaultTippyProps = {
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        theme: "lean",
+        maxWidth: "none",
+        appendTo: () => document.body,
+        interactive: true,
+        delay: [100, null],
+        ignoreAttributes: true,
+        onShow(inst) {
+          if (inst.reference.querySelector(".hover-info") || "versoHover" in inst.reference.dataset) {
+            if (blockedByTactic(inst.reference)) { return false };
+            if (blockedByTippy(inst.reference)) { return false; }
+          } else { // Nothing to show here!
+            return false;
+          }
+        },
+        content (tgt) {
+          const content = document.createElement("span");
+          content.className = "hl lean";
+          content.style.display = "block";
+          content.style.maxHeight = "300px";
+          content.style.overflowY = "auto";
+          content.style.overflowX = "hidden";
+          const hoverId = tgt.dataset.versoHover;
+          const hoverInfo = tgt.querySelector(".hover-info");
+          if (hoverId) { // Docstrings from the table
+            // TODO stop doing an implicit conversion from string to number here
+            let data = versoDocData[hoverId];
+            if (data) {
+              const info = document.createElement("span");
+              info.className = "hover-info";
+              info.style.display = "block";
+              info.innerHTML = data;
+              content.appendChild(info);
+              /* Render docstrings - TODO server-side */
+              if ('undefined' !== typeof marked) {
+                  for (const d of content.querySelectorAll("code.docstring, pre.docstring")) {
+                      const str = d.innerText;
+                      const html = marked.parse(str);
+                      const rendered = document.createElement("div");
+                      rendered.classList.add("docstring");
+                      rendered.innerHTML = html;
+                      d.parentNode.replaceChild(rendered, d);
+                  }
+              }
+            } else {
+              content.innerHTML = "Failed to load doc ID: " + hoverId;
+            }
+          } else if (hoverInfo) { // The inline info, still used for compiler messages
+            content.appendChild(hoverInfo.cloneNode(true));
+          }
+          return content;
+        }
+      };
+
+      const addTippy = (selector, props) => {
+        tippy(selector, Object.assign({}, defaultTippyProps, props));
+      };
+      addTippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token', {theme: 'lean'});
+      addTippy('.hl.lean .has-info.warning', {theme: 'warning message'});
+      addTippy('.hl.lean .has-info.info', {theme: 'info message'});
+      addTippy('.hl.lean .has-info.error', {theme: 'error message'});
+
+      tippy('.hl.lean .tactic', {
+        allowHtml: true,
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        maxWidth: "none",
+        onShow(inst) {
+          const toggle = inst.reference.querySelector("input.tactic-toggle");
+          if (toggle && toggle.checked) {
+            return false;
+          }
+          if (blockedByTippy(inst.reference)) { return false; }
+        },
+        theme: "tactic",
+        placement: 'bottom-start',
+        content (tgt) {
+          const content = document.createElement("span");
+          const state = tgt.querySelector(".tactic-state").cloneNode(true);
+          state.style.display = "block";
+          content.appendChild(state);
+          content.style.display = "block";
+          content.className = "hl lean popup";
+          return content;
+        }
+      });
+  });
+}
+</script>
+    <script type="module" src="../static/search/search-init.js"></script>
+    </head>
+  <body>
+    <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
+      <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
+      <nav id="toc">
+        <input type="checkbox" id="toggle-toc" checked="checked"><div class="first">
+          <a href="../" id="logo"><img src="../static/lean_logo.svg"></a><nav id="local-buttons">
+            <a class="local-button active" href="../Dealing-with-Sets/#Sets" rel="prev" title="4. Dealing with Sets"><span class="arrow">←</span><span class="where">Prev</span></a><a class="local-button active" href="../#" title=" Interactive Theorem Proving using Lean, Summer 2025"><span class="arrow">↑</span><span class="where">Up</span></a><a class="local-button active" href="../Tactics/#tactics" rel="next" title="6. Tactics"><span class="where">Next</span><span class="arrow">→</span></a></nav>
+          <div class="split-tocs">
+            <div class="split-toc book">
+              <div class="title">
+                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot"></label><span class=""><a href="../">Interactive Theorem Proving using Lean, Summer 2025</a></span></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="../Introduction/#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="../First-steps-using-Logic/#logic">First steps using Logic</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="../___-and-___/#numbers">ℕ and ℝ</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="../Dealing-with-Sets/#Sets">Dealing with Sets</a></td></tr><tr class="current numbered"><td class="num">5.</td><td><a href="#lean">Notes on Lean</a></td></tr><tr class="numbered"><td class="num">6.</td><td><a href="../Tactics/#tactics">Tactics</a></td></tr></table></div>
+            <div class="split-toc">
+              <div class="title">
+                <label for="--verso-manual-toc-lean" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-lean" checked="checked"></label><span class="number">5.</span> <span class="current"><a href="#lean">Notes on Lean</a></span></div>
+              <table><tr class="numbered"><td class="num">5.1.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Notes-on-Lean">Notes on Lean</a></td></tr><tr class="numbered"><td class="num">5.2.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Some-notes-on-Lean">Some notes on Lean</a></td></tr></table></div>
+            </div>
+          </div>
+        <div class="last">
+          <ul id="meta-links">
+            <li>
+              <a href="https://github.com/leanprover/reference-manual">Source Code</a></li>
+            <li>
+              <a href="https://github.com/leanprover/reference-manual/issues">Report Issues</a></li>
+            </ul>
+          </div>
+        </nav>
+      <main><section>
+          <h1>
+            5. Notes on Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=lean" title="Permalink">🔗</a></span></h1>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Notes-on-Lean">
+              5.1. Notes on Lean</h2>
+            <p>
+              In Section 1, we have already dealt with the installation of Lean and <code>vscode</code>. Here follows a short, incoherent introduction. We start with a very simple example. The tactics <code>intro</code> and <code>exact</code> can be found in
+Chapter. If we want to prove the statement <code>P → P</code> (i.e. <code>P</code> implies <code>P</code>) we enter the following on the left side in <code>vscode</code>:</p>
+            <pre>example (P : Prop) : P → P := by
+  sorry
+</pre><p>
+              On the right side, depending on the position of the cursor, you will find the <strong>proof state</strong>. If the cursor is directly after <code>by</code>, the <strong>proof state</strong> is seen. It is important to know that behind <code>⊢</code> stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that <code>P</code> is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the <code>sorry</code>, there is now <strong>no goals</strong>, but the <code>sorry</code> tactic is only there to prove unproven assertions without further action, and a warning is issued in <code>vscode</code>. If you delete the <code>sorry</code> and replace it with an <code>intro hP</code>, we get</p>
+            <pre>P : Prop
+hP : P
+⊢ P
+</pre><p>
+              So we have transformed the statement <code>P → P</code> into a state where we have to assume <code>hP : P</code> and conclude <code>P</code>. This can now easily be solved using <code>assumption</code>, and the desired <strong>no goals</strong> appears. The <code>assumption</code> tactic searches for a hypothesis that is identical to the statement and concludes the proof. The exact  tactic is somewhat different. Here you have to know exactly which hypothesis is meant and can use <code>exact hP</code> to conclude the proof.</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Some-notes-on-Lean">
+              5.2. Some notes on Lean</h2>
+            <section>
+              <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Some-notes-on-Lean--Dependent-type-theory">
+                5.2.1. Dependent type theory</h3>
+              <p>
+                Lean is a functional programming language (i.e. it actually only consists of functions) and is based on the <strong>dependent type theory</strong>. Types in programming languages like Python are <code>bool</code>, <code>int</code>, <code>double</code> etc. Lean thrives on defining and using your own types. We will see in the course of the course that you can think of the resulting types as sets. The type <code>ℕ</code> will be the set of natural numbers, and <code>ℝ</code> the set of real numbers. However, <code>ℕ</code> actually represents an infinite set that is characterized by containing <code>0</code>, and if it contains <code>n</code>, then it also contains the successor of <code>n</code> (represented by <code>succ n</code>). Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences,  which is quite elaborate. Types can depend on other types, and that is why we speak of <strong>dependent types</strong>. For example, the space <code>\mathbb R^n</code> depends on the dimension <code>n</code>. As we shall see mathematical statements are also types. Regarding the notation: for sets, we are used to writing <code>n\in\mathbb N</code> if <code>n</code> is a natural number. In type theory, we write <code>n : ℕ</code> and say that <code>n</code> is a term (expression) of type <code>ℕ</code>. More generally, every expression has a type and when introducing an expression, Lean checks its type. (Incidentally, this can be quite confusing: for example, the statement <code>(x : ℕ) → (x : ℤ)</code>, i.e. (every natural number is also an integer) is not at all comprehensible for <code>lean</code>. Because <code>x</code> is a term of type <code>ℕ</code> (and thus of no other type), so that <code>x : ℤ</code> makes no sense at all for <code>lean</code>. The solution is an 'invisible mapping' <code>coe : ℕ → ℤ</code>.)</p>
+              </section>
+            <section>
+              <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Some-notes-on-Lean--Universes___-Types-and-Terms">
+                5.2.2. Universes, Types and Terms</h3>
+              <p>
+                In Lean, there are three levels of objects: universes, types and terms. We are concerned here with the last two. Of particular interest is the type <code>Prop</code>, which consists of statements that can be true or false . It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form <code>hP : P</code>, which means <code>P</code> is true, and this statement is called <code>hP</code>. It can also mean that <code>P</code> is true and <code>hP</code> is a proof of <code>P</code>. The hypotheses here have names <code>P Q R S</code>, and the names of the hypotheses <code>hP hQ hR hS</code>. All names can be arbitrary. Furthermore, there are hypotheses of the form <code>P → Q</code>, which is the statement that <code>P</code> implies <code>Q</code>.</p>
+              </section>
+            <section>
+              <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Some-notes-on-Lean--Function-definitions">
+                5.2.3. Function definitions</h3>
+              <p>
+                In <code>Lean</code>, for example, the function <code>f : \mathbb N \to \mathbb N, x \mapsto 2x</code> is defined as</p>
+              <pre>  f : ℕ → ℕ := fun x ↦ 2*x
+</pre><p>
+                or</p>
+              <pre>fun x ↦ 2*x
+</pre><p>
+                (Write <code>\mapsto</code> for <code>↦</code>.) It is assumed that the <code>x</code> is only introduced to
+define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</code> is then done using <code>f x</code>. (The notation <code>f x</code> is an abbreviation for <code>f(x)</code>, since <code>Lean</code> is sparing with parenthesis.)</p>
+              </section>
+            <section>
+              <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Some-notes-on-Lean--Equality">
+                5.2.4. Equality</h3>
+              <p>
+                In Lean, there are three types of equality:</p>
+              <ul>
+                <li>
+                  <p>
+                    Syntactic equality: If two terms are letter-for-letter equal, then they are syntactically equal. However, there are a few more situations in which two terms are syntactically equal. Namely, if one term is just an abbreviation for the other (for example, 'x=y' is an abbreviation for 'eq x y'), then these both terms are syntactically equal. Also equal are terms in which globally quantified variables have different letters. For example, <code>∀ x, ∃ y, f x y</code> and <code>∀ y, ∃ x, f y x</code> are syntactically equal.</p>
+                  </li>
+                <li>
+                  <p>
+                    Definitional equality: Some terms are by definition equal in Lean. For <code>x : ℕ</code>, <code>x + 0</code> is by definition identical to <code>x</code>. However, <code>0 + x</code> is not   definitionally identical to <code>x</code>. This is apparently only due to the     internal definition of addition of natural numbers in Lean.</p>
+                  </li>
+                <li>
+                  <p>
+                    Propositional equality: If there is a proof of <code>x = y</code>, then <code>x</code> and <code>y</code> are said to be propositionally equal. Similarly, terms <code>P</code> and <code>Q</code> are said to be propositionally equal if you can prove <code>P ↔ Q</code>. Some Lean Tactics only work up to syntactic equality (such as <code>rw</code>), others (most) work up to definitional equality (such as <code>apply</code>, <code>exact</code>,...) This means that the tactic automatically transforms terms if they are syntactically or definitional equality. There is a special kind of equality to be observed with sets and functions. For example, two functions are exactly the same if they return the same value for all values in the domain. This behavior is called <strong>extensionality</strong> in the theory of programming languages. (If extensionality applies, then, for example, two sorting algorithms are the same if they always produce the same result).</p>
+                  </li>
+                </ul>
+              </section>
+            <section>
+              <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Some-notes-on-Lean--Different-parentheses-in--Lean">
+                5.2.5. Different parentheses in <code>Lean</code></h3>
+              <p>
+                There are (essentially) three different types of parentheses in <code>Lean</code> statements. The simplest is <code>(...)</code>, which, as in normal use, indicates parentheses in the sense of what belongs together. However, you have to learn how 'Lean' brackets internally when no '()' are given. Operators like <strong>and</strong> (<code>∧</code>), <strong>or</strong> (<code>∨</code>), are right-associative, so e.g. <code>P ∧ Q ∧ R := P ∧ (Q ∧ R)</code>. The application of functions in sequence, such as <code>f : ℕ → ℝ</code> and <code>g : : ℝ→ ℝ </code>, applied to <code>n : ℕ</code> is <code>g (f n)</code>, because <code>g</code> expects an input of type <code>ℝ</code>, and this is what <code>f n</code> provides. You cannot omit (...), i.e. in this case the parenthesis is left-associative.</p>
+              <p>
+                Now let's comment on the parentheses <code>[...]</code> and <code>{...}</code>. For example, <code>#check@ gt_iff_lt</code> (the statement that <code>a&gt;b</code> holds if and only if <code>b&lt;a</code> holds), where both types occur. This yields</p>
+              <pre>gt_iff_lt : ∀ {α : Type u_1} [_inst_1 : has_lt α] {a b : α}, a &gt; b ↔ b &lt; a
+</pre><p>
+                When this result is applied, the statements in <code>{...}</code> and <code>[...]</code> are added by <code>Lean</code> itself. The statements in <code>{...}</code> depend on the type of the objects that have to be given, and can therefore be inferred. (Above, when applying <code>gt_iff_lt</code>, the variables <code>a</code> and <code>b</code> have to be given.) Therefore, their type is also known, and one does not have to <code>α</code> is not explicitly specified. Since the application is made to a concrete <code>α</code> (for example, <code>ℕ</code>), and <code>Lean</code> knows a lot about the natural numbers, the type class system can look up many properties of <code>ℕ</code>, and also finds that <code>has_lt ℕ</code> holds (i.e. on <code>ℕ</code> at least a partial order is defined).</p>
+              </section>
+            <section>
+              <h3 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Notes-on-Lean--Some-notes-on-Lean--Names-of--Mathlib--Results">
+                5.2.6. Names of <code>Mathlib</code> Results</h3>
+              <p>
+                Names like <code>zero_add, add_zero, one_mul, add_assoc, succ_ne_zero, lt_of_succ_le,...</code> seem cryptic. It is clear that individual relatively understandable abbreviations (<code>zero, one, mul, add, succ,...</code>) are separated by <code>_</code>. In general, the following two rules apply to naming:</p>
+              <ul>
+                <li>
+                  <p>
+                    The goal of the statement to be proven is described; if hypotheses are added in the name, then with <code>of_</code>. The statement <code>lt_of_succ_le</code> is therefore an <code>&lt;</code> statement, where <code>succ ≤</code> applies. In fact:</p>
+                  </li>
+                </ul>
+              <pre>#check @lt_of_succ_le
+</pre><p>
+                results in</p>
+              <pre>  lt_of_succ_le : ∀ {a b : ℕ}, a.succ ≤ b → a &lt; b
+</pre><p>
+                This way, you can often guess the names of statements that you want to use.
+</p>
+              </section>
+            </section>
+          </section>
+        </main></div>
+    </body>
+  </html>
+

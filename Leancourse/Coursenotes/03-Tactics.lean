@@ -1,9 +1,4 @@
-import Lean
 import VersoManual
-import DemoTextbook
-import UsersGuide.Markup
-import Leancourse.Meta.Table
-import Leancourse.Misc.Defs
 
 import «Leancourse».Coursenotes.«03-Tactics».«Cheatsheet»
 import «Leancourse».Coursenotes.«03-Tactics».«Apply»

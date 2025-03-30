@@ -90,4 +90,14 @@
  "Verso.Genre.Manual.doc":
  {"title": "Lean constant reference",
   "description": "Documentation for Lean constants",
-  "contents": {}}}
+  "contents": {}},
+ "Manual.parserAlias":
+ {"title": "Parser Alias Documentation",
+  "description": "Detailed descriptions of parser aliases",
+  "contents": {}},
+ "Manual.lakeCommand":
+ {"title": "Lake commands",
+  "description": "Detailed descriptions of Lake commands",
+  "contents": {}},
+ "Manual.envVar":
+ {"title": "Environment Variables", "description": null, "contents": {}}}

@@ -41,6 +41,20 @@ window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
     <script>
       const __versoSiteRoot = "./../"</script>
     <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
+    <script src="../static/katex/katex.min.js"></script>
+    <script src="../static/math.js"></script>
+    <script src="../static/search/fuzzysort.js"></script>
+    <script src="../static/print.js"></script>
+    <script src="../-verso-js/popper.js"></script>
+    <script src="../-verso-js/tippy.js"></script>
+    <link rel="stylesheet" href="../static/katex/katex.min.css">
+    <link rel="stylesheet" href="../static/colors.css">
+    <link rel="stylesheet" href="../static/theme.css">
+    <link rel="stylesheet" href="../static/print.css">
+    <link rel="stylesheet" href="../static/search/search-box.css">
+    <link rel="stylesheet" href="../static/fonts/source-serif/source-serif-text.css">
+    <link rel="stylesheet" href="../static/fonts/source-code-pro/source-code-pro.css">
+    <link rel="stylesheet" href="../-verso-css/tippy-border.css">
     <style>
 
 .hl.lean {
@@ -600,7 +614,7 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Tactics", "number": "6"}]},
-     "address": "/"}],
+     "address": "/Tactics/"}],
    "numbers":
    [{"id": "numbers",
      "data":
@@ -610,7 +624,7 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "ℕ and ℝ", "number": "3"}]},
-     "address": "/"}],
+     "address": "/___-and-___/"}],
    "logic":
    [{"id": "logic",
      "data":
@@ -620,7 +634,7 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "First steps using Logic", "number": "2"}]},
-     "address": "/"}],
+     "address": "/First-steps-using-Logic/"}],
    "lean":
    [{"id": "lean",
      "data":
@@ -630,7 +644,7 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Notes on Lean", "number": "5"}]},
-     "address": "/"}],
+     "address": "/Notes-on-Lean/"}],
    "introduction":
    [{"id": "introduction",
      "data":
@@ -640,7 +654,7 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Introduction", "number": "1"}]},
-     "address": "/"}],
+     "address": "/Introduction/"}],
    "cheatsheet":
    [{"id": "cheatsheet",
      "data":
@@ -651,7 +665,7 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
         "number": null},
        {"title": "Tactics", "number": "6"},
        {"title": "Tactics Cheatsheet", "number": "1"}]},
-     "address": "/"}],
+     "address": "/Tactics/"}],
    "Sets":
    [{"id": "Sets",
      "data":
@@ -661,7 +675,7 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Dealing with Sets", "number": "4"}]},
-     "address": "/"}]}},
+     "address": "/Dealing-with-Sets/"}]}},
  "Verso.Genre.Manual.doc.tech":
  {"title": "Terminology",
   "description": "Definitions of technical terms",
@@ -679,7 +693,17 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
  "Verso.Genre.Manual.doc":
  {"title": "Lean constant reference",
   "description": "Documentation for Lean constants",
-  "contents": {}}};
+  "contents": {}},
+ "Manual.parserAlias":
+ {"title": "Parser Alias Documentation",
+  "description": "Detailed descriptions of parser aliases",
+  "contents": {}},
+ "Manual.lakeCommand":
+ {"title": "Lake commands",
+  "description": "Detailed descriptions of Lake commands",
+  "contents": {}},
+ "Manual.envVar":
+ {"title": "Environment Variables", "description": null, "contents": {}}};
 let params = new URLSearchParams(document.location.search);
 let domains = params.getAll("domain");
 let name = params.get("name");
@@ -908,27 +932,28 @@ window.onload = () => {
   });
 }
 </script>
+    <script type="module" src="../static/search/search-init.js"></script>
     </head>
   <body>
     <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
       <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
       <nav id="toc">
         <input type="checkbox" id="toggle-toc" checked="checked"><div class="first">
-          <nav id="local-buttons">
+          <a href="../" id="logo"><img src="../static/lean_logo.svg"></a><nav id="local-buttons">
             <span class="local-button inactive"><span class="arrow">←</span><span class="where">Prev</span></span><span class="local-button inactive"><span class="arrow">↑</span><span class="where">Up</span></span><span class="local-button inactive"><span class="where">Next</span><span class="arrow">→</span></span></nav>
           <div class="split-tocs">
             <div class="split-toc book">
               <div class="title">
                 <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot"></label><span class=""><a href="../">Cross-Reference Redirection</a></span></div>
-              <table><tr class="current numbered"><td class="num">1.</td><td><a href="../#introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num">2.</td><td><a href="../#logic">First steps using Logic</a></td></tr><tr class="current numbered"><td class="num">3.</td><td><a href="../#numbers">ℕ and ℝ</a></td></tr><tr class="current numbered"><td class="num">4.</td><td><a href="../#Sets">Dealing with Sets</a></td></tr><tr class="current numbered"><td class="num">5.</td><td><a href="../#lean">Notes on Lean</a></td></tr><tr class="current numbered"><td class="num">6.</td><td><a href="../#tactics">Tactics</a></td></tr></table></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="../Introduction/#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="../First-steps-using-Logic/#logic">First steps using Logic</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="../___-and-___/#numbers">ℕ and ℝ</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="../Dealing-with-Sets/#Sets">Dealing with Sets</a></td></tr><tr class="numbered"><td class="num">5.</td><td><a href="../Notes-on-Lean/#lean">Notes on Lean</a></td></tr><tr class="numbered"><td class="num">6.</td><td><a href="../Tactics/#tactics">Tactics</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
           <ul id="meta-links">
             <li>
-              <a href="https://github.com/pfaffelh/leancourse">Source Code</a></li>
+              <a href="https://github.com/leanprover/reference-manual">Source Code</a></li>
             <li>
-              <a href="https://github.com/pfaffelh/leancourse/issues">Report Issues</a></li>
+              <a href="https://github.com/leanprover/reference-manual/issues">Report Issues</a></li>
             </ul>
           </div>
         </nav>

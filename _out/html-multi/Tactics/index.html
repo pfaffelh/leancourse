@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      (function(){
+  const {protocol:proto, host:hostName, pathname:path, search:srch, hash:hsh} = window.location;
+  if (!(path.endsWith("/") || path.endsWith(".html"))) {
+    window.location.replace(`${proto}//${hostName}${path}/${srch}${hsh}`);
+  }
+})()</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Tactics</title><link rel="stylesheet" href="../book.css">
+    <script>
+      
+function saveCheckboxesInit() {
+  for (checkbox of document.querySelectorAll('#toc input[type="checkbox"]')) {
+    const value = localStorage.getItem(checkbox.id);
+
+    // Treat the ToC toggle specially, because it should always default to
+    // closed on mobile-width screens but respect user preference on desktop-width.
+    if (checkbox.id === "toggle-toc" && window.matchMedia("(max-width: 700px)").matches) {
+        checkbox.checked = false;
+    } else if (value === "true") {
+        checkbox.checked = true;
+    } else if (value === "false") {
+        checkbox.checked = false;
+    } // if not found, do nothing
+
+    checkbox.addEventListener("change", persistCheckbox);
+  }
+}
+
+function persistCheckbox() {
+  const value = this.checked; // in a handler, 'this' is the element with the handler on it
+  const id = this.id;
+  localStorage.setItem(this.id, value ? "true" : "false");
+}
+
+window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
+</script>
+    <script>
+      const __versoSiteRoot = "./../"</script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
+    <script src="../static/katex/katex.min.js"></script>
+    <script src="../static/math.js"></script>
+    <script src="../static/search/fuzzysort.js"></script>
+    <script src="../static/print.js"></script>
+    <script src="../-verso-js/popper.js"></script>
+    <script src="../-verso-js/tippy.js"></script>
+    <link rel="stylesheet" href="../static/katex/katex.min.css">
+    <link rel="stylesheet" href="../static/colors.css">
+    <link rel="stylesheet" href="../static/theme.css">
+    <link rel="stylesheet" href="../static/print.css">
+    <link rel="stylesheet" href="../static/search/search-box.css">
+    <link rel="stylesheet" href="../static/fonts/source-serif/source-serif-text.css">
+    <link rel="stylesheet" href="../static/fonts/source-code-pro/source-code-pro.css">
+    <link rel="stylesheet" href="../-verso-css/tippy-border.css">
+    <style>
+
+.hl.lean {
+  white-space: pre;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.hl.lean .keyword {
+  font-weight : bold;
+}
+
+.hl.lean .var {
+  font-style: italic;
+  position: relative;
+}
+
+.hover-container {
+  width: 0;
+  height: 0;
+  position: relative;
+  display: inline;
+}
+
+.hl.lean a {
+  color: inherit;
+  text-decoration: currentcolor underline dotted;
+}
+
+.hl.lean a:hover {
+  text-decoration: currentcolor underline solid;
+}
+
+.hl.lean .hover-info {
+  white-space: normal;
+}
+
+.hl.lean .token .hover-info {
+  display: none;
+  position: absolute;
+  background-color: #e5e5e5;
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 300;
+  font-size: inherit;
+}
+
+.hl.lean .hover-info.messages {
+  max-height: 10rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding: 0 0.5rem 0 0;
+  display: block;
+}
+
+.hl.lean .hover-info code {
+  white-space: pre-wrap;
+}
+
+.hl.lean .hover-info.messages > code {
+  padding: 0.5rem;
+  display: block;
+  width: fit-content;
+}
+
+.hl.lean .hover-info.messages > code:only-child {
+  margin: 0;
+}
+
+.hl.lean .hover-info.messages > code {
+  margin: 0.1rem;
+}
+
+.hl.lean .hover-info.messages > code:not(:first-child) {
+  margin-top: 0rem;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .has-info:hover > .hover-container > .hover-info:not(.tactic *),
+  .hl.lean .tactic:has(> .tactic-toggle:checked) .has-info:hover > .hover-container > .hover-info,
+  .hl.lean .token:hover > .hover-container > .hover-info:not(.has-info *):not(.tactic *),
+  .hl.lean .tactic:has(> .tactic-toggle:checked) .token:hover > .hover-container > .hover-info:not(.has-info *) {
+    display: inline-block;
+    position: absolute;
+    top: 1rem;
+    font-weight: normal;
+    font-style: normal;
+    width: min-content;
+  }
+}
+*/
+
+.hl.lean.block {
+  display: block;
+}
+
+.hl.lean.inline {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+.hl.lean .token {
+  transition: all 0.25s; /* Slight fade for highlights */
+}
+
+@media (hover: hover) {
+  .hl.lean .token.binding-hl, .hl.lean .literal.string:hover, .hl.lean .token.typed:hover {
+    background-color: #eee;
+    border-radius: 2px;
+    transition: none;
+  }
+}
+
+
+.hl.lean .has-info {
+  text-decoration-style: wavy;
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.1rem;
+}
+
+.hl.lean .has-info .hover-info {
+  display: none;
+  position: absolute;
+  transform: translate(0.25rem, 0.3rem);
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 400;
+  text-align: left;
+}
+
+.hl.lean .has-info.error {
+  text-decoration-color: red;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.error:hover {
+    background-color: #ffb3b3;
+  }
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #ffb3b3;
+}
+
+.tippy-box[data-theme~='error'] .hl.lean .hover-info.messages > code.error {
+  background: none;
+  border: none;
+}
+
+.error pre {
+    color: red;
+}
+
+.hl.lean .has-info.warning {
+  text-decoration-color: #efd871;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.warning:hover {
+    background-color: #efd871;
+  }
+}
+
+.hl.lean .hover-info.messages > code.warning {
+  background-color: #efd871;
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #efd871;
+}
+
+.tippy-box[data-theme~='warning'] .hl.lean .hover-info.messages > code.warning {
+  background: none;
+  border: none;
+}
+
+
+.hl.lean .has-info.info {
+  text-decoration-color: blue;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.info:hover {
+    background-color: #4777ff;
+  }
+}
+
+
+.hl.lean .hover-info.messages > code.info {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #4777ff;
+}
+
+.tippy-box[data-theme~='info'] .hl.lean .hover-info.messages > code.info {
+  background: none;
+  border: none;
+}
+
+.hl.lean div.docstring {
+  font-family: sans-serif;
+  white-space: normal;
+  max-width: 40rem;
+  width: max-content;
+}
+
+.hl.lean div.docstring > :last-child {
+  margin-bottom: 0;
+}
+
+.hl.lean .hover-info .sep {
+  display: block;
+  width: auto;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  height: 1px;
+  border-top: 1px solid #ccc;
+}
+
+.hl.lean code {
+  font-family: monospace;
+}
+
+.hl.lean .tactic-state {
+  display: none;
+  position: relative;
+  left: 2rem;
+  width: fit-content;
+  border: 1px solid #888888;
+  border-radius: 0.1rem;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+  z-index: 200;
+}
+
+.hl.lean.popup .tactic-state {
+  position: static;
+  display: block;
+  width: auto;
+  border: none;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+
+
+.hl.lean .tactic {
+  position: relative;
+}
+
+.hl.lean .tactic-toggle:checked ~ .tactic-state {
+  display: block;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .tactic:hover > .tactic-toggle:not(:checked) ~ .tactic-state {
+    display: block;
+    position: absolute;
+    left: 0;
+    transform: translate(0.25rem, 0);
+    z-index: 250;
+  }
+}
+*/
+
+.hl.lean .tactic > label {
+  position: relative;
+  transition: all 0.5s;
+}
+
+@media (hover: hover) {
+  .hl.lean .tactic > label:hover {
+    border-bottom: 1px dotted #bbbbbb;
+  }
+}
+
+.hl.lean .tactic-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .tactic > label::after {
+  content: "";
+  border: 1px solid #bbbbbb;
+  border-radius: 1rem;
+  height: 0.25rem;
+  vertical-align: middle;
+  width: 0.6rem;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+  display: inline-block;
+  transition: all 0.5s;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .tactic > label:hover::after {
+    border: 1px solid #aaaaaa;
+    background-color: #aaaaaa;
+    transition: all 0.5s;
+  }
+}
+*/
+
+.hl.lean .tactic > label:has(+ .tactic-toggle:checked)::after {
+  border: 1px solid #999999;
+  background-color: #999999;
+  transition: all 0.5s;
+}
+
+.hl.lean .tactic-state .goal + .goal {
+  margin-top: 1.5rem;
+}
+
+.hl.lean .tactic-state summary {
+  margin-left: -0.5rem;
+}
+
+.hl.lean .tactic-state details {
+  padding-left: 0.5rem;
+}
+
+.hl.lean .case-label {
+  display: block;
+  position: relative;
+}
+
+.hl.lean .case-label input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"])::before {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  background-color: black;
+  content: ' ';
+  transition: ease 0.2s;
+  margin-right: 0.7rem;
+  clip-path: polygon(100% 0, 0 0, 50% 100%);
+  width: 0.6rem;
+  height: 0.6rem;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:not(:checked))::before {
+  transform: rotate(-90deg);
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]) {
+
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:checked) {
+
+}
+
+
+.hl.lean .tactic-state .labeled-case > :not(:first-child) {
+  max-height: 0px;
+  display: block;
+  overflow: hidden;
+  transition: max-height 0.1s ease-in;
+  margin-left: 0.5rem;
+  margin-top: 0.1rem;
+}
+
+.hl.lean .labeled-case:has(.case-label input[type="checkbox"]:checked) > :not(:first-child) {
+  max-height: 100%;
+}
+
+
+.hl.lean .tactic-state .goal-name::before {
+  font-style: normal;
+  content: "case ";
+}
+
+.hl.lean .tactic-state .goal-name {
+  font-style: italic;
+  font-family: monospace;
+}
+
+.hl.lean .tactic-state .hypotheses {
+  display: table;
+}
+
+.hl.lean .tactic-state .hypothesis {
+  display: table-row;
+}
+
+.hl.lean .tactic-state .hypothesis > * {
+  display: table-cell;
+}
+
+
+.hl.lean .tactic-state .hypotheses .colon {
+  text-align: center;
+  min-width: 1rem;
+}
+
+.hl.lean .tactic-state .hypotheses .name {
+  text-align: right;
+}
+
+.hl.lean .tactic-state .hypotheses .name,
+.hl.lean .tactic-state .hypotheses .type,
+.hl.lean .tactic-state .conclusion .type {
+  font-family: monospace;
+}
+
+.tippy-box[data-theme~='lean'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='lean'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::after {
+  bottom: -11px;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::after {
+  top: -11px;
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+  border-width: 11px 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::after {
+  right: -11px;
+  border-width: 11px 0 11px 11px;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+  border-width: 11px 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::after {
+  left: -11px;
+  border-width: 11px 11px 11px 0;
+}
+
+
+
+.tippy-box[data-theme~='warning'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #efd871;
+}
+
+.tippy-box[data-theme~='error'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #f7a7af;
+}
+
+.tippy-box[data-theme~='info'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #99b3c2;
+}
+
+
+
+.tippy-box[data-theme~='tactic'] {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: white;
+}
+
+</style><style>
+table.tabular {
+  margin: auto;
+  border-spacing: 1rem;
+}
+table.tabular.left-align {
+  margin-right: auto;
+  margin-left: 0;
+}
+table.tabular.center-align {
+  margin: auto;
+}
+table.tabular.right-align {
+  margin-left auto;
+  margin-right: 0;
+}
+table.tabular td, table.tabular th {
+  text-align: left;
+  vertical-align: top;
+}
+table.tabular td > p:first-child, table.tabular th > p:first-child {
+  margin-top: 0;
+}
+table.tabular td > p:last-child, table.tabular th > p:first-child {
+  margin-bottom: 0;
+}
+</style><script>
+      
+window.onload = () => {
+
+    // Don't show hovers inside of closed tactic states
+    function blockedByTactic(elem) {
+      let parent = elem.parentNode;
+      while (parent && "classList" in parent) {
+        if (parent.classList.contains("tactic")) {
+          const toggle = parent.querySelector("input.tactic-toggle");
+          if (toggle) {
+            return !toggle.checked;
+          }
+        }
+        parent = parent.parentNode;
+      }
+      return false;
+    }
+
+    function blockedByTippy(elem) {
+      // Don't show a new hover until the old ones are all closed.
+      // Scoped to the nearest "top-level block" to avoid being O(n) in the size of the document.
+      var block = elem;
+      const topLevel = new Set(["section", "body", "html", "nav", "header"]);
+      while (block.parentNode && !topLevel.has(block.parentNode.nodeName.toLowerCase())) {
+        block = block.parentNode;
+      }
+      for (const child of block.querySelectorAll(".token, .has-info")) {
+        if (child._tippy && child._tippy.state.isVisible) { return true };
+      }
+      return false;
+    }
+
+    for (const c of document.querySelectorAll(".hl.lean .token")) {
+        if (c.dataset.binding != "") {
+            c.addEventListener("mouseover", (event) => {
+                if (blockedByTactic(c)) {return;}
+                const context = c.closest(".hl.lean").dataset.leanContext;
+                for (const example of document.querySelectorAll(".hl.lean")) {
+                    if (example.dataset.leanContext == context) {
+                        for (const tok of example.querySelectorAll(".token")) {
+                            if (c.dataset.binding == tok.dataset.binding) {
+                                tok.classList.add("binding-hl");
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        c.addEventListener("mouseout", (event) => {
+            for (const tok of document.querySelectorAll(".hl.lean .token")) {
+                tok.classList.remove("binding-hl");
+            }
+        });
+    }
+    /* Render docstrings */
+    if ('undefined' !== typeof marked) {
+        for (const d of document.querySelectorAll("code.docstring, pre.docstring")) {
+            const str = d.innerText;
+            const html = marked.parse(str);
+            const rendered = document.createElement("div");
+            rendered.classList.add("docstring");
+            rendered.innerHTML = html;
+            d.parentNode.replaceChild(rendered, d);
+        }
+    }
+    // Add hovers
+    let siteRoot = typeof __versoSiteRoot !== 'undefined' ? __versoSiteRoot : "/";
+    fetch(siteRoot + "-verso-docs.json").then((resp) => resp.json()).then((versoDocData) => {
+
+      const defaultTippyProps = {
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        theme: "lean",
+        maxWidth: "none",
+        appendTo: () => document.body,
+        interactive: true,
+        delay: [100, null],
+        ignoreAttributes: true,
+        onShow(inst) {
+          if (inst.reference.querySelector(".hover-info") || "versoHover" in inst.reference.dataset) {
+            if (blockedByTactic(inst.reference)) { return false };
+            if (blockedByTippy(inst.reference)) { return false; }
+          } else { // Nothing to show here!
+            return false;
+          }
+        },
+        content (tgt) {
+          const content = document.createElement("span");
+          content.className = "hl lean";
+          content.style.display = "block";
+          content.style.maxHeight = "300px";
+          content.style.overflowY = "auto";
+          content.style.overflowX = "hidden";
+          const hoverId = tgt.dataset.versoHover;
+          const hoverInfo = tgt.querySelector(".hover-info");
+          if (hoverId) { // Docstrings from the table
+            // TODO stop doing an implicit conversion from string to number here
+            let data = versoDocData[hoverId];
+            if (data) {
+              const info = document.createElement("span");
+              info.className = "hover-info";
+              info.style.display = "block";
+              info.innerHTML = data;
+              content.appendChild(info);
+              /* Render docstrings - TODO server-side */
+              if ('undefined' !== typeof marked) {
+                  for (const d of content.querySelectorAll("code.docstring, pre.docstring")) {
+                      const str = d.innerText;
+                      const html = marked.parse(str);
+                      const rendered = document.createElement("div");
+                      rendered.classList.add("docstring");
+                      rendered.innerHTML = html;
+                      d.parentNode.replaceChild(rendered, d);
+                  }
+              }
+            } else {
+              content.innerHTML = "Failed to load doc ID: " + hoverId;
+            }
+          } else if (hoverInfo) { // The inline info, still used for compiler messages
+            content.appendChild(hoverInfo.cloneNode(true));
+          }
+          return content;
+        }
+      };
+
+      const addTippy = (selector, props) => {
+        tippy(selector, Object.assign({}, defaultTippyProps, props));
+      };
+      addTippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token', {theme: 'lean'});
+      addTippy('.hl.lean .has-info.warning', {theme: 'warning message'});
+      addTippy('.hl.lean .has-info.info', {theme: 'info message'});
+      addTippy('.hl.lean .has-info.error', {theme: 'error message'});
+
+      tippy('.hl.lean .tactic', {
+        allowHtml: true,
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        maxWidth: "none",
+        onShow(inst) {
+          const toggle = inst.reference.querySelector("input.tactic-toggle");
+          if (toggle && toggle.checked) {
+            return false;
+          }
+          if (blockedByTippy(inst.reference)) { return false; }
+        },
+        theme: "tactic",
+        placement: 'bottom-start',
+        content (tgt) {
+          const content = document.createElement("span");
+          const state = tgt.querySelector(".tactic-state").cloneNode(true);
+          state.style.display = "block";
+          content.appendChild(state);
+          content.style.display = "block";
+          content.className = "hl lean popup";
+          return content;
+        }
+      });
+  });
+}
+</script>
+    <script type="module" src="../static/search/search-init.js"></script>
+    </head>
+  <body>
+    <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
+      <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
+      <nav id="toc">
+        <input type="checkbox" id="toggle-toc" checked="checked"><div class="first">
+          <a href="../" id="logo"><img src="../static/lean_logo.svg"></a><nav id="local-buttons">
+            <a class="local-button active" href="../Notes-on-Lean/#lean" rel="prev" title="5. Notes on Lean"><span class="arrow">←</span><span class="where">Prev</span></a><a class="local-button active" href="../#" title=" Interactive Theorem Proving using Lean, Summer 2025"><span class="arrow">↑</span><span class="where">Up</span></a><span class="local-button inactive"><span class="where">Next</span><span class="arrow">→</span></span></nav>
+          <div class="split-tocs">
+            <div class="split-toc book">
+              <div class="title">
+                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot"></label><span class=""><a href="../">Interactive Theorem Proving using Lean, Summer 2025</a></span></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="../Introduction/#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="../First-steps-using-Logic/#logic">First steps using Logic</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="../___-and-___/#numbers">ℕ and ℝ</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="../Dealing-with-Sets/#Sets">Dealing with Sets</a></td></tr><tr class="numbered"><td class="num">5.</td><td><a href="../Notes-on-Lean/#lean">Notes on Lean</a></td></tr><tr class="current numbered"><td class="num">6.</td><td><a href="#tactics">Tactics</a></td></tr></table></div>
+            <div class="split-toc">
+              <div class="title">
+                <label for="--verso-manual-toc-tactics" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-tactics" checked="checked"></label><span class="number">6.</span> <span class="current"><a href="#tactics">Tactics</a></span></div>
+              <table><tr class="numbered"><td class="num">6.1.</td><td><a href="#cheatsheet">Tactics Cheatsheet</a></td></tr><tr class="numbered"><td class="num">6.2.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--apply"><code>apply</code></a></td></tr><tr class="numbered"><td class="num">6.3.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--apply___"><code>apply?</code></a></td></tr><tr class="numbered"><td class="num">6.4.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--by_cases"><code>by_cases</code></a></td></tr><tr class="numbered"><td class="num">6.5.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--by_contra"><code>by_contra</code></a></td></tr><tr class="numbered"><td class="num">6.6.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--calc"><code>calc</code></a></td></tr><tr class="numbered"><td class="num">6.7.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--cases___"><code>cases'</code></a></td></tr><tr class="numbered"><td class="num">6.8.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--change"><code>change</code></a></td></tr><tr class="numbered"><td class="num">6.9.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--clear"><code>clear</code></a></td></tr><tr class="numbered"><td class="num">6.10.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--congr"><code>congr</code></a></td></tr><tr class="numbered"><td class="num">6.11.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--constructor"><code>constructor</code></a></td></tr><tr class="numbered"><td class="num">6.12.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--exact"><code>exact</code></a></td></tr><tr class="numbered"><td class="num">6.13.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--exfalso"><code>exfalso</code></a></td></tr><tr class="numbered"><td class="num">6.14.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--have"><code>have</code></a></td></tr><tr class="numbered"><td class="num">6.15.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--induction"><code>induction</code></a></td></tr><tr class="numbered"><td class="num">6.16.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--intro"><code>intro</code></a></td></tr><tr class="numbered"><td class="num">6.17.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--left"><code>left</code></a></td></tr><tr class="numbered"><td class="num">6.18.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--linarith"><code>linarith</code></a></td></tr><tr class="numbered"><td class="num">6.19.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--nth_rewrite"><code>nth_rewrite</code></a></td></tr><tr class="numbered"><td class="num">6.20.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--obtain"><code>obtain</code></a></td></tr><tr class="numbered"><td class="num">6.21.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--push_neg"><code>push_neg</code></a></td></tr><tr class="numbered"><td class="num">6.22.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--rcases"><code>rcases</code></a></td></tr><tr class="numbered"><td class="num">6.23.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--refine"><code>refine</code></a></td></tr><tr class="numbered"><td class="num">6.24.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--revert"><code>revert</code></a></td></tr><tr class="numbered"><td class="num">6.25.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--rfl"><code>rfl</code></a></td></tr><tr class="numbered"><td class="num">6.26.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--right"><code>right</code></a></td></tr><tr class="numbered"><td class="num">6.27.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--ring"><code>ring</code></a></td></tr><tr class="numbered"><td class="num">6.28.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--rintro"><code>rintro</code></a></td></tr><tr class="numbered"><td class="num">6.29.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--rw"><code>rw</code></a></td></tr><tr class="numbered"><td class="num">6.30.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--simp"><code>simp</code></a></td></tr><tr class="numbered"><td class="num">6.31.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--specialize"><code>specialize</code></a></td></tr><tr class="numbered"><td class="num">6.32.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--tauto"><code>tauto</code></a></td></tr><tr class="numbered"><td class="num">6.33.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--triv"><code>triv</code></a></td></tr><tr class="numbered"><td class="num">6.34.</td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--use"><code>use</code></a></td></tr></table></div>
+            </div>
+          </div>
+        <div class="last">
+          <ul id="meta-links">
+            <li>
+              <a href="https://github.com/leanprover/reference-manual">Source Code</a></li>
+            <li>
+              <a href="https://github.com/leanprover/reference-manual/issues">Report Issues</a></li>
+            </ul>
+          </div>
+        </nav>
+      <main><section>
+          <h1>
+            6. Tactics<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=tactics" title="Permalink">🔗</a></span></h1>
+          <section>
+            <h2 id="cheatsheet">
+              6.1. Tactics Cheatsheet<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=cheatsheet" title="Permalink">🔗</a></span></h2>
+            <table class="tabular left-align"><tr><th><p>
+                    Proof state</p>
+                  </th><th><p>
+                    Tactic</p>
+                  </th><th><p>
+                    New proof state</p>
+                  </th></tr><tr><td><p>
+                    <code>⊢ P → Q</code></p>
+                  </td><td><p>
+                    <code>intro hP</code></p>
+                  </td><td><p>
+                    <code>hP : P</code> <br> <code>⊢ Q</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P → Q → R</code></p>
+                  </td><td><p>
+                    <code>intro hP hQ</code></p>
+                  </td><td><p>
+                    <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                  </td></tr><tr><td><p>
+                    <code>p : α → Prop</code> <br> <code>⊢ ∀ (x : α), f x</code></p>
+                  </td><td><p>
+                    <code>intro x</code></p>
+                  </td><td><p>
+                    <code>f: α → Prop</code> <br> <code>x : α</code> <br> <code>⊢ p x</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P</code> <br> <code>⊢ P</code></p>
+                  </td><td><p>
+                    <code>exact h</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P</code> <br> <code>⊢ P</code></p>
+                  </td><td><p>
+                    <code>assumption</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P → Q</code> <br> <code>⊢ P</code></p>
+                  </td><td><p>
+                    <code>apply h</code></p>
+                  </td><td><p>
+                    <code>⊢ Q</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h₁ : P → Q</code> <br> <code>h₂ : Q → R</code> <br> <code>⊢ R</code></p>
+                  </td><td><p>
+                    <code>apply h₂ h₁</code></p>
+                  </td><td><p>
+                    <code>h₁ : P → Q</code> <br> <code>h₂ : Q → R</code> <br> <code>⊢ P</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P ∧ Q → P</code></p>
+                  </td><td><p>
+                    <code>tauto</code> oder <code>tauto!</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ true</code></p>
+                  </td><td><p>
+                    <code>triv</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P</code> <br> <code>⊢ Q</code></p>
+                  </td><td><p>
+                    <code>exfalso</code></p>
+                  </td><td><p>
+                    <code>h : P</code> <br> <code>⊢ false</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P</code></p>
+                  </td><td><p>
+                    <code>by_contra h</code></p>
+                  </td><td><p>
+                    <code>h : ¬P</code> <br> <code>⊢ false</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P</code></p>
+                  </td><td><p>
+                    <code>by_cases h : Q</code></p>
+                  </td><td><p>
+                    <code>h : Q</code> <br> <code>⊢ P</code> <br> <code>h : ¬Q</code> <br> <code>⊢ P</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P ∧ Q</code> <br> <code>⊢ R</code></p>
+                  </td><td><p>
+                    <code>cases' h with hP hQ</code></p>
+                  </td><td><p>
+                    <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P ∧ Q</code> <br> <code>⊢ R</code></p>
+                  </td><td><p>
+                    <code>obtain ⟨hP, hQ⟩ := h</code></p>
+                  </td><td><p>
+                    <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P ∨ Q</code> <br> <code>⊢ R</code></p>
+                  </td><td><p>
+                    <code>cases' h with hP hQ</code></p>
+                  </td><td><p>
+                    <code>hP : P</code> <br> <code>⊢ R</code> <br> <code>hQ : Q ⊢ R</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : false</code> <br> <code>⊢ P</code></p>
+                  </td><td><p>
+                    <code>cases h</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ : P → false</code></p>
+                  </td><td><p>
+                    <code>change ¬P</code></p>
+                  </td><td><p>
+                    <code>⊢ ¬P</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P ∧ Q</code></p>
+                  </td><td><p>
+                    <code>constructor</code></p>
+                  </td><td><p>
+                    <code>⊢ P</code> <br> <code>⊢ Q</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P ↔ Q</code></p>
+                  </td><td><p>
+                    <code>constructor</code></p>
+                  </td><td><p>
+                    <code>⊢ P → Q</code> <br> <code>⊢ Q → P</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P ↔ P</code> oder <br> <code>⊢ P = P</code></p>
+                  </td><td><p>
+                    <code>rfl</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P ↔ Q</code> <br> <code>⊢ P</code></p>
+                  </td><td><p>
+                    <code>rw h</code></p>
+                  </td><td><p>
+                    <code>h : P ↔ Q</code> <br> <code>⊢ Q</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P ↔ Q</code> <br> <code>hP : P</code></p>
+                  </td><td><p>
+                    <code>rw h at hP</code></p>
+                  </td><td><p>
+                    <code>h : P ↔ Q</code> <br> <code>hP : Q</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P ↔ Q</code> <br> <code>⊢ Q</code></p>
+                  </td><td><p>
+                    <code>rw ← h</code></p>
+                  </td><td><p>
+                    <code>h : P ↔ Q</code> <br> <code>⊢ P</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P ↔ Q</code> <br> <code>hQ : Q</code></p>
+                  </td><td><p>
+                    <code>rw ← h at hQ</code></p>
+                  </td><td><p>
+                    <code>h : P ↔ Q</code> <br> <code>hQ : P</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P ∨ Q</code></p>
+                  </td><td><p>
+                    <code>left</code></p>
+                  </td><td><p>
+                    <code>⊢ P</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P ∨ Q</code></p>
+                  </td><td><p>
+                    <code>right</code></p>
+                  </td><td><p>
+                    <code>⊢ Q</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ 2 + 2 &lt; 5</code></p>
+                  </td><td><p>
+                    <code>norm_num</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>p : α → Prop</code> <br> <code>y : α</code> <br> <code>⊢ ∃ (x : α), f x</code></p>
+                  </td><td><p>
+                    <code>use y</code></p>
+                  </td><td><p>
+                    <code>p : α → Prop</code> <br> <code>y : α</code> <br>  <code>⊢ f y</code></p>
+                  </td></tr><tr><td><p>
+                    <code>x y : ℝ</code> <br> <code>⊢ x + y = y + x</code></p>
+                  </td><td><p>
+                    <code>ring</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>p : α → Prop</code> <br> <code>⊢ ∀ (x : α), p x</code></p>
+                  </td><td><p>
+                    <code>intro x</code></p>
+                  </td><td><p>
+                    <code>p : α → Prop</code> <br> <code>x : α</code> <br> <code>p x</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h₁ : a &lt; b</code> <br> <code>h₂ : b ≤ c</code> <br> <code>⊢ a &lt; c</code></p>
+                  </td><td><p>
+                    <code>linarith</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P</code> <br> <code>⊢ Q</code></p>
+                  </td><td><p>
+                    <code>clear h</code></p>
+                  </td><td><p>
+                    <code>⊢ Q</code></p>
+                  </td></tr><tr><td><p>
+                    <code>p : ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), p n</code> <br>  <code>⊢ P</code></p>
+                  </td><td><p>
+                    <code>specialize h 13</code></p>
+                  </td><td><p>
+                    <code>p : ℕ → Prop</code> <br> <code>h : p 13</code> <br> <code>⊢ P</code></p>
+                  </td></tr><tr><td><p>
+                    <code>p : ℕ → ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), ∃ (m : ℕ), f n m</code></p>
+                  </td><td><p>
+                    <code>obtain ⟨m, hm⟩ := h 27</code></p>
+                  </td><td><p>
+                    <code>f : ℕ → ℕ → Prop</code> <br> <code>h : ∀ (n : ℕ), ∃ (m : ℕ), f n m</code> <br> <code>m : ℕ</code> <br> <code>hm : f 27 m</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ R</code></p>
+                  </td><td><p>
+                    <code>have h : P ↔ Q</code></p>
+                  </td><td><p>
+                    <code>⊢ P ↔ Q</code> <br> <code>h : P ↔ Q</code> <br> <code>⊢ R</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h₁ : a &lt; b</code> <br> <code>h₂ : b &lt; c</code> <br> <code>⊢ a &lt; c</code></p>
+                  </td><td><p>
+                    <code>apply?</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code> <br> Try this: <br>  <code>exact lt_trans h₁ h₂</code></p>
+                  </td></tr><tr><td><p>
+                    <code>hQ : Q</code> <br> <code>⊢ P ∧ Q</code></p>
+                  </td><td><p>
+                    <code>refine ⟨ _, hQ ⟩</code></p>
+                  </td><td><p>
+                    <code>hQ : Q</code> <br> <code>⊢ P</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P ∨ Q → R</code></p>
+                  </td><td><p>
+                    <code>rintro (hP | hQ)</code> <br> = <br> <code>intro h</code> <br> <code>cases h with hP hQ</code></p>
+                  </td><td><p>
+                    <code>hP : P</code> <br> <code>⊢ R</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ P ∧ Q → R</code></p>
+                  </td><td><p>
+                    <code>rintro ⟨hP , hQ⟩</code> <br> = <br> <code>intro h</code> <br> <code>cases h with h1 h2</code></p>
+                  </td><td><p>
+                    <code>hP : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ R</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : P ∧ Q ∨ P ∧ R</code> <br> <code>⊢ S</code></p>
+                  </td><td><p>
+                    <code>rcases h with (⟨hP1,hQ⟩|⟨hP2,hR⟩)</code></p>
+                  </td><td><p>
+                    <code>hP1 : P</code> <br> <code>hQ : Q</code> <br> <code>⊢ S</code> <br> <code>hP2 : P</code> <br> <code>hR : R</code> <br> <code>⊢ S</code></p>
+                  </td></tr><tr><td><p>
+                    <code>⊢ n + 0 = n</code></p>
+                  </td><td><p>
+                    <code>simp</code></p>
+                  </td><td><p>
+                    <code>no goals 🎉</code></p>
+                  </td></tr><tr><td><p>
+                    <code>h : n + 0 = m</code> <br> <code>⊢ P</code></p>
+                  </td><td><p>
+                    <code>simp at h</code></p>
+                  </td><td><p>
+                    <code>h : n = m</code> <br> <code>⊢ P</code></p>
+                  </td></tr></table></section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--apply">
+              6.2. <code>apply</code></h2>
+            <p>
+              <strong>Summary:</strong> If we have the goal <code>⊢ Q</code>, and a proof of <code>h : P → Q</code>, we only need to find a proof for <code>P</code>. This transition happens by <code>apply h</code>.</p>
+            <table class="tabular left-align"><tr><th><p>
+                    , h : P → Q <br> ⊢ P</p>
+                  </th><th><p>
+                    apply h</p>
+                  </th><th><p>
+                    ⊢Q</p>
+                  </th></tr><tr><td><p>
+                    h₁ : P → Q <br> h₂ : Q → R  <br> ⊢ R</p>
+                  </td><td><p>
+                    apply h₂ h₁</p>
+                  </td><td><p>
+                    h₁ : P → Q <br> h₂ : Q → R  <br> ⊢ P</p>
+                  </td></tr></table><p>
+              The <code>apply</code>-tactics works iteratively. This means that if <code>apply h</code> makes no progress, it uses the placeholder <code>_</code> and tries to make <code>apply h _</code>.</p>
+            <code class="hl lean block" data-lean-context="examples"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-684">example</span></span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.26" data-verso-hover="2">hPQR</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="3">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.12" data-verso-hover="4">Q</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.20" data-verso-hover="5">R</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.20" data-verso-hover="5">R</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-4536602843373837207-722-724"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-722" data-verso-hover="6">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4536602843373837207-722-724"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26" data-verso-hover="2">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-918978195751927186-727-737"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.apply-727" data-verso-hover="10">apply</span> <span class="var token" data-binding="var-_uniq.26" data-verso-hover="2">hPQR</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-918978195751927186-727-737"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-1" checked="checked"><span for="--verso-unique-1" class="goal-name">a</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26" data-verso-hover="2">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span></span></span></span></span><span class="goal"><span class="labeled-case"><label class="case-label"><input type="checkbox" id="--verso-unique-2"><span for="--verso-unique-2" class="goal-name">a</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26" data-verso-hover="2">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-17183041818203655499-740-742"><span class="unknown token" data-binding="">·</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-17183041818203655499-740-742"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-3" checked="checked"><span for="--verso-unique-3" class="goal-name">a</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26" data-verso-hover="2">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span></span></span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-743-748"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-743" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-743-748"><span class="tactic-state">All goals completed! 🐙</span></span>
+  <span class="tactic"><label for="tactic-state-11995093062861413118-751-753"><span class="unknown token" data-binding="">·</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-11995093062861413118-751-753"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-4" checked="checked"><span for="--verso-unique-4" class="goal-name">a</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.22</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.25</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26" data-verso-hover="2">hPQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.35" data-verso-hover="7">P</span> → <span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span> → <span class="var token" data-binding="var-_uniq.37" data-verso-hover="9">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="8">Q</span></span></span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-754-759"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-754" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-754-759"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+              <strong>Remarks:</strong></p>
+            <ul>
+              <li>
+                <p>
+                  <code>apply</code> works up to equality by definition. This can be seen in the example above, where <code>¬P ↔ (P → False)</code> is true by definition.</p>
+                </li>
+              <li>
+                <p>
+                  <code>apply h</code> is frequently identical to <code>refine ?_</code>.</p>
+                </li>
+              <li>
+                <p>
+                  If the use of <code>apply</code> closes the current goal, you might as well use <code>exact</code> instead of <code>apply</code>.
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--apply___">
+              6.3. <code>apply?</code></h2>
+            <p>
+              <strong>Summary:</strong> There are already a lot of proven statements in <code>mathlib</code>. When using <code>apply?</code>, the <code>mathlib</code> is statements whose types correspond to those of the statement to be proved. If this is not successful, <code>Lean</code> reports a <code>timeout</code>. If successful, it also reports which command was found. If you click on it, this is inserted in place of <code>library_search</code>.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+--------------------- -------------------------- -------------------------------
+<code>h1 : a &lt; b</code> <code>library_search,</code> <strong>goals accomplished</strong>
+<code>h2 : b &lt; c</code> <code>Try this: </code>
+<code>⊢ a &lt; c</code> <code>exact lt_trans h1 h2</code></p>
+            <p>
+              <strong>Notes</strong></p>
+            <p>
+              The tactic <code>suggest</code> is similar and also works if
+the goal cannot be closed.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--by_cases">
+              6.4. <code>by_cases</code></h2>
+            <p>
+              <strong>Summary:</strong>
+If you have a term <code>P : Prop</code> as a hypothesis, <code>by_cases hP : P</code> returns two goals. The first one has <code>hP : P</code>, and the second one <code>hP : ¬P</code>. This tactic is thus identical to <code>have hP : P ∨ ¬ P, exact em P, cases hP,</code>. (The second expression is <code>em : ∀ (p : Prop), p ∨ ¬p</code>.)</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              In the second example, we use a variable of type <code>bool</code> This is defined as follows:</p>
+            <pre>inductive bool : Type
+| ff : bool
+| tt : bool
+</pre><p>
+              A Boolean variable can only have the values <code>tt</code> (for <code>true</code>) and <code>ff</code> (for <code>false</code>).</p>
+            <p>
+              <strong>Notes</strong></p>
+            <ul>
+              <li>
+                <p>
+                  Apparently, the <code>by_cases</code> tactic (just like <code>by_contradiction</code>) assumes that a statement is either true or false. This is also known as the law of excluded middle. In mathematics, proofs that do not use this rule are called constructive.</p>
+                </li>
+              <li>
+                <p>
+                  For terms of type <code>Prop</code>, the tactic <code>tauto</code> (or <code>tauto!</code>) can
+draw
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--by_contra">
+              6.5. <code>by_contra</code></h2>
+            <p>
+              <strong>Summary</strong></p>
+            <p>
+              The <code>by_contra</code> tactic provides a proof by contradiction. It is therefore assumed (i.e. transformed into a hypothesis) that the statement (after <code>⊢</code>) is not true, and this must be made to contradict itself, i.e. a proof of <code>false</code> must be found.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              +---------------------------+-----------------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:==========================+:======================+:======================+
+| <code>⊢ P</code> | <code>by_contra h,</code> | <code>h : ¬P</code> |
++---------------------------+-----------------------+-----------------------+
+| | | <code>⊢ false</code> |
++---------------------------+-----------------------+-----------------------+
+| <code>h: ¬¬P</code> | | |
+| <code>⊢ P</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>by_contra hnegP,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>h: ¬¬P</code> | | |
+| <code>hnegP: ¬P</code> | | |
+| <code>⊢ false</code> | | |
++---------------------------+-----------------------+-----------------------+</p>
+            <p>
+              <strong>Notes</strong></p>
+            <p>
+              This tactic is stronger than <code>exfalso</code>. After all, there the goal is only converted to <code>false</code> without adding a new hypothesis. With <code>by_contra</code>, the new goal is also <code>false</code>, but there is still a new hypothesis.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--calc">
+              6.6. <code>calc</code></h2>
+            <p>
+              <strong>Summary:</strong> As the word suggests, <code>calc</code> is about concrete calculations. This is not a tactic, but a <code>lean</code> mode. This means that you can enter this mode (with the word <code>calc</code>) and enter calculation steps and proofs that each individual calculation step is correct.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              Here is a proof of the first binomial formula that only comes about by rewriting of calculating properties from the <code>mathlib</code>.</p>
+            <pre>example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 := by
+have h : n + n = 2*n,
+{
+nth_rewrite 0 ← one_mul n,
+nth_rewrite 1 ← one_mul n,
+rw ← add_mul,
+},
+calc (n+1)^2 = (n+1) * (n+1) : by { rw pow_two, }...
+ = (n+1)*n + (n+1) * 1: by {rw mul_add, }
+... = n*n + 1*n + (n+1) : by {rw add_mul, rw mul_one (n+1),}...
+ = n^2 + n + (n+1) : by {rw one_mul, rw ← pow_two,}
+... = n^2 + (n + n+1) : by {rw add_assoc, rw ← add_assoc n n 1,}...
+ = n^2 + 2*n + 1 : by { rw ← add_assoc, rw ← h, },
+</pre><p>
+              The same can be achieved without the <code>calc</code> mode, like this:</p>
+            <pre>example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 := by
+  have h : n + n = 2*n, by { nth_rewrite 0 ← one_mul n,
+  nth_rewrite 1 ← one_mul n, rw ← add_mul, },
+  rw [pow_two, mul_add, add_mul, mul_one (n+1), one_mul,
+  ← pow_two, add_assoc, ← add_assoc n n 1,
+  ← add_assoc, ← h],
+</pre><p>
+              However, this is much less readable.</p>
+            <p>
+              <strong>Notes</strong>
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--cases___">
+              6.7. <code>cases'</code></h2>
+            <p>
+              <strong>Summary:</strong> If a hypothesis is composed, i.e. can be expanded into two or more cases, <code>cases'</code> delivers exactly that. This can be used not only used with hypotheses <code>h : P ∨ Q</code> or <code>h : P ∧ Q</code>, but also with structures that consist of several cases, such as <code>∃...</code> (here there is a variable and a statement) and <code>x : bool</code> or <code>n : ℕ</code>.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              <strong>Notes:</strong></p>
+            <ul>
+              <li>
+                <p>
+                  The application <code>cases' n</code> for <code>n : ℕ</code> is strictly weaker than complete induction (see <code>induction</code>). After all, <code>cases</code> only converts <code>n : ℕ</code> into the two cases <code>0</code> and <code>succ n</code>, but you cannot use the statement for <code>n-1</code> to prove the statement for <code>n</code>.</p>
+                </li>
+              <li>
+                <p>
+                  A more flexible version of <code>cases'</code> is <code>rcases</code>.
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--change">
+              6.8. <code>change</code></h2>
+            <p>
+              Changes the goal (or a hypothesis) into a goal (or a hypothesis) that is defined the same.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              <strong>Notes:</strong></p>
+            <ul>
+              <li>
+                <p>
+                  As can be seen from the penultimate example, <code>change</code> also works for hypotheses.</p>
+                </li>
+              <li>
+                <p>
+                  Since many tactics test for definitional equality anyway, <code>change</code> is often not necessary. However, it can help to make the proof more readable.
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--clear">
+              6.9. <code>clear</code></h2>
+            <p>
+              <strong>Summary:</strong> With <code>clear h</code> the hypothesis <code>h</code> is removed from the goal state
+(forgotten).</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+----------------- ------------------- -----------------------
+<code>h : P</code> <code>clear h,</code> <code>⊢ Q</code>
+<code>⊢ Q</code>
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--congr">
+              6.10. <code>congr</code></h2>
+            <p>
+              <strong>Summary:</strong> If you have to show an equality <code>f x = f y</code>, then <code>congr</code> uses the statement that the equality is particularly true if <code>x = y</code>.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              <strong>Notes:</strong></p>
+            <p>
+              The related tactic <code>congr'</code> uses another parameter that determines how many recursive layers are eliminated in the goal. This is helpful in the following examples:
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--constructor">
+              6.11. <code>constructor</code></h2>
+            <p>
+              <strong>Summary:</strong> If the goal is of the type <code>⊢ P ∧ Q</code>, it is replaced by <code>constructor</code> into two goals <code>⊢ P</code> and <code>⊢ Q</code>.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+------------------ ----------------- -----------------------
+<code>⊢ P ∧ Q</code> <code>split,</code> <code>⊢ P</code>
+<code>⊢ Q</code>
+<code>⊢ P ↔ Q</code> <code>split,</code> <code>⊢ P → Q</code>
+<code>⊢ Q → P</code></p>
+            <p>
+              <strong>Notes</strong></p>
+            <p>
+              Note that <code>⊢ P ↔ Q</code> is identical to <code>⊢ (P → Q) ∧ (Q → P)</code>.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--exact">
+              6.12. <code>exact</code></h2>
+            <p>
+              <strong>Summary:</strong> If the goal can be achieved with a single command, then it can be achieved with the <code>exact</code> tactic. Like many other tactics, <code>exact</code> also works with terms that are defined the same.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              +----------------------------+-------------------+-------------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:===========================+:==================+:========================+
+| <code>h : P</code> | <code>exact h,</code> | <strong>goals accomplished</strong> |
++----------------------------+-------------------+-------------------------+
+| <code>⊢ P</code> | | |
++----------------------------+-------------------+-------------------------+
+| <code>hP: P</code> | | |
+| <code>hQ: Q</code> | | |
+| <code>⊢ P ∧ Q</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>exact ⟨ hP, hQ ⟩,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <strong>goals accomplished</strong> | | |
++----------------------------+-------------------+-------------------------+</p>
+            <p>
+              <strong>Notes:</strong></p>
+            <p>
+              In the third example, note the order in which the two hapotheses <code>hP</code> and <code>hnP</code> are applied. The first hypothesis after <code>exact</code> is always the one whose right side matches the goal. If the goal requires further input, it is appended afterwards.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--exfalso">
+              6.13. <code>exfalso</code></h2>
+            <p>
+              <strong>Summary:</strong> The statement <code>false → P</code> is true for all <code>P</code>. If the current goal is <code>⊢ P</code>, and you would apply this true statement using <code>apply</code>, the new goal would be <code>⊢ false</code>. This is exactly what the <code>exfalso</code> tactic does.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              +--------------------+-------------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:===================+:==================+:======================+
+| <code>h : P</code> | <code>exfalso,</code> | <code>h : P</code> |
++--------------------+-------------------+-----------------------+
+| <code>⊢ Q</code> | | <code>⊢ false</code> |
++--------------------+-------------------+-----------------------+
+| <code>hP: P</code> | | |
+| <code>hnP: ¬P</code> | | |
+| <code>⊢ Q</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>exfalso, </code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>hP: P</code> | | |
+| <code>hnP: ¬P</code> | | |
+| <code>⊢ false</code> | | |
++--------------------+-------------------+-----------------------+</p>
+            <p>
+              <strong>Notes:</strong></p>
+            <p>
+              If you use this tactic, you leave the realm of constructive mathematics. (This dispenses with the rule of the excluded middle.)
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--have">
+              6.14. <code>have</code></h2>
+            <p>
+              <strong>Summary:</strong> By using <code>have</code> we introduce a new claim, which we have to prove first. Afterwards, it is available as a hypothesis in all further goals. This is identical to first proving a lemma <code>h</code> with the statement after <code>have h : </code> and then reusing it at the appropriate place in the proof (for example with <code>apply</code> or <code>rw</code>).</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              +----------------------+----------------------+----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof |
+| | | state</strong> |
++:=====================+:=====================+:=====================+
+| <code>⊢ R</code> | <code>have | </code>⊢ P ↔ Q<code>|
+| | h : P ↔ Q,</code> | |
++----------------------+----------------------+----------------------+
+| | | <code>h : P ↔ Q</code> |
++----------------------+----------------------+----------------------+
+| | | <code>⊢ R</code> |
++----------------------+----------------------+----------------------+
+| <code>⊢ P</code> | | |
+| | |
+| & | | |
+| | | |
+| <code>have h1 : | | |
+| ∃ (m : ℕ),</code> | | |
+| <code> | | |
+| f 27 m, ...</code> | | |
+| <code>cases | | |
+| h1 with m hm</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>m : ℕ</code> | | |
+| <code>hm: f 27 m</code> | | |
+| <code>⊢ P</code> | | |
++----------------------+----------------------+----------------------+</p>
+            <p>
+              <strong>Notes:</strong></p>
+            <ul>
+              <li>
+                <p>
+                  Suppose we have two goals (let's call them <code>⊢1</code> and <code>⊢2</code>), and we need the statement of <code>⊢1</code> in the proof of <code>⊢2</code>. We can first introduce a third goal with <code>have h := ⊢ 1</code> (where <code>⊢1</code> is to be replaced by the statement). Then <code>⊢ 1</code> can be proved with <code>exact</code>, and has the statement <code>⊢ 1</code> available in the proof of <code>⊢ 2</code>.
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--induction">
+              6.15. <code>induction</code></h2>
+            <p>
+              <strong>Summary:</strong></p>
+            <p>
+              Inductive types allow the possibility of proving statements about them by means of induction. This includes, for example, the usual case of complete induction over natural numbers.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              <strong>Proof state</strong> <strong>command</strong> <strong>new proof state</strong>
+---------------------- --------------------------------- ---------------------------------
+<code>n : ℕ</code> <code>induction n with d hd,</code> <code>⊢ 0 = 0 + 0</code>
+<code>⊢ n = 0 + n</code> <code>hd : d = 0 + d</code>
+<code>⊢ d.succ = 0 + d.succ,</code>
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--intro">
+              6.16. <code>intro</code></h2>
+            <p>
+              <strong>Summary</strong></p>
+            <p>
+              If the goal is of the form <code>⊢ P → Q</code> or <code>∀ (n : ℕ), P n</code>, you can proceed with <code>intro P</code> or <code>intro n</code>. You can use several <code>intro</code> commands at the same time to summarize a single one. A little more precisely, <code>intro h1 h2 h3,</code> is identical to <code>intro h1; intro h2; intro h3</code>.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+--------------------------- ------------------- -----------------------
+<code>⊢ P → Q</code> <code>intro hP</code> <code>hP : P</code>
+<code>⊢ Q</code>
+<code>f : α → Prop</code> <code>intro x,</code> <code>f: α → Prop</code>
+<code>⊢ ∀ (x : α), f x</code> <code>x : α</code>
+<code>⊢ f x</code></p>
+            <p>
+              +-------------------------------+------------------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:==============================+:=======================+:======================+
+| <code>⊢ P → Q → R</code> | <code>intros hP hQ,</code> | <code>hP : P</code> |
++-------------------------------+------------------------+-----------------------+
+| | | <code>hQ : Q</code> |
++-------------------------------+------------------------+-----------------------+
+| | | <code>⊢ R</code> |
++-------------------------------+------------------------+-----------------------+
+| <code>P: ℕ → Prop</code> | | |
+| <code>⊢ ∀ (n : ℕ), P n → Q</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>intros n hP</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>P: ℕ → Prop</code> | | |
+| <code>n: ℕ</code> | | |
+| <code>hP: P n</code> <code>⊢ Q</code> | | |
++-------------------------------+------------------------+-----------------------+</p>
+            <p>
+              <strong>Notes</strong></p>
+            <ul>
+              <li>
+                <p>
+                  Several <code>intro</code> commands in a row are best combined. Furthermore,  <code>rintro</code> is a more flexible variant.</p>
+                </li>
+              <li>
+                <p>
+                  A reversal of <code>intro</code> is <code>revert</code>.
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--left">
+              6.17. <code>left</code></h2>
+            <p>
+              <strong>Summary:</strong></p>
+            <p>
+              The application of <code>left,</code> is identical to <code>apply h</code> for <code>h : P → P ∨ Q</code>. So if you have a goal of the form <code>⊢ P ∨ Q</code>, <code>left,</code> causes you to have only the goal <code>⊢ P</code>. After all, it is sufficient to show <code>P</code> to close the goal.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              +-------------------------+----------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:========================+:===============+:======================+
+| <code>⊢ P ∨ Q</code> | <code>left,</code> | <code>⊢ P</code> |
++-------------------------+----------------+-----------------------+
+| <code>⊢ ℕ</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>left,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <strong>goals accomplished</strong> | | |
++-------------------------+----------------+-----------------------+</p>
+            <p>
+              The second example requires a little explanation. First of all, you have to understand that the goal <code>⊢ ℕ</code> is to show that there is a term of type <code>ℕ</code>, i.e. that there is a natural number. Now you have to know how <code>ℕ</code> is implemented in Lean. This is</p>
+            <pre>inductive nat
+| zero : nat
+| succ (n : nat) : nat
+</pre><p>
+              together with</p>
+            <pre>notation `ℕ` := nat
+</pre><p>
+              This means: The type <code>ℕ</code> is defined by the fact that <code>zero</code> is a term of this type, and that there is a function <code>succ : ℕ → ℕ</code>. Thus, in the second example, the input <code>left,</code> is closed because by definition <code>zero : ℕ</code> holds, so in particular there is a term of type <code>ℕ</code>.</p>
+            <p>
+              <strong>Notes:</strong></p>
+            <ul>
+              <li>
+                <p>
+                  See also <code>right,</code> for the equivalent tactic, which is <code>apply h</code> for <code>h : Q → P ∨ Q</code>.</p>
+                </li>
+              <li>
+                <p>
+                  As in the second example, <code>left,</code> can always be applied when dealing with an inductive type with two constructors (such like <code>ℕ</code>).
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--linarith">
+              6.18. <code>linarith</code></h2>
+            <p>
+              <strong>Summary:</strong> This tactic can prove equations and inequalities with the help of hypotheses. It is important that the hypotheses used are also only equations and inequalities. So here we are working mainly with the transitivity of <code>&lt;</code> together with arithmetic rules.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+---------------------- -------------------- -------------------------
+<code>h1 : a &lt; b</code> <code>linarith,</code> <strong>goals accomplished</strong>
+<code>h2 : b ≤ c</code>
+<code>⊢ a &lt; c</code>
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--nth_rewrite">
+              6.19. <code>nth_rewrite</code></h2>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+--------------------------- -------------------- -------------------------
+<code>⊢ 2 + 2 &lt; 5</code> <code>norm_num,</code> <strong>goals accomplished</strong></p>
+            <p>
+              <strong>Summary:</strong></p>
+            <p>
+              This tactic is related to <code>rw</code>. The difference is that you can specify the occurrence number of the term to be replaced on which <code>rw</code> is to be applied. The exact syntax is <code>nth_rewrite k h</code>, where <code>k</code> is the number (starting with $0$) of the term to be replaced and <code>h</code> is the hypothesis to be replaced. As with <code>rw</code>, this must be in the form <code>h : x=y</code> or <code>h : A↔B</code>.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              +----------------------------------+--------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:=================================+:=============+:======================+
+| <code>n : ℕ</code> | | |
+| <code>⊢ 0 + n = 0 + 0 + n</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>nth_rewrite 0 zero_add,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>n: ℕ</code> | | |
+| <code>⊢ n = 0 + 0 + n</code> | | |
++----------------------------------+--------------+-----------------------+</p>
+            <p>
+              In the above example, Lean sees three terms of the form <code>0 + ?_</code>: Number 0 is on the left-hand side, for numbers 1 and 2, on the right side (because of the parenthesis <code>0 + 0 + n = (0 + 0) + n</code>),  the second = is checked first. To the left of it is <code>0 + 0</code>, which is by definition identical to <code>0</code>. applying <code>rw zero_add</code> here, the term is converted to <code>n</code>. For number 2, you see <code>0 + 0</code>, determine that it is of the desired form and convert it to <code>0</code>.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--obtain">
+              6.20. <code>obtain</code></h2>
+            <p>
+              <strong>Summary:</strong> The <code>obtain</code> tactic can be used to merge <code>have</code> and <code>cases</code> into one command.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+------------------------------------------ --------------------------- -------------------------------------
+<code>f : ℕ → ℕ → Prop</code> <code>obtain ⟨ m, hm ⟩</code> <code>f: ℕ → ℕ → Prop</code>
+<code>h : ∀ (n : ℕ), ∃ (m : ℕ), f n m</code> <code> := h 27,</code> <code>h : ∀ (n : ℕ), ∃ (m : ℕ), </code>
+<code> f n m</code>
+<code>m : ℕ</code>
+<code>hm : f 27 m</code>
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--push_neg">
+              6.21. <code>push_neg</code></h2>
+            <p>
+              <strong>Summary:</strong> In many steps of a proof, a negation must be carried out. In order to process the corresponding quantifiers etc. as well and to better reusable, the tactic <code>push_neg</code> is available.</p>
+            <p>
+              <strong>Examples</strong>
++---------------------+--------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:====================+:=============+:======================+
+| <code>⊢ ¬(P ∨ Q)</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>push_neg,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>⊢ ¬P ∧ ¬Q</code> | | |
++---------------------+--------------+-----------------------+</p>
+            <p>
+              <strong>Notes:</strong></p>
+            <p>
+              This tactic also works with other objects, such as sets.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--rcases">
+              6.22. <code>rcases</code></h2>
+            <p>
+              +-------------------------------+--------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:==============================+:=============+:======================+
+| <code>h : P ∧ Q ∨ P ∧ R</code> | | |
+| <code>⊢ P</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>rcases h with</code> | | |
+| <code>(⟨hP1,hQ⟩|⟨hP2,hR⟩),</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>hP1 : P</code> | | |
+| <code>hQ : Q</code> | | |
+| <code>⊢ P</code> | | |
+| <code>hP2 : P </code> | | |
+| <code>hR : R</code> | | |
+| <code>⊢ P</code> | | |
++-------------------------------+--------------+-----------------------+</p>
+            <p>
+              <strong>Summary:</strong> <code>rcases</code> is a more flexible version of <code>cases</code>. Here, it is allowed to use <code>⟨ hP, hQ ⟩</code> (or <code>(hP | hQ)</code>) to to split the hypotheses <code>hP</code> and <code>hQ</code> into their cases.  As can be seen in the example above, it is also possible to nest <code>⟨.,.⟩</code> and <code>(.|.)</code>.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              +----------------------------+--------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:===========================+:=============+:======================+
+| <code>h : P ∧ Q</code> | | |
+| <code>⊢ R</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>rcases h with</code> | | |
+| <code> ⟨ hP, hQ ⟩</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>hP : P</code> | | |
+| <code>hQ : Q</code> | | |
+| <code>⊢ R</code> | | |
++----------------------------+--------------+-----------------------+</p>
+            <p>
+              <strong>Notes:</strong></p>
+            <p>
+              The last example shows how to use <code>rcases</code> to directly resolve a <code>∃</code> quantifier in a hypothesis that has more than one constraint (here: <code>0 ≤ m)</code> and <code>m &lt; n</code> can be resolved directly.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--refine">
+              6.23. <code>refine</code></h2>
+            <p>
+              <strong>Summary:</strong> The <code>refine</code> tactic is like <code>exact</code> with holes. More precisely: if the goal is to apply a combination of hypotheses, you can do that with 'refine' and write an open term '<em>' for each. You then get each '</em>' back as a new goal (where those with definitional equality are solved immediately).</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              +----------------------+----------------------+----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof |
+| | | state</strong> |
++:=====================+:=====================+:=====================+
+| <code>hQ : Q</code> | <code>refin | </code>hQ : Q<code> |
+| | e ⟨ _, hQ ⟩,</code> | |
++----------------------+----------------------+----------------------+
+| <code>⊢ P ∧ Q</code> | | <code>⊢ P</code> |
++----------------------+----------------------+----------------------+
+| <code>⊢ ∃ (n : ℕ) (h | | |
+| : n &gt; 0), </code> | | |
+| <code> | | |
+| n ^ 2 = 9</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>refine </code> | | |
+| <code>⟨3, ?_, b | | |
+| y norm_num⟩,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>⊢ 3 &gt; 0</code> | | |
++----------------------+----------------------+----------------------+
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--revert">
+              6.24. <code>revert</code></h2>
+            <p>
+              <strong>Summary:</strong> <code>revert</code> is the opposite of <code>intro</code>: It takes a hypothesis from the local context and inserts it as a precondition into the goal.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              +--------------------+--------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:===================+:=============+:======================+
+| <code>hP : P</code> | | |
+| <code>⊢ Q</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>revert hP</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>⊢ P → Q</code> | | |
++--------------------+--------------+-----------------------+</p>
+            <p>
+              <strong>Notes:</strong></p>
+            <p>
+              <code>revert</code> is rarely needed; actually only when you want to apply an already proven result exactly and first want to establish the correct form of the goal.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--rfl">
+              6.25. <code>rfl</code></h2>
+            <p>
+              <strong>Summary:</strong> This tactic proves the equality (or equivalence) of two definitionally equal terms.</p>
+            <p>
+              <strong>Examples:</strong></p>
+            <p>
+              +-------------------------+----------------+-------------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:========================+:===============+:========================+
+| <code>⊢ P ↔ P</code> or | <code>refl,</code> | <strong>goals accomplished</strong> |
++-------------------------+----------------+-------------------------+
+| <code>⊢ P = P</code> | | |
++-------------------------+----------------+-------------------------+
+| <code>⊢ 1 + 2 = 3</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>refl,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <strong>goals accomplished</strong> | | |
++-------------------------+----------------+-------------------------+</p>
+            <p>
+              <strong>Notes:</strong></p>
+            <p>
+              The second example works because both sides are by definition equal to <code>succ succ succ 0</code>.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--right">
+              6.26. <code>right</code></h2>
+            <p>
+              <strong>Summary:</strong> See <code>left</code>, where the adjustments are obvious.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              <strong>Proof state</strong> <strong>command</strong> <strong>New proof state</strong>
+------------------ ----------------- -----------------------
+<code>⊢ P ∨ Q</code> <code>right,</code> <code>⊢ Q</code>
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--ring">
+              6.27. <code>ring</code></h2>
+            <p>
+              <strong>Summary:</strong> The <code>ring</code> uses rules of calculation such as associativity, commutativity, and distributivity to achieve the goal.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              +------------------------------------+----------------+-------------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:===================================+:===============+:========================+
+| <code>x y : ℝ</code> | <code>ring,</code> | <strong>goals accomplished</strong> |
++------------------------------------+----------------+-------------------------+
+| <code>⊢ x + y = y + x</code> | | |
++------------------------------------+----------------+-------------------------+
+| <code>n : ℕ</code> | | |
+| <code>⊢ (n+1)^2 = n^2 + 2*n + 1</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>ring,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <strong>goals accomplished</strong> | | |
++------------------------------------+----------------+-------------------------+</p>
+            <p>
+              <strong>Notes:</strong></p>
+            <ul>
+              <li>
+                <p>
+                  The second example works even though <code>ℕ</code> is not a ring (but only a half-ring). It would also work with <code>n : ℝ</code> (since <code>ℝ</code> has more calculation rules than <code>ℕ</code>).</p>
+                </li>
+              <li>
+                <p>
+                  <code>ring</code> is only used to close the goal.
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--rintro">
+              6.28. <code>rintro</code></h2>
+            <p>
+              <strong>Summary:</strong> The <code>rintro</code> tactic is used to process several <code>intro</code> and <code>cases</code> tactics on one line.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+---------------------- ------------------------------ -----------------------
+<code>⊢ P ∨ Q → R</code> <code>rintro ( hP | hQ ),</code> <code>hP : P</code>
+$=$ <code>⊢ P</code>
+<code>intro h,</code> <code>hQ : Q</code>
+<code>cases h with hP hQ,</code> <code>⊢ Q</code>
+<code>⊢ P ∧ Q → R</code> <code>rintro ⟨ hP , hQ ⟩,</code> <code>hP : P</code>
+$=$ <code>hQ : Q</code>
+<code>intro h,</code> <code>⊢ Q</code>
+<code>cases h with h1 h2,</code></p>
+            <p>
+              <strong>Notes:</strong></p>
+            <p>
+              Here, more than two <code>∨</code> can also be split into cases in one step: With <code>A ∨ B ∨ C</code>, <code>rintro (A | B | C)</code> introduces three goals.
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--rw">
+              6.29. <code>rw</code></h2>
+            <p>
+              <strong>Summary:</strong> <code>rw</code> stands for <strong>rewrite</strong>. For <code>rw h</code> to work, <code>h</code> must be an expression of the type <code>h : x=y</code> or <code>h : A↔B</code>. In this case, <code>rw h</code>  replaces every term that is syntactically identical to <code>x</code> (or <code>A</code>) is replaced by <code>y</code> (or <code>B</code>). This also works if <code>h</code> is an already proven result (i.e. a <code>lemma</code> or <code>theorem</code>). With <code>rw ← h</code> is applied from right to left. (In the above example, <code>y</code> is replaced by <code>x</code> and <code>B</code> by <code>A</code>.)</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              For the last four examples, you first need to know that add<em>comm and add</em>zero are the statements</p>
+            <pre>add_comm : ∀ {G : Type} [_inst_1 : add_comm_semigroup G] (a b : G),
+a + b = b + a
+add_zero : ∀ {M : Type} [_inst_1 : add_zero_class M] (a : M), a + 0 = a
+</pre><p>
+              In the first of the four examples, <code>rw</code> applies to the first occurrence of a term of type <code>a + b</code>. Due to the internal bracketing, <code>(k + m) + 0</code> is on the left side, so that the <code>rw</code> results in a <code>0 + k + m</code>. If you want to use the commutativity in the term <code>k + m</code>, you need the second (or third) example, where <code>rw add_comm k m</code> leads to the desired progress. In the last example, the two <code>+ 0</code> terms are first eliminated by <code>rw add_zero</code>.</p>
+            <p>
+              <strong>Notes</strong></p>
+            <ul>
+              <li>
+                <p>
+                  <code>rw</code> is used very often in practice to apply statements from the <code>mathlib</code> (at least if they are of the type <code>=</code> or <code>↔</code>).</p>
+                </li>
+              <li>
+                <p>
+                  If you want to combine several <code>rw</code> commands, you can do so in square brackets, for example <code>rw [h1, h2]</code> or <code>rw [h1, ←h2, h3]</code>.</p>
+                </li>
+              <li>
+                <p>
+                  <code>rw</code> immediately executes a <code>refl</code> after its application. This leads to the second and third examples of the applications of <code>add_comm</code> and <code>add_zero</code> that the new proof state is not as specified, but <strong>no goals</strong>.</p>
+                </li>
+              <li>
+                <p>
+                  If you do not want to perform a <code>rw</code> in sequence (as in the double elimination of the <code>+0</code> above), you can use <code>nth_rewrite</code> to rewrite the second occurrence of a term.</p>
+                </li>
+              <li>
+                <p>
+                  The <code>rw</code> tactic does not work when it comes after a <strong>binder</strong>, which could be a <code>∀ ∃ ∑</code>. In this case, <code>simp_rw</code> will hopefully help.
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--simp">
+              6.30. <code>simp</code></h2>
+            <p>
+              <strong>Summary:</strong> In <code>mathlib</code> there are many lemmas with <code>=</code> or <code>↔</code> statements that can be applied with <code>rw</code> and are marked with <code>@[simp]</code>. These marked lemmas have the property that the right side is a simplified form of the left side. With <code>simp</code>, <code>lean</code> looks for matching lemmas and tries to apply them.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              <strong>Notes:</strong></p>
+            <p>
+              If you want to know which lemmas were used, try 'simp?<code> or 'squeeze_simp</code>. This provides clues.</p>
+            <p>
+              +---------------------------------+--------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:================================+:=============+:======================+
+| <code>⊢ n + 0 = n</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>simp?,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <strong>goals accomplished</strong> | | |
+| Try this: | | |
+| <code>simp only [add_zero, </code> | | |
+| <code> eq_self_iff_true]</code> | | |
++---------------------------------+--------------+-----------------------+
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--specialize">
+              6.31. <code>specialize</code></h2>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+----------------------------- --------------------------- -----------------------
+<code>f : ℕ → Prop</code> <code>specialize h 13,</code> <code>f: ℕ → Prop</code>
+<code>h : ∀ (n : ℕ), f n</code> <code>h : f 13</code>
+<code>⊢ P</code> <code>⊢ P</code></p>
+            <p>
+              <strong>Summary:</strong> In a hypothesis <code>h : ∀ n, ...</code>, <code>...</code> applies to all <code>n</code>, but for the proof of the goal, you may only need a specific <code>n</code>. If you specify <code>specialize h</code> followed by the value for which <code>h</code> is needed, the hypothesis changes accordingly.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              +-----------------------------------+--------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:==================================+:=============+:======================+
+| <code>h: ∀ (n : ℕ), 0 &lt; n + 1</code> | | |
+| <code>⊢ 0 &lt; 1</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>specialize h 0,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>m : ℕ</code> | | |
+| <code>h: 0 &lt; 0 + 1</code> | | |
+| <code>⊢ 0 &lt; 1</code> | | |
++-----------------------------------+--------------+-----------------------+</p>
+            <p>
+              <strong>Notes</strong></p>
+            <ul>
+              <li>
+                <p>
+                  Just as with <code>use</code>, you have to be careful that the goal remains provable.</p>
+                </li>
+              <li>
+                <p>
+                  If you want to use two values of the hypothesis <code>h</code>, then <code>let h' := h</code> first provides a duplication of the hypothesis, so that you can then apply <code>specialize</code> to <code>h</code> and <code>h'</code>.
+</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--tauto">
+              6.32. <code>tauto</code></h2>
+            <p>
+              <strong>Summary:</strong> <code>tauto</code> solves all goals that can be solved with a truth table.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              +----------------------+----------------------+----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof |
+| | | state</strong> |
++:=====================+:=====================+:=====================+
+| <code>⊢ P | </code>tauto,<code> or | **goals accomplished |
+| ∧ Q → P</code> | <code>tauto!,</code> | </p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--triv">
+              6.33. <code>triv</code></h2>
+            <p>
+              <strong>Summary</strong></p>
+            <p>
+              <code>triv</code> solves an objective that is, by definition, identical to <code>true</code>. It also solves objectives that can be solved with <code>refl</code>
+.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              +-------------------------+----------------+-------------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:========================+:===============+:========================+
+| <code>⊢ true</code> | <code>triv,</code> | <strong>goals accomplished</strong> |
++-------------------------+----------------+-------------------------+
+| <code>⊢ x=x</code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>triv,</code> | | |
+| | | |
+| & | | |
+| | | |
+| <strong>goals accomplished</strong> | | |
++-------------------------+----------------+-------------------------+
+</p>
+            </section>
+          <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Tactics--use">
+              6.34. <code>use</code></h2>
+            <p>
+              <strong>Proof state</strong> <strong>Command</strong> <strong>New proof state</strong>
+--------------------------- ----------------- -----------------------
+<code>f : α → Prop</code> <code>use y,</code> <code>f : α → Prop</code>
+<code>y : α</code> <code>y : α</code>
+⊢ ∃ (x : α), f x<code> ⊢ f y</code></p>
+            <p>
+              <strong>Summary:</strong> The <code>use</code> tactic is used for goals that begin with ∃. Here, parameters are used to indicate which object quantified by ∃ is to be reused in the proof.</p>
+            <p>
+              <strong>Examples</strong></p>
+            <p>
+              +----------------------------------+--------------+-----------------------+
+| <strong>Proof state</strong> | <strong>Command</strong> | <strong>New proof state</strong> |
++:=================================+:=============+:======================+
+| <code>⊢ ∃ (k : ℕ), k * k = 16</code> | | |
+| | |
+| & | | |
+| | |
+| <code>use 4, </code> | | |
+| | | |
+| & | | |
+| | | |
+| <code>⊢ 4 * 4 = 16</code> | | |
++----------------------------------+--------------+-----------------------+</p>
+            <p>
+              mal sehen
+</p>
+            </section>
+          </section>
+        </main></div>
+    </body>
+  </html>
+

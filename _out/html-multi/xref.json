@@ -11,7 +11,7 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Tactics", "number": "6"}]},
-     "address": "/"}],
+     "address": "/Tactics/"}],
    "numbers":
    [{"id": "numbers",
      "data":
@@ -21,7 +21,7 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "ℕ and ℝ", "number": "3"}]},
-     "address": "/"}],
+     "address": "/___-and-___/"}],
    "logic":
    [{"id": "logic",
      "data":
@@ -31,7 +31,7 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "First steps using Logic", "number": "2"}]},
-     "address": "/"}],
+     "address": "/First-steps-using-Logic/"}],
    "lean":
    [{"id": "lean",
      "data":
@@ -41,7 +41,7 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Notes on Lean", "number": "5"}]},
-     "address": "/"}],
+     "address": "/Notes-on-Lean/"}],
    "introduction":
    [{"id": "introduction",
      "data":
@@ -51,7 +51,7 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Introduction", "number": "1"}]},
-     "address": "/"}],
+     "address": "/Introduction/"}],
    "cheatsheet":
    [{"id": "cheatsheet",
      "data":
@@ -62,7 +62,7 @@
         "number": null},
        {"title": "Tactics", "number": "6"},
        {"title": "Tactics Cheatsheet", "number": "1"}]},
-     "address": "/"}],
+     "address": "/Tactics/"}],
    "Sets":
    [{"id": "Sets",
      "data":
@@ -72,7 +72,7 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Dealing with Sets", "number": "4"}]},
-     "address": "/"}]}},
+     "address": "/Dealing-with-Sets/"}]}},
  "Verso.Genre.Manual.doc.tech":
  {"title": "Terminology",
   "description": "Definitions of technical terms",
@@ -90,4 +90,14 @@
  "Verso.Genre.Manual.doc":
  {"title": "Lean constant reference",
   "description": "Documentation for Lean constants",
-  "contents": {}}}
+  "contents": {}},
+ "Manual.parserAlias":
+ {"title": "Parser Alias Documentation",
+  "description": "Detailed descriptions of parser aliases",
+  "contents": {}},
+ "Manual.lakeCommand":
+ {"title": "Lake commands",
+  "description": "Detailed descriptions of Lake commands",
+  "contents": {}},
+ "Manual.envVar":
+ {"title": "Environment Variables", "description": null, "contents": {}}}

@@ -29,7 +29,7 @@ tag := "simp"
 
 **Notes:**
 
-If you want to know which lemmas were used, try 'simp?`. This provides some clues.
+If you want to know which lemmas were used, try `simp?`. This provides some clues.
 
 :::table (align := left) (header := true)
 * + Proof state

@@ -1,6 +1,7 @@
 import VersoManual
 import Manual.Meta
 import Leancourse.Misc.Defs
+import Mathlib
 
 open Verso.Genre Manual
 
@@ -11,40 +12,25 @@ set_option pp.rawOnError true
 tag := "specialize"
 %%%
 
-**Proof state** **Command** **New proof state**
------------------------------ --------------------------- -----------------------
-`f : ℕ → Prop` `specialize h 13,` `f: ℕ → Prop`
-`h : ∀ (n : ℕ), f n` `h : f 13`
-`⊢ P` `⊢ P`
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + `f : ℕ → Prop` {br}[] `h : ∀ (n : ℕ), f n` {br}[] `⊢ P`
+  + `specialize h 13`
+  + `f: ℕ → Prop` {br}[] `h : f 13` {br}[] `⊢ P`
+:::
 
 **Summary:** In a hypothesis `h : ∀ n, ...`, `...` applies to all `n`, but for the proof of the goal, you may only need a specific `n`. If you specify `specialize h` followed by the value for which `h` is needed, the hypothesis changes accordingly.
 
 **Examples**
 
-:::table (align := left) (header := true)
-* + Proof state
-  + Tactic
-  + New proof state
-* + `h : P` {br}[] ⊢ P
-  + `exact h`
-  + **no goals**
-
-+-----------------------------------+--------------+-----------------------+
-| **Proof state** | **Command** | **New proof state** |
-+:==================================+:=============+:======================+
-| `h: ∀ (n : ℕ), 0 < n + 1`\ | | |
-| `⊢ 0 < 1` | | |
-| | | |
-| & | | |
-| | | |
-| `specialize h 0,` | | |
-| | | |
-| & | | |
-| | | |
-| `m : ℕ`\ | | |
-| `h: 0 < 0 + 1`\ | | |
-| `⊢ 0 < 1` | | |
-+-----------------------------------+--------------+-----------------------+
+```lean
+example (p : ℕ → Prop) (hp : ∀ (n : ℕ), p n) :
+    (p 0) := by
+  specialize hp 0
+  exact hp
+```
 
 **Notes**
 

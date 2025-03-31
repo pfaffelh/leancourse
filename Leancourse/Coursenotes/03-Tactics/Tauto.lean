@@ -19,51 +19,59 @@ tag := "tauto"
 * + Proof state
   + Tactic
   + New proof state
-* + `h : P` {br}[] ⊢ P
-  + `exact h`
+* + ⊢ P ∧ Q → P
+  + `tauto` oder `tauto!`
   + **no goals**
-
-+----------------------+----------------------+----------------------+
-| **Proof state** | **Command** | **New proof |
-| | | state** |
-+:=====================+:=====================+:=====================+
-| `⊢ P | `tauto,` or | **goals accomplished |
-| ∧ Q → P` | `tauto!,` | ** |
-+----------------------+----------------------+----------------------+
-| `⊢ ((P → | | |
-| Q) → P) → P` | | |
-| | | |
-| & | | |
-| | | |
-| `tauto!, ` | | |
-| | | |
-| & | | |
-| | | |
-| **goals accomplished | | |
-| ** | | |
-+----------------------+----------------------+----------------------+
+* + ⊢ ((P → Q) → P) → P
+  + `tauto!`
+  + **no goals**
+:::
 
 The truth tables for `¬P`, `P ∧ Q` and `P ∨ Q` are as follows; if more terms of type `Prop` are involved, there are more lines.
 
-::: center
-`P` `¬P`
----------------- ----------------
-`true` `false`
-`false` `true`
+:::table
+* + `P`
+  + `¬P`
+* + `true`
+  + `false`
+* + `false`
+  + `true`
+:::
 
-`P` `Q` `(P ∧ Q)`
----------------- ---------------- ------------------
-`true` `true` `true`
-`false` `true` `false`
-`true` `false` `false`
-`false` `false` `false`
+:::table
+* + `P`
+  + `Q`
+  + `(P ∧ Q)`
+* + `true`
+  + `true`
+  + `true`
+* + `false`
+  + `true`
+  + `false`
+* + `true`
+  + `false`
+  + `false`
+* + `false`
+  + `false`
+  + `false`
+:::
 
-`P` `Q` `(P ∨ Q)`
----------------- ---------------- ------------------
-`true` `true` `true`
-`false` `true` `true`
-`true` `false` `true`
-`false` `false` `false`
+:::table
+* + `P`
+  + `Q`
+  + `(P ∨ Q)`
+* + `true`
+  + `true`
+  + `true`
+* + `false`
+  + `true`
+  + `true`
+* + `true`
+  + `false`
+  + `true`
+* + `false`
+  + `false`
+  + `false`
 :::
 
 **Notes**

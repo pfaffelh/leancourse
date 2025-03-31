@@ -15,6 +15,14 @@ tag := "rw"
 
 **Examples**
 
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + `h : P` {br}[] ⊢ P
+  + `exact h`
+  + **no goals**
+
 For the last four examples, you first need to know that add_comm and add_zero are the statements
 ```
 add_comm : ∀ {G : Type} [_inst_1 : add_comm_semigroup G] (a b : G),

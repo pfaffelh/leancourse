@@ -15,8 +15,11 @@ tag := "linearith"
 
 **Examples:**
 
-**Proof state** **Command** **New proof state**
----------------------- -------------------- -------------------------
-`h1 : a < b` `linarith,` **goals accomplished**
-`h2 : b ≤ c`
-`⊢ a < c`
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + `h₁ : a < b` {br}[] `h₂ : b < c` {br}[] ⊢ a < c
+  + linarith
+  + **no goals**
+:::

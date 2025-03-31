@@ -17,26 +17,22 @@ The application of `left,` is identical to `apply h` for `h : P → P ∨ Q`. So
 
 **Examples:**
 
-+-------------------------+----------------+-----------------------+
-| **Proof state** | **Command** | **New proof state** |
-+:========================+:===============+:======================+
-| `⊢ P ∨ Q` | `left,` | `⊢ P` |
-+-------------------------+----------------+-----------------------+
-| `⊢ ℕ` | | |
-| | | |
-| & | | |
-| | | |
-| `left,` | | |
-| | | |
-| & | | |
-| | | |
-| **goals accomplished** | | |
-+-------------------------+----------------+-----------------------+
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + ⊢ P ∨ Q
+  + left
+  + ⊢ P
+* + ⊢ ℕ
+  + left
+  + **no goals🎉**
+:::
 
 
 The second example requires a little explanation. First of all, you have to understand that the goal `⊢ ℕ` is to show that there is a term of type `ℕ`, i.e. that there is a natural number. Now you have to know how `ℕ` is implemented in Lean. This is
 
-```
+```lean
 inductive nat
 | zero : nat
 | succ (n : nat) : nat

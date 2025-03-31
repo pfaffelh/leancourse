@@ -15,10 +15,11 @@ tag := "obtain"
 
 **Examples:**
 
-**Proof state** **Command** **New proof state**
------------------------------------------- --------------------------- -------------------------------------
-`f : ℕ → ℕ → Prop` `obtain ⟨ m, hm ⟩` `f: ℕ → ℕ → Prop`
-`h : ∀ (n : ℕ), ∃ (m : ℕ), f n m` ` := h 27,` `h : ∀ (n : ℕ), ∃ (m : ℕ), `
-` f n m`
-`m : ℕ`
-`hm : f 27 m`
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + f : ℕ → ℕ → Prop {br}[] h : ∀ (n : ℕ), ∃ (m : ℕ), f n m
+  + obtain ⟨ m, hm ⟩ := h 27
+  + f: ℕ → ℕ → Prop {br}[] h : ∀ (n : ℕ), ∃ (m : ℕ), f n m {br}[] m : ℕ {br}[] hm : f 27 m
+:::

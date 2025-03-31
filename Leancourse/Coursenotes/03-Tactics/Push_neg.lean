@@ -14,19 +14,28 @@ tag := "push_neg"
 **Summary:** In many steps of a proof, a negation must be carried out. In order to process the corresponding quantifiers etc. as well and to better reusable, the tactic `push_neg` is available.
 
 **Examples**
-+---------------------+--------------+-----------------------+
-| **Proof state** | **Command** | **New proof state** |
-+:====================+:=============+:======================+
-| `⊢ ¬(P ∨ Q)` | | |
-| | | |
-| & | | |
-| | | |
-| `push_neg,` | | |
-| | | |
-| & | | |
-| | | |
-| `⊢ ¬P ∧ ¬Q` | | |
-+---------------------+--------------+-----------------------+
+
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + ⊢ ¬(P ∨ Q)
+  + `push_neg`
+  + ⊢ ¬P ∧ ¬Q
+* + h : ¬(P ∨ Q)
+  + `push_neg at h`
+  + h : ¬P ∧ ¬Q
+* + ⊢ ¬(P ∧ Q)
+  + `push_neg`
+  + ⊢ P → ¬Q
+* + P : X → Prop {br}[] ⊢ ¬∀ (x : X), P x
+  + `push_neg`
+  + P : X → Prop {br}[] ⊢ ∃ (x : X), ¬P x
+* + P : X → Prop {br}[] ⊢ ¬∃ (x : X), P x
+  + `push_neg`
+  + P : X → Prop {br}[] ⊢ ∀ (x : X), ¬P x
+:::
+
 
 **Notes:**
 

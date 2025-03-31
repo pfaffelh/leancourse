@@ -3,6 +3,7 @@ import VersoManual
 import «Leancourse».Coursenotes.«03-Tactics».«Cheatsheet»
 import «Leancourse».Coursenotes.«03-Tactics».«Apply»
 import «Leancourse».Coursenotes.«03-Tactics».«Apply?»
+import «Leancourse».Coursenotes.«03-Tactics».«Assumption»
 import «Leancourse».Coursenotes.«03-Tactics».«By_cases»
 import «Leancourse».Coursenotes.«03-Tactics».«By_contra»
 import «Leancourse».Coursenotes.«03-Tactics».«Calc»
@@ -18,6 +19,7 @@ import «Leancourse».Coursenotes.«03-Tactics».«Induction»
 import «Leancourse».Coursenotes.«03-Tactics».«Intro»
 import «Leancourse».Coursenotes.«03-Tactics».«Left»
 import «Leancourse».Coursenotes.«03-Tactics».«Linarith»
+import «Leancourse».Coursenotes.«03-Tactics».«Norm_num»
 import «Leancourse».Coursenotes.«03-Tactics».«Nth_rewrite»
 import «Leancourse».Coursenotes.«03-Tactics».«Obtain»
 import «Leancourse».Coursenotes.«03-Tactics».«Push_neg»
@@ -52,6 +54,8 @@ tag := "tactics"
 
 {include 0 «Leancourse».Coursenotes.«03-Tactics».«Apply?»}
 
+{include 0 «Leancourse».Coursenotes.«03-Tactics».«Assumption»}
+
 {include 0 «Leancourse».Coursenotes.«03-Tactics».«By_cases»}
 
 {include 0 «Leancourse».Coursenotes.«03-Tactics».«By_contra»}
@@ -81,6 +85,8 @@ tag := "tactics"
 {include 0  «Leancourse».Coursenotes.«03-Tactics».«Left»}
 
 {include 0  «Leancourse».Coursenotes.«03-Tactics».«Linarith»}
+
+{include 0  «Leancourse».Coursenotes.«03-Tactics».«Norm_num»}
 
 {include 0  «Leancourse».Coursenotes.«03-Tactics».«Nth_rewrite»}
 

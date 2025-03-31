@@ -15,6 +15,14 @@ tag := "right"
 
 **Examples**
 
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + `h : P` {br}[] ⊢ P
+  + `exact h`
+  + **no goals**
+
 **Proof state** **command** **New proof state**
 ------------------ ----------------- -----------------------
 `⊢ P ∨ Q` `right,` `⊢ Q`

@@ -21,6 +21,14 @@ tag := "use"
 
 **Examples**
 
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + `h : P` {br}[] ⊢ P
+  + `exact h`
+  + **no goals**
+
 +----------------------------------+--------------+-----------------------+
 | **Proof state** | **Command** | **New proof state** |
 +:=================================+:=============+:======================+

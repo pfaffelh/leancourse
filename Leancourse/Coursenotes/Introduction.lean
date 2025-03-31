@@ -6,7 +6,6 @@ set_option pp.rawOnError true
 
 #doc (Manual) "Introduction" =>
 %%%
-htmlSplit := .never
 tag := "introduction"
 %%%
 

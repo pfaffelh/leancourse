@@ -19,13 +19,37 @@ tag := "rw"
 * + Proof state
   + Tactic
   + New proof state
-* + `h : P` {br}[] ⊢ P
-  + `exact h`
-  + **no goals**
+* + h : P ↔ Q {br}[] ⊢ P
+  + `rw [h]`
+  + h : P ↔ Q {br}[] ⊢ Q
+* + h : P ↔ Q {br}[] ⊢ Q
+  + `rw [← h]`
+  + h : P ↔ Q {br}[]  ⊢ P
+* + h : P ↔ Q {br}[] hP : P
+  + `rw [h] at hP`
+  + h : P ↔ Q {br}[] hP : Q
+* + h : P ↔ Q {br}[] hQ : Q
+  + `rw [← h] at hQ`
+  + h : P ↔ Q {br}[] hQ : P
+* + k m: ℕ {br}[] ⊢ k + m + 0 = m + k + 0
+  + `rw [add_comm]`
+  + k m : ℕ {br}[] ⊢ 0 + (k + m) = m + k + 0
+* + k m : ℕ {br}[] ⊢ k + m + 0 = m + k + 0
+  + `rw [add_comm k m]`
+  + ⊢ m + k + 0 = m + k + 0
+* + k m : ℕ {br}[] ⊢ k + m + 0 = m + k + 0
+  + `rw [← add_comm k m]`
+  + ⊢ k + m + 0 = k + m + 0
+* + k m : ℕ {br}[] ⊢ k + m + 0 = m + k + 0
+  + `rw [add_zero, add_zero]`
+  + k m : ℕ {br}[] ⊢ k + m = m + k
+:::
+
 
 For the last four examples, you first need to know that add_comm and add_zero are the statements
+
 ```
-add_comm : ∀ {G : Type} [_inst_1 : add_comm_semigroup G] (a b : G),
+lemma add_comm : ∀ {G : Type} [_inst_1 : add_comm_semigroup G] (a b : G),
 a + b = b + a
 add_zero : ∀ {M : Type} [_inst_1 : add_zero_class M] (a : M), a + 0 = a
 ```

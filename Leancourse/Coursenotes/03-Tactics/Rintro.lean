@@ -15,16 +15,17 @@ tag := "rintro"
 
 **Examples**
 
-**Proof state** **Command** **New proof state**
----------------------- ------------------------------ -----------------------
-`⊢ P ∨ Q → R` `rintro ( hP | hQ ),` `hP : P`
-$=$ `⊢ P`
-`intro h,` `hQ : Q`
-`cases h with hP hQ,` `⊢ Q`
-`⊢ P ∧ Q → R` `rintro ⟨ hP , hQ ⟩,` `hP : P`
-$=$ `hQ : Q`
-`intro h,` `⊢ Q`
-`cases h with h1 h2,`
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + `⊢ P ∨ Q → R`
+  + `rintro ( hP | hQ )` {br}[] = {br}[] `intro h` {br}[] `cases h with hP hQ`
+  + `hP : P` {br}[] `⊢ P` {br}[] `hQ : Q` {br}[] `⊢ Q`
+* + `⊢ P ∧ Q → R`
+  + `rintro ⟨ hP , hQ ⟩` {br}[] = {br}[] `intro h` {br}[]  `cases h with h1 h2`
+  + `hP : P` {br}[] `hQ : Q` {br}[] `⊢ R`
+:::
 
 **Notes:**
 

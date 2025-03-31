@@ -19,27 +19,24 @@ tag := "simp"
 * + Proof state
   + Tactic
   + New proof state
-* + `h : P` {br}[] ⊢ P
-  + `exact h`
-  + **no goals**
+* + ⊢ n + 0 = n
+  + simp
+  + **no goals** 🎉
+* + h : n + 0 = m {br}[] ⊢ P
+  + simp at h
+  + h : n = m {br}[] ⊢ P
+:::
 
 **Notes:**
 
-If you want to know which lemmas were used, try 'simp?` or 'squeeze_simp`. This provides clues.
+If you want to know which lemmas were used, try 'simp?`. This provides some clues.
 
-+---------------------------------+--------------+-----------------------+
-| **Proof state** | **Command** | **New proof state** |
-+:================================+:=============+:======================+
-| `⊢ n + 0 = n` | | |
-| | | |
-| & | | |
-| | | |
-| `simp?,` | | |
-| | | |
-| & | | |
-| | | |
-| **goals accomplished**\ | | |
-| Try this:\ | | |
-| `simp only [add_zero, `\ | | |
-| ` eq_self_iff_true]` | | |
-+---------------------------------+--------------+-----------------------+
+:::table (align := left) (header := true)
+* + Proof state
+  + Tactic
+  + New proof state
+* + `⊢ n + 0 = n`
+  + `simp?`
+  + **no goals** 🎉 {br}[] Try this: {br}[]
+  `simp only add_zero, eq_self_iff_true`
+:::

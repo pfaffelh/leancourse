@@ -19,10 +19,7 @@ tag := "right"
 * + Proof state
   + Tactic
   + New proof state
-* + `h : P` {br}[] ⊢ P
-  + `exact h`
-  + **no goals**
-
-**Proof state** **command** **New proof state**
------------------- ----------------- -----------------------
-`⊢ P ∨ Q` `right,` `⊢ Q`
+* + `h : P ∨ Q`
+  + `right`
+  + `⊢ Q`
+:::

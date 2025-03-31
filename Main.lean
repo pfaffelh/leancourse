@@ -1,4 +1,5 @@
 import Leancourse
+import Manual.Meta
 
 open Verso.Genre.Manual
 
@@ -6,11 +7,6 @@ open Verso.Output.Html in
 def searchModule := {{
     <script type="module" src="/static/search/search-init.js"></script>
   }}
-
-def config : Config := {
-  sourceLink := some "https://github.com/pfaffelh/leancourse",
-  issueLink := some "https://github.com/pfaffelh/leancourse/issues"
-}
 
 def KaTeXLicense : LicenseInfo where
   identifier := "MIT"
@@ -48,7 +44,8 @@ def addKaTeX (config : Config) : Config :=
     licenseInfo := KaTeXLicense :: config.licenseInfo
   }
 
-def main := manualMain (%doc Leancourse) (config := config)
+def main :=
+  manualMain (%doc Leancourse) (config := config)
 where
   config := addKaTeX {
     extraFiles := [("static", "static")],
@@ -70,6 +67,8 @@ where
     emitTeX := false,
     emitHtmlSingle := true, -- for proofreading
     logo := some "/static/lean_logo.svg",
-    sourceLink := some "https://github.com/leanprover/reference-manual",
-    issueLink := some "https://github.com/leanprover/reference-manual/issues"
+    sourceLink := some "https://github.com/pfaffelh/leancourse",
+    issueLink := some "https://github.com/pfaffelh/leancourse/issues"
+    -- Licenses for the search box
+    licenseInfo := []
   }

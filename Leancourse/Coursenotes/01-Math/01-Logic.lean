@@ -12,6 +12,9 @@ tag := "logic"
 %%%
 
 # First steps using logic
+%%%
+tag := "first-steps"
+%%%
 
 We start with simple logical statements. We always distinguish (as in every mathematical theorem) between the _hypotheses_ and the _statement_ (or _assertion_, which we also call _goal_ or _target_). To introduce our hypotheses, we write
 

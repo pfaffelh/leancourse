@@ -1,6 +1,7 @@
 -- This module serves as the root of the `Leancourse` library.
 -- Import modules here that should be built as part of the library.
 import VersoManual
+import Mathlib
 
 import «Leancourse».Coursenotes.«Introduction»
 import «Leancourse».Coursenotes.«01-Math».«01-Logic»
@@ -12,8 +13,8 @@ import «Leancourse».Coursenotes.«03-Tactics»
 open Verso.Genre Manual
 
 #doc (Manual) "Interactive Theorem Proving using Lean, Summer 2025" =>
-
 %%%
+tag := "ITPFr"
 authors := ["Peter Pfaffelhuber"]
 %%%
 

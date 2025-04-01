@@ -6,19 +6,24 @@ set_option pp.rawOnError true
 
 #doc (Manual) "Introduction" =>
 %%%
+htmlSplit := .never
 tag := "introduction"
 %%%
 
-# Introduction
-
-## Goals
+# Goals
+%%%
+tag := "goals"
+%%%
 
 The course is designed for mathematics students and has at least two goals:
 
 * Learning the techniques for interactive theorem proofing using Lean: In recent years, efforts to prove mathematical theorems with the help of computers have increased dramatically. While a few decades ago, it was more a matter of consistently processing many cases that were left to the computer, interactive theorem provers are different. Here, a very small core can be used to understand or interactively generate all the logical conclusions of a mathematical proof. The computer then reports interactively on the progress of the proof and when all the steps have been completed.
 * Establishing connections to some mathematical material: At least in the first half, the mathematical details needed in this course should not be the main issue of this course. However, in order to _explain_ how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well - at least if it exceeds a few lines - so that the commands you enter (which we will call tactics) fit together. The course intends to teach both, first steps in `Lean` and learning a bunch of these tactics, and make a deeper dive into some mathematical material.
 
-## Other material and Theorem provers
+# Other material and Theorem provers
+%%%
+tag := "other-theorem-provers"
+%%%
 
 Lean is not the only theorem prover, and, of course, this course is not the only course trying to teach Lean to you. Other Theorem provers (which all will be neglected here) are:
 
@@ -31,7 +36,10 @@ Other courses, which you might want to have a look at are:
 * [_Formalizing Mathematics 2025_](https://b-mehta.github.io/formalising-mathematics-notes/) by Bhavik Mehta, based on notes by Kevin Buzzard: these notes have inspired at least the format of the present course.
 * [_Mathematics in Lean_](https://leanprover-community.github.io/mathematics_in_lean/) by Jeremy Avigad and Patrick Massot: if there is something like an official course maintained by experts in charge, this is probably it. It is mainly concentrated about different areas of mathematics.
 
-## Some notes on Lean and Mathlib
+# Some notes on Lean and Mathlib
+%%%
+tag := "some-notes"
+%%%
 
 * Hardware requirements: In fact, Lean will require a decent hardware, e.g. at least 8GB of RAM in order to function properly. If you do not have this, there are ways of using Lean online; see xxx.
 * Lean is not only an interactive theorem prover, but also a programming language. If you want to know/learn more about this aspect, please consult [Functional programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
@@ -42,7 +50,10 @@ import Mathlib
 at the start of any file. In this way, we have access to a large part of mathematics in order to solve exercises.
 
 
-## How to use this course
+# How to use this course
+%%%
+tag := "howto"
+%%%
 
 These notes have three main parts:
 

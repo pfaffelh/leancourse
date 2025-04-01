@@ -1,15 +1,15 @@
 import Mathlib -- load everything, in particular tactics
 
-/-- We start by studying `Prop`-types. These are like mathematical theorems, i.e. can be either true or false. We start by introducing a bunch of variables which are generic propositions.-/
+/- We start by studying `Prop`-types. These are like mathematical theorems, i.e. can be either true or false. We start by introducing a bunch of variables which are generic propositions. -/
 
-variable (P Q R S T: Prop)
+variables (P Q R S T: Prop)
 
 /-- Apart from these types, we will in this and the upcoming exercises mostly deal with implications, i.e. Types of the form `P → Q`.-/
 
 /- Let's start simple. -/
 
 example : True := by
-  triv
+  trivial
 
 /-- Some remark:
 * In Lean, we have `example` (which does not need an own name), `lemma` and `theorem` (both of which have a name). So, `example` is always followed by `:` while we have `lemma <nameOfLemma> : ` and `theorem <nameOfTheorem> :` for the latter two.
@@ -28,16 +28,16 @@ example : P → P := by
   intro hP
   exact hP
 
-/-- Note that the lean syntax does not use the usual double arrow `=>` here, but a single `→`. (Hover over the symbol in vscode in order to learn how to type it.) -/
+/- Note that the lean syntax does not use the usual double arrow `=>` here, but a single `→`. (Hover over the symbol in vscode in order to learn how to type it.) -/
 
-/-- Side note: the `→` looks like a function application, doesn't it? In fact, theoretical computer scientists have shown that there is a close connection between applying functions and proving theorems; see [Curry-Howard correspondance](https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence). This is why the proof could as well look like this: -/
+/- Side note: the `→` looks like a function application, doesn't it? In fact, theoretical computer scientists have shown that there is a close connection between applying functions and proving theorems; see [Curry-Howard correspondance](https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence). This is why the proof could as well look like this: -/
 
 example : P → P := by
   exact fun x ↦ x
 
-/-- Here are some exercises. In all of them, we use the `sorry` axiom/tactics to get started. This tactics closes every goal (no matter if it is true or not). Of course, using `sorry` is like cheating, so your task is to make the exercises `sorry`-free.-/
+/- Here are some exercises. In all of them, we use the `sorry` axiom/tactics to get started. This tactics closes every goal (no matter if it is true or not). Of course, using `sorry` is like cheating, so your task is to make the exercises `sorry`-free.-/
 
-/-- The statement `⊢ P → Q` (i.e. `P` implies `Q`) means that `Q` is valid if one may assume that the hypothesis `P` is correct. This transition from `⊢ P → Q` to the hypothesis `hP : P` with target `⊢ Q` is done using `intro hP`. Several `intro` commands can be abbreviated using `intro h1 h2...`.
+/- The statement `⊢ P → Q` (i.e. `P` implies `Q`) means that `Q` is valid if one may assume that the hypothesis `P` is correct. This transition from `⊢ P → Q` to the hypothesis `hP : P` with target `⊢ Q` is done using `intro hP`. Several `intro` commands can be abbreviated using `intro h1 h2...`.
 
 If the hypothesis `hP : P` holds and we want to prove `⊢ P`, then we just have to apply `hP` to the goal. If goal and hypothesis are identical, this is done with `exact hP`. In a more general way, `assumption` searches all hypotheses for those that are identical with the goal by definition.-/
 
@@ -92,16 +92,16 @@ example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T
 
 -- Aus dem Ziel P ↔ Q erzeugt man mit _split_ zwei Ziele. Diese sind dann der Reihe nach abzuarbeiten:
 example (hPQ : P → Q) (hQP : Q → P) : (P ↔ Q) := by
-  split
-  exact hPQ
-  exact hQP
+  constructor
+  · exact hPQ
+  · exact hQP
 
 -- Aufgabe 3) Dasselbe Labyrinth wie oben, aber mit einem anderen Ziel.
 example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T → P) (hRT : R → T) : ( P ↔ R )  := by
   sorry
 
 -- Für die Negation von P, also ¬P, bemerken wir, dass ¬P definitorisch äquivalent ist zu P → false.
-example : (¬ P ↔ (P → false)) := by
+example : (¬ P ↔ (P → False)) := by
   constructor
   · intro h1 h2
     apply h1
@@ -114,5 +114,35 @@ example (hP : P) (hQ : Q) (hPQ : P → Q) : ¬Q → ¬ P := by
   sorry
 
 -- Aufgabe 5) Gelten sowohl P als auch ¬P, kann etwas nicht stimmen.
-example : P → ¬P → false := by
+example : P → ¬P → False := by
   sorry
+
+
+example : ∀ (x y : ℝ),  (x - y)^2 = 0 ↔ x = y  := by
+  intro x y
+  nth_rewrite 2 [← sub_eq_zero]
+  exact sq_eq_zero_iff
+
+
+
+
+example : ∀ (ε : ℝ) (hε : 0 < ε), ∃ (n : ℕ),
+  (1/n : ℝ) < ε := by
+  intro ε hε
+  obtain ⟨n, hn⟩ := exists_lt_nsmul hε 1
+  have hn' : 0 < (n : ℝ) := by
+    simp only [Nat.cast_pos]
+    by_contra h
+    simp only [not_lt, nonpos_iff_eq_zero] at h
+    rw [h] at hn
+    simp at hn
+    revert hn
+    simp only [imp_false, not_lt, zero_le_one]
+  use n
+  have g : n • ε = (n : ℝ) * ε := by exact nsmul_eq_mul n ε
+  have h : (1/n : ℝ) < ε ↔ 1 < n • ε := by
+    rw [nsmul_eq_mul n ε]
+    simp only [one_div]
+    refine inv_lt_iff_one_lt_mul₀' hn'
+  rw [h]
+  exact hn

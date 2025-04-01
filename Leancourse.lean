@@ -4,10 +4,11 @@ import VersoManual
 import Mathlib
 
 import «Leancourse».Coursenotes.«Introduction»
-import «Leancourse».Coursenotes.«01-Math».«01-Logic»
-import «Leancourse».Coursenotes.«01-Math».«02-NandR»
-import «Leancourse».Coursenotes.«01-Math».«03-Sets»
-import «Leancourse».Coursenotes.«02-Lean».«01-Notes»
+import «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»
+import «Leancourse».Coursenotes.«01-Lean».«02-Notes-Proofs»
+import «Leancourse».Coursenotes.«02-Math».«01-Logic»
+import «Leancourse».Coursenotes.«02-Math».«02-NandR»
+import «Leancourse».Coursenotes.«02-Math».«03-Sets»
 import «Leancourse».Coursenotes.«03-Tactics»
 
 open Verso.Genre Manual
@@ -34,12 +35,14 @@ When you type `code .` within the `leancourse` folder, you should see some code 
 
 {include 0 «Leancourse».Coursenotes.«Introduction»}
 
-{include 0 «Leancourse».Coursenotes.«01-Math».«01-Logic»}
+{include 0 «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»}
 
-{include 0 «Leancourse».Coursenotes.«01-Math».«02-NandR»}
+{include 0 «Leancourse».Coursenotes.«01-Lean».«02-Notes-Proofs»}
 
-{include 0 «Leancourse».Coursenotes.«01-Math».«03-Sets»}
+{include 0 «Leancourse».Coursenotes.«02-Math».«01-Logic»}
 
-{include 0 «Leancourse».Coursenotes.«02-Lean».«01-Notes»}
+{include 0 «Leancourse».Coursenotes.«02-Math».«02-NandR»}
+
+{include 0 «Leancourse».Coursenotes.«02-Math».«03-Sets»}
 
 {include 0 «Leancourse».Coursenotes.«03-Tactics»}

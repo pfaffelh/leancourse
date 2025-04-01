@@ -1,7 +1,7 @@
-import Lean
 import VersoManual
 import Manual.Meta
 import Leancourse.Misc.Defs
+import Mathlib
 
 open Verso.Genre Manual
 
@@ -20,12 +20,62 @@ example (P : Prop) : P → P := by
   sorry
 ```
 On the right side, depending on the position of the cursor, you will find the *proof state*. If the cursor is directly after `by`, the *proof state* is seen. It is important to know that behind `⊢` stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that `P` is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the `sorry`, there is now **no goals**, but the `sorry` tactic is only there to prove unproven assertions without further action, and a warning is issued in `vscode`. If you delete the `sorry` and replace it with an `intro hP`, we get
+```lean
+example : P → P := by
+  intro hP
+  exact hP
 ```
-P : Prop
-hP : P
-⊢ P
+So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. This can now easily be solved using `assumption`, and the desired **no goals** appears. The `assumption` tactic searches for a hypothesis that is identical to the statement and concludes the proof. The `exact` tactic is somewhat different. Here you have to know exactly which hypothesis is meant and can use `exact hP` to conclude the proof.
+
+```lean
+def Odd (n : ℕ) := ∃ (k : ℕ), n = 2 * k + 1
+
+def Even (n : ℕ) := ∃ (k : ℕ), n = 2 * k
+
+example (n : ℕ) : (Odd n) ∨ (Even n) := by
+  apply?
+  sorry
 ```
-So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. This can now easily be solved using `assumption`, and the desired **no goals** appears. The `assumption` tactic searches for a hypothesis that is identical to the statement and concludes the proof. The exact  tactic is somewhat different. Here you have to know exactly which hypothesis is meant and can use `exact hP` to conclude the proof.
+
+```lean
+example (x : ℕ) : ∀ (ε : ℝ) (hε : 0 < ε), ∃ (n : ℕ) : 1/n < ε := by
+  apply
+  sorry
+
+```
+
+```lean
+example : ∃ (x : ℕ), x^2 = 9 := by
+  exact ⟨3, by rfl⟩
+```
+
+```lean
+example : ∃ (x : ℕ), x^2 = 9 := by
+  use 3
+  rfl
+```
+
+```lean
+example : ∀ (x : ℝ), (x^2 : ℝ) := by
+  exact ⟨3, by rfl⟩
+```
+
+
+
+
+intro apply exact simp refine obtain apply?
+
+sets functions
+
+forall as applying function
+
+exists as a pair/tuple
+
+subtypes
+
+use
+
+
 
 
 # Dependent type theory

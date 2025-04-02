@@ -327,17 +327,6 @@
         "number": null},
        {"title": "Notes on Lean", "number": "2"}]},
      "address": "/"}],
-   "keywords":
-   [{"id": "keywords",
-     "data":
-     {"title": "Some keywords",
-      "sectionNum": "3.3.",
-      "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
-        "number": null},
-       {"title": "Proofs in Lean", "number": "3"},
-       {"title": "Some keywords", "number": "3"}]},
-     "address": "/"}],
    "introduction":
    [{"id": "introduction",
      "data":
@@ -347,6 +336,18 @@
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Introduction", "number": "1"}]},
+     "address": "/"}],
+   "introapplyexact":
+   [{"id": "introapplyexact",
+     "data":
+     {"title": "intro ,  exact ,  apply  and  rw",
+      "sectionNum": "3.3.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Proofs in Lean", "number": "3"},
+       {"title": "First steps", "number": "3"},
+       {"title": "intro ,  exact ,  apply  and  rw", "number": "1"}]},
      "address": "/"}],
    "intro":
    [{"id": "intro",
@@ -380,6 +381,18 @@
         "number": null},
        {"title": "Introduction", "number": "1"},
        {"title": "How to use this course", "number": "4"}]},
+     "address": "/"}],
+   "haverefineuse":
+   [{"id": "haverefineuse",
+     "data":
+     {"title": "have ,  refine , and  use",
+      "sectionNum": "3.3.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Proofs in Lean", "number": "3"},
+       {"title": "First steps", "number": "3"},
+       {"title": "have ,  refine , and  use", "number": "3"}]},
      "address": "/"}],
    "have":
    [{"id": "have",
@@ -435,6 +448,17 @@
         "number": null},
        {"title": "Proofs in Lean", "number": "3"},
        {"title": "Foundation", "number": "1"}]},
+     "address": "/"}],
+   "firststeps":
+   [{"id": "firststeps",
+     "data":
+     {"title": "First steps",
+      "sectionNum": "3.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Proofs in Lean", "number": "3"},
+       {"title": "First steps", "number": "3"}]},
      "address": "/"}],
    "first-steps":
    [{"id": "first-steps",
@@ -600,6 +624,18 @@
         "number": null},
        {"title": "Tactics", "number": "7"},
        {"title": "assumption", "number": "4"}]},
+     "address": "/"}],
+   "applysimp":
+   [{"id": "applysimp",
+     "data":
+     {"title": "apply?  and  simp",
+      "sectionNum": "3.3.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Proofs in Lean", "number": "3"},
+       {"title": "First steps", "number": "3"},
+       {"title": "apply?  and  simp", "number": "2"}]},
      "address": "/"}],
    "apply?":
    [{"id": "apply___",

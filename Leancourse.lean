@@ -35,7 +35,6 @@ When you type `code .` within the `leancourse` folder, navigate to `Leancourse/E
 
 (In case you cannot install the course material locally, do the following: Right click [here](https://gitpod.io/#/https://github.com/pfaffelh/leancourse>) and _open link in new tab_ to access the repository using Gitpod. You will probably need a github account in order to do this.)
 
-
 {include 0 «Leancourse».Coursenotes.«Introduction»}
 
 {include 0 «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»}

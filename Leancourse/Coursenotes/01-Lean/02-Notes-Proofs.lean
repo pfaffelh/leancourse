@@ -32,7 +32,7 @@ This is to say:
 
 **Types as theorems, terms as proofs!**
 
-Constructing a term of type `ℕ` is easier (`0 : ℕ` is accepted by Lean for this construction) than constructing a term of type `∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j)`, for which we would require proving Goldbach's conjecture and implementing the proof in Lean.
+Constructing a term of type `ℕ` is easier (`0 : ℕ)` is accepted by Lean for this construction) than constructing a term of type `∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j)`, for which we would require proving Goldbach's conjecture and implementing the proof in Lean.
 
 Since we are already speaking about fundamentals: For a large part, it is safe to think of Types as Sets. Recall that it leads to [logical self-inconsistencies](https://en.wikipedia.org/wiki/Russell%27s_paradox) if we allow for something like the set/type of all sets/types. For this reason, the `Type` universe is split into levels, such as `Type 0 : Type 1`, saying that the type `Type 0` (of all objects in level 0) is of `Type 1`, i.e., we are moving up a ladder when constructing more complex types. The coresponding [idea](https://en.wikipedia.org/wiki/Von_Neumann_universe)  goes back to [von Neumann](https://en.wikipedia.org/wiki/John_von_Neumann) and [Ernst Zermelo](https://en.wikipedia.org/wiki/Ernst_Zermelo).
 
@@ -45,13 +45,30 @@ The Lean-library which contains many mathematical results is called _Mathlib_. O
 
 Another way to search Mathlib is [Moogle](https://www.moogle.ai/) and [Loogle](https://loogle.lean-lang.org/) (which you also have in `vscode` when clicking on the `∀` sign.)
 
-# Some keywords
+# First steps
 %%%
-tag := "keywords"
+tag := "firststeps"
 %%%
 
-Let us start with a very simple `example` and the
-tactics `intro` and `exact`. If we want to prove the statement `P → P` (i.e. `P` implies `P`) we enter the following:
+Let us start with some simple examples in order to explain the first tactics in Lean. We will deal here with
+* intro
+* exact
+* apply
+* rw
+* simp
+* apply?
+* cases
+* have
+* refine
+* obtain
+More tactics are found in Chapter xxx.
+
+## `intro`, `exact`, `apply` and `rw`
+%%%
+tag := "introapplyexact"
+%%%
+
+Let us start with a very simple `example`. If we want to prove the statement `P → P` (i.e. `P` implies `P`) we enter the following:
 
 ```lean
 example (P : Prop) : P → P := by
@@ -64,25 +81,177 @@ example : P → P := by
   intro hP
   exact hP
 ```
-So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. This can now easily be solved using `assumption`, and the desired **no goals** appears.
+So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. The desired **no goals** appears.
+
+The `apply` tactics is similar, but does not necessarily need to close the goal. Let us see how it works:
+
+```lean
+example (hPQ : P → Q) (hQR : Q → R) : P → R := by
+  intro hP
+  apply hQR
+  apply hPQ
+  exact hP
+```
+Here, if the goal is `R`, and you have a proof `hQR : Q → R`, we only have to show `Q` and this transformation is done using `apply hQR`.
+
+In fact, apply works iteratively. This means that `apply hQR; apply hPQ; exact hP` can be combined into
+```lean
+example (hPQ : P → Q) (hQR : Q → R) : P → R := by
+  intro hP
+  apply hQR (hPQ hP)
+```
+(Here, `hPQ hP` is a proof for `Q`, since we apply `P → Q` to a proof of `P`, which gives `Q`.)
+
+Sometimes, we have statements of equality `x = y` or `P ↔ Q`, so we would like to use the one instead of the other. This works using `rw`:
+```lean
+example (hQ : Q) (hPQ : P ↔ Q) : P := by
+    rw [hPQ]
+    exact hQ
+```
+Here, we use `rw` to transform the goal `P` to the rewritten goal `Q`. If we want to use `rw` reversely, we write `rw [← hPQ]`, and we can use `rw` also in hypothesis by writing e.g. `rw [hPQ] at hP`. Here is an example.
+```lean
+example (hQ : Q) (hPQ : P ↔ Q) : P := by
+    rw [← hPQ] at hQ
+    exact hQ
+```
+
+## `apply?` and `simp`
+%%%
+tag := "applysimp"
+%%%
+
+Of course, we want to make use of known facts when proving new ones. There are two main search functions built into our work: `simp?` and `apply?`. The first is based on `simp`, which works using a collection of simplification rules, which are searchable using `simp?`. Here is an example:
+```lean
+example : (0 < 1) := by
+  simp?
+```
+Lean suggests `Try this: simp only [Nat.lt_one_iff, pos_of_gt]`, which is taken to our code when we click on it.
+
+In fact, the same example can be solved using library search using `apply?`. Here, Lean searches its library for possible results, and often outputs very many results and the remaining goals. Here, it is simple:
+```lean
+example : (0 < 1) := by
+  apply?
+```
+where Lean suggests `Try this: exact Nat.one_pos`.
+
+## `have`, `refine`, and `use`
+%%%
+tag := "haverefineuse"
+%%%
+
+Assume we cannot prove our goal in one step, but need some intermediate result. In this case, we have the `have` tactics. We simply claim what we need as an intermediate step. At the moment, we leave the rest using `sorry`.
+```lean
+example : ∃ (n : ℕ), Even (n * n) := by
+  have h : ∃ (n : ℕ), Even n := by
+    sorry
+  sorry
+```
+We come to our intermediate result later, but first want to use it in the rest of the proof. However, we have to disentangle the ∃ statement in `h`. Often, we have to take apart what we are given. Note that `∃ (n : ℕ), Even n` consists of `(n : ℕ)` and a proof of `Odd `, i.e. a pair of objects, and pairs in Lean are gives using `⟨_, _⟩`. We use `obtain` in order to get the two elements of the pair:
+```lean
+example : ∃ (n : ℕ), Even (n * n) := by
+  have h : ∃ (n : ℕ), Even n := by
+    sorry
+  obtain ⟨n, hn⟩ := h
+  sorry
+```
+Recall that `hn` itself is an ∃-statement. This means we can use a nested version:
+```lean
+example : ∃ (n : ℕ), Even (n * n) := by
+  have h : ∃ (n : ℕ), Even n := by
+    sorry
+  obtain ⟨n, ⟨k, hk⟩⟩ := h
+  sorry
+```
+Now we can use that `n` is `Even` and therefore would like to `use` that `n * n = (2*k) * (2*k) = 4*k*k` for showing that `n * n` is even. In order to see what we have to show, let us simplify using the definition of `Even`:
+```lean
+example : ∃ (n : ℕ), Even (n * n) := by
+  have h : ∃ (n : ℕ), Even n := by
+    sorry
+  obtain ⟨n, ⟨k, hk⟩⟩ := h
+  simp [Even]
+  sorry
+```
+Now we can use `n` from above, and `r = 2*k*k`. This works with `use`:
+```lean
+example : ∃ (n : ℕ), Even (n * n) := by
+  have h : ∃ (n : ℕ), Even n := by
+    sorry
+  obtain ⟨n, ⟨k, hk⟩⟩ := h
+  simp [Even]
+  use n
+  use 2*k*k
+  sorry
+```
+The rest should be easy, since it only remains a calculation. Here, we use `rw` and the `ring` tactics, which can do calculations within a `ring` (in fact in a monoid):
+```lean
+example : ∃ (n : ℕ), Even (n * n) := by
+  have h : ∃ (n : ℕ), Even n := by
+    sorry
+  obtain ⟨n, ⟨k, hk⟩⟩ := h
+  simp [Even]
+  use n
+  use 2*k*k
+  rw [hk]
+  ring
+```
+It remains to show the intermediate step. Here, we have to give Lean a pair, i.e. some `n` as well as a proof that `Even n`. This can not only be done using `use` as above, but also using `refine`, which is able to make a pair from two separate objects. Assume ww want to use that `Even 48`, but do not have a proof yet. Then we write a `?_`, which stands for a hole in the proof which is to be filled in later:
+```lean
+example : ∃ (n : ℕ), Even n := by
+  refine ⟨48, ?_⟩
+  sorry
+```
+For a proof of `Even 48`, we need to find `24` and a proof that `48 = 24 + 24`. Let us again work with `?_`:
+```lean
+example : ∃ (n : ℕ), Even n := by
+  refine ⟨48, ⟨24, ?_⟩⟩
+  ring
+```
+(In fact, the last step can also be solved by `rfl`, which means that the goal is true by definition.)
+
+In total, we have the full example:
+```lean
+example : ∃ (n : ℕ), Even (n * n) := by
+  have h : ∃ (n : ℕ), Even n := by
+    refine ⟨48, ⟨24, by rfl⟩⟩
+  obtain ⟨n, ⟨k, hk⟩⟩ := h
+  use n, 2*k^2
+  rw [hk]
+  ring
+```
+
+
+
+
+
+
+* refine
+
+* have
+* obtain
+
 
 
 ```lean (name := even)
-#print equations Even
+#print Even
 ```
 
+```leanOutput even
+def Even.{u_2} : {α : Type u_2} → [inst : Add α] → α → Prop :=
+fun {α} [Add α] a => ∃ r, a = r + r
+```
 
+```lean (name := odd)
 #print Odd
+```
 
+```leanOutput odd
+def Odd.{u_2} : {α : Type u_2} → [inst : Semiring α] → α → Prop :=
+fun {α} [Semiring α] a => ∃ k, a = 2 * k + 1
+```
 
+```lean
 example (n : ℕ) :  (Even n) ∨ (Odd n) := by
   apply? -- gives exact Nat.even_or_odd n
-
-```lean (name := singletonList)
-#check fun x => [x]
-```
-```leanOutput singletonList
-fun x => [x] : ?m.9 → List ?m.9
 ```
 
 ```lean

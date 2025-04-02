@@ -67,14 +67,23 @@ example : P → P := by
 So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. This can now easily be solved using `assumption`, and the desired **no goals** appears.
 
 
-```lean
-#print Even
+```lean (name := even)
+#print equations Even
+```
+
+
 #print Odd
+
 
 example (n : ℕ) :  (Even n) ∨ (Odd n) := by
   apply? -- gives exact Nat.even_or_odd n
-```
 
+```lean (name := singletonList)
+#check fun x => [x]
+```
+```leanOutput singletonList
+fun x => [x] : ?m.9 → List ?m.9
+```
 
 ```lean
 example : ∃ (x : ℕ), x^2 = 9 := by

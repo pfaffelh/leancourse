@@ -57,10 +57,10 @@ Let us start with some simple examples in order to explain the first tactics in 
 * rw
 * simp
 * apply?
-* cases
 * have
 * refine
 * obtain
+
 More tactics are found in Chapter xxx.
 
 ## `intro`, `exact`, `apply` and `rw`
@@ -68,23 +68,24 @@ More tactics are found in Chapter xxx.
 tag := "introapplyexact"
 %%%
 
+:::paragraph
 Let us start with a very simple `example`. If we want to prove the statement `P → P` (i.e. `P` implies `P`) we enter the following:
 
 ```lean
 example (P : Prop) : P → P := by
   sorry
 ```
-
-On the right side, depending on the position of the cursor, you will find the *proof state*. If the cursor is directly after `by`, the initial *proof state* is seen. It is important to know that behind `⊢` (called [turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that `P` is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the `sorry`, there is now **no goals**, but the `sorry` tactic is only there to prove unproven assertions without further action, and a warning is issued in `vscode`. If you delete the `sorry` and replace it with an `intro hP` followed by `exact hP`, we get
+Depending on the position of the cursor, you will find the corresponding *proof state*. If the cursor is directly after `by`, the initial *proof state* is seen. It is important to know that behind `⊢` (called [turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that `P` is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the `sorry`, there is now **no goals**, but the `sorry` tactic is only there to prove unproven assertions without further action, and a warning is issued in `vscode`. If you delete the `sorry` and replace it with an `intro hP` followed by `exact hP`, we get
 ```lean
 example : P → P := by
   intro hP
   exact hP
 ```
 So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. The desired **no goals** appears.
+:::
 
+:::paragraph
 The `apply` tactics is similar, but does not necessarily need to close the goal. Let us see how it works:
-
 ```lean
 example (hPQ : P → Q) (hQR : Q → R) : P → R := by
   intro hP
@@ -101,7 +102,20 @@ example (hPQ : P → Q) (hQR : Q → R) : P → R := by
   apply hQR (hPQ hP)
 ```
 (Here, `hPQ hP` is a proof for `Q`, since we apply `P → Q` to a proof of `P`, which gives `Q`.)
+:::
 
+:::paragraph
+We note that the above example is equivalent to
+```lean
+example : ∀ (P : Prop), P → P := by
+  intro P
+  intro hP
+  exact hP
+```
+So if we have a ∀ in the goal, we make progress by using `intro`.
+:::
+
+:::paragraph
 Sometimes, we have statements of equality `x = y` or `P ↔ Q`, so we would like to use the one instead of the other. This works using `rw`:
 ```lean
 example (hQ : Q) (hPQ : P ↔ Q) : P := by
@@ -114,6 +128,7 @@ example (hQ : Q) (hPQ : P ↔ Q) : P := by
     rw [← hPQ] at hQ
     exact hQ
 ```
+:::
 
 ## `apply?` and `simp`
 %%%
@@ -139,6 +154,19 @@ where Lean suggests `Try this: exact Nat.one_pos`.
 tag := "haverefineuse"
 %%%
 
+:::paragraph
+In order to have some proper example, let us introduce `Even` and `Odd`. In fact, for a definition of `Even`, we can type
+```lean (name := even)
+#print Even
+```
+which results in
+```leanOutput even
+def Even.{u_2} : {α : Type u_2} → [inst : Add α] → α → Prop :=
+fun {α} [Add α] a => ∃ r, a = r + r
+```
+:::
+
+:::paragraph
 Assume we cannot prove our goal in one step, but need some intermediate result. In this case, we have the `have` tactics. We simply claim what we need as an intermediate step. At the moment, we leave the rest using `sorry`.
 ```lean
 example : ∃ (n : ℕ), Even (n * n) := by
@@ -182,6 +210,9 @@ example : ∃ (n : ℕ), Even (n * n) := by
   use 2*k*k
   sorry
 ```
+:::
+
+:::paragraph
 The rest should be easy, since it only remains a calculation. Here, we use `rw` and the `ring` tactics, which can do calculations within a `ring` (in fact in a monoid):
 ```lean
 example : ∃ (n : ℕ), Even (n * n) := by
@@ -218,36 +249,10 @@ example : ∃ (n : ℕ), Even (n * n) := by
   rw [hk]
   ring
 ```
+:::
 
 
 
-
-
-
-* refine
-
-* have
-* obtain
-
-
-
-```lean (name := even)
-#print Even
-```
-
-```leanOutput even
-def Even.{u_2} : {α : Type u_2} → [inst : Add α] → α → Prop :=
-fun {α} [Add α] a => ∃ r, a = r + r
-```
-
-```lean (name := odd)
-#print Odd
-```
-
-```leanOutput odd
-def Odd.{u_2} : {α : Type u_2} → [inst : Semiring α] → α → Prop :=
-fun {α} [Semiring α] a => ∃ k, a = 2 * k + 1
-```
 
 ```lean
 example (n : ℕ) :  (Even n) ∨ (Odd n) := by

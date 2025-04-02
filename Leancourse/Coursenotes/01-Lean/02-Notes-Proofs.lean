@@ -13,6 +13,22 @@ htmlSplit := .never
 tag := "proof"
 %%%
 
+Prop
+
+In Lean every object has a type. Types itself fall into several categories, called universes. There are two main universes, called `Prop` and `Type`. Any mathematical statement comes with a claim and its proof. Say we want to claim something, such as [Goldbach's conjecture](https://en.wikipedia.org/wiki/Goldbach%27s_conjecture):
+```lean
+theorem goldbach : ∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j) := by sorry
+```
+we speak about a term `∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), Prime i ∧ Prime ∧ (n = i + j)` of type `Prop`, which constitutes its own type. A term of this type (which sould repalce the `sorry` in the above Lean code) is equivalent to a `proof` of Goldbach's conjecture.
+
+This is to say:
+
+** Types as theorems, terms as proofs!**
+
+Constructing a term of type `ℕ` is easier (`0 : ℕ` is accepted by Lean for this construction) than constructing a term of type ∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j)`, for which we would require proving Goldbach's conjecture and implementing the proof in Lean.
+
+Since we are already speaking about fundamentals: For a large part, it is safe to think of Types as Sets. Recall that it leads to [logical self-inconsistencies](https://en.wikipedia.org/wiki/Russell%27s_paradox) if we allow for something like the set/type of all sets/types. For this reason, the `Type` universe is split into levels, such as `Type 0 : Type 1`, saying that the type `Type 0` (of all objects in level 0) is of `Type 1`, i.e., we are moving up a ladder when constructing more complex types. The coresponding [idea](https://en.wikipedia.org/wiki/Von_Neumann_universe)  goes back to [von Neumann](https://en.wikipedia.org/wiki/John_von_Neumann) and [Ernst Zermelo](https://en.wikipedia.org/wiki/Ernst_Zermelo).
+
 
 In Section 1, we have already dealt with the installation of Lean and `vscode`. Here follows a short, incoherent introduction. We start with a very simple example. The tactics `intro` and `exact` can be found in
 Chapter. If we want to prove the statement `P → P` (i.e. `P` implies `P`) we enter the following on the left side in `vscode`:

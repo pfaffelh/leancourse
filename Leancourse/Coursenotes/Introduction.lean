@@ -41,13 +41,13 @@ Other courses, which you might want to have a look at are:
 tag := "some-notes"
 %%%
 
-* Hardware requirements: In fact, Lean will require a decent hardware, e.g. at least 8GB of RAM in order to function properly. If you do not have this, there are ways of using Lean online; see xxx.
+* Hardware requirements: In fact, Lean will require a decent hardware, e.g. at least 8GB of RAM in order to function properly. If you do not have this, there are ways of using Lean online; see above.
 * Lean is not only an interactive theorem prover, but also a programming language. If you want to know/learn more about this aspect, please consult [Functional programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
 * While `Lean` is a programming language, `Mathlib` is a library in the Lean language. It collects various (more or less deep) mathematical results. In this course, we do not make any distinction between `Lean` and `Mathlib`, since we will have
 ```
 import Mathlib
 ```
-at the start of any file. In this way, we have access to a large part of mathematics in order to solve exercises.
+at the start of any file we will need results from `Mathlib`. In this way, we have access to a large part of mathematics in order to solve exercises.
 
 
 # How to use this course
@@ -58,7 +58,9 @@ tag := "howto"
 These notes have three main parts:
 
 * These introductory notes: Starting in the next chapter, we give general hints on Lean, which are rather for reference and background than for starting the course. You will almost certainly find yourself asking fundamental things on Lean (e.g. _What is type theory, and why should I care?_), which we try to explain without too much detail.
+* Dealing with basic mathematics objects in Lean: Before we start with the Exercises, we work through the second chapter which aims to give a flavour of how to speak about mathematical objects from within Lean. Simple `logical` claims form a basis, while `ℕ` and `ℝ` introduce you to very basics numbers and how to deal with them. Finally, `Sets` and `Functions` have their own interfaces we will learn about here.
 * Tactics descriptions: When interactively writing proofs, a main focus will be the currently _proof state_. In order to modify it, we need tactics, which in some sense feels like learning a new language (which is in fact true). In the latter part of these notes, we give an overview of the most important tactics. A more comprehensive overview is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md).
-* The exercises: As in most mathematical courses, the heart are the exercises you have to solve; see the _Exercises_ folder within this repository. Unlike in other courses, you will get immediate feedback of how well you performed on any single exercise. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.
+
+Finally, the heart of the course are the exercises: (see the _Exercises_ folder within `Leancourse`). Unlike in other courses, you will get immediate feedback of how well you performed on any single exercise. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.
 
 While the exercises will only cover the first half of the semeser, individual assignments will happen in the latter part of this course. (These will mostly be self-assigned, so e.g. you will formalize an esxercise from your first year of studies, or you are interested in a specific part of `Mathlib`, or...)

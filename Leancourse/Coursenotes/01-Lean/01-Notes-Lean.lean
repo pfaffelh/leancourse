@@ -19,19 +19,18 @@ tag := "lean"
 tag := "functional"
 %%%
 
-Lean is a functional programming language (i.e. it actually only consists of functions). This paradigm is in contrast to procedural programming languages such as Python, Java and C. It comes with many features such as libraries for output and input, but is still young and many things need to be developed.
+Lean is a [functional programming language](https://en.wikipedia.org/wiki/Functional_programming) (i.e. it actually only consists of functions). This paradigm is in contrast to [imperative programming](https://en.wikipedia.org/wiki/Imperative_programming)  such as Python, Java and C. Lean comes with many features you might be familiar with, such as a library for output and input, but is still young and many things need to be developed.
 
 # Dependent type theory
 %%%
 tag := "dependent-type-theory"
 %%%
 
-In all programming languages, you have data types such as int, string, float. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write `x : α` for a term `x` of type `α`, so we write `False : Bool`, but also `f : ℕ → ℝ` (a function from ℕ to ℝ) and `0 ≠ 1 : Prop` (the proposition that 0 and 1 are different numbers in ℕ), which is a proposition. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` and `f : (n : ℕ) → (Fin n → ℝ)` (where `Fin n` is the type which carries `{0, ..., n-1}`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
+In all programming languages, you have data types such as `int`, `string` and `float`. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write `x : α` for a term `x` of type `α`, so we write `False : Bool`, `42 : ℕ`, but also `f : ℕ → ℝ` (for a function from ℕ to ℝ, which is an own type) and `0 ≠ 1 : Prop` (the proposition that 0 and 1 are different numbers in ℕ), which is a proposition. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` and `f : (n : ℕ) → (Fin n → ℝ)` (where `Fin n` is the type which carries `{0, ..., n-1}`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
 
-As we see, these new data types are more abstract in the sense that Lean is understand `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic.
-E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences,  which is quite elaborate.
+As we see, these new data types are more abstract in the sense that Lean is understand `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic. E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate. (Although `ℝ` is implemented as such a quotient within `Lean`, we will not have to deal with these implementation details when working with real numbers, since we will rely on results in `Mathlib` taking care of these details.)
 
-Regarding the notation: for sets, we are used to writing `n ∈ ℕ` if `n` is a natural number. In type theory, we write `n : ℕ` and say that `n` is a term (or expression) of type `ℕ`. More generally, when typing an expression, Lean checks its type and tells us if it can make sense of our statement. (Incidentally, this can be quite confusing: for example, the statement `(x : ℕ) → (x : ℤ)`, i.e. (every natural number is also an integer) is not at all comprehensible for `lean`. Because `x` is a term of type `ℕ` (and thus of no other type), so that `x : ℤ` makes no sense at all for Lean. In this case, the solution is an 'invisible mapping' (or coercion) `coe : ℕ → ℤ`.)
+
 
 # Universes, Types and Terms
 %%%
@@ -45,7 +44,7 @@ In Lean, there are three levels of objects: universes, types and terms. We are c
 tag := "functions"
 %%%
 
-In `Lean`, for example, the function `f : ℕ → ℕ, x ↦ 2x` is defined as
+In `Lean`, the function `f : ℕ → ℕ, x ↦ 2x` is defined as
 ```lean
 def f : ℕ → ℕ := fun x ↦ 2*x
 ```

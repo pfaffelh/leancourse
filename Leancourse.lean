@@ -29,9 +29,12 @@ git clone https://github.com/pfaffelh/leancourse`
 cd leancourse
 lake exe cache get
 ```
-When you type `code .` within the `leancourse` folder, you should see some code which looks a bit like mathematics.
+When you type `code .` within the `leancourse` folder, navigate to `Leancourse/Exercises/01-Logic/01-a.lean`, accept to have`ELAN` installed, as well as the corresponding `Lean` version.  When all is finished. Everything is fine once orange and/or red bars disapprear, and navigating in the left hand side of the windom leads to changes in the right hand side (the infoview). You should see some code which looks a bit like mathematics.
 * The directory `Leancourse/Exercises` contains the material for the course. We recommend that you first copy this directory, for example to `myExercises`. Otherwise, an update of the repository may overwrite the local files.
 * To update the course materials, enter `git pull` from within the `leancourse`directory.
+
+(In case you cannot install the course material locally, do the following: Right click [here](https://gitpod.io/#/https://github.com/pfaffelh/leancourse>) and _open link in new tab_ to access the repository using Gitpod. You will probably need a github account in order to do this.)
+
 
 {include 0 «Leancourse».Coursenotes.«Introduction»}
 

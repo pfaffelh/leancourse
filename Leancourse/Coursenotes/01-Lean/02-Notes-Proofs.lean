@@ -13,36 +13,59 @@ htmlSplit := .never
 tag := "proof"
 %%%
 
-Prop
+# Foundation
+%%%
+tag := "foundation"
+%%%
 
 In Lean every object has a type. Types itself fall into several categories, called universes. There are two main universes, called `Prop` and `Type`. Any mathematical statement comes with a claim and its proof. Say we want to claim something, such as [Goldbach's conjecture](https://en.wikipedia.org/wiki/Goldbach%27s_conjecture):
+
 ```lean
-theorem goldbach : ∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j) := by sorry
+theorem goldbach : ∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n),
+    ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j) := by
+  sorry
 ```
+
 we speak about a term `∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), Prime i ∧ Prime ∧ (n = i + j)` of type `Prop`, which constitutes its own type. A term of this type (which sould repalce the `sorry` in the above Lean code) is equivalent to a `proof` of Goldbach's conjecture.
 
 This is to say:
 
-** Types as theorems, terms as proofs!**
+**Types as theorems, terms as proofs!**
 
-Constructing a term of type `ℕ` is easier (`0 : ℕ` is accepted by Lean for this construction) than constructing a term of type ∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j)`, for which we would require proving Goldbach's conjecture and implementing the proof in Lean.
+Constructing a term of type `ℕ` is easier (`0 : ℕ` is accepted by Lean for this construction) than constructing a term of type `∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j)`, for which we would require proving Goldbach's conjecture and implementing the proof in Lean.
 
 Since we are already speaking about fundamentals: For a large part, it is safe to think of Types as Sets. Recall that it leads to [logical self-inconsistencies](https://en.wikipedia.org/wiki/Russell%27s_paradox) if we allow for something like the set/type of all sets/types. For this reason, the `Type` universe is split into levels, such as `Type 0 : Type 1`, saying that the type `Type 0` (of all objects in level 0) is of `Type 1`, i.e., we are moving up a ladder when constructing more complex types. The coresponding [idea](https://en.wikipedia.org/wiki/Von_Neumann_universe)  goes back to [von Neumann](https://en.wikipedia.org/wiki/John_von_Neumann) and [Ernst Zermelo](https://en.wikipedia.org/wiki/Ernst_Zermelo).
 
+# Mathlib
+%%%
+tag := "mathlib"
+%%%
 
-In Section 1, we have already dealt with the installation of Lean and `vscode`. Here follows a short, incoherent introduction. We start with a very simple example. The tactics `intro` and `exact` can be found in
-Chapter. If we want to prove the statement `P → P` (i.e. `P` implies `P`) we enter the following on the left side in `vscode`:
-```
+The Lean-library which contains many mathematical results is called _Mathlib_. On its [documentation page](https://leanprover-community.github.io/mathlib4_docs/index.html) you can search for some results and concepts. (More precisely, you can search names of definitions, lemmas and theorems.) You will find results about e.g. [Real numbers](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Real/Basic.html#Real), [Groups](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Group/Defs.html#Group) in algebra, [Topology](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/Defs/Basic.html#TopologicalSpace) and [Measure Theory](https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/OuterMeasure/Defs.html).
+
+Another way to search Mathlib is [Moogle](https://www.moogle.ai/) and [Loogle](https://loogle.lean-lang.org/) (which you also have in `vscode` when clicking on the `∀` sign.)
+
+# Some keywords
+%%%
+tag := "keywords"
+%%%
+
+Let us start with a very simple `example` and the
+tactics `intro` and `exact`. If we want to prove the statement `P → P` (i.e. `P` implies `P`) we enter the following:
+
+```lean
 example (P : Prop) : P → P := by
   sorry
 ```
-On the right side, depending on the position of the cursor, you will find the *proof state*. If the cursor is directly after `by`, the *proof state* is seen. It is important to know that behind `⊢` stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that `P` is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the `sorry`, there is now **no goals**, but the `sorry` tactic is only there to prove unproven assertions without further action, and a warning is issued in `vscode`. If you delete the `sorry` and replace it with an `intro hP`, we get
+
+On the right side, depending on the position of the cursor, you will find the *proof state*. If the cursor is directly after `by`, the initial *proof state* is seen. It is important to know that behind `⊢` (called [turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that `P` is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the `sorry`, there is now **no goals**, but the `sorry` tactic is only there to prove unproven assertions without further action, and a warning is issued in `vscode`. If you delete the `sorry` and replace it with an `intro hP` followed by `exact hP`, we get
 ```lean
 example : P → P := by
   intro hP
   exact hP
 ```
-So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. This can now easily be solved using `assumption`, and the desired **no goals** appears. The `assumption` tactic searches for a hypothesis that is identical to the statement and concludes the proof. The `exact` tactic is somewhat different. Here you have to know exactly which hypothesis is meant and can use `exact hP` to conclude the proof.
+So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. This can now easily be solved using `assumption`, and the desired **no goals** appears.
+
 
 ```lean
 #print Even

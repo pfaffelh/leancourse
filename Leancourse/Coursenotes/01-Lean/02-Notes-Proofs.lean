@@ -64,9 +64,6 @@ Let us start with some simple examples in order to explain the first tactics in 
 More tactics are found in Chapter xxx.
 
 ## `intro`, `exact`, `apply` and `rw`
-%%%
-tag := "introapplyexact"
-%%%
 
 :::paragraph
 Let us start with a very simple `example`. If we want to prove the statement `P → P` (i.e. `P` implies `P`) we enter the following:
@@ -131,9 +128,6 @@ example (hQ : Q) (hPQ : P ↔ Q) : P := by
 :::
 
 ## `apply?` and `simp`
-%%%
-tag := "applysimp"
-%%%
 
 Of course, we want to make use of known facts when proving new ones. There are two main search functions built into our work: `simp?` and `apply?`. The first is based on `simp`, which works using a collection of simplification rules, which are searchable using `simp?`. Here is an example:
 ```lean
@@ -150,9 +144,6 @@ example : (0 < 1) := by
 where Lean suggests `Try this: exact Nat.one_pos`.
 
 ## `have`, `refine`, and `use`
-%%%
-tag := "haverefineuse"
-%%%
 
 :::paragraph
 In order to have some proper example, let us introduce `Even` and `Odd`. In fact, for a definition of `Even`, we can type
@@ -252,45 +243,6 @@ example : ∃ (n : ℕ), Even (n * n) := by
 :::
 
 
-
-
-```lean
-example (n : ℕ) :  (Even n) ∨ (Odd n) := by
-  apply? -- gives exact Nat.even_or_odd n
-```
-
-```lean
-example : ∃ (x : ℕ), x^2 = 9 := by
-  exact ⟨3, by rfl⟩
-```
-
-```lean
-example : ∃ (x : ℕ), x^2 = 9 := by
-  use 3
-  rfl
-```
-
-```lean
-example : ∀ (x : ℝ), 0 ≤ x^2 := by
-  intro x
-  exact sq_nonneg x
-```
-
-
-
-
-intro apply exact simp refine obtain apply?
-
-sets functions
-
-forall as applying function
-
-exists as a pair/tuple
-
-subtypes
-
-use
-
 # Names of `Mathlib` Results
 %%%
 tag := "names"
@@ -299,11 +251,11 @@ tag := "names"
 Names like `zero_add, add_zero, one_mul, add_assoc, succ_ne_zero, lt_of_succ_le,...` seem cryptic. It is clear that individual relatively understandable abbreviations (`zero, one, mul, add, succ,...`) are separated by `_`. In general, the following two rules apply to naming:
 
 - The goal of the statement to be proven is described; if hypotheses are added in the name, then with `of_`. The statement `lt_of_succ_le` is therefore an `<` statement, where `succ ≤` applies. In fact:
-```
-#check @lt_of_succ_le
+```lean (name := lt_of_succ_le)
+#check Nat.lt_of_succ_le
 ```
 results in
-```
-  lt_of_succ_le : ∀ {a b : ℕ}, a.succ ≤ b → a < b
+```leanOutput lt_of_succ_le
+Nat.lt_of_succ_le {n m : ℕ} (h : n.succ ≤ m) : n < m
 ```
 This way, you can often guess the names of statements that you want to use.

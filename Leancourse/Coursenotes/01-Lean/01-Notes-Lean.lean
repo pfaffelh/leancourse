@@ -10,7 +10,7 @@ set_option pp.rawOnError true
 #doc (Manual) "Notes on Lean" =>
 %%%
 htmlSplit := .never
-tag := "lean"
+tag := "notesonlean"
 %%%
 
 

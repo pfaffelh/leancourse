@@ -3,13 +3,9 @@
 import VersoManual
 import Mathlib
 
-import «Leancourse».Coursenotes.«Introduction»
-import «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»
-import «Leancourse».Coursenotes.«01-Lean».«02-Notes-Proofs»
-import «Leancourse».Coursenotes.«02-Math».«01-Logic»
-import «Leancourse».Coursenotes.«02-Math».«02-NandR»
-import «Leancourse».Coursenotes.«02-Math».«03-Sets»
-import «Leancourse».Coursenotes.«03-Tactics»
+import «Leancourse».Coursenotes.«00-Introduction»
+import «Leancourse».Coursenotes.«01-Lean»
+import «Leancourse».Coursenotes.«02-Tactics»
 
 open Verso.Genre Manual
 
@@ -35,16 +31,8 @@ When you type `code .` within the `leancourse` folder, navigate to `Leancourse/E
 
 (In case you cannot install the course material locally, do the following: Right click [here](https://gitpod.io/#/https://github.com/pfaffelh/leancourse>) and _open link in new tab_ to access the repository using Gitpod. You will probably need a github account in order to do this.)
 
-{include 0 «Leancourse».Coursenotes.«Introduction»}
+{include 0 «Leancourse».Coursenotes.«00-Introduction»}
 
-{include 0 «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»}
+{include 0 «Leancourse».Coursenotes.«01-Lean»}
 
-{include 0 «Leancourse».Coursenotes.«01-Lean».«02-Notes-Proofs»}
-
-{include 0 «Leancourse».Coursenotes.«02-Math».«01-Logic»}
-
-{include 0 «Leancourse».Coursenotes.«02-Math».«02-NandR»}
-
-{include 0 «Leancourse».Coursenotes.«02-Math».«03-Sets»}
-
-{include 0 «Leancourse».Coursenotes.«03-Tactics»}
+{include 0 «Leancourse».Coursenotes.«02-Tactics»}

@@ -447,6 +447,18 @@
        {"title": "Tactics", "number": "3"},
        {"title": "exfalso", "number": "14"}]},
      "address": "/"}],
+   "exercises":
+   [{"id": "exercises",
+     "data":
+     {"title": "Exercises",
+      "sectionNum": "2.2.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Lean", "number": "2"},
+       {"title": "Proofs in Lean", "number": "2"},
+       {"title": "Exercises", "number": "5"}]},
+     "address": "/"}],
    "exact":
    [{"id": "exact",
      "data":

@@ -259,3 +259,10 @@ results in
 Nat.lt_of_succ_le {n m : ℕ} (h : n.succ ≤ m) : n < m
 ```
 This way, you can often guess the names of statements that you want to use.
+
+# Exercises
+%%%
+tag := "exercises"
+%%%
+
+It is now time to move to the exercises. So, proceed to `vscode` (or `gitpod`), copy the exercises folder and start coding. Further hints on tactics etc is given within the exercises. Tactics are given in alphabetical order in the next chapter.

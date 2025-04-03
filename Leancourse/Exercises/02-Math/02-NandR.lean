@@ -13,6 +13,7 @@ tag := "numbers"
 %%%
 
 # Natural numbers
+
 To get a little more mathematical, we now introduce the natural numbers. This type (abbreviated `ℕ`, type `\N`) is defined (see 02-a.lean) so that `0 : ℕ` and `succ (n : ℕ) : ℕ`, i.e. with `n` is also `succ n` a natural number. `succ n` stands for the successor of `n`. Furthermore, we will get to know the types `set ℕ` and `Finset ℕ` here. These are the subsets of `ℕ` and the finite subsets of `ℕ`.
 -  Sheet 02-a: Natural numbers and the `calc` mode:
     After an introduction to how natural numbers are implemented in `Lean`, we introduce the `calc` mode. This allows us to perform calculations step by step, using previously proven statements. This way, we can, for example, prove binomial formulas. We also get to know the very powerful tactics `ring`, `norm_num`, `linarith` and `simp` can simplify a lot of work. Here we also learn the `fun` notation for defining functions.

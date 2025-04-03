@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open MyDef
 
 set_option pp.rawOnError true
 

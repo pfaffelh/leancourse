@@ -109,121 +109,85 @@ example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 := by
     nth_rewrite 2 [← one_mul n]
     rw [← add_mul]
     rfl
+  calc (n+1)^2 = (n+1) * (n+1) := by rw [pow_two]
+  _ = (n+1)*n + (n+1) * 1 := by rw [mul_add]
+  _ = n*n + 1*n + (n+1) := by rw [add_mul, mul_one (n+1)]
+  _ = n^2 + n + (n+1) := by rw [one_mul, ← pow_two]
+  _ = n^2 + (n + n+1) := by rw [add_assoc, ← add_assoc n n 1]
+  _ = n^2 + 2*n + 1 := by rw [← add_assoc, ← h]
 
 
-  calc (n+1)^2 = (n+1) * (n+1) : by { rw pow_two, }
-  ... = (n+1)*n + (n+1) * 1: by {rw mul_add, }
-  ... = n*n + 1*n + (n+1) : by {rw add_mul, rw mul_one (n+1),}
-  ... = n^2 + n + (n+1) : by {rw one_mul, rw ← pow_two,}
-  ... = n^2 + (n + n+1) : by {rw add_assoc, rw ← add_assoc n n 1,}
-  ... = n^2 + 2*n + 1 : by { rw ← add_assoc, rw ← h, },
-end
+example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 := by
+  have h : n + n = 2*n := by
+    nth_rewrite 1 [← one_mul n]
+    nth_rewrite 2 [← one_mul n]
+    rw [← add_mul]
+    rfl
+  rw [pow_two, mul_add, add_mul, mul_one (n+1), one_mul, ← pow_two,  add_assoc, ← add_assoc n n 1, ← add_assoc, ← h]
 
-example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 :=
-begin
-  have h : n + n = 2*n, by { nth_rewrite 0 ← one_mul n,  nth_rewrite 1 ← one_mul n, rw ← add_mul, },
-  rw [pow_two, mul_add, add_mul, mul_one (n+1), one_mul, ← pow_two,  add_assoc, ← add_assoc n n 1, ← add_assoc, ← h],
-end
-
-example (n : ℕ) : n + n = 2*n :=
-begin
-  calc n + n = 1 * n + 1 * n : by {nth_rewrite 0 ← one_mul n,
-    nth_rewrite 1 ← one_mul n,}
-  ... = (1 + 1) * n : by {rw add_mul, }
-  ... = 2 * n : by {refl, }
-end
+example (n : ℕ) : n + n = 2*n := by
+  calc n + n = 1 * n + 1 * n := by
+      nth_rewrite 1 [← one_mul n]
+      nth_rewrite 2 [← one_mul n]
+  _ = (1 + 1) * n := by rw [add_mul]
+  _ = 2 * n := by rfl
 
 
-def is_even (n : ℕ) := ∃ (k : ℕ), n = 2*k
+def Is_Even (n : ℕ) := ∃ (k : ℕ), n = 2*k
 
 def double (n : ℕ) := 2*n
 
-example : is_even n ↔ ¬(is_even (n+1)) :=
-begin
-  sorry,
-end
+example : Is_Even n ↔ ¬(Is_Even (n+1)) := by
+  sorry
 
-example : ∀ (k : ℕ), is_even (2*k) :=
-begin
-  sorry,
-end
+example : ∀ (k : ℕ), Is_Even (2*k) := by
+  sorry
 
-example (m n : ℕ) : (m+1)^n = m^n * m :=
-begin
-  sorry,
-end
+example (m n : ℕ) : (m+1)^n = m^n * m := by
+  sorry
 
-example : ∑ i ≤ 4, i ^ 2 = 30 :=
-begin
-  refl,
-end
+example : ∑ i ≤ 4, i ^ 2 = 30 := by
+  rfl
 
-lemma choose_succ : ∀ k n : ℕ, k ≥ 1 → choose (n+1) k = choose n k  + choose n (k-1) :=
-begin
-  intros k n h,
-  cases k,
-  linarith,
-  rw succ_sub_one,
-  rw choose_succ_succ, rw add_comm,
-end
+lemma choose_succ : ∀ k n : ℕ, k ≥ 1 → choose (n+1) k = choose n k  + choose n (k-1) := by
+  intro k n h
+  cases' k
+  linarith
+  rw [succ_sub_one]
+  rw [choose_succ_succ, add_comm]
 
-example (s : finset ℕ) (f : ℕ → ℝ ) (g :  ℕ → ℝ ) : s.sum (λ (x : ℕ), f x) + s.sum (λ (x : ℕ), g x) = s.sum (λ (x : ℕ), f x + g x)
+example (s : Finset ℕ) (f : ℕ → ℝ ) (g :  ℕ → ℝ ) : s.sum (fun (x : ℕ) ↦ f x) + s.sum (fun  (x : ℕ) ↦ g x) = s.sum (fun (x : ℕ) ↦ f x + g x)
 -- ∑ x in s, f x + ∑ x in s, g x = ∑ x in s, (f x + g x)
-:=
-begin
-  rw finset.sum_add_distrib,
-end
+:= by
+  rw [← Finset.sum_add_distrib]
 
 example (n : ℕ) :
-  ∑ i in range n, (i+1 : ℝ) = ∑ i in range ( n+1 ), (i : ℝ)  :=
-begin
-  sorry,
-end
+  ∑ (i ≤ n), i + 1  = ∑ (i ≤ n+1), i := by
+    sorry
+
+open Nat
 
 example (n : ℕ) :
-  ∑ i in range (n + 1), nat.choose n i = 2 ^ n  :=
-begin
-  sorry,
-end
-
-
-lemma sum_fifths (n : ℕ) : ∑ i in range n, (i : ℚ)^5 = (4*(n*(n-1)/2)^3-(n*(n-1)/2)^2)/3 :=
-begin
-  induction n with d hd,
-  { simp, },
-  { rw [finset.sum_range_succ, hd],
-    simp,
-    ring }
-end
+  ∑ i ≤ n, choose n i = 2 ^ n  := by
+    sorry
 
 example (n i : ℕ) :
-  (nat.choose (n+1) (i+1)) = (nat.choose n i) + (nat.choose n (i + 1)) :=
-begin
-  exact nat.choose_succ_succ n i,
-end
+  (choose (n+1) (i+1)) = (choose n i) + (choose n (i + 1)) := by
+    exact choose_succ_succ n i
 
 example (x y : ℕ) (n : ℕ) :
-  ∑ i in range (n+1), (nat.choose n i) * (x^i) * (y^(n-i)) = (x + y)^n :=
-begin
---  induction n with d hd,
---  simp,
---  rw d.choose_succ_succ,
-  sorry,
-end
+  ∑ i ≤ n, (choose n i) * (x^i) * (y^(n-i)) = (x + y)^n := by
+  --  induction n with d hd,
+  --  simp,
+  --  rw d.choose_succ_succ,
+  sorry
 
 example (n : ℕ) :
-  ∑ i in range n, (i : ℝ) = n * (n - 1) / 2 :=
-begin
-  induction n with d hd,
-  { -- base case: sum over empty type is 0 * (0 - 1) / 2
-    simp },
-  { -- inductive step
-    rw [sum_range_succ, hd],
-    simp, -- tidies up and reduces the goal to
-    -- ⊢ ↑d * (↑d - 1) / 2 + ↑d = (↑d + 1) * ↑d / 2
-    ring, -- a more appropriate tactic to finish the job
-  }
-end
+  ∑ i < n, i = n * (n - 1) / 2 := by
+  induction n
+  · simp only [_root_.zero_le, Nat.sub_eq_zero_of_le, mul_zero, Nat.zero_div,
+    Finset.sum_eq_zero_iff, Finset.mem_Iio, not_lt_zero', IsEmpty.forall_iff, implies_true]
+  · sorry
 
 lemma choose_succ : ∀ k n : ℕ, k ≥ 1 → choose (n+1) k = choose n k  + choose n (k-1) :=
 begin
@@ -232,11 +196,4 @@ begin
   linarith,
   rw succ_sub_one,
   rw choose_succ_succ, rw add_comm,
-end
-
-example (s : finset ℕ) (f : ℕ → ℝ ) (g :  ℕ → ℝ ) : s.sum (λ (x : ℕ), f x) + s.sum (λ (x : ℕ), g x) = s.sum (λ (x : ℕ), f x + g x)
--- ∑ x in s, f x + ∑ x in s, g x = ∑ x in s, (f x + g x)
-:=
-begin
-  rw finset.sum_add_distrib,
 end

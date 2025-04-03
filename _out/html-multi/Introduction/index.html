@@ -10,7 +10,7 @@
 })()</script>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <title>Interactive Theorem Proving using Lean, Summer 2025</title><link rel="stylesheet" href="book.css">
+    <title>Introduction</title><link rel="stylesheet" href="../book.css">
     <script>
       
 function saveCheckboxesInit() {
@@ -40,22 +40,22 @@ function persistCheckbox() {
 window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
 </script>
     <script>
-      const __versoSiteRoot = "./"</script>
+      const __versoSiteRoot = "./../"</script>
     <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
-    <script src="static/katex/katex.min.js"></script>
-    <script src="static/math.js"></script>
-    <script src="static/search/fuzzysort.js"></script>
-    <script src="static/print.js"></script>
-    <script src="-verso-js/popper.js"></script>
-    <script src="-verso-js/tippy.js"></script>
-    <link rel="stylesheet" href="static/katex/katex.min.css">
-    <link rel="stylesheet" href="static/colors.css">
-    <link rel="stylesheet" href="static/theme.css">
-    <link rel="stylesheet" href="static/print.css">
-    <link rel="stylesheet" href="static/search/search-box.css">
-    <link rel="stylesheet" href="static/fonts/source-serif/source-serif-text.css">
-    <link rel="stylesheet" href="static/fonts/source-code-pro/source-code-pro.css">
-    <link rel="stylesheet" href="-verso-css/tippy-border.css">
+    <script src="../static/katex/katex.min.js"></script>
+    <script src="../static/math.js"></script>
+    <script src="../static/search/fuzzysort.js"></script>
+    <script src="../static/print.js"></script>
+    <script src="../-verso-js/popper.js"></script>
+    <script src="../-verso-js/tippy.js"></script>
+    <link rel="stylesheet" href="../static/katex/katex.min.css">
+    <link rel="stylesheet" href="../static/colors.css">
+    <link rel="stylesheet" href="../static/theme.css">
+    <link rel="stylesheet" href="../static/print.css">
+    <link rel="stylesheet" href="../static/search/search-box.css">
+    <link rel="stylesheet" href="../static/fonts/source-serif/source-serif-text.css">
+    <link rel="stylesheet" href="../static/fonts/source-code-pro/source-code-pro.css">
+    <link rel="stylesheet" href="../-verso-css/tippy-border.css">
     <style>
 
 .hl.lean {
@@ -766,20 +766,24 @@ window.onload = () => {
   });
 }
 </script>
-    <script type="module" src="static/search/search-init.js"></script>
+    <script type="module" src="../static/search/search-init.js"></script>
     </head>
   <body>
     <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
       <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
       <nav id="toc">
         <input type="checkbox" id="toggle-toc" checked="checked"><div class="first">
-          <a href="" id="logo"><img src="static/lean_logo.svg"></a><nav id="local-buttons">
-            <span class="local-button inactive"><span class="arrow">←</span><span class="where">Prev</span></span><span class="local-button inactive"><span class="arrow">↑</span><span class="where">Up</span></span><a class="local-button active" href="Introduction/#introduction" rel="next" title="1. Introduction"><span class="where">Next</span><span class="arrow">→</span></a></nav>
+          <a href="../" id="logo"><img src="../static/lean_logo.svg"></a><nav id="local-buttons">
+            <a class="local-button active" href="../#" rel="prev" title=" Interactive Theorem Proving using Lean, Summer 2025"><span class="arrow">←</span><span class="where">Prev</span></a><a class="local-button active" href="../#" title=" Interactive Theorem Proving using Lean, Summer 2025"><span class="arrow">↑</span><span class="where">Up</span></a><a class="local-button active" href="../Lean/#lean" rel="next" title="2. Lean"><span class="where">Next</span><span class="arrow">→</span></a></nav>
           <div class="split-tocs">
             <div class="split-toc book">
               <div class="title">
-                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class=""><a href="">Interactive Theorem Proving using Lean, Summer 2025</a></span></div>
-              <table><tr class="numbered"><td class="num">1.</td><td><a href="Introduction/#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="Lean/#lean">Lean</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="Tactics/#tactics">Tactics</a></td></tr></table></div>
+                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot"></label><span class=""><a href="../">Interactive Theorem Proving using Lean, Summer 2025</a></span></div>
+              <table><tr class="current numbered"><td class="num">1.</td><td><a href="#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="../Lean/#lean">Lean</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="../Tactics/#tactics">Tactics</a></td></tr></table></div>
+            <div class="split-toc">
+              <div class="title">
+                <label for="--verso-manual-toc-introduction" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-introduction" checked="checked"></label><span class="number">1.</span> <span class="current"><a href="#introduction">Introduction</a></span></div>
+              <table><tr class="numbered"><td class="num">1.1.</td><td><a href="#goals">Goals</a></td></tr><tr class="numbered"><td class="num">1.2.</td><td><a href="#other-theorem-provers">Other material and Theorem provers</a></td></tr><tr class="numbered"><td class="num">1.3.</td><td><a href="#some-notes">Some notes on Lean and Mathlib</a></td></tr><tr class="numbered"><td class="num">1.4.</td><td><a href="#howto">How to use this course</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
@@ -792,143 +796,99 @@ window.onload = () => {
           </div>
         </nav>
       <main><section>
-          <div class="titlepage">
-            <h1>
-               Interactive Theorem Proving using Lean, Summer 2025<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=ITPFr" title="Permalink">🔗</a></span></h1>
-            <div class="authors">
-              <span class="author">Peter Pfaffelhuber</span></div>
+          <h1>
+            1. Introduction<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=introduction" title="Permalink">🔗</a></span></h1>
+          <section>
+            <h2 id="goals">
+              1.1. Goals<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=goals" title="Permalink">🔗</a></span></h2>
             <p>
-              These are the notes for a course on formal proving with the interactive theorem prover Lean4 (in the following we just write Lean) in the summer semester of 2025 at the University of Freiburg. To be able to work through the course in a meaningful way, the following technical preparations are to be made:</p>
+              The course is designed for mathematics students and has at least two goals:</p>
             <ul>
               <li>
                 <p>
-                  Installation of <a href="https://code.visualstudio.com/">vscode</a>.</p>
+                  Learning the techniques for interactive theorem proofing using Lean: In recent years, efforts to prove mathematical theorems with the help of computers have increased dramatically. While a few decades ago, it was more a matter of consistently processing many cases that were left to the computer, interactive theorem provers are different. Here, a very small core can be used to understand or interactively generate all the logical conclusions of a mathematical proof. The computer then reports interactively on the progress of the proof and when all the steps have been completed.</p>
                 </li>
               <li>
                 <p>
-                  Local installation of Lean and the associated tools: Please follow these <a href="https://leanprover-community.github.io/get_started.html#regular-install">instructions</a>.</p>
-                </li>
-              <li>
-                <p>
-                  Installing the course repository: Navigate to a location where you would like to put the course materials and use</p>
+                  Establishing connections to some mathematical material: At least in the first half, the mathematical details needed in this course should not be the main issue of this course. However, in order to <em>explain</em> how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well - at least if it exceeds a few lines - so that the commands you enter (which we will call tactics) fit together. The course intends to teach both, first steps in <code>Lean</code> and learning a bunch of these tactics, and make a deeper dive into some mathematical material.</p>
                 </li>
               </ul>
-            <pre>git clone https://github.com/pfaffelh/leancourse`
-cd leancourse
-lake exe cache get
-</pre><p>
-              When you type <code>code .</code> within the <code>leancourse</code> folder, navigate to <code>Leancourse/Exercises/01-Logic/01-a.lean</code>, accept to have<code>ELAN</code> installed, as well as the corresponding <code>Lean</code> version.  When all is finished. Everything is fine once orange and/or red bars disapprear, and navigating in the left hand side of the windom leads to changes in the right hand side (the infoview). You should see some code which looks a bit like mathematics.</p>
+            </section>
+          <section>
+            <h2 id="other-theorem-provers">
+              1.2. Other material and Theorem provers<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=other-theorem-provers" title="Permalink">🔗</a></span></h2>
+            <p>
+              Lean is not the only theorem prover, and, of course, this course is not the only course trying to teach Lean to you. Other Theorem provers (which all will be neglected here) are:</p>
             <ul>
               <li>
                 <p>
-                  The directory <code>Leancourse/Exercises</code> contains the material for the course. We recommend that you first copy this directory, for example to <code>myExercises</code>. Otherwise, an update of the repository may overwrite the local files.</p>
+                  <a href="https://rocq-prover.org/">Rocq</a> (formerly COQ)</p>
                 </li>
               <li>
                 <p>
-                  To update the course materials, enter <code>git pull</code> from within the <code>leancourse</code>directory.</p>
+                  <a href="https://isabelle.in.tum.de/">Isabelle/HOL </a></p>
                 </li>
               </ul>
             <p>
-              (In case you cannot install the course material locally, do the following: Right click <a href="https://gitpod.io/#/https://github.com/pfaffelh/leancourse>">here</a> and <em>open link in new tab</em> to access the repository using Gitpod. You will probably need a github account in order to do this.)</p>
-            </div>
-          <ol class="section-toc">
-            <li>
-              <a href="Introduction/#introduction"><span class="number">1.</span> Introduction</a><ol>
-                <li>
-                  <a href="Introduction/#goals"><span class="number">1.1.</span> Goals</a></li>
-                <li>
-                  <a href="Introduction/#other-theorem-provers"><span class="number">1.2.</span> Other material and Theorem provers</a></li>
-                <li>
-                  <a href="Introduction/#some-notes"><span class="number">1.3.</span> Some notes on Lean and Mathlib</a></li>
-                <li>
-                  <a href="Introduction/#howto"><span class="number">1.4.</span> How to use this course</a></li>
-                </ol>
-              </li>
-            <li>
-              <a href="Lean/#lean"><span class="number">2.</span> Lean</a><ol>
-                <li>
-                  <a href="Lean/#notesonlean"><span class="number">2.1.</span> Notes on Lean</a></li>
-                <li>
-                  <a href="Lean/#proof"><span class="number">2.2.</span> Proofs in Lean</a></li>
-                </ol>
-              </li>
-            <li>
-              <a href="Tactics/#tactics"><span class="number">3.</span> Tactics</a><ol>
-                <li>
-                  <a href="Tactics/#cheatsheet"><span class="number">3.1.</span> Tactics Cheatsheet</a></li>
-                <li>
-                  <a href="Tactics/#apply"><span class="number">3.2.</span> <code>apply</code></a></li>
-                <li>
-                  <a href="Tactics/#apply___"><span class="number">3.3.</span> <code>apply?</code></a></li>
-                <li>
-                  <a href="Tactics/#assumption"><span class="number">3.4.</span> <code>assumption</code></a></li>
-                <li>
-                  <a href="Tactics/#by_cases"><span class="number">3.5.</span> <code>by_cases</code></a></li>
-                <li>
-                  <a href="Tactics/#by_contra"><span class="number">3.6.</span> <code>by_contra</code></a></li>
-                <li>
-                  <a href="Tactics/#calc"><span class="number">3.7.</span> <code>calc</code></a></li>
-                <li>
-                  <a href="Tactics/#cases"><span class="number">3.8.</span> <code>cases'</code></a></li>
-                <li>
-                  <a href="Tactics/#change"><span class="number">3.9.</span> <code>change</code></a></li>
-                <li>
-                  <a href="Tactics/#clear"><span class="number">3.10.</span> <code>clear</code></a></li>
-                <li>
-                  <a href="Tactics/#congr"><span class="number">3.11.</span> <code>congr</code></a></li>
-                <li>
-                  <a href="Tactics/#constructor"><span class="number">3.12.</span> <code>constructor</code></a></li>
-                <li>
-                  <a href="Tactics/#exact"><span class="number">3.13.</span> <code>exact</code></a></li>
-                <li>
-                  <a href="Tactics/#exfalso"><span class="number">3.14.</span> <code>exfalso</code></a></li>
-                <li>
-                  <a href="Tactics/#have"><span class="number">3.15.</span> <code>have</code></a></li>
-                <li>
-                  <a href="Tactics/#induction"><span class="number">3.16.</span> <code>induction</code></a></li>
-                <li>
-                  <a href="Tactics/#intro"><span class="number">3.17.</span> <code>intro</code></a></li>
-                <li>
-                  <a href="Tactics/#left"><span class="number">3.18.</span> <code>left</code></a></li>
-                <li>
-                  <a href="Tactics/#linearith"><span class="number">3.19.</span> <code>linarith</code></a></li>
-                <li>
-                  <a href="Tactics/#norm_num"><span class="number">3.20.</span> <code>norm_num</code></a></li>
-                <li>
-                  <a href="Tactics/#nth_rewrite"><span class="number">3.21.</span> <code>nth_rewrite</code></a></li>
-                <li>
-                  <a href="Tactics/#obtain"><span class="number">3.22.</span> <code>obtain</code></a></li>
-                <li>
-                  <a href="Tactics/#push_neg"><span class="number">3.23.</span> <code>push_neg</code></a></li>
-                <li>
-                  <a href="Tactics/#rcases"><span class="number">3.24.</span> <code>rcases</code></a></li>
-                <li>
-                  <a href="Tactics/#refine"><span class="number">3.25.</span> <code>refine</code></a></li>
-                <li>
-                  <a href="Tactics/#revert"><span class="number">3.26.</span> <code>revert</code></a></li>
-                <li>
-                  <a href="Tactics/#rfl"><span class="number">3.27.</span> <code>rfl</code></a></li>
-                <li>
-                  <a href="Tactics/#right"><span class="number">3.28.</span> <code>right</code></a></li>
-                <li>
-                  <a href="Tactics/#ring"><span class="number">3.29.</span> <code>ring</code></a></li>
-                <li>
-                  <a href="Tactics/#rintro"><span class="number">3.30.</span> <code>rintro</code></a></li>
-                <li>
-                  <a href="Tactics/#rw"><span class="number">3.31.</span> <code>rw</code></a></li>
-                <li>
-                  <a href="Tactics/#simp"><span class="number">3.32.</span> <code>simp</code></a></li>
-                <li>
-                  <a href="Tactics/#specialize"><span class="number">3.33.</span> <code>specialize</code></a></li>
-                <li>
-                  <a href="Tactics/#tauto"><span class="number">3.34.</span> <code>tauto</code></a></li>
-                <li>
-                  <a href="Tactics/#triv"><span class="number">3.35.</span> <code>triv</code></a></li>
-                <li>
-                  <a href="Tactics/#use"><span class="number">3.36.</span> <code>use</code></a></li>
-                </ol>
-              </li>
-            </ol>
+              Other courses, which you might want to have a look at are:</p>
+            <ul>
+              <li>
+                <p>
+                  <a href="https://adam.math.hhu.de/#/g/leanprover-community/nng4"><em>Natural Number Game</em></a>: In case you are reading this text in advance and have some spare time, it is highly recommended to start this (online) game, making you prove first things on <code>ℕ</code> using Lean. It is a classical way to start your first contact with Lean.</p>
+                </li>
+              <li>
+                <p>
+                  <a href="https://b-mehta.github.io/formalising-mathematics-notes/"><em>Formalizing Mathematics 2025</em></a> by Bhavik Mehta, based on notes by Kevin Buzzard: these notes have inspired at least the format of the present course.</p>
+                </li>
+              <li>
+                <p>
+                  <a href="https://leanprover-community.github.io/mathematics_in_lean/"><em>Mathematics in Lean</em></a> by Jeremy Avigad and Patrick Massot: if there is something like an official course maintained by experts in charge, this is probably it. It is mainly concentrated about different areas of mathematics.</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="some-notes">
+              1.3. Some notes on Lean and Mathlib<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=some-notes" title="Permalink">🔗</a></span></h2>
+            <ul>
+              <li>
+                <p>
+                  Hardware requirements: In fact, Lean will require a decent hardware, e.g. at least 8GB of RAM in order to function properly. If you do not have this, there are ways of using Lean online; see above.</p>
+                </li>
+              <li>
+                <p>
+                  Lean is not only an interactive theorem prover, but also a programming language. If you want to know/learn more about this aspect, please consult <a href="https://lean-lang.org/functional_programming_in_lean/">Functional programming in Lean</a>.</p>
+                </li>
+              <li>
+                <p>
+                  While <code>Lean</code> is a programming language, <code>Mathlib</code> is a library in the Lean language. It collects various (more or less deep) mathematical results. In this course, we do not make any distinction between <code>Lean</code> and <code>Mathlib</code>, since we will have <code>import Mathlib</code> at the start of any file we will need results from there. In this way, we have access to a large part of mathematics in order to solve exercises.</p>
+                </li>
+              </ul>
+            </section>
+          <section>
+            <h2 id="howto">
+              1.4. How to use this course<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=howto" title="Permalink">🔗</a></span></h2>
+            <p>
+              These notes have three main parts:</p>
+            <ul>
+              <li>
+                <p>
+                  These introductory notes: Starting in the next chapter, we give general hints on Lean, which are rather for reference and background than for starting the course. You will almost certainly find yourself asking fundamental things on Lean (e.g. <em>What is type theory, and why should I care?</em>), which we try to explain without too much detail.</p>
+                </li>
+              <li>
+                <p>
+                  Dealing with basic mathematics objects in Lean: Before we start with the Exercises, we work through the second chapter which aims to give a flavour of how to speak about mathematical objects from within Lean. Simple <code>logical</code> claims form a basis, while <code>ℕ</code> and <code>ℝ</code> introduce you to very basics numbers and how to deal with them. Finally, <code>Sets</code> and <code>Functions</code> have their own interfaces we will learn about here.</p>
+                </li>
+              <li>
+                <p>
+                  Tactics descriptions: When interactively writing proofs, a main focus will be the currently <em>proof state</em>. In order to modify it, we need tactics, which in some sense feels like learning a new language (which is in fact true). In the latter part of these notes, we give an overview of the most important tactics. A more comprehensive overview is <a href="https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md">here</a>.</p>
+                </li>
+              </ul>
+            <p>
+              Finally, the heart of the course are the exercises: (see the <em>Exercises</em> folder within <code>Leancourse</code>). Unlike in other courses, you will get immediate feedback of how well you performed on any single exercise. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.</p>
+            <p>
+              While the exercises will only cover the first half of the semeser, individual assignments will happen in the latter part of this course. (These will mostly be self-assigned, so e.g. you will formalize an exercise from your first year of studies, or you are interested in a specific part of <code>Mathlib</code>, or...)
+</p>
+            </section>
           </section>
         </main></div>
     </body>

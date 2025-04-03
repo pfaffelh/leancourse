@@ -7,7 +7,7 @@ To view the output, a local server will be needed. One way to get such a server 
 python3 -m http.server 8800 --directory _out/html-single/ &
 after which http://localhost:8800/ will show the generated site.
 
-pkill python3; lake build; lake exe leancourse --output _out/; python3 -m http.server 8800 --directory _out/html-multi/
+pkill python3; lake build; lake exe leancourse --output _out --verbose --depth 2; python3 -m http.server 8800 --directory _out/html-multi/
 
 https://pfaffelh.github.io/leancourse/
 shows 

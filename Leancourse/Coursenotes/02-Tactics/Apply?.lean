@@ -7,6 +7,7 @@ import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
 open DemoTextbook.Exts
+open MyDef
 
 set_option pp.rawOnError true
 

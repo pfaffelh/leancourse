@@ -1,6 +1,7 @@
 import Leancourse
 import Manual.Meta
 
+open Verso.Genre Manual
 open Verso.Genre.Manual
 
 open Verso.Output.Html in
@@ -66,6 +67,7 @@ where
     extraHead := #[searchModule],
     emitTeX := false,
     emitHtmlSingle := true, -- for proofreading
+    emitHtmlMulti := true, -- for proofreading
     logo := some "/static/lean_logo.svg",
     sourceLink := some "https://github.com/pfaffelh/leancourse",
     issueLink := some "https://github.com/pfaffelh/leancourse/issues"

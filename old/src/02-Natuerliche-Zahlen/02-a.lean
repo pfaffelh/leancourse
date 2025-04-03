@@ -17,14 +17,14 @@ Das bedeutet: Der Typ nat (oder ℕ) hat den Term zero (oder 0), und wenn n : �
 
 example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) :=
 begin
-  cases n, 
-  {left, 
+  cases n,
+  {left,
   refl,},
   {right, use n,}
 end
 
 /-
-  Aufgabe 1: Versuchen Sie doch mal, dieses Beispiel etwas weiter zu verfolgen. 
+  Aufgabe 1: Versuchen Sie doch mal, dieses Beispiel etwas weiter zu verfolgen.
   Hier habe ich zwei Lemmas gebraucht (um rw darauf anzuwenden; beim ersten weiß lean, dass α = ℕ die Eigenschaft _has_lt_ hat (wobei lt für _lower than_ steht, d.h. ℕ ist geordnet)):
 
   gt_iff_lt : ∀ {α : Type} [_inst_1 : has_lt α] {a b : α}, a > b ↔ b < a
@@ -32,7 +32,7 @@ end
   nat.succ_lt_succ_iff : ∀ {m n : ℕ}, m.succ < n.succ ↔ m < n
 
   Diese und noch viel mehr Aussagen kann man zB auch hier https://leanprover-community.github.io/ finden. Siehe auch noch weiter unten für weitere Beispiele.
--/ 
+-/
 example (n : ℕ) (h : n > 1) : ∃ (k : ℕ), n = k + 2 :=
 begin
   sorry,
@@ -50,18 +50,18 @@ end
   mul_one : ∀ {M : Type ?} [_inst_1 : mul_one_class M] (a : M), a * 1 = a
 
   add_assoc : ∀ {G : Type ?} [_inst_1 : add_semigroup G] (a b c : G), a + b + c = a + (b + c)
-  
+
   add_comm : ∀ {G : Type ?} [_inst_1 : add_comm_semigroup G] (a b : G), a + b = b + a
-  
+
   mul_assoc : ∀ {G : Type ?} [_inst_1 : semigroup G] (a b c : G), a * b * c = a * (b * c)
-  
+
   mul_comm : ∀ {G : Type ?} [_inst_1 : comm_semigroup G] (a b : G), a * b = b * a
 -/
 
--- Hier ein Beispiel; wenn Sie mit der Maus etwa über _add_zero_gehen, so zeigt Ihnen vscode die entsprechende Aussage. 
+-- Hier ein Beispiel; wenn Sie mit der Maus etwa über _add_zero_gehen, so zeigt Ihnen vscode die entsprechende Aussage.
 example (m n : ℕ) : m + n = n + m + 0 :=
 begin
-  rw add_zero, 
+  rw add_zero,
   apply add_comm,
   -- oder rw add_comm,
 end
@@ -77,9 +77,9 @@ example (m n : ℕ) : m + n = n + m + 0 :=
 end
 
 /-
-  Man lese sich hierzu am besten auch die Beschreibung von _calc_ im Skript durch. 
-  
-  Außerdem brauchen wir manchmal auch die Taktik _nth_rewrite_ (siehe auch das Skript), wenn wir festlegen wollen, an welcher Stelle wir etwas umschreiben wollen. Siehe das nächste Beispiel. (Versuchen Sie doch mal, das nth_rewrite durch ein rw zu erstzen!) 
+  Man lese sich hierzu am besten auch die Beschreibung von _calc_ im Skript durch.
+
+  Außerdem brauchen wir manchmal auch die Taktik _nth_rewrite_ (siehe auch das Skript), wenn wir festlegen wollen, an welcher Stelle wir etwas umschreiben wollen. Siehe das nächste Beispiel. (Versuchen Sie doch mal, das nth_rewrite durch ein rw zu erstzen!)
 -/
 
 lemma double (n : ℕ) : n + n = 2*n :=
@@ -104,7 +104,7 @@ begin
   ... = n^2 + 2*n + 1 : by { rw ← add_assoc, rw ← double, },
 end
 
-/- 
+/-
   Hier ein alternativer, aber schlechter lesbarer Beweis:
 -/
 example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 :=
@@ -115,7 +115,7 @@ end
 /-
   Aufgabe 2)
    Formalisieren und beweisen Sie die dritte binomische Formel in der Form n*(n+2) = (n+1)^2 - 1. Verwenden Sie dazu am besten den calc-Modus.
-   Hinweis: evtl brauchen Sie das Lemma 
+   Hinweis: evtl brauchen Sie das Lemma
 
   nat.add_succ_sub_one : ∀ (n m : ℕ), n + m.succ - 1 = n + m
 -/
@@ -133,8 +133,8 @@ begin
 end
 
 /-
-  Übrigens: Das Umschreiben mit rw von jeder kleinen Rechenregel kann lästig werden. Es gibt vier Taktiken, die hier wesentlich mehr Power haben: 
-  
+  Übrigens: Das Umschreiben mit rw von jeder kleinen Rechenregel kann lästig werden. Es gibt vier Taktiken, die hier wesentlich mehr Power haben:
+
   - ring : kennt alle Rechenregeln in (Halb-)Ringen, also zB den natürlichen Zahle; kann allerdings keine Hypothesen benutzen; löst direkt das Lemma binom1;
   - norm_num : kann mit Zahlen (aber keinen Variablen) rechnen;
   - linarith : kann unter Zuhilfenahme von Hypothesen lineare Gleichungen und Ungleichungen beweisen;
@@ -180,13 +180,13 @@ begin
 end
 
 -- Aufgabe 4c
-example : 1^100 = 100/100 := 
+example : 1^100 = 100/100 :=
 begin
   sorry,
 end
 
 /-
-  Aufgabe 5: eine nicht-lineare Ungleichung; übrigens funktioniert der calc-Modus auch für Ungleichungen, also 
+  Aufgabe 5: eine nicht-lineare Ungleichung; übrigens funktioniert der calc-Modus auch für Ungleichungen, also
   calc n = 1 * n : by {...}
    ... ≤ 2 * n : by {...},
 -/
@@ -199,7 +199,7 @@ end
 /-
   Es folgen jetzt noch drei Aufgaben mit weniger Hilfestellung. Teil der Aufgabe ist jeweils auch, das entsprechende Resultat zu suchen, mit dem der Beweis einfacher wird!
 
-  Aufgabe 6 : 
+  Aufgabe 6 :
 -/
 
 example (m n : ℕ) : m^(n+2) = m * m^n * m :=
@@ -208,7 +208,7 @@ begin
 end
 
 /-
-  Aufgabe 7 : 
+  Aufgabe 7 :
 -/
 
 example (m n : ℕ) : (m + n) * (m - n) = m^2 - n^2 :=
@@ -217,12 +217,10 @@ begin
 end
 
 /-
-  Aufgabe 8 : 
+  Aufgabe 8 :
 -/
 
-example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k^2 ≤ n^3 := 
+example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k^2 ≤ n^3 :=
 begin
   sorry,
 end
-
-

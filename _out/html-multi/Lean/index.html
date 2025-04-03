@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      (function(){
+  const {protocol:proto, host:hostName, pathname:path, search:srch, hash:hsh} = window.location;
+  if (!(path.endsWith("/") || path.endsWith(".html"))) {
+    window.location.replace(`${proto}//${hostName}${path}/${srch}${hsh}`);
+  }
+})()</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Lean</title><link rel="stylesheet" href="../book.css">
+    <script>
+      
+function saveCheckboxesInit() {
+  for (checkbox of document.querySelectorAll('#toc input[type="checkbox"]')) {
+    const value = localStorage.getItem(checkbox.id);
+
+    // Treat the ToC toggle specially, because it should always default to
+    // closed on mobile-width screens but respect user preference on desktop-width.
+    if (checkbox.id === "toggle-toc" && window.matchMedia("(max-width: 700px)").matches) {
+        checkbox.checked = false;
+    } else if (value === "true") {
+        checkbox.checked = true;
+    } else if (value === "false") {
+        checkbox.checked = false;
+    } // if not found, do nothing
+
+    checkbox.addEventListener("change", persistCheckbox);
+  }
+}
+
+function persistCheckbox() {
+  const value = this.checked; // in a handler, 'this' is the element with the handler on it
+  const id = this.id;
+  localStorage.setItem(this.id, value ? "true" : "false");
+}
+
+window.addEventListener("DOMContentLoaded", saveCheckboxesInit);
+</script>
+    <script>
+      const __versoSiteRoot = "./../"</script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
+    <script src="../static/katex/katex.min.js"></script>
+    <script src="../static/math.js"></script>
+    <script src="../static/search/fuzzysort.js"></script>
+    <script src="../static/print.js"></script>
+    <script src="../-verso-js/popper.js"></script>
+    <script src="../-verso-js/tippy.js"></script>
+    <link rel="stylesheet" href="../static/katex/katex.min.css">
+    <link rel="stylesheet" href="../static/colors.css">
+    <link rel="stylesheet" href="../static/theme.css">
+    <link rel="stylesheet" href="../static/print.css">
+    <link rel="stylesheet" href="../static/search/search-box.css">
+    <link rel="stylesheet" href="../static/fonts/source-serif/source-serif-text.css">
+    <link rel="stylesheet" href="../static/fonts/source-code-pro/source-code-pro.css">
+    <link rel="stylesheet" href="../-verso-css/tippy-border.css">
+    <style>
+
+.hl.lean {
+  white-space: pre;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.hl.lean .keyword {
+  font-weight : bold;
+}
+
+.hl.lean .var {
+  font-style: italic;
+  position: relative;
+}
+
+.hover-container {
+  width: 0;
+  height: 0;
+  position: relative;
+  display: inline;
+}
+
+.hl.lean a {
+  color: inherit;
+  text-decoration: currentcolor underline dotted;
+}
+
+.hl.lean a:hover {
+  text-decoration: currentcolor underline solid;
+}
+
+.hl.lean .hover-info {
+  white-space: normal;
+}
+
+.hl.lean .token .hover-info {
+  display: none;
+  position: absolute;
+  background-color: #e5e5e5;
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 300;
+  font-size: inherit;
+}
+
+.hl.lean .hover-info.messages {
+  max-height: 10rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding: 0 0.5rem 0 0;
+  display: block;
+}
+
+.hl.lean .hover-info code {
+  white-space: pre-wrap;
+}
+
+.hl.lean .hover-info.messages > code {
+  padding: 0.5rem;
+  display: block;
+  width: fit-content;
+}
+
+.hl.lean .hover-info.messages > code:only-child {
+  margin: 0;
+}
+
+.hl.lean .hover-info.messages > code {
+  margin: 0.1rem;
+}
+
+.hl.lean .hover-info.messages > code:not(:first-child) {
+  margin-top: 0rem;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .has-info:hover > .hover-container > .hover-info:not(.tactic *),
+  .hl.lean .tactic:has(> .tactic-toggle:checked) .has-info:hover > .hover-container > .hover-info,
+  .hl.lean .token:hover > .hover-container > .hover-info:not(.has-info *):not(.tactic *),
+  .hl.lean .tactic:has(> .tactic-toggle:checked) .token:hover > .hover-container > .hover-info:not(.has-info *) {
+    display: inline-block;
+    position: absolute;
+    top: 1rem;
+    font-weight: normal;
+    font-style: normal;
+    width: min-content;
+  }
+}
+*/
+
+.hl.lean.block {
+  display: block;
+}
+
+.hl.lean.inline {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+.hl.lean .token {
+  transition: all 0.25s; /* Slight fade for highlights */
+}
+
+@media (hover: hover) {
+  .hl.lean .token.binding-hl, .hl.lean .literal.string:hover, .hl.lean .token.typed:hover {
+    background-color: #eee;
+    border-radius: 2px;
+    transition: none;
+  }
+}
+
+
+.hl.lean .has-info {
+  text-decoration-style: wavy;
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.1rem;
+}
+
+.hl.lean .has-info .hover-info {
+  display: none;
+  position: absolute;
+  transform: translate(0.25rem, 0.3rem);
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 400;
+  text-align: left;
+}
+
+.hl.lean .has-info.error {
+  text-decoration-color: red;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.error:hover {
+    background-color: #ffb3b3;
+  }
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #ffb3b3;
+}
+
+.tippy-box[data-theme~='error'] .hl.lean .hover-info.messages > code.error {
+  background: none;
+  border: none;
+}
+
+.error pre {
+    color: red;
+}
+
+.hl.lean .has-info.warning {
+  text-decoration-color: #efd871;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.warning:hover {
+    background-color: #efd871;
+  }
+}
+
+.hl.lean .hover-info.messages > code.warning {
+  background-color: #efd871;
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #efd871;
+}
+
+.tippy-box[data-theme~='warning'] .hl.lean .hover-info.messages > code.warning {
+  background: none;
+  border: none;
+}
+
+
+.hl.lean .has-info.info {
+  text-decoration-color: blue;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.info:hover {
+    background-color: #4777ff;
+  }
+}
+
+
+.hl.lean .hover-info.messages > code.info {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #4777ff;
+}
+
+.tippy-box[data-theme~='info'] .hl.lean .hover-info.messages > code.info {
+  background: none;
+  border: none;
+}
+
+.hl.lean div.docstring {
+  font-family: sans-serif;
+  white-space: normal;
+  max-width: 40rem;
+  width: max-content;
+}
+
+.hl.lean div.docstring > :last-child {
+  margin-bottom: 0;
+}
+
+.hl.lean .hover-info .sep {
+  display: block;
+  width: auto;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  height: 1px;
+  border-top: 1px solid #ccc;
+}
+
+.hl.lean code {
+  font-family: monospace;
+}
+
+.hl.lean .tactic-state {
+  display: none;
+  position: relative;
+  left: 2rem;
+  width: fit-content;
+  border: 1px solid #888888;
+  border-radius: 0.1rem;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+  z-index: 200;
+}
+
+.hl.lean.popup .tactic-state {
+  position: static;
+  display: block;
+  width: auto;
+  border: none;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+
+
+.hl.lean .tactic {
+  position: relative;
+}
+
+.hl.lean .tactic-toggle:checked ~ .tactic-state {
+  display: block;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .tactic:hover > .tactic-toggle:not(:checked) ~ .tactic-state {
+    display: block;
+    position: absolute;
+    left: 0;
+    transform: translate(0.25rem, 0);
+    z-index: 250;
+  }
+}
+*/
+
+.hl.lean .tactic > label {
+  position: relative;
+  transition: all 0.5s;
+}
+
+@media (hover: hover) {
+  .hl.lean .tactic > label:hover {
+    border-bottom: 1px dotted #bbbbbb;
+  }
+}
+
+.hl.lean .tactic-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .tactic > label::after {
+  content: "";
+  border: 1px solid #bbbbbb;
+  border-radius: 1rem;
+  height: 0.25rem;
+  vertical-align: middle;
+  width: 0.6rem;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+  display: inline-block;
+  transition: all 0.5s;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .tactic > label:hover::after {
+    border: 1px solid #aaaaaa;
+    background-color: #aaaaaa;
+    transition: all 0.5s;
+  }
+}
+*/
+
+.hl.lean .tactic > label:has(+ .tactic-toggle:checked)::after {
+  border: 1px solid #999999;
+  background-color: #999999;
+  transition: all 0.5s;
+}
+
+.hl.lean .tactic-state .goal + .goal {
+  margin-top: 1.5rem;
+}
+
+.hl.lean .tactic-state summary {
+  margin-left: -0.5rem;
+}
+
+.hl.lean .tactic-state details {
+  padding-left: 0.5rem;
+}
+
+.hl.lean .case-label {
+  display: block;
+  position: relative;
+}
+
+.hl.lean .case-label input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"])::before {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  background-color: black;
+  content: ' ';
+  transition: ease 0.2s;
+  margin-right: 0.7rem;
+  clip-path: polygon(100% 0, 0 0, 50% 100%);
+  width: 0.6rem;
+  height: 0.6rem;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:not(:checked))::before {
+  transform: rotate(-90deg);
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]) {
+
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:checked) {
+
+}
+
+
+.hl.lean .tactic-state .labeled-case > :not(:first-child) {
+  max-height: 0px;
+  display: block;
+  overflow: hidden;
+  transition: max-height 0.1s ease-in;
+  margin-left: 0.5rem;
+  margin-top: 0.1rem;
+}
+
+.hl.lean .labeled-case:has(.case-label input[type="checkbox"]:checked) > :not(:first-child) {
+  max-height: 100%;
+}
+
+
+.hl.lean .tactic-state .goal-name::before {
+  font-style: normal;
+  content: "case ";
+}
+
+.hl.lean .tactic-state .goal-name {
+  font-style: italic;
+  font-family: monospace;
+}
+
+.hl.lean .tactic-state .hypotheses {
+  display: table;
+}
+
+.hl.lean .tactic-state .hypothesis {
+  display: table-row;
+}
+
+.hl.lean .tactic-state .hypothesis > * {
+  display: table-cell;
+}
+
+
+.hl.lean .tactic-state .hypotheses .colon {
+  text-align: center;
+  min-width: 1rem;
+}
+
+.hl.lean .tactic-state .hypotheses .name {
+  text-align: right;
+}
+
+.hl.lean .tactic-state .hypotheses .name,
+.hl.lean .tactic-state .hypotheses .type,
+.hl.lean .tactic-state .conclusion .type {
+  font-family: monospace;
+}
+
+.tippy-box[data-theme~='lean'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='lean'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::after {
+  bottom: -11px;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::after {
+  top: -11px;
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+  border-width: 11px 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::after {
+  right: -11px;
+  border-width: 11px 0 11px 11px;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+  border-width: 11px 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::after {
+  left: -11px;
+  border-width: 11px 11px 11px 0;
+}
+
+
+
+.tippy-box[data-theme~='warning'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #efd871;
+}
+
+.tippy-box[data-theme~='error'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #f7a7af;
+}
+
+.tippy-box[data-theme~='info'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #99b3c2;
+}
+
+
+
+.tippy-box[data-theme~='tactic'] {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: white;
+}
+
+</style><style>
+table.tabular {
+  margin: auto;
+  border-spacing: 1rem;
+}
+table.tabular.left-align {
+  margin-right: auto;
+  margin-left: 0;
+}
+table.tabular.center-align {
+  margin: auto;
+}
+table.tabular.right-align {
+  margin-left auto;
+  margin-right: 0;
+}
+table.tabular td, table.tabular th {
+  text-align: left;
+  vertical-align: top;
+}
+table.tabular td > p:first-child, table.tabular th > p:first-child {
+  margin-top: 0;
+}
+table.tabular td > p:last-child, table.tabular th > p:first-child {
+  margin-bottom: 0;
+}
+</style><script>
+      
+window.onload = () => {
+
+    // Don't show hovers inside of closed tactic states
+    function blockedByTactic(elem) {
+      let parent = elem.parentNode;
+      while (parent && "classList" in parent) {
+        if (parent.classList.contains("tactic")) {
+          const toggle = parent.querySelector("input.tactic-toggle");
+          if (toggle) {
+            return !toggle.checked;
+          }
+        }
+        parent = parent.parentNode;
+      }
+      return false;
+    }
+
+    function blockedByTippy(elem) {
+      // Don't show a new hover until the old ones are all closed.
+      // Scoped to the nearest "top-level block" to avoid being O(n) in the size of the document.
+      var block = elem;
+      const topLevel = new Set(["section", "body", "html", "nav", "header"]);
+      while (block.parentNode && !topLevel.has(block.parentNode.nodeName.toLowerCase())) {
+        block = block.parentNode;
+      }
+      for (const child of block.querySelectorAll(".token, .has-info")) {
+        if (child._tippy && child._tippy.state.isVisible) { return true };
+      }
+      return false;
+    }
+
+    for (const c of document.querySelectorAll(".hl.lean .token")) {
+        if (c.dataset.binding != "") {
+            c.addEventListener("mouseover", (event) => {
+                if (blockedByTactic(c)) {return;}
+                const context = c.closest(".hl.lean").dataset.leanContext;
+                for (const example of document.querySelectorAll(".hl.lean")) {
+                    if (example.dataset.leanContext == context) {
+                        for (const tok of example.querySelectorAll(".token")) {
+                            if (c.dataset.binding == tok.dataset.binding) {
+                                tok.classList.add("binding-hl");
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        c.addEventListener("mouseout", (event) => {
+            for (const tok of document.querySelectorAll(".hl.lean .token")) {
+                tok.classList.remove("binding-hl");
+            }
+        });
+    }
+    /* Render docstrings */
+    if ('undefined' !== typeof marked) {
+        for (const d of document.querySelectorAll("code.docstring, pre.docstring")) {
+            const str = d.innerText;
+            const html = marked.parse(str);
+            const rendered = document.createElement("div");
+            rendered.classList.add("docstring");
+            rendered.innerHTML = html;
+            d.parentNode.replaceChild(rendered, d);
+        }
+    }
+    // Add hovers
+    let siteRoot = typeof __versoSiteRoot !== 'undefined' ? __versoSiteRoot : "/";
+    fetch(siteRoot + "-verso-docs.json").then((resp) => resp.json()).then((versoDocData) => {
+
+      const defaultTippyProps = {
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        theme: "lean",
+        maxWidth: "none",
+        appendTo: () => document.body,
+        interactive: true,
+        delay: [100, null],
+        ignoreAttributes: true,
+        onShow(inst) {
+          if (inst.reference.querySelector(".hover-info") || "versoHover" in inst.reference.dataset) {
+            if (blockedByTactic(inst.reference)) { return false };
+            if (blockedByTippy(inst.reference)) { return false; }
+          } else { // Nothing to show here!
+            return false;
+          }
+        },
+        content (tgt) {
+          const content = document.createElement("span");
+          content.className = "hl lean";
+          content.style.display = "block";
+          content.style.maxHeight = "300px";
+          content.style.overflowY = "auto";
+          content.style.overflowX = "hidden";
+          const hoverId = tgt.dataset.versoHover;
+          const hoverInfo = tgt.querySelector(".hover-info");
+          if (hoverId) { // Docstrings from the table
+            // TODO stop doing an implicit conversion from string to number here
+            let data = versoDocData[hoverId];
+            if (data) {
+              const info = document.createElement("span");
+              info.className = "hover-info";
+              info.style.display = "block";
+              info.innerHTML = data;
+              content.appendChild(info);
+              /* Render docstrings - TODO server-side */
+              if ('undefined' !== typeof marked) {
+                  for (const d of content.querySelectorAll("code.docstring, pre.docstring")) {
+                      const str = d.innerText;
+                      const html = marked.parse(str);
+                      const rendered = document.createElement("div");
+                      rendered.classList.add("docstring");
+                      rendered.innerHTML = html;
+                      d.parentNode.replaceChild(rendered, d);
+                  }
+              }
+            } else {
+              content.innerHTML = "Failed to load doc ID: " + hoverId;
+            }
+          } else if (hoverInfo) { // The inline info, still used for compiler messages
+            content.appendChild(hoverInfo.cloneNode(true));
+          }
+          return content;
+        }
+      };
+
+      const addTippy = (selector, props) => {
+        tippy(selector, Object.assign({}, defaultTippyProps, props));
+      };
+      addTippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token', {theme: 'lean'});
+      addTippy('.hl.lean .has-info.warning', {theme: 'warning message'});
+      addTippy('.hl.lean .has-info.info', {theme: 'info message'});
+      addTippy('.hl.lean .has-info.error', {theme: 'error message'});
+
+      tippy('.hl.lean .tactic', {
+        allowHtml: true,
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        maxWidth: "none",
+        onShow(inst) {
+          const toggle = inst.reference.querySelector("input.tactic-toggle");
+          if (toggle && toggle.checked) {
+            return false;
+          }
+          if (blockedByTippy(inst.reference)) { return false; }
+        },
+        theme: "tactic",
+        placement: 'bottom-start',
+        content (tgt) {
+          const content = document.createElement("span");
+          const state = tgt.querySelector(".tactic-state").cloneNode(true);
+          state.style.display = "block";
+          content.appendChild(state);
+          content.style.display = "block";
+          content.className = "hl lean popup";
+          return content;
+        }
+      });
+  });
+}
+</script>
+    <script type="module" src="../static/search/search-init.js"></script>
+    </head>
+  <body>
+    <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
+      <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
+      <nav id="toc">
+        <input type="checkbox" id="toggle-toc" checked="checked"><div class="first">
+          <a href="../" id="logo"><img src="../static/lean_logo.svg"></a><nav id="local-buttons">
+            <a class="local-button active" href="../Introduction/#introduction" rel="prev" title="1. Introduction"><span class="arrow">←</span><span class="where">Prev</span></a><a class="local-button active" href="../#" title=" Interactive Theorem Proving using Lean, Summer 2025"><span class="arrow">↑</span><span class="where">Up</span></a><a class="local-button active" href="../Tactics/#tactics" rel="next" title="3. Tactics"><span class="where">Next</span><span class="arrow">→</span></a></nav>
+          <div class="split-tocs">
+            <div class="split-toc book">
+              <div class="title">
+                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot"></label><span class=""><a href="../">Interactive Theorem Proving using Lean, Summer 2025</a></span></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="../Introduction/#introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num">2.</td><td><a href="#lean">Lean</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="../Tactics/#tactics">Tactics</a></td></tr></table></div>
+            <div class="split-toc">
+              <div class="title">
+                <label for="--verso-manual-toc-lean" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-lean" checked="checked"></label><span class="number">2.</span> <span class="current"><a href="#lean">Lean</a></span></div>
+              <table><tr class="numbered"><td class="num">2.1.</td><td><a href="#notesonlean">Notes on Lean</a></td></tr><tr class="numbered"><td class="num">2.2.</td><td><a href="#proof">Proofs in Lean</a></td></tr></table></div>
+            </div>
+          </div>
+        <div class="last">
+          <ul id="meta-links">
+            <li>
+              <a href="https://github.com/pfaffelh/leancourse">Source Code</a></li>
+            <li>
+              <a href="https://github.com/pfaffelh/leancourse/issues">Report Issues</a></li>
+            </ul>
+          </div>
+        </nav>
+      <main><section>
+          <h1>
+            2. Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=lean" title="Permalink">🔗</a></span></h1>
+          <section>
+            <h2 id="notesonlean">
+              2.1. Notes on Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=notesonlean" title="Permalink">🔗</a></span></h2>
+            <section>
+              <h3 id="functional">
+                2.1.1. Lean as a programming language<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=functional" title="Permalink">🔗</a></span></h3>
+              <p>
+                Lean is a <a href="https://en.wikipedia.org/wiki/Functional_programming">functional programming language</a> (i.e. it actually only consists of functions). This paradigm is in contrast to <a href="https://en.wikipedia.org/wiki/Imperative_programming">imperative programming</a>  such as Python, Java and C. Lean comes with many features you might be familiar with, such as a library for output and input, but is still young and many things need to be developed.</p>
+              </section>
+            <section>
+              <h3 id="dependent-type-theory">
+                2.1.2. Dependent type theory<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=dependent-type-theory" title="Permalink">🔗</a></span></h3>
+              <p>
+                In all programming languages, you have data types such as <code>int</code>, <code>string</code> and <code>float</code>. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write <code>x : α</code> for a term <code>x</code> of type <code>α</code>, so we write <code>False : Bool</code>, <code>42 : ℕ</code>, but also <code>f : ℕ → ℝ</code> (for a function from ℕ to ℝ, which is an own type) and <code>0 ≠ 1 : Prop</code> (the proposition that 0 and 1 are different numbers in ℕ), which is a proposition. Terms and types can depend on variables, e.g. in <code>∀ (n : ℕ), n &lt; n + 1 : Prop</code> and <code>f : (n : ℕ) → (Fin n → ℝ)</code> (where <code>Fin n</code> is the type which carries <code>{0, ..., n-1}</code>), which is a function <code>f</code> with domain <code>ℕ</code> such that <code>f n ∈ ℝ^n</code>.</p>
+              <p>
+                As we see, these new data types are more abstract in the sense that Lean is understand <code>ℕ</code> (and <code>ℝ</code>) as infinite types, which are not limited by floating point arithmetic. E.g., <code>ℕ</code> actually represents an infinite set that is characterized by containing <code>0</code>, and if it contains <code>n</code>, then it also contains the successor of <code>n</code> (represented by <code>succ n</code>). Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate. (Although <code>ℝ</code> is implemented as such a quotient within <code>Lean</code>, we will not have to deal with these implementation details when working with real numbers, since we will rely on results in <code>Mathlib</code> taking care of these details.)</p>
+              </section>
+            <section>
+              <h3 id="universes">
+                2.1.3. Universes, Types and Terms<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=universes" title="Permalink">🔗</a></span></h3>
+              <p>
+                In Lean, there are three levels of objects: universes, types and terms. We are concerned here with the last two. Of particular interest is the type <code>Prop</code>, which consists of statements that can be true or false . It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form <code>hP : P</code>, which means <code>P</code> is true, and this statement is called <code>hP</code>. It can also mean that <code>P</code> is true and <code>hP</code> is a proof of <code>P</code>. The hypotheses here have names <code>P Q R S</code>, and the names of the hypotheses <code>hP hQ hR hS</code>. All names can be arbitrary. Furthermore, there are hypotheses of the form <code>P → Q</code>, which is the statement that <code>P</code> implies <code>Q</code>. (Note the similarity to function notation as in <code>f : ℝ → ℝ</code>.)</p>
+              </section>
+            <section>
+              <h3 id="functions">
+                2.1.4. Function definitions<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=functions" title="Permalink">🔗</a></span></h3>
+              <p>
+                In <code>Lean</code>, the function <code>f : ℕ → ℕ, x ↦ 2x</code> is defined as</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.definition-3176">def</span> <span class="const token" data-binding="const-f" data-verso-hover="0" id="f">f</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span> <span class="unknown token" data-binding="">→</span> <span class="unknown token" data-binding="">ℕ</span> <span class="unknown token" data-binding="">:=</span> <span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.fun-3199">fun</span> <span class="var token" data-binding="var-_uniq.7" data-verso-hover="1">x</span> <span class="unknown token" data-binding="">↦</span> <span class="typed token" data-binding="" data-verso-hover="1">2</span><span class="unknown token" data-binding="">*</span><span class="var token" data-binding="var-_uniq.7" data-verso-hover="1">x</span>
+<span class="unknown token" data-binding=""></span></code><p>
+                (Write <code>\mapsto</code> for <code>↦</code>.) It is assumed that the <code>x</code> is only introduced to
+define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</code> is then done using <code>f x</code>. (The notation <code>f x</code> is an abbreviation for <code>f(x)</code>, since <code>Lean</code> is sparing with parenthesis.)</p>
+              </section>
+            <section>
+              <h3 id="equality">
+                2.1.5. Equality<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=equality" title="Permalink">🔗</a></span></h3>
+              <p>
+                Due to the multitude of types in Lean, we have to be careful about equality. In Lean, there are three types of equality:</p>
+              <ul>
+                <li>
+                  <p>
+                    Syntactic equality: If two terms are letter-for-letter equal, then they are syntactically equal. However, there are a few more situations in which two terms are syntactically equal. Namely, if one term is just an abbreviation for the other (for example, <code>x = y</code> is an abbreviation for <code> Eq x y</code>, where <code>Eq</code> is a function which takes two terms of the same type, and assigns <code>True</code> if they are the same and <code>False</code> otherwise), then these both terms are syntactically equal. Also equal are terms in which globally quantified variables have different letters. For example, <code>∀ x, ∃ y, f x y</code> and <code>∀ y, ∃ x, f y x</code> are syntactically equal.</p>
+                  </li>
+                <li>
+                  <p>
+                    Definitional equality: Some terms are by definition equal in Lean. For <code>x : ℕ</code>, <code>x + 0</code> is by definition identical to <code>x</code>. However, <code>0 + x</code> is not   definitionally identical to <code>x</code>. This is apparently only due to the     internal definition of addition of natural numbers in Lean.</p>
+                  </li>
+                <li>
+                  <p>
+                    Propositional equality: If there is a proof of <code>x = y</code>, then <code>x</code> and <code>y</code> are said to be propositionally equal. Similarly, terms <code>P</code> and <code>Q</code> are said to be propositionally equal if you can prove <code>P ↔ Q</code>. Some Lean Tactics only work up to syntactic equality (such as <code>rw</code>), others (most) work up to definitional equality (such as <code>apply</code>, <code>exact</code>,...) This means that the tactic automatically transforms terms if they are syntactically or definitional equality. There is a special kind of equality to be observed with sets and functions. For example, two functions are exactly the same if they return the same value for all values in the domain. This behavior is called <strong>extensionality</strong> in the theory of programming languages. (If extensionality applies, then, for example, two sorting algorithms are the same if they always produce the same result).</p>
+                  </li>
+                </ul>
+              </section>
+            <section>
+              <h3 id="parenthesis">
+                2.1.6. Different parentheses in <code>Lean</code><span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=parenthesis" title="Permalink">🔗</a></span></h3>
+              <p>
+                There are (essentially) three different types of parentheses in <code>Lean</code> statements. The simplest is <code>(...)</code>, which, as in normal use, indicates parentheses in the sense of what belongs together. However, you have to learn how 'Lean' brackets internally when no '()' are given. Operators like <strong>and</strong> (<code>∧</code>), <strong>or</strong> (<code>∨</code>), are right-associative, so e.g. <code>P ∧ Q ∧ R := P ∧ (Q ∧ R)</code>. The application of functions in sequence, such as <code>f : ℕ → ℝ</code> and <code>g : ℝ → ℝ </code>, applied to <code>n : ℕ</code> is <code>g (f n)</code>, because <code>g</code> expects an input of type <code>ℝ</code>, and this is what <code>f n</code> provides. You cannot omit (...), i.e. in this case the parenthesis is left-associative.</p>
+              <p>
+                Now let's comment on the parentheses <code>[...]</code> and <code>{...}</code>. For example, <code>#check@ gt_iff_lt</code> (the statement that <code>a&gt;b</code> holds if and only if <code>b&lt;a</code> holds), where both types occur. This yields</p>
+              <pre>gt_iff_lt : ∀ {α : Type u_1} [_inst_1 : has_lt α] {a b : α}, a &gt; b ↔ b &lt; a
+</pre><p>
+                When this result is applied, the statements in <code>{...}</code> and <code>[...]</code> are added by <code>Lean</code> itself. The statements in <code>{...}</code> depend on the type of the objects that have to be given, and can therefore be inferred. (Above, when applying <code>gt_iff_lt</code>, the variables <code>a</code> and <code>b</code> have to be given.) Therefore, their type is also known, and one does not have to <code>α</code> is not explicitly specified. Since the application is made to a concrete <code>α</code> (for example, <code>ℕ</code>), and <code>Lean</code> knows a lot about the natural numbers, the type class system can look up many properties of <code>ℕ</code>, and also finds that <code>has_lt ℕ</code> holds (i.e. on <code>ℕ</code> at least a partial order is defined).
+</p>
+              </section>
+            </section>
+          <section>
+            <h2 id="proof">
+              2.2. Proofs in Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=proof" title="Permalink">🔗</a></span></h2>
+            <section>
+              <h3 id="foundation">
+                2.2.1. Foundation<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=foundation" title="Permalink">🔗</a></span></h3>
+              <p>
+                In Lean every object has a type. Types itself fall into several categories, called universes. There are two main universes, called <code>Prop</code> and <code>Type</code>. Any mathematical statement comes with a claim and its proof. Say we want to claim something, such as <a href="https://en.wikipedia.org/wiki/Goldbach%27s_conjecture">Goldbach's conjecture</a>:</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.theorem-609">theorem</span> <span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="const token" data-binding="const-goldbach" data-verso-hover="2" id="goldbach">goldbach</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∀</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.34" data-verso-hover="3">h₁</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">&gt;</span> <span class="typed token" data-binding="" data-verso-hover="1">2</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.341" data-verso-hover="4">h₂</span> <span class="unknown token" data-binding="">:</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span>
+    <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.346" data-verso-hover="1">i</span> <span class="var token" data-binding="var-_uniq.350" data-verso-hover="1">j</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="unknown token" data-binding="">(</span><span class="const token" data-binding="const-Prime" data-verso-hover="6">Prime</span> <span class="var token" data-binding="var-_uniq.346" data-verso-hover="1">i</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">∧</span> <span class="unknown token" data-binding="">(</span><span class="const token" data-binding="const-Prime" data-verso-hover="6">Prime</span> <span class="var token" data-binding="var-_uniq.350" data-verso-hover="1">j</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">∧</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">=</span> <span class="var token" data-binding="var-_uniq.346" data-verso-hover="1">i</span> <span class="unknown token" data-binding="">+</span> <span class="var token" data-binding="var-_uniq.350" data-verso-hover="1">j</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-6003696466953135604-738-740"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-738" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-6003696466953135604-738-740"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∀ <span class="var token" data-binding="var-_uniq.421" data-verso-hover="1">n</span> &gt; 2, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.421" data-verso-hover="1">n</span> → ∃ <span class="var token" data-binding="var-_uniq.425" data-verso-hover="1">i</span> <span class="var token" data-binding="var-_uniq.426" data-verso-hover="1">j</span>, <span class="const token" data-binding="const-Prime" data-verso-hover="6">Prime</span> <span class="var token" data-binding="var-_uniq.425" data-verso-hover="1">i</span><span class="const token" data-binding="const-And" data-verso-hover="8"> ∧ </span><span class="const token" data-binding="const-Prime" data-verso-hover="6">Prime</span> <span class="var token" data-binding="var-_uniq.426" data-verso-hover="1">j</span><span class="const token" data-binding="const-And" data-verso-hover="8"> ∧ </span><span class="var token" data-binding="var-_uniq.421" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.425" data-verso-hover="1">i</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.426" data-verso-hover="1">j</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-743-748"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-743" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-743-748"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                we speak about a term <code>∀ (n : ℕ) (h₁ : n &gt; 2) (h₂ : Even n), ∃ (i j : ℕ), Prime i ∧ Prime ∧ (n = i + j)</code> of type <code>Prop</code>, which constitutes its own type. A term of this type (which sould repalce the <code>sorry</code> in the above Lean code) is equivalent to a <code>proof</code> of Goldbach's conjecture.</p>
+              <p>
+                This is to say:</p>
+              <p>
+                <strong>Types as theorems, terms as proofs!</strong></p>
+              <p>
+                Constructing a term of type <code>ℕ</code> is easier (<code>0 : ℕ)</code> is accepted by Lean for this construction) than constructing a term of type <code>∀ (n : ℕ) (h₁ : n &gt; 2) (h₂ : Even n), ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j)</code>, for which we would require proving Goldbach's conjecture and implementing the proof in Lean.</p>
+              <p>
+                Since we are already speaking about fundamentals: For a large part, it is safe to think of Types as Sets. Recall that it leads to <a href="https://en.wikipedia.org/wiki/Russell%27s_paradox">logical self-inconsistencies</a> if we allow for something like the set/type of all sets/types. For this reason, the <code>Type</code> universe is split into levels, such as <code>Type 0 : Type 1</code>, saying that the type <code>Type 0</code> (of all objects in level 0) is of <code>Type 1</code>, i.e., we are moving up a ladder when constructing more complex types. The coresponding <a href="https://en.wikipedia.org/wiki/Von_Neumann_universe">idea</a>  goes back to <a href="https://en.wikipedia.org/wiki/John_von_Neumann">von Neumann</a> and <a href="https://en.wikipedia.org/wiki/Ernst_Zermelo">Ernst Zermelo</a>.</p>
+              </section>
+            <section>
+              <h3 id="mathlib">
+                2.2.2. Mathlib<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=mathlib" title="Permalink">🔗</a></span></h3>
+              <p>
+                The Lean-library which contains many mathematical results is called <em>Mathlib</em>. On its <a href="https://leanprover-community.github.io/mathlib4_docs/index.html">documentation page</a> you can search for some results and concepts. (More precisely, you can search names of definitions, lemmas and theorems.) You will find results about e.g. <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Real/Basic.html#Real">Real numbers</a>, <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Group/Defs.html#Group">Groups</a> in algebra, <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/Defs/Basic.html#TopologicalSpace">Topology</a> and <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/OuterMeasure/Defs.html">Measure Theory</a>.</p>
+              <p>
+                Another way to search Mathlib is <a href="https://www.moogle.ai/">Moogle</a> and <a href="https://loogle.lean-lang.org/">Loogle</a> (which you also have in <code>vscode</code> when clicking on the <code>∀</code> sign.)</p>
+              </section>
+            <section>
+              <h3 id="firststeps">
+                2.2.3. First steps<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=firststeps" title="Permalink">🔗</a></span></h3>
+              <p>
+                Let us start with some simple examples in order to explain the first tactics in Lean. We will deal here with</p>
+              <ul>
+                <li>
+                  <p>
+                    intro</p>
+                  </li>
+                <li>
+                  <p>
+                    exact</p>
+                  </li>
+                <li>
+                  <p>
+                    apply</p>
+                  </li>
+                <li>
+                  <p>
+                    rw</p>
+                  </li>
+                <li>
+                  <p>
+                    simp</p>
+                  </li>
+                <li>
+                  <p>
+                    apply?</p>
+                  </li>
+                <li>
+                  <p>
+                    have</p>
+                  </li>
+                <li>
+                  <p>
+                    refine</p>
+                  </li>
+                <li>
+                  <p>
+                    obtain</p>
+                  </li>
+                </ul>
+              <p>
+                More tactics are found in Chapter xxx.</p>
+              <section>
+                <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Lean--Proofs-in-Lean--First-steps--intro-___--exact-___--apply--and--rw">
+                  2.2.3.1. <code>intro</code>, <code>exact</code>, <code>apply</code> and <code>rw</code></h4>
+                <div class="paragraph">
+                  <p>
+                    Let us start with a very simple <code>example</code>. If we want to prove the statement <code>P → P</code> (i.e. <code>P</code> implies <code>P</code>) we enter the following:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-3621">example</span></span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.2" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">:</span> <span class="sort token" data-binding="">Prop</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.2" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.2" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-2999662591073250353-3653-3655"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-3653" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-2999662591073250353-3653-3655"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.2" data-verso-hover="12">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.2" data-verso-hover="12">P</span> → <span class="var token" data-binding="var-_uniq.2" data-verso-hover="12">P</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-3658-3663"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-3658" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-3658-3663"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    Depending on the position of the cursor, you will find the corresponding <strong>proof state</strong>. If the cursor is directly after <code>by</code>, the initial <strong>proof state</strong> is seen. It is important to know that behind <code>⊢</code> (called <a href="https://en.wikipedia.org/wiki/Logical_consequence">turnstile</a>) stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that <code>P</code> is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the <code>sorry</code>, there is now <strong>no goals</strong>, but the <code>sorry</code> tactic is only there to prove unproven assertions without further action, and a warning is issued in <code>vscode</code>. If you delete the <code>sorry</code> and replace it with an <code>intro hP</code> followed by <code>exact hP</code>, we get</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-4435">example</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="13">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="13">P</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-11043227593564130920-4456-4458"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-4456" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-11043227593564130920-4456-4458"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.12" data-verso-hover="14">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.7</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.12" data-verso-hover="14">P</span> → <span class="var token" data-binding="var-_uniq.12" data-verso-hover="14">P</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-17715058946386248744-4461-4469"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-4461" data-verso-hover="15">intro</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="16">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-17715058946386248744-4461-4469"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.12" data-verso-hover="14">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.7</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.14" data-verso-hover="16">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.12" data-verso-hover="14">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.12" data-verso-hover="14">P</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-4472-4480"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.exact-4472" data-verso-hover="17">exact</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="16">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-4472-4480"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    So we have transformed the statement <code>P → P</code> into a state where we have to assume <code>hP : P</code> and conclude <code>P</code>. The desired <strong>no goals</strong> appears.</p>
+                  </div>
+                <div class="paragraph">
+                  <p>
+                    The <code>apply</code> tactics is similar, but does not necessarily need to close the goal. Let us see how it works:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-4762">example</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="13">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="19">Q</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="19">Q</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.21" data-verso-hover="21">R</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="13">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.21" data-verso-hover="21">R</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-4697415521392057906-4815-4817"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-4815" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4697415521392057906-4815-4817"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.23</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.28</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span> → <span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span> → <span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span> → <span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-11024522155415406879-4820-4828"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-4820" data-verso-hover="15">intro</span> <span class="var token" data-binding="var-_uniq.48" data-verso-hover="16">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-11024522155415406879-4820-4828"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.23</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.28</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span> → <span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span> → <span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="16">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-9911334692600731926-4831-4840"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.apply-4831" data-verso-hover="25">apply</span> <span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-9911334692600731926-4831-4840"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.23</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.28</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span> → <span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span> → <span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="16">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-9668849013339516127-4843-4852"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.apply-4843" data-verso-hover="25">apply</span> <span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-9668849013339516127-4843-4852"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.23</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.28</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span> → <span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span> → <span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="16">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-4855-4863"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.exact-4855" data-verso-hover="17">exact</span> <span class="var token" data-binding="var-_uniq.48" data-verso-hover="16">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-4855-4863"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    Here, if the goal is <code>R</code>, and you have a proof <code>hQR : Q → R</code>, we only have to show <code>Q</code> and this transformation is done using <code>apply hQR</code>.</p>
+                  <p>
+                    In fact, apply works iteratively. This means that <code>apply hQR; apply hPQ; exact hP</code> can be combined into</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-5121">example</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="13">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="19">Q</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="19">Q</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.21" data-verso-hover="21">R</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="13">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.21" data-verso-hover="21">R</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-4697415521392057906-5174-5176"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-5174" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4697415521392057906-5174-5176"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.23</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.28</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span> → <span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span> → <span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span> → <span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-11024522155415406879-5179-5187"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-5179" data-verso-hover="15">intro</span> <span class="var token" data-binding="var-_uniq.48" data-verso-hover="16">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-11024522155415406879-5179-5187"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.23</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.24</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Sort ?u.28</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span> → <span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.43" data-verso-hover="23">Q</span> → <span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.48" data-verso-hover="16">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.42" data-verso-hover="22">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.44" data-verso-hover="24">R</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-5190-5208"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.apply-5190" data-verso-hover="25">apply</span> <span class="var token" data-binding="var-_uniq.29" data-verso-hover="20">hQR</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.25" data-verso-hover="18">hPQ</span> <span class="var token" data-binding="var-_uniq.48" data-verso-hover="16">hP</span><span class="unknown token" data-binding="">)</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-5190-5208"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    (Here, <code>hPQ hP</code> is a proof for <code>Q</code>, since we apply <code>P → Q</code> to a proof of <code>P</code>, which gives <code>Q</code>.)</p>
+                  </div>
+                <div class="paragraph">
+                  <p>
+                    We note that the above example is equivalent to</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-5385">example</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∀</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.3" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">:</span> <span class="sort token" data-binding="">Prop</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="var token" data-binding="var-_uniq.3" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">→</span> <span class="var token" data-binding="var-_uniq.3" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-10343381734476382264-5422-5424"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-5422" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-10343381734476382264-5422-5424"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∀ (<span class="var token" data-binding="var-_uniq.18" data-verso-hover="12">P</span> : <span class="sort token" data-binding="">Prop</span>), <span class="var token" data-binding="var-_uniq.18" data-verso-hover="12">P</span> → <span class="var token" data-binding="var-_uniq.18" data-verso-hover="12">P</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-10243156815194690571-5427-5434"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-5427" data-verso-hover="15">intro</span> <span class="var token" data-binding="var-_uniq.11" data-verso-hover="12">P</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-10243156815194690571-5427-5434"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.11" data-verso-hover="12">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.11" data-verso-hover="12">P</span> → <span class="var token" data-binding="var-_uniq.11" data-verso-hover="12">P</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-9722968490246414440-5437-5445"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.intro-5437" data-verso-hover="15">intro</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="16">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-9722968490246414440-5437-5445"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.11" data-verso-hover="12">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.14" data-verso-hover="16">hP</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.11" data-verso-hover="12">P</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.11" data-verso-hover="12">P</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-5448-5456"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.exact-5448" data-verso-hover="17">exact</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="16">hP</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-5448-5456"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    So if we have a ∀ in the goal, we make progress by using <code>intro</code>.</p>
+                  </div>
+                <div class="paragraph">
+                  <p>
+                    Sometimes, we have statements of equality <code>x = y</code> or <code>P ↔ Q</code>, so we would like to use the one instead of the other. This works using <code>rw</code>:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-5696">example</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.12" data-verso-hover="26">hQ</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.4" data-verso-hover="12">Q</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.14" data-verso-hover="27">hPQ</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.10" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">↔</span> <span class="var token" data-binding="var-_uniq.4" data-verso-hover="12">Q</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.10" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-8503394257845901682-5736-5738"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-5736" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8503394257845901682-5736-5738"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.12" data-verso-hover="26">hQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.14" data-verso-hover="27">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span><span class="const token" data-binding="const-Iff" data-verso-hover="28"> ↔ </span><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-18244700532699573962-5743-5751"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.rwSeq-5743" data-verso-hover="29">rw</span> <span class="unknown token" data-binding="">[</span><span class="var token" data-binding="var-_uniq.14" data-verso-hover="27">hPQ</span><span class="unknown token" data-binding="">]</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-18244700532699573962-5743-5751"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.12" data-verso-hover="26">hQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.14" data-verso-hover="27">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span><span class="const token" data-binding="const-Iff" data-verso-hover="28"> ↔ </span><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-7-5756-5764"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.exact-5756" data-verso-hover="17">exact</span> <span class="var token" data-binding="var-_uniq.12" data-verso-hover="26">hQ</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-5756-5764"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    Here, we use <code>rw</code> to transform the goal <code>P</code> to the rewritten goal <code>Q</code>. If we want to use <code>rw</code> reversely, we write <code>rw [← hPQ]</code>, and we can use <code>rw</code> also in hypothesis by writing e.g. <code>rw [hPQ] at hP</code>. Here is an example.</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-6000">example</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.12" data-verso-hover="26">hQ</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.4" data-verso-hover="12">Q</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.14" data-verso-hover="27">hPQ</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.10" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">↔</span> <span class="var token" data-binding="var-_uniq.4" data-verso-hover="12">Q</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.10" data-verso-hover="12">P</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-8503394257845901682-6040-6042"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-6040" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8503394257845901682-6040-6042"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.12" data-verso-hover="26">hQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.14" data-verso-hover="27">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span><span class="const token" data-binding="const-Iff" data-verso-hover="28"> ↔ </span><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-8220055888617835738-6047-6065"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.rwSeq-6047" data-verso-hover="29">rw</span> <span class="unknown token" data-binding="">[</span><span class="unknown token" data-binding="">←</span> <span class="var token" data-binding="var-_uniq.14" data-verso-hover="27">hPQ</span><span class="unknown token" data-binding="">]</span> <span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.location-6060" data-verso-hover="30">at</span> <span class="var token" data-binding="var-_uniq.12" data-verso-hover="26">hQ</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8220055888617835738-6047-6065"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span></span><span class="colon">:</span><span class="type"><span class="sort token" data-binding="">Prop</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.36" data-verso-hover="16">hQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.39" data-verso-hover="27">hPQ</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span><span class="const token" data-binding="const-Iff" data-verso-hover="28"> ↔ </span><span class="var token" data-binding="var-_uniq.21" data-verso-hover="12">Q</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.22" data-verso-hover="12">P</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-7-6070-6078"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.exact-6070" data-verso-hover="17">exact</span> <span class="var token" data-binding="var-_uniq.36" data-verso-hover="16">hQ</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-6070-6078"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code></div>
+                </section>
+              <section>
+                <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Lean--Proofs-in-Lean--First-steps--apply___--and--simp">
+                  2.2.3.2. <code>apply?</code> and <code>simp</code></h4>
+                <p>
+                  Of course, we want to make use of known facts when proving new ones. There are two main search functions built into our work: <code>simp?</code> and <code>apply?</code>. The first is based on <code>simp</code>, which works using a collection of simplification rules, which are searchable using <code>simp?</code>. Here is an example:</p>
+                <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-6410">example</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">(</span><span class="typed token" data-binding="" data-verso-hover="1">0</span> <span class="unknown token" data-binding="">&lt;</span> <span class="typed token" data-binding="" data-verso-hover="1">1</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-10303010878956689020-6431-6433"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-6431" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-10303010878956689020-6431-6433"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">0<span class="const token" data-binding="const-LT.lt" data-verso-hover="31"> &lt; </span>1</span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-6436-6441"><span class="has-info info"><span class="hover-container"><span class="hover-info messages"><code class="message info">Try this: simp only [Nat.lt_one_iff, pos_of_gt]</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.simpTrace-6436" data-verso-hover="32">simp?</span></span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-6436-6441"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                  Lean suggests <code>Try this: simp only [Nat.lt_one_iff, pos_of_gt]</code>, which is taken to our code when we click on it.</p>
+                <p>
+                  In fact, the same example can be solved using library search using <code>apply?</code>. Here, Lean searches its library for possible results, and often outputs very many results and the remaining goals. Here, it is simple:</p>
+                <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-6780">example</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">(</span><span class="typed token" data-binding="" data-verso-hover="1">0</span> <span class="unknown token" data-binding="">&lt;</span> <span class="typed token" data-binding="" data-verso-hover="1">1</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-10303010878956689020-6801-6803"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-6801" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-10303010878956689020-6801-6803"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">0<span class="const token" data-binding="const-LT.lt" data-verso-hover="31"> &lt; </span>1</span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-6806-6812"><span class="has-info info"><span class="hover-container"><span class="hover-info messages"><code class="message info">Try this: exact Nat.one_pos</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.apply?-6806" data-verso-hover="33">apply?</span></span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-6806-6812"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                  where Lean suggests <code>Try this: exact Nat.one_pos</code>.</p>
+                </section>
+              <section>
+                <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Lean--Proofs-in-Lean--First-steps--have-___--refine-___-and--use">
+                  2.2.3.3. <code>have</code>, <code>refine</code>, and <code>use</code></h4>
+                <div class="paragraph">
+                  <p>
+                    In order to have some proper example, let us introduce <code>Even</code> and <code>Odd</code>. In fact, for a definition of <code>Even</code>, we can type</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="has-info info"><span class="hover-container"><span class="hover-info messages"><code class="message info">def Even.{u_2} : {α : Type u_2} → [inst : Add α] → α → Prop :=
+fun {α} [Add α] a =&gt; ∃ r, a = r + r</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.print-7059">#print</span></span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    which results in</p>
+                  <div class="information">
+                    <pre>def Even.{u_2} : {α : Type u_2} → [inst : Add α] → α → Prop :=
+fun {α} [Add α] a =&gt; ∃ r, a = r + r
+</pre></div>
+                  </div>
+                <div class="paragraph">
+                  <p>
+                    Assume we cannot prove our goal in one step, but need some intermediate result. In this case, we have the <code>have</code> tactics. We simply claim what we need as an intermediate step. At the moment, we leave the rest using <code>sorry</code>.</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-7477">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">*</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-7928520605545480354-7518-7520"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-7518" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7928520605545480354-7518-7520"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.89" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.89" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.89" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+  <span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticHave_-7523" data-verso-hover="35">have</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-7928520605545480354-7557-7559"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-7557" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7928520605545480354-7557-7559"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.89" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.89" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.89" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-7-7564-7569"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-7564" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-7564-7569"><span class="tactic-state">All goals completed! 🐙</span></span>
+  <span class="tactic"><label for="tactic-state-7-7572-7577"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-7572" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-7572-7577"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    We come to our intermediate result later, but first want to use it in the rest of the proof. However, we have to disentangle the ∃ statement in <code>h</code>. Often, we have to take apart what we are given. Note that <code>∃ (n : ℕ), Even n</code> consists of <code>(n : ℕ)</code> and a proof of <code>Odd </code>, i.e. a pair of objects, and pairs in Lean are gives using <code>⟨_, _⟩</code>. We use <code>obtain</code> in order to get the two elements of the pair:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-8004">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">*</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-8504314016403885126-8045-8047"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-8045" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8504314016403885126-8045-8047"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.115" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.115" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.115" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+  <span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticHave_-8050" data-verso-hover="35">have</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-8504314016403885126-8084-8086"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-8084" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8504314016403885126-8084-8086"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.115" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.115" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.115" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-7-8091-8096"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-8091" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-8091-8096"><span class="tactic-state">All goals completed! 🐙</span></span>
+  <span class="tactic"><label for="tactic-state-3874195347944500266-8099-8122"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.obtain-8099" data-verso-hover="37">obtain</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="unknown token" data-binding="">,</span> <span class="var token" data-binding="var-_uniq.111" data-verso-hover="4">hn</span><span class="unknown token" data-binding="">⟩</span> <span class="unknown token" data-binding="">:=</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-3874195347944500266-8099-8122"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-23" checked="checked"><span for="--verso-unique-23" class="goal-name">intro</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.111" data-verso-hover="4">hn</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.115" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.115" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.115" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-8125-8130"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-8125" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-8125-8130"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    Recall that <code>hn</code> itself is an ∃-statement. This means we can use a nested version:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-8228">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">*</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-8515028277357526647-8269-8271"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-8269" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8515028277357526647-8269-8271"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.133" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.133" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.133" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+  <span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticHave_-8274" data-verso-hover="35">have</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-8515028277357526647-8308-8310"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-8308" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8515028277357526647-8308-8310"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.133" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.133" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.133" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-7-8315-8320"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-8315" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-8315-8320"><span class="tactic-state">All goals completed! 🐙</span></span>
+  <span class="tactic"><label for="tactic-state-2548215950689318006-8323-8355"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.obtain-8323" data-verso-hover="37">obtain</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="unknown token" data-binding="">,</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="unknown token" data-binding="">,</span> <span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span><span class="unknown token" data-binding="">⟩</span><span class="unknown token" data-binding="">⟩</span> <span class="unknown token" data-binding="">:=</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-2548215950689318006-8323-8355"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-26" checked="checked"><span for="--verso-unique-26" class="goal-name">intro.intro</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.133" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.133" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.133" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-8358-8363"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-8358" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-8358-8363"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    Now we can use that <code>n</code> is <code>Even</code> and therefore would like to <code>use</code> that <code>n * n = (2*k) * (2*k) = 4*k*k</code> for showing that <code>n * n</code> is even. In order to see what we have to show, let us simplify using the definition of <code>Even</code>:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-8601">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">*</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-15001804489820865041-8642-8644"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-8642" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-15001804489820865041-8642-8644"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+  <span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticHave_-8647" data-verso-hover="35">have</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-15001804489820865041-8681-8683"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-8681" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-15001804489820865041-8681-8683"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-7-8688-8693"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-8688" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-8688-8693"><span class="tactic-state">All goals completed! 🐙</span></span>
+  <span class="tactic"><label for="tactic-state-8612269377950536751-8696-8728"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.obtain-8696" data-verso-hover="37">obtain</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="unknown token" data-binding="">,</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="unknown token" data-binding="">,</span> <span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span><span class="unknown token" data-binding="">⟩</span><span class="unknown token" data-binding="">⟩</span> <span class="unknown token" data-binding="">:=</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8612269377950536751-8696-8728"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-29" checked="checked"><span for="--verso-unique-29" class="goal-name">intro.intro</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-4886659932073511740-8731-8742"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.simp-8731" data-verso-hover="40">simp</span> <span class="unknown token" data-binding="">[</span><span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span><span class="unknown token" data-binding="">]</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4886659932073511740-8731-8742"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-30" checked="checked"><span for="--verso-unique-30" class="goal-name">intro.intro</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span> <span class="var token" data-binding="var-_uniq.4980" data-verso-hover="1">r</span>, <span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.4979" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.4980" data-verso-hover="1">r</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.4980" data-verso-hover="1">r</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-8745-8750"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-8745" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-8745-8750"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    Now we can use <code>n</code> from above, and <code>r = 2*k*k</code>. This works with <code>use</code>:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-8834">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">*</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-4509315863948506552-8875-8877"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-8875" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4509315863948506552-8875-8877"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+  <span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticHave_-8880" data-verso-hover="35">have</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-4509315863948506552-8914-8916"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-8914" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-4509315863948506552-8914-8916"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-7-8921-8926"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-8921" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-8921-8926"><span class="tactic-state">All goals completed! 🐙</span></span>
+  <span class="tactic"><label for="tactic-state-3647698514869245246-8929-8961"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.obtain-8929" data-verso-hover="37">obtain</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="unknown token" data-binding="">,</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="unknown token" data-binding="">,</span> <span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span><span class="unknown token" data-binding="">⟩</span><span class="unknown token" data-binding="">⟩</span> <span class="unknown token" data-binding="">:=</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-3647698514869245246-8929-8961"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-33" checked="checked"><span for="--verso-unique-33" class="goal-name">intro.intro</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-1825927384325749167-8964-8975"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.simp-8964" data-verso-hover="40">simp</span> <span class="unknown token" data-binding="">[</span><span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span><span class="unknown token" data-binding="">]</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-1825927384325749167-8964-8975"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-34" checked="checked"><span for="--verso-unique-34" class="goal-name">intro.intro</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span> <span class="var token" data-binding="var-_uniq.5139" data-verso-hover="1">r</span>, <span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.5139" data-verso-hover="1">r</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.5139" data-verso-hover="1">r</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-15442159727915639028-8978-8983"><span class="keyword token" data-binding="kw-occ-Mathlib.Tactic.useSyntax-8978" data-verso-hover="41">use</span> <span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-15442159727915639028-8978-8983"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-35" checked="checked"><span for="--verso-unique-35" class="goal-name">h</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">r</span>, <span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">r</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.5138" data-verso-hover="1">r</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-9479338315310946656-8986-8995"><span class="keyword token" data-binding="kw-occ-Mathlib.Tactic.useSyntax-8986" data-verso-hover="41">use</span> <span class="typed token" data-binding="" data-verso-hover="1">2</span><span class="unknown token" data-binding="">*</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="unknown token" data-binding="">*</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-9479338315310946656-8986-8995"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-36" checked="checked"><span for="--verso-unique-36" class="goal-name">h</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-8998-9003"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-8998" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-8998-9003"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code></div>
+                <div class="paragraph">
+                  <p>
+                    The rest should be easy, since it only remains a calculation. Here, we use <code>rw</code> and the <code>ring</code> tactics, which can do calculations within a <code>ring</code> (in fact in a monoid):</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-9203">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">*</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-18030706658035299081-9244-9246"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-9244" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-18030706658035299081-9244-9246"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+  <span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticHave_-9249" data-verso-hover="35">have</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-18030706658035299081-9283-9285"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-9283" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-18030706658035299081-9283-9285"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+    <span class="tactic"><label for="tactic-state-7-9290-9295"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-9290" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-9290-9295"><span class="tactic-state">All goals completed! 🐙</span></span>
+  <span class="tactic"><label for="tactic-state-17609719732443126143-9298-9330"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.obtain-9298" data-verso-hover="37">obtain</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="unknown token" data-binding="">,</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="unknown token" data-binding="">,</span> <span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span><span class="unknown token" data-binding="">⟩</span><span class="unknown token" data-binding="">⟩</span> <span class="unknown token" data-binding="">:=</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-17609719732443126143-9298-9330"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-39" checked="checked"><span for="--verso-unique-39" class="goal-name">intro.intro</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-8300346088057430464-9333-9344"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.simp-9333" data-verso-hover="40">simp</span> <span class="unknown token" data-binding="">[</span><span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span><span class="unknown token" data-binding="">]</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-8300346088057430464-9333-9344"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-40" checked="checked"><span for="--verso-unique-40" class="goal-name">intro.intro</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span> <span class="var token" data-binding="var-_uniq.5400" data-verso-hover="1">r</span>, <span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.5400" data-verso-hover="1">r</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.5400" data-verso-hover="1">r</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-17096281159067409686-9347-9352"><span class="keyword token" data-binding="kw-occ-Mathlib.Tactic.useSyntax-9347" data-verso-hover="41">use</span> <span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-17096281159067409686-9347-9352"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-41" checked="checked"><span for="--verso-unique-41" class="goal-name">h</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">r</span>, <span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">r</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.5399" data-verso-hover="1">r</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-9479338315310946656-9355-9364"><span class="keyword token" data-binding="kw-occ-Mathlib.Tactic.useSyntax-9355" data-verso-hover="41">use</span> <span class="typed token" data-binding="" data-verso-hover="1">2</span><span class="unknown token" data-binding="">*</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="unknown token" data-binding="">*</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-9479338315310946656-9355-9364"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-42" checked="checked"><span for="--verso-unique-42" class="goal-name">h</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-18213862888945907003-9367-9374"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.rwSeq-9367" data-verso-hover="29">rw</span> <span class="unknown token" data-binding="">[</span><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span><span class="unknown token" data-binding="">]</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-18213862888945907003-9367-9374"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-43" checked="checked"><span for="--verso-unique-43" class="goal-name">h</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.129" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.110" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10">(</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10">)</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10">(</span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10">)</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.128" data-verso-hover="1">k</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-9377-9381"><span class="keyword token" data-binding="kw-occ-Mathlib.Tactic.RingNF.ring-9377" data-verso-hover="42">ring</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-9377-9381"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    It remains to show the intermediate step. Here, we have to give Lean a pair, i.e. some <code>n</code> as well as a proof that <code>Even n</code>. This can not only be done using <code>use</code> as above, but also using <code>refine</code>, which is able to make a pair from two separate objects. Assume ww want to use that <code>Even 48</code>, but do not have a proof yet. Then we write a <code>?_</code>, which stands for a hole in the proof which is to be filled in later:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-9806">example</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-6644836541236056277-9841-9843"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-9841" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-6644836541236056277-9841-9843"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.43" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.43" data-verso-hover="1">n</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-3502960898566317823-9846-9865"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.refine-9846" data-verso-hover="43">refine</span> <span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟨</span><span class="typed token" data-binding="" data-verso-hover="1">48</span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">,</span> <span class="unknown token" data-binding="">?</span><span class="unknown token" data-binding="">_</span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟩</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-3502960898566317823-9846-9865"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> 48</span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-9868-9873"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-9868" data-verso-hover="11">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-9868-9873"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    For a proof of <code>Even 48</code>, we need to find <code>24</code> and a proof that <code>48 = 24 + 24</code>. Let us again work with <code>?_</code>:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-9995">example</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-2055680377669206352-10030-10032"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-10030" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-2055680377669206352-10030-10032"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.347" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.347" data-verso-hover="1">n</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-15091559520063390221-10035-10064"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.refine-10035" data-verso-hover="43">refine</span> <span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟨</span><span class="typed token" data-binding="" data-verso-hover="1">48</span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">,</span> <span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟨</span><span class="typed token" data-binding="" data-verso-hover="1">24</span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">,</span> <span class="unknown token" data-binding="">?</span><span class="unknown token" data-binding="">_</span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟩</span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟩</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-15091559520063390221-10035-10064"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">48<span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span>24<span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span>24</span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-10067-10071"><span class="keyword token" data-binding="kw-occ-Mathlib.Tactic.RingNF.ring-10067" data-verso-hover="42">ring</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-10067-10071"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code><p>
+                    (In fact, the last step can also be solved by <code>rfl</code>, which means that the goal is true by definition.)</p>
+                  <p>
+                    In total, we have the full example:</p>
+                  <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-10224">example</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">*</span> <span class="var token" data-binding="var-_uniq.5" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-14022313513949090347-10265-10267"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-10265" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-14022313513949090347-10265-10267"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.825" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.825" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.825" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+  <span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticHave_-10270" data-verso-hover="35">have</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∃</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span> <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="var token" data-binding="var-_uniq.74" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-14022313513949090347-10304-10306"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-10304" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-14022313513949090347-10304-10306"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.825" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.825" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.825" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span>
+    <span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.refine-10311" data-verso-hover="43">refine</span> <span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟨</span><span class="typed token" data-binding="" data-verso-hover="1">48</span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">,</span> <span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟨</span><span class="typed token" data-binding="" data-verso-hover="1">24</span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">,</span> <span class="tactic"><label for="tactic-state-15091559520063390221-10332-10334"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-10332" data-verso-hover="7">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-15091559520063390221-10332-10334"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">48<span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span>24<span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span>24</span></span></span></span></span> <span class="tactic"><label for="tactic-state-7-10335-10338"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticRfl-10335" data-verso-hover="45">rfl</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-10335-10338"><span class="tactic-state">All goals completed! 🐙</span></span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟩</span><span class="unknown token" data-binding="const-Exists.intro" data-verso-hover="44">⟩</span>
+  <span class="tactic"><label for="tactic-state-12984894134073774812-10347-10379"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.obtain-10347" data-verso-hover="37">obtain</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span><span class="unknown token" data-binding="">,</span> <span class="unknown token" data-binding="">⟨</span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="unknown token" data-binding="">,</span> <span class="var token" data-binding="var-_uniq.167" data-verso-hover="39">hk</span><span class="unknown token" data-binding="">⟩</span><span class="unknown token" data-binding="">⟩</span> <span class="unknown token" data-binding="">:=</span> <span class="var token" data-binding="var-_uniq.81" data-verso-hover="36">h</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-12984894134073774812-10347-10379"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-51" checked="checked"><span for="--verso-unique-51" class="goal-name">intro.intro</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.167" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type">∃ <span class="var token" data-binding="var-_uniq.825" data-verso-hover="1">n</span>, <span class="const token" data-binding="const-Even" data-verso-hover="5">Even</span> <span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">(</span><span class="var token" data-binding="var-_uniq.825" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.825" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34">)</span></span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-2625277620786670179-10382-10394"><span class="keyword token" data-binding="kw-occ-Mathlib.Tactic.useSyntax-10382" data-verso-hover="41">use</span> <span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span><span class="unknown token" data-binding="">,</span> <span class="typed token" data-binding="" data-verso-hover="1">2</span><span class="unknown token" data-binding="">*</span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="unknown token" data-binding="">^</span><span class="typed token" data-binding="" data-verso-hover="1">2</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-2625277620786670179-10382-10394"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-52" checked="checked"><span for="--verso-unique-52" class="goal-name">h</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.167" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HPow.hPow" data-verso-hover="46"> ^ </span>2<span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HPow.hPow" data-verso-hover="46"> ^ </span>2</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-13330551120985372076-10397-10404"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.rwSeq-10397" data-verso-hover="29">rw</span> <span class="unknown token" data-binding="">[</span><span class="var token" data-binding="var-_uniq.167" data-verso-hover="39">hk</span><span class="unknown token" data-binding="">]</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-13330551120985372076-10397-10404"><span class="tactic-state"><span class="goal"><span class="labeled-case" checked="checked"><label class="case-label"><input type="checkbox" id="--verso-unique-53" checked="checked"><span for="--verso-unique-53" class="goal-name">h</span></label><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span></span><span class="colon">:</span><span class="type"><span class="const token" data-binding="const-Nat" data-verso-hover="38">ℕ</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.167" data-verso-hover="39">hk</span></span><span class="colon">:</span><span class="type"><span class="var token" data-binding="var-_uniq.148" data-verso-hover="1">n</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10">(</span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10">)</span><span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10">(</span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10">)</span><span class="const token" data-binding="const-Eq" data-verso-hover="9"> = </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HPow.hPow" data-verso-hover="46"> ^ </span>2<span class="const token" data-binding="const-HAdd.hAdd" data-verso-hover="10"> + </span>2<span class="const token" data-binding="const-HMul.hMul" data-verso-hover="34"> * </span><span class="var token" data-binding="var-_uniq.166" data-verso-hover="1">k</span><span class="const token" data-binding="const-HPow.hPow" data-verso-hover="46"> ^ </span>2</span></span></span></span></span></span>
+  <span class="tactic"><label for="tactic-state-7-10407-10411"><span class="keyword token" data-binding="kw-occ-Mathlib.Tactic.RingNF.ring-10407" data-verso-hover="42">ring</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-10407-10411"><span class="tactic-state">All goals completed! 🐙</span></span>
+<span class="unknown token" data-binding=""></span></code></div>
+                </section>
+              </section>
+            <section>
+              <h3 id="names">
+                2.2.4. Names of <code>Mathlib</code> Results<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=names" title="Permalink">🔗</a></span></h3>
+              <p>
+                Names like <code>zero_add, add_zero, one_mul, add_assoc, succ_ne_zero, lt_of_succ_le,...</code> seem cryptic. It is clear that individual relatively understandable abbreviations (<code>zero, one, mul, add, succ,...</code>) are separated by <code>_</code>. In general, the following two rules apply to naming:</p>
+              <ul>
+                <li>
+                  <p>
+                    The goal of the statement to be proven is described; if hypotheses are added in the name, then with <code>of_</code>. The statement <code>lt_of_succ_le</code> is therefore an <code>&lt;</code> statement, where <code>succ ≤</code> applies. In fact:</p>
+                  </li>
+                </ul>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info info"><span class="hover-container"><span class="hover-info messages"><code class="message info">Nat.lt_of_succ_le {n m : ℕ} (h : n.succ ≤ m) : n &lt; m</code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-10989">#check</span></span> <span class="const token" data-binding="const-Nat.lt_of_succ_le" data-verso-hover="47">Nat.lt_of_succ_le</span>
+<span class="unknown token" data-binding=""></span></code><p>
+                results in</p>
+              <div class="information">
+                <pre>Nat.lt_of_succ_le {n m : ℕ} (h : n.succ ≤ m) : n &lt; m
+</pre></div>
+              <p>
+                This way, you can often guess the names of statements that you want to use.</p>
+              </section>
+            <section>
+              <h3 id="exercises">
+                2.2.5. Exercises<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=exercises" title="Permalink">🔗</a></span></h3>
+              <p>
+                It is now time to move to the exercises. So, proceed to <code>vscode</code> (or <code>gitpod</code>), copy the exercises folder and start coding. Further hints on tactics etc is given within the exercises. Tactics are given in alphabetical order in the next chapter.
+</p>
+              </section>
+            </section>
+          </section>
+        </main></div>
+    </body>
+  </html>
+

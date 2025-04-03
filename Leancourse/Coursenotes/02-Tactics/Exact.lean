@@ -30,6 +30,11 @@ tag := "exact"
 :::
 
 
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+
 **Notes:**
 
 In the third example, note the order in which the two hapotheses `hP` and `hnP` are applied. The first hypothesis after `exact` is always the one whose right side matches the goal. If the goal requires further input, it is appended afterwards.

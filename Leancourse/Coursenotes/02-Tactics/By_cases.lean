@@ -31,13 +31,21 @@ If you have a term `P : Prop` as a hypothesis, `by_cases hP : P` returns two goa
 
 In the second example, we use a variable of type `bool` This is defined as follows:
 
+{Docstring Bool}
+
 ```lean
 inductive myBool : Type
-| False : myBool
-| True : myBool
+| falsch : myBool
+| wahr : myBool
 ```
-
 A Boolean variable can only have the values `True` and `False`.
+
+```lean
+example (P Q : Prop) (hP: P → Q) ( hP' : ¬P → Q) : Q := by
+  by_cases h : P
+  · exact hP h
+  · exact hP' h
+```
 
 **Notes**
 

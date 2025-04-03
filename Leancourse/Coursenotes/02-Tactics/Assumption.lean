@@ -29,12 +29,17 @@ If a hypothesis is identical to the goal, `assumption` closes the goal.
   + **no goals**
 :::
 
-**Notes**
-
-* As in other tactics, `assumption` works up to definitional equality.
-* Here is a trick: If you use `<;>` after a tactic, the forthcoming tactic is applied to apll goals.
-
 ```lean
 example (hP : P) (hQ : Q) : P ∧ Q := by
   constructor <;> assumption
 ```
+
+```lean
+example (P : Prop) (hP : P) : P := by
+  assumption
+```
+
+**Notes**
+
+* As in other tactics, `assumption` works up to definitional equality.
+* Here is a trick: If you use `<;>` after a tactic, the forthcoming tactic is applied to apll goals.

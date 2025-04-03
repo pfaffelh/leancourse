@@ -1,6 +1,7 @@
 import VersoManual
 import Manual.Meta
 import Leancourse.Misc.Defs
+import Mathlib
 
 open Verso.Genre Manual
 open MyDef
@@ -35,10 +36,20 @@ The `apply`-tactics works iteratively. This means that if `apply h` makes no pro
 ```lean
 example (hP : P) (hPQ : P → Q) (hPQR : P → Q → R) : R := by
   apply hPQR
-  · sorry
-  · sorry
+  · exact hP
+  · apply hPQ
+    exact hP
 ```
 
+```lean
+example (n : ℕ) (hn : 0 < n) : n ≤ 2 * (n * n) := by
+  have h₁ : n ≤ n * n := by
+    exact Nat.le_mul_of_pos_left n hn
+  apply le_trans h₁
+  have h₂ (k : ℕ) : k ≤ 2 * k := by
+    exact Nat.le_mul_of_pos_left k Nat.zero_lt_two
+  apply h₂ (n * n)
+```
 
 **Remarks:**
 * `apply` works up to equality by definition. This can be seen in the example above, where `¬P ↔ (P → False)` is true by definition.

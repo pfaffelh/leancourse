@@ -4,6 +4,7 @@ import DemoTextbook
 import UsersGuide.Markup
 import Manual.Meta.Table
 import Leancourse.Misc.Defs
+import Mathlib
 
 open Verso.Genre Manual
 open DemoTextbook.Exts
@@ -16,7 +17,7 @@ set_option pp.rawOnError true
 tag := "apply?"
 %%%
 
-**Summary:** There are already a lot of proven statements in `mathlib`. When using `apply?`, the `mathlib` is statements whose types correspond to those of the statement to be proved. If this is not successful, `Lean` reports a `timeout`. If successful, it also reports which command was found. If you click on it, this is inserted in place of `library_search`.
+**Summary:** There are already a lot of proven statements in `Mathlib`. When using `apply?`, `Mathlib` is searched for statements whose types correspond to those of the statement to be proved. If this is not successful, `Lean` reports a `timeout`. If successful, it also reports which commands were found. If you click on it, this is inserted in place of `apply?`.
 
 **Examples**
 
@@ -28,6 +29,16 @@ tag := "apply?"
   + `apply?`
   + **no goals** {br}[] Try this: `exact lt_trans h₁ h₂`
 :::
+
+```lean
+example (n : ℕ) : 2 * n = n + n := by
+  apply?
+```
+
+```lean
+example (n : ℕ) : n ^ 2 ≤ 2 ^ n := by
+  apply? -- gives a list of results which are not useful
+```
 
 **Notes**
 

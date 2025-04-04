@@ -1,179 +1,208 @@
 {"99":
- "<code>mul_le_mul_of_nonneg_left.{u_3} {α : Type u_3} {a b c : α} [Mul α] [Zero α] [Preorder α] [PosMulMono α] (h : b ≤ c)\n  (a0 : 0 ≤ a) : a * b ≤ a * c</code>",
+ "<code>tsum_congr.{u_1, u_2} {α : Type u_1} {β : Type u_2} [AddCommMonoid α] [TopologicalSpace α] {f g : β → α}\n  (hfg : ∀ (b : β), f b = g b) : ∑' (b : β), f b = ∑' (b : β), g b</code>",
  "98":
- "<code>GE.ge.{u} {α : Type u} [LE α] (a b : α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`a ≥ b` is an abbreviation for `b ≤ a`. </code>",
- "97": "<code>0 = ↑d * 0</code>",
- "96":
- "<code>zero_le.{u} {α : Type u} [AddZeroClass α] [LE α] [CanonicallyOrderedAdd α] (a : α) : 0 ≤ a</code>",
- "95": "<code>d ≥ 0</code>",
- "94": "<code>False</code>",
- "93":
- "<code>Subtype.{u} {α : Sort u} (p : α → Prop) : Sort (max 1 u)</code><span class=\"sep\"></span><code class=\"docstring\">`Subtype p`, usually written as `{x : α // p x}`, is a type which\nrepresents all the elements `x : α` for which `p x` is true. It is structurally\na pair-like type, so if you have `x : α` and `h : p x` then\n`⟨x, h⟩ : {x // p x}`. An element `s : {x // p x}` will coerce to `α` but\nyou can also make it explicit using `s.1` or `s.val`.\n</code>",
+ "<code>add_comm.{u_1} {G : Type u_1} [AddCommMagma G] (a b : G) : a + b = b + a</code>",
+ "97":
+ "<code class=\"docstring\">Apply congruence (recursively) to goals of the form `⊢ f as = f bs` and `⊢ HEq (f as) (f bs)`.\nThe optional parameter is the depth of the recursive applications.\nThis is useful when `congr` is too aggressive in breaking down the goal.\nFor example, given `⊢ f (g (x + y)) = f (g (y + x))`,\n`congr` produces the goals `⊢ x = y` and `⊢ y = x`,\nwhile `congr 2` produces the intended `⊢ x + y = y + x`.\n</code>",
+ "96": "<code>ℝ → ℝ</code>",
+ "95":
+ "<code>setOf.{u} {α : Type u} (p : α → Prop) : Set α</code><span class=\"sep\"></span><code class=\"docstring\">Turn a predicate `p : α → Prop` into a set, also written as `{x | p x}` </code>",
+ "94": "<code>P n</code>",
+ "93": "<code>P → False</code>",
  "92":
- "<code>mySubtype.mk.{u_1} {ℕ : Sort u_1} (P : ℕ → Prop) (n : ℕ) (hn : P n) : { m // P m }</code>",
+ "<code class=\"docstring\">* `change tgt'` will change the goal from `tgt` to `tgt'`,\n  assuming these are definitionally equal.\n* `change t' at h` will change hypothesis `h : t` to have type `t'`, assuming\n  assuming `t` and `t'` are definitionally equal.\n</code>",
  "91":
- "<code>And.intro {a b : Prop} (left : a) (right : b) : a ∧ b</code><span class=\"sep\"></span><code class=\"docstring\">`And.intro : a → b → a ∧ b` is the constructor for the And operation. </code>",
- "90": "<code>R</code>",
+ "<code>add_assoc.{u_1} {G : Type u_1} [AddSemigroup G] (a b c : G) : a + b + c = a + (b + c)</code>",
+ "90":
+ "<code>mul_one.{u} {M : Type u} [MulOneClass M] (a : M) : a * 1 = a</code>",
  "9": "<code>s ⊆ t</code>",
  "89":
- "<code>tsum_congr.{u_1, u_2} {α : Type u_1} {β : Type u_2} [AddCommMonoid α] [TopologicalSpace α] {f g : β → α}\n  (hfg : ∀ (b : β), f b = g b) : ∑' (b : β), f b = ∑' (b : β), g b</code>",
+ "<code>mul_add.{v} {R : Type v} [Mul R] [Add R] [LeftDistribClass R] (a b c : R) : a * (b + c) = a * b + a * c</code><span class=\"sep\"></span><code class=\"docstring\">**Alias** of `left_distrib`.</code>",
  "88":
- "<code>add_comm.{u_1} {G : Type u_1} [AddCommMagma G] (a b : G) : a + b = b + a</code>",
+ "<code>pow_two.{u_2} {M : Type u_2} [Monoid M] (a : M) : a ^ 2 = a * a</code><span class=\"sep\"></span><code class=\"docstring\">Note that most of the lemmas about powers of two refer to it as `sq`. </code>",
  "87":
- "<code class=\"docstring\">Apply congruence (recursively) to goals of the form `⊢ f as = f bs` and `⊢ HEq (f as) (f bs)`.\nThe optional parameter is the depth of the recursive applications.\nThis is useful when `congr` is too aggressive in breaking down the goal.\nFor example, given `⊢ f (g (x + y)) = f (g (y + x))`,\n`congr` produces the goals `⊢ x = y` and `⊢ y = x`,\nwhile `congr 2` produces the intended `⊢ x + y = y + x`.\n</code>",
- "86": "<code>ℝ → ℝ</code>",
- "85":
- "<code>setOf.{u} {α : Type u} (p : α → Prop) : Set α</code><span class=\"sep\"></span><code class=\"docstring\">Turn a predicate `p : α → Prop` into a set, also written as `{x | p x}` </code>",
- "84": "<code>P n</code>",
- "83": "<code>ℕ → Prop</code>",
- "82": "<code>P → False</code>",
- "81":
- "<code class=\"docstring\">* `change tgt'` will change the goal from `tgt` to `tgt'`,\n  assuming these are definitionally equal.\n* `change t' at h` will change hypothesis `h : t` to have type `t'`, assuming\n  assuming `t` and `t'` are definitionally equal.\n</code>",
- "80":
  "<code class=\"docstring\">Step-wise reasoning over transitive relations.\n```\ncalc\n  a = b := pab\n  b = c := pbc\n  ...\n  y = z := pyz\n```\nproves `a = z` from the given step-wise proofs. `=` can be replaced with any\nrelation implementing the typeclass `Trans`. Instead of repeating the right-\nhand sides, subsequent left-hand sides can be replaced with `_`.\n```\ncalc\n  a = b := pab\n  _ = c := pbc\n  ...\n  _ = z := pyz\n```\nIt is also possible to write the *first* relation as `&lt;lhs&gt;\\n  _ = &lt;rhs&gt; :=\n&lt;proof&gt;`. This is useful for aligning relation symbols, especially on longer:\nidentifiers:\n```\ncalc abc\n  _ = bce := pabce\n  _ = cef := pbcef\n  ...\n  _ = xyz := pwxyz\n```\n\n`calc` works as a term, as a tactic or as a `conv` tactic.\n\nSee [Theorem Proving in Lean 4][tpil4] for more information.\n\n[tpil4]: https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#calculational-proofs\n</code>",
+ "86":
+ "<code>add_mul.{v} {R : Type v} [Mul R] [Add R] [RightDistribClass R] (a b c : R) : (a + b) * c = a * c + b * c</code><span class=\"sep\"></span><code class=\"docstring\">**Alias** of `right_distrib`.</code>",
+ "85":
+ "<code>one_mul.{u} {M : Type u} [MulOneClass M] (a : M) : 1 * a = a</code>",
+ "84":
+ "<code class=\"docstring\">`nth_rewrite` is a variant of `rewrite` that only changes the `n₁, ..., nₖ`ᵗʰ _occurrence_ of\nthe expression to be rewritten. `nth_rewrite n₁ ... nₖ [eq₁, eq₂,..., eqₘ]` will rewrite the\n`n₁, ..., nₖ`ᵗʰ _occurrence_ of each of the `m` equalities `eqᵢ`in that order. Occurrences are\ncounted beginning with `1` in order of precedence.\n\nFor example,\n```lean\nexample (h : a = 1) : a + a + a + a + a = 5 := by\n  nth_rewrite 2 3 [h]\n/-\na: ℕ\nh: a = 1\n⊢ a + 1 + 1 + a + a = 5\n-/\n```\nNotice that the second occurrence of `a` from the left has been rewritten by `nth_rewrite`.\n\nTo understand the importance of order of precedence, consider the example below\n```lean\nexample (a b c : Nat) : (a + b) + c = (b + a) + c := by\n  nth_rewrite 2 [Nat.add_comm] -- ⊢ (b + a) + c = (b + a) + c\n```\nHere, although the occurrence parameter is `2`, `(a + b)` is rewritten to `(b + a)`. This happens\nbecause in order of precedence, the first occurrence of `_ + _` is the one that adds `a + b` to `c`.\nThe occurrence in `a + b` counts as the second occurrence.\n\nIf a term `t` is introduced by rewriting with `eqᵢ`, then this instance of `t` will be counted as an\n_occurrence_ of `t` for all subsequent rewrites of `t` with `eqⱼ` for `j &gt; i`. This behaviour is\nillustrated by the example below\n```lean\nexample (h : a = a + b) : a + a + a + a + a = 0 := by\n  nth_rewrite 3 [h, h]\n/-\na b: ℕ\nh: a = a + b\n⊢ a + a + (a + b + b) + a + a = 0\n-/\n```\nHere, the first `nth_rewrite` with `h` introduces an additional occurrence of `a` in the goal.\nThat is, the goal state after the first rewrite looks like below\n```lean\n/-\na b: ℕ\nh: a = a + b\n⊢ a + a + (a + b) + a + a = 0\n-/\n```\nThis new instance of `a` also turns out to be the third _occurrence_ of `a`.  Therefore,\nthe next `nth_rewrite` with `h` rewrites this `a`.\n</code>",
+ "83": "<code>n + n = 2 * n</code>",
+ "82":
+ "<code class=\"docstring\">`by_cases (h :)? p` splits the main goal into two cases, assuming `h : p` in the first branch, and `h : ¬ p` in the second branch.\n</code>",
+ "81": "<code>¬P → Q</code>",
+ "80":
+ "<code>True : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`True` is a proposition and has only an introduction rule, `True.intro : True`.\nIn other words, `True` is simply true, and has a canonical proof, `True.intro`\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n</code>",
  "8":
  "<code>Set.{u} (α : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">A set is a collection of elements of some type `α`.\n\nAlthough `Set` is defined as `α → Prop`, this is an implementation detail which should not be\nrelied on. Instead, `setOf` and membership of a set (`∈`) should be used to convert between sets\nand predicates.\n</code>",
- "79": "<code>¬P</code>",
- "78":
- "<code class=\"docstring\">`by_cases (h :)? p` splits the main goal into two cases, assuming `h : p` in the first branch, and `h : ¬ p` in the second branch.\n</code>",
- "77":
- "<code>Not (a : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Not p`, or `¬p`, is the negation of `p`. It is defined to be `p → False`,\nso if your goal is `¬p` you can use `intro h` to turn the goal into\n`h : p ⊢ False`, and if you have `hn : ¬p` and `h : p` then `hn h : False`\nand `(hn h).elim` will prove anything.\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n</code>",
- "76": "<code>¬P → Q</code>",
- "75":
- "<code>True : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`True` is a proposition and has only an introduction rule, `True.intro : True`.\nIn other words, `True` is simply true, and has a canonical proof, `True.intro`\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n</code>",
- "74":
+ "79":
  "<code>bool.{u, v} {β : Type u} {α : Type v} [ToBool β] (f t : α) (b : β) : α</code>",
- "73":
+ "78":
  "<code>Bool.false : Bool</code><span class=\"sep\"></span><code class=\"docstring\">The boolean value `false`, not to be confused with the proposition `False`. </code>",
- "72":
+ "77":
  "<code>Bool.true : Bool</code><span class=\"sep\"></span><code class=\"docstring\">The boolean value `true`, not to be confused with the proposition `True`. </code>",
- "71":
+ "76":
  "<code>Bool : Type</code><span class=\"sep\"></span><code class=\"docstring\">`Bool` is the type of boolean values, `true` and `false`. Classically,\nthis is equivalent to `Prop` (the type of propositions), but the distinction\nis important for programming, because values of type `Prop` are erased in the\ncode generator, while `Bool` corresponds to the type called `bool` or `boolean`\nin most programming languages.\n</code>",
- "70":
+ "75":
  "<code class=\"docstring\">`assumption` tries to solve the main goal using a hypothesis of compatible type, or else fails.\nNote also the `‹t›` term notation, which is a shorthand for `show t by assumption`.\n</code>",
- "7": "<code>Set ℝ</code>",
- "69":
+ "74":
  "<code class=\"docstring\">If the main goal's target type is an inductive type, `constructor` solves it with\nthe first matching constructor, or else fails.\n</code>",
- "68": "<code>Nat.zero_lt_two : 0 &lt; 2</code>",
- "67": "<code>∀ (k : ℕ), k ≤ 2 * k</code>",
- "66":
+ "73": "<code>Nat.zero_lt_two : 0 &lt; 2</code>",
+ "72": "<code>∀ (k : ℕ), k ≤ 2 * k</code>",
+ "71":
  "<code>le_trans.{u_1} {α : Type u_1} [Preorder α] {a b c : α} : a ≤ b → b ≤ c → a ≤ c</code><span class=\"sep\"></span><code class=\"docstring\">The relation `≤` on a preorder is transitive. </code>",
- "65":
+ "70":
  "<code>Nat.le_mul_of_pos_left {n : ℕ} (m : ℕ) (h : 0 &lt; n) : m ≤ n * m</code>",
- "64": "<code>n ≤ n * n</code>",
- "63":
+ "7": "<code>Set ℝ</code>",
+ "69": "<code>n ≤ n * n</code>",
+ "68":
  "<code>LE.le.{u} {α : Type u} [self : LE α] : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The less-equal relation: `x ≤ y` </code>",
- "62": "<code>0 &lt; n</code>",
- "61": "<code>Sort ?u.37</code>",
- "60": "<code>Sort ?u.31</code>",
+ "67": "<code>0 &lt; n</code>",
+ "66": "<code>Sort ?u.37</code>",
+ "65": "<code>Sort ?u.31</code>",
+ "64": "<code>Sort ?u.27</code>",
+ "63": "<code>P → Q → R</code>",
+ "62": "<code>Nat.lt_of_succ_le {n m : ℕ} (h : n.succ ≤ m) : n &lt; m</code>",
+ "61":
+ "<code>HPow.hPow.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HPow α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a ^ b` computes `a` to the power of `b`.\nThe meaning of this notation is type-dependent. </code>",
+ "60":
+ "<code class=\"docstring\">This tactic applies to a goal whose target has the form `x ~ x`,\nwhere `~` is equality, heterogeneous equality or any relation that\nhas a reflexivity lemma tagged with the attribute @[refl].\n</code>",
  "6":
  "<code class=\"docstring\">`exact e` closes the main goal if its target type matches that of `e`.\n</code>",
- "59": "<code>Sort ?u.27</code>",
- "58": "<code>P → Q → R</code>",
- "57": "<code>Nat.lt_of_succ_le {n m : ℕ} (h : n.succ ≤ m) : n &lt; m</code>",
- "56":
- "<code>HPow.hPow.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HPow α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a ^ b` computes `a` to the power of `b`.\nThe meaning of this notation is type-dependent. </code>",
- "55":
- "<code class=\"docstring\">This tactic applies to a goal whose target has the form `x ~ x`,\nwhere `~` is equality, heterogeneous equality or any relation that\nhas a reflexivity lemma tagged with the attribute @[refl].\n</code>",
- "54":
+ "59":
  "<code>Exists.intro.{u} {α : Sort u} {p : α → Prop} (w : α) (h : p w) : Exists p</code><span class=\"sep\"></span><code class=\"docstring\">Existential introduction. If `a : α` and `h : p a`,\nthen `⟨a, h⟩` is a proof that `∃ x : α, p x`. </code>",
- "53":
+ "58":
  "<code class=\"docstring\">`refine e` behaves like `exact e`, except that named (`?x`) or unnamed (`?_`)\nholes in `e` that are not solved by unification with the main goal's target type\nare converted into new goals, using the hole's name, if any, as the goal case name.\n</code>",
- "52":
+ "57":
  "<code class=\"docstring\">Tactic for evaluating expressions in *commutative* (semi)rings, allowing for variables in the\nexponent. If the goal is not appropriate for `ring` (e.g. not an equality) `ring_nf` will be\nsuggested.\n\n* `ring!` will use a more aggressive reducibility setting to determine equality of atoms.\n* `ring1` fails if the target is not an equality.\n\nFor example:\n```\nexample (n : ℕ) (m : ℤ) : 2^(n+1) * m = 2 * 2^n * m := by ring\nexample (a b : ℤ) (n : ℕ) : (a + b)^(n + 2) = (a^2 + b^2 + a * b + b * a) * (a + b)^n := by ring\nexample (x y : ℕ) : x + id y = y + id x := by ring!\nexample (x : ℕ) (h : x * 2 &gt; 5): x + x &gt; 5 := by ring; assumption -- suggests ring_nf\n```\n</code>",
- "51":
+ "56":
  "<code class=\"docstring\">`use e₁, e₂, ⋯` is similar to `exists`, but unlike `exists` it is equivalent to applying the tactic\n`refine ⟨e₁, e₂, ⋯, ?_, ⋯, ?_⟩` with any number of placeholders (rather than just one) and\nthen trying to close goals associated to the placeholders with a configurable discharger (rather\nthan just `try trivial`).\n\nExamples:\n\n```lean\nexample : ∃ x : Nat, x = x := by use 42\n\nexample : ∃ x : Nat, ∃ y : Nat, x = y := by use 42, 42\n\nexample : ∃ x : String × String, x.1 = x.2 := by use (\"forty-two\", \"forty-two\")\n```\n\n`use! e₁, e₂, ⋯` is similar but it applies constructors everywhere rather than just for\ngoals that correspond to the last argument of a constructor. This gives the effect that\nnested constructors are being flattened out, with the supplied values being used along the\nleaves and nodes of the tree of constructors.\nWith `use!` one can feed in each `42` one at a time:\n\n```lean\nexample : ∃ p : Nat × Nat, p.1 = p.2 := by use! 42, 42\n\nexample : ∃ p : Nat × Nat, p.1 = p.2 := by use! (42, 42)\n```\n\nThe second line makes use of the fact that `use!` tries refining with the argument before\napplying a constructor. Also note that `use`/`use!` by default uses a tactic\ncalled `use_discharger` to discharge goals, so `use! 42` will close the goal in this example since\n`use_discharger` applies `rfl`, which as a consequence solves for the other `Nat` metavariable.\n\nThese tactics take an optional discharger to handle remaining explicit `Prop` constructor arguments.\nBy default it is `use (discharger := try with_reducible use_discharger) e₁, e₂, ⋯`.\nTo turn off the discharger and keep all goals, use `(discharger := skip)`.\nTo allow \"heavy refls\", use `(discharger := try use_discharger)`.\n</code>",
- "50":
+ "55":
  "<code class=\"docstring\">The `simp` tactic uses lemmas and hypotheses to simplify the main goal target or\nnon-dependent hypotheses. It has many variants:\n- `simp` simplifies the main goal target using lemmas tagged with the attribute `[simp]`.\n- `simp [h₁, h₂, ..., hₙ]` simplifies the main goal target using the lemmas tagged\n  with the attribute `[simp]` and the given `hᵢ`'s, where the `hᵢ`'s are expressions.-\n- If an `hᵢ` is a defined constant `f`, then `f` is unfolded. If `f` has equational lemmas associated\n  with it (and is not a projection or a `reducible` definition), these are used to rewrite with `f`.\n- `simp [*]` simplifies the main goal target using the lemmas tagged with the\n  attribute `[simp]` and all hypotheses.\n- `simp only [h₁, h₂, ..., hₙ]` is like `simp [h₁, h₂, ..., hₙ]` but does not use `[simp]` lemmas.\n- `simp [-id₁, ..., -idₙ]` simplifies the main goal target using the lemmas tagged\n  with the attribute `[simp]`, but removes the ones named `idᵢ`.\n- `simp at h₁ h₂ ... hₙ` simplifies the hypotheses `h₁ : T₁` ... `hₙ : Tₙ`. If\n  the target or another hypothesis depends on `hᵢ`, a new simplified hypothesis\n  `hᵢ` is introduced, but the old one remains in the local context.\n- `simp at *` simplifies all the hypotheses and the target.\n- `simp [*] at *` simplifies target and all (propositional) hypotheses using the\n  other hypotheses.\n</code>",
+ "54": "<code>n = k + k</code>",
+ "53":
+ "<code class=\"docstring\">The `obtain` tactic is a combination of `have` and `rcases`. See `rcases` for\na description of supported patterns.\n\n```lean\nobtain ⟨patt⟩ : type := proof\n```\nis equivalent to\n```lean\nhave h : type := proof\nrcases h with ⟨patt⟩\n```\n\nIf `⟨patt⟩` is omitted, `rcases` will try to infer the pattern.\n\nIf `type` is omitted, `:= proof` is required.\n</code>",
+ "52": "<code>∃ n, Even n</code>",
+ "51":
+ "<code class=\"docstring\">The `have` tactic is for adding hypotheses to the local context of the main goal.\n* `have h : t := e` adds the hypothesis `h : t` if `e` is a term of type `t`.\n* `have h := e` uses the type of `e` for `t`.\n* `have : t := e` and `have := e` use `this` for the name of the hypothesis.\n* `have pat := e` for a pattern `pat` is equivalent to `match e with | pat =&gt; _`,\n  where `_` stands for the tactics that follow this one.\n  It is convenient for types that have only one applicable constructor.\n  For example, given `h : p ∧ q ∧ r`, `have ⟨h₁, h₂, h₃⟩ := h` produces the\n  hypotheses `h₁ : p`, `h₂ : q`, and `h₃ : r`.\n</code>",
+ "50":
+ "<code>HMul.hMul.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HMul α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a * b` computes the product of `a` and `b`.\nThe meaning of this notation is type-dependent. </code>",
  "5":
  "<code class=\"docstring\">`by tac` constructs a term of the expected type by running the tactic(s) `tac`. </code>",
- "49": "<code>n = k + k</code>",
- "48":
- "<code>Nat : Type</code><span class=\"sep\"></span><code class=\"docstring\">The type of natural numbers, starting at zero. It is defined as an\ninductive type freely generated by \"zero is a natural number\" and\n\"the successor of a natural number is a natural number\".\n\nYou can prove a theorem `P n` about `n : Nat` by `induction n`, which will\nexpect a proof of the theorem for `P 0`, and a proof of `P (succ i)` assuming\na proof of `P i`. The same method also works to define functions by recursion\non natural numbers: induction and recursion are two expressions of the same\noperation from Lean's point of view.\n\n```\nopen Nat\nexample (n : Nat) : n &lt; succ n := by\n  induction n with\n  | zero =&gt;\n    show 0 &lt; 1\n    decide\n  | succ i ih =&gt; -- ih : i &lt; succ i\n    show succ i &lt; succ (succ i)\n    exact Nat.succ_lt_succ ih\n```\n\nThis type is special-cased by both the kernel and the compiler:\n* The type of expressions contains \"`Nat` literals\" as a primitive constructor,\n  and the kernel knows how to reduce zero/succ expressions to nat literals.\n* If implemented naively, this type would represent a numeral `n` in unary as a\n  linked list with `n` links, which is horribly inefficient. Instead, the\n  runtime itself has a special representation for `Nat` which stores numbers up\n  to 2^63 directly and larger numbers use an arbitrary precision \"bignum\"\n  library (usually [GMP](https://gmplib.org/)).\n</code>",
- "47":
- "<code class=\"docstring\">The `obtain` tactic is a combination of `have` and `rcases`. See `rcases` for\na description of supported patterns.\n\n```lean\nobtain ⟨patt⟩ : type := proof\n```\nis equivalent to\n```lean\nhave h : type := proof\nrcases h with ⟨patt⟩\n```\n\nIf `⟨patt⟩` is omitted, `rcases` will try to infer the pattern.\n\nIf `type` is omitted, `:= proof` is required.\n</code>",
- "46": "<code>∃ n, Even n</code>",
- "45":
- "<code class=\"docstring\">The `have` tactic is for adding hypotheses to the local context of the main goal.\n* `have h : t := e` adds the hypothesis `h : t` if `e` is a term of type `t`.\n* `have h := e` uses the type of `e` for `t`.\n* `have : t := e` and `have := e` use `this` for the name of the hypothesis.\n* `have pat := e` for a pattern `pat` is equivalent to `match e with | pat =&gt; _`,\n  where `_` stands for the tactics that follow this one.\n  It is convenient for types that have only one applicable constructor.\n  For example, given `h : p ∧ q ∧ r`, `have ⟨h₁, h₂, h₃⟩ := h` produces the\n  hypotheses `h₁ : p`, `h₂ : q`, and `h₃ : r`.\n</code>",
- "44":
- "<code>HMul.hMul.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HMul α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a * b` computes the product of `a` and `b`.\nThe meaning of this notation is type-dependent. </code>",
- "43":
+ "49":
  "<code class=\"docstring\">Searches environment for definitions or theorems that can refine the goal using `apply`\nwith conditions resolved when possible with `solve_by_elim`.\n\nThe optional `using` clause provides identifiers in the local context that must be\nused when closing the goal.\n</code>",
- "42":
+ "48":
  "<code class=\"docstring\">`simp?` takes the same arguments as `simp`, but reports an equivalent call to `simp only`\nthat would be sufficient to close the goal. This is useful for reducing the size of the simp\nset in a local invocation to speed up processing.\n```\nexample (x : Nat) : (if True then x + 2 else 3) = x + 2 := by\n  simp? -- prints \"Try this: simp only [ite_true]\"\n```\n\nThis command can also be used in `simp_all` and `dsimp`.\n</code>",
- "41":
+ "47":
  "<code>LT.lt.{u} {α : Type u} [self : LT α] : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The less-than relation: `x &lt; y` </code>",
- "40":
+ "46":
  "<code class=\"docstring\">Location specifications are used by many tactics that can operate on either the\nhypotheses or the goal. It can have one of the forms:\n* 'empty' is not actually present in this syntax, but most tactics use\n  `(location)?` matchers. It means to target the goal only.\n* `at h₁ ... hₙ`: target the hypotheses `h₁`, ..., `hₙ`\n* `at h₁ h₂ ⊢`: target the hypotheses `h₁` and `h₂`, and the goal\n* `at *`: target all hypotheses and the goal\n</code>",
+ "45":
+ "<code class=\"docstring\">`rw` is like `rewrite`, but also tries to close the goal by \"cheap\" (reducible) `rfl` afterwards.\n</code>",
+ "44":
+ "<code>Iff (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">If and only if, or logical bi-implication. `a ↔ b` means that `a` implies `b` and vice versa.\nBy `propext`, this implies that `a` and `b` are equal and hence any expression involving `a`\nis equivalent to the corresponding expression with `b` instead.\n</code>",
+ "43": "<code>P ↔ Q</code>",
+ "42": "<code>Q</code>",
+ "41": "<code>Sort ?u.28</code>",
+ "40": "<code>Sort ?u.24</code>",
  "4":
  "<code>False.elim.{u} {C : Sort u} (h : False) : C</code><span class=\"sep\"></span><code class=\"docstring\">`False.elim : False → C` says that from `False`, any desired proposition\n`C` holds. Also known as ex falso quodlibet (EFQ) or the principle of explosion.\n\nThe target type is actually `C : Sort u` which means it works for both\npropositions and types. When executed, this acts like an \"unreachable\"\ninstruction: it is **undefined behavior** to run, but it will probably print\n\"unreachable code\". (You would need to construct a proof of false to run it\nanyway, which you can only do using `sorry` or unsound axioms.)\n</code>",
- "39":
- "<code class=\"docstring\">`rw` is like `rewrite`, but also tries to close the goal by \"cheap\" (reducible) `rfl` afterwards.\n</code>",
- "38":
- "<code>Iff (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">If and only if, or logical bi-implication. `a ↔ b` means that `a` implies `b` and vice versa.\nBy `propext`, this implies that `a` and `b` are equal and hence any expression involving `a`\nis equivalent to the corresponding expression with `b` instead.\n</code>",
- "37": "<code>P ↔ Q</code>",
- "36": "<code>Q</code>",
- "35":
- "<code class=\"docstring\">`apply e` tries to match the current goal against the conclusion of `e`'s type.\nIf it succeeds, then the tactic returns as many subgoals as the number of premises that\nhave not been fixed by type inference or type class resolution.\nNon-dependent premises are added before dependent ones.\n\nThe `apply` tactic uses higher-order pattern matching, type class resolution,\nand first-order unification with dependent types.\n</code>",
- "34": "<code>Sort ?u.28</code>",
- "33": "<code>Sort ?u.24</code>",
- "32": "<code>Sort ?u.23</code>",
- "31": "<code>Sort u_3</code>",
- "30": "<code>Q → R</code>",
+ "39": "<code>Sort ?u.23</code>",
+ "38": "<code>Sort u_3</code>",
+ "37": "<code>Q → R</code>",
+ "36": "<code>Sort u_2</code>",
+ "35": "<code>P → Q</code>",
+ "34": "<code>Sort ?u.7</code>",
+ "33": "<code>Sort u_1</code>",
+ "32":
+ "<code class=\"docstring\">The `sorry` tactic is a temporary placeholder for an incomplete tactic proof,\nclosing the main goal using `exact sorry`.\n\nThis is intended for stubbing-out incomplete parts of a proof while still having a syntactically correct proof skeleton.\nLean will give a warning whenever a proof uses `sorry`, so you aren't likely to miss it,\nbut you can double check if a theorem depends on `sorry` by looking for `sorryAx` in the output\nof the `#print axioms my_thm` command, the axiom used by the implementation of `sorry`.\n</code>",
+ "31":
+ "<code>HAdd.hAdd.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HAdd α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a + b` computes the sum of `a` and `b`.\nThe meaning of this notation is type-dependent. </code>",
+ "30":
+ "<code>And (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`And a b`, or `a ∧ b`, is the conjunction of propositions. It can be\nconstructed and destructed like a pair: if `ha : a` and `hb : b` then\n`⟨ha, hb⟩ : a ∧ b`, and if `h : a ∧ b` then `h.left : a` and `h.right : b`.\n</code>",
  "3":
  "<code>False : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`False` is the empty proposition. Thus, it has no introduction rules.\nIt represents a contradiction. `False` elimination rule, `False.rec`,\nexpresses the fact that anything follows from a contradiction.\nThis rule is sometimes called ex falso (short for ex falso sequitur quodlibet),\nor the principle of explosion.\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n</code>",
- "29": "<code>Sort u_2</code>",
- "28": "<code>P → Q</code>",
- "27": "<code>P</code>",
- "26": "<code>Sort ?u.7</code>",
- "25": "<code>Sort u_1</code>",
- "24":
- "<code class=\"docstring\">The `sorry` tactic is a temporary placeholder for an incomplete tactic proof,\nclosing the main goal using `exact sorry`.\n\nThis is intended for stubbing-out incomplete parts of a proof while still having a syntactically correct proof skeleton.\nLean will give a warning whenever a proof uses `sorry`, so you aren't likely to miss it,\nbut you can double check if a theorem depends on `sorry` by looking for `sorryAx` in the output\nof the `#print axioms my_thm` command, the axiom used by the implementation of `sorry`.\n</code>",
- "23":
- "<code>HAdd.hAdd.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HAdd α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a + b` computes the sum of `a` and `b`.\nThe meaning of this notation is type-dependent. </code>",
- "22":
- "<code>Eq.{u_1} {α : Sort u_1} : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The equality relation. It has one introduction rule, `Eq.refl`.\nWe use `a = b` as notation for `Eq a b`.\nA fundamental property of equality is that it is an equivalence relation.\n```\nvariable (α : Type) (a b c d : α)\nvariable (hab : a = b) (hcb : c = b) (hcd : c = d)\n\nexample : a = d :=\n  Eq.trans (Eq.trans hab (Eq.symm hcb)) hcd\n```\nEquality is much more than an equivalence relation, however. It has the important property that every assertion\nrespects the equivalence, in the sense that we can substitute equal expressions without changing the truth value.\nThat is, given `h1 : a = b` and `h2 : p a`, we can construct a proof for `p b` using substitution: `Eq.subst h1 h2`.\nExample:\n```\nexample (α : Type) (a b : α) (p : α → Prop)\n        (h1 : a = b) (h2 : p a) : p b :=\n  Eq.subst h1 h2\n\nexample (α : Type) (a b : α) (p : α → Prop)\n    (h1 : a = b) (h2 : p a) : p b :=\n  h1 ▸ h2\n```\nThe triangle in the second presentation is a macro built on top of `Eq.subst` and `Eq.symm`, and you can enter it by typing `\\t`.\nFor more information: [Equality](https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#equality)\n</code>",
- "21":
- "<code>And (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`And a b`, or `a ∧ b`, is the conjunction of propositions. It can be\nconstructed and destructed like a pair: if `ha : a` and `hb : b` then\n`⟨ha, hb⟩ : a ∧ b`, and if `h : a ∧ b` then `h.left : a` and `h.right : b`.\n</code>",
- "20":
+ "29":
  "<code>Prime.{u_1} {M : Type u_1} [CommMonoidWithZero M] (p : M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">An element `p` of a commutative monoid with zero (e.g., a ring) is called *prime*,\nif it's not zero, not a unit, and `p ∣ a * b → p ∣ a ∨ p ∣ b` for all `a`, `b`. </code>",
+ "28":
+ "<code>Even.{u_2} {α : Type u_2} [Add α] (a : α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">An element `a` of a type `α` with addition satisfies `Even a` if `a = r + r`,\nfor some `r : α`.</code>",
+ "27": "<code>Even n</code>",
+ "26": "<code>n &gt; 2</code>",
+ "25":
+ "<code>goldbach (n : ℕ) (h₁ : n &gt; 2) (h₂ : Even n) : ∃ i j, Prime i ∧ Prime j ∧ n = i + j</code>",
+ "24":
+ "<code class=\"docstring\">`apply e` tries to match the current goal against the conclusion of `e`'s type.\nIf it succeeds, then the tactic returns as many subgoals as the number of premises that\nhave not been fixed by type inference or type class resolution.\nNon-dependent premises are added before dependent ones.\n\nThe `apply` tactic uses higher-order pattern matching, type class resolution,\nand first-order unification with dependent types.\n</code>",
+ "23":
+ "<code>Not (a : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Not p`, or `¬p`, is the negation of `p`. It is defined to be `p → False`,\nso if your goal is `¬p` you can use `intro h` to turn the goal into\n`h : p ⊢ False`, and if you have `hn : ¬p` and `h : p` then `hn h : False`\nand `(hn h).elim` will prove anything.\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n</code>",
+ "22": "<code>¬P</code>",
+ "21": "<code>P</code>",
+ "20":
+ "<code>Eq.{u_1} {α : Sort u_1} : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The equality relation. It has one introduction rule, `Eq.refl`.\nWe use `a = b` as notation for `Eq a b`.\nA fundamental property of equality is that it is an equivalence relation.\n```\nvariable (α : Type) (a b c d : α)\nvariable (hab : a = b) (hcb : c = b) (hcd : c = d)\n\nexample : a = d :=\n  Eq.trans (Eq.trans hab (Eq.symm hcb)) hcd\n```\nEquality is much more than an equivalence relation, however. It has the important property that every assertion\nrespects the equivalence, in the sense that we can substitute equal expressions without changing the truth value.\nThat is, given `h1 : a = b` and `h2 : p a`, we can construct a proof for `p b` using substitution: `Eq.subst h1 h2`.\nExample:\n```\nexample (α : Type) (a b : α) (p : α → Prop)\n        (h1 : a = b) (h2 : p a) : p b :=\n  Eq.subst h1 h2\n\nexample (α : Type) (a b : α) (p : α → Prop)\n    (h1 : a = b) (h2 : p a) : p b :=\n  h1 ▸ h2\n```\nThe triangle in the second presentation is a macro built on top of `Eq.subst` and `Eq.symm`, and you can enter it by typing `\\t`.\nFor more information: [Equality](https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#equality)\n</code>",
  "2": "<code>Prop</code>",
  "19":
- "<code>Even.{u_2} {α : Type u_2} [Add α] (a : α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">An element `a` of a type `α` with addition satisfies `Even a` if `a = r + r`,\nfor some `r : α`.</code>",
- "18": "<code>Even n</code>",
- "17": "<code>n &gt; 2</code>",
- "16":
- "<code>goldbach (n : ℕ) (h₁ : n &gt; 2) (h₂ : Even n) : ∃ i j, Prime i ∧ Prime j ∧ n = i + j</code>",
+ "<code>Nat : Type</code><span class=\"sep\"></span><code class=\"docstring\">The type of natural numbers, starting at zero. It is defined as an\ninductive type freely generated by \"zero is a natural number\" and\n\"the successor of a natural number is a natural number\".\n\nYou can prove a theorem `P n` about `n : Nat` by `induction n`, which will\nexpect a proof of the theorem for `P 0`, and a proof of `P (succ i)` assuming\na proof of `P i`. The same method also works to define functions by recursion\non natural numbers: induction and recursion are two expressions of the same\noperation from Lean's point of view.\n\n```\nopen Nat\nexample (n : Nat) : n &lt; succ n := by\n  induction n with\n  | zero =&gt;\n    show 0 &lt; 1\n    decide\n  | succ i ih =&gt; -- ih : i &lt; succ i\n    show succ i &lt; succ (succ i)\n    exact Nat.succ_lt_succ ih\n```\n\nThis type is special-cased by both the kernel and the compiler:\n* The type of expressions contains \"`Nat` literals\" as a primitive constructor,\n  and the kernel knows how to reduce zero/succ expressions to nat literals.\n* If implemented naively, this type would represent a numeral `n` in unary as a\n  linked list with `n` links, which is horribly inefficient. Instead, the\n  runtime itself has a special representation for `Nat` which stores numbers up\n  to 2^63 directly and larger numbers use an arbitrary precision \"bignum\"\n  library (usually [GMP](https://gmplib.org/)).\n</code>",
+ "18": "<code>P x</code>",
+ "17": "<code>x = y</code>",
+ "16": "<code>ℕ → Prop</code>",
  "15":
  "<code class=\"docstring\">Introduces one or more hypotheses, optionally naming and/or pattern-matching them.\nFor each hypothesis to be introduced, the remaining main goal's target type must\nbe a `let` or function type.\n\n* `intro` by itself introduces one anonymous hypothesis, which can be accessed\n  by e.g. `assumption`.\n* `intro x y` introduces two hypotheses and names them. Individual hypotheses\n  can be anonymized via `_`, or matched against a pattern:\n  ```lean\n  -- ... ⊢ α × β → ...\n  intro (a, b)\n  -- ..., a : α, b : β ⊢ ...\n  ```\n* Alternatively, `intro` can be combined with pattern matching much like `fun`:\n  ```lean\n  intro\n  | n + 1, 0 =&gt; tac\n  | ...\n  ```\n</code>",
  "14":
  "<code>Membership.mem.{u, v} {α : outParam (Type u)} {γ : Type v} [self : Membership α γ] : γ → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The membership relation `a ∈ s : Prop` where `a : α`, `s : γ`. </code>",
+ "132":
+ "<code>div_two_lt_of_pos.{u_2} {α : Type u_2} [LinearOrderedSemifield α] {a : α} : 0 &lt; a → a / 2 &lt; a</code><span class=\"sep\"></span><code class=\"docstring\">**Alias** of the reverse direction of `half_lt_self_iff`.\n\n---\n\n**Alias** of the reverse direction of `half_lt_self_iff`.</code>",
+ "131":
+ "<code>half_pos.{u_2} {α : Type u_2} [LinearOrderedSemifield α] {a : α} (h : 0 &lt; a) : 0 &lt; a / 2</code>",
+ "130":
+ "<code>HDiv.hDiv.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HDiv α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a / b` computes the result of dividing `a` by `b`.\nThe meaning of this notation is type-dependent.\n* For most types like `Nat`, `Int`, `Rat`, `Real`, `a / 0` is defined to be `0`.\n* For `Nat`, `a / b` rounds downwards.\n* For `Int`, `a / b` rounds downwards if `b` is positive or upwards if `b` is negative.\n  It is implemented as `Int.ediv`, the unique function satisfying\n  `a % b + b * (a / b) = a` and `0 ≤ a % b &lt; natAbs b` for `b ≠ 0`.\n  Other rounding conventions are available using the functions\n  `Int.fdiv` (floor rounding) and `Int.tdiv` (truncation rounding).\n* For `Float`, `a / 0` follows the IEEE 754 semantics for division,\n  usually resulting in `inf` or `nan`. </code>",
  "13":
  "<code>HasSubset.Subset.{u} {α : Type u} [self : HasSubset α] : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">Subset relation: `a ⊆ b`  </code>",
+ "129": "<code>0 &lt; δ</code>",
+ "128": "<code>0 &lt; 0 → ∃ n, 1 &lt; n • 0</code>",
+ "127":
+ "<code>HSMul.hSMul.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HSMul α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a • b` computes the product of `a` and `b`.\nThe meaning of this notation is type-dependent, but it is intended to be used for left actions. </code>",
+ "126": "<code>0 &lt; ε</code>",
+ "125": "<code>∀ (ε : ℝ), 0 &lt; ε → ∃ n, 1 &lt; n • ε</code>",
+ "124": "<code>0 ≤ 0</code>",
+ "123": "<code>∀ (n : ℕ), 0 ≤ n</code>",
+ "122": "<code>p 0</code>",
+ "121":
+ "<code class=\"docstring\">The tactic `specialize h a₁ ... aₙ` works on local hypothesis `h`.\nThe premises of this hypothesis, either universal quantifications or\nnon-dependent implications, are instantiated by concrete terms coming\nfrom arguments `a₁` ... `aₙ`.\nThe tactic adds a new hypothesis with the same name `h := h a₁ ... aₙ`\nand tries to clear the previous one.\n</code>",
+ "120": "<code>∀ (n : ℕ), p n</code>",
  "12":
  "<code>Real : Type</code><span class=\"sep\"></span><code class=\"docstring\">The type `ℝ` of real numbers constructed as equivalence classes of Cauchy sequences of rational\nnumbers. </code>",
- "113": "<code>p 0</code>",
- "112":
- "<code class=\"docstring\">The tactic `specialize h a₁ ... aₙ` works on local hypothesis `h`.\nThe premises of this hypothesis, either universal quantifications or\nnon-dependent implications, are instantiated by concrete terms coming\nfrom arguments `a₁` ... `aₙ`.\nThe tactic adds a new hypothesis with the same name `h := h a₁ ... aₙ`\nand tries to clear the previous one.\n</code>",
- "111": "<code>∀ (n : ℕ), p n</code>",
- "110": "<code>nat</code>",
- "11": "<code>x ∈ s</code>",
- "109": "<code>nat.succ (n : nat) : nat</code>",
- "108": "<code>nat.zero : nat</code>",
- "107": "<code>nat : Type</code>",
- "106":
+ "119": "<code>nat</code>",
+ "118": "<code>nat.succ (n : nat) : nat</code>",
+ "117": "<code>nat.zero : nat</code>",
+ "116": "<code>nat : Type</code>",
+ "115":
  "<code class=\"docstring\">In Lean, every concrete type other than the universes\nand every type constructor other than dependent arrows\nis an instance of a general family of type constructions known as inductive types.\nIt is remarkable that it is possible to construct a substantial edifice of mathematics\nbased on nothing more than the type universes, dependent arrow types, and inductive types;\neverything else follows from those.\nIntuitively, an inductive type is built up from a specified list of constructors.\nFor example, `List α` is the list of elements of type `α`, and is defined as follows:\n```\ninductive List (α : Type u) where\n| nil\n| cons (head : α) (tail : List α)\n```\nA list of elements of type `α` is either the empty list, `nil`,\nor an element `head : α` followed by a list `tail : List α`.\nSee [Inductive types](https://lean-lang.org/theorem_proving_in_lean4/inductive_types.html)\nfor more information.\n</code>",
- "105":
- "<code>add_assoc.{u_1} {G : Type u_1} [AddSemigroup G] (a b c : G) : a + b + c = a + (b + c)</code>",
- "104": "<code>n = 0 + n</code>",
- "103":
+ "114": "<code>n = 0 + n</code>",
+ "113":
  "<code class=\"docstring\">After `with`, there is an optional tactic that runs on all branches, and\nthen a list of alternatives.\n</code>",
- "102":
+ "112":
  "<code class=\"docstring\">Assuming `x` is a variable in the local context with an inductive type,\n`induction x` applies induction on `x` to the main goal,\nproducing one goal for each constructor of the inductive type,\nin which the target is replaced by a general instance of that constructor\nand an inductive hypothesis is added for each recursive argument to the constructor.\nIf the type of an element in the local context depends on `x`,\nthat element is reverted and reintroduced afterward,\nso that the inductive hypothesis incorporates that hypothesis as well.\n\nFor example, given `n : Nat` and a goal with a hypothesis `h : P n` and target `Q n`,\n`induction n` produces one goal with hypothesis `h : P 0` and target `Q 0`,\nand one goal with hypotheses `h : P (Nat.succ a)` and `ih₁ : P a → Q a` and target `Q (Nat.succ a)`.\nHere the names `a` and `ih₁` are chosen automatically and are not accessible.\nYou can use `with` to provide the variables names for each constructor.\n- `induction e`, where `e` is an expression instead of a variable,\n  generalizes `e` in the goal, and then performs induction on the resulting variable.\n- `induction e using r` allows the user to specify the principle of induction that should be used.\n  Here `r` should be a term whose result type must be of the form `C t`,\n  where `C` is a bound variable and `t` is a (possibly empty) sequence of bound variables\n- `induction e generalizing z₁ ... zₙ`, where `z₁ ... zₙ` are variables in the local context,\n  generalizes over `z₁ ... zₙ` before applying the induction but then introduces them in each goal.\n  In other words, the net effect is that each inductive hypothesis is generalized.\n- Given `x : Nat`, `induction x with | zero =&gt; tac₁ | succ x' ih =&gt; tac₂`\n  uses tactic `tac₁` for the `zero` case, and `tac₂` for the `succ` case.\n</code>",
- "101":
+ "111":
  "<code>Nat.cast_nonneg'.{u_1} {α : Type u_1} [AddMonoidWithOne α] [PartialOrder α] [AddLeftMono α] [ZeroLEOneClass α] (n : ℕ) :\n  0 ≤ ↑n</code><span class=\"sep\"></span><code class=\"docstring\">See also `Nat.cast_nonneg`, specialised for an `OrderedSemiring`. </code>",
- "100":
+ "110":
  "<code class=\"docstring\">An extension of `linarith` with some preprocessing to allow it to solve some nonlinear arithmetic\nproblems. (Based on Coq's `nra` tactic.) See `linarith` for the available syntax of options,\nwhich are inherited by `nlinarith`; that is, `nlinarith!` and `nlinarith only [h1, h2]` all work as\nin `linarith`. The preprocessing is as follows:\n\n* For every subterm `a ^ 2` or `a * a` in a hypothesis or the goal,\n  the assumption `0 ≤ a ^ 2` or `0 ≤ a * a` is added to the context.\n* For every pair of hypotheses `a1 R1 b1`, `a2 R2 b2` in the context, `R1, R2 ∈ {&lt;, ≤, =}`,\n  the assumption `0 R' (b1 - a1) * (b2 - a2)` is added to the context (non-recursively),\n  where `R ∈ {&lt;, ≤, =}` is the appropriate comparison derived from `R1, R2`.\n</code>",
+ "11": "<code>x ∈ s</code>",
+ "109":
+ "<code>mul_le_mul_of_nonneg_left.{u_3} {α : Type u_3} {a b c : α} [Mul α] [Zero α] [Preorder α] [PosMulMono α] (h : b ≤ c)\n  (a0 : 0 ≤ a) : a * b ≤ a * c</code>",
+ "108":
+ "<code>GE.ge.{u} {α : Type u} [LE α] (a b : α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`a ≥ b` is an abbreviation for `b ≤ a`. </code>",
+ "107": "<code>0 = ↑d * 0</code>",
+ "106":
+ "<code>zero_le.{u} {α : Type u} [AddZeroClass α] [LE α] [CanonicallyOrderedAdd α] (a : α) : 0 ≤ a</code>",
+ "105": "<code>d ≥ 0</code>",
+ "104": "<code>False</code>",
+ "103":
+ "<code>Subtype.{u} {α : Sort u} (p : α → Prop) : Sort (max 1 u)</code><span class=\"sep\"></span><code class=\"docstring\">`Subtype p`, usually written as `{x : α // p x}`, is a type which\nrepresents all the elements `x : α` for which `p x` is true. It is structurally\na pair-like type, so if you have `x : α` and `h : p x` then\n`⟨x, h⟩ : {x // p x}`. An element `s : {x // p x}` will coerce to `α` but\nyou can also make it explicit using `s.1` or `s.val`.\n</code>",
+ "102":
+ "<code>mySubtype.mk.{u_1} {ℕ : Sort u_1} (P : ℕ → Prop) (n : ℕ) (hn : P n) : { m // P m }</code>",
+ "101":
+ "<code>And.intro {a b : Prop} (left : a) (right : b) : a ∧ b</code><span class=\"sep\"></span><code class=\"docstring\">`And.intro : a → b → a ∧ b` is the constructor for the And operation. </code>",
+ "100": "<code>R</code>",
  "10": "<code>ℝ</code>",
  "1": "<code>ℕ</code>",
  "0": "<code>f : ℕ → ℕ</code>"}

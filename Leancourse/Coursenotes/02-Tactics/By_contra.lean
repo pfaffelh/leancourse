@@ -30,6 +30,10 @@ The `by_contra` tactic provides a proof by contradiction. It is therefore assume
   + `h: ¬¬P` {br}[] `hnegP: ¬P` {br}[] `⊢ False`
 :::
 
+**Remarks**
+
+This tactic is stronger than `exfalso`. After all, there the goal is only converted to `false` without adding a new hypothesis. With `by_contra`, the new goal is also `false`, but there is still a new hypothesis.
+
 ::::keepEnv
 :::example " "
 ```lean
@@ -40,7 +44,3 @@ example (P Q : Prop) (hP: P → Q) ( hP' : ¬P → Q) : Q := by
 ```
 :::
 ::::
-
-**Notes**
-
-This tactic is stronger than `exfalso`. After all, there the goal is only converted to `false` without adding a new hypothesis. With `by_contra`, the new goal is also `false`, but there is still a new hypothesis.

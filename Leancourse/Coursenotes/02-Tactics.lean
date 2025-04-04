@@ -38,7 +38,6 @@ import «Leancourse».Coursenotes.«02-Tactics».«Triv»
 import «Leancourse».Coursenotes.«02-Tactics».«Use»
 
 open Verso.Genre Manual
-open DemoTextbook.Exts
 
 set_option pp.rawOnError true
 

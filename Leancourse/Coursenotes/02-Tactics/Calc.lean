@@ -48,6 +48,18 @@ example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 := by
 
 However, this is much less readable.
 
+::::keepEnv
+:::example " "
+```lean
+example (P Q : Prop) (hP: P → Q) ( hP' : ¬P → Q) : Q := by
+  by_cases h : P
+  · exact hP h
+  · exact hP' h
+```
+:::
+::::
+
+
 **Notes**
 
 * The exact notation is important in `calc` mode.

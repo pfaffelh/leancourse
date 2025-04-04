@@ -12,6 +12,11 @@ set_option pp.rawOnError true
 tag := "clear"
 %%%
 
+**Summary:** With `clear h` the hypothesis `h` is removed from the goal state
+(forgotten).
+
+**Example**
+
 :::table (align := left) (header := true)
 * + Proof state
   + Tactic
@@ -20,11 +25,3 @@ tag := "clear"
   + `clear h`
   + `⊢ Q`
 :::
-
-**Summary:** With `clear h` the hypothesis `h` is removed from the goal state
-(forgotten).
-
-**Examples:**
-
-**Proof state** **Command** **New proof state**
------------------ ------------------- -----------------------

@@ -27,3 +27,12 @@ tag := "refine"
   + refine ⟨3, _, by norm_num⟩
   + ⊢ 3 > 0
 :::
+
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::

@@ -24,3 +24,12 @@ tag := "obtain"
   + obtain ⟨ m, hm ⟩ := h 27
   + f: ℕ → ℕ → Prop {br}[] h : ∀ (n : ℕ), ∃ (m : ℕ), f n m {br}[] m : ℕ {br}[] hm : f 27 m
 :::
+
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::

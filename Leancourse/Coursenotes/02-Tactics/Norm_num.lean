@@ -30,6 +30,15 @@ As long as there are no variables, `norm_num` can do calculations which involve 
   + **no goals**
 :::
 
-**Notes**
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::
+
+**Remarks**
 
 `norm_num` knows about some more operations, e.g. absolute values; see also the second example.

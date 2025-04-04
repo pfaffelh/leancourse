@@ -33,6 +33,8 @@ tag := "apply"
 
 The `apply`-tactics works iteratively. This means that if `apply h` makes no progress, it uses the placeholder `_` and tries to make `apply h _`.
 
+::::keepEnv
+:::example " "
 ```lean
 example (hP : P) (hPQ : P → Q) (hPQR : P → Q → R) : R := by
   apply hPQR
@@ -50,6 +52,8 @@ example (n : ℕ) (hn : 0 < n) : n ≤ 2 * (n * n) := by
     exact Nat.le_mul_of_pos_left k Nat.zero_lt_two
   apply h₂ (n * n)
 ```
+:::
+::::
 
 **Remarks:**
 * `apply` works up to equality by definition. This can be seen in the example above, where `¬P ↔ (P → False)` is true by definition.

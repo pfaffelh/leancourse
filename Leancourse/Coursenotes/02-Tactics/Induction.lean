@@ -26,3 +26,12 @@ Inductive types allow the possibility of proving statements about them by means 
   + induction n with d hd
   + ⊢ 0 = 0 + 0 {br}[] hd : d = 0 + d {br}[] ⊢ d.succ = 0 + d.succ
 :::
+
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::

@@ -34,3 +34,12 @@ This tactic is related to `rw`. The difference is that you can specify the occur
 :::
 
 In the above example, Lean sees three terms of the form `0 + ?_`: Number 0 is on the left-hand side, for numbers 1 and 2, on the right side (because of the parenthesis `0 + 0 + n = (0 + 0) + n`),  the second = is checked first. To the left of it is `0 + 0`, which is by definition identical to `0`. applying `rw zero_add` here, the term is converted to `n`. For number 2, you see `0 + 0`, determine that it is of the desired form and convert it to `0`.
+
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::

@@ -78,3 +78,12 @@ The truth tables for `¬P`, `P ∧ Q` and `P ∨ Q` are as follows; if more term
 **Notes**
 
 The difference between `tauto` and `tauto!` is that in the latter tactic, the rule of the excluded middle is allowed.  The second example can therefore only be solved with `tauto!`, but not with `tauto`.
+
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::

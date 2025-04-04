@@ -37,7 +37,16 @@ If the goal is of the form `⊢ P → Q` or `∀ (n : ℕ), P n`, you can procee
   + P : ℕ → Prop {br}[] n : ℕ {br}[] hP: P n ⊢ Q
 :::
 
-**Notes**
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::
+
+**Remarks**
 
 * Several `intro` commands in a row are best combined. Furthermore,  `rintro` is a more flexible variant.
 * A reversal of `intro` is `revert`.

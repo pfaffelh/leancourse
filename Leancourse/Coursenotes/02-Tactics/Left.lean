@@ -46,7 +46,16 @@ notation `ℕ` := nat
 ```
 This means: The type `ℕ` is defined by the fact that `zero` is a term of this type, and that there is a function `succ : ℕ → ℕ`. Thus, in the second example, the input `left,` is closed because by definition `zero : ℕ` holds, so in particular there is a term of type `ℕ`.
 
-**Notes:**
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::
+
+**Remarks:**
 
 * See also `right,` for the equivalent tactic, which is `apply h` for `h : Q → P ∨ Q`.
 * As in the second example, `left,` can always be applied when dealing with an inductive type with two constructors (such like `ℕ`).

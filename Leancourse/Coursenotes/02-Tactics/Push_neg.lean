@@ -37,6 +37,14 @@ tag := "push_neg"
   + P : X → Prop {br}[] ⊢ ∀ (x : X), ¬P x
 :::
 
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::
 
 **Notes:**
 

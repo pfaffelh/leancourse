@@ -12,10 +12,9 @@ set_option pp.rawOnError true
 tag := "exact"
 %%%
 
-**Summary:** If the goal can be achieved with a single command, then it can be achieved with the `exact` tactic. Like many other tactics, `exact` also works with terms that are defined the same.
+**Summary:** If the goal can be closed with a single command, then it can be closed with the `exact` tactic. Like many other tactics, `exact` also works with terms that are definitionally equal.
 
 **Examples:**
-
 
 :::table (align := left) (header := true)
 * + Proof state
@@ -29,12 +28,17 @@ tag := "exact"
   + **no goals**
 :::
 
+**Remarks:**
 
+* The related tyctics `exact?` searches for terms which close the goal; see [`apply?`](apply?).
+* If the proof consists of a single call of `exact`, it is easy to translate it to `term` mode; see [easy proofs in term mode](term).
+* In the third example, note the order in which the two hypotheses `hP` and `hnP` are applied. The first hypothesis after `exact` is always the one whose right side matches the goal. If the goal requires further input, it is appended afterwards.
+
+::::keepEnv
+:::example " "
 ```lean
-example (P : Prop) : False → P := by
-  exact False.elim
+example (P : Prop) (h : False) : P := by
+  exact False.elim h
 ```
-
-**Notes:**
-
-In the third example, note the order in which the two hapotheses `hP` and `hnP` are applied. The first hypothesis after `exact` is always the one whose right side matches the goal. If the goal requires further input, it is appended afterwards.
+:::
+::::

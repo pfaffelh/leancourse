@@ -33,7 +33,16 @@ example (p : ℕ → Prop) (hp : ∀ (n : ℕ), p n) :
   exact hp
 ```
 
-**Notes**
+**Remarks**
 
 * Just as with `use`, you have to be careful that the goal remains provable.
 * If you want to use two values of the hypothesis `h`, then `let h' := h` first provides a duplication of the hypothesis, so that you can then apply `specialize` to `h` and `h'`.
+
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::

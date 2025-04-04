@@ -1,13 +1,11 @@
-import Lean
 import VersoManual
-import DemoTextbook
-import UsersGuide.Markup
+import Manual.Meta
 import Manual.Meta.Table
 import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
-open DemoTextbook.Exts
+open Lean.MessageSeverity
 open MyDef
 
 set_option pp.rawOnError true
@@ -30,17 +28,16 @@ tag := "apply?"
   + **no goals** {br}[] Try this: `exact lt_trans h₁ h₂`
 :::
 
-```lean
+::::keepEnv
+:::example " "
+```lean (name := output)
 example (n : ℕ) : 2 * n = n + n := by
   apply?
 ```
 
-```lean
-example (n : ℕ) : n ^ 2 ≤ 2 ^ n := by
-  apply? -- gives a list of results which are not useful
+```leanOutput output (severity := information)
+Try this: exact Nat.two_mul n
 ```
 
-**Notes**
-
-The tactic `suggest` is similar and also works if
-the goal cannot be closed.
+:::
+::::

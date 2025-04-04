@@ -28,7 +28,16 @@ tag := "ring"
   + **no goals**
 :::
 
-**Notes:**
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::
+
+**Remarks:**
 
 * The second example works even though `ℕ` is not a ring (but only a half-ring). It would also work with `n : ℝ` (since `ℝ` has more calculation rules than `ℕ`).
 * `ring` is only used to close the goal.

@@ -28,7 +28,7 @@ tag := "simp"
   + h : n = m {br}[] ⊢ P
 :::
 
-**Notes:**
+**Remarks:**
 
 If you want to know which lemmas were used, try `simp?`. This provides some clues.
 
@@ -41,3 +41,12 @@ If you want to know which lemmas were used, try `simp?`. This provides some clue
   + **no goals** 🎉 {br}[] Try this: {br}[]
   `simp only add_zero, eq_self_iff_true`
 :::
+
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::

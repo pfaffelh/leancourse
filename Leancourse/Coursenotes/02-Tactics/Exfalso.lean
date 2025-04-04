@@ -28,6 +28,16 @@ tag := "exfalso"
   + hP : P {br}[] hnP: ¬P {br}[] ⊢ false
 :::
 
-**Notes:**
+**Remarks:**
 
-If you use this tactic, you leave the realm of constructive mathematics. (This dispenses with the rule of the excluded middle.)
+* If you use this tactic, you leave the realm of constructive mathematics. (This dispenses with the rule of the excluded middle.)
+* `exfalso` is the same as `apply False.elim`; see the examples for {ref "exact"}[`exact`].
+
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::

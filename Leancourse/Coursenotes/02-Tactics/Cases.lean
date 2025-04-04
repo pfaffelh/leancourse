@@ -42,6 +42,16 @@ tag := "cases"
 n.succ = k + 1)
 :::
 
+::::keepEnv
+:::example " "
+```lean
+example (P Q : Prop) (hP: P → Q) ( hP' : ¬P → Q) : Q := by
+  by_cases h : P
+  · exact hP h
+  · exact hP' h
+```
+:::
+::::
 
 **Notes:**
 

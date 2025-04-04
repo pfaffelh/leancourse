@@ -29,6 +29,8 @@ If a hypothesis is identical to the goal, `assumption` closes the goal.
   + **no goals**
 :::
 
+::::keepEnv
+:::example " "
 ```lean
 example (hP : P) (hQ : Q) : P ∧ Q := by
   constructor <;> assumption
@@ -38,6 +40,8 @@ example (hP : P) (hQ : Q) : P ∧ Q := by
 example (P : Prop) (hP : P) : P := by
   assumption
 ```
+:::
+::::
 
 **Notes**
 

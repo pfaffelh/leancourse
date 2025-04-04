@@ -40,3 +40,12 @@ tag := "use"
   + use 8, 2
   + `⊢ 8 * 2 = 16`
 :::
+
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::

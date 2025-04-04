@@ -642,9 +642,7 @@
   {"nat.zero": [{"id": "nat___succ", "data": null, "address": "/"}],
    "nat.succ": [{"id": "nat___succ", "data": null, "address": "/"}],
    "nat": [{"id": "nat___succ", "data": null, "address": "/"}],
-   "myBool.True": [{"id": "myBool___False", "data": null, "address": "/"}],
-   "myBool.False": [{"id": "myBool___False", "data": null, "address": "/"}],
-   "myBool": [{"id": "myBool___False", "data": null, "address": "/"}],
+   "mySubtype.mk": [{"id": "mySubtype___mk", "data": null, "address": "/"}],
    "goldbach": [{"id": "goldbach", "data": null, "address": "/"}],
    "f": [{"id": "f", "data": null, "address": "/"}]}},
  "Verso.Genre.Manual.doc.tech":
@@ -664,7 +662,10 @@
  "Verso.Genre.Manual.doc":
  {"title": "Lean constant reference",
   "description": "Documentation for Lean constants",
-  "contents": {}},
+  "contents":
+  {"Bool.true": [{"id": "Bool___false", "data": null, "address": "/"}],
+   "Bool.false": [{"id": "Bool___false", "data": null, "address": "/"}],
+   "Bool": [{"id": "Bool___false", "data": null, "address": "/"}]}},
  "Manual.parserAlias":
  {"title": "Parser Alias Documentation",
   "description": "Detailed descriptions of parser aliases",

@@ -40,6 +40,14 @@ tag := "rcases"
   + `n m : ℕ` {br}[] `h1 : 0 ≤ m` {br}[] `h2 : m < n`  {br}[] `⊢ 1 < n`
 :::
 
+::::keepEnv
+:::example " "
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+:::
+::::
 
 **Notes:**
 

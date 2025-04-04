@@ -78,3 +78,46 @@ gt_iff_lt : ∀ {α : Type u_1} [_inst_1 : has_lt α] {a b : α}, a > b ↔ b < 
 ```
 
 When this result is applied, the statements in `{...}` and `[...]` are added by `Lean` itself. The statements in `{...}` depend on the type of the objects that have to be given, and can therefore be inferred. (Above, when applying `gt_iff_lt`, the variables `a` and `b` have to be given.) Therefore, their type is also known, and one does not have to `α` is not explicitly specified. Since the application is made to a concrete `α` (for example, `ℕ`), and `Lean` knows a lot about the natural numbers, the type class system can look up many properties of `ℕ`, and also finds that `has_lt ℕ` holds (i.e. on `ℕ` at least a partial order is defined).
+
+# Two abbreviations
+%%%
+tag := "abreviation"
+%%%
+
+
+|> und ▸
+
+# Proving propositions and evaluating functions
+%%%
+tag := "term"
+%%%
+
+Although we almost exclusively prove propositions in `tactic` mode in these notes, it is instructive to know about the simplest example of how to turn the proof to `term` mode: There are two rules:
+
+* The tactoc `exact` is the same as calling a function.
+* The tactic `intro` is like taking a variable, which will be the argument of a function which is evaluated in the next step.
+
+Let us consider two examples:
+
+The `term` proof
+```lean
+example (P : Prop) : False → P := False.elim
+```
+is the same as
+```lean
+example (P : Prop) : False → P := by
+    exact False.elim
+```
+
+The `term` proof
+```lean
+example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
+    x ∈ s → x ∈ t := fun hx ↦ hst hx
+```
+is the same as
+```lean
+example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
+    x ∈ s → x ∈ t := by
+    intro hx
+    exact hst hx
+```

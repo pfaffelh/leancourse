@@ -23,12 +23,12 @@ tag := "triv"
 * + Proof state
   + Tactic
   + New proof state
-* + ⊢ True
+* + `⊢ True`
   + `triv`
-  + **no goals**
-* + ⊢ x = x
+  + **No goals**
+* + `⊢ x = x`
   + `triv`
-  + **no goals**
+  + **No goals**
 :::
 
 ::::keepEnv

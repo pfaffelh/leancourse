@@ -22,7 +22,7 @@ tag := "use"
 :::
 
 
-**Summary:** The `use` tactic is used for goals that begin with ∃. Here, parameters are used to indicate which object quantified by ∃ is to be reused in the proof.
+**Summary:** The `use` tactic is used for goals that begin with `∃`. Here, parameters are used to indicate which object quantified by `∃` is to be reused in the proof.
 
 **Examples**
 
@@ -30,22 +30,31 @@ tag := "use"
 * + Proof state
   + Tactic
   + New proof state
-* + `h : P` {br}[] ⊢ P
-  + `exact h`
-  + **no goals**
 * + `⊢ ∃ (k : ℕ), k * k = 16`
   + use 4
   + `⊢ 4 * 4 = 16`
 * + `⊢ ∃ (k l : ℕ), k * l = 16`
-  + use 8, 2
+  + `use 8, 2`
   + `⊢ 8 * 2 = 16`
 :::
 
 ::::keepEnv
 :::example " "
 ```lean
-example (P : Prop) : False → P := by
-  exact False.elim
+example : ∃ (k : ℕ), k * k = 16 := by
+  use 4
+  rfl
+```
+```lean
+example : ∃ (k : ℕ), k * k = 16 := by
+  refine ⟨4, by rfl⟩
+```
+
+```lean
+example (ε : ℝ) (hε : 0 < ε) : ∃ (δ : ℝ) (hδ : 0 < δ), δ < ε := by
+  use ε / 2
+
+  use 4
 ```
 :::
 ::::

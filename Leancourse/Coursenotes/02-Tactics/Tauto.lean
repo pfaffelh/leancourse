@@ -20,12 +20,12 @@ tag := "tauto"
 * + Proof state
   + Tactic
   + New proof state
-* + ⊢ P ∧ Q → P
+* + `⊢ P ∧ Q → P`
   + `tauto` oder `tauto!`
-  + **no goals**
-* + ⊢ ((P → Q) → P) → P
+  + **No goals**
+* + `⊢ ((P → Q) → P) → P`
   + `tauto!`
-  + **no goals**
+  + **No goals**
 :::
 
 The truth tables for `¬P`, `P ∧ Q` and `P ∨ Q` are as follows; if more terms of type `Prop` are involved, there are more lines.

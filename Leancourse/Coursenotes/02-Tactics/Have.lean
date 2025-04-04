@@ -43,10 +43,10 @@ example (x : ℝ) (d : ℕ): 0 ≤ (d : ℝ) * x^2 := by
     exact zero_le d
   have h1 : (0 : ℝ) = d * 0 := by
     simp
-  rw h1
+  rw [h1]
   apply mul_le_mul_of_nonneg_left
   nlinarith
-  exact cast_nonneg d
+  exact Nat.cast_nonneg' d
 ```
 
 ```

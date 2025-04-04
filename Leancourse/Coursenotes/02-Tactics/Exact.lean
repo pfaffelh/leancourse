@@ -30,8 +30,8 @@ tag := "exact"
 
 **Remarks:**
 
-* The related tyctics `exact?` searches for terms which close the goal; see [`apply?`](apply?).
-* If the proof consists of a single call of `exact`, it is easy to translate it to `term` mode; see [easy proofs in term mode](term).
+* The related tyctics `exact?` searches for terms which close the goal; see {ref "apply?"}[`apply?`].
+* If the proof consists of a single call of `exact`, it is easy to translate it to `term` mode; see {ref "term"}[easy proofs in term mode].
 * In the third example, note the order in which the two hypotheses `hP` and `hnP` are applied. The first hypothesis after `exact` is always the one whose right side matches the goal. If the goal requires further input, it is appended afterwards.
 
 ::::keepEnv

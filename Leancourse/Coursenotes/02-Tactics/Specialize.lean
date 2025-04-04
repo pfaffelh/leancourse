@@ -41,8 +41,14 @@ example (p : ℕ → Prop) (hp : ∀ (n : ℕ), p n) :
 ::::keepEnv
 :::example " "
 ```lean
-example (P : Prop) : False → P := by
-  exact False.elim
+example (h : ∀ (n : ℕ), 0 ≤ n) : 0 ≤ 0 := by
+  specialize h 0
+  assumption
+
+example (h : ∀ (ε : ℝ) (hε : 0 < ε), ∃ (n : ℕ), 1 < n • ε) := by
+  specialize h 0
+  assumption
+
 ```
 :::
 ::::

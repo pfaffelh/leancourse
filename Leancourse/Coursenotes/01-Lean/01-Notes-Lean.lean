@@ -79,14 +79,6 @@ gt_iff_lt : ∀ {α : Type u_1} [_inst_1 : has_lt α] {a b : α}, a > b ↔ b < 
 
 When this result is applied, the statements in `{...}` and `[...]` are added by `Lean` itself. The statements in `{...}` depend on the type of the objects that have to be given, and can therefore be inferred. (Above, when applying `gt_iff_lt`, the variables `a` and `b` have to be given.) Therefore, their type is also known, and one does not have to `α` is not explicitly specified. Since the application is made to a concrete `α` (for example, `ℕ`), and `Lean` knows a lot about the natural numbers, the type class system can look up many properties of `ℕ`, and also finds that `has_lt ℕ` holds (i.e. on `ℕ` at least a partial order is defined).
 
-# Two abbreviations
-%%%
-tag := "abreviation"
-%%%
-
-
-|> und ▸
-
 # Proving propositions and evaluating functions
 %%%
 tag := "term"
@@ -120,4 +112,27 @@ example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
     x ∈ s → x ∈ t := by
     intro hx
     exact hst hx
+```
+
+# Two abbreviations
+%%%
+tag := "abreviation"
+%%%
+
+There are at least two abbreviations used in `Mathlib` which you will encounter frequently.
+
+If you have `h : x = y` and `hx : P x` (with `P x : Prop`), you can prove `P y` by replacing `h` in `hx`. The shorthand notation for this is `h ▸ hx`. (Write `\t` for `▸`).
+
+```lean
+example (P : ℕ → Prop) (x y : ℕ) (h : x = y) (hx : P x) :
+    P y := by
+  exact h ▸ hx
+```
+
+Sometimes, bracketing is critical, and it appears frequently that it has the form
+`apply first (second very long statement)`, and you might get lost since the closing brackets are far away from their opening counterparts. In this case, we write `apply first <| second very long statement`, which does not need a closing symbol.
+
+```lean
+example (P Q : Prop) (hP : P) (hnP : ¬P) : Q := by
+    apply False.elim <| hnP hP
 ```

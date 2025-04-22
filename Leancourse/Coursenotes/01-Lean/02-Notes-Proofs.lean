@@ -261,6 +261,15 @@ Nat.lt_of_succ_le {n m : ℕ} (h : n.succ ≤ m) : n < m
 ```
 This way, you can often guess the names of statements that you want to use.
 
+
+# Holes in proofs
+%%%
+tag := "holes"
+%%%
+
+What is a hole in a proof? It is a missing argument...
+
+
 # Exercises
 %%%
 tag := "exercises"

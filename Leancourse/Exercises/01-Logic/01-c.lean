@@ -1,11 +1,23 @@
 import Mathlib
 
-variables (P Q R S T: Prop)
+variable (P Q R S T: Prop)
+
+/- Here, we continue with some more exercises, and some more tactics. -/
 
 /-
-  False implies anything.
+  We start with the statement: **False implies anything**.
+
+  In fact, this statement is already implemented in `Lean`, which can be read [here](https://leanprover-community.github.io/mathlib4_docs/Init/Prelude.html#False.elim). (You might as well read further on that page.)
 -/
-example (h : False) : P := by
+
+
+example : (False) → P := by
+  exact False.elim
+
+/- However, there is also a tactic for that: `exfalso`. As you see, it does the same as applying `False.elim`. -/
+
+example : (False) → P := by
+  intro h
   exfalso
   exact h
 
@@ -34,14 +46,14 @@ example : (True → P) ↔ P := by
   sorry
 
 -- Exercise 6) Here is a repetition using double negatiion.
-example : P ↔ ¬¬P := by
+example : P → ¬¬P := by
   sorry
 
 /-
-  Now we come to proofs by contradiction. If we have the goal `⊢ P` and want to prove it using contradiction, we add another hypothesis `¬P` and have to get a contradiction, i.e. we have to prove `false`.
+  Now we come to proofs by contradiction. If we have the goal `⊢ P` and want to prove it using contradiction, we add another hypothesis `¬P` and have to get a contradiction, i.e. we have to prove `False`. This is done using `by_contra h`.
 -/
 
--- We show the reverse of Exercise 5:
+-- We show the reverse of Exercise 6:
 example : ¬¬P → P := by
   intro h1
   by_contra h2

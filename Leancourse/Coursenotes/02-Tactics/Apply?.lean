@@ -39,5 +39,7 @@ example (n : ℕ) : 2 * n = n + n := by
 Try this: exact Nat.two_mul n
 ```
 
+{docstring Lean.Parser.Tactic.apply?}
+
 :::
 ::::

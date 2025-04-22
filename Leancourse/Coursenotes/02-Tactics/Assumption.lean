@@ -29,6 +29,11 @@ If a hypothesis is identical to the goal, `assumption` closes the goal.
   + **no goals**
 :::
 
+**Remarks**
+
+* As in other tactics, `assumption` works up to definitional equality.
+* Here is a trick: If you use `<;>` after a tactic, the forthcoming tactic is applied to apll goals.
+
 ::::keepEnv
 :::example " "
 ```lean
@@ -40,10 +45,8 @@ example (hP : P) (hQ : Q) : P ∧ Q := by
 example (P : Prop) (hP : P) : P := by
   assumption
 ```
+
+{docstring Lean.Parser.Tactic.assumption}
+
 :::
 ::::
-
-**Notes**
-
-* As in other tactics, `assumption` works up to definitional equality.
-* Here is a trick: If you use `<;>` after a tactic, the forthcoming tactic is applied to apll goals.

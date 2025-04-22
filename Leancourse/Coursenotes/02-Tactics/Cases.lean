@@ -42,6 +42,12 @@ tag := "cases"
 n.succ = k + 1)
 :::
 
+
+**Remarks:**
+
+* The application `cases' n` for `n : ℕ` is strictly weaker than complete induction (see `induction`). After all, `cases` only converts `n : ℕ` into the two cases `0` and `succ n`, but you cannot use the statement for `n-1` to prove the statement for `n`.
+* A more flexible version of `cases'` is `rcases`.
+
 ::::keepEnv
 :::example " "
 ```lean
@@ -52,8 +58,3 @@ example (P Q : Prop) (hP: P → Q) ( hP' : ¬P → Q) : Q := by
 ```
 :::
 ::::
-
-**Notes:**
-
-* The application `cases' n` for `n : ℕ` is strictly weaker than complete induction (see `induction`). After all, `cases` only converts `n : ℕ` into the two cases `0` and `succ n`, but you cannot use the statement for `n-1` to prove the statement for `n`.
-* A more flexible version of `cases'` is `rcases`.

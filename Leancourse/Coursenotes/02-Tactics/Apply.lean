@@ -33,6 +33,11 @@ tag := "apply"
 
 The `apply`-tactics works iteratively. This means that if `apply h` makes no progress, it uses the placeholder `_` and tries to make `apply h _`.
 
+**Remarks:**
+* `apply` works up to equality by definition. This can be seen in the example above, where `¬P ↔ (P → False)` is true by definition.
+* `apply h` is frequently identical to `refine ?_`.
+* If the use of `apply` closes the current goal, you might as well use `exact` instead of `apply`.
+
 ::::keepEnv
 :::example " "
 ```lean
@@ -52,10 +57,8 @@ example (n : ℕ) (hn : 0 < n) : n ≤ 2 * (n * n) := by
     exact Nat.le_mul_of_pos_left k Nat.zero_lt_two
   apply h₂ (n * n)
 ```
+
+{docstring Lean.Parser.Tactic.apply}
+
 :::
 ::::
-
-**Remarks:**
-* `apply` works up to equality by definition. This can be seen in the example above, where `¬P ↔ (P → False)` is true by definition.
-* `apply h` is frequently identical to `refine ?_`.
-* If the use of `apply` closes the current goal, you might as well use `exact` instead of `apply`.

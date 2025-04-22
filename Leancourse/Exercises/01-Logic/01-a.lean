@@ -2,7 +2,7 @@ import Mathlib -- load everything, in particular tactics
 
 /- We start by studying `Prop`-types. These are like mathematical theorems, i.e. can be either true or false. We start by introducing a bunch of variables which are generic propositions. -/
 
-variables (P Q R S T: Prop)
+variable (P Q R S T: Prop)
 
 /-- Apart from these types, we will in this and the upcoming exercises mostly deal with implications, i.e. Types of the form `P → Q`.-/
 
@@ -13,7 +13,7 @@ example : True := by
 
 /-- Some remark:
 * In Lean, we have `example` (which does not need an own name), `lemma` and `theorem` (both of which have a name). So, `example` is always followed by `:` while we have `lemma <nameOfLemma> : ` and `theorem <nameOfTheorem> :` for the latter two.
-* The proof of the `True`-statement is right of `:=`. In principle, there are two types of proofs: term-proofs, and tyctic proofs. We will only deal with tactic proofs, which always start with the `by` keyword.
+* The proof of the `True`-statement is right of `:=`. In principle, there are two types of proofs: term-proofs, and tactic proofs. We will only deal with tactic proofs, which always start with the `by` keyword.
 * Here, `triv` is a tactic, and has the only task of showing `True`. -/
 
 /-
@@ -41,6 +41,8 @@ example : P → P := by
 
 If the hypothesis `hP : P` holds and we want to prove `⊢ P`, then we just have to apply `hP` to the goal. If goal and hypothesis are identical, this is done with `exact hP`. In a more general way, `assumption` searches all hypotheses for those that are identical with the goal by definition.-/
 
+/- Note that in all exercises, we do not need to say that `P : Prop` since we have done this once and forever at the start of tis file. -/
+
 -- Exercise 1)
 example : P → (P → P) := by
   sorry
@@ -50,7 +52,7 @@ example : P → (P → P) := by
 example (hQ : Q) : (P → Q) := by
   sorry
 
--- Exercise 3) Why not try with `intro hP hPQ`. This shortens it a bit.
+-- Exercise 3) Why not try with `intro hP hPQ`. This shortens it a bit. However, note that you can also use something like `hPQ hP`, which applies the hypothesis `P → Q` to `P`.
 example : P → (P → Q) → Q := by
   sorry
 
@@ -63,86 +65,3 @@ example : P → P → Q := by
 
 example : P → Q → Q := by
   sorry
-
-
-
-
-/-
-  We now use the _apply_-tactics. If the goal is `Q` and we have a hypothesis `P → Q`, we can close the goal if we can prove `P`, right? With _apply_ führen wir diese Operation durch.
--/
-example (hP : P) (hPQ : P → Q) : Q := by
-  apply hPQ
-  exact hP
-
--- Nebenbei bemerkt geht das auch so: Man setze hP in hPQ ein, genauso wie man Funktionen hintereinander ausführen kann:
-example (hP : P) (hPQ : P → Q) : Q := by
-  exact hPQ hP
-
--- Oft kann man übrigens _apply_ statt _exact_ verwenden. Der Grund ist, dass man auch hier die Hypothese auf das Ziel anwendet.
-example (hP : P) : P := by
-  apply hP
-
--- Aufgabe 1) Das ist fast so wie im ersten Beispiel oben, und kann entweder durch zwei Anwendungen von _apply_ oder das Einsetzen zweier Funktionen gelöst werden:
-example (hP : P) (hPQ : P → Q) (hQR : Q → R) : R := by
-  sorry
-
--- Aufgabe 2) Ein kleines Labyrinth...
-example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T → P) (hRT : R → T) : ( T → R ) := by
-  sorry
-
--- Aus dem Ziel P ↔ Q erzeugt man mit _split_ zwei Ziele. Diese sind dann der Reihe nach abzuarbeiten:
-example (hPQ : P → Q) (hQP : Q → P) : (P ↔ Q) := by
-  constructor
-  · exact hPQ
-  · exact hQP
-
--- Aufgabe 3) Dasselbe Labyrinth wie oben, aber mit einem anderen Ziel.
-example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T → P) (hRT : R → T) : ( P ↔ R )  := by
-  sorry
-
--- Für die Negation von P, also ¬P, bemerken wir, dass ¬P definitorisch äquivalent ist zu P → false.
-example : (¬ P ↔ (P → False)) := by
-  constructor
-  · intro h1 h2
-    apply h1
-    exact h2
-  · intro h1
-    exact h1
-
--- Aufgabe 4) Man beachte: Ist das Ziel ¬P, so führt ein weiteres _intro_ weiter, da das Ziel als P → false definiert ist.
-example (hP : P) (hQ : Q) (hPQ : P → Q) : ¬Q → ¬ P := by
-  sorry
-
--- Aufgabe 5) Gelten sowohl P als auch ¬P, kann etwas nicht stimmen.
-example : P → ¬P → False := by
-  sorry
-
-
-example : ∀ (x y : ℝ),  (x - y)^2 = 0 ↔ x = y  := by
-  intro x y
-  nth_rewrite 2 [← sub_eq_zero]
-  exact sq_eq_zero_iff
-
-
-
-
-example : ∀ (ε : ℝ) (hε : 0 < ε), ∃ (n : ℕ),
-  (1/n : ℝ) < ε := by
-  intro ε hε
-  obtain ⟨n, hn⟩ := exists_lt_nsmul hε 1
-  have hn' : 0 < (n : ℝ) := by
-    simp only [Nat.cast_pos]
-    by_contra h
-    simp only [not_lt, nonpos_iff_eq_zero] at h
-    rw [h] at hn
-    simp at hn
-    revert hn
-    simp only [imp_false, not_lt, zero_le_one]
-  use n
-  have g : n • ε = (n : ℝ) * ε := by exact nsmul_eq_mul n ε
-  have h : (1/n : ℝ) < ε ↔ 1 < n • ε := by
-    rw [nsmul_eq_mul n ε]
-    simp only [one_div]
-    refine inv_lt_iff_one_lt_mul₀' hn'
-  rw [h]
-  exact hn

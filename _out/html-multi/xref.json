@@ -379,6 +379,18 @@
        {"title": "Introduction", "number": "1"},
        {"title": "How to use this course", "number": "4"}]},
      "address": "/Introduction/"}],
+   "holes":
+   [{"id": "holes",
+     "data":
+     {"title": "Holes in proofs",
+      "sectionNum": "2.2.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Lean", "number": "2"},
+       {"title": "Proofs in Lean", "number": "2"},
+       {"title": "Holes in proofs", "number": "5"}]},
+     "address": "/Lean/"}],
    "have":
    [{"id": "have",
      "data":
@@ -464,13 +476,13 @@
    [{"id": "exercises",
      "data":
      {"title": "Exercises",
-      "sectionNum": "2.2.5.",
+      "sectionNum": "2.2.6.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
        {"title": "Lean", "number": "2"},
        {"title": "Proofs in Lean", "number": "2"},
-       {"title": "Exercises", "number": "5"}]},
+       {"title": "Exercises", "number": "6"}]},
      "address": "/Lean/"}],
    "exact":
    [{"id": "exact",
@@ -689,7 +701,64 @@
  {"title": "Lean constant reference",
   "description": "Documentation for Lean constants",
   "contents":
-  {"Bool.true": [{"id": "Bool___false", "data": null, "address": "/Tactics/"}],
+  {"«tacticBy_cases_:_»":
+   [{"id": "_FLQQ_tacticBy_cases______FLQQ_",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.calc": [{"id": "Lean___calc", "data": null, "address": "/Tactics/"}],
+   "Lean.Parser.Tactic.assumption":
+   [{"id": "Lean___Parser___Tactic___assumption",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Parser.Tactic.apply?":
+   [{"id": "Lean___Parser___Tactic___apply___",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Parser.Tactic.apply":
+   [{"id": "Lean___Parser___Tactic___apply",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.Rfl.evalApplyRfl":
+   [{"id": "Lean___Elab___Tactic___Rfl___evalApplyRfl",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.RCases.rintro":
+   [{"id": "Lean___Elab___Tactic___RCases___rintro",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.RCases.RCasesPatt.typed":
+   [{"id": "Lean___Elab___Tactic___RCases___RCasesPatt___paren",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.RCases.RCasesPatt.tuple":
+   [{"id": "Lean___Elab___Tactic___RCases___RCasesPatt___paren",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.RCases.RCasesPatt.paren":
+   [{"id": "Lean___Elab___Tactic___RCases___RCasesPatt___paren",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.RCases.RCasesPatt.one":
+   [{"id": "Lean___Elab___Tactic___RCases___RCasesPatt___paren",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.RCases.RCasesPatt.explicit":
+   [{"id": "Lean___Elab___Tactic___RCases___RCasesPatt___paren",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.RCases.RCasesPatt.clear":
+   [{"id": "Lean___Elab___Tactic___RCases___RCasesPatt___paren",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.RCases.RCasesPatt.alts":
+   [{"id": "Lean___Elab___Tactic___RCases___RCasesPatt___paren",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Lean.Elab.Tactic.RCases.RCasesPatt":
+   [{"id": "Lean___Elab___Tactic___RCases___RCasesPatt___paren",
+     "data": null,
+     "address": "/Tactics/"}],
+   "Bool.true": [{"id": "Bool___false", "data": null, "address": "/Tactics/"}],
    "Bool.false": [{"id": "Bool___false", "data": null, "address": "/Tactics/"}],
    "Bool": [{"id": "Bool___false", "data": null, "address": "/Tactics/"}]}},
  "Manual.parserAlias":

@@ -1,6 +1,8 @@
 import VersoManual
 import Manual.Meta
 import Leancourse.Misc.Defs
+import Lean
+import Mathlib
 
 open Verso.Genre Manual
 open MyDef
@@ -41,10 +43,13 @@ example (P Q : Prop) (hP: P → Q) ( hP' : ¬P → Q) : Q := by
   · exact hP h
   · exact hP' h
 ```
+
+{docstring «tacticBy_cases_:_»}
+
 :::
 ::::
 
 **Notes**
 
-* Apparently, the `by_cases` tactic (just like `by_contradiction`) assumes that a statement is either true or false. This is also known as the law of excluded middle. In mathematics, proofs that do not use this rule are called constructive.
+* Apparently, the `by_cases` tactic (just like `by_contra`) assumes that a statement is either true or false. This is also known as the law of excluded middle. In mathematics, proofs that do not use this rule are called constructive.
 * For terms of type `Prop`, the tactic `tauto` (or `tauto!`) can draw various conclusions from a truth table.

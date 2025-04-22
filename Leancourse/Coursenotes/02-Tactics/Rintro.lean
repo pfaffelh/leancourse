@@ -38,5 +38,8 @@ Here, more than two `∨` can also be split into cases in one step: With `A ∨ 
 example (P : Prop) : False → P := by
   exact False.elim
 ```
+
+{docstring Lean.Elab.Tactic.RCases.rintro}
+
 :::
 ::::

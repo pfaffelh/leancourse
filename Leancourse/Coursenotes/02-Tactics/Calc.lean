@@ -76,5 +76,7 @@ example (n : ℕ) : n + n = 2*n := by
   _ = 2 * n := by rfl
 ```
 
+{docstring Lean.calc}
+
 :::
 ::::

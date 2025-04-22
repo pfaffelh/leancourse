@@ -28,15 +28,18 @@ tag := "rfl"
   + **no goals**
 :::
 
+**Remarks:**
+
+The second example works because both sides are by definition equal to `succ succ succ 0`.
+
 ::::keepEnv
 :::example " "
 ```lean
 example (P : Prop) : False → P := by
   exact False.elim
 ```
+
+{docstring Lean.Elab.Tactic.Rfl.evalApplyRfl}
+
 :::
 ::::
-
-**Notes:**
-
-The second example works because both sides are by definition equal to `succ succ succ 0`.

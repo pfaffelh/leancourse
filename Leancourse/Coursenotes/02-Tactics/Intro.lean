@@ -40,9 +40,23 @@ If the goal is of the form `⊢ P → Q` or `∀ (n : ℕ), P n`, you can procee
 ::::keepEnv
 :::example " "
 ```lean
-example (P : Prop) : False → P := by
-  exact False.elim
+example (P : Prop) : P → P := by
+  intro h
+  exact h
 ```
+
+```lean
+example (P : Prop) : P → P → P → P := by
+  intro h₁ h₂ h₃
+  exact h₁
+```
+
+```lean
+example (P Q : Prop) : (P → Q) → P → Q := by
+  intro h₁
+  exact h₁
+```
+
 :::
 ::::
 

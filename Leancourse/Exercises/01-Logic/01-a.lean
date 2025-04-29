@@ -43,6 +43,9 @@ If the hypothesis `hP : P` holds and we want to prove `⊢ P`, then we just have
 
 /- Note that in all exercises, we do not need to say that `P : Prop` since we have done this once and forever at the start of tis file. -/
 
+example : False := by
+  sorry
+
 -- Exercise 1)
 example : P → (P → P) := by
   sorry

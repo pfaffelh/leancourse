@@ -29,7 +29,8 @@ example (h : P ∧ Q ∧ R) : (P ∨ Q ∨ R) := by
 -- An example with `obtain`
 example (hPQ : P → Q) (hPnQ : P → ¬Q) : ¬P := by
   intro hP
-  obtain ⟨ hQ, hnQ ⟩ := ⟨ hPQ hP, hPnQ hP ⟩
+  obtain hQ := hPQ hP
+  obtain hnQ := hPnQ hP
   exact hnQ hQ
 
 /-

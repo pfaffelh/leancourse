@@ -56,5 +56,6 @@ example (P Q : Prop) (hP: P → Q) ( hP' : ¬P → Q) : Q := by
   · exact hP h
   · exact hP' h
 ```
+
 :::
 ::::

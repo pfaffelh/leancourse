@@ -34,22 +34,24 @@ example (hPQ : P → Q) (hPnQ : P → ¬Q) : ¬P := by
 /-
   It would be easier to read if we first showed `Q` and then `¬Q`. We do this using the `have` tactic. This allows us to postulate any new hypotheses that we have to prove before they are available.-/
 
-example (hPQ : P → Q) (hPnQ : P → ¬Q) : ¬P :=
+example (hPQ : P → Q) (hPnQ : P → ¬Q) : ¬P := by
   intro hP
   have hQ : Q
   · apply hPQ hP
   have hnQ : ¬Q
   · apply hPnQ hP
-  exact hnQ hQ,
+  exact hnQ hQ
 
 -- Exercise 3) We can circumvent `by_cases` by using `have`.
 example (hPQ : P → Q) (hnPQ : ¬P → Q) : Q := by
-  have h : P ∨ ¬ P → Q
+  have h : P ∨ ¬ P → Q := by
+    sorry
   sorry
 
 -- Exercise 4) Here, `have` can help, too.
 example (hPQ : P → Q) (hQR : Q → R ) (hSR : S → R ) : (P → R) ∧ (S → R) := by
-  have h : P → R
+  have h : P → R := by
+    sorry
   sorry
 
 -- Exercise 5) I found the following task difficult to prove. Remember that `P → Q` is identical to `Q ∨ ¬P`. However, with a few applications of `have` it should work.

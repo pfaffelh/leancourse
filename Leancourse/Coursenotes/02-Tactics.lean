@@ -2,7 +2,7 @@ import VersoManual
 
 import «Leancourse».Coursenotes.«02-Tactics».«Cheatsheet»
 import «Leancourse».Coursenotes.«02-Tactics».«Apply»
-import «Leancourse».Coursenotes.«02-Tactics».«Apply?»
+import «Leancourse».Coursenotes.«02-Tactics».«Applyqm»
 import «Leancourse».Coursenotes.«02-Tactics».«Assumption»
 import «Leancourse».Coursenotes.«02-Tactics».«By_cases»
 import «Leancourse».Coursenotes.«02-Tactics».«By_contra»
@@ -51,7 +51,7 @@ tag := "tactics"
 
 {include 0 «Leancourse».Coursenotes.«02-Tactics».«Apply»}
 
-{include 0 «Leancourse».Coursenotes.«02-Tactics».«Apply?»}
+{include 0 «Leancourse».Coursenotes.«02-Tactics».«Applyqm»}
 
 {include 0 «Leancourse».Coursenotes.«02-Tactics».«Assumption»}
 

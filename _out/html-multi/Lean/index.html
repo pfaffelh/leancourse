@@ -1543,16 +1543,16 @@ window.onload = () => {
       <nav id="toc">
         <input type="checkbox" id="toggle-toc" checked="checked"><div class="first">
           <a href="../" id="logo"><img src="../static/lean_logo.svg"></a><nav id="local-buttons">
-            <a class="local-button active" href="../Introduction/#introduction" rel="prev" title="1. Introduction"><span class="arrow">←</span><span class="where">Prev</span></a><a class="local-button active" href="../#" title=" Interactive Theorem Proving using Lean, Summer 2025"><span class="arrow">↑</span><span class="where">Up</span></a><a class="local-button active" href="../Tactics/#tactics" rel="next" title="3. Tactics"><span class="where">Next</span><span class="arrow">→</span></a></nav>
+            <a class="local-button active" href="../Introduction/#introduction" rel="prev" title="2. Introduction"><span class="arrow">←</span><span class="where">Prev</span></a><a class="local-button active" href="../#" title=" Interactive Theorem Proving using Lean, Summer 2025"><span class="arrow">↑</span><span class="where">Up</span></a><a class="local-button active" href="../Tactics/#tactics" rel="next" title="4. Tactics"><span class="where">Next</span><span class="arrow">→</span></a></nav>
           <div class="split-tocs">
             <div class="split-toc book">
               <div class="title">
                 <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot"></label><span class=""><a href="../">Interactive Theorem Proving using Lean, Summer 2025</a></span></div>
-              <table><tr class="numbered"><td class="num">1.</td><td><a href="../Introduction/#introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num">2.</td><td><a href="#lean">Lean</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="../Tactics/#tactics">Tactics</a></td></tr></table></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="../Table-of-Contents/#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Table-of-Contents">Table of Contents</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="../Introduction/#introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num">3.</td><td><a href="#lean">Lean</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="../Tactics/#tactics">Tactics</a></td></tr></table></div>
             <div class="split-toc">
               <div class="title">
-                <label for="--verso-manual-toc-lean" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-lean" checked="checked"></label><span class="number">2.</span> <span class="current"><a href="#lean">Lean</a></span></div>
-              <table><tr class="numbered"><td class="num">2.1.</td><td><a href="#notesonlean">Notes on Lean</a></td></tr><tr class="numbered"><td class="num">2.2.</td><td><a href="#proof">Proofs in Lean</a></td></tr></table></div>
+                <label for="--verso-manual-toc-lean" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-lean" checked="checked"></label><span class="number">3.</span> <span class="current"><a href="#lean">Lean</a></span></div>
+              <table><tr class="numbered"><td class="num">3.1.</td><td><a href="#notesonlean">Notes on Lean</a></td></tr><tr class="numbered"><td class="num">3.2.</td><td><a href="#proof">Proofs in Lean</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
@@ -1566,19 +1566,19 @@ window.onload = () => {
         </nav>
       <main><section>
           <h1>
-            2. Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=lean" title="Permalink">🔗</a></span></h1>
+            3. Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=lean" title="Permalink">🔗</a></span></h1>
           <section>
             <h2 id="notesonlean">
-              2.1. Notes on Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=notesonlean" title="Permalink">🔗</a></span></h2>
+              3.1. Notes on Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=notesonlean" title="Permalink">🔗</a></span></h2>
             <section>
               <h3 id="functional">
-                2.1.1. Lean as a programming language<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=functional" title="Permalink">🔗</a></span></h3>
+                3.1.1. Lean as a programming language<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=functional" title="Permalink">🔗</a></span></h3>
               <p>
                 Lean is a <a href="https://en.wikipedia.org/wiki/Functional_programming">functional programming language</a> (i.e. it actually only consists of functions). This paradigm is in contrast to <a href="https://en.wikipedia.org/wiki/Imperative_programming">imperative programming</a>  such as Python, Java and C. Lean comes with many features you might be familiar with, such as a library for output and input, but is still young and many things need to be developed.</p>
               </section>
             <section>
               <h3 id="dependent-type-theory">
-                2.1.2. Dependent type theory<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=dependent-type-theory" title="Permalink">🔗</a></span></h3>
+                3.1.2. Dependent type theory<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=dependent-type-theory" title="Permalink">🔗</a></span></h3>
               <p>
                 In all programming languages, you have data types such as <code>int</code>, <code>string</code> and <code>float</code>. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write <code>x : α</code> for a term <code>x</code> of type <code>α</code>, so we write <code>False : Bool</code>, <code>42 : ℕ</code>, but also <code>f : ℕ → ℝ</code> (for a function from ℕ to ℝ, which is an own type) and <code>0 ≠ 1 : Prop</code> (the proposition that 0 and 1 are different natural numbers), which is a proposition. Terms and types can depend on variables, e.g. in <code>∀ (n : ℕ), n &lt; n + 1 : Prop</code> and <code>f : (n : ℕ) → (Fin n → ℝ)</code> (where <code>Fin n</code> is the type which carries <code>{0, ..., n-1}</code>), which is a function <code>f</code> with domain <code>ℕ</code> such that <code>f n ∈ ℝ^n</code>.</p>
               <p>
@@ -1586,13 +1586,13 @@ window.onload = () => {
               </section>
             <section>
               <h3 id="universes">
-                2.1.3. Universes, Types and Terms<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=universes" title="Permalink">🔗</a></span></h3>
+                3.1.3. Universes, Types and Terms<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=universes" title="Permalink">🔗</a></span></h3>
               <p>
                 In Lean, there are three levels of objects: universes, types and terms. We are concerned here with the last two. Of particular interest is the type <code>Prop</code>, which consists of statements that can be <code>True</code> or <code>False</code>. It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form <code>hP : P</code>, which means <code>P</code> is true, and this statement is called <code>hP</code>. Synonomously, it meansthat <code>P</code> is true and <code>hP</code> is a proof of <code>P</code>. The hypotheses here have names <code>P Q R S</code>, and the proofs of the hypotheses <code>hP hQ hR hS</code>. All names can be arbitrary. Furthermore, there are hypotheses of the form <code>P → Q</code>, which is the statement that <code>P</code> implies <code>Q</code>. (Note the similarity to function notation as in <code>f : ℝ → ℝ</code>.)</p>
               </section>
             <section>
               <h3 id="functions">
-                2.1.4. Function definitions<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=functions" title="Permalink">🔗</a></span></h3>
+                3.1.4. Function definitions<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=functions" title="Permalink">🔗</a></span></h3>
               <p>
                 In <code>Lean</code>, the function <code>f : ℕ → ℕ, x ↦ 2x</code> is defined as</p>
               <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.definition-3210">def</span> <span class="const token" data-binding="const-f" data-verso-hover="0" id="f">f</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span> <span class="unknown token" data-binding="">→</span> <span class="unknown token" data-binding="">ℕ</span> <span class="unknown token" data-binding="">:=</span> <span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.fun-3233">fun</span> <span class="var token" data-binding="var-_uniq.7" data-verso-hover="1">x</span> <span class="unknown token" data-binding="">↦</span> <span class="typed token" data-binding="" data-verso-hover="1">2</span><span class="unknown token" data-binding="">*</span><span class="var token" data-binding="var-_uniq.7" data-verso-hover="1">x</span>
@@ -1602,7 +1602,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
               </section>
             <section>
               <h3 id="equality">
-                2.1.5. Equality<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=equality" title="Permalink">🔗</a></span></h3>
+                3.1.5. Equality<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=equality" title="Permalink">🔗</a></span></h3>
               <p>
                 Due to the multitude of types in Lean, we have to be careful about equality. In Lean, there are three types of equality:</p>
               <ul>
@@ -1624,7 +1624,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
               </section>
             <section>
               <h3 id="parenthesis">
-                2.1.6. Different parentheses in <code>Lean</code><span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=parenthesis" title="Permalink">🔗</a></span></h3>
+                3.1.6. Different parentheses in <code>Lean</code><span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=parenthesis" title="Permalink">🔗</a></span></h3>
               <p>
                 There are (essentially) three different types of parentheses in <code>Lean</code> statements. The simplest is <code>(...)</code>, which, as in normal use, indicates parentheses in the sense of what belongs together. However, you have to learn how <code>Lean</code> brackets internally when no '()' are given. Operators like <strong>and</strong> (<code>∧</code>), <strong>or</strong> (<code>∨</code>), are right-associative, so e.g. <code>P ∧ Q ∧ R := P ∧ (Q ∧ R)</code>. The application of functions in sequence, such as <code>f : ℕ → ℝ</code> and <code>g : ℝ → ℝ </code>, applied to <code>n : ℕ</code> is <code>g (f n)</code>, because <code>g</code> expects an input of type <code>ℝ</code>, and this is what <code>f n</code> provides. You cannot omit (...), i.e. in this case the parenthesis is left-associative.</p>
               <p>
@@ -1635,7 +1635,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
               </section>
             <section>
               <h3 id="term">
-                2.1.7. Proving propositions and evaluating functions<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=term" title="Permalink">🔗</a></span></h3>
+                3.1.7. Proving propositions and evaluating functions<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=term" title="Permalink">🔗</a></span></h3>
               <p>
                 Although we almost exclusively prove propositions in <code>tactic</code> mode in these notes, it is instructive to know about the simplest example of how to turn the proof to <code>term</code> mode: There are two rules:</p>
               <ul>
@@ -1670,7 +1670,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
 <span class="unknown token" data-binding=""></span></code></section>
             <section>
               <h3 id="abreviation">
-                2.1.8. Two abbreviations<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=abreviation" title="Permalink">🔗</a></span></h3>
+                3.1.8. Two abbreviations<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=abreviation" title="Permalink">🔗</a></span></h3>
               <p>
                 There are at least two abbreviations used in <code>Mathlib</code> which you will encounter frequently.</p>
               <p>
@@ -1687,10 +1687,10 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
             </section>
           <section>
             <h2 id="proof">
-              2.2. Proofs in Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=proof" title="Permalink">🔗</a></span></h2>
+              3.2. Proofs in Lean<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=proof" title="Permalink">🔗</a></span></h2>
             <section>
               <h3 id="foundation">
-                2.2.1. Foundation<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=foundation" title="Permalink">🔗</a></span></h3>
+                3.2.1. Foundation<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=foundation" title="Permalink">🔗</a></span></h3>
               <p>
                 In Lean every object has a type. Types itself fall into several categories, called universes. There are two main universes, called <code>Prop</code> and <code>Type</code>. Any mathematical statement comes with a claim and its proof. Say we want to claim something, such as <a href="https://en.wikipedia.org/wiki/Goldbach%27s_conjecture">Goldbach's conjecture</a>:</p>
               <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.theorem-609">theorem</span> <span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="const token" data-binding="const-goldbach" data-verso-hover="25" id="goldbach">goldbach</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∀</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.34" data-verso-hover="26">h₁</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">&gt;</span> <span class="typed token" data-binding="" data-verso-hover="1">2</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.341" data-verso-hover="27">h₂</span> <span class="unknown token" data-binding="">:</span> <span class="const token" data-binding="const-Even" data-verso-hover="28">Even</span> <span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span>
@@ -1709,7 +1709,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
               </section>
             <section>
               <h3 id="mathlib">
-                2.2.2. Mathlib<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=mathlib" title="Permalink">🔗</a></span></h3>
+                3.2.2. Mathlib<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=mathlib" title="Permalink">🔗</a></span></h3>
               <p>
                 The Lean-library which contains many mathematical results is called <em>Mathlib</em>. On its <a href="https://leanprover-community.github.io/mathlib4_docs/index.html">documentation page</a> you can search for some results and concepts. (More precisely, you can search names of definitions, lemmas and theorems.) You will find results about e.g. <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Real/Basic.html#Real">Real numbers</a>, <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Group/Defs.html#Group">Groups</a> in algebra, <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/Defs/Basic.html#TopologicalSpace">Topology</a> and <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/OuterMeasure/Defs.html">Measure Theory</a>.</p>
               <p>
@@ -1717,7 +1717,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
               </section>
             <section>
               <h3 id="firststeps">
-                2.2.3. First steps<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=firststeps" title="Permalink">🔗</a></span></h3>
+                3.2.3. First steps<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=firststeps" title="Permalink">🔗</a></span></h3>
               <p>
                 Let us start with some simple examples in order to explain the first tactics in Lean. We will deal here with</p>
               <ul>
@@ -1762,7 +1762,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                 More tactics are found in Chapter xxx.</p>
               <section>
                 <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Lean--Proofs-in-Lean--First-steps--intro-___--exact-___--apply--and--rw">
-                  2.2.3.1. <code>intro</code>, <code>exact</code>, <code>apply</code> and <code>rw</code></h4>
+                  3.2.3.1. <code>intro</code>, <code>exact</code>, <code>apply</code> and <code>rw</code></h4>
                 <div class="paragraph">
                   <p>
                     Let us start with a very simple <code>example</code>. If we want to prove the statement <code>P → P</code> (i.e. <code>P</code> implies <code>P</code>) we enter the following:</p>
@@ -1819,7 +1819,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                 </section>
               <section>
                 <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Lean--Proofs-in-Lean--First-steps--apply___--and--simp">
-                  2.2.3.2. <code>apply?</code> and <code>simp</code></h4>
+                  3.2.3.2. <code>apply?</code> and <code>simp</code></h4>
                 <p>
                   Of course, we want to make use of known facts when proving new ones. There are two main search functions built into our work: <code>simp?</code> and <code>apply?</code>. The first is based on <code>simp</code>, which works using a collection of simplification rules, which are searchable using <code>simp?</code>. Here is an example:</p>
                 <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-6410">example</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">(</span><span class="typed token" data-binding="" data-verso-hover="1">0</span> <span class="unknown token" data-binding="">&lt;</span> <span class="typed token" data-binding="" data-verso-hover="1">1</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-10303010878956689020-6431-6433"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-6431" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-10303010878956689020-6431-6433"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">0<span class="const token" data-binding="const-LT.lt" data-verso-hover="47"> &lt; </span>1</span></span></span></span></span>
@@ -1835,7 +1835,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                 </section>
               <section>
                 <h4 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Lean--Proofs-in-Lean--First-steps--have-___--refine-___-and--use">
-                  2.2.3.3. <code>have</code>, <code>refine</code>, and <code>use</code></h4>
+                  3.2.3.3. <code>have</code>, <code>refine</code>, and <code>use</code></h4>
                 <div class="paragraph">
                   <p>
                     In order to have some proper example, let us introduce <code>Even</code> and <code>Odd</code>. In fact, for a definition of <code>Even</code>, we can type</p>
@@ -1926,7 +1926,7 @@ fun {α} [Add α] a =&gt; ∃ r, a = r + r
               </section>
             <section>
               <h3 id="names">
-                2.2.4. Names of <code>Mathlib</code> Results<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=names" title="Permalink">🔗</a></span></h3>
+                3.2.4. Names of <code>Mathlib</code> Results<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=names" title="Permalink">🔗</a></span></h3>
               <p>
                 Names like <code>zero_add, add_zero, one_mul, add_assoc, succ_ne_zero, lt_of_succ_le,...</code> seem cryptic. It is clear that individual relatively understandable abbreviations (<code>zero, one, mul, add, succ,...</code>) are separated by <code>_</code>. In general, the following two rules apply to naming:</p>
               <ul>
@@ -1946,13 +1946,13 @@ fun {α} [Add α] a =&gt; ∃ r, a = r + r
               </section>
             <section>
               <h3 id="holes">
-                2.2.5. Holes in proofs<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=holes" title="Permalink">🔗</a></span></h3>
+                3.2.5. Holes in proofs<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=holes" title="Permalink">🔗</a></span></h3>
               <p>
                 What is a hole in a proof? It is a missing argument...</p>
               </section>
             <section>
               <h3 id="exercises">
-                2.2.6. Exercises<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=exercises" title="Permalink">🔗</a></span></h3>
+                3.2.6. Exercises<span class="permalink-widget inline"><a href="../find/?domain=Verso.Genre.Manual.section&name=exercises" title="Permalink">🔗</a></span></h3>
               <p>
                 It is now time to move to the exercises. So, proceed to <code>vscode</code> (or <code>gitpod</code>), copy the exercises folder and start coding. Further hints on tactics etc is given within the exercises. Tactics are given in alphabetical order in the next chapter.
 </p>

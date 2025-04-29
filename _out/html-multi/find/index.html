@@ -1370,171 +1370,6 @@ table.tabular td > p:last-child, table.tabular th > p:first-child {
   margin-bottom: 0;
 }
 </style><script>
-      
-window.onload = () => {
-
-    // Don't show hovers inside of closed tactic states
-    function blockedByTactic(elem) {
-      let parent = elem.parentNode;
-      while (parent && "classList" in parent) {
-        if (parent.classList.contains("tactic")) {
-          const toggle = parent.querySelector("input.tactic-toggle");
-          if (toggle) {
-            return !toggle.checked;
-          }
-        }
-        parent = parent.parentNode;
-      }
-      return false;
-    }
-
-    function blockedByTippy(elem) {
-      // Don't show a new hover until the old ones are all closed.
-      // Scoped to the nearest "top-level block" to avoid being O(n) in the size of the document.
-      var block = elem;
-      const topLevel = new Set(["section", "body", "html", "nav", "header"]);
-      while (block.parentNode && !topLevel.has(block.parentNode.nodeName.toLowerCase())) {
-        block = block.parentNode;
-      }
-      for (const child of block.querySelectorAll(".token, .has-info")) {
-        if (child._tippy && child._tippy.state.isVisible) { return true };
-      }
-      return false;
-    }
-
-    for (const c of document.querySelectorAll(".hl.lean .token")) {
-        if (c.dataset.binding != "") {
-            c.addEventListener("mouseover", (event) => {
-                if (blockedByTactic(c)) {return;}
-                const context = c.closest(".hl.lean").dataset.leanContext;
-                for (const example of document.querySelectorAll(".hl.lean")) {
-                    if (example.dataset.leanContext == context) {
-                        for (const tok of example.querySelectorAll(".token")) {
-                            if (c.dataset.binding == tok.dataset.binding) {
-                                tok.classList.add("binding-hl");
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        c.addEventListener("mouseout", (event) => {
-            for (const tok of document.querySelectorAll(".hl.lean .token")) {
-                tok.classList.remove("binding-hl");
-            }
-        });
-    }
-    /* Render docstrings */
-    if ('undefined' !== typeof marked) {
-        for (const d of document.querySelectorAll("code.docstring, pre.docstring")) {
-            const str = d.innerText;
-            const html = marked.parse(str);
-            const rendered = document.createElement("div");
-            rendered.classList.add("docstring");
-            rendered.innerHTML = html;
-            d.parentNode.replaceChild(rendered, d);
-        }
-    }
-    // Add hovers
-    let siteRoot = typeof __versoSiteRoot !== 'undefined' ? __versoSiteRoot : "/";
-    fetch(siteRoot + "-verso-docs.json").then((resp) => resp.json()).then((versoDocData) => {
-
-      const defaultTippyProps = {
-        /* DEBUG -- remove the space: * /
-        onHide(any) { return false; },
-        trigger: "click",
-        // */
-        theme: "lean",
-        maxWidth: "none",
-        appendTo: () => document.body,
-        interactive: true,
-        delay: [100, null],
-        ignoreAttributes: true,
-        onShow(inst) {
-          if (inst.reference.querySelector(".hover-info") || "versoHover" in inst.reference.dataset) {
-            if (blockedByTactic(inst.reference)) { return false };
-            if (blockedByTippy(inst.reference)) { return false; }
-          } else { // Nothing to show here!
-            return false;
-          }
-        },
-        content (tgt) {
-          const content = document.createElement("span");
-          content.className = "hl lean";
-          content.style.display = "block";
-          content.style.maxHeight = "300px";
-          content.style.overflowY = "auto";
-          content.style.overflowX = "hidden";
-          const hoverId = tgt.dataset.versoHover;
-          const hoverInfo = tgt.querySelector(".hover-info");
-          if (hoverId) { // Docstrings from the table
-            // TODO stop doing an implicit conversion from string to number here
-            let data = versoDocData[hoverId];
-            if (data) {
-              const info = document.createElement("span");
-              info.className = "hover-info";
-              info.style.display = "block";
-              info.innerHTML = data;
-              content.appendChild(info);
-              /* Render docstrings - TODO server-side */
-              if ('undefined' !== typeof marked) {
-                  for (const d of content.querySelectorAll("code.docstring, pre.docstring")) {
-                      const str = d.innerText;
-                      const html = marked.parse(str);
-                      const rendered = document.createElement("div");
-                      rendered.classList.add("docstring");
-                      rendered.innerHTML = html;
-                      d.parentNode.replaceChild(rendered, d);
-                  }
-              }
-            } else {
-              content.innerHTML = "Failed to load doc ID: " + hoverId;
-            }
-          } else if (hoverInfo) { // The inline info, still used for compiler messages
-            content.appendChild(hoverInfo.cloneNode(true));
-          }
-          return content;
-        }
-      };
-
-      const addTippy = (selector, props) => {
-        tippy(selector, Object.assign({}, defaultTippyProps, props));
-      };
-      addTippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token', {theme: 'lean'});
-      addTippy('.hl.lean .has-info.warning', {theme: 'warning message'});
-      addTippy('.hl.lean .has-info.info', {theme: 'info message'});
-      addTippy('.hl.lean .has-info.error', {theme: 'error message'});
-
-      tippy('.hl.lean .tactic', {
-        allowHtml: true,
-        /* DEBUG -- remove the space: * /
-        onHide(any) { return false; },
-        trigger: "click",
-        // */
-        maxWidth: "none",
-        onShow(inst) {
-          const toggle = inst.reference.querySelector("input.tactic-toggle");
-          if (toggle && toggle.checked) {
-            return false;
-          }
-          if (blockedByTippy(inst.reference)) { return false; }
-        },
-        theme: "tactic",
-        placement: 'bottom-start',
-        content (tgt) {
-          const content = document.createElement("span");
-          const state = tgt.querySelector(".tactic-state").cloneNode(true);
-          state.style.display = "block";
-          content.appendChild(state);
-          content.style.display = "block";
-          content.className = "hl lean popup";
-          return content;
-        }
-      });
-  });
-}
-</script>
-    <script>
       let xref = {"Verso.Genre.Manual.section":
  {"title": "Sections or chapters of the manual",
   "description": null,
@@ -1543,22 +1378,22 @@ window.onload = () => {
    [{"id": "use",
      "data":
      {"title": "use",
-      "sectionNum": "3.36.",
+      "sectionNum": "4.36.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "use", "number": "36"}]},
      "address": "/Tactics/"}],
    "universes":
    [{"id": "universes",
      "data":
      {"title": "Universes, Types and Terms",
-      "sectionNum": "2.1.3.",
+      "sectionNum": "3.1.3.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Notes on Lean", "number": "1"},
        {"title": "Universes, Types and Terms", "number": "3"}]},
      "address": "/Lean/"}],
@@ -1566,22 +1401,22 @@ window.onload = () => {
    [{"id": "triv",
      "data":
      {"title": "triv",
-      "sectionNum": "3.35.",
+      "sectionNum": "4.35.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "triv", "number": "35"}]},
      "address": "/Tactics/"}],
    "term":
    [{"id": "term",
      "data":
      {"title": "Proving propositions and evaluating functions",
-      "sectionNum": "2.1.7.",
+      "sectionNum": "3.1.7.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Notes on Lean", "number": "1"},
        {"title": "Proving propositions and evaluating functions",
         "number": "7"}]},
@@ -1590,175 +1425,175 @@ window.onload = () => {
    [{"id": "tauto",
      "data":
      {"title": "tauto",
-      "sectionNum": "3.34.",
+      "sectionNum": "4.34.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "tauto", "number": "34"}]},
      "address": "/Tactics/"}],
    "tactics":
    [{"id": "tactics",
      "data":
      {"title": "Tactics",
-      "sectionNum": "3.",
+      "sectionNum": "4.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"}]},
+       {"title": "Tactics", "number": "4"}]},
      "address": "/Tactics/"}],
    "specialize":
    [{"id": "specialize",
      "data":
      {"title": "specialize",
-      "sectionNum": "3.33.",
+      "sectionNum": "4.33.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "specialize", "number": "33"}]},
      "address": "/Tactics/"}],
    "some-notes":
    [{"id": "some-notes",
      "data":
      {"title": "Some notes on Lean and Mathlib",
-      "sectionNum": "1.3.",
+      "sectionNum": "2.3.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Introduction", "number": "1"},
+       {"title": "Introduction", "number": "2"},
        {"title": "Some notes on Lean and Mathlib", "number": "3"}]},
      "address": "/Introduction/"}],
    "simp":
    [{"id": "simp",
      "data":
      {"title": "simp",
-      "sectionNum": "3.32.",
+      "sectionNum": "4.32.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "simp", "number": "32"}]},
      "address": "/Tactics/"}],
    "rw":
    [{"id": "rw",
      "data":
      {"title": "rw",
-      "sectionNum": "3.31.",
+      "sectionNum": "4.31.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "rw", "number": "31"}]},
      "address": "/Tactics/"}],
    "rintro":
    [{"id": "rintro",
      "data":
      {"title": "rintro",
-      "sectionNum": "3.30.",
+      "sectionNum": "4.30.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "rintro", "number": "30"}]},
      "address": "/Tactics/"}],
    "ring":
    [{"id": "ring",
      "data":
      {"title": "ring",
-      "sectionNum": "3.29.",
+      "sectionNum": "4.29.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "ring", "number": "29"}]},
      "address": "/Tactics/"}],
    "right":
    [{"id": "right",
      "data":
      {"title": "right",
-      "sectionNum": "3.28.",
+      "sectionNum": "4.28.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "right", "number": "28"}]},
      "address": "/Tactics/"}],
    "rfl":
    [{"id": "rfl",
      "data":
      {"title": "rfl",
-      "sectionNum": "3.27.",
+      "sectionNum": "4.27.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "rfl", "number": "27"}]},
      "address": "/Tactics/"}],
    "revert":
    [{"id": "revert",
      "data":
      {"title": "revert",
-      "sectionNum": "3.26.",
+      "sectionNum": "4.26.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "revert", "number": "26"}]},
      "address": "/Tactics/"}],
    "refine":
    [{"id": "refine",
      "data":
      {"title": "refine",
-      "sectionNum": "3.25.",
+      "sectionNum": "4.25.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "refine", "number": "25"}]},
      "address": "/Tactics/"}],
    "rcases":
    [{"id": "rcases",
      "data":
      {"title": "rcases",
-      "sectionNum": "3.24.",
+      "sectionNum": "4.24.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "rcases", "number": "24"}]},
      "address": "/Tactics/"}],
    "push_neg":
    [{"id": "push_neg",
      "data":
      {"title": "push_neg",
-      "sectionNum": "3.23.",
+      "sectionNum": "4.23.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "push_neg", "number": "23"}]},
      "address": "/Tactics/"}],
    "proof":
    [{"id": "proof",
      "data":
      {"title": "Proofs in Lean",
-      "sectionNum": "2.2.",
+      "sectionNum": "3.2.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Proofs in Lean", "number": "2"}]},
      "address": "/Lean/"}],
    "parenthesis":
    [{"id": "parenthesis",
      "data":
      {"title": "Different parentheses in  Lean",
-      "sectionNum": "2.1.6.",
+      "sectionNum": "3.1.6.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Notes on Lean", "number": "1"},
        {"title": "Different parentheses in  Lean", "number": "6"}]},
      "address": "/Lean/"}],
@@ -1766,66 +1601,66 @@ window.onload = () => {
    [{"id": "other-theorem-provers",
      "data":
      {"title": "Other material and Theorem provers",
-      "sectionNum": "1.2.",
+      "sectionNum": "2.2.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Introduction", "number": "1"},
+       {"title": "Introduction", "number": "2"},
        {"title": "Other material and Theorem provers", "number": "2"}]},
      "address": "/Introduction/"}],
    "obtain":
    [{"id": "obtain",
      "data":
      {"title": "obtain",
-      "sectionNum": "3.22.",
+      "sectionNum": "4.22.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "obtain", "number": "22"}]},
      "address": "/Tactics/"}],
    "nth_rewrite":
    [{"id": "nth_rewrite",
      "data":
      {"title": "nth_rewrite",
-      "sectionNum": "3.21.",
+      "sectionNum": "4.21.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "nth_rewrite", "number": "21"}]},
      "address": "/Tactics/"}],
    "notesonlean":
    [{"id": "notesonlean",
      "data":
      {"title": "Notes on Lean",
-      "sectionNum": "2.1.",
+      "sectionNum": "3.1.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Notes on Lean", "number": "1"}]},
      "address": "/Lean/"}],
    "norm_num":
    [{"id": "norm_num",
      "data":
      {"title": "norm_num",
-      "sectionNum": "3.20.",
+      "sectionNum": "4.20.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "norm_num", "number": "20"}]},
      "address": "/Tactics/"}],
    "names":
    [{"id": "names",
      "data":
      {"title": "Names of  Mathlib  Results",
-      "sectionNum": "2.2.4.",
+      "sectionNum": "3.2.4.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Proofs in Lean", "number": "2"},
        {"title": "Names of  Mathlib  Results", "number": "4"}]},
      "address": "/Lean/"}],
@@ -1833,11 +1668,11 @@ window.onload = () => {
    [{"id": "mathlib",
      "data":
      {"title": "Mathlib",
-      "sectionNum": "2.2.2.",
+      "sectionNum": "3.2.2.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Proofs in Lean", "number": "2"},
        {"title": "Mathlib", "number": "2"}]},
      "address": "/Lean/"}],
@@ -1845,86 +1680,86 @@ window.onload = () => {
    [{"id": "linearith",
      "data":
      {"title": "linarith",
-      "sectionNum": "3.19.",
+      "sectionNum": "4.19.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "linarith", "number": "19"}]},
      "address": "/Tactics/"}],
    "left":
    [{"id": "left",
      "data":
      {"title": "left",
-      "sectionNum": "3.18.",
+      "sectionNum": "4.18.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "left", "number": "18"}]},
      "address": "/Tactics/"}],
    "lean":
    [{"id": "lean",
      "data":
      {"title": "Lean",
-      "sectionNum": "2.",
+      "sectionNum": "3.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"}]},
+       {"title": "Lean", "number": "3"}]},
      "address": "/Lean/"}],
    "introduction":
    [{"id": "introduction",
      "data":
      {"title": "Introduction",
-      "sectionNum": "1.",
+      "sectionNum": "2.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Introduction", "number": "1"}]},
+       {"title": "Introduction", "number": "2"}]},
      "address": "/Introduction/"}],
    "intro":
    [{"id": "intro",
      "data":
      {"title": "intro",
-      "sectionNum": "3.17.",
+      "sectionNum": "4.17.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "intro", "number": "17"}]},
      "address": "/Tactics/"}],
    "induction":
    [{"id": "induction",
      "data":
      {"title": "induction",
-      "sectionNum": "3.16.",
+      "sectionNum": "4.16.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "induction", "number": "16"}]},
      "address": "/Tactics/"}],
    "howto":
    [{"id": "howto",
      "data":
      {"title": "How to use this course",
-      "sectionNum": "1.4.",
+      "sectionNum": "2.4.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Introduction", "number": "1"},
+       {"title": "Introduction", "number": "2"},
        {"title": "How to use this course", "number": "4"}]},
      "address": "/Introduction/"}],
    "holes":
    [{"id": "holes",
      "data":
      {"title": "Holes in proofs",
-      "sectionNum": "2.2.5.",
+      "sectionNum": "3.2.5.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Proofs in Lean", "number": "2"},
        {"title": "Holes in proofs", "number": "5"}]},
      "address": "/Lean/"}],
@@ -1932,33 +1767,33 @@ window.onload = () => {
    [{"id": "have",
      "data":
      {"title": "have",
-      "sectionNum": "3.15.",
+      "sectionNum": "4.15.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "have", "number": "15"}]},
      "address": "/Tactics/"}],
    "goals":
    [{"id": "goals",
      "data":
      {"title": "Goals",
-      "sectionNum": "1.1.",
+      "sectionNum": "2.1.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Introduction", "number": "1"},
+       {"title": "Introduction", "number": "2"},
        {"title": "Goals", "number": "1"}]},
      "address": "/Introduction/"}],
    "functions":
    [{"id": "functions",
      "data":
      {"title": "Function definitions",
-      "sectionNum": "2.1.4.",
+      "sectionNum": "3.1.4.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Notes on Lean", "number": "1"},
        {"title": "Function definitions", "number": "4"}]},
      "address": "/Lean/"}],
@@ -1966,11 +1801,11 @@ window.onload = () => {
    [{"id": "functional",
      "data":
      {"title": "Lean as a programming language",
-      "sectionNum": "2.1.1.",
+      "sectionNum": "3.1.1.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Notes on Lean", "number": "1"},
        {"title": "Lean as a programming language", "number": "1"}]},
      "address": "/Lean/"}],
@@ -1978,11 +1813,11 @@ window.onload = () => {
    [{"id": "foundation",
      "data":
      {"title": "Foundation",
-      "sectionNum": "2.2.1.",
+      "sectionNum": "3.2.1.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Proofs in Lean", "number": "2"},
        {"title": "Foundation", "number": "1"}]},
      "address": "/Lean/"}],
@@ -1990,11 +1825,11 @@ window.onload = () => {
    [{"id": "firststeps",
      "data":
      {"title": "First steps",
-      "sectionNum": "2.2.3.",
+      "sectionNum": "3.2.3.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Proofs in Lean", "number": "2"},
        {"title": "First steps", "number": "3"}]},
      "address": "/Lean/"}],
@@ -2002,22 +1837,22 @@ window.onload = () => {
    [{"id": "exfalso",
      "data":
      {"title": "exfalso",
-      "sectionNum": "3.14.",
+      "sectionNum": "4.14.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "exfalso", "number": "14"}]},
      "address": "/Tactics/"}],
    "exercises":
    [{"id": "exercises",
      "data":
      {"title": "Exercises",
-      "sectionNum": "2.2.6.",
+      "sectionNum": "3.2.6.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Proofs in Lean", "number": "2"},
        {"title": "Exercises", "number": "6"}]},
      "address": "/Lean/"}],
@@ -2025,22 +1860,22 @@ window.onload = () => {
    [{"id": "exact",
      "data":
      {"title": "exact",
-      "sectionNum": "3.13.",
+      "sectionNum": "4.13.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "exact", "number": "13"}]},
      "address": "/Tactics/"}],
    "equality":
    [{"id": "equality",
      "data":
      {"title": "Equality",
-      "sectionNum": "2.1.5.",
+      "sectionNum": "3.1.5.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Notes on Lean", "number": "1"},
        {"title": "Equality", "number": "5"}]},
      "address": "/Lean/"}],
@@ -2048,11 +1883,11 @@ window.onload = () => {
    [{"id": "dependent-type-theory",
      "data":
      {"title": "Dependent type theory",
-      "sectionNum": "2.1.2.",
+      "sectionNum": "3.1.2.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Notes on Lean", "number": "1"},
        {"title": "Dependent type theory", "number": "2"}]},
      "address": "/Lean/"}],
@@ -2060,143 +1895,143 @@ window.onload = () => {
    [{"id": "constructor",
      "data":
      {"title": "constructor",
-      "sectionNum": "3.12.",
+      "sectionNum": "4.12.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "constructor", "number": "12"}]},
      "address": "/Tactics/"}],
    "congr":
    [{"id": "congr",
      "data":
      {"title": "congr",
-      "sectionNum": "3.11.",
+      "sectionNum": "4.11.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "congr", "number": "11"}]},
      "address": "/Tactics/"}],
    "clear":
    [{"id": "clear",
      "data":
      {"title": "clear",
-      "sectionNum": "3.10.",
+      "sectionNum": "4.10.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "clear", "number": "10"}]},
      "address": "/Tactics/"}],
    "cheatsheet":
    [{"id": "cheatsheet",
      "data":
      {"title": "Tactics Cheatsheet",
-      "sectionNum": "3.1.",
+      "sectionNum": "4.1.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "Tactics Cheatsheet", "number": "1"}]},
      "address": "/Tactics/"}],
    "change":
    [{"id": "change",
      "data":
      {"title": "change",
-      "sectionNum": "3.9.",
+      "sectionNum": "4.9.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "change", "number": "9"}]},
      "address": "/Tactics/"}],
    "cases":
    [{"id": "cases",
      "data":
      {"title": "cases'",
-      "sectionNum": "3.8.",
+      "sectionNum": "4.8.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "cases'", "number": "8"}]},
      "address": "/Tactics/"}],
    "calc":
    [{"id": "calc",
      "data":
      {"title": "calc",
-      "sectionNum": "3.7.",
+      "sectionNum": "4.7.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "calc", "number": "7"}]},
      "address": "/Tactics/"}],
    "by_contra":
    [{"id": "by_contra",
      "data":
      {"title": "by_contra",
-      "sectionNum": "3.6.",
+      "sectionNum": "4.6.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "by_contra", "number": "6"}]},
      "address": "/Tactics/"}],
    "by_cases":
    [{"id": "by_cases",
      "data":
      {"title": "by_cases",
-      "sectionNum": "3.5.",
+      "sectionNum": "4.5.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "by_cases", "number": "5"}]},
      "address": "/Tactics/"}],
    "assumption":
    [{"id": "assumption",
      "data":
      {"title": "assumption",
-      "sectionNum": "3.4.",
+      "sectionNum": "4.4.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "assumption", "number": "4"}]},
      "address": "/Tactics/"}],
    "apply?":
    [{"id": "apply___",
      "data":
      {"title": "apply?",
-      "sectionNum": "3.3.",
+      "sectionNum": "4.3.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "apply?", "number": "3"}]},
      "address": "/Tactics/"}],
    "apply":
    [{"id": "apply",
      "data":
      {"title": "apply",
-      "sectionNum": "3.2.",
+      "sectionNum": "4.2.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Tactics", "number": "3"},
+       {"title": "Tactics", "number": "4"},
        {"title": "apply", "number": "2"}]},
      "address": "/Tactics/"}],
    "abreviation":
    [{"id": "abreviation",
      "data":
      {"title": "Two abbreviations",
-      "sectionNum": "2.1.8.",
+      "sectionNum": "3.1.8.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
         "number": null},
-       {"title": "Lean", "number": "2"},
+       {"title": "Lean", "number": "3"},
        {"title": "Notes on Lean", "number": "1"},
        {"title": "Two abbreviations", "number": "8"}]},
      "address": "/Lean/"}],
@@ -2371,6 +2206,171 @@ if(name) {
     });
 }
 </script>
+    <script>
+      
+window.onload = () => {
+
+    // Don't show hovers inside of closed tactic states
+    function blockedByTactic(elem) {
+      let parent = elem.parentNode;
+      while (parent && "classList" in parent) {
+        if (parent.classList.contains("tactic")) {
+          const toggle = parent.querySelector("input.tactic-toggle");
+          if (toggle) {
+            return !toggle.checked;
+          }
+        }
+        parent = parent.parentNode;
+      }
+      return false;
+    }
+
+    function blockedByTippy(elem) {
+      // Don't show a new hover until the old ones are all closed.
+      // Scoped to the nearest "top-level block" to avoid being O(n) in the size of the document.
+      var block = elem;
+      const topLevel = new Set(["section", "body", "html", "nav", "header"]);
+      while (block.parentNode && !topLevel.has(block.parentNode.nodeName.toLowerCase())) {
+        block = block.parentNode;
+      }
+      for (const child of block.querySelectorAll(".token, .has-info")) {
+        if (child._tippy && child._tippy.state.isVisible) { return true };
+      }
+      return false;
+    }
+
+    for (const c of document.querySelectorAll(".hl.lean .token")) {
+        if (c.dataset.binding != "") {
+            c.addEventListener("mouseover", (event) => {
+                if (blockedByTactic(c)) {return;}
+                const context = c.closest(".hl.lean").dataset.leanContext;
+                for (const example of document.querySelectorAll(".hl.lean")) {
+                    if (example.dataset.leanContext == context) {
+                        for (const tok of example.querySelectorAll(".token")) {
+                            if (c.dataset.binding == tok.dataset.binding) {
+                                tok.classList.add("binding-hl");
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        c.addEventListener("mouseout", (event) => {
+            for (const tok of document.querySelectorAll(".hl.lean .token")) {
+                tok.classList.remove("binding-hl");
+            }
+        });
+    }
+    /* Render docstrings */
+    if ('undefined' !== typeof marked) {
+        for (const d of document.querySelectorAll("code.docstring, pre.docstring")) {
+            const str = d.innerText;
+            const html = marked.parse(str);
+            const rendered = document.createElement("div");
+            rendered.classList.add("docstring");
+            rendered.innerHTML = html;
+            d.parentNode.replaceChild(rendered, d);
+        }
+    }
+    // Add hovers
+    let siteRoot = typeof __versoSiteRoot !== 'undefined' ? __versoSiteRoot : "/";
+    fetch(siteRoot + "-verso-docs.json").then((resp) => resp.json()).then((versoDocData) => {
+
+      const defaultTippyProps = {
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        theme: "lean",
+        maxWidth: "none",
+        appendTo: () => document.body,
+        interactive: true,
+        delay: [100, null],
+        ignoreAttributes: true,
+        onShow(inst) {
+          if (inst.reference.querySelector(".hover-info") || "versoHover" in inst.reference.dataset) {
+            if (blockedByTactic(inst.reference)) { return false };
+            if (blockedByTippy(inst.reference)) { return false; }
+          } else { // Nothing to show here!
+            return false;
+          }
+        },
+        content (tgt) {
+          const content = document.createElement("span");
+          content.className = "hl lean";
+          content.style.display = "block";
+          content.style.maxHeight = "300px";
+          content.style.overflowY = "auto";
+          content.style.overflowX = "hidden";
+          const hoverId = tgt.dataset.versoHover;
+          const hoverInfo = tgt.querySelector(".hover-info");
+          if (hoverId) { // Docstrings from the table
+            // TODO stop doing an implicit conversion from string to number here
+            let data = versoDocData[hoverId];
+            if (data) {
+              const info = document.createElement("span");
+              info.className = "hover-info";
+              info.style.display = "block";
+              info.innerHTML = data;
+              content.appendChild(info);
+              /* Render docstrings - TODO server-side */
+              if ('undefined' !== typeof marked) {
+                  for (const d of content.querySelectorAll("code.docstring, pre.docstring")) {
+                      const str = d.innerText;
+                      const html = marked.parse(str);
+                      const rendered = document.createElement("div");
+                      rendered.classList.add("docstring");
+                      rendered.innerHTML = html;
+                      d.parentNode.replaceChild(rendered, d);
+                  }
+              }
+            } else {
+              content.innerHTML = "Failed to load doc ID: " + hoverId;
+            }
+          } else if (hoverInfo) { // The inline info, still used for compiler messages
+            content.appendChild(hoverInfo.cloneNode(true));
+          }
+          return content;
+        }
+      };
+
+      const addTippy = (selector, props) => {
+        tippy(selector, Object.assign({}, defaultTippyProps, props));
+      };
+      addTippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token', {theme: 'lean'});
+      addTippy('.hl.lean .has-info.warning', {theme: 'warning message'});
+      addTippy('.hl.lean .has-info.info', {theme: 'info message'});
+      addTippy('.hl.lean .has-info.error', {theme: 'error message'});
+
+      tippy('.hl.lean .tactic', {
+        allowHtml: true,
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        maxWidth: "none",
+        onShow(inst) {
+          const toggle = inst.reference.querySelector("input.tactic-toggle");
+          if (toggle && toggle.checked) {
+            return false;
+          }
+          if (blockedByTippy(inst.reference)) { return false; }
+        },
+        theme: "tactic",
+        placement: 'bottom-start',
+        content (tgt) {
+          const content = document.createElement("span");
+          const state = tgt.querySelector(".tactic-state").cloneNode(true);
+          state.style.display = "block";
+          content.appendChild(state);
+          content.style.display = "block";
+          content.className = "hl lean popup";
+          return content;
+        }
+      });
+  });
+}
+</script>
     <script type="module" src="../static/search/search-init.js"></script>
     </head>
   <body>
@@ -2384,7 +2384,7 @@ if(name) {
             <div class="split-toc book">
               <div class="title">
                 <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot"></label><span class=""><a href="../">Cross-Reference Redirection</a></span></div>
-              <table><tr class="numbered"><td class="num">1.</td><td><a href="../Introduction/#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="../Lean/#lean">Lean</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="../Tactics/#tactics">Tactics</a></td></tr></table></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="../Table-of-Contents/#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Table-of-Contents">Table of Contents</a></td></tr><tr class="numbered"><td class="num">2.</td><td><a href="../Introduction/#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="../Lean/#lean">Lean</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="../Tactics/#tactics">Tactics</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">

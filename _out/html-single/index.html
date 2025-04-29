@@ -1546,7 +1546,7 @@ window.onload = () => {
             <div class="split-toc book">
               <div class="title">
                 <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class=""><a href="">Interactive Theorem Proving using Lean, Summer 2025</a></span></div>
-              <table><tr class="numbered"><td class="num"></td><td><a href="#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#lean">Lean</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#tactics">Tactics</a></td></tr></table></div>
+              <table><tr class="numbered"><td class="num"></td><td><a href="#Interactive-Theorem-Proving-using-Lean___-Summer-2025--Table-of-Contents">Table of Contents</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#lean">Lean</a></td></tr><tr class="numbered"><td class="num"></td><td><a href="#tactics">Tactics</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
@@ -1573,18 +1573,29 @@ window.onload = () => {
                 </li>
               <li>
                 <p>
-                  Local installation of Lean and the associated tools: Please follow these <a href="https://leanprover-community.github.io/get_started.html#regular-install">instructions</a>.</p>
+                  Open <code>vscode</code>, hit the <em>extensions</em> icon (fifth from the top) on the left, and install the <em>Lean 4 language extension</em>.</p>
+                </li>
+              <li>
+                <p>
+                  If you haven't done already, install <code>git</code>. For this, the best way is to open <code>vscode</code>, hit the <em>git</em> icon (third from the top on the left), and follow the instructions.</p>
                 </li>
               <li>
                 <p>
                   Installing the course repository: Navigate to a location where you would like to put the course materials and use</p>
                 </li>
               </ul>
-            <pre>git clone https://github.com/pfaffelh/leancourse`
+            <pre>git clone https://github.com/pfaffelh/leancourse
 cd leancourse
 lake exe cache get
+code .
 </pre><p>
-              When you type <code>code .</code> within the <code>leancourse</code> folder, navigate to <code>Leancourse/Exercises/01-Logic/01-a.lean</code>, accept to have<code>ELAN</code> installed, as well as the corresponding <code>Lean</code> version.  When all is finished. Everything is fine once orange and/or red bars disapprear, and navigating in the left hand side of the windom leads to changes in the right hand side (the infoview). You should see some code which looks a bit like mathematics.</p>
+              Then, <em>vscode</em> should open and you see the course materials.</p>
+            <div class="paragraph">
+              <p>
+                Note: Yet another description how to install <em>Lean</em> is found <a href="https://leanprover-community.github.io/get_started.html#regular-install">here</a>.</p>
+              </div>
+            <p>
+              After having typed <code>code .</code> within the <code>leancourse</code> folder, navigate to <code>Leancourse/Exercises/01-Logic/01-a.lean</code>. Everything is fine once orange and/or red bars disapprear, and navigating in the left hand side of the windom leads to changes in the right hand side (the infoview). You should see some code which looks a bit like mathematics.</p>
             <ul>
               <li>
                 <p>
@@ -1596,116 +1607,122 @@ lake exe cache get
                 </li>
               </ul>
             <p>
-              (In case you cannot install the course material locally, do the following: Right click <a href="https://gitpod.io/#/https://github.com/pfaffelh/leancourse>">here</a> and <em>open link in new tab</em> to access the repository using Gitpod. You will probably need a github account in order to do this.)</p>
+              In case you cannot install the course material locally, do the following: Visit <a href="https://https://github.com/pfaffelh/leancourse">this page</a> and click on the green Code-button. Navigate to Codespaces and open the course notes there. You get a window which looks a lot like <em>vscode</em>, so please follow the instructions from above. You will have to <em>Restart Lean</em> and <em>Restart File</em> and wait several minutes until all is set. (If you see a red vertical bar, something is wrong. If you see an orange vertical bar, you will have to wait longer.) You will probably need a github account in order to open the coursenotes in Codespaces.</p>
             </div>
           <section>
             <h2>
               Table of Contents</h2>
             <ol class="section-toc">
               <li>
-                <a href=""><span class="number">1.</span> Introduction</a><ol>
+                <a href=""><span class="number">1.</span> Table of Contents</a></li>
+              <li>
+                <a href=""><span class="number">2.</span> Introduction</a><ol>
                   <li>
-                    <a href=""><span class="number">1.1.</span> Goals</a></li>
+                    <a href=""><span class="number">2.1.</span> Goals</a></li>
                   <li>
-                    <a href=""><span class="number">1.2.</span> Other material and Theorem provers</a></li>
+                    <a href=""><span class="number">2.2.</span> Other material and Theorem provers</a></li>
                   <li>
-                    <a href=""><span class="number">1.3.</span> Some notes on Lean and Mathlib</a></li>
+                    <a href=""><span class="number">2.3.</span> Some notes on Lean and Mathlib</a></li>
                   <li>
-                    <a href=""><span class="number">1.4.</span> How to use this course</a></li>
+                    <a href=""><span class="number">2.4.</span> How to use this course</a></li>
                   </ol>
                 </li>
               <li>
-                <a href=""><span class="number">2.</span> Lean</a><ol>
+                <a href=""><span class="number">3.</span> Lean</a><ol>
                   <li>
-                    <a href=""><span class="number">2.1.</span> Notes on Lean</a></li>
+                    <a href=""><span class="number">3.1.</span> Notes on Lean</a></li>
                   <li>
-                    <a href=""><span class="number">2.2.</span> Proofs in Lean</a></li>
+                    <a href=""><span class="number">3.2.</span> Proofs in Lean</a></li>
                   </ol>
                 </li>
               <li>
-                <a href=""><span class="number">3.</span> Tactics</a><ol>
+                <a href=""><span class="number">4.</span> Tactics</a><ol>
                   <li>
-                    <a href=""><span class="number">3.1.</span> Tactics Cheatsheet</a></li>
+                    <a href=""><span class="number">4.1.</span> Tactics Cheatsheet</a></li>
                   <li>
-                    <a href=""><span class="number">3.2.</span> <code>apply</code></a></li>
+                    <a href=""><span class="number">4.2.</span> <code>apply</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.3.</span> <code>apply?</code></a></li>
+                    <a href=""><span class="number">4.3.</span> <code>apply?</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.4.</span> <code>assumption</code></a></li>
+                    <a href=""><span class="number">4.4.</span> <code>assumption</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.5.</span> <code>by_cases</code></a></li>
+                    <a href=""><span class="number">4.5.</span> <code>by_cases</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.6.</span> <code>by_contra</code></a></li>
+                    <a href=""><span class="number">4.6.</span> <code>by_contra</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.7.</span> <code>calc</code></a></li>
+                    <a href=""><span class="number">4.7.</span> <code>calc</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.8.</span> <code>cases'</code></a></li>
+                    <a href=""><span class="number">4.8.</span> <code>cases'</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.9.</span> <code>change</code></a></li>
+                    <a href=""><span class="number">4.9.</span> <code>change</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.10.</span> <code>clear</code></a></li>
+                    <a href=""><span class="number">4.10.</span> <code>clear</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.11.</span> <code>congr</code></a></li>
+                    <a href=""><span class="number">4.11.</span> <code>congr</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.12.</span> <code>constructor</code></a></li>
+                    <a href=""><span class="number">4.12.</span> <code>constructor</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.13.</span> <code>exact</code></a></li>
+                    <a href=""><span class="number">4.13.</span> <code>exact</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.14.</span> <code>exfalso</code></a></li>
+                    <a href=""><span class="number">4.14.</span> <code>exfalso</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.15.</span> <code>have</code></a></li>
+                    <a href=""><span class="number">4.15.</span> <code>have</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.16.</span> <code>induction</code></a></li>
+                    <a href=""><span class="number">4.16.</span> <code>induction</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.17.</span> <code>intro</code></a></li>
+                    <a href=""><span class="number">4.17.</span> <code>intro</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.18.</span> <code>left</code></a></li>
+                    <a href=""><span class="number">4.18.</span> <code>left</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.19.</span> <code>linarith</code></a></li>
+                    <a href=""><span class="number">4.19.</span> <code>linarith</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.20.</span> <code>norm_num</code></a></li>
+                    <a href=""><span class="number">4.20.</span> <code>norm_num</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.21.</span> <code>nth_rewrite</code></a></li>
+                    <a href=""><span class="number">4.21.</span> <code>nth_rewrite</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.22.</span> <code>obtain</code></a></li>
+                    <a href=""><span class="number">4.22.</span> <code>obtain</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.23.</span> <code>push_neg</code></a></li>
+                    <a href=""><span class="number">4.23.</span> <code>push_neg</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.24.</span> <code>rcases</code></a></li>
+                    <a href=""><span class="number">4.24.</span> <code>rcases</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.25.</span> <code>refine</code></a></li>
+                    <a href=""><span class="number">4.25.</span> <code>refine</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.26.</span> <code>revert</code></a></li>
+                    <a href=""><span class="number">4.26.</span> <code>revert</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.27.</span> <code>rfl</code></a></li>
+                    <a href=""><span class="number">4.27.</span> <code>rfl</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.28.</span> <code>right</code></a></li>
+                    <a href=""><span class="number">4.28.</span> <code>right</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.29.</span> <code>ring</code></a></li>
+                    <a href=""><span class="number">4.29.</span> <code>ring</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.30.</span> <code>rintro</code></a></li>
+                    <a href=""><span class="number">4.30.</span> <code>rintro</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.31.</span> <code>rw</code></a></li>
+                    <a href=""><span class="number">4.31.</span> <code>rw</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.32.</span> <code>simp</code></a></li>
+                    <a href=""><span class="number">4.32.</span> <code>simp</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.33.</span> <code>specialize</code></a></li>
+                    <a href=""><span class="number">4.33.</span> <code>specialize</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.34.</span> <code>tauto</code></a></li>
+                    <a href=""><span class="number">4.34.</span> <code>tauto</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.35.</span> <code>triv</code></a></li>
+                    <a href=""><span class="number">4.35.</span> <code>triv</code></a></li>
                   <li>
-                    <a href=""><span class="number">3.36.</span> <code>use</code></a></li>
+                    <a href=""><span class="number">4.36.</span> <code>use</code></a></li>
                   </ol>
                 </li>
               </ol>
             </section>
           <section>
+            <h2 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Table-of-Contents">
+              1. Table of Contents</h2>
+            </section>
+          <section>
             <h2 id="introduction">
-              1. Introduction<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=introduction" title="Permalink">🔗</a></span></h2>
+              2. Introduction<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=introduction" title="Permalink">🔗</a></span></h2>
             <section>
               <h3 id="goals">
-                1.1. Goals<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=goals" title="Permalink">🔗</a></span></h3>
+                2.1. Goals<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=goals" title="Permalink">🔗</a></span></h3>
               <p>
                 The course is designed for mathematics students and has at least two goals:</p>
               <ul>
@@ -1721,7 +1738,7 @@ lake exe cache get
               </section>
             <section>
               <h3 id="other-theorem-provers">
-                1.2. Other material and Theorem provers<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=other-theorem-provers" title="Permalink">🔗</a></span></h3>
+                2.2. Other material and Theorem provers<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=other-theorem-provers" title="Permalink">🔗</a></span></h3>
               <p>
                 Lean is not the only theorem prover, and, of course, this course is not the only course trying to teach Lean to you. Other Theorem provers (which all will be neglected here) are:</p>
               <ul>
@@ -1753,7 +1770,7 @@ lake exe cache get
               </section>
             <section>
               <h3 id="some-notes">
-                1.3. Some notes on Lean and Mathlib<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=some-notes" title="Permalink">🔗</a></span></h3>
+                2.3. Some notes on Lean and Mathlib<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=some-notes" title="Permalink">🔗</a></span></h3>
               <ul>
                 <li>
                   <p>
@@ -1771,7 +1788,7 @@ lake exe cache get
               </section>
             <section>
               <h3 id="howto">
-                1.4. How to use this course<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=howto" title="Permalink">🔗</a></span></h3>
+                2.4. How to use this course<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=howto" title="Permalink">🔗</a></span></h3>
               <p>
                 These notes have three main parts:</p>
               <ul>
@@ -1797,19 +1814,19 @@ lake exe cache get
             </section>
           <section>
             <h2 id="lean">
-              2. Lean<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=lean" title="Permalink">🔗</a></span></h2>
+              3. Lean<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=lean" title="Permalink">🔗</a></span></h2>
             <section>
               <h3 id="notesonlean">
-                2.1. Notes on Lean<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=notesonlean" title="Permalink">🔗</a></span></h3>
+                3.1. Notes on Lean<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=notesonlean" title="Permalink">🔗</a></span></h3>
               <section>
                 <h4 id="functional">
-                  2.1.1. Lean as a programming language<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=functional" title="Permalink">🔗</a></span></h4>
+                  3.1.1. Lean as a programming language<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=functional" title="Permalink">🔗</a></span></h4>
                 <p>
                   Lean is a <a href="https://en.wikipedia.org/wiki/Functional_programming">functional programming language</a> (i.e. it actually only consists of functions). This paradigm is in contrast to <a href="https://en.wikipedia.org/wiki/Imperative_programming">imperative programming</a>  such as Python, Java and C. Lean comes with many features you might be familiar with, such as a library for output and input, but is still young and many things need to be developed.</p>
                 </section>
               <section>
                 <h4 id="dependent-type-theory">
-                  2.1.2. Dependent type theory<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=dependent-type-theory" title="Permalink">🔗</a></span></h4>
+                  3.1.2. Dependent type theory<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=dependent-type-theory" title="Permalink">🔗</a></span></h4>
                 <p>
                   In all programming languages, you have data types such as <code>int</code>, <code>string</code> and <code>float</code>. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write <code>x : α</code> for a term <code>x</code> of type <code>α</code>, so we write <code>False : Bool</code>, <code>42 : ℕ</code>, but also <code>f : ℕ → ℝ</code> (for a function from ℕ to ℝ, which is an own type) and <code>0 ≠ 1 : Prop</code> (the proposition that 0 and 1 are different natural numbers), which is a proposition. Terms and types can depend on variables, e.g. in <code>∀ (n : ℕ), n &lt; n + 1 : Prop</code> and <code>f : (n : ℕ) → (Fin n → ℝ)</code> (where <code>Fin n</code> is the type which carries <code>{0, ..., n-1}</code>), which is a function <code>f</code> with domain <code>ℕ</code> such that <code>f n ∈ ℝ^n</code>.</p>
                 <p>
@@ -1817,13 +1834,13 @@ lake exe cache get
                 </section>
               <section>
                 <h4 id="universes">
-                  2.1.3. Universes, Types and Terms<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=universes" title="Permalink">🔗</a></span></h4>
+                  3.1.3. Universes, Types and Terms<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=universes" title="Permalink">🔗</a></span></h4>
                 <p>
                   In Lean, there are three levels of objects: universes, types and terms. We are concerned here with the last two. Of particular interest is the type <code>Prop</code>, which consists of statements that can be <code>True</code> or <code>False</code>. It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form <code>hP : P</code>, which means <code>P</code> is true, and this statement is called <code>hP</code>. Synonomously, it meansthat <code>P</code> is true and <code>hP</code> is a proof of <code>P</code>. The hypotheses here have names <code>P Q R S</code>, and the proofs of the hypotheses <code>hP hQ hR hS</code>. All names can be arbitrary. Furthermore, there are hypotheses of the form <code>P → Q</code>, which is the statement that <code>P</code> implies <code>Q</code>. (Note the similarity to function notation as in <code>f : ℝ → ℝ</code>.)</p>
                 </section>
               <section>
                 <h4 id="functions">
-                  2.1.4. Function definitions<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=functions" title="Permalink">🔗</a></span></h4>
+                  3.1.4. Function definitions<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=functions" title="Permalink">🔗</a></span></h4>
                 <p>
                   In <code>Lean</code>, the function <code>f : ℕ → ℕ, x ↦ 2x</code> is defined as</p>
                 <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.definition-3210">def</span> <span class="const token" data-binding="const-f" data-verso-hover="0" id="f">f</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span> <span class="unknown token" data-binding="">→</span> <span class="unknown token" data-binding="">ℕ</span> <span class="unknown token" data-binding="">:=</span> <span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.fun-3233">fun</span> <span class="var token" data-binding="var-_uniq.7" data-verso-hover="1">x</span> <span class="unknown token" data-binding="">↦</span> <span class="typed token" data-binding="" data-verso-hover="1">2</span><span class="unknown token" data-binding="">*</span><span class="var token" data-binding="var-_uniq.7" data-verso-hover="1">x</span>
@@ -1833,7 +1850,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                 </section>
               <section>
                 <h4 id="equality">
-                  2.1.5. Equality<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=equality" title="Permalink">🔗</a></span></h4>
+                  3.1.5. Equality<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=equality" title="Permalink">🔗</a></span></h4>
                 <p>
                   Due to the multitude of types in Lean, we have to be careful about equality. In Lean, there are three types of equality:</p>
                 <ul>
@@ -1855,7 +1872,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                 </section>
               <section>
                 <h4 id="parenthesis">
-                  2.1.6. Different parentheses in <code>Lean</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=parenthesis" title="Permalink">🔗</a></span></h4>
+                  3.1.6. Different parentheses in <code>Lean</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=parenthesis" title="Permalink">🔗</a></span></h4>
                 <p>
                   There are (essentially) three different types of parentheses in <code>Lean</code> statements. The simplest is <code>(...)</code>, which, as in normal use, indicates parentheses in the sense of what belongs together. However, you have to learn how <code>Lean</code> brackets internally when no '()' are given. Operators like <strong>and</strong> (<code>∧</code>), <strong>or</strong> (<code>∨</code>), are right-associative, so e.g. <code>P ∧ Q ∧ R := P ∧ (Q ∧ R)</code>. The application of functions in sequence, such as <code>f : ℕ → ℝ</code> and <code>g : ℝ → ℝ </code>, applied to <code>n : ℕ</code> is <code>g (f n)</code>, because <code>g</code> expects an input of type <code>ℝ</code>, and this is what <code>f n</code> provides. You cannot omit (...), i.e. in this case the parenthesis is left-associative.</p>
                 <p>
@@ -1866,7 +1883,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                 </section>
               <section>
                 <h4 id="term">
-                  2.1.7. Proving propositions and evaluating functions<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=term" title="Permalink">🔗</a></span></h4>
+                  3.1.7. Proving propositions and evaluating functions<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=term" title="Permalink">🔗</a></span></h4>
                 <p>
                   Although we almost exclusively prove propositions in <code>tactic</code> mode in these notes, it is instructive to know about the simplest example of how to turn the proof to <code>term</code> mode: There are two rules:</p>
                 <ul>
@@ -1901,7 +1918,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
 <span class="unknown token" data-binding=""></span></code></section>
               <section>
                 <h4 id="abreviation">
-                  2.1.8. Two abbreviations<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=abreviation" title="Permalink">🔗</a></span></h4>
+                  3.1.8. Two abbreviations<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=abreviation" title="Permalink">🔗</a></span></h4>
                 <p>
                   There are at least two abbreviations used in <code>Mathlib</code> which you will encounter frequently.</p>
                 <p>
@@ -1918,10 +1935,10 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
               </section>
             <section>
               <h3 id="proof">
-                2.2. Proofs in Lean<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=proof" title="Permalink">🔗</a></span></h3>
+                3.2. Proofs in Lean<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=proof" title="Permalink">🔗</a></span></h3>
               <section>
                 <h4 id="foundation">
-                  2.2.1. Foundation<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=foundation" title="Permalink">🔗</a></span></h4>
+                  3.2.1. Foundation<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=foundation" title="Permalink">🔗</a></span></h4>
                 <p>
                   In Lean every object has a type. Types itself fall into several categories, called universes. There are two main universes, called <code>Prop</code> and <code>Type</code>. Any mathematical statement comes with a claim and its proof. Say we want to claim something, such as <a href="https://en.wikipedia.org/wiki/Goldbach%27s_conjecture">Goldbach's conjecture</a>:</p>
                 <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.theorem-609">theorem</span> <span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="message warning">declaration uses 'sorry'</code></span></span><span class="const token" data-binding="const-goldbach" data-verso-hover="25" id="goldbach">goldbach</span></span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">∀</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">ℕ</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.34" data-verso-hover="26">h₁</span> <span class="unknown token" data-binding="">:</span> <span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span> <span class="unknown token" data-binding="">&gt;</span> <span class="typed token" data-binding="" data-verso-hover="1">2</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.341" data-verso-hover="27">h₂</span> <span class="unknown token" data-binding="">:</span> <span class="const token" data-binding="const-Even" data-verso-hover="28">Even</span> <span class="var token" data-binding="var-_uniq.3" data-verso-hover="1">n</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span>
@@ -1940,7 +1957,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                 </section>
               <section>
                 <h4 id="mathlib">
-                  2.2.2. Mathlib<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=mathlib" title="Permalink">🔗</a></span></h4>
+                  3.2.2. Mathlib<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=mathlib" title="Permalink">🔗</a></span></h4>
                 <p>
                   The Lean-library which contains many mathematical results is called <em>Mathlib</em>. On its <a href="https://leanprover-community.github.io/mathlib4_docs/index.html">documentation page</a> you can search for some results and concepts. (More precisely, you can search names of definitions, lemmas and theorems.) You will find results about e.g. <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Real/Basic.html#Real">Real numbers</a>, <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Group/Defs.html#Group">Groups</a> in algebra, <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/Defs/Basic.html#TopologicalSpace">Topology</a> and <a href="https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/OuterMeasure/Defs.html">Measure Theory</a>.</p>
                 <p>
@@ -1948,7 +1965,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                 </section>
               <section>
                 <h4 id="firststeps">
-                  2.2.3. First steps<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=firststeps" title="Permalink">🔗</a></span></h4>
+                  3.2.3. First steps<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=firststeps" title="Permalink">🔗</a></span></h4>
                 <p>
                   Let us start with some simple examples in order to explain the first tactics in Lean. We will deal here with</p>
                 <ul>
@@ -1993,7 +2010,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                   More tactics are found in Chapter xxx.</p>
                 <section>
                   <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Lean--Proofs-in-Lean--First-steps--intro-___--exact-___--apply--and--rw">
-                    2.2.3.1. <code>intro</code>, <code>exact</code>, <code>apply</code> and <code>rw</code></h5>
+                    3.2.3.1. <code>intro</code>, <code>exact</code>, <code>apply</code> and <code>rw</code></h5>
                   <div class="paragraph">
                     <p>
                       Let us start with a very simple <code>example</code>. If we want to prove the statement <code>P → P</code> (i.e. <code>P</code> implies <code>P</code>) we enter the following:</p>
@@ -2050,7 +2067,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                   </section>
                 <section>
                   <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Lean--Proofs-in-Lean--First-steps--apply___--and--simp">
-                    2.2.3.2. <code>apply?</code> and <code>simp</code></h5>
+                    3.2.3.2. <code>apply?</code> and <code>simp</code></h5>
                   <p>
                     Of course, we want to make use of known facts when proving new ones. There are two main search functions built into our work: <code>simp?</code> and <code>apply?</code>. The first is based on <code>simp</code>, which works using a collection of simplification rules, which are searchable using <code>simp?</code>. Here is an example:</p>
                   <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-6410">example</span> <span class="unknown token" data-binding="">:</span> <span class="unknown token" data-binding="">(</span><span class="typed token" data-binding="" data-verso-hover="1">0</span> <span class="unknown token" data-binding="">&lt;</span> <span class="typed token" data-binding="" data-verso-hover="1">1</span><span class="unknown token" data-binding="">)</span> <span class="unknown token" data-binding="">:=</span> <span class="tactic"><label for="tactic-state-10303010878956689020-6431-6433"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-6431" data-verso-hover="5">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-10303010878956689020-6431-6433"><span class="tactic-state"><span class="goal"><span class="conclusion"><span class="prefix">⊢ </span><span class="type">0<span class="const token" data-binding="const-LT.lt" data-verso-hover="47"> &lt; </span>1</span></span></span></span></span>
@@ -2066,7 +2083,7 @@ define <code>f</code>. The application of <code>f</code> to an <code>x : ℕ</co
                   </section>
                 <section>
                   <h5 id="Interactive-Theorem-Proving-using-Lean___-Summer-2025--Lean--Proofs-in-Lean--First-steps--have-___--refine-___-and--use">
-                    2.2.3.3. <code>have</code>, <code>refine</code>, and <code>use</code></h5>
+                    3.2.3.3. <code>have</code>, <code>refine</code>, and <code>use</code></h5>
                   <div class="paragraph">
                     <p>
                       In order to have some proper example, let us introduce <code>Even</code> and <code>Odd</code>. In fact, for a definition of <code>Even</code>, we can type</p>
@@ -2157,7 +2174,7 @@ fun {α} [Add α] a =&gt; ∃ r, a = r + r
                 </section>
               <section>
                 <h4 id="names">
-                  2.2.4. Names of <code>Mathlib</code> Results<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=names" title="Permalink">🔗</a></span></h4>
+                  3.2.4. Names of <code>Mathlib</code> Results<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=names" title="Permalink">🔗</a></span></h4>
                 <p>
                   Names like <code>zero_add, add_zero, one_mul, add_assoc, succ_ne_zero, lt_of_succ_le,...</code> seem cryptic. It is clear that individual relatively understandable abbreviations (<code>zero, one, mul, add, succ,...</code>) are separated by <code>_</code>. In general, the following two rules apply to naming:</p>
                 <ul>
@@ -2177,13 +2194,13 @@ fun {α} [Add α] a =&gt; ∃ r, a = r + r
                 </section>
               <section>
                 <h4 id="holes">
-                  2.2.5. Holes in proofs<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=holes" title="Permalink">🔗</a></span></h4>
+                  3.2.5. Holes in proofs<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=holes" title="Permalink">🔗</a></span></h4>
                 <p>
                   What is a hole in a proof? It is a missing argument...</p>
                 </section>
               <section>
                 <h4 id="exercises">
-                  2.2.6. Exercises<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=exercises" title="Permalink">🔗</a></span></h4>
+                  3.2.6. Exercises<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=exercises" title="Permalink">🔗</a></span></h4>
                 <p>
                   It is now time to move to the exercises. So, proceed to <code>vscode</code> (or <code>gitpod</code>), copy the exercises folder and start coding. Further hints on tactics etc is given within the exercises. Tactics are given in alphabetical order in the next chapter.
 </p>
@@ -2192,10 +2209,10 @@ fun {α} [Add α] a =&gt; ∃ r, a = r + r
             </section>
           <section>
             <h2 id="tactics">
-              3. Tactics<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=tactics" title="Permalink">🔗</a></span></h2>
+              4. Tactics<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=tactics" title="Permalink">🔗</a></span></h2>
             <section>
               <h3 id="cheatsheet">
-                3.1. Tactics Cheatsheet<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=cheatsheet" title="Permalink">🔗</a></span></h3>
+                4.1. Tactics Cheatsheet<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=cheatsheet" title="Permalink">🔗</a></span></h3>
               <table class="tabular left-align"><tr><th><p>
                       Proof state</p>
                     </th><th><p>
@@ -2457,7 +2474,7 @@ fun {α} [Add α] a =&gt; ∃ r, a = r + r
                     </td></tr></table></section>
             <section>
               <h3 id="apply">
-                3.2. <code>apply</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=apply" title="Permalink">🔗</a></span></h3>
+                4.2. <code>apply</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=apply" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> If we have the goal <code>⊢ Q</code>, and a proof of <code>h : P → Q</code>, we only need to find a proof for <code>P</code>. This transition happens by <code>apply h</code>.</p>
               <table class="tabular left-align"><tr><th><p>
@@ -2529,7 +2546,7 @@ and first-order unification with dependent types.</p>
                 </details></section>
             <section>
               <h3 id="apply___">
-                3.3. <code>apply?</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=apply?" title="Permalink">🔗</a></span></h3>
+                4.3. <code>apply?</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=apply?" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> There are already a lot of proven statements in <code>Mathlib</code>. When using <code>apply?</code>, <code>Mathlib</code> is searched for statements whose types correspond to those of the statement to be proved. If this is not successful, <code>Lean</code> reports a <code>timeout</code>. If successful, it also reports which commands were found. If you click on it, this is inserted in place of <code>apply?</code>.</p>
               <p>
@@ -2564,7 +2581,7 @@ used when closing the goal.</p>
                 </details></section>
             <section>
               <h3 id="assumption">
-                3.4. <code>assumption</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=assumption" title="Permalink">🔗</a></span></h3>
+                4.4. <code>assumption</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=assumption" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong>
 If a hypothesis is identical to the goal, <code>assumption</code> closes the goal.</p>
@@ -2614,7 +2631,7 @@ Note also the <code class="hl lean inline" data-lean-context="docstring-examples
                 </details></section>
             <section>
               <h3 id="by_cases">
-                3.5. <code>by_cases</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=by_cases" title="Permalink">🔗</a></span></h3>
+                4.5. <code>by_cases</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=by_cases" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong>
 If you have a term <code>P : Prop</code> as a hypothesis, <code>by_cases hP : P</code> returns two goals. The first one has <code>hP : P</code>, and the second one <code>hP : ¬P</code>. This tactic is thus identical to <code>have hP : P ∨ ¬ P, exact em P, cases hP,</code>. (The second expression is <code>em : ∀ (p : Prop), p ∨ ¬p</code>.)</p>
@@ -2690,7 +2707,7 @@ in most programming languages.</p>
               </section>
             <section>
               <h3 id="by_contra">
-                3.6. <code>by_contra</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=by_contra" title="Permalink">🔗</a></span></h3>
+                4.6. <code>by_contra</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=by_contra" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary</strong></p>
               <p>
@@ -2726,7 +2743,7 @@ in most programming languages.</p>
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="calc">
-                3.7. <code>calc</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=calc" title="Permalink">🔗</a></span></h3>
+                4.7. <code>calc</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=calc" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> As the word suggests, <code>calc</code> is about concrete calculations. This is not a tactic, but a <code>lean</code> mode. This means that you can enter this mode (with the word <code>calc</code>) and enter calculation steps and proofs that each individual calculation step is correct.</p>
               <p>
@@ -2834,7 +2851,7 @@ identifiers:</p>
                 </details></section>
             <section>
               <h3 id="cases">
-                3.8. <code>cases'</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=cases" title="Permalink">🔗</a></span></h3>
+                4.8. <code>cases'</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=cases" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> If a hypothesis is composed, i.e. can be expanded into two or more cases, <code>cases'</code> delivers exactly that. This can be used not only used with hypotheses <code>h : P ∨ Q</code> or <code>h : P ∧ Q</code>, but also with structures that consist of several cases, such as <code>∃...</code> (here there is a variable and a statement) and <code>x : bool</code> or <code>n : ℕ</code>.</p>
               <p>
@@ -2901,7 +2918,7 @@ n.succ = k + 1)</p>
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="change">
-                3.9. <code>change</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=change" title="Permalink">🔗</a></span></h3>
+                4.9. <code>change</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=change" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> Changes the goal (or a hypothesis) into a goal (or a hypothesis) that is defined the same.</p>
               <p>
@@ -2955,7 +2972,7 @@ n.succ = k + 1)</p>
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="clear">
-                3.10. <code>clear</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=clear" title="Permalink">🔗</a></span></h3>
+                4.10. <code>clear</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=clear" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> With <code>clear h</code> the hypothesis <code>h</code> is removed from the goal state
 (forgotten).</p>
@@ -2976,7 +2993,7 @@ n.succ = k + 1)</p>
                     </td></tr></table></section>
             <section>
               <h3 id="congr">
-                3.11. <code>congr</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=congr" title="Permalink">🔗</a></span></h3>
+                4.11. <code>congr</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=congr" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> If you have to show an equality <code>f x = f y</code>, then <code>congr</code> uses the statement that the equality is particularly true if <code>x = y</code>.</p>
               <p>
@@ -3029,7 +3046,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
                 </details></section>
             <section>
               <h3 id="constructor">
-                3.12. <code>constructor</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=constructor" title="Permalink">🔗</a></span></h3>
+                4.12. <code>constructor</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=constructor" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> If the goal is of the type <code>⊢ P ∧ Q</code>, it is replaced by <code>constructor</code> into two goals <code>⊢ P</code> and <code>⊢ Q</code>.</p>
               <p>
@@ -3077,7 +3094,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="exact">
-                3.13. <code>exact</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=exact" title="Permalink">🔗</a></span></h3>
+                4.13. <code>exact</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=exact" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> If the goal can be closed with a single command, then it can be closed with the <code>exact</code> tactic. Like many other tactics, <code>exact</code> also works with terms that are definitionally equal.</p>
               <p>
@@ -3121,7 +3138,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="exfalso">
-                3.14. <code>exfalso</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=exfalso" title="Permalink">🔗</a></span></h3>
+                4.14. <code>exfalso</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=exfalso" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> The statement <code>false → P</code> is true for all <code>P</code>. If the current goal is <code>⊢ P</code>, and you would apply this true statement using <code>apply</code>, the new goal would be <code>⊢ false</code>. This is exactly what the <code>exfalso</code> tactic does.</p>
               <p>
@@ -3161,7 +3178,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="have">
-                3.15. <code>have</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=have" title="Permalink">🔗</a></span></h3>
+                4.15. <code>have</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=have" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> By using <code>have</code> we introduce a new goal, which we have to prove first. Afterwards, it is available as a hypothesis in all further goals. This is identical to first proving a lemma <code>h</code> with the statement after <code>have h : </code> and then reusing it at the appropriate place in the proof (for example with <code>apply</code> or <code>rw</code>).</p>
               <p>
@@ -3214,7 +3231,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
 </pre></details></section>
             <section>
               <h3 id="induction">
-                3.16. <code>induction</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=induction" title="Permalink">🔗</a></span></h3>
+                4.16. <code>induction</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=induction" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong></p>
               <p>
@@ -3242,7 +3259,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="intro">
-                3.17. <code>intro</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=intro" title="Permalink">🔗</a></span></h3>
+                4.17. <code>intro</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=intro" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary</strong></p>
               <p>
@@ -3304,7 +3321,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
               </section>
             <section>
               <h3 id="left">
-                3.18. <code>left</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=left" title="Permalink">🔗</a></span></h3>
+                4.18. <code>left</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=left" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong></p>
               <p>
@@ -3357,7 +3374,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
               </section>
             <section>
               <h3 id="linearith">
-                3.19. <code>linarith</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=linearith" title="Permalink">🔗</a></span></h3>
+                4.19. <code>linarith</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=linearith" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> This tactic can prove equations and inequalities with the help of hypotheses. It is important that the hypotheses used are also only equations and inequalities. So here we are working mainly with the transitivity of <code>&lt;</code> together with arithmetic rules.</p>
               <p>
@@ -3379,7 +3396,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="norm_num">
-                3.20. <code>norm_num</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=norm_num" title="Permalink">🔗</a></span></h3>
+                4.20. <code>norm_num</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=norm_num" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong></p>
               <p>
@@ -3414,7 +3431,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
               </section>
             <section>
               <h3 id="nth_rewrite">
-                3.21. <code>nth_rewrite</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=nth_rewrite" title="Permalink">🔗</a></span></h3>
+                4.21. <code>nth_rewrite</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=nth_rewrite" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong></p>
               <p>
@@ -3452,7 +3469,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="obtain">
-                3.22. <code>obtain</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=obtain" title="Permalink">🔗</a></span></h3>
+                4.22. <code>obtain</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=obtain" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> The <code>obtain</code> tactic can be used to merge <code>have</code> and <code>cases</code> into one command.</p>
               <p>
@@ -3474,7 +3491,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="push_neg">
-                3.23. <code>push_neg</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=push_neg" title="Permalink">🔗</a></span></h3>
+                4.23. <code>push_neg</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=push_neg" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> In many steps of a proof, a negation must be carried out. In order to process the corresponding quantifiers etc. as well and to better reusable, the tactic <code>push_neg</code> is available.</p>
               <p>
@@ -3525,7 +3542,7 @@ fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg =&gt; congr_arg
               </section>
             <section>
               <h3 id="rcases">
-                3.24. <code>rcases</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=rcases" title="Permalink">🔗</a></span></h3>
+                4.24. <code>rcases</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=rcases" title="Permalink">🔗</a></span></h3>
               <table class="tabular left-align"><tr><th><p>
                       Proof state</p>
                     </th><th><p>
@@ -3670,7 +3687,7 @@ type with 3 constructors,  <code class="hl lean inline" data-lean-context="docst
                 </details></section>
             <section>
               <h3 id="refine">
-                3.25. <code>refine</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=refine" title="Permalink">🔗</a></span></h3>
+                4.25. <code>refine</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=refine" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> The <code>refine</code> tactic is like <code>exact</code> with holes. More precisely: if the goal is to apply a combination of hypotheses, you can do that with 'refine' and write an open term '<em>' for each. You then get each '</em>' back as a new goal (where those with definitional equality are solved immediately).</p>
               <p>
@@ -3698,7 +3715,7 @@ type with 3 constructors,  <code class="hl lean inline" data-lean-context="docst
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="revert">
-                3.26. <code>revert</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=revert" title="Permalink">🔗</a></span></h3>
+                4.26. <code>revert</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=revert" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> <code>revert</code> is the opposite of <code>intro</code>: It takes a hypothesis from the local context and inserts it as a precondition into the goal.</p>
               <p>
@@ -3725,7 +3742,7 @@ type with 3 constructors,  <code class="hl lean inline" data-lean-context="docst
               </section>
             <section>
               <h3 id="rfl">
-                3.27. <code>rfl</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=rfl" title="Permalink">🔗</a></span></h3>
+                4.27. <code>rfl</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=rfl" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> This tactic proves the equality (or equivalence) of two definitionally equal terms.</p>
               <p>
@@ -3765,7 +3782,7 @@ relation, that is, a relation which has a reflexive lemma tagged with the attrib
                 </details></section>
             <section>
               <h3 id="right">
-                3.28. <code>right</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=right" title="Permalink">🔗</a></span></h3>
+                4.28. <code>right</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=right" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> See <code>left</code>, where the adjustments are obvious.</p>
               <p>
@@ -3787,7 +3804,7 @@ relation, that is, a relation which has a reflexive lemma tagged with the attrib
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="ring">
-                3.29. <code>ring</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=ring" title="Permalink">🔗</a></span></h3>
+                4.29. <code>ring</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=ring" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> The <code>ring</code> uses rules of calculation such as associativity, commutativity, and distributivity to achieve the goal.</p>
               <p>
@@ -3828,7 +3845,7 @@ relation, that is, a relation which has a reflexive lemma tagged with the attrib
               </section>
             <section>
               <h3 id="rintro">
-                3.30. <code>rintro</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=rintro" title="Permalink">🔗</a></span></h3>
+                4.30. <code>rintro</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=rintro" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> The <code>rintro</code> tactic is used to process several <code>intro</code> and <code>cases</code> tactics on one line.</p>
               <p>
@@ -3870,7 +3887,7 @@ an optional type ascription <code class="hl lean inline" data-lean-context="docs
                 </details></section>
             <section>
               <h3 id="rw">
-                3.31. <code>rw</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=rw" title="Permalink">🔗</a></span></h3>
+                4.31. <code>rw</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=rw" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> <code>rw</code> stands for <strong>rewrite</strong>. For <code>rw h</code> to work, <code>h</code> must be an expression of the type <code>h : x=y</code> or <code>h : A↔B</code>. In this case, <code>rw h</code>  replaces every term that is syntactically identical to <code>x</code> (or <code>A</code>) is replaced by <code>y</code> (or <code>B</code>). This also works if <code>h</code> is an already proven result (i.e. a <code>lemma</code> or <code>theorem</code>). With <code>rw ← h</code> is applied from right to left. (In the above example, <code>y</code> is replaced by <code>x</code> and <code>B</code> by <code>A</code>.)</p>
               <p>
@@ -3965,7 +3982,7 @@ add_zero : ∀ {M : Type} [_inst_1 : add_zero_class M] (a : M), a + 0 = a
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="simp">
-                3.32. <code>simp</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=simp" title="Permalink">🔗</a></span></h3>
+                4.32. <code>simp</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=simp" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> In <code>mathlib</code> there are many lemmas with <code>=</code> or <code>↔</code> statements that can be applied with <code>rw</code> and are marked with <code>@[simp]</code>. These marked lemmas have the property that the right side is a simplified form of the left side. With <code>simp</code>, <code>lean</code> looks for matching lemmas and tries to apply them.</p>
               <p>
@@ -4010,7 +4027,7 @@ add_zero : ∀ {M : Type} [_inst_1 : add_zero_class M] (a : M), a + 0 = a
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="specialize">
-                3.33. <code>specialize</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=specialize" title="Permalink">🔗</a></span></h3>
+                4.33. <code>specialize</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=specialize" title="Permalink">🔗</a></span></h3>
               <table class="tabular left-align"><tr><th><p>
                       Proof state</p>
                     </th><th><p>
@@ -4054,7 +4071,7 @@ add_zero : ∀ {M : Type} [_inst_1 : add_zero_class M] (a : M), a + 0 = a
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="tauto">
-                3.34. <code>tauto</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=tauto" title="Permalink">🔗</a></span></h3>
+                4.34. <code>tauto</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=tauto" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary:</strong> <code>tauto</code> solves all goals that can be solved with a truth table.</p>
               <p>
@@ -4160,7 +4177,7 @@ add_zero : ∀ {M : Type} [_inst_1 : add_zero_class M] (a : M), a + 0 = a
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="triv">
-                3.35. <code>triv</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=triv" title="Permalink">🔗</a></span></h3>
+                4.35. <code>triv</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=triv" title="Permalink">🔗</a></span></h3>
               <p>
                 <strong>Summary</strong></p>
               <p>
@@ -4191,7 +4208,7 @@ add_zero : ∀ {M : Type} [_inst_1 : add_zero_class M] (a : M), a + 0 = a
 <span class="unknown token" data-binding=""></span></code></details></section>
             <section>
               <h3 id="use">
-                3.36. <code>use</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=use" title="Permalink">🔗</a></span></h3>
+                4.36. <code>use</code><span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&name=use" title="Permalink">🔗</a></span></h3>
               <table class="tabular left-align"><tr><th><p>
                       Proof state</p>
                     </th><th><p>

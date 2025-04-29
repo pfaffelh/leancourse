@@ -37,7 +37,7 @@ example (hPQ : P → Q) (hQP : Q → P) : (P ↔ Q) := by
 example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T → P) (hRT : R → T) : ( P ↔ R )  := by
   sorry
 
--- For the negation of `P`, abbreviated by `¬P`, we remark that `¬P` is by definition equivalent to `P → false`.
+-- For the negation of `P`, abbreviated by `¬P`, we remark that `¬P` is by definition equivalent to `P → False`.
 
 example : ¬P ↔ (P → False) := by
   constructor
@@ -55,5 +55,5 @@ example (hP : P) (hQ : Q) (hPQ : P → Q) : ¬Q → ¬ P := by
 -/
 
 -- Exercise 5) If both, `P` and `¬P` hold, something cannot be right.
-example : P → ¬P → false := by
+example : P → ¬P → False := by
   sorry

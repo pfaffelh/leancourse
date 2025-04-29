@@ -51,6 +51,7 @@ example (h : P → Q → R → S) : (P ∧ Q ∧ R) → S := by
 example : (P ∨ Q) → (¬Q → P) := by
   sorry
 
+
 -- Exercise 4) Yet another time...
 example : (P → Q) ∧ (Q → R) → (P → R) := by
   sorry

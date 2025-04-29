@@ -122,6 +122,7 @@ example (x : α) (f : α → Prop) : (¬(f x)) ↔ ((f x) → False) := by
   change (¬(f x)) ↔ (¬(f x))
   rfl
 
+
 -- Exercise 8: Here, the right-hand side is a version saying that β contains only one element.
 example : (∀ (f g : α → β), f = g) → (∀ (y1 y2 : β), y1 = y2) := by
   sorry

@@ -100,6 +100,7 @@ example (P : α → Prop) : ¬(∃ (x : α), P x ) → (∀ (x : α), ¬(P x) ) 
 example (P : α → Prop) : (∃ (x : α), ¬(P x) ) → ¬(∀ (x : α), P x ) := by
   sorry
 
+
 -- Exercise 8:
 example (P : α → Prop) : ¬(∀ (x : α), P x ) → (∃ (x : α), ¬P x ) := by
   sorry

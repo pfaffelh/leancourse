@@ -91,6 +91,7 @@ example : ¬(P ∧ Q) ↔ (¬P ∨ ¬ Q) := by
 example : P ∨ (Q ∧ R) ↔ (P ∨ Q) ∧ (P ∨ R) := by
   sorry
 
+
 -- Exercise 7b) Here is the second:
 example : P ∧ (Q ∨ R) ↔ (P ∧ Q) ∨ (P ∧ R) := by
   sorry

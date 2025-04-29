@@ -56,5 +56,6 @@ example (hPQ : P → Q) (hQR : Q → R ) (hSR : S → R ) : (P → R) ∧ (S →
 
 -- Exercise 5) I found the following task difficult to prove. Remember that `P → Q` is identical to `Q ∨ ¬P`. However, with a few applications of `have` it should work.
 
+
 example : (((P → Q) → P) → P) := by
   sorry

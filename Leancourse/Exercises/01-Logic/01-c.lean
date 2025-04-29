@@ -60,6 +60,7 @@ example : ¬¬P → P := by
   apply h1
   exact h2
 
+
 -- Exercise 7: At the reverse direction, an apply leads to two new goals.
 example : (P → Q) ↔ (¬ Q → ¬ P) := by
   sorry

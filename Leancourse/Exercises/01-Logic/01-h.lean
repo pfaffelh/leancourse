@@ -16,7 +16,7 @@ example (x : α) : x = x := by
   rfl
 
 -- Exercise 1: This also works differently, but it is faster using `rfl`.
-example (P : Prop) : ¬P ↔ (P → false) := by
+example (P : Prop) : ¬P ↔ (P → False) := by
   sorry
 
 /-

@@ -58,6 +58,12 @@ example (inh : Inhabited α) (h : ∃ x, ∀ y, R x y) : ∃ x, R x x := by
   use x
   exact h x   -- or exact ⟨ x, h x ⟩,
 
+-- In fact, the `∃` in an assumption is equvalent to a pair: It gives an object which is assumed to exists, and a proof that it satisfies what comes after the `∃`.
+-- In addition, the proof in the last step can be abbreviated_
+example (inh : Inhabited α) (h : ∃ x, ∀ y, R x y) : ∃ x, R x x := by
+  obtain ⟨x, hx⟩ := h
+  use x, (hx x)
+
 -- Exercise 1: If `P x` is true for all `x`, then it is also true for one.
 example (inh : Inhabited α) : (∀ x, P x) → (∃ x, P x) := by
   sorry

@@ -32,7 +32,7 @@ example (hQ : Q) : P ∨ Q := by
 example (hQ : Q) : P ∨ Q ∨ R := by
   sorry
 
--- Exercise 3) Nested `constructor` tactics are possible as well.
+-- Exercise 3) We already encountered nested `constructor` above. Here are some momre:
 example (hPQ : P → Q) (hQT : Q → T) (hQR : Q → R) (hRS : R → S) (hTP : T → P) (hRT : R → T) : ( (Q ↔ R) ∧ (R ↔ T)) := by
   sorry
 
@@ -76,7 +76,7 @@ example : (P ∧ Q) → (P ∨ Q) := by
   sorry
 
 -- Exercise 5) `P` and `¬P` cannot hold at the same time.
-example : (P ∧ ¬P) ↔ false := by
+example : (P ∧ ¬P) ↔ False := by
   sorry
 
 -- Exercise 6a) One of the deMorgan's rules for negation:

@@ -61,6 +61,6 @@ example : ¬¬P → P := by
   exact h2
 
 
--- Exercise 7: At the reverse direction, an apply leads to two new goals.
+-- Exercise 7: The reverse direction is by contradiction!
 example : (P → Q) ↔ (¬ Q → ¬ P) := by
   sorry

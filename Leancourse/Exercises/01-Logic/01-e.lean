@@ -1,6 +1,6 @@
 import Mathlib
 
-variables (P Q R S T: Prop)
+variable (P Q R S T: Prop)
 
 /-
   So far, the hypotheses used have always resulted from the transformation of existing hypotheses. However, this does not always have to be the case, because new hypotheses can be added, but these also have to be proven. Here we learn about and become familiar with `by_cases` and `have`.-/

@@ -55,3 +55,22 @@ example : (P ∨ Q) → (¬Q → P) := by
 -- Exercise 4) Yet another time...
 example : (P → Q) ∧ (Q → R) → (P → R) := by
   sorry
+
+-- For `refine`, you can use the same notation with `⟨.,.⟩` and `( | )`. In addition, using `?_`, you can leave holes which you must fill in later.
+
+example (hP : P) (hQ : Q) : P ∧ Q := by
+  refine ⟨?_, ?_⟩
+  · exact hP
+  · exact hQ
+
+-- You can even circumvent many `intro`s using the fact that they _just_ introfuce new variables which need to be plugged into functions.
+example : P ↔ P := by
+  refine ⟨fun hP ↦ ?_, fun hP ↦ ?_⟩
+  · exact hP
+  · exact hP
+
+-- Exercise 5)
+example : (P → Q) ↔ (Q ∨ ¬P) := by
+  refine ⟨fun h ↦ ?_, fun h hP ↦ ?_⟩
+  · sorry
+  · sorry

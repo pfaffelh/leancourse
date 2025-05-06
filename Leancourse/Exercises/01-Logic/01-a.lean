@@ -55,23 +55,18 @@ example : P → (P → P) := by
 -- Exercise 2)
 -- Here the proof starts with a hypothesis, which we do not have _intro_duced earlier.
 example (hQ : Q) : (P → Q) := by
-  intro hP
-  exact hQ
+  sorry
 
 -- Exercise 3) Why not try with `intro hP hPQ`. This shortens it a bit. However, note that you can also use something like `hPQ hP`, which applies the hypothesis `P → Q` to `P`.
 example : P → (P → Q) → Q := by
-  intro hP hPQ
-  exact hPQ hP
+  sorry
 
 -- Exercise 4) Make up your mind which of the following `examples` are valid, and prove them.
 example : P → Q → P := by
-  intro hP hQ
-  exact hP
+  sorry
 
 example : P → P → Q := by
-  intro hP hP'
   sorry
 
 example : P → Q → Q := by
-  intro hP hQ
-  exact hQ
+  sorry

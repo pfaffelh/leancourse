@@ -13,6 +13,8 @@ This means that the type `Nat` (or `ℕ`) has the term `zero` (or `0`), and if `
 
 #print Nat
 
+-- Another hint that we will use often. Why don't you move the cursor to the `Nat` in the last line and press `F12`. You will then be guided to the definition of `Nat`.
+
 -- The statement just made can also be proven (with cases')-/
 
 example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) := by

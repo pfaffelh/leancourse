@@ -1,11 +1,11 @@
 import Mathlib
 
 -- Dies sind Namen für alle verwendeten Aussagen
-variables (P Q R S T: Prop)
+variable (P Q R S T: Prop)
 
 /-
-  We now come to a few abbreviating tactics, namely `rintro`, `rcases` and `obtain`. First of all, two parenthesis notations are important here, namely `⟨hP, hQ⟩` and `(hP | hQ)`. The first notation represents the simultaneous introduction of `hP` and `hQ` as a pair of hypothesis, the second notation represents two goals, one with `hP`, the other with `hQ`. (Exactly the same as with the `cases'` tactic. However, here we can also process more than two terms, for example `⟨hP, hQ, hR⟩` for a joint introduction of `hP`, `hQ` and `hR`. It is also possible to nest, for example `⟨(hP | hQ), hR ⟩`).
-  The three tactics are abbreviations, namely `rintro` for `intro` + `cases'`, `rcases` for a more flexible version of `cases'`, and `obtain` for `intros` + `have`. We'll start with examples.-/
+  We now come to a few abbreviating tactics, namely `rintro`, `rcases`, `obtain`, and `refine`. First of all, two parenthesis notations are important here, namely `⟨hP, hQ⟩` and `(hP | hQ)`. The first notation represents the simultaneous introduction of `hP` and `hQ` as a pair of hypothesis, the second notation represents two goals, one with `hP`, the other with `hQ`. (Exactly the same as with the `cases'` tactic. However, here we can also process more than two terms, for example `⟨hP, hQ, hR⟩` for a joint introduction of `hP`, `hQ` and `hR`. It is also possible to nest, for example `⟨(hP | hQ), hR ⟩`).
+  The first three tactics are abbreviations, namely `rintro` for `intro` + `cases'`, `rcases` for a more flexible version of `cases'`, and `obtain` for `have + rintro`. The fourth tactic, `refine`, lets you split up your goal quickly. We'll start with examples.-/
 
 -- An example for `rintro`
 example : (P ∨ Q) → (¬Q → P) := by

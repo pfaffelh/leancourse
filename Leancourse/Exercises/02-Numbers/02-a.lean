@@ -32,37 +32,28 @@ example (n : ℕ) (hn : n ≠ 0) : ∃ (k : ℕ), n = succ k := by
 /-
 Exercise 1: Try to follow this example a little further.
 
-Here I needed two lemmas (to apply `rw` to it; for the first one, lean knows that `α = ℕ` has the property `LT` (which stands for _less than_, i.e., `ℕ` is ordered)):
+Here I needed two lemmas (to apply `rw` to it; for the first one, lean knows that `α = ℕ` has the property `LT` (which stands for _less than_, i.e., `ℕ` is ordered)):-/
 
-```
-  gt_iff_lt : ∀ {α : Type u} [inst : LT α] {x y : α}, x > y ↔ y < x
+#check gt_iff_lt
+#check Nat.succ_lt_succ_iff
 
-  Nat.succ_lt_succ_iff : ∀ {a b : ℕ}, a.succ < b.succ ↔ a < b
-```
-
+/-
 These and many more statements can also be found here, for example: https://leanprover-community.github.io/. See also below for further examples.-/
 
 example (n : ℕ) (h : n > 1) : ∃ (k : ℕ), n = k + 2 := by
   sorry
 /-
   Now let's move on to some concrete calculations. We have already learned how `rw` works. This, together with the many statements in mathlib, will now help us solve arithmetic problems. We will first work in the set of natural numbers. The lemmas we will use in the following are, for example, the proofs stored in mathlib that ℕ has the properties `add_zero_class`, `mul_one_class`, `add_semigroup`, `add_comm_semigroup`, as well as the lemmas: (for the parentheses, see script)
-
-  zero_add : ∀ {M : Type u} [inst : AddZeroClass M] (a : M), 0 + a = a
-
-  add_zero : ∀ {M : Type u} [inst : AddZeroClass M] (a : M), a + 0 = a
-
-  one_mul :  ∀ {M : Type u} [inst : MulOneClass M] (a : M), 1 * a = a
-
-  mul_one : ∀ {M : Type u} [inst : MulOneClass M] (a : M), a * 1 = a
-
-  add_assoc : ∀ {G : Type u_1} [inst : AddSemigroup G] (a b c : G), a + b + c = a + (b + c)
-
-  add_comm : ∀ {G : Type u_1} [inst : AddCommMagma G] (a b : G), a + b = b + a
-
-  mul_assoc : ∀ {G : Type u_1} [inst : Semigroup G] (a b c : G), a * b * c = a * (b * c)
-
-  mul_comm : ∀ {G : Type u_1} [inst : CommMagma G] (a b : G), a * b = b * a
 -/
+
+#check zero_add
+#check add_zero
+#check one_mul
+#check mul_one
+#check add_assoc
+#check add_comm
+#check mul_assoc
+#check mul_comm
 
 -- Here is an example: if you move the mouse over `add_zero`, vscode will show you the corresponding statement.
 example (m n : ℕ) : m + n = n + m + 0 := by
@@ -102,11 +93,9 @@ lemma binom1 (n : ℕ) : (n+1)^2 = n^2 + 2*n + 1 :=
 example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 := by
   rw [pow_two, mul_add, add_mul, mul_one (n+1), one_mul, ← pow_two,  add_assoc, ← add_assoc n n 1, ← add_assoc, ← double]
 
-
 /-
-  By the way: Rewriting every little calculation rule with rw can become tedious. There are four tactics that are much more powerful here:
-  - ring: knows all arithmetic rules in (half) rings, e.g., natural numbers; however, it cannot use hypotheses; directly solves the binomial theorem;
-
+By the way: Rewriting every little calculation rule with rw can become tedious. There are four tactics that are much more powerful here:
+- `ring`: knows all arithmetic rules in (semi) rings, e.g., natural numbers; however, it cannot use hypotheses; directly solves the binomial theorem;
 - `norm_num`: can calculate with numbers (but not variables);
 - `linarith`: can prove linear equations and inequalities with the help of hypotheses;
 - `simp`: in Mathlib there are many lemmas that are intended to simplify things, such as `n + 0 = n`. These are always `=` or `↔` statements and are marked with @simp. The simp tactic can access these.-/
@@ -115,7 +104,7 @@ example (m n : ℕ) : (m + n)^3 = m^3 + 3*m*n^2 + 3*m^2*n + n^3 := by
   ring
 
 example : 123 * 321 = 39483 := by
-norm_num
+  norm_num
 
 example (k m n : ℕ) (h1 : k ≤ m+n) (h2 : m < n) : k < 2*n := by
   linarith

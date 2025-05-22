@@ -77,6 +77,8 @@ example (a : ℕ → ℝ) (ha : ∀ (n : ℕ), a n = 1 / n) : TendsTo a 0 := by
 #check neg_add_eq_sub
 #check abs_neg
 #check neg_sub
+#check abs_lt
+
 -- We write `max x y` for the maximum of two numbers.
 
 -- Exercise 4: If `x` tends to `t` and `y` tends to `u`, then `x + y` tends to `t + u`.

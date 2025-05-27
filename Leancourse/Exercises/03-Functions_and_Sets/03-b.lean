@@ -80,8 +80,8 @@ example : (∀ x, x ∈ s) ↔ ¬∃ x, x ∈ sᶜ := by
 
 When are two sets equal? Well, if they contain the same elements. This is what extensionality is about.
 
-If the goal is `⊢ s = t` where `a` and `b` are `Set α`, then `ext x,` will create a hypothesis `x : α` and change
-the goal to `x ∈ A ↔ x ∈ B`.
+If the goal is `⊢ s = t` where `s` and `t` are `Set α`, then `ext x,` will create a hypothesis `x : α` and change
+the goal to `x ∈ s ↔ x ∈ t`.
 
 Since we will be dealing with sets below anyway, we start with a different example. Two functions are equal, if all values are equal.
 

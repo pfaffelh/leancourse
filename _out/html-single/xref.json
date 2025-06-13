@@ -213,6 +213,16 @@
        {"title": "Lean", "number": "3"},
        {"title": "Proofs in Lean", "number": "2"}]},
      "address": "/"}],
+   "projects":
+   [{"id": "projects",
+     "data":
+     {"title": "Projects",
+      "sectionNum": "5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+        "number": null},
+       {"title": "Projects", "number": "5"}]},
+     "address": "/"}],
    "parenthesis":
    [{"id": "parenthesis",
      "data":
@@ -676,7 +686,16 @@
  {"title": "Verso.Genre.Manual.example",
   "description": null,
   "contents":
-  {"nat.zero": [{"id": "nat___succ", "data": null, "address": "/"}],
+  {"own_mul_right_neutral":
+   [{"id": "own_mul_right_neutral", "data": null, "address": "/"}],
+   "own_mul_left_neutral":
+   [{"id": "own_mul_right_neutral", "data": null, "address": "/"}],
+   "own_mul_komm":
+   [{"id": "own_mul_right_neutral", "data": null, "address": "/"}],
+   "own_mul_assoc":
+   [{"id": "own_mul_right_neutral", "data": null, "address": "/"}],
+   "own_add": [{"id": "own_mul_right_neutral", "data": null, "address": "/"}],
+   "nat.zero": [{"id": "nat___succ", "data": null, "address": "/"}],
    "nat.succ": [{"id": "nat___succ", "data": null, "address": "/"}],
    "nat": [{"id": "nat___succ", "data": null, "address": "/"}],
    "mySubtype.mk": [{"id": "mySubtype___mk", "data": null, "address": "/"}],

@@ -6,7 +6,6 @@ import Mathlib
 open Verso.Genre Manual
 open MyDef
 
-
 set_option pp.rawOnError true
 
 #doc (Manual) "`apply`" =>

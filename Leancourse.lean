@@ -6,6 +6,7 @@ import Mathlib
 import «Leancourse».Coursenotes.«00-Introduction»
 import «Leancourse».Coursenotes.«01-Lean»
 import «Leancourse».Coursenotes.«02-Tactics»
+import «Leancourse».Coursenotes.«03-Projects»
 
 open Verso.Genre Manual
 
@@ -47,3 +48,5 @@ In case you cannot install the course material locally, do the following: Visit 
 {include 0 «Leancourse».Coursenotes.«01-Lean»}
 
 {include 0 «Leancourse».Coursenotes.«02-Tactics»}
+
+{include 0 «Leancourse».Coursenotes.«03-Projects»}

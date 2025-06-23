@@ -83,7 +83,83 @@ Jede Kontraktion hat genau einen Fixpunkt
 
 # Path-connected spaces (Jasper Ganten)
 
-The union of path-connected spaces is path-connected, if their intersection is not empty.
+```lean
+
+open Set
+
+section PathConnected
+
+variable {X : Type*} [TopologicalSpace X]
+
+/--
+An intuitive definition of path connectedness:
+A set `S` is path connected if it is nonempty and any two
+points in `S` can be joined by a continuous path in `S`.
+-/
+def IsPathConnected' (S : Set X) : Prop :=
+  S.Nonempty ∧
+  ∀ x y : X, x ∈ S → y ∈ S →
+    ∃ γ : Set.Icc (0 : ℝ) 1 → X,
+      Continuous γ ∧
+      γ 0 = x ∧
+      γ 1 = y ∧
+      ∀ t, γ t ∈ S
+
+/--
+`IsPathConnected'` is equivalent to Mathlib's
+`IsPathConnected`.
+-/
+theorem pathConnected_iff (A : Set X) :
+    IsPathConnected A ↔ IsPathConnected' A := by
+  constructor
+  · -- Mathlib ⇒ Intuitive
+    intro ⟨p1, ⟨hp1, h1⟩⟩
+    -- show that the set is nonempty
+    refine ⟨⟨p1, hp1⟩, ?_⟩
+    intro p2 p3 hp2 hp3
+    -- construct a path from p2 to p3 by using the
+    -- transitivity of the JoinedIn relation
+    obtain ⟨γ, hγ⟩ := (h1 hp2).symm.trans (h1 hp3)
+    exact ⟨γ, γ.continuous, γ.source, γ.target, hγ⟩
+  · -- Intuitive ⇒ Mathlib
+    rintro ⟨hne, hC⟩
+    obtain ⟨x, hx⟩ := hne
+    refine ⟨x, hx, fun {y} hy => ?_⟩
+    obtain ⟨γ, γ_cont, γ0, γ1, hγ⟩ := hC x y hx hy
+    -- construct a Path type from my intuitive definition
+    let p : Path x y := {
+      toFun := γ,
+      continuous_toFun := γ_cont,
+      source' := γ0,
+      target' := γ1
+    }
+    exact ⟨p, hγ⟩
+
+/--
+If `A` and `B` are path connected, and their intersetion
+is nonempty, `A ∪ B` is pathconnected.
+-/
+theorem my_task {A B : Set X} (hA : IsPathConnected A)
+    (hB : IsPathConnected B) (hAB : (A ∩ B).Nonempty) :
+    IsPathConnected (A ∪ B) := by
+  -- select a point z in the intersection
+  obtain ⟨x, hxA, hxB⟩ := hAB
+  use x
+  refine ⟨Set.mem_union_left B hxA , fun {y} hy => ?_⟩
+  -- split in cases depending on where y is
+  rcases hy with hyA | hyB
+  · -- y ∈ A then x and y are joined in A
+    have joinedInA := hA.joinedIn x hxA y hyA
+    -- but then also in the superset A ∪ B
+    exact joinedInA.mono subset_union_left
+  · -- y ∈ A then x and y are joined in B
+    have joinedInB := hB.joinedIn x hxB y hyB
+    -- but then also in the superset A ∪ B
+    exact joinedInB.mono subset_union_right
+
+end PathConnected
+```
+
 
 # Parallel inequality (Moritz Graßnitzer, Natalie Jahnes)
 
@@ -98,5 +174,22 @@ There is only one prime triplet, i.e. only one `n : ℕ` prime, such that `n + 2
 example (n : ℕ) :
     Nat.Prime n ∧ Nat.Prime (n + 2) ∧
     Nat.Prime (n + 4) → n = 3 := by
+  sorry
+```
+# An equivalence on sets (Emma Reichel, Luisa Caspary)
+
+We have `U ⊆ V ↔ U = U ∩ V ↔ V = U ∪ V`. So, the following needs to be proved:
+
+```lean
+
+variable (U V : Set α)
+
+example : (U ⊆ V) → U = U ∩ V := by
+  sorry
+
+example : U = U ∩ V → V = U ∪ V:= by
+  sorry
+
+example : V = U ∪ V → U ⊆ V := by
   sorry
 ```

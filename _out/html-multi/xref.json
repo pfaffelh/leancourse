@@ -686,7 +686,9 @@
  {"title": "Verso.Genre.Manual.example",
   "description": null,
   "contents":
-  {"own_mul_right_neutral":
+  {"pathConnected_iff":
+   [{"id": "IsPathConnected___", "data": null, "address": "/Projects/"}],
+   "own_mul_right_neutral":
    [{"id": "own_mul_right_neutral", "data": null, "address": "/Projects/"}],
    "own_mul_left_neutral":
    [{"id": "own_mul_right_neutral", "data": null, "address": "/Projects/"}],
@@ -699,10 +701,14 @@
    "nat.zero": [{"id": "nat___succ", "data": null, "address": "/Tactics/"}],
    "nat.succ": [{"id": "nat___succ", "data": null, "address": "/Tactics/"}],
    "nat": [{"id": "nat___succ", "data": null, "address": "/Tactics/"}],
+   "my_task":
+   [{"id": "IsPathConnected___", "data": null, "address": "/Projects/"}],
    "mySubtype.mk":
    [{"id": "mySubtype___mk", "data": null, "address": "/Tactics/"}],
    "goldbach": [{"id": "goldbach", "data": null, "address": "/Lean/"}],
-   "f": [{"id": "f", "data": null, "address": "/Lean/"}]}},
+   "f": [{"id": "f", "data": null, "address": "/Lean/"}],
+   "IsPathConnected'":
+   [{"id": "IsPathConnected___", "data": null, "address": "/Projects/"}]}},
  "Verso.Genre.Manual.doc.tech":
  {"title": "Terminology",
   "description": "Definitions of technical terms",

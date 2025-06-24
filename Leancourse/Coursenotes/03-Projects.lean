@@ -17,7 +17,8 @@ tag := "projects"
 
 # Induction (Luis Jaschke und Felicitas Kissel)
 
-Prove the following equalities using induction:
+Compute the following sums and products, and show your result by induction.
+
 
 ```lean
 example (n : ℕ) :
@@ -31,8 +32,6 @@ example (n : ℕ) :
   sorry
 ```
 
-Compute the following sums and products, and show your result by induction.
-
 ```lean
 example (n : ℕ) : ∑ k ≤ n, 2 * k - 1 = sorry := by
   sorry
@@ -44,7 +43,8 @@ example (n : ℕ) : ∏ k ≤ n, (1 + 1 / (k + 1)) = sorry := by
 ```
 
 ```lean
-example (n : ℕ) : ∏ k ≤ n, (1 - 1 / (k + 1)) = sorry := by
+example (q : ℝ) (hq : abs q  < 1) :
+    Filter.Tendsto (fun n ↦ q^n) atTop (nhds 0) := by
   sorry
 ```
 

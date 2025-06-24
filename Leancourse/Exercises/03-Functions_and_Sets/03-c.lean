@@ -2,7 +2,8 @@ import Mathlib.Tactic -- imports all the Lean tactics
 
 /- Let us now combine the last two topics, functions and sets: You know both, the image (or push-forward) of a set under a function/map, and the pre-image (or pull-back) of a set under some function/map.
 
-In Lean, consider `f : α → β` and `s : Set α`, and write `f '' s := { y : β | ∃ x : α, x ∈ s ∧ f x = y}`, and call it the push-forward of `s` along `f`.
+In Lean, consider `f : α → β` and `s : Set α`, and write
+ `f '' s := { y : β | ∃ x : α, x ∈ s ∧ f x = y}`, and call it the push-forward of `s` along `f`.
 
 In addition, for `f : α → β` and `t : Set β`, write `f⁻¹' t := { x : α | f x ∈ t}`, and call it the pull-back of `t` along `f`.
 
@@ -28,12 +29,18 @@ example : s ⊆ f ⁻¹' (f '' s) := by
 -- Exercise 1:
 -- `exact?` will do this but see if you can do it yourself.
 example : f '' s ⊆ t ↔ s ⊆ f ⁻¹' t := by
-  sorry
+  refine ⟨fun h x hx ↦ ?_, fun h y hy ↦ ?_⟩
+  · apply h
+    use x
+  · obtain ⟨x, ⟨hs1, hx2⟩⟩ := hy
+    rw [← hx2]
+    apply h hs1
 
 -- Exercise 2:
 -- Pushforward and pullback along the identity map don't change anything
 -- pullback is actually simple:
-example : id ⁻¹' s = s := by
+example (g : α → α): g ⁻¹' s = s := by
+
   sorry
 
 -- Exercise 3:

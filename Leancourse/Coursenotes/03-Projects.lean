@@ -79,6 +79,26 @@ example (n : ℕ) : ∏ k ≤ n, (1 - 1 / (k + 1)) = sorry := by
 
 # Fixed points and contractions (Jule Kiesele, Anna Vitiello)
 
+```lean
+variable {α : Type*} [MetricSpace α]
+
+example {α : Type*} [MetricSpace α] [CompleteSpace α]
+  (x y : α) (f : α → α)
+    (h_con : ∃ q < 1, ∀ x y, dist (f x) (f y) ≤
+      q * dist x y) (hxy : f x = f y) :
+    x = y := by
+  sorry
+
+example [CompleteSpace α] (x y : α) (f : α → α)
+    (h_con : ∃ q < 1, ∀ x y, dist (f x) (f y) ≤
+      q * dist x y) :
+    ∃ x, f x = x := by
+  sorry
+```
+
+
+
+
 Jede Kontraktion hat genau einen Fixpunkt
 
 # Path-connected spaces (Jasper Ganten)

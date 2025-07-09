@@ -197,11 +197,30 @@ We have `U ⊆ V ↔ U = U ∩ V ↔ V = U ∪ V`. So, the following needs to be
 variable (U V : Set α)
 
 example : (U ⊆ V) → U = U ∩ V := by
-  sorry
+  intro h
+  ext x
+  constructor
+  · intro hxU
+    exact ⟨hxU, h hxU⟩
+  · intro ⟨hxU, hxV⟩
+    exact hxU
 
 example : U = U ∩ V → V = U ∪ V:= by
-  sorry
+  intro h
+  ext x
+  constructor
+  · intro hxV
+    exact Or.inr hxV
+  · intro h'
+    cases h' with
+    | inl hxU =>
+      rw [h] at hxU
+      exact hxU.2
+    | inr hxV => exact hxV
 
 example : V = U ∪ V → U ⊆ V := by
-  sorry
+  intro h
+  intro x hxU
+  rw [h]
+  exact Or.inl hxU
 ```

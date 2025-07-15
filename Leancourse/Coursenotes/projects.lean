@@ -1,27 +1,8 @@
-import VersoManual
-import Manual.Meta
-import Leancourse.Misc.Defs
 import Mathlib
 
-open Verso.Genre Manual
-
-set_option pp.rawOnError true
-
-#doc (Manual) "Projects" =>
-%%%
-htmlSplit := .never
-tag := "projects"
-%%%
-
-**Summary:** In the second phase of this course, students can assign themselves projects. For this, they were asked to look for simple exercises, e.g. from their first year courses. Here comes a list of exercises they used.
-
-# Induction (Luis Jaschke und Felicitas Kissel)
-
-Compute the following sums and products, and show your result by induction.
-
-
-```lean
 open Finset
+
+-- Induction (Luis Jaschke und Felicitas Kissel)
 
 example (n : ℕ) :
     ∑ k ∈ range (n + 1), (k:ℝ) ^ 2 =
@@ -34,9 +15,7 @@ example (n : ℕ) :
       ring_nf
       field_simp
       ring
-```
 
-```lean
 example (n : ℕ) :
   ∑ k ∈ Finset.range (n + 1), (k : ℝ) ^ 3 =
     n * n * (n + 1) * (n + 1) / 4  := by
@@ -47,9 +26,7 @@ example (n : ℕ) :
     ring_nf
     field_simp
     ring
-```
 
-```lean
 example (n : ℕ) :
     ∑ k ∈ Finset.range n, (2 * (k : ℝ) + 1) = (n : ℝ)^2 := by
   induction n with
@@ -59,10 +36,7 @@ example (n : ℕ) :
       rw [Finset.sum_range_succ, ih]
       norm_num
       ring
-```
 
-```lean
-open Finset
 
 example (n : ℕ) :
  ∏ k ∈ Finset.range n, (1 + 1 / (k + 1 : ℚ)) = n + 1
@@ -92,17 +66,13 @@ example (n : ℕ) :
     rw [h']
     field_simp [Nat.cast_add]
     ring
-```
 
-```lean
 example (q : ℝ) (hq : abs q  < 1) :
     Filter.Tendsto (fun n ↦ q^n) atTop (nhds 0) := by
   sorry
-```
 
-# Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)
+-- Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)
 
-```lean
 open   Rat
 open   BigOperators
 
@@ -114,8 +84,6 @@ open   BigOperators
 
 def star (a b : ℚ) : ℚ
   := a * b + 2 * a + 2 * b + 2
-```
-```lean
 -- `Aufgabe 1a`: Ist _(ℚ, star)_ kommutativ?
 -- Beweis der Kommutativität: a ∗ b = b ∗ a
 
@@ -136,8 +104,6 @@ theorem LA1_Sheet1_Task1b (a b c : ℚ) :
 -- `Aufgabe 1c`: Besitzt _(ℚ, star)_ ein neutrales Element?
 -- Beweis: -1 ist das neutrale Element, d.h. -1 ∗ a = a und a ∗ (-1) = a
 
-```
-```lean
 theorem LA1_Sheet1_Task1c (a : ℚ) :
   star (-1) a = a ∧ star a (-1) = a
   := by
@@ -157,9 +123,6 @@ theorem LA1_Sheet1_Task1d : ¬ ∃ b : ℚ, star (-2) b = -1
   ring_nf at hb
   norm_num at hb
 
-```
-```lean
-
 -- Außerdem bearbeitet wurde das `Blatt 1` der Vorlesung `Analysis I` im _WiSe 2021/22_
 --      an der _Universität Freiburg_ bei _Prof. Dr. Sebastian Goette_.
 
@@ -178,11 +141,10 @@ theorem Ana1_Sheet1_Task3d (n : ℕ) (hn : 1 < n) :
     simp [Finset.mem_range, h_pos]
   apply Finset.prod_eq_zero h_mem
   norm_num
-```
 
-# Fixed points and contractions (Jule Kiesele, Anna Vitiello)
 
-```lean
+-- Fixed points and contractions (Jule Kiesele, Anna Vitiello)
+
 variable{I : Set ℝ} (hI_closed : IsClosed I)(hne : I.Nonempty)
 variable(f : ℝ → ℝ)(hf: ∀ x, x ∈ I → f x ∈ I)
 variable(q : NNReal)(hq: 0 < q ∧ q < 1) --NNReal sind nichtnegative reelle Zahlen
@@ -350,10 +312,6 @@ example (a : ℕ → ℝ)(ha0:a 0 ∈ I)(ha : ∀ (n : ℕ), a (n+1) = f (a n)):
     use x
     apply sub_eq_zero.mp
     exact abs_eq_zero.mp h4
-```
-
-Second solution:
-```lean
 
 variable {α : Type u_1} [MetricSpace α] [cs : CompleteSpace α]
 variable (f : α → α)
@@ -384,11 +342,8 @@ example : ∃ x, Function.IsFixedPt f x := by
   obtain ⟨ x ,h ⟩ :=  (ContractingWith.exists_fixedPoint hf x hx)
   use x
   exact h.1
-```
 
-# Path-connected spaces (Jasper Ganten)
-
-```lean
+-- Path-connected spaces (Jasper Ganten)
 
 open Set
 
@@ -463,18 +418,13 @@ theorem my_task {A B : Set X} (hA : IsPathConnected A)
     exact joinedInB.mono subset_union_right
 
 end PathConnected
-```
+
+-- Parallel inequality (Moritz Graßnitzer, Natalie Jahnes)
 
 
-# Parallel inequality (Moritz Graßnitzer, Natalie Jahnes)
+-- There is only one prime triplet (Patrick Nasdala, Max Lehr)
 
-Parallel inequality, or a homomorphism is injective iff its kernel is trivial.
 
-# There is only one prime triplet (Patrick Nasdala, Max Lehr)
-
-There is only one prime triplet, i.e. only one `n : ℕ` prime, such that `n + 2` and `n + 4` are prime as well.
-
-```lean
 lemma div3 (n : ℕ) : (3 ∣ n) ∨ (3 ∣ (n+1)) ∨ (3 ∣ (n+2)) := by
   induction n with
   | zero =>
@@ -596,12 +546,9 @@ theorem prime_tripple (n : ℕ) : Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prim
   constructor
   · exact pt_forward n
   · exact pt_backward n
-```
-# An equivalence on sets (Emma Reichel, Luisa Caspary)
 
-We have `U ⊆ V ↔ U = U ∩ V ↔ V = U ∪ V`. So, the following needs to be proved:
+-- An equivalence on sets (Emma Reichel, Luisa Caspary)
 
-```lean
 
 variable (U V : Set α)
 
@@ -632,4 +579,3 @@ example : V = U ∪ V → U ⊆ V := by
   intro x hxU
   rw [h]
   exact Or.inl hxU
-```

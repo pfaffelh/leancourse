@@ -109,179 +109,370 @@
  "40": "<code>Sort ?u.24</code>",
  "4":
  "<code>False.elim.{u} {C : Sort u} (h : False) : C</code><span class=\"sep\"></span><code class=\"docstring\">`False.elim : False → C` says that from `False`, any desired proposition\n`C` holds. Also known as ex falso quodlibet (EFQ) or the principle of explosion.\n\nThe target type is actually `C : Sort u` which means it works for both\npropositions and types. When executed, this acts like an \"unreachable\"\ninstruction: it is **undefined behavior** to run, but it will probably print\n\"unreachable code\". (You would need to construct a proof of false to run it\nanyway, which you can only do using `sorry` or unsound axioms.)\n</code>",
+ "393": "<code>V = U ∪ V</code>",
+ "392": "<code>x ∈ U ∩ V</code>",
+ "391":
+ "<code>Or.inl {a b : Prop} (h : a) : a ∨ b</code><span class=\"sep\"></span><code class=\"docstring\">`Or.inl` is \"left injection\" into an `Or`. If `h : a` then `Or.inl h : a ∨ b`. </code>",
+ "390":
+ "<code class=\"docstring\">Assuming `x` is a variable in the local context with an inductive type,\n`cases x` splits the main goal, producing one goal for each constructor of the\ninductive type, in which the target is replaced by a general instance of that constructor.\nIf the type of an element in the local context depends on `x`,\nthat element is reverted and reintroduced afterward,\nso that the case split affects that hypothesis as well.\n`cases` detects unreachable cases and closes them automatically.\n\nFor example, given `n : Nat` and a goal with a hypothesis `h : P n` and target `Q n`,\n`cases n` produces one goal with hypothesis `h : P 0` and target `Q 0`,\nand one goal with hypothesis `h : P (Nat.succ a)` and target `Q (Nat.succ a)`.\nHere the name `a` is chosen automatically and is not accessible.\nYou can use `with` to provide the variables names for each constructor.\n- `cases e`, where `e` is an expression instead of a variable, generalizes `e` in the goal,\n  and then cases on the resulting variable.\n- Given `as : List α`, `cases as with | nil =&gt; tac₁ | cons a as' =&gt; tac₂`,\n  uses tactic `tac₁` for the `nil` case, and `tac₂` for the `cons` case,\n  and `a` and `as'` are used as names for the new variables introduced.\n- `cases h : e`, where `e` is a variable or an expression,\n  performs cases on `e` as above, but also adds a hypothesis `h : e = ...` to each hypothesis,\n  where `...` is the constructor instance for that particular case.\n</code>",
  "39": "<code>Sort ?u.23</code>",
+ "389": "<code>x ∈ U ∪ V</code>",
+ "388":
+ "<code>Or.inr {a b : Prop} (h : b) : a ∨ b</code><span class=\"sep\"></span><code class=\"docstring\">`Or.inr` is \"right injection\" into an `Or`. If `h : b` then `Or.inr h : a ∨ b`. </code>",
+ "387": "<code>U = U ∩ V</code>",
+ "386": "<code>x ∈ V</code>",
+ "385": "<code>x ∈ U</code>",
+ "384": "<code>α</code>",
+ "383":
+ "<code class=\"docstring\">Applies extensionality lemmas that are registered with the `@[ext]` attribute.\n* `ext pat*` applies extensionality theorems as much as possible,\n  using the patterns `pat*` to introduce the variables in extensionality theorems using `rintro`.\n  For example, the patterns are used to name the variables introduced by lemmas such as `funext`.\n* Without patterns,`ext` applies extensionality lemmas as much\n  as possible but introduces anonymous hypotheses whenever needed.\n* `ext pat* : n` applies ext theorems only up to depth `n`.\n\nThe `ext1 pat*` tactic is like `ext pat*` except that it only applies a single extensionality theorem.\n\nUnused patterns will generate warning.\nPatterns that don't match the variables will typically result in the introduction of anonymous hypotheses.\n</code>",
+ "382": "<code>U ⊆ V</code>",
+ "381": "<code>Type ?u.7</code>",
+ "380": "<code>Set α</code>",
  "38": "<code>Sort u_3</code>",
+ "379":
+ "<code>prime_tripple (n : ℕ) : Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 4) ↔ n = 3</code>",
+ "378":
+ "<code>Iff.mp {a b : Prop} (self : a ↔ b) : a → b</code><span class=\"sep\"></span><code class=\"docstring\">Modus ponens for if and only if. If `a ↔ b` and `a`, then `b`. </code>",
+ "377":
+ "<code>Nat.properDivisors_eq_singleton_one_iff_prime {n : ℕ} : n.properDivisors = {1} ↔ Nat.Prime n</code>",
+ "376": "<code>Nat.prime_five : Nat.Prime 5</code>",
+ "375": "<code>Nat.prime_three : Nat.Prime 3</code>",
+ "374": "<code>n = 3</code>",
+ "373":
+ "<code>pt_backward (n : ℕ) : n = 3 → Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 4)</code>",
+ "372": "<code>¬3 &lt; n</code>",
+ "371": "<code>¬(Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 4))</code>",
+ "370": "<code>¬n &lt; 3</code>",
  "37": "<code>Q → R</code>",
+ "369":
+ "<code>pt_forward (n : ℕ) : Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 4) → n = 3</code>",
+ "368": "<code>∀ (a b : ℕ), n + 2 = a * b → a = 1 ∨ b = 1</code>",
+ "367": "<code>∀ (a b : ℕ), n + 2 = a * b → IsUnit a ∨ IsUnit b</code>",
+ "366": "<code>¬IsUnit (n + 2)</code>",
+ "365": "<code>n + 2 = 3 * x</code>",
+ "364": "<code>x = 0</code>",
+ "363": "<code>3 * (x + 1) = 3 * (x + 1) → 3 = 1 ∨ x + 1 = 1</code>",
+ "362": "<code>∀ (a b : ℕ), 3 * (x + 1) = a * b → a = 1 ∨ b = 1</code>",
+ "361":
+ "<code>id.{u} {α : Sort u} (a : α) : α</code><span class=\"sep\"></span><code class=\"docstring\">The identity function. `id` takes an implicit argument `α : Sort u`\n(a type in any universe), and an argument `a : α`, and returns `a`.\n\nAlthough this may look like a useless function, one application of the identity\nfunction is to explicitly put a type on an expression. If `e` has type `T`,\nand `T'` is definitionally equal to `T`, then `@id T' e` typechecks, and Lean\nknows that this expression has type `T'` rather than `T`. This can make a\ndifference for typeclass inference, since `T` and `T'` may have different\ntypeclass instances on them. `show T' from e` is sugar for an `@id T' e`\nexpression.\n</code>",
+ "360":
+ "<code>Mathlib.Tactic.Ring.mul_add.{u_1} {R : Type u_1} [CommSemiring R] {a b₁ b₂ c₁ c₂ d : R} :\n  a * b₁ = c₁ → a * b₂ = c₂ → c₁ + 0 + c₂ = d → a * (b₁ + b₂) = d</code>",
  "36": "<code>Sort u_2</code>",
+ "359":
+ "<code>Eq.symm.{u} {α : Sort u} {a b : α} (h : a = b) : b = a</code><span class=\"sep\"></span><code class=\"docstring\">Equality is symmetric: if `a = b` then `b = a`.\n\nBecause this is in the `Eq` namespace, if you have a variable `h : a = b`,\n`h.symm` can be used as shorthand for `Eq.symm h` as a proof of `b = a`.\n\nFor more information: [Equality](https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#equality)\n</code>",
+ "358": "<code>n + 4 = 3 * (x + 1)</code>",
+ "357": "<code>∀ (a b : ℕ), n + 4 = a * b → a = 1 ∨ b = 1</code>",
+ "356": "<code>True</code>",
+ "355": "<code>∀ (a b : ℕ), n + 4 = a * b → IsUnit a ∨ IsUnit b</code>",
+ "354": "<code>¬IsUnit (n + 4)</code>",
+ "353": "<code>n + 1 = 3 * x</code>",
+ "352": "<code>x = 1</code>",
+ "351": "<code>3 * x = 3 * x → 3 = 1 ∨ x = 1</code>",
+ "350": "<code>∀ (a b : ℕ), 3 * x = a * b → a = 1 ∨ b = 1</code>",
  "35": "<code>P → Q</code>",
+ "349": "<code>∀ (a b : ℕ), n = a * b → a = 1 ∨ b = 1</code>",
+ "348": "<code>¬n = 1</code>",
+ "347":
+ "<code>IsUnit.{u_1} {M : Type u_1} [Monoid M] (a : M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">An element `a : M` of a `Monoid` is a unit if it has a two-sided inverse.\nThe actual definition says that `a` is equal to some `u : Mˣ`, where\n`Mˣ` is a bundled version of `IsUnit`. </code>",
+ "346": "<code>∀ (a b : ℕ), n = a * b → IsUnit a ∨ IsUnit b</code>",
+ "345": "<code>¬IsUnit n</code>",
+ "344": "<code>n = 3 * x</code>",
+ "343": "<code>3 &lt; n</code>",
+ "342":
+ "<code>lem2 (n : ℕ) : 3 &lt; n → ¬(Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 4))</code>",
+ "341": "<code>Nat.Prime 0</code>",
+ "340": "<code>Nat.not_prime_zero : ¬Nat.Prime 0</code>",
  "34": "<code>Sort ?u.7</code>",
+ "339": "<code>¬Nat.Prime 0</code>",
+ "338": "<code>n = 0</code>",
+ "337": "<code>¬0 ≤ n</code>",
+ "336": "<code>0 ≤ n</code>",
+ "335": "<code>Nat.Prime 1</code>",
+ "334": "<code>Nat.not_prime_one : ¬Nat.Prime 1</code>",
+ "333": "<code>¬Nat.Prime 1</code>",
+ "332": "<code>n = 1</code>",
+ "331": "<code>¬1 ≤ n</code>",
+ "330": "<code>1 ≤ n</code>",
  "33": "<code>Sort u_1</code>",
+ "329": "<code>Nat.Prime 4</code>",
+ "328": "<code>Nat.Prime (2 + 2)</code>",
+ "327":
+ "<code>of_decide_eq_false {p : Prop} [inst : Decidable p] : decide p = false → ¬p</code>",
+ "326": "<code>¬Nat.Prime 4</code>",
+ "325":
+ "<code class=\"docstring\">`linarith` attempts to find a contradiction between hypotheses that are linear (in)equalities.\nEquivalently, it can prove a linear inequality by assuming its negation and proving `False`.\n\nIn theory, `linarith` should prove any goal that is true in the theory of linear arithmetic over\nthe rationals. While there is some special handling for non-dense orders like `Nat` and `Int`,\nthis tactic is not complete for these theories and will not prove every true goal. It will solve\ngoals over arbitrary types that instantiate `LinearOrderedCommRing`.\n\nAn example:\n```lean\nexample (x y z : ℚ) (h1 : 2*x &lt; 3*y) (h2 : -4*x + 2*z &lt; 0)\n        (h3 : 12*y - 4* z &lt; 0) : False := by\n  linarith\n```\n\n`linarith` will use all appropriate hypotheses and the negation of the goal, if applicable.\nDisequality hypotheses require case splitting and are not normally considered\n(see the `splitNe` option below).\n\n`linarith [t1, t2, t3]` will additionally use proof terms `t1, t2, t3`.\n\n`linarith only [h1, h2, h3, t1, t2, t3]` will use only the goal (if relevant), local hypotheses\n`h1`, `h2`, `h3`, and proofs `t1`, `t2`, `t3`. It will ignore the rest of the local context.\n\n`linarith!` will use a stronger reducibility setting to try to identify atoms. For example,\n```lean\nexample (x : ℚ) : id x ≥ x := by\n  linarith\n```\nwill fail, because `linarith` will not identify `x` and `id x`. `linarith!` will.\nThis can sometimes be expensive.\n\n`linarith (config := { .. })` takes a config object with five\noptional arguments:\n* `discharger` specifies a tactic to be used for reducing an algebraic equation in the\n  proof stage. The default is `ring`. Other options include `simp` for basic\n  problems.\n* `transparency` controls how hard `linarith` will try to match atoms to each other. By default\n  it will only unfold `reducible` definitions.\n* If `splitHypotheses` is true, `linarith` will split conjunctions in the context into separate\n  hypotheses.\n* If `splitNe` is `true`, `linarith` will case split on disequality hypotheses.\n  For a given `x ≠ y` hypothesis, `linarith` is run with both `x &lt; y` and `x &gt; y`,\n  and so this runs linarith exponentially many times with respect to the number of\n  disequality hypotheses. (`false` by default.)\n* If `exfalso` is `false`, `linarith` will fail when the goal is neither an inequality nor `False`.\n  (`true` by default.)\n* `restrict_type` (not yet implemented in mathlib4)\n  will only use hypotheses that are inequalities over `tp`. This is useful\n  if you have e.g. both integer and rational valued inequalities in the local context, which can\n  sometimes confuse the tactic.\n\nA variant, `nlinarith`, does some basic preprocessing to handle some nonlinear goals.\n\nThe option `set_option trace.linarith true` will trace certain intermediate stages of the `linarith`\nroutine.\n</code>",
+ "324": "<code>n = 2</code>",
+ "323": "<code>¬2 ≤ n</code>",
+ "322": "<code>2 ≤ n</code>",
+ "321": "<code>Nat.Prime (n + 4)</code>",
+ "320": "<code>Nat.Prime (n + 2)</code>",
  "32":
  "<code class=\"docstring\">The `sorry` tactic is a temporary placeholder for an incomplete tactic proof,\nclosing the main goal using `exact sorry`.\n\nThis is intended for stubbing-out incomplete parts of a proof while still having a syntactically correct proof skeleton.\nLean will give a warning whenever a proof uses `sorry`, so you aren't likely to miss it,\nbut you can double check if a theorem depends on `sorry` by looking for `sorryAx` in the output\nof the `#print axioms my_thm` command, the axiom used by the implementation of `sorry`.\n</code>",
+ "319": "<code>Nat.Prime n</code>",
+ "318": "<code>Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 4)</code>",
+ "317":
+ "<code class=\"docstring\">`by_contra h` proves `⊢ p` by contradiction,\nintroducing a hypothesis `h : ¬p` and proving `False`.\n* If `p` is a negation `¬q`, `h : q` will be introduced instead of `¬¬q`.\n* If `p` is decidable, it uses `Decidable.byContradiction` instead of `Classical.byContradiction`.\n* If `h` is omitted, the introduced variable `_: ¬p` will be anonymous.\n</code>",
+ "316": "<code>n &lt; 3</code>",
+ "315":
+ "<code>Nat.Prime (p : ℕ) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Nat.Prime p` means that `p` is a prime number, that is, a natural number\nat least 2 whose only divisors are `p` and `1`.\nThe theorem `Nat.prime_def` witnesses this description of a prime number. </code>",
+ "314":
+ "<code>lem1 (n : ℕ) : n &lt; 3 → ¬(Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 4))</code>",
+ "313": "<code>3 ∣ n + 1 ∨ 3 ∣ n + 2</code>",
+ "312":
+ "<code class=\"docstring\">The `cases'` tactic is similar to the `cases` tactic in Lean 4 core, but the syntax for giving\nnames is different:\n\n```\nexample (h : p ∨ q) : q ∨ p := by\n  cases h with\n  | inl hp =&gt; exact Or.inr hp\n  | inr hq =&gt; exact Or.inl hq\n\nexample (h : p ∨ q) : q ∨ p := by\n  cases' h with hp hq\n  · exact Or.inr hp\n  · exact Or.inl hq\n\nexample (h : p ∨ q) : q ∨ p := by\n  rcases h with hp | hq\n  · exact Or.inr hp\n  · exact Or.inl hq\n```\n\nPrefer `cases` or `rcases` when possible, because these tactics promote structured proofs.\n</code>",
+ "311":
+ "<code class=\"docstring\">`exfalso` converts a goal `⊢ tgt` into `⊢ False` by applying `False.elim`. </code>",
+ "310": "<code>3 ∣ 2 + n</code>",
  "31":
  "<code>HAdd.hAdd.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HAdd α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a + b` computes the sum of `a` and `b`.\nThe meaning of this notation is type-dependent. </code>",
+ "309": "<code>¬3 ∣ n + 2</code>",
+ "308": "<code>3 ∣ n + 2</code>",
+ "307": "<code>3 ∣ 1 + n</code>",
+ "306": "<code>Nat.add_comm (n m : ℕ) : n + m = m + n</code>",
+ "305": "<code>¬3 ∣ n + 1</code>",
+ "304": "<code>3 ∣ n + 1</code>",
+ "303":
+ "<code>Iff.mpr {a b : Prop} (self : a ↔ b) : b → a</code><span class=\"sep\"></span><code class=\"docstring\">Modus ponens for if and only if, reversed. If `a ↔ b` and `b`, then `a`. </code>",
+ "302":
+ "<code>Nat.dvd_add_self_left {m n : ℕ} : m ∣ m + n ↔ m ∣ n</code><span class=\"sep\"></span><code class=\"docstring\">A natural number `m` divides the sum `m + n` if and only if `m` divides `n`.</code>",
+ "301":
+ "<code class=\"docstring\">Applies the second constructor when\nthe goal is an inductive type with exactly two constructors, or fails otherwise.\n```\nexample {p q : Prop} (h : q) : p ∨ q := by\n  right\n  exact h\n```\n</code>",
+ "300": "<code>¬3 ∣ n</code>",
  "30":
  "<code>And (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`And a b`, or `a ∧ b`, is the conjunction of propositions. It can be\nconstructed and destructed like a pair: if `ha : a` and `hb : b` then\n`⟨ha, hb⟩ : a ∧ b`, and if `h : a ∧ b` then `h.left : a` and `h.right : b`.\n</code>",
  "3":
  "<code>False : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`False` is the empty proposition. Thus, it has no introduction rules.\nIt represents a contradiction. `False` elimination rule, `False.rec`,\nexpresses the fact that anything follows from a contradiction.\nThis rule is sometimes called ex falso (short for ex falso sequitur quodlibet),\nor the principle of explosion.\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n</code>",
+ "299": "<code>3 ∣ n</code>",
+ "298": "<code>3 ∣ n ∨ 3 ∣ n + 1 ∨ 3 ∣ n + 2</code>",
+ "297": "<code>Nat.dvd_zero (a : ℕ) : a ∣ 0</code>",
+ "296":
+ "<code class=\"docstring\">Applies the first constructor when\nthe goal is an inductive type with exactly two constructors, or fails otherwise.\n```\nexample : True ∨ False := by\n  left\n  trivial\n```\n</code>",
+ "295":
+ "<code>Or (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Or a b`, or `a ∨ b`, is the disjunction of propositions. There are two\nconstructors for `Or`, called `Or.inl : a → a ∨ b` and `Or.inr : b → a ∨ b`,\nand you can use `match` or `cases` to destruct an `Or` assumption into the\ntwo cases.\n</code>",
+ "294":
+ "<code>Dvd.dvd.{u_1} {α : Type u_1} [self : Dvd α] : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">Divisibility. `a ∣ b` (typed as `\\|`) means that there is some `c` such that `b = a * c`. </code>",
+ "293": "<code>div3 (n : ℕ) : 3 ∣ n ∨ 3 ∣ n + 1 ∨ 3 ∣ n + 2</code>",
+ "292": "<code>a = G.inv (G.inv a)</code>",
+ "291": "<code>G.mul (G.inv a) a = G.one</code>",
+ "290":
+ "<code>our_unique_inv_inv {G : our_Group} (a : G.uni) : a = G.inv (G.inv a)</code>",
  "29":
  "<code>Prime.{u_1} {M : Type u_1} [CommMonoidWithZero M] (p : M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">An element `p` of a commutative monoid with zero (e.g., a ring) is called *prime*,\nif it's not zero, not a unit, and `p ∣ a * b → p ∣ a ∨ p ∣ b` for all `a`, `b`. </code>",
+ "289": "<code>b = G.inv a</code>",
+ "288": "<code>b = G.mul (G.inv a) G.one</code>",
+ "287": "<code>G.mul G.one b = G.mul (G.inv a) G.one</code>",
+ "286": "<code>G.mul (G.mul (G.inv a) a) b = G.mul (G.inv a) G.one</code>",
+ "285": "<code>G.mul (G.inv a) (G.mul a b) = G.mul (G.inv a) G.one</code>",
+ "284": "<code>G.mul a (G.inv a) = G.mul a b</code>",
+ "283": "<code>G.mul a (G.inv a) = G.one</code>",
+ "282": "<code>G.mul a b = G.one</code>",
+ "281": "<code>G.uni</code>",
+ "280": "<code>our_Group</code>",
  "28":
  "<code>Even.{u_2} {α : Type u_2} [Add α] (a : α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">An element `a` of a type `α` with addition satisfies `Even a` if `a = r + r`,\nfor some `r : α`.</code>",
+ "279":
+ "<code>our_unique_inv {G : our_Group} (a b : G.uni) : G.mul a b = G.one → b = G.inv a</code>",
+ "278":
+ "<code>our_Group.inv_mul (self : our_Group) (a : self.uni) : self.mul (self.inv a) a = self.one</code>",
+ "277": "<code>uni → uni</code>",
+ "276":
+ "<code>our_Group.mul_inv (self : our_Group) (a : self.uni) : self.mul a (self.inv a) = self.one</code>",
+ "275":
+ "<code>our_Group.mul_one (self : our_Group) (a : self.uni) : self.mul a self.one = a</code>",
+ "274":
+ "<code>our_Group.one_mul (self : our_Group) (a : self.uni) : self.mul self.one a = a</code>",
+ "273": "<code>uni → uni → uni</code>",
+ "272": "<code>uni</code>",
+ "271":
+ "<code>our_Group.mul_assoc (self : our_Group) (a b c : self.uni) : self.mul (self.mul a b) c = self.mul a (self.mul b c)</code>",
+ "270": "<code>our_Group.inv (self : our_Group) : self.uni → self.uni</code>",
  "27": "<code>Even n</code>",
+ "269": "<code>our_Group.one (self : our_Group) : self.uni</code>",
+ "268": "<code>Type</code>",
+ "267":
+ "<code>our_Group.mul (self : our_Group) : self.uni → self.uni → self.uni</code>",
+ "266": "<code>our_Group.uni (self : our_Group) : Type</code>",
+ "265": "<code>our_Group : Type 1</code>",
+ "264":
+ "<code class=\"docstring\">`end` closes a `section` or `namespace` scope. If the scope is named `&lt;id&gt;`, it has to be closed\nwith `end &lt;id&gt;`. The `end` command is optional at the end of a file.\n</code>",
+ "263":
+ "<code>Set.subset_union_right.{u} {α : Type u} {s t : Set α} : t ⊆ s ∪ t</code>",
+ "262": "<code>JoinedIn B x y</code>",
+ "261":
+ "<code>Set.subset_union_left.{u} {α : Type u} {s t : Set α} : s ⊆ s ∪ t</code>",
+ "260":
+ "<code>JoinedIn.mono.{u_1} {X : Type u_1} [TopologicalSpace X] {x y : X} {U V : Set X} (h : JoinedIn U x y) (hUV : U ⊆ V) :\n  JoinedIn V x y</code>",
  "26": "<code>n &gt; 2</code>",
- "251": "<code>Set α</code>",
- "250":
- "<code>Nat.Prime (p : ℕ) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Nat.Prime p` means that `p` is a prime number, that is, a natural number\nat least 2 whose only divisors are `p` and `1`.\nThe theorem `Nat.prime_def` witnesses this description of a prime number. </code>",
+ "259":
+ "<code>IsPathConnected.joinedIn.{u_1} {X : Type u_1} [TopologicalSpace X] {F : Set X} (h : IsPathConnected F) (x : X) :\n  x ∈ F → ∀ y ∈ F, JoinedIn F x y</code>",
+ "258": "<code>JoinedIn A x y</code>",
+ "257": "<code>y ∈ B</code>",
+ "256": "<code>y ∈ A ∪ B</code>",
+ "255":
+ "<code>Set.mem_union_left.{u} {α : Type u} {x : α} {a : Set α} (b : Set α) : x ∈ a → x ∈ a ∪ b</code>",
+ "254": "<code>x ∈ B</code>",
+ "253":
+ "<code>Union.union.{u} {α : Type u} [self : Union α] : α → α → α</code><span class=\"sep\"></span><code class=\"docstring\">`a ∪ b` is the union of`a` and `b`. </code>",
+ "252":
+ "<code>Inter.inter.{u} {α : Type u} [self : Inter α] : α → α → α</code><span class=\"sep\"></span><code class=\"docstring\">`a ∩ b` is the intersection of`a` and `b`. </code>",
+ "251": "<code>(A ∩ B).Nonempty</code>",
+ "250": "<code>IsPathConnected B</code>",
  "25":
  "<code>goldbach (n : ℕ) (h₁ : n &gt; 2) (h₂ : Even n) : ∃ i j, Prime i ∧ Prime j ∧ n = i + j</code>",
- "249":
- "<code class=\"docstring\">`end` closes a `section` or `namespace` scope. If the scope is named `&lt;id&gt;`, it has to be closed\nwith `end &lt;id&gt;`. The `end` command is optional at the end of a file.\n</code>",
+ "249": "<code>IsPathConnected A</code>",
  "248":
- "<code>Set.subset_union_right.{u} {α : Type u} {s t : Set α} : t ⊆ s ∪ t</code>",
- "247": "<code>JoinedIn B x y</code>",
+ "<code>my_task.{u_1} {X : Type u_1} [TopologicalSpace X] {A B : Set X} (hA : IsPathConnected A) (hB : IsPathConnected B)\n  (hAB : (A ∩ B).Nonempty) : IsPathConnected (A ∪ B)</code><span class=\"sep\"></span><code class=\"docstring\">If `A` and `B` are path connected, and their intersetion\nis nonempty, `A ∪ B` is pathconnected.\n</code>",
+ "247":
+ "<code>γ 1 = y</code><span class=\"sep\"></span><code class=\"docstring\">The end point of a `Path`. </code>",
  "246":
- "<code>Set.subset_union_left.{u} {α : Type u} {s t : Set α} : s ⊆ s ∪ t</code>",
+ "<code>γ 0 = x</code><span class=\"sep\"></span><code class=\"docstring\">The start point of a `Path`. </code>",
  "245":
- "<code>JoinedIn.mono.{u_1} {X : Type u_1} [TopologicalSpace X] {x y : X} {U V : Set X} (h : JoinedIn U x y) (hUV : U ⊆ V) :\n  JoinedIn V x y</code>",
+ "<code>Continuous γ</code><span class=\"sep\"></span><code class=\"docstring\">Proposition that `toFun` is continuous </code>",
  "244":
- "<code>IsPathConnected.joinedIn.{u_1} {X : Type u_1} [TopologicalSpace X] {F : Set X} (h : IsPathConnected F) (x : X) :\n  x ∈ F → ∀ y ∈ F, JoinedIn F x y</code>",
- "243": "<code>JoinedIn A x y</code>",
- "242": "<code>y ∈ B</code>",
- "241": "<code>y ∈ A ∪ B</code>",
- "240":
- "<code>Set.mem_union_left.{u} {α : Type u} {x : α} {a : Set α} (b : Set α) : x ∈ a → x ∈ a ∪ b</code>",
+ "<code>↑(Set.Icc 0 1) → X</code><span class=\"sep\"></span><code class=\"docstring\">The function `X → Y` </code>",
+ "243": "<code>_root_.Path x y</code>",
+ "242":
+ "<code class=\"docstring\">The `let` tactic is for adding definitions to the local context of the main goal.\n* `let x : t := e` adds the definition `x : t := e` if `e` is a term of type `t`.\n* `let x := e` uses the type of `e` for `t`.\n* `let : t := e` and `let := e` use `this` for the name of the hypothesis.\n* `let pat := e` for a pattern `pat` is equivalent to `match e with | pat =&gt; _`,\n  where `_` stands for the tactics that follow this one.\n  It is convenient for types that let only one applicable constructor.\n  For example, given `p : α × β × γ`, `let ⟨x, y, z⟩ := p` produces the\n  local variables `x : α`, `y : β`, and `z : γ`.\n</code>",
+ "241": "<code>∀ (t : ↑(Set.Icc 0 1)), γ t ∈ A</code>",
+ "240": "<code>γ 1 = y</code>",
  "24":
  "<code class=\"docstring\">`apply e` tries to match the current goal against the conclusion of `e`'s type.\nIf it succeeds, then the tactic returns as many subgoals as the number of premises that\nhave not been fixed by type inference or type class resolution.\nNon-dependent premises are added before dependent ones.\n\nThe `apply` tactic uses higher-order pattern matching, type class resolution,\nand first-order unification with dependent types.\n</code>",
- "239": "<code>x ∈ B</code>",
- "238":
- "<code>Union.union.{u} {α : Type u} [self : Union α] : α → α → α</code><span class=\"sep\"></span><code class=\"docstring\">`a ∪ b` is the union of`a` and `b`. </code>",
- "237":
- "<code>Inter.inter.{u} {α : Type u} [self : Inter α] : α → α → α</code><span class=\"sep\"></span><code class=\"docstring\">`a ∩ b` is the intersection of`a` and `b`. </code>",
- "236": "<code>(A ∩ B).Nonempty</code>",
- "235": "<code>IsPathConnected B</code>",
- "234": "<code>IsPathConnected A</code>",
+ "239": "<code>γ 0 = x</code>",
+ "238": "<code>Continuous γ</code>",
+ "237": "<code>y ∈ A</code>",
+ "236": "<code>x ∈ A</code>",
+ "235":
+ "<code>∀ (x y : X), x ∈ A → y ∈ A → ∃ γ, Continuous γ ∧ γ 0 = x ∧ γ 1 = y ∧ ∀ (t : ↑(Set.Icc 0 1)), γ t ∈ A</code>",
+ "234": "<code>A.Nonempty</code>",
  "233":
- "<code>my_task.{u_2} {X : Type u_2} [TopologicalSpace X] {A B : Set X} (hA : IsPathConnected A) (hB : IsPathConnected B)\n  (hAB : (A ∩ B).Nonempty) : IsPathConnected (A ∪ B)</code><span class=\"sep\"></span><code class=\"docstring\">If `A` and `B` are path connected, and their intersetion\nis nonempty, `A ∪ B` is pathconnected.\n</code>",
+ "<code>Path.target.{u_1} {X : Type u_1} [TopologicalSpace X] {x y : X} (γ : _root_.Path x y) : γ 1 = y</code>",
  "232":
- "<code>γ 1 = y</code><span class=\"sep\"></span><code class=\"docstring\">The end point of a `Path`. </code>",
+ "<code>Path.source.{u_1} {X : Type u_1} [TopologicalSpace X] {x y : X} (γ : _root_.Path x y) : γ 0 = x</code>",
  "231":
- "<code>γ 0 = x</code><span class=\"sep\"></span><code class=\"docstring\">The start point of a `Path`. </code>",
+ "<code>Path.continuous.{u_1} {X : Type u_1} [TopologicalSpace X] {x y : X} (γ : _root_.Path x y) : Continuous ⇑γ</code>",
  "230":
- "<code>Continuous γ</code><span class=\"sep\"></span><code class=\"docstring\">Proposition that `toFun` is continuous </code>",
+ "<code>unitInterval : Set ℝ</code><span class=\"sep\"></span><code class=\"docstring\">The unit interval `[0,1]` in ℝ. </code>",
  "23":
  "<code>Not (a : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Not p`, or `¬p`, is the negation of `p`. It is defined to be `p → False`,\nso if your goal is `¬p` you can use `intro h` to turn the goal into\n`h : p ⊢ False`, and if you have `hn : ¬p` and `h : p` then `hn h : False`\nand `(hn h).elim` will prove anything.\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n</code>",
- "229":
- "<code>↑(Icc 0 1) → X</code><span class=\"sep\"></span><code class=\"docstring\">The function `X → Y` </code>",
- "228": "<code>_root_.Path x y</code>",
- "227":
- "<code class=\"docstring\">The `let` tactic is for adding definitions to the local context of the main goal.\n* `let x : t := e` adds the definition `x : t := e` if `e` is a term of type `t`.\n* `let x := e` uses the type of `e` for `t`.\n* `let : t := e` and `let := e` use `this` for the name of the hypothesis.\n* `let pat := e` for a pattern `pat` is equivalent to `match e with | pat =&gt; _`,\n  where `_` stands for the tactics that follow this one.\n  It is convenient for types that let only one applicable constructor.\n  For example, given `p : α × β × γ`, `let ⟨x, y, z⟩ := p` produces the\n  local variables `x : α`, `y : β`, and `z : γ`.\n</code>",
- "226": "<code>∀ (t : ↑(Icc 0 1)), γ t ∈ A</code>",
- "225": "<code>γ 1 = y</code>",
- "224": "<code>γ 0 = x</code>",
- "223": "<code>Continuous γ</code>",
- "222": "<code>y ∈ A</code>",
- "221": "<code>x ∈ A</code>",
- "220":
- "<code>∀ (x y : X), x ∈ A → y ∈ A → ∃ γ, Continuous γ ∧ γ 0 = x ∧ γ 1 = y ∧ ∀ (t : ↑(Icc 0 1)), γ t ∈ A</code>",
- "22": "<code>¬P</code>",
- "219": "<code>A.Nonempty</code>",
- "218":
- "<code>Path.target.{u_1} {X : Type u_1} [TopologicalSpace X] {x y : X} (γ : _root_.Path x y) : γ 1 = y</code>",
- "217":
- "<code>Path.source.{u_1} {X : Type u_1} [TopologicalSpace X] {x y : X} (γ : _root_.Path x y) : γ 0 = x</code>",
- "216":
- "<code>Path.continuous.{u_1} {X : Type u_1} [TopologicalSpace X] {x y : X} (γ : _root_.Path x y) : Continuous ⇑γ</code>",
- "215":
- "<code>unitInterval : Set ℝ</code><span class=\"sep\"></span><code class=\"docstring\">The unit interval `[0,1]` in ℝ. </code>",
- "214": "<code>↑unitInterval</code>",
- "213":
+ "229": "<code>↑unitInterval</code>",
+ "228":
  "<code>Path.{u_1} {X : Type u_1} [TopologicalSpace X] (x y : X) : Type u_1</code><span class=\"sep\"></span><code class=\"docstring\">Continuous path connecting two points `x` and `y` in a topological space </code>",
- "212":
+ "227":
  "<code>JoinedIn.trans.{u_1} {X : Type u_1} [TopologicalSpace X] {x y z : X} {F : Set X} (hxy : JoinedIn F x y)\n  (hyz : JoinedIn F y z) : JoinedIn F x z</code>",
- "211":
+ "226":
  "<code>JoinedIn.symm.{u_1} {X : Type u_1} [TopologicalSpace X] {x y : X} {F : Set X} (h : JoinedIn F x y) : JoinedIn F y x</code>",
- "210": "<code>∀ (t : ↑unitInterval), γ t ∈ A</code>",
- "21": "<code>P</code>",
- "209": "<code>_root_.Path p2 p3</code>",
- "208": "<code>p3 ∈ A</code>",
- "207": "<code>p2 ∈ A</code>",
- "206":
+ "225": "<code>∀ (t : ↑unitInterval), γ t ∈ A</code>",
+ "224": "<code>_root_.Path p2 p3</code>",
+ "223": "<code>p3 ∈ A</code>",
+ "222": "<code>p2 ∈ A</code>",
+ "221":
  "<code>JoinedIn.{u_1} {X : Type u_1} [TopologicalSpace X] (F : Set X) (x y : X) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The relation \"being joined by a path in `F`\". Not quite an equivalence relation since it's not\nreflexive for points that do not belong to `F`. </code>",
- "205": "<code>∀ {y : X}, y ∈ A → JoinedIn A p1 y</code>",
- "204": "<code>p1 ∈ A</code>",
- "203": "<code>TopologicalSpace X</code>",
- "202":
+ "220": "<code>∀ {y : X}, y ∈ A → JoinedIn A p1 y</code>",
+ "22": "<code>¬P</code>",
+ "219": "<code>p1 ∈ A</code>",
+ "218": "<code>TopologicalSpace X</code>",
+ "217":
  "<code>IsPathConnected.{u_1} {X : Type u_1} [TopologicalSpace X] (F : Set X) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A set `F` is path connected if it contains a point that can be joined to all other in `F`. </code>",
- "201":
- "<code>pathConnected_iff.{u_2} {X : Type u_2} [TopologicalSpace X] (A : Set X) : IsPathConnected A ↔ IsPathConnected' A</code><span class=\"sep\"></span><code class=\"docstring\">`IsPathConnected'` is equivalent to Mathlib's\n`IsPathConnected`.\n</code>",
- "200": "<code>↑(Icc 0 1)</code>",
+ "216":
+ "<code>pathConnected_iff.{u_1} {X : Type u_1} [TopologicalSpace X] (A : Set X) : IsPathConnected A ↔ IsPathConnected' A</code><span class=\"sep\"></span><code class=\"docstring\">`IsPathConnected'` is equivalent to Mathlib's\n`IsPathConnected`.\n</code>",
+ "215": "<code>↑(Set.Icc 0 1)</code>",
+ "214":
+ "<code>Continuous.{u, v} {X : Type u} {Y : Type v} [TopologicalSpace X] [TopologicalSpace Y] (f : X → Y) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A function between topological spaces is continuous if the preimage\nof every open set is open. Registered as a structure to make sure it is not unfolded by Lean. </code>",
+ "213":
+ "<code>Set.Icc.{u_1} {α : Type u_1} [Preorder α] (a b : α) : Set α</code><span class=\"sep\"></span><code class=\"docstring\">`Icc a b` is the left-closed right-closed interval $[a, b]$. </code>",
+ "212": "<code>↑(Set.Icc 0 1) → X</code>",
+ "211": "<code>X</code>",
+ "210":
+ "<code>Set.Nonempty.{u} {α : Type u} (s : Set α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The property `s.Nonempty` expresses the fact that the set `s` is not empty. It should be used\nin theorem assumptions instead of `∃ x, x ∈ s` or `s ≠ ∅` as it gives access to a nice API thanks\nto the dot notation. </code>",
+ "21": "<code>P</code>",
+ "209": "<code>Set X</code>",
+ "208":
+ "<code>IsPathConnected'.{u_1} {X : Type u_1} [TopologicalSpace X] (S : Set X) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">An intuitive definition of path connectedness:\nA set `S` is path connected if it is nonempty and any two\npoints in `S` can be joined by a continuous path in `S`.\n</code>",
+ "207":
+ "<code>TopologicalSpace.{u} (X : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">A topology on `X`. </code>",
+ "206": "<code>Type u_1</code>",
+ "205":
+ "<code class=\"docstring\">Declares one or more typed variables, or modifies whether already-declared variables are\n  implicit.\n\nIntroduces variables that can be used in definitions within the same `namespace` or `section` block.\nWhen a definition mentions a variable, Lean will add it as an argument of the definition. This is\nuseful in particular when writing many definitions that have parameters in common (see below for an\nexample).\n\nVariable declarations have the same flexibility as regular function parameters. In particular they\ncan be [explicit, implicit][binder docs], or [instance implicit][tpil classes] (in which case they\ncan be anonymous). This can be changed, for instance one can turn explicit variable `x` into an\nimplicit one with `variable {x}`. Note that currently, you should avoid changing how variables are\nbound and declare new variables at the same time; see [issue 2789] for more on this topic.\n\nIn *theorem bodies* (i.e. proofs), variables are not included based on usage in order to ensure that\nchanges to the proof cannot change the statement of the overall theorem. Instead, variables are only\navailable to the proof if they have been mentioned in the theorem header or in an `include` command\nor are instance implicit and depend only on such variables.\n\nSee [*Variables and Sections* from Theorem Proving in Lean][tpil vars] for a more detailed\ndiscussion.\n\n[tpil vars]:\nhttps://lean-lang.org/theorem_proving_in_lean4/dependent_type_theory.html#variables-and-sections\n(Variables and Sections on Theorem Proving in Lean) [tpil classes]:\nhttps://lean-lang.org/theorem_proving_in_lean4/type_classes.html (Type classes on Theorem Proving in\nLean) [binder docs]:\nhttps://leanprover-community.github.io/mathlib4_docs/Lean/Expr.html#Lean.BinderInfo (Documentation\nfor the BinderInfo type) [issue 2789]: https://github.com/leanprover/lean4/issues/2789 (Issue 2789\non github)\n\n## Examples\n\n```lean\nsection\n  variable\n    {α : Type u}      -- implicit\n    (a : α)           -- explicit\n    [instBEq : BEq α] -- instance implicit, named\n    [Hashable α]      -- instance implicit, anonymous\n\n  def isEqual (b : α) : Bool :=\n    a == b\n\n  #check isEqual\n  -- isEqual.{u} {α : Type u} (a : α) [instBEq : BEq α] (b : α) : Bool\n\n  variable\n    {a} -- `a` is implicit now\n\n  def eqComm {b : α} := a == b ↔ b == a\n\n  #check eqComm\n  -- eqComm.{u} {α : Type u} {a : α} [instBEq : BEq α] {b : α} : Prop\nend\n```\n\nThe following shows a typical use of `variable` to factor out definition arguments:\n\n```lean\nvariable (Src : Type)\n\nstructure Logger where\n  trace : List (Src × String)\n#check Logger\n-- Logger (Src : Type) : Type\n\nnamespace Logger\n  -- switch `Src : Type` to be implicit until the `end Logger`\n  variable {Src}\n\n  def empty : Logger Src where\n    trace := []\n  #check empty\n  -- Logger.empty {Src : Type} : Logger Src\n\n  variable (log : Logger Src)\n\n  def len :=\n    log.trace.length\n  #check len\n  -- Logger.len {Src : Type} (log : Logger Src) : Nat\n\n  variable (src : Src) [BEq Src]\n\n  -- at this point all of `log`, `src`, `Src` and the `BEq` instance can all become arguments\n\n  def filterSrc :=\n    log.trace.filterMap\n      fun (src', str') =&gt; if src' == src then some str' else none\n  #check filterSrc\n  -- Logger.filterSrc {Src : Type} (log : Logger Src) (src : Src) [inst✝ : BEq Src] : List String\n\n  def lenSrc :=\n    log.filterSrc src |&gt;.length\n  #check lenSrc\n  -- Logger.lenSrc {Src : Type} (log : Logger Src) (src : Src) [inst✝ : BEq Src] : Nat\nend Logger\n```\n\nThe following example demonstrates availability of variables in proofs:\n```lean\nvariable\n  {α : Type}    -- available in the proof as indirectly mentioned through `a`\n  [ToString α]  -- available in the proof as `α` is included\n  (a : α)       -- available in the proof as mentioned in the header\n  {β : Type}    -- not available in the proof\n  [ToString β]  -- not available in the proof\n\ntheorem ex : a = a := rfl\n```\nAfter elaboration of the proof, the following warning will be generated to highlight the unused\nhypothesis:\n```\nincluded section variable '[ToString α]' is not used in 'ex', consider excluding it\n```\nIn such cases, the offending variable declaration should be moved down or into a section so that\nonly theorems that do depend on it follow it until the end of the section.\n</code>",
+ "204":
+ "<code class=\"docstring\">A `section`/`end` pair delimits the scope of `variable`, `include, `open`, `set_option`, and `local`\ncommands. Sections can be nested. `section &lt;id&gt;` provides a label to the section that has to appear\nwith the matching `end`. In either case, the `end` can be omitted, in which case the section is\nclosed at the end of the file.\n</code>",
+ "203":
+ "<code>Finset.prod_eq_zero.{u_1, u_4} {ι : Type u_1} {M₀ : Type u_4} [CommMonoidWithZero M₀] {f : ι → M₀} {s : Finset ι}\n  {i : ι} (hi : i ∈ s) (h : f i = 0) : ∏ j ∈ s, f j = 0</code>",
+ "202": "<code>Finset.mem_range {n m : ℕ} : m ∈ range n ↔ m &lt; n</code>",
+ "201": "<code>Nat.zero_lt_of_lt {a b : ℕ} : a &lt; b → 0 &lt; b</code>",
+ "200": "<code>0 ∈ range n</code>",
  "20":
  "<code>Eq.{u_1} {α : Sort u_1} : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The equality relation. It has one introduction rule, `Eq.refl`.\nWe use `a = b` as notation for `Eq a b`.\nA fundamental property of equality is that it is an equivalence relation.\n```\nvariable (α : Type) (a b c d : α)\nvariable (hab : a = b) (hcb : c = b) (hcd : c = d)\n\nexample : a = d :=\n  Eq.trans (Eq.trans hab (Eq.symm hcb)) hcd\n```\nEquality is much more than an equivalence relation, however. It has the important property that every assertion\nrespects the equivalence, in the sense that we can substitute equal expressions without changing the truth value.\nThat is, given `h1 : a = b` and `h2 : p a`, we can construct a proof for `p b` using substitution: `Eq.subst h1 h2`.\nExample:\n```\nexample (α : Type) (a b : α) (p : α → Prop)\n        (h1 : a = b) (h2 : p a) : p b :=\n  Eq.subst h1 h2\n\nexample (α : Type) (a b : α) (p : α → Prop)\n    (h1 : a = b) (h2 : p a) : p b :=\n  h1 ▸ h2\n```\nThe triangle in the second presentation is a macro built on top of `Eq.subst` and `Eq.symm`, and you can enter it by typing `\\t`.\nFor more information: [Equality](https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#equality)\n</code>",
  "2": "<code>Prop</code>",
  "199":
- "<code>Continuous.{u, v} {X : Type u} {Y : Type v} [TopologicalSpace X] [TopologicalSpace Y] (f : X → Y) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A function between topological spaces is continuous if the preimage\nof every open set is open. Registered as a structure to make sure it is not unfolded by Lean. </code>",
- "198":
- "<code>Set.Icc.{u_1} {α : Type u_1} [Preorder α] (a b : α) : Set α</code><span class=\"sep\"></span><code class=\"docstring\">`Icc a b` is the left-closed right-closed interval $[a, b]$. </code>",
- "197": "<code>↑(Icc 0 1) → X</code>",
- "196": "<code>X</code>",
- "195":
- "<code>Set.Nonempty.{u} {α : Type u} (s : Set α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The property `s.Nonempty` expresses the fact that the set `s` is not empty. It should be used\nin theorem assumptions instead of `∃ x, x ∈ s` or `s ≠ ∅` as it gives access to a nice API thanks\nto the dot notation. </code>",
- "194": "<code>Set X</code>",
- "193":
- "<code>IsPathConnected'.{u_2} {X : Type u_2} [TopologicalSpace X] (S : Set X) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">An intuitive definition of path connectedness:\nA set `S` is path connected if it is nonempty and any two\npoints in `S` can be joined by a continuous path in `S`.\n</code>",
- "192":
- "<code>TopologicalSpace.{u} (X : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">A topology on `X`. </code>",
- "191": "<code>Type u_2</code>",
+ "<code>HSub.hSub.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HSub α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a - b` computes the difference of `a` and `b`.\nThe meaning of this notation is type-dependent.\n* For natural numbers, this operator saturates at 0: `a - b = 0` when `a ≤ b`. </code>",
+ "198": "<code>1 &lt; n</code>",
+ "197":
+ "<code>Ana1_Sheet1_Task3d (n : ℕ) (hn : 1 &lt; n) : ∏ i ∈ range n, (1 - 1 / (↑i + 1)) = 0</code>",
+ "196": "<code>-2 = -1</code>",
+ "195": "<code>-2 * b + 2 * -2 + 2 * b + 2 = -1</code>",
+ "194": "<code>_root_.star (-2) b = -1</code>",
+ "193": "<code>∃ b, _root_.star (-2) b = -1</code>",
+ "192": "<code>LA1_Sheet1_Task1d : ¬∃ b, _root_.star (-2) b = -1</code>",
+ "191":
+ "<code>LA1_Sheet1_Task1c (a : ℚ) : _root_.star (-1) a = a ∧ _root_.star a (-1) = a</code>",
  "190":
- "<code class=\"docstring\">A `section`/`end` pair delimits the scope of `variable`, `include, `open`, `set_option`, and `local`\ncommands. Sections can be nested. `section &lt;id&gt;` provides a label to the section that has to appear\nwith the matching `end`. In either case, the `end` can be omitted, in which case the section is\nclosed at the end of the file.\n</code>",
+ "<code>LA1_Sheet1_Task1b (a b c : ℚ) : _root_.star (_root_.star a b) c = _root_.star a (_root_.star b c)</code>",
  "19":
  "<code>Nat : Type</code><span class=\"sep\"></span><code class=\"docstring\">The type of natural numbers, starting at zero. It is defined as an\ninductive type freely generated by \"zero is a natural number\" and\n\"the successor of a natural number is a natural number\".\n\nYou can prove a theorem `P n` about `n : Nat` by `induction n`, which will\nexpect a proof of the theorem for `P 0`, and a proof of `P (succ i)` assuming\na proof of `P i`. The same method also works to define functions by recursion\non natural numbers: induction and recursion are two expressions of the same\noperation from Lean's point of view.\n\n```\nopen Nat\nexample (n : Nat) : n &lt; succ n := by\n  induction n with\n  | zero =&gt;\n    show 0 &lt; 1\n    decide\n  | succ i ih =&gt; -- ih : i &lt; succ i\n    show succ i &lt; succ (succ i)\n    exact Nat.succ_lt_succ ih\n```\n\nThis type is special-cased by both the kernel and the compiler:\n* The type of expressions contains \"`Nat` literals\" as a primitive constructor,\n  and the kernel knows how to reduce zero/succ expressions to nat literals.\n* If implemented naively, this type would represent a numeral `n` in unary as a\n  linked list with `n` links, which is horribly inefficient. Instead, the\n  runtime itself has a special representation for `Nat` which stores numbers up\n  to 2^63 directly and larger numbers use an arbitrary precision \"bignum\"\n  library (usually [GMP](https://gmplib.org/)).\n</code>",
  "189":
- "<code class=\"docstring\">Makes names from other namespaces visible without writing the namespace prefix.\n\nNames that are made available with `open` are visible within the current `section` or `namespace`\nblock. This makes referring to (type) definitions and theorems easier, but note that it can also\nmake [scoped instances], notations, and attributes from a different namespace available.\n\nThe `open` command can be used in a few different ways:\n\n* `open Some.Namespace.Path1 Some.Namespace.Path2` makes all non-protected names in\n  `Some.Namespace.Path1` and `Some.Namespace.Path2` available without the prefix, so that\n  `Some.Namespace.Path1.x` and `Some.Namespace.Path2.y` can be referred to by writing only `x` and\n  `y`.\n\n* `open Some.Namespace.Path hiding def1 def2` opens all non-protected names in `Some.Namespace.Path`\n  except `def1` and `def2`.\n\n* `open Some.Namespace.Path (def1 def2)` only makes `Some.Namespace.Path.def1` and\n  `Some.Namespace.Path.def2` available without the full prefix, so `Some.Namespace.Path.def3` would\n  be unaffected.\n\n  This works even if `def1` and `def2` are `protected`.\n\n* `open Some.Namespace.Path renaming def1 → def1', def2 → def2'` same as `open Some.Namespace.Path\n  (def1 def2)` but `def1`/`def2`'s names are changed to `def1'`/`def2'`.\n\n  This works even if `def1` and `def2` are `protected`.\n\n* `open scoped Some.Namespace.Path1 Some.Namespace.Path2` **only** opens [scoped instances],\n  notations, and attributes from `Namespace1` and `Namespace2`; it does **not** make any other name\n  available.\n\n* `open &lt;any of the open shapes above&gt; in` makes the names `open`-ed visible only in the next\n  command or expression.\n\n[scoped instance]: https://lean-lang.org/theorem_proving_in_lean4/type_classes.html#scoped-instances\n(Scoped instances in Theorem Proving in Lean)\n\n\n## Examples\n\n```lean\n/-- SKI combinators https://en.wikipedia.org/wiki/SKI_combinator_calculus -/\nnamespace Combinator.Calculus\n  def I (a : α) : α := a\n  def K (a : α) : β → α := fun _ =&gt; a\n  def S (x : α → β → γ) (y : α → β) (z : α) : γ := x z (y z)\nend Combinator.Calculus\n\nsection\n  -- open everything under `Combinator.Calculus`, *i.e.* `I`, `K` and `S`,\n  -- until the section ends\n  open Combinator.Calculus\n\n  theorem SKx_eq_K : S K x = I := rfl\nend\n\n-- open everything under `Combinator.Calculus` only for the next command (the next `theorem`, here)\nopen Combinator.Calculus in\ntheorem SKx_eq_K' : S K x = I := rfl\n\nsection\n  -- open only `S` and `K` under `Combinator.Calculus`\n  open Combinator.Calculus (S K)\n\n  theorem SKxy_eq_y : S K x y = y := rfl\n\n  -- `I` is not in scope, we have to use its full path\n  theorem SKxy_eq_Iy : S K x y = Combinator.Calculus.I y := rfl\nend\n\nsection\n  open Combinator.Calculus\n    renaming\n      I → identity,\n      K → konstant\n\n  #check identity\n  #check konstant\nend\n\nsection\n  open Combinator.Calculus\n    hiding S\n\n  #check I\n  #check K\nend\n\nsection\n  namespace Demo\n    inductive MyType\n    | val\n\n    namespace N1\n      scoped infix:68 \" ≋ \" =&gt; BEq.beq\n\n      scoped instance : BEq MyType where\n        beq _ _ := true\n\n      def Alias := MyType\n    end N1\n  end Demo\n\n  -- bring `≋` and the instance in scope, but not `Alias`\n  open scoped Demo.N1\n\n  #check Demo.MyType.val == Demo.MyType.val\n  #check Demo.MyType.val ≋ Demo.MyType.val\n  -- #check Alias -- unknown identifier 'Alias'\nend\n```\n</code>",
- "188": "<code>CompleteSpace α</code>",
- "187":
- "<code>CompleteSpace.{u} (α : Type u) [UniformSpace α] : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A complete space is defined here using uniformities. A uniform space\nis complete if every Cauchy filter converges. </code>",
- "186": "<code>MetricSpace α</code>",
- "185": "<code>f x = f y</code>",
- "184":
- "<code>Dist.dist.{u_3} {α : Type u_3} [self : Dist α] : α → α → ℝ</code>",
- "183": "<code>α</code>",
- "182": "<code>∃ q &lt; 1, ∀ (x y : α), dist (f x) (f y) ≤ q * dist x y</code>",
- "181": "<code>α → α</code>",
- "180":
- "<code>MetricSpace.{u} (α : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">We now define `MetricSpace`, extending `PseudoMetricSpace`. </code>",
- "18": "<code>P x</code>",
- "179": "<code>Type u_1</code>",
- "178":
- "<code class=\"docstring\">Declares one or more typed variables, or modifies whether already-declared variables are\n  implicit.\n\nIntroduces variables that can be used in definitions within the same `namespace` or `section` block.\nWhen a definition mentions a variable, Lean will add it as an argument of the definition. This is\nuseful in particular when writing many definitions that have parameters in common (see below for an\nexample).\n\nVariable declarations have the same flexibility as regular function parameters. In particular they\ncan be [explicit, implicit][binder docs], or [instance implicit][tpil classes] (in which case they\ncan be anonymous). This can be changed, for instance one can turn explicit variable `x` into an\nimplicit one with `variable {x}`. Note that currently, you should avoid changing how variables are\nbound and declare new variables at the same time; see [issue 2789] for more on this topic.\n\nIn *theorem bodies* (i.e. proofs), variables are not included based on usage in order to ensure that\nchanges to the proof cannot change the statement of the overall theorem. Instead, variables are only\navailable to the proof if they have been mentioned in the theorem header or in an `include` command\nor are instance implicit and depend only on such variables.\n\nSee [*Variables and Sections* from Theorem Proving in Lean][tpil vars] for a more detailed\ndiscussion.\n\n[tpil vars]:\nhttps://lean-lang.org/theorem_proving_in_lean4/dependent_type_theory.html#variables-and-sections\n(Variables and Sections on Theorem Proving in Lean) [tpil classes]:\nhttps://lean-lang.org/theorem_proving_in_lean4/type_classes.html (Type classes on Theorem Proving in\nLean) [binder docs]:\nhttps://leanprover-community.github.io/mathlib4_docs/Lean/Expr.html#Lean.BinderInfo (Documentation\nfor the BinderInfo type) [issue 2789]: https://github.com/leanprover/lean4/issues/2789 (Issue 2789\non github)\n\n## Examples\n\n```lean\nsection\n  variable\n    {α : Type u}      -- implicit\n    (a : α)           -- explicit\n    [instBEq : BEq α] -- instance implicit, named\n    [Hashable α]      -- instance implicit, anonymous\n\n  def isEqual (b : α) : Bool :=\n    a == b\n\n  #check isEqual\n  -- isEqual.{u} {α : Type u} (a : α) [instBEq : BEq α] (b : α) : Bool\n\n  variable\n    {a} -- `a` is implicit now\n\n  def eqComm {b : α} := a == b ↔ b == a\n\n  #check eqComm\n  -- eqComm.{u} {α : Type u} {a : α} [instBEq : BEq α] {b : α} : Prop\nend\n```\n\nThe following shows a typical use of `variable` to factor out definition arguments:\n\n```lean\nvariable (Src : Type)\n\nstructure Logger where\n  trace : List (Src × String)\n#check Logger\n-- Logger (Src : Type) : Type\n\nnamespace Logger\n  -- switch `Src : Type` to be implicit until the `end Logger`\n  variable {Src}\n\n  def empty : Logger Src where\n    trace := []\n  #check empty\n  -- Logger.empty {Src : Type} : Logger Src\n\n  variable (log : Logger Src)\n\n  def len :=\n    log.trace.length\n  #check len\n  -- Logger.len {Src : Type} (log : Logger Src) : Nat\n\n  variable (src : Src) [BEq Src]\n\n  -- at this point all of `log`, `src`, `Src` and the `BEq` instance can all become arguments\n\n  def filterSrc :=\n    log.trace.filterMap\n      fun (src', str') =&gt; if src' == src then some str' else none\n  #check filterSrc\n  -- Logger.filterSrc {Src : Type} (log : Logger Src) (src : Src) [inst✝ : BEq Src] : List String\n\n  def lenSrc :=\n    log.filterSrc src |&gt;.length\n  #check lenSrc\n  -- Logger.lenSrc {Src : Type} (log : Logger Src) (src : Src) [inst✝ : BEq Src] : Nat\nend Logger\n```\n\nThe following example demonstrates availability of variables in proofs:\n```lean\nvariable\n  {α : Type}    -- available in the proof as indirectly mentioned through `a`\n  [ToString α]  -- available in the proof as `α` is included\n  (a : α)       -- available in the proof as mentioned in the header\n  {β : Type}    -- not available in the proof\n  [ToString β]  -- not available in the proof\n\ntheorem ex : a = a := rfl\n```\nAfter elaboration of the proof, the following warning will be generated to highlight the unused\nhypothesis:\n```\nincluded section variable '[ToString α]' is not used in 'ex', consider excluding it\n```\nIn such cases, the offending variable declaration should be moved down or into a section so that\nonly theorems that do depend on it follow it until the end of the section.\n</code>",
- "177": "<code>own_mul_left_neutral (a : ℚ) : (-1) ⊕ a = a</code>",
- "176": "<code>own_mul_right_neutral (a : ℚ) : a ⊕ -1 = a</code>",
- "175": "<code>own_mul_assoc (a b c : ℚ) : (a ⊕ b) ⊕ c = a ⊕ b ⊕ c</code>",
- "174":
+ "<code class=\"docstring\">* `unfold id` unfolds all occurrences of definition `id` in the target.\n* `unfold id1 id2 ...` is equivalent to `unfold id1; unfold id2; ...`.\n* `unfold id at h` unfolds at the hypothesis `h`.\n\nDefinitions can be either global or local definitions.\n\nFor non-recursive global definitions, this tactic is identical to `delta`.\nFor recursive global definitions, it uses the \"unfolding lemma\" `id.eq_def`,\nwhich is generated for each recursive definition, to unfold according to the recursive definition given by the user.\nOnly one level of unfolding is performed, in contrast to `simp only [id]`, which unfolds definition `id` recursively.\n</code>",
+ "188":
  "<code>Rat : Type</code><span class=\"sep\"></span><code class=\"docstring\">Rational numbers, implemented as a pair of integers `num / den` such that the\ndenominator is positive and the numerator and denominator are coprime.\n</code>",
- "173": "<code>own_mul_komm (a b : ℚ) : a ⊕ b = b ⊕ a</code>",
- "172": "<code><span class=\"literal string\">\" ⊕ \"</span> : String</code>",
- "171": "<code>Lean.TSyntax `term</code>",
- "170": "<code>ℚ</code>",
- "17": "<code>x = y</code>",
- "169": "<code>own_add (a b : ℚ) : ℚ</code>",
- "168":
+ "187":
+ "<code>LA1_Sheet1_Task1a (a b : ℚ) : _root_.star a b = _root_.star b a</code>",
+ "186": "<code>star (a b : ℚ) : ℚ</code>",
+ "185":
  "<code>Filter.{u_1} (α : Type u_1) : Type u_1</code><span class=\"sep\"></span><code class=\"docstring\">A filter `F` on a type `α` is a collection of sets of `α` which contains the whole `α`,\nis upwards-closed, and is stable under intersection. We do not forbid this collection to be\nall sets of `α`. </code>",
- "167":
+ "184":
  "<code>nhds.{u_3} {X : Type u_3} [TopologicalSpace X] (x : X) : Filter X</code><span class=\"sep\"></span><code class=\"docstring\">A set is called a neighborhood of `x` if it contains an open set around `x`. The set of all\nneighborhoods of `x` forms a filter, the neighborhood filter at `x`, is here defined as the\ninfimum over the principal filters of all open sets containing `x`. </code>",
- "166": "<code>Filter ℕ</code>",
- "165":
+ "183": "<code>Filter ℕ</code>",
+ "182":
  "<code>Filter.Tendsto.{u_1, u_2} {α : Type u_1} {β : Type u_2} (f : α → β) (l₁ : Filter α) (l₂ : Filter β) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Filter.Tendsto` is the generic \"limit of a function\" predicate.\n`Tendsto f l₁ l₂` asserts that for every `l₂` neighborhood `a`,\nthe `f`-preimage of `a` is an `l₁` neighborhood. </code>",
- "164":
+ "181":
  "<code>abs.{u_1} {α : Type u_1} [Lattice α] [AddGroup α] (a : α) : α</code><span class=\"sep\"></span><code class=\"docstring\">`abs a`, denoted `|a|`, is the absolute value of `a`</code>",
- "163": "<code>|q| &lt; 1</code>",
+ "180": "<code>|q| &lt; 1</code>",
+ "18": "<code>P x</code>",
+ "179": "<code>∏ k ∈ range n, (↑k + 2) / (↑k + 1) = ↑n + 1</code>",
+ "178":
+ "<code>∏ k ∈ range (n + 1), (1 + 1 / (↑k + 1)) = ∏ k ∈ range (n + 1), (↑k + 2) / (↑k + 1)</code>",
+ "177": "<code>Finset.not_mem_range_self {n : ℕ} : n ∉ range n</code>",
+ "176":
+ "<code>Finset.prod_insert.{u_3, u_4} {α : Type u_3} {β : Type u_4} {s : Finset α} {a : α} {f : α → β} [CommMonoid β]\n  [DecidableEq α] : a ∉ s → ∏ x ∈ insert a s, f x = f a * ∏ x ∈ s, f x</code>",
+ "175":
+ "<code>Finset.range_succ {n : ℕ} : range n.succ = insert n (range n)</code>",
+ "174":
+ "<code>∏ k ∈ range n, (1 + 1 / (↑k + 1)) = ∏ k ∈ range n, (↑k + 2) / (↑k + 1) → ∏ k ∈ range n, (↑k + 2) / (↑k + 1) = ↑n + 1</code>",
+ "173":
+ "<code>Nat.cast_add.{u_1} {R : Type u_1} [AddMonoidWithOne R] (m n : ℕ) : ↑(m + n) = ↑m + ↑n</code>",
+ "172": "<code>k ∈ range n</code>",
+ "171":
+ "<code>Finset.prod_congr.{u_3, u_4} {α : Type u_3} {β : Type u_4} {s₁ s₂ : Finset α} {f g : α → β} [CommMonoid β]\n  (h : s₁ = s₂) : (∀ x ∈ s₂, f x = g x) → s₁.prod f = s₂.prod g</code>",
+ "170":
+ "<code>∏ k ∈ range n, (1 + 1 / (↑k + 1)) = ∏ k ∈ range n, (↑k + 2) / (↑k + 1)</code>",
+ "17": "<code>x = y</code>",
+ "169": "<code>ℚ</code>",
+ "168":
+ "<code class=\"docstring\">Normalize numerical expressions. Supports the operations `+` `-` `*` `/` `⁻¹` `^` and `%`\nover numerical types such as `ℕ`, `ℤ`, `ℚ`, `ℝ`, `ℂ` and some general algebraic types,\nand can prove goals of the form `A = B`, `A ≠ B`, `A &lt; B` and `A ≤ B`, where `A` and `B` are\nnumerical expressions. It also has a relatively simple primality prover.\n</code>",
+ "167": "<code>∑ k ∈ range n, (2 * ↑k + 1) = ↑n ^ 2</code>",
+ "166":
+ "<code>∑ k ∈ range (n + 1), ↑k ^ 3 = ↑n * ↑n * (↑n + 1) * (↑n + 1) / 4</code>",
+ "165":
+ "<code class=\"docstring\">The goal of `field_simp` is to reduce an expression in a field to an expression of the form `n / d`\nwhere neither `n` nor `d` contains any division symbol, just using the simplifier (with a carefully\ncrafted simpset named `field_simps`) to reduce the number of division symbols whenever possible by\niterating the following steps:\n\n- write an inverse as a division\n- in any product, move the division to the right\n- if there are several divisions in a product, group them together at the end and write them as a\n  single division\n- reduce a sum to a common denominator\n\nIf the goal is an equality, this simpset will also clear the denominators, so that the proof\ncan normally be concluded by an application of `ring`.\n\n`field_simp [hx, hy]` is a short form for\n`simp (disch := field_simp_discharge) [-one_div, -one_divp, -mul_eq_zero, hx, hy, field_simps]`\n\nNote that this naive algorithm will not try to detect common factors in denominators to reduce the\ncomplexity of the resulting expression. Instead, it relies on the ability of `ring` to handle\ncomplicated expressions in the next step.\n\nAs always with the simplifier, reduction steps will only be applied if the preconditions of the\nlemmas can be checked. This means that proofs that denominators are nonzero should be included. The\nfact that a product is nonzero when all factors are, and that a power of a nonzero number is\nnonzero, are included in the simpset, but more complicated assertions (especially dealing with sums)\nshould be given explicitly. If your expression is not completely reduced by the simplifier\ninvocation, check the denominators of the resulting expression and provide proofs that they are\nnonzero to enable further progress.\n\nTo check that denominators are nonzero, `field_simp` will look for facts in the context, and\nwill try to apply `norm_num` to close numerical goals.\n\nThe invocation of `field_simp` removes the lemma `one_div` from the simpset, as this lemma\nworks against the algorithm explained above. It also removes\n`mul_eq_zero : x * y = 0 ↔ x = 0 ∨ y = 0`, as `norm_num` can not work on disjunctions to\nclose goals of the form `24 ≠ 0`, and replaces it with `mul_ne_zero : x ≠ 0 → y ≠ 0 → x * y ≠ 0`\ncreating two goals instead of a disjunction.\n\nFor example,\n```lean\nexample (a b c d x y : ℂ) (hx : x ≠ 0) (hy : y ≠ 0) :\n    a + b / x + c / x^2 + d / x^3 = a + x⁻¹ * (y * b / y + (d / x + c) / x) := by\n  field_simp\n  ring\n```\n\nMoreover, the `field_simp` tactic can also take care of inverses of units in\na general (commutative) monoid/ring and partial division `/ₚ`, see `Algebra.Group.Units`\nfor the definition. Analogue to the case above, the lemma `one_divp` is removed from the simpset\nas this works against the algorithm. If you have objects with an `IsUnit x` instance like\n`(x : R) (hx : IsUnit x)`, you should lift them with\n`lift x to Rˣ using id hx; rw [IsUnit.unit_of_val_units] clear hx`\nbefore using `field_simp`.\n\nSee also the `cancel_denoms` tactic, which tries to do a similar simplification for expressions\nthat have numerals in denominators.\nThe tactics are not related: `cancel_denoms` will only handle numeric denominators, and will try to\nentirely remove (numeric) division from the expression by multiplying by a factor.\n</code>",
+ "164":
+ "<code class=\"docstring\">Simplification tactic for expressions in the language of commutative (semi)rings,\nwhich rewrites all ring expressions into a normal form.\n* `ring_nf!` will use a more aggressive reducibility setting to identify atoms.\n* `ring_nf (config := cfg)` allows for additional configuration:\n  * `red`: the reducibility setting (overridden by `!`)\n  * `recursive`: if true, `ring_nf` will also recurse into atoms\n* `ring_nf` works as both a tactic and a conv tactic.\n  In tactic mode, `ring_nf at h` can be used to rewrite in a hypothesis.\n\nThis can be used non-terminally to normalize ring expressions in the goal such as\n`⊢ P (x + x + x)` ~&gt; `⊢ P (x * 3)`, as well as being able to prove some equations that\n`ring` cannot because they involve ring reasoning inside a subterm, such as\n`sin (x + y) + sin (y + x) = 2 * sin (x + y)`.\n</code>",
+ "163":
+ "<code>Finset.sum_range_succ.{u_4} {β : Type u_4} [AddCommMonoid β] (f : ℕ → β) (n : ℕ) :\n  ∑ x ∈ range (n + 1), f x = ∑ x ∈ range n, f x + f n</code>",
  "162":
- "<code>HSub.hSub.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HSub α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a - b` computes the difference of `a` and `b`.\nThe meaning of this notation is type-dependent.\n* For natural numbers, this operator saturates at 0: `a - b = 0` when `a ≤ b`. </code>",
+ "<code>∑ k ∈ range (n + 1), ↑k ^ 2 = ↑n * (↑n + 1) * (2 * ↑n + 1) / 6</code>",
  "161":
- "<code class=\"docstring\">The `sorry` term is a temporary placeholder for a missing proof or value.\n\nThe syntax is intended for stubbing-out incomplete parts of a value or proof while still having a syntactically correct skeleton.\nLean will give a warning whenever a declaration uses `sorry`, so you aren't likely to miss it,\nbut you can double check if a declaration depends on `sorry` by looking for `sorryAx` in the output\nof the `#print axioms my_thm` command, the axiom used by the implementation of `sorry`.\n\n\"Go to definition\" on `sorry` in the Infoview will go to the source position where it was introduced, if such information is available.\n\nEach `sorry` is guaranteed to be unique, so for example the following fails:\n```lean\nexample : (sorry : Nat) = sorry := rfl -- fails\n```\n\nSee also the `sorry` tactic, which is short for `exact sorry`.\n</code>",
+ "<code>Finset.range (n : ℕ) : Finset ℕ</code><span class=\"sep\"></span><code class=\"docstring\">`range n` is the set of natural numbers less than `n`. </code>",
  "160":
- "<code>Finset.Iic.{u_1} {α : Type u_1} [Preorder α] [LocallyFiniteOrderBot α] (b : α) : Finset α</code><span class=\"sep\"></span><code class=\"docstring\">The finset $(-∞, b]$ of elements `x` such that `x ≤ b`. Basically `Set.Iic b` as a finset. </code>",
+ "<code class=\"docstring\">Makes names from other namespaces visible without writing the namespace prefix.\n\nNames that are made available with `open` are visible within the current `section` or `namespace`\nblock. This makes referring to (type) definitions and theorems easier, but note that it can also\nmake [scoped instances], notations, and attributes from a different namespace available.\n\nThe `open` command can be used in a few different ways:\n\n* `open Some.Namespace.Path1 Some.Namespace.Path2` makes all non-protected names in\n  `Some.Namespace.Path1` and `Some.Namespace.Path2` available without the prefix, so that\n  `Some.Namespace.Path1.x` and `Some.Namespace.Path2.y` can be referred to by writing only `x` and\n  `y`.\n\n* `open Some.Namespace.Path hiding def1 def2` opens all non-protected names in `Some.Namespace.Path`\n  except `def1` and `def2`.\n\n* `open Some.Namespace.Path (def1 def2)` only makes `Some.Namespace.Path.def1` and\n  `Some.Namespace.Path.def2` available without the full prefix, so `Some.Namespace.Path.def3` would\n  be unaffected.\n\n  This works even if `def1` and `def2` are `protected`.\n\n* `open Some.Namespace.Path renaming def1 → def1', def2 → def2'` same as `open Some.Namespace.Path\n  (def1 def2)` but `def1`/`def2`'s names are changed to `def1'`/`def2'`.\n\n  This works even if `def1` and `def2` are `protected`.\n\n* `open scoped Some.Namespace.Path1 Some.Namespace.Path2` **only** opens [scoped instances],\n  notations, and attributes from `Namespace1` and `Namespace2`; it does **not** make any other name\n  available.\n\n* `open &lt;any of the open shapes above&gt; in` makes the names `open`-ed visible only in the next\n  command or expression.\n\n[scoped instance]: https://lean-lang.org/theorem_proving_in_lean4/type_classes.html#scoped-instances\n(Scoped instances in Theorem Proving in Lean)\n\n\n## Examples\n\n```lean\n/-- SKI combinators https://en.wikipedia.org/wiki/SKI_combinator_calculus -/\nnamespace Combinator.Calculus\n  def I (a : α) : α := a\n  def K (a : α) : β → α := fun _ =&gt; a\n  def S (x : α → β → γ) (y : α → β) (z : α) : γ := x z (y z)\nend Combinator.Calculus\n\nsection\n  -- open everything under `Combinator.Calculus`, *i.e.* `I`, `K` and `S`,\n  -- until the section ends\n  open Combinator.Calculus\n\n  theorem SKx_eq_K : S K x = I := rfl\nend\n\n-- open everything under `Combinator.Calculus` only for the next command (the next `theorem`, here)\nopen Combinator.Calculus in\ntheorem SKx_eq_K' : S K x = I := rfl\n\nsection\n  -- open only `S` and `K` under `Combinator.Calculus`\n  open Combinator.Calculus (S K)\n\n  theorem SKxy_eq_y : S K x y = y := rfl\n\n  -- `I` is not in scope, we have to use its full path\n  theorem SKxy_eq_Iy : S K x y = Combinator.Calculus.I y := rfl\nend\n\nsection\n  open Combinator.Calculus\n    renaming\n      I → identity,\n      K → konstant\n\n  #check identity\n  #check konstant\nend\n\nsection\n  open Combinator.Calculus\n    hiding S\n\n  #check I\n  #check K\nend\n\nsection\n  namespace Demo\n    inductive MyType\n    | val\n\n    namespace N1\n      scoped infix:68 \" ≋ \" =&gt; BEq.beq\n\n      scoped instance : BEq MyType where\n        beq _ _ := true\n\n      def Alias := MyType\n    end N1\n  end Demo\n\n  -- bring `≋` and the instance in scope, but not `Alias`\n  open scoped Demo.N1\n\n  #check Demo.MyType.val == Demo.MyType.val\n  #check Demo.MyType.val ≋ Demo.MyType.val\n  -- #check Alias -- unknown identifier 'Alias'\nend\n```\n</code>",
  "16": "<code>ℕ → Prop</code>",
  "159":
  "<code>div_two_lt_of_pos.{u_2} {α : Type u_2} [LinearOrderedSemifield α] {a : α} : 0 &lt; a → a / 2 &lt; a</code><span class=\"sep\"></span><code class=\"docstring\">**Alias** of the reverse direction of `half_lt_self_iff`.\n\n---\n\n**Alias** of the reverse direction of `half_lt_self_iff`.</code>",

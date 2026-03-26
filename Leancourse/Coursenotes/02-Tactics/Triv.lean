@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,23 +13,23 @@ set_option pp.rawOnError true
 tag := "triv"
 %%%
 
-**Summary**
+*Summary*
 
 `triv` solves an objective that is, by definition, identical to `true`. It also solves objectives that can be solved with `refl`
 .
 
-**Examples**
+*Examples*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
 * + `⊢ True`
   + `triv`
-  + **No goals**
+  + *No goals*
 * + `⊢ x = x`
   + `triv`
-  + **No goals**
+  + *No goals*
 :::
 
 ::::keepEnv

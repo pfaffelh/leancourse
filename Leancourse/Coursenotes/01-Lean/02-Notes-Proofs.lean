@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -31,7 +32,7 @@ we speak about a term `∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : 
 
 This is to say:
 
-**Types as theorems, terms as proofs!**
+*Types as theorems, terms as proofs!*
 
 Constructing a term of type `ℕ` is easier (`0 : ℕ)` is accepted by Lean for this construction) than constructing a term of type `∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n), ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j)`, for which we would require proving Goldbach's conjecture and implementing the proof in Lean.
 
@@ -73,13 +74,13 @@ Let us start with a very simple `example`. If we want to prove the statement `P 
 example (P : Prop) : P → P := by
   sorry
 ```
-Depending on the position of the cursor, you will find the corresponding *proof state*. If the cursor is directly after `by`, the initial *proof state* is seen. It is important to know that behind `⊢` (called [turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that `P` is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the `sorry`, there is now **no goals**, but the `sorry` tactic is only there to prove unproven assertions without further action, and a warning is issued in `vscode`. If you delete the `sorry` and replace it with an `intro hP` followed by `exact hP`, we get
+Depending on the position of the cursor, you will find the corresponding *proof state*. If the cursor is directly after `by`, the initial *proof state* is seen. It is important to know that behind `⊢` (called [turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) stands the assertion, and everything above are hypotheses. (In the case shown, this is only the fact that `P` is an assertion/proposition.) This representation thus corresponds exactly to the assertion. If the cursor is after the `sorry`, there is now *no goals*, but the `sorry` tactic is only there to prove unproven assertions without further action, and a warning is issued in `vscode`. If you delete the `sorry` and replace it with an `intro hP` followed by `exact hP`, we get
 ```lean
 example : P → P := by
   intro hP
   exact hP
 ```
-So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. The desired **no goals** appears.
+So we have transformed the statement `P → P` into a state where we have to assume `hP : P` and conclude `P`. The desired *no goals* appears.
 :::
 
 :::paragraph
@@ -153,7 +154,7 @@ In order to have some proper example, let us introduce `Even` and `Odd`. In fact
 ```
 which results in
 ```leanOutput even
-def Even.{u_2} : {α : Type u_2} → [inst : Add α] → α → Prop :=
+def Even.{u_2} : {α : Type u_2} → [Add α] → α → Prop :=
 fun {α} [Add α] a => ∃ r, a = r + r
 ```
 :::

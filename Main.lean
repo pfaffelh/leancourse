@@ -3,10 +3,30 @@ import Manual.Meta
 
 open Verso.Genre Manual
 open Verso.Genre.Manual
+open Verso.Genre.Manual.InlineLean
 
 open Verso.Output.Html in
 def searchModule := {{
     <script type="module" src="/static/search/search-init.js"></script>
+  }}
+
+open Verso.Output.Html in
+def staticCss := {{
+    <link rel="stylesheet" href="/static/colors.css" />
+    <link rel="stylesheet" href="/static/theme.css" />
+    <link rel="stylesheet" href="/static/print.css" />
+    <link rel="stylesheet" href="/static/search/search-box.css" />
+    <link rel="stylesheet" href="/static/fonts/source-serif/source-serif-text.css" />
+    <link rel="stylesheet" href="/static/fonts/source-code-pro/source-code-pro.css" />
+    <link rel="stylesheet" href="/static/katex/katex.min.css" />
+  }}
+
+open Verso.Output.Html in
+def staticJs := {{
+    <script src="/static/katex/katex.min.js"></script>
+    <script src="/static/math.js"></script>
+    <script src="/static/search/fuzzysort.js"></script>
+    <script src="/static/print.js"></script>
   }}
 
 def KaTeXLicense : LicenseInfo where
@@ -38,39 +58,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 "#
 
-def addKaTeX (config : Config) : Config :=
-  {config with
-    extraCss := "/static/katex/katex.min.css" :: config.extraCss,
-    extraJs := "/static/katex/katex.min.js" :: "/static/math.js" :: config.extraJs,
-    licenseInfo := KaTeXLicense :: config.licenseInfo
-  }
-
 def main :=
   manualMain (%doc Leancourse) (config := config)
 where
-  config := addKaTeX {
+  config := {
     extraFiles := [("static", "static")],
-    extraCss := [
-      "/static/colors.css",
-      "/static/theme.css",
-      "/static/print.css",
-      "/static/search/search-box.css",
-      "/static/fonts/source-serif/source-serif-text.css",
-      "/static/fonts/source-code-pro/source-code-pro.css",
-    ],
-    extraJs := [
-      -- Search box
-      "/static/search/fuzzysort.js",
-      -- Print stylesheet improvements
-      "/static/print.js"
-    ],
-    extraHead := #[searchModule],
+    extraHead := #[searchModule, staticCss, staticJs],
     emitTeX := false,
-    emitHtmlSingle := true, -- for proofreading
-    emitHtmlMulti := true, -- for proofreading
+    emitHtmlSingle := .immediately,
+    emitHtmlMulti := .immediately,
     logo := some "/static/lean_logo.svg",
     sourceLink := some "https://github.com/pfaffelh/leancourse",
-    issueLink := some "https://github.com/pfaffelh/leancourse/issues"
-    -- Licenses for the search box
-    licenseInfo := []
+    issueLink := some "https://github.com/pfaffelh/leancourse/issues",
   }

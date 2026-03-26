@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,11 +13,11 @@ set_option pp.rawOnError true
 tag := "right"
 %%%
 
-**Summary:** See `left`, where the adjustments are obvious.
+*Summary:* See `left`, where the adjustments are obvious.
 
-**Examples**
+*Examples*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state

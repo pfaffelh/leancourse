@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -13,7 +14,7 @@ set_option pp.rawOnError true
 tag := "specialize"
 %%%
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -22,9 +23,9 @@ tag := "specialize"
   + `f: ℕ → Prop` {br}[] `h : f 13` {br}[] `⊢ P`
 :::
 
-**Summary:** In a hypothesis `h : ∀ n, ...`, `...` applies to all `n`, but for the proof of the goal, you may only need a specific `n`. If you specify `specialize h` followed by the value for which `h` is needed, the hypothesis changes accordingly.
+*Summary:* In a hypothesis `h : ∀ n, ...`, `...` applies to all `n`, but for the proof of the goal, you may only need a specific `n`. If you specify `specialize h` followed by the value for which `h` is needed, the hypothesis changes accordingly.
 
-**Examples**
+*Examples*
 
 ```lean
 example (p : ℕ → Prop) (hp : ∀ (n : ℕ), p n) :
@@ -33,7 +34,7 @@ example (p : ℕ → Prop) (hp : ∀ (n : ℕ), p n) :
   exact hp
 ```
 
-**Remarks**
+*Remarks*
 
 * Just as with `use`, you have to be careful that the goal remains provable.
 * If you want to use two values of the hypothesis `h`, then `let h' := h` first provides a duplication of the hypothesis, so that you can then apply `specialize` to `h` and `h'`.

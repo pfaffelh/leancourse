@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,12 +13,12 @@ set_option pp.rawOnError true
 tag := "clear"
 %%%
 
-**Summary:** With `clear h` the hypothesis `h` is removed from the goal state
+*Summary:* With `clear h` the hypothesis `h` is removed from the goal state
 (forgotten).
 
-**Example**
+*Example*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state

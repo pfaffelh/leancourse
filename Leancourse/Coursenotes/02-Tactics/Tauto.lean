@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,20 +13,20 @@ set_option pp.rawOnError true
 tag := "tauto"
 %%%
 
-**Summary:** `tauto` solves all goals that can be solved with a truth table.
+*Summary:* `tauto` solves all goals that can be solved with a truth table.
 
-**Examples**
+*Examples*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
 * + `⊢ P ∧ Q → P`
   + `tauto` oder `tauto!`
-  + **No goals**
+  + *No goals*
 * + `⊢ ((P → Q) → P) → P`
   + `tauto!`
-  + **No goals**
+  + *No goals*
 :::
 
 The truth tables for `¬P`, `P ∧ Q` and `P ∨ Q` are as follows; if more terms of type `Prop` are involved, there are more lines.
@@ -75,7 +76,7 @@ The truth tables for `¬P`, `P ∧ Q` and `P ∨ Q` are as follows; if more term
   + `false`
 :::
 
-**Notes**
+*Notes*
 
 The difference between `tauto` and `tauto!` is that in the latter tactic, the rule of the excluded middle is allowed.  The second example can therefore only be solved with `tauto!`, but not with `tauto`.
 

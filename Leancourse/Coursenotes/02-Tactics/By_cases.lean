@@ -5,6 +5,7 @@ import Lean
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -14,12 +15,12 @@ set_option pp.rawOnError true
 tag := "by_cases"
 %%%
 
-**Summary:**
+*Summary:*
 If you have a term `P : Prop` as a hypothesis, `by_cases hP : P` returns two goals. The first one has `hP : P`, and the second one `hP : ¬P`. This tactic is thus identical to `have hP : P ∨ ¬ P, exact em P, cases hP,`. (The second expression is `em : ∀ (p : Prop), p ∨ ¬p`.)
 
-**Examples**
+*Examples*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -49,7 +50,7 @@ example (P Q : Prop) (hP: P → Q) ( hP' : ¬P → Q) : Q := by
 :::
 ::::
 
-**Notes**
+*Notes*
 
 * Apparently, the `by_cases` tactic (just like `by_contra`) assumes that a statement is either true or false. This is also known as the law of excluded middle. In mathematics, proofs that do not use this rule are called constructive.
 * For terms of type `Prop`, the tactic `tauto` (or `tauto!`) can draw various conclusions from a truth table.

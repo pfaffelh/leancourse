@@ -4,6 +4,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 import Mathlib
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -13,11 +14,11 @@ set_option pp.rawOnError true
 tag := "ext"
 %%%
 
-**Summary:** Extensionality is a principle that states that two functions are equal if they give the same result for all arguments. The `ext` tactic applies this principle to prove the equality of two functions.
+*Summary:* Extensionality is a principle that states that two functions are equal if they give the same result for all arguments. The `ext` tactic applies this principle to prove the equality of two functions.
 
-**Examples:**
+*Examples:*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -26,7 +27,7 @@ tag := "ext"
   + `f g : ℝ → ℝ` {br}`x : ℝ` {br}[] ⊢ f x = g x
 :::
 
-**Remarks:**
+*Remarks:*
 
 * Extensionality works for functions and sets.
 

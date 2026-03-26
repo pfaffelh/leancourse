@@ -2,6 +2,7 @@ import VersoManual
 import Manual.Meta
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 
 set_option pp.rawOnError true
 
@@ -63,7 +64,7 @@ variable (P Q R S T : Prop)
 
   Quantifiers such as `∀` (type `\forall`) and `∃` (type `\exists`) have been known since the first semester. These can also occur in `Lean`. We distinguish whether these quantifiers occur in the goal or in a hypothesis. The following is a small table of which tactics are appropriate in each case. Exact explanations are in `01-g.lean`.
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Quantifier
   + in goal
   + in hypothesis `h`

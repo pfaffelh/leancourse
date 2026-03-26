@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,11 +13,11 @@ set_option pp.rawOnError true
 tag := "constructor"
 %%%
 
-**Summary:** If the goal is of the type `⊢ P ∧ Q`, it is replaced by `constructor` into two goals `⊢ P` and `⊢ Q`.
+*Summary:* If the goal is of the type `⊢ P ∧ Q`, it is replaced by `constructor` into two goals `⊢ P` and `⊢ Q`.
 
-**Examples**
+*Examples*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -28,7 +29,7 @@ tag := "constructor"
   + `⊢ P → Q` {br}[] `⊢ Q → P`
 :::
 
-**Remarks**
+*Remarks*
 
 Note that `⊢ P ↔ Q` is identical to `⊢ (P → Q) ∧ (Q → P)`.
 

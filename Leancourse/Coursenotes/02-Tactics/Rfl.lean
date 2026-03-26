@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,23 +13,23 @@ set_option pp.rawOnError true
 tag := "rfl"
 %%%
 
-**Summary:** This tactic proves the equality (or equivalence) of two definitionally equal terms.
+*Summary:* This tactic proves the equality (or equivalence) of two definitionally equal terms.
 
-**Examples:**
+*Examples:*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
 * + `⊢ P ↔ P` oder {br}[] `⊢ P = P`
   + `rfl`
-  + **no goals**
+  + *no goals*
 * + `⊢ 1 + 2 = 3`
   + `rfl`
-  + **no goals**
+  + *no goals*
 :::
 
-**Remarks:**
+*Remarks:*
 
 The second example works because both sides are by definition equal to `succ succ succ 0`.
 

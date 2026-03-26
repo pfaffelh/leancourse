@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,13 +13,13 @@ set_option pp.rawOnError true
 tag := "left"
 %%%
 
-**Summary:**
+*Summary:*
 
 The application of `left,` is identical to `apply h` for `h : P → P ∨ Q`. So if you have a goal of the form `⊢ P ∨ Q`, `left,` causes you to have only the goal `⊢ P`. After all, it is sufficient to show `P` to close the goal.
 
-**Examples:**
+*Examples:*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -27,7 +28,7 @@ The application of `left,` is identical to `apply h` for `h : P → P ∨ Q`. So
   + ⊢ P
 * + ⊢ ℕ
   + left
-  + **no goals🎉**
+  + *no goals🎉*
 :::
 
 
@@ -55,7 +56,7 @@ example (P : Prop) : False → P := by
 :::
 ::::
 
-**Remarks:**
+*Remarks:*
 
 * See also `right,` for the equivalent tactic, which is `apply h` for `h : Q → P ∨ Q`.
 * As in the second example, `left,` can always be applied when dealing with an inductive type with two constructors (such like `ℕ`).

@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 
 set_option pp.rawOnError true
 
@@ -19,7 +20,7 @@ To get a little more mathematical, we now introduce the natural numbers. This ty
     After an introduction to how natural numbers are implemented in `Lean`, we introduce the `calc` mode. This allows us to perform calculations step by step, using previously proven statements. This way, we can, for example, prove binomial formulas. We also get to know the very powerful tactics `ring`, `norm_num`, `linarith` and `simp` can simplify a lot of work. Here we also learn the `fun` notation for defining functions.
 -  Page 02-b: divisibility:
     For `m n : ℕ` (or `m n : ℤ`) `h : m | n` (type `\|`), means that `n` is divided by `m`. In other words, there is `a : ℕ` with `n = a * m`. With this definition, the goal of this sheet is to show the long known statement that a number is exactly divisible by 3 (or 9) if and only if its cross sum is divisible by 3 (or 9). Here we will only do this for numbers up to `10000`.
-**Bonus task:** An especially simple method of proving the divisibility rule by 3 in Lean is with the following Lean file (here, `\%` is the modulo sign and `digits 10` is the finite list of decimal representations of the
+*Bonus task:* An especially simple method of proving the divisibility rule by 3 in Lean is with the following Lean file (here, `\%` is the modulo sign and `digits 10` is the finite list of decimal representations of the
   number `n`):
   ```
     open Nat

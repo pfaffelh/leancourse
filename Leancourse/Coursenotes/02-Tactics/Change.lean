@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -13,11 +14,11 @@ set_option pp.rawOnError true
 tag := "change"
 %%%
 
-**Summary:** Changes the goal (or a hypothesis) into a goal (or a hypothesis) that is defined the same.
+*Summary:* Changes the goal (or a hypothesis) into a goal (or a hypothesis) that is defined the same.
 
-**Examples:**
+*Examples:*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -32,7 +33,7 @@ tag := "change"
   + `xs : x ∈ s` {br}[] `⊢ f x ∈ f '' s`
 :::
 
-**Remarks:**
+*Remarks:*
 
 * As can be seen from the penultimate example, `change` also works for hypotheses.
 * Since many tactics test for definitional equality anyway, `change` is often not necessary. However, it can help to make the proof more readable.

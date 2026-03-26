@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,11 +13,11 @@ set_option pp.rawOnError true
 tag := "revert"
 %%%
 
-**Summary:** `revert` is the opposite of `intro`: It takes a hypothesis from the local context and inserts it as a precondition into the goal.
+*Summary:* `revert` is the opposite of `intro`: It takes a hypothesis from the local context and inserts it as a precondition into the goal.
 
-**Examples**
+*Examples*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -34,6 +35,6 @@ example (P : Prop) : False → P := by
 :::
 ::::
 
-**Remarks:**
+*Remarks:*
 
 `revert` is rarely needed; actually only when you want to apply an already proven result exactly and first want to establish the correct form of the goal.

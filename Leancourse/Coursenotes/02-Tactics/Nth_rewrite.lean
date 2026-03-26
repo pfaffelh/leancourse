@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,13 +13,13 @@ set_option pp.rawOnError true
 tag := "nth_rewrite"
 %%%
 
-**Summary:**
+*Summary:*
 
 This tactic is related to `rw`. The difference is that you can specify the occurrence number of the term to be replaced on which `rw` is to be applied. The exact syntax is `nth_rewrite k h`, where `k` is the number (starting with $0$) of the term to be replaced and `h` is the hypothesis to be replaced. As with `rw`, this must be in the form `h : x=y` or `h : A↔B`.
 
-**Examples:**
+*Examples:*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state

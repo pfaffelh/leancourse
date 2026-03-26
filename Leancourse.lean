@@ -7,16 +7,20 @@ import «Leancourse».Coursenotes.«00-Introduction»
 import «Leancourse».Coursenotes.«01-Lean»
 import «Leancourse».Coursenotes.«02-Tactics»
 import «Leancourse».Coursenotes.«03-Projects»
+import «Leancourse».Coursenotes.«04-FunctionalProgramming»
+import «Leancourse».Coursenotes.«05-TypeTheory»
+import «Leancourse».Coursenotes.«06-Mathematics»
+import «Leancourse».Coursenotes.«07-ProofEngineering»
 
 open Verso.Genre Manual
 
-#doc (Manual) "Interactive Theorem Proving using Lean, Summer 2025" =>
+#doc (Manual) "Interactive Theorem Proving using Lean, Winter 2026/27" =>
 %%%
 tag := "ITPFr"
 authors := ["Peter Pfaffelhuber"]
 %%%
 
-These are the notes for a course on formal proving with the interactive theorem prover Lean4 (in the following we just write Lean) in the summer semester of 2025 at the University of Freiburg. To be able to work through the course in a meaningful way, the following technical preparations are to be made:
+These are the notes for a course on formal proving with the interactive theorem prover Lean4 (in the following we just write Lean) in the winter semester of 2026/27 at the University of Freiburg. To be able to work through the course in a meaningful way, the following technical preparations are to be made:
 
 * Installation of [vscode](https://code.visualstudio.com/).
 * Open `vscode`, hit the _extensions_ icon (fifth from the top) on the left, and install the _Lean 4 language extension_.
@@ -50,3 +54,11 @@ In case you cannot install the course material locally, do the following: Visit 
 {include 0 «Leancourse».Coursenotes.«02-Tactics»}
 
 {include 0 «Leancourse».Coursenotes.«03-Projects»}
+
+{include 0 «Leancourse».Coursenotes.«04-FunctionalProgramming»}
+
+{include 0 «Leancourse».Coursenotes.«05-TypeTheory»}
+
+{include 0 «Leancourse».Coursenotes.«06-Mathematics»}
+
+{include 0 «Leancourse».Coursenotes.«07-ProofEngineering»}

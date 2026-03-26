@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,11 +13,11 @@ set_option pp.rawOnError true
 tag := "rintro"
 %%%
 
-**Summary:** The `rintro` tactic is used to process several `intro` and `cases` tactics on one line.
+*Summary:* The `rintro` tactic is used to process several `intro` and `cases` tactics on one line.
 
-**Examples**
+*Examples*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -28,7 +29,7 @@ tag := "rintro"
   + `hP : P` {br}[] `hQ : Q` {br}[] `⊢ R`
 :::
 
-**Notes:**
+*Notes:*
 
 Here, more than two `∨` can also be split into cases in one step: With `A ∨ B ∨ C`, `rintro (A | B | C)` introduces three goals.
 

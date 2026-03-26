@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,23 +13,23 @@ set_option pp.rawOnError true
 tag := "exact"
 %%%
 
-**Summary:** If the goal can be closed with a single command, then it can be closed with the `exact` tactic. Like many other tactics, `exact` also works with terms that are definitionally equal.
+*Summary:* If the goal can be closed with a single command, then it can be closed with the `exact` tactic. Like many other tactics, `exact` also works with terms that are definitionally equal.
 
-**Examples:**
+*Examples:*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
 * + `h : P` {br}[] ⊢ P
   + `exact h`
-  + **no goals**
+  + *no goals*
 * + `hP: P` {br}[] `hQ: Q` `⊢ P ∧ Q`
   + `exact ⟨ hP, hQ ⟩`
-  + **no goals**
+  + *no goals*
 :::
 
-**Remarks:**
+*Remarks:*
 
 * The related tyctics `exact?` searches for terms which close the goal; see {ref "apply?"}[`apply?`].
 * If the proof consists of a single call of `exact`, it is easy to translate it to `term` mode; see {ref "term"}[easy proofs in term mode].

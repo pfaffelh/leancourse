@@ -5,6 +5,7 @@ import Mathlib
 
 open Lean.MessageSeverity
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -14,11 +15,11 @@ set_option pp.rawOnError true
 tag := "congr"
 %%%
 
-**Summary:** If you have to show an equality `f x = f y`, then `congr` uses the statement that the equality is particularly true if `x = y`.
+*Summary:* If you have to show an equality `f x = f y`, then `congr` uses the statement that the equality is particularly true if `x = y`.
 
-**Examples:**
+*Examples:*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -27,7 +28,7 @@ tag := "congr"
   + `⊢ x = y`
 :::
 
-**Remarks:**
+*Remarks:*
 
 * The related tactic `congr'` uses another parameter that determines how many recursive layers are eliminated in the goal; see the examples below.
 * Besides the `congr` tactic there are several related results which can be applied, e.g. `tsum_congr`.
@@ -49,14 +50,14 @@ example (f : ℝ → ℝ) (x y : ℝ) : f (x + y) = f (y + x) := by
   exact add_comm x y
 ```
 `tsum_congr` can be made usefule by using `apply` or a related tactics.
-```lean (name := output) (error := false)
+```lean (name := output) -error
 #print tsum_congr
 ```
 
 ```leanOutput output (severity := information)
 theorem tsum_congr.{u_1, u_2} : ∀ {α : Type u_1} {β : Type u_2} [inst : AddCommMonoid α] [inst_1 : TopologicalSpace α]
-  {f g : β → α}, (∀ (b : β), f b = g b) → ∑' (b : β), f b = ∑' (b : β), g b :=
-fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {f g} hfg => congr_arg tsum (funext hfg)
+  {L : SummationFilter β} {f g : β → α}, (∀ (b : β), f b = g b) → ∑'[L] (b : β), f b = ∑'[L] (b : β), g b :=
+fun {α} {β} [AddCommMonoid α] [TopologicalSpace α] {L} {f g} hfg => congr_arg (fun x => tsum x L) (funext hfg)
 ```
 
 :::

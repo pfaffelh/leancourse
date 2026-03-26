@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,7 +13,7 @@ set_option pp.rawOnError true
 tag := "rcases"
 %%%
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -21,11 +22,11 @@ tag := "rcases"
   + hP1 : P {br}[] hQ : Q {br}[] ⊢ P {br}[] hP2 : P{br}[] hR : R {br}[] ⊢ P
 :::
 
-**Summary:** `rcases` is a more flexible version of `cases`. Here, it is allowed to use `⟨ hP, hQ ⟩` (or `(hP | hQ)`) to to split the hypotheses `hP` and `hQ` into their cases.  As can be seen in the example above, it is also possible to nest `⟨.,.⟩` and `(.|.)`.
+*Summary:* `rcases` is a more flexible version of `cases`. Here, it is allowed to use `⟨ hP, hQ ⟩` (or `(hP | hQ)`) to to split the hypotheses `hP` and `hQ` into their cases.  As can be seen in the example above, it is also possible to nest `⟨.,.⟩` and `(.|.)`.
 
-**Examples:**
+*Examples:*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -40,7 +41,7 @@ tag := "rcases"
   + `n m : ℕ` {br}[] `h1 : 0 ≤ m` {br}[] `h2 : m < n`  {br}[] `⊢ 1 < n`
 :::
 
-**Remarks:**
+*Remarks:*
 
 The last example shows how to use `rcases` to directly resolve a ∃ quantifier in a hypothesis that has more than one constraint (here: 0 ≤ m) and m < n can be resolved directly.
 

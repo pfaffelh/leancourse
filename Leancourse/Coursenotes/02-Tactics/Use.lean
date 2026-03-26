@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -13,7 +14,7 @@ set_option pp.rawOnError true
 tag := "use"
 %%%
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -23,11 +24,11 @@ tag := "use"
 :::
 
 
-**Summary:** The `use` tactic is used for goals that begin with `∃`. Here, parameters are used to indicate which object quantified by `∃` is to be reused in the proof.
+*Summary:* The `use` tactic is used for goals that begin with `∃`. Here, parameters are used to indicate which object quantified by `∃` is to be reused in the proof.
 
-**Examples**
+*Examples*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state

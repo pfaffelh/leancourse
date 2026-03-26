@@ -3,6 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -12,24 +13,24 @@ set_option pp.rawOnError true
 tag := "assumption"
 %%%
 
-**Summary:**
+*Summary:*
 If a hypothesis is identical to the goal, `assumption` closes the goal.
 
-**Examples**
+*Examples*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
 * + `h : P` {br}[] `⊢ P`
   + `assumption`
-  + **no goals**
+  + *no goals*
 * + `h : ¬P` {br}[] `⊢ P → False`
   + `assumption`
-  + **no goals**
+  + *no goals*
 :::
 
-**Remarks**
+*Remarks*
 
 * As in other tactics, `assumption` works up to definitional equality.
 * Here is a trick: If you use `<;>` after a tactic, the forthcoming tactic is applied to apll goals.

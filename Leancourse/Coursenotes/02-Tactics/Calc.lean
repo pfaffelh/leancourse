@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -13,9 +14,9 @@ set_option pp.rawOnError true
 tag := "calc"
 %%%
 
-**Summary:** As the word suggests, `calc` is about concrete calculations. This is not a tactic, but a `lean` mode. This means that you can enter this mode (with the word `calc`) and enter calculation steps and proofs that each individual calculation step is correct.
+*Summary:* As the word suggests, `calc` is about concrete calculations. This is not a tactic, but a `lean` mode. This means that you can enter this mode (with the word `calc`) and enter calculation steps and proofs that each individual calculation step is correct.
 
-**Examples**
+*Examples*
 
 Here is a proof of the first binomial formula that only comes about by rewriting of calculating properties from the `mathlib`.
 
@@ -50,7 +51,7 @@ example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 := by
 However, this is much less readable.
 
 
-**Remarks**
+*Remarks*
 
 * The exact notation is important in `calc` mode.
 * The `calc` mode not only works for equalities, but also for inequalities, subset-relations etc.

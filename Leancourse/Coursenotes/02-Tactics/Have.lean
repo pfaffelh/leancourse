@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -13,11 +14,11 @@ set_option pp.rawOnError true
 tag := "have"
 %%%
 
-**Summary:** By using `have` we introduce a new goal, which we have to prove first. Afterwards, it is available as a hypothesis in all further goals. This is identical to first proving a lemma `h` with the statement after `have h : ` and then reusing it at the appropriate place in the proof (for example with `apply` or `rw`).
+*Summary:* By using `have` we introduce a new goal, which we have to prove first. Afterwards, it is available as a hypothesis in all further goals. This is identical to first proving a lemma `h` with the statement after `have h : ` and then reusing it at the appropriate place in the proof (for example with `apply` or `rw`).
 
-**Examples:**
+*Examples:*
 
-:::table (align := left) (header := true)
+:::table (align := left) +header
 * + Proof state
   + Tactic
   + New proof state
@@ -29,7 +30,7 @@ tag := "have"
   + m : ℕ {br}[] hm: f 27 m {br}[] ⊢ P
 :::
 
-**Remarks:**
+*Remarks:*
 
 * Assume you want to use `have`. You could as well formulate a separate lemma and use it afterwards. It is not always clear which is better.
 * If the proof of the statement is short and is only used once in your proof, you might want to consider replacing its proof in the place where it is needed.

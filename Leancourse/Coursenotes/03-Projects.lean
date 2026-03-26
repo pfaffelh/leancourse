@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 
 set_option maxRecDepth 10000
 
@@ -15,7 +16,7 @@ htmlSplit := .never
 tag := "projects"
 %%%
 
-**Summary:** In the second phase of this course, students can assign themselves projects. For this, they were asked to look for simple exercises, e.g. from their first year courses. Here comes a list of exercises they used.
+*Summary:* In the second phase of this course, students can assign themselves projects. For this, they were asked to look for simple exercises, e.g. from their first year courses. Here comes a list of exercises they used.
 
 # Induction (Luis Jaschke und Felicitas Kissel)
 
@@ -31,10 +32,8 @@ example (n : ℕ) :
   induction n with
   |  zero => simp
   | succ n ih =>
-      rw [sum_range_succ]
-      rw [ih]
-      ring_nf
-      field_simp
+      rw [sum_range_succ, ih]
+      push_cast
       ring
 ```
 
@@ -45,9 +44,8 @@ example (n : ℕ) :
   induction n with
   | zero => simp
   | succ n ih =>
-    rw [Finset.sum_range_succ,ih]
-    ring_nf
-    field_simp
+    rw [Finset.sum_range_succ, ih]
+    push_cast
     ring
 ```
 
@@ -85,7 +83,7 @@ example (n : ℕ) :
   induction n with
    | zero => simp
    | succ n kh =>
-    rw [range_succ, prod_insert not_mem_range_self]
+    rw [range_succ, prod_insert notMem_range_self]
     have h' := kh (by
       apply Finset.prod_congr rfl
       intro k hk
@@ -93,6 +91,7 @@ example (n : ℕ) :
       ring)
     rw [h']
     field_simp [Nat.cast_add]
+    push_cast
     ring
 ```
 
@@ -309,31 +308,7 @@ There is only one prime triplet, i.e. only one `n : ℕ` prime, such that `n + 2
 
 ```lean
 lemma div3 (n : ℕ) : (3 ∣ n) ∨ (3 ∣ (n+1)) ∨ (3 ∣ (n+2)) := by
-  induction n with
-  | zero =>
-    left
-    exact Nat.dvd_zero 3
-  | succ n hn =>
-    ring_nf
-    by_cases h0 : 3 ∣ n
-    · right
-      right
-      exact Nat.dvd_add_self_left.mpr h0
-    · by_cases h1 : 3 ∣ n + 1
-      · left
-        rw[Nat.add_comm n 1] at h1
-        exact h1
-      · by_cases h2 : 3 ∣ n + 2
-        · right
-          left
-          rw[Nat.add_comm n 2] at h2
-          exact h2
-        · exfalso
-          cases' hn with l0 lr
-          · exact h0 l0
-          · cases' lr with l1 l2
-            · exact h1 l1
-            · exact h2 l2
+  omega
 
 
 lemma lem1 (n : ℕ) : (n < 3) → ¬ (Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 4)) := by
@@ -367,36 +342,14 @@ lemma lem2 (n : ℕ) : (3 < n) → ¬ (Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat
   by_contra h
   obtain ⟨ pn, pn2, pn4 ⟩ := h
   have super := div3 n
-
-  cases' super with k0 kr
-  · obtain ⟨ x, g ⟩ := k0
-    obtain ⟨ u1, u2 ⟩ := pn
-    simp at u1 u2
-    rw[g] at u2
-    have u3 := u2 3 x
-    simp at u3
-    exfalso
-    linarith
-
-  · cases' kr with k1 k2
-    · obtain ⟨ x, g ⟩ := k1
-      obtain ⟨ u1, u2 ⟩ := pn4
-      simp at u1 u2
-      have gp3: n + 4 = 3 * (x + 1) := Eq.symm (Mathlib.Tactic.Ring.mul_add (id (Eq.symm g)) rfl rfl)
-      rw[gp3] at u2
-      have u3 := u2 3 (x+1)
-      simp at u3
-      exfalso
-      linarith
-
-    · obtain ⟨ x,g ⟩ := k2
-      obtain ⟨ u1,u2 ⟩ := pn2
-      simp at u1 u2
-      rw[g] at u2
-      have u3 := u2 3 x
-      simp at u3
-      exfalso
-      linarith
+  rcases super with k0 | k1 | k2
+  · have := pn.eq_one_or_self_of_dvd 3 k0
+    omega
+  · have h3 : 3 ∣ n + 4 := by omega
+    have := pn4.eq_one_or_self_of_dvd 3 h3
+    omega
+  · have := pn2.eq_one_or_self_of_dvd 3 k2
+    omega
 
 
 theorem pt_forward (n : ℕ) : Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 4) → n = 3 := by

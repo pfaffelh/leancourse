@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -163,7 +164,7 @@ Inside `do`-notation, we can sequence IO actions. The key insight is that `greet
 A complete program in Lean is a value of type `IO Unit`:
 
 ```lean
-def main : IO Unit := do
+def myMain : IO Unit := do
   IO.println "What is 2 + 2?"
   IO.println s!"It is {2 + 2}."
 ```

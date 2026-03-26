@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -160,9 +161,8 @@ and *antitone* if `a ≤ b → f b ≤ f a`. Mathlib provides `Monotone f` and
 `Antitone f`.
 
 ```lean
-example : Monotone (fun n : ℕ ↦ n + 1) := by
-  intro a b hab
-  omega
+example : Monotone (fun n : ℕ ↦ n + 1) :=
+  fun _ _ h ↦ Nat.add_le_add_right h 1
 
 -- A constant function is both monotone and antitone
 example {α β : Type*} [Preorder α] [Preorder β] (c : β) :

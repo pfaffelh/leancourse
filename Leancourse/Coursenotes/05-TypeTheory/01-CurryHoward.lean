@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -130,7 +131,7 @@ Negation `¬P` is defined as `P → False`. That is, a proof of `¬P` is a funct
 
 ```lean
 -- Negation is just a function to False
-example (P : Prop) : ¬P = (P → False) := rfl
+example (P : Prop) : (¬P) = (P → False) := rfl
 
 -- Tactic proof
 example (P : Prop) (hP : P) (hnP : ¬P) : False := by
@@ -175,7 +176,7 @@ The existential quantifier `∃ (x : α), P x` corresponds to the **dependent pa
 ```lean
 -- Tactic proof
 example : ∃ (n : ℕ), n > 0 := by
-  use 1
+  use 1; norm_num
 
 -- Term proof: construct the dependent pair
 example : ∃ (n : ℕ), n > 0 :=

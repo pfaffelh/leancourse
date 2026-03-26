@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -80,7 +81,7 @@ or equivalently `(x : α) × β x`. A term of this type is a pair `⟨a, b⟩` w
 
 ```lean
 -- A dependent pair: a natural number together with a proof it is even
-def exampleSigma : Σ (n : ℕ), n % 2 = 0 :=
+def exampleSigma : { n : ℕ // n % 2 = 0 } :=
   ⟨4, by norm_num⟩
 
 -- Accessing the components
@@ -104,7 +105,7 @@ This reflects the principle of **proof irrelevance**: in `Prop`, the specific pr
 
 ```lean
 -- Sigma: we can extract the witness
-def sigmaExample : Σ (n : ℕ), n > 5 := ⟨7, by norm_num⟩
+def sigmaExample : { n : ℕ // n > 5 } := ⟨7, by norm_num⟩
 #eval sigmaExample.1  -- 7
 
 -- Exists: we CANNOT extract the witness for computation
@@ -167,8 +168,8 @@ def BoolFamily : Bool → Type
 
 -- Dependent function using the type family
 def boolFamilyExample : (b : Bool) → BoolFamily b
-  | true  => 42
-  | false => "hello"
+  | true  => (42 : ℕ)
+  | false => ("hello" : String)
 ```
 
 In mathematical formalization, type families appear everywhere. For instance, the fiber of a function `f : α → β` over a point `b : β` is the subtype `{a : α // f a = b}`, which is a type family indexed by `β`.

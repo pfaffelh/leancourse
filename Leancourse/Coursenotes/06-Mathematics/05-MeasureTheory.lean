@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -98,7 +99,7 @@ measurable sets to `[0, ∞]`. In Mathlib, measures take values in `ℝ≥0∞`
 
 -- A measure assigns a value in ℝ≥0∞ to each measurable set
 example {α : Type*} [MeasurableSpace α] (μ : MeasureTheory.Measure α)
-    (s : Set α) : ℝ≥0∞ :=
+    (s : Set α) : ENNReal :=
   μ s
 
 -- The measure of the empty set is 0
@@ -221,13 +222,13 @@ complement has measure zero.
 
 ```lean
 open MeasureTheory in
-#check @Measure.ae
--- Measure.ae μ : Filter α
+#check @ae
+-- ae μ : Filter α
 
 -- "f = g almost everywhere" means {x | f x ≠ g x} has measure zero
 open MeasureTheory in
 example {α : Type*} [MeasurableSpace α] (μ : Measure α) (f g : α → ℝ) :
-    f =ᵐ[μ] g ↔ ∀ᶠ x in μ.ae, f x = g x :=
+    f =ᵐ[μ] g ↔ ∀ᶠ x in ae μ, f x = g x :=
   Iff.rfl
 ```
 
@@ -243,7 +244,7 @@ For probability theory, Mathlib provides conditional expectation with respect
 to a sub-sigma-algebra. This is an advanced topic, but the key definition is:
 
 ```lean
-#check @MeasureTheory.condexp
+#check @MeasureTheory.condExp
 -- condexp (m : MeasurableSpace α) (μ : Measure α) (f : α → E) : α → E
 ```
 

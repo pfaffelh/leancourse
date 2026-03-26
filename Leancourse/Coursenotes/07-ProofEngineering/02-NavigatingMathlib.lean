@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -56,8 +57,8 @@ example : (0 : ℝ) < 1 := by exact?
 **`apply?`** searches for a lemma whose conclusion matches the goal, possibly leaving subgoals.
 
 ```lean
--- Suppose your goal is `Continuous (fun x : ℝ ↦ x^2 + 1)`. Try:
--- example : Continuous (fun x : ℝ ↦ x^2 + 1) := by apply?
+example : Continuous (fun x : ℝ ↦ x ^ 2 + 1) := by
+  fun_prop
 ```
 
 **`rw?`** searches for a lemma that can rewrite part of the goal.
@@ -109,7 +110,7 @@ Both tools link directly to the Mathlib documentation and source code.
 tag := "mathlib-docs"
 %%%
 
-The official Mathlib documentation is available at [leanprover-community.github.io/mathlib4_docs/](https://leanprover-community.github.io/mathlib4_docs/). It provides:
+The official Mathlib documentation is available at [the Mathlib docs site](https://leanprover-community.github.io/mathlib4_docs/). It provides:
 
 - A searchable index of all declarations
 - Rendered source code with clickable cross-references

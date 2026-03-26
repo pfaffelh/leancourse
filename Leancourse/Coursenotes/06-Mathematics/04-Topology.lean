@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -261,7 +262,7 @@ example : Continuous (Prod.snd : ℝ × ℝ → ℝ) :=
   continuous_snd
 
 -- A function into a product is continuous iff both components are
-#check @continuous_prod_mk
+#check @Continuous.prodMk
 ```
 
 # Summary of key Mathlib API for topology

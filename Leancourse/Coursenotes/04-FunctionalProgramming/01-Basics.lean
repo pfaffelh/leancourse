@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -80,12 +81,12 @@ This says: `MyNat` has exactly two constructors. Every value of type `MyNat` is 
 Here is another example -- a type representing a binary tree of natural numbers:
 
 ```lean
-inductive Tree where
-  | leaf : Tree
-  | node : Tree → ℕ → Tree → Tree
+inductive MyTree where
+  | leaf : MyTree
+  | node : MyTree → ℕ → MyTree → MyTree
 ```
 
-A `Tree` is either a `leaf` (an empty tree) or a `node` consisting of a left subtree, a value, and a right subtree.
+A `MyTree` is either a `leaf` (an empty tree) or a `node` consisting of a left subtree, a value, and a right subtree.
 
 We can also define our own version of lists:
 
@@ -159,11 +160,11 @@ def myLength {α : Type} : List α → ℕ
 And here is a function that sums all the values in a `Tree`:
 
 ```lean
-def Tree.sum : Tree → ℕ
-  | Tree.leaf => 0
-  | Tree.node l v r => Tree.sum l + v + Tree.sum r
+def MyTree.sum : MyTree → ℕ
+  | MyTree.leaf => 0
+  | MyTree.node l v r => MyTree.sum l + v + MyTree.sum r
 
-#eval Tree.sum (Tree.node (Tree.node Tree.leaf 3 Tree.leaf) 5 Tree.leaf)
+#eval MyTree.sum (MyTree.node (MyTree.node MyTree.leaf 3 MyTree.leaf) 5 MyTree.leaf)
 -- outputs 8
 ```
 

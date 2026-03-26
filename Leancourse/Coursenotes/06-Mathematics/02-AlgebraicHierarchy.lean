@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -112,7 +113,8 @@ Mathlib also provides ordered variants:
 - `LinearOrderedField α` : a linearly ordered field (like `ℝ` or `ℚ`).
 
 ```lean
-#check (inferInstance : LinearOrderedField ℝ)
+#check (inferInstance : LinearOrder ℝ)
+#check (inferInstance : IsStrictOrderedRing ℝ)
 ```
 
 # Morphisms
@@ -130,7 +132,7 @@ proof of preservation).
 
 ```lean
 -- The inclusion ℤ → ℚ is a ring homomorphism
-#check (Int.castRingHom : ℤ →+* ℚ)
+#check (Int.castRingHom ℚ : ℤ →+* ℚ)
 
 -- A ring homomorphism preserves addition
 example (f : ℤ →+* ℚ) (a b : ℤ) : f (a + b) = f a + f b :=
@@ -174,7 +176,7 @@ example {G : Type*} [Group G] (H : Subgroup G) (a b : G)
   H.mul_mem ha hb
 
 -- Subgroups form a complete lattice
-#check (inferInstance : CompleteLattice (Subgroup ℤ))
+#check (inferInstance : CompleteLattice (AddSubgroup ℤ))
 ```
 
 # Quotient structures
@@ -237,7 +239,7 @@ are helpful:
 ```lean
 -- Check what instances ℝ has
 #check (inferInstance : Field ℝ)
-#check (inferInstance : LinearOrderedField ℝ)
+#check (inferInstance : LinearOrder ℝ)
 #check (inferInstance : AddCommGroup ℝ)
 
 -- A general proof that works for any commutative ring

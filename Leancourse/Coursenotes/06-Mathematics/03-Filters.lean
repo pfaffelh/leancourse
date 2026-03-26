@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -139,6 +140,7 @@ example (a : ℕ → ℝ) (l : ℝ) :
     Filter.Tendsto a Filter.atTop (nhds l) ↔
     ∀ ε > 0, ∃ N, ∀ n ≥ N, |a n - l| < ε := by
   rw [Metric.tendsto_atTop]
+  simp [Real.dist_eq]
 
 -- Composition of limits (if a → l and f is continuous at l, then f ∘ a → f l)
 #check @Filter.Tendsto.comp
@@ -201,7 +203,7 @@ compactification).
 -- An ultrafilter on α is a filter F such that for all s, s ∈ F ∨ sᶜ ∈ F
 
 -- Every point gives a principal ultrafilter
-#check @Ultrafilter.pure
+#check (pure : ℕ → Ultrafilter ℕ)
 ```
 
 # Why filters are better for formalization

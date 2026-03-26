@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -84,12 +85,12 @@ tag := "default-values"
 Fields can have default values:
 
 ```lean
-structure Config where
+structure MyConfig where
   width : ℕ := 80
   height : ℕ := 24
   title : String := "Untitled"
 
-def myConfig : Config := { title := "My Window" }
+def myConfig : MyConfig := { title := "My Window" }
 -- myConfig.width = 80, myConfig.height = 24
 ```
 

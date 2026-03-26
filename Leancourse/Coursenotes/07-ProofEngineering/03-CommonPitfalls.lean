@@ -4,6 +4,7 @@ import Leancourse.Misc.Defs
 import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
@@ -83,7 +84,7 @@ example (n : ℕ) : n + 0 = n := by rfl -- by definition of Nat.add
 ```
 
 **When `rfl` fails:**
-```lean
+```
 -- This does NOT work:
 -- example (n : ℕ) : 0 + n = n := by rfl
 -- Because Nat.add is defined by recursion on the first argument,
@@ -132,7 +133,7 @@ A _simp loop_ occurs when two simp lemmas rewrite back and forth indefinitely. F
 
 **How to diagnose:** Use `set_option trace.Meta.Tactic.simp true in` before your tactic call to see which lemmas simp is applying. If you see the same lemma applied repeatedly, you have a loop.
 
-```lean
+```
 -- Diagnose simp behavior:
 -- set_option trace.Meta.Tactic.simp true in
 -- example : ... := by simp
@@ -177,7 +178,7 @@ Lean has a computational budget measured in _heartbeats_. When a tactic or elabo
 - Deeply nested term elaboration
 
 **How to increase the budget (for debugging only):**
-```lean
+```
 set_option maxHeartbeats 400000 in
 example : ... := by sorry
 ```
@@ -185,7 +186,7 @@ example : ... := by sorry
 The default is 200000. Increasing it is a band-aid, not a solution. Find the root cause.
 
 **How to diagnose:**
-```lean
+```
 -- See what simp is doing:
 set_option trace.Meta.Tactic.simp true in
 
@@ -206,7 +207,7 @@ Here is a collection of debugging techniques that every Lean user should know.
 **1. Use the Infoview.** Always keep the Lean Infoview panel open in VS Code. Place your cursor after each tactic to see the current goal state. This is the single most important debugging tool.
 
 **2. Type annotations.** When Lean gives a confusing error, add explicit type annotations to help it (and yourself) understand what is going on:
-```lean
+```
 -- Instead of:
 -- let x := f a
 -- Write:
@@ -237,7 +238,7 @@ set_option trace.Elab.definition true         -- trace definition elaboration
 ```lean
 example (a b : ℝ) : a + b + a = a + a + b := by
   conv_lhs => rw [add_comm a b]
-  rw [add_assoc]
+  ring
 ```
 
 **9. The `?` suffix.** Many tactics have a `?` variant that suggests a more explicit call:

@@ -8,6 +8,7 @@ open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
+set_option verso.docstring.allowMissing true
 
 #doc (Manual) "Orders, Lattices, and Complete Lattices" =>
 %%%
@@ -20,6 +21,37 @@ order theory. Ordered structures pervade all of mathematics: partial orders
 appear in set inclusion, divisibility of natural numbers, and subgroup
 relations; lattices arise whenever we can form meets and joins; and complete
 lattices are essential for fixed-point theorems and topology.
+
+# Notation and naming conventions
+%%%
+tag := "orders-notation"
+%%%
+
+Several symbols below are unicode characters typed in VS Code via a
+backslash escape (e.g. `\le` produces `≤`).  Hover over a symbol in the
+editor to see how to type it.
+
+| Symbol  | Lean name             | Reads as                        | Typed as                |
+|---------|-----------------------|---------------------------------|-------------------------|
+| `≤`     | `LE.le a b`           | "a less than or equal to b"     | `\le`                   |
+| `<`     | `LT.lt a b`           | "a strictly less than b"        | `\lt`                   |
+| `⊆`     | `Set.Subset s t`      | "s is a subset of t"            | `\sub`                  |
+| `⊔`     | `Sup.sup a b`         | "a join b" / "a sup b"          | `\sup`                  |
+| `⊓`     | `Inf.inf a b`         | "a meet b" / "a inf b"          | `\inf`                  |
+| `⊤`     | `Top.top`             | "top"                           | `\top`                  |
+| `⊥`     | `Bot.bot`             | "bottom"                        | `\bot`                  |
+| `sSup`  | `sSup s`              | "supremum of the set s"         | (ASCII)                 |
+| `sInf`  | `sInf s`              | "infimum of the set s"          | (ASCII)                 |
+| `iSup`  | `iSup f`              | "indexed supremum"              | (ASCII)                 |
+| `iInf`  | `iInf f`              | "indexed infimum"               | (ASCII)                 |
+| `→o`    | `OrderHom α β`        | "order homomorphism α to β"     | `\to o` or `\too`       |
+
+Naming hints:
+
+- The prefix `s` in `sSup`, `sInf` stands for *set*: it takes a `Set α`.
+- The prefix `i` in `iSup`, `iInf` stands for *indexed*: it takes a function.
+- The bare operators `⊔` and `⊓` are *binary*; `sSup`, `sInf`, `iSup`, `iInf` are their *set/indexed* counterparts.
+- Lemma naming follows the convention `le_sup_left`, `inf_le_right`, `le_antisymm`, etc.: the conclusion is named first, then the hypotheses in order.
 
 # Partial orders
 %%%
@@ -172,26 +204,78 @@ example {α β : Type*} [Preorder α] [Preorder β] (c : β) :
 
 There is also `StrictMono f` for strictly increasing functions.
 
-# Fixed point theorems
+# The Knaster-Tarski fixed point theorem
 %%%
 tag := "fixed-points"
 %%%
 
-The *Knaster-Tarski theorem* states that every monotone function on a complete
-lattice has a least fixed point and a greatest fixed point. In Mathlib this is
-available via `OrderHom.lfp` and `OrderHom.gfp`.
+The *Knaster-Tarski theorem* is one of the cornerstones of fixed point
+theory.  It generalizes Tarski's earlier fixed point theorem for the
+real line and has applications in logic, denotational semantics, and
+set theory (e.g. the Schröder-Bernstein theorem).
+
+*Theorem* (Knaster-Tarski).  Let `α` be a complete lattice and let
+`f : α → α` be a monotone function. Then:
+
+1. `f` has a least fixed point, given by `sInf {x | f x ≤ x}`.
+2. `f` has a greatest fixed point, given by `sSup {x | x ≤ f x}`.
+3. Moreover, the set of fixed points of `f` is itself a complete
+   lattice under the induced order.
+
+The proof of the first part is short and instructive.  Let
+`S = {x | f x ≤ x}` (the *prefixed points*) and set `a = sInf S`.
+Since `f` is monotone and `a ≤ x` for every `x ∈ S`, we get
+`f a ≤ f x ≤ x` for all `x ∈ S`, so `f a` is a lower bound of `S`,
+hence `f a ≤ a`.  Thus `a ∈ S`.  Applying `f` monotonically gives
+`f (f a) ≤ f a`, so `f a ∈ S`, hence `a ≤ f a`.  Antisymmetry yields
+`f a = a`, and any other fixed point `y = f y` belongs to `S`, so
+`a ≤ y`.
+
+In Mathlib this theorem is available through the `OrderHom` API. The
+least fixed point is `OrderHom.lfp` and the greatest is `OrderHom.gfp`:
+
+The least fixed point and the key lemmas:
+
+{docstring OrderHom.lfp}
+
+{docstring OrderHom.map_lfp}
+
+{docstring OrderHom.lfp_le}
+
+Dually, the greatest fixed point:
+
+{docstring OrderHom.gfp}
+
+{docstring OrderHom.map_gfp}
+
+{docstring OrderHom.le_gfp}
+
+Note that `α →o α` is the type of monotone self-maps of `α` (the arrow
+`→o` denotes an `OrderHom`).  A useful small example:
 
 ```lean
--- The least fixed point of a monotone map on a complete lattice
-#check @OrderHom.lfp
-
--- Key property: the lfp is a fixed point
-#check @OrderHom.map_lfp
+-- The lfp of the constant ∅ map on Set X is ∅:
+example {X : Type*} :
+    OrderHom.lfp
+      ⟨(fun _ : Set X ↦ (∅ : Set X)),
+        fun _ _ _ ↦ le_refl _⟩
+      = ∅ := by
+  apply le_antisymm
+  · exact OrderHom.lfp_le _ (le_refl _)
+  · exact bot_le
 ```
 
-This theorem is fundamental in computer science (for defining recursive
-functions and semantics) and in mathematics (for proving the
-Cantor-Bernstein theorem).
+*Applications.*
+
+- *Recursive definitions.*  The semantics of recursion in programming
+  languages is given by least fixed points of monotone functionals on
+  a domain of partial functions.
+- *The Schröder-Bernstein theorem.*  Given injections `f : α → β` and
+  `g : β → α`, one constructs a bijection by taking the least fixed
+  point of a certain monotone operator on `Set α`.
+- *Inductively defined sets.*  Many sets in mathematics (the natural
+  numbers, syntactic terms, well-founded relations) are defined as
+  least fixed points of monotone operators.
 
 # Summary of key API
 %%%

@@ -1,13 +1,13 @@
 import Mathlib
 
 /-
-# Exercises: Topology and Measure Theory
+# Exercises: Topology
 
-These exercises cover continuity, topological properties, measurable functions,
-and basic measure theory. Replace each `sorry` with a proof.
+These exercises cover continuity, open/closed sets, metric spaces,
+and compactness. Replace each `sorry` with a proof.
 -/
 
-open Filter MeasureTheory
+open Filter
 
 /- ## Part 1: Continuous Functions -/
 
@@ -64,85 +64,62 @@ example : IsClosed (∅ : Set ℝ) := by
 example (x : ℝ) : IsClosed ({x} : Set ℝ) := by
   sorry
 
+-- Exercise 13: The union of two open sets is open
+example (s t : Set ℝ) (hs : IsOpen s) (ht : IsOpen t) : IsOpen (s ∪ t) := by
+  sorry
+
+-- Exercise 14: The intersection of two open sets is open
+example (s t : Set ℝ) (hs : IsOpen s) (ht : IsOpen t) : IsOpen (s ∩ t) := by
+  sorry
+
 /- ## Part 3: Metric Spaces -/
 
--- Exercise 13: dist x x = 0
+-- Exercise 15: dist x x = 0
 example (x : ℝ) : dist x x = 0 := by
   sorry
 
--- Exercise 14: dist is symmetric
+-- Exercise 16: dist is symmetric
 example (x y : ℝ) : dist x y = dist y x := by
   sorry
 
--- Exercise 15: Triangle inequality
+-- Exercise 17: Triangle inequality
 example (x y z : ℝ) : dist x z ≤ dist x y + dist y z := by
   sorry
 
--- Exercise 16: dist is nonneg
+-- Exercise 18: dist is nonneg
 example (x y : ℝ) : 0 ≤ dist x y := by
+  sorry
+
+-- Exercise 19: In a metric space, open balls are open.
+example {X : Type*} [MetricSpace X] (x : X) (r : ℝ) :
+    IsOpen (Metric.ball x r) := by
   sorry
 
 /- ## Part 4: Compact Sets -/
 
--- Exercise 17: A closed interval is compact
+-- Exercise 20: A closed interval is compact
 example (a b : ℝ) : IsCompact (Set.Icc a b) := by
   sorry
 
--- Exercise 18: The image of a compact set under a continuous function is compact
+-- Exercise 21: The image of a compact set under a continuous function is compact
 example (f : ℝ → ℝ) (hf : Continuous f) (K : Set ℝ) (hK : IsCompact K) :
     IsCompact (f '' K) := by
   sorry
 
-/- ## Part 5: Measurable Functions -/
-
--- Exercise 19: The identity is measurable
-example : Measurable (id : ℝ → ℝ) := by
+-- Exercise 22: A continuous function on a compact set attains its maximum.
+-- Hint: IsCompact.exists_isMaxOn, or bounded/closed arguments.
+example (f : ℝ → ℝ) (hf : Continuous f) (a b : ℝ) (hab : a ≤ b) :
+    ∃ x ∈ Set.Icc a b, ∀ y ∈ Set.Icc a b, f y ≤ f x := by
   sorry
 
--- Exercise 20: A constant function is measurable
-example (c : ℝ) : Measurable (fun _ : ℝ ↦ c) := by
+/- ## Part 5: Filters and Topology -/
+
+-- Exercise 23: f is continuous iff it is continuous at every point.
+example {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (f : X → Y) :
+    Continuous f ↔ ∀ x, ContinuousAt f x := by
   sorry
 
--- Exercise 21: Composition of measurable functions is measurable
-example {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β]
-    [MeasurableSpace γ] (f : α → β) (g : β → γ)
-    (hf : Measurable f) (hg : Measurable g) : Measurable (g ∘ f) := by
-  sorry
-
--- Exercise 22: A continuous function (ℝ → ℝ) is measurable
-example (f : ℝ → ℝ) (hf : Continuous f) : Measurable f := by
-  sorry
-
-/- ## Part 6: Measures -/
-
--- Exercise 23: The measure of the empty set is 0
-example (μ : Measure ℝ) : μ ∅ = 0 := by
-  sorry
-
--- Exercise 24: Monotonicity of measures
-example (μ : Measure ℝ) (s t : Set ℝ) (hst : s ⊆ t) : μ s ≤ μ t := by
-  sorry
-
--- Exercise 25: The Lebesgue measure of a point is 0
--- Hint: use Real.volume_singleton
-example (x : ℝ) : volume ({x} : Set ℝ) = 0 := by
-  sorry
-
-/- ## Part 7: Probability Measures -/
-
--- Exercise 26: If μ is a probability measure, then μ(Set.univ) = 1
-example {α : Type*} [MeasurableSpace α] (μ : Measure α)
-    [IsProbabilityMeasure μ] : μ Set.univ = 1 := by
-  sorry
-
--- Exercise 27: If μ is a probability measure and s is measurable, then μ(s) ≤ 1
-example {α : Type*} [MeasurableSpace α] (μ : Measure α)
-    [IsProbabilityMeasure μ] (s : Set α) : μ s ≤ 1 := by
-  sorry
-
--- Exercise 28: The complement of a set of full measure has measure 0
--- (under a finite measure)
-example {α : Type*} [MeasurableSpace α] (μ : Measure α) [IsFiniteMeasure μ]
-    (s : Set α) (hs : MeasurableSet s) (hfull : μ s = μ Set.univ) :
-    μ sᶜ = 0 := by
+-- Exercise 24: f is continuous at x iff Tendsto f (nhds x) (nhds (f x)).
+example {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (f : X → Y)
+    (x : X) : ContinuousAt f x ↔ Tendsto f (nhds x) (nhds (f x)) := by
   sorry

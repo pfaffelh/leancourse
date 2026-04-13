@@ -8,6 +8,7 @@ open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
+set_option verso.docstring.allowMissing true
 
 #doc (Manual) "Topology via Filters" =>
 %%%
@@ -21,6 +22,43 @@ definition uses `Filter.Tendsto` applied to neighborhood filters. This section
 explains how topological spaces are set up in Mathlib, how continuity works,
 and how metric spaces fit in.
 
+# Notation and naming conventions
+%%%
+tag := "topology-notation"
+%%%
+
+| Symbol            | Lean name                 | Reads as                              | Typed as         |
+|-------------------|---------------------------|---------------------------------------|------------------|
+| `TopologicalSpace α` | `TopologicalSpace α`   | "topology on α"                       | (ASCII)          |
+| `IsOpen s`        | `IsOpen s`                | "s is open"                           | (ASCII)          |
+| `IsClosed s`      | `IsClosed s`              | "s is closed"                         | (ASCII)          |
+| `IsClopen s`      | `IsClopen s`              | "s is clopen (open and closed)"       | (ASCII)          |
+| `nhds x` or `𝓝 x` | `nhds x`                  | "neighborhood filter at x"            | `\nhds`          |
+| `Continuous f`    | `Continuous f`            | "f is continuous"                     | (ASCII)          |
+| `ContinuousAt f x`| `ContinuousAt f x`        | "f is continuous at x"                | (ASCII)          |
+| `IsCompact s`     | `IsCompact s`             | "s is compact"                        | (ASCII)          |
+| `IsConnected s`   | `IsConnected s`           | "s is connected"                      | (ASCII)          |
+| `IsPreconnected s`| `IsPreconnected s`        | "s is preconnected"                   | (ASCII)          |
+| `dist x y`        | `dist x y`                | "distance between x and y"            | (ASCII)          |
+| `Metric.ball x r` | `Metric.ball x r`         | "open ball of radius r at x"          | (ASCII)          |
+| `Metric.closedBall x r` | `Metric.closedBall x r` | "closed ball"                    | (ASCII)          |
+| `f ⁻¹' s`         | `Set.preimage f s`        | "preimage of s under f"               | `\inv'`          |
+| `f '' s`          | `Set.image f s`           | "image of s under f"                  | (ASCII, two `'`) |
+| `α × β`           | `Prod α β`                | "product of α and β"                  | `\times`         |
+| `sᶜ`              | `compl s`                 | "complement of s"                     | `\compl`         |
+
+Naming hints.
+
+- Predicates over sets are mostly prefixed with `Is`: `IsOpen`,
+  `IsClosed`, `IsCompact`, `IsConnected`.
+- The filter-flavored counterpart of a property is usually `Tendsto` +
+  some filter: `ContinuousAt f x ↔ Tendsto f (𝓝 x) (𝓝 (f x))`.
+- `'` and `''` are two different ASCII sequences: `''` is the image
+  operator (two apostrophes), while `⁻¹'` is the preimage operator
+  (unicode, `\inv'`).
+- Product-related continuity lemmas live in the `Continuous.prod`
+  namespace: `Continuous.prodMk`, `Continuous.fst`, `Continuous.snd`.
+
 # TopologicalSpace
 %%%
 tag := "topological-space"
@@ -31,14 +69,14 @@ specifies which sets are open. However, the actual definition in Mathlib
 uses the *neighborhood filter* approach: a `TopologicalSpace` is given by
 specifying, for each point `x`, its neighborhood filter `nhds x`.
 
-Equivalently, one can define it via `IsOpen`:
+Equivalently, one can define it via `IsOpen`.  Here is the structure
+as it appears in Mathlib:
+
+{docstring TopologicalSpace}
+
+The real numbers carry the standard topological space structure:
 
 ```lean
-#print TopologicalSpace
--- The key fields are related to which sets are open:
--- IsOpen : Set α → Prop
-
--- The real numbers have a topological space structure
 #check (inferInstance : TopologicalSpace ℝ)
 ```
 
@@ -59,15 +97,17 @@ example {α : Type*} [TopologicalSpace α] : IsOpen (∅ : Set α) :=
 example {α : Type*} [TopologicalSpace α] : IsOpen (Set.univ : Set α) :=
   isOpen_univ
 
--- Finite intersections and arbitrary unions of open sets are open
-#check IsOpen.inter
-#check isOpen_iUnion
-
 -- A set is closed iff its complement is open
 example {α : Type*} [TopologicalSpace α] (s : Set α) :
     IsClosed s ↔ IsOpen sᶜ :=
   isOpen_compl_iff.symm
 ```
+
+Finite intersections and arbitrary unions of open sets are open:
+
+{docstring IsOpen.inter}
+
+{docstring isOpen_iUnion}
 
 # The neighborhood filter nhds
 %%%
@@ -75,17 +115,12 @@ tag := "nhds-filter"
 %%%
 
 For a point `x` in a topological space, `nhds x` is the filter of
-neighborhoods of `x`. A set `s` is a neighborhood of `x` if there is an open
-set `U` with `x ∈ U ⊆ s`.
+neighborhoods of `x`. A set `s` is a neighborhood of `x` if there is an
+open set `U` with `x ∈ U ⊆ s`.
 
-```lean
-#check @nhds
--- nhds : α → Filter α
+{docstring nhds}
 
--- A set is in nhds x iff it contains an open set around x
-#check @mem_nhds_iff
--- mem_nhds_iff : s ∈ nhds x ↔ ∃ t ⊆ s, IsOpen t ∧ x ∈ t
-```
+{docstring mem_nhds_iff}
 
 The neighborhood filter is the bridge between topology and the filter
 framework.
@@ -103,17 +138,15 @@ preserves the neighborhood filter at every point. In Mathlib:
 This is equivalent to the classical definition: preimages of open sets are
 open.
 
+{docstring Continuous}
+
+{docstring continuous_def}
+
+Equivalence with the filter formulation:
+
+{docstring continuous_iff_continuousAt}
+
 ```lean
--- The definition
-#check @Continuous
-#check @continuous_def
--- continuous_def : Continuous f ↔ ∀ s, IsOpen s → IsOpen (f ⁻¹' s)
-
--- Equivalence with the filter formulation
-#check @continuous_iff_continuousAt
--- Continuous f ↔ ∀ x, ContinuousAt f x
--- where ContinuousAt f x := Tendsto f (nhds x) (nhds (f x))
-
 -- The identity is continuous
 example {α : Type*} [TopologicalSpace α] : Continuous (id : α → α) :=
   continuous_id
@@ -145,20 +178,21 @@ compactness is defined using filters: `s` is compact if every filter that
 contains `s` (via the principal filter) and is nontrivial has a cluster point
 in `s`.
 
-```lean
-#check @IsCompact
--- IsCompact : Set α → Prop
+{docstring IsCompact}
 
+```lean
 -- The closed interval [0,1] in ℝ is compact
 example : IsCompact (Set.Icc (0 : ℝ) 1) :=
   isCompact_Icc
-
--- A compact space is one where the whole space is compact
-#check @CompactSpace
-
--- The image of a compact set under a continuous function is compact
-#check @IsCompact.image
 ```
+
+A compact space is one where the whole space is compact:
+
+{docstring CompactSpace}
+
+The image of a compact set under a continuous function is compact:
+
+{docstring IsCompact.image}
 
 # Connected spaces
 %%%
@@ -172,13 +206,15 @@ subspace, it is connected.
 ```lean
 -- ℝ is connected
 #check (inferInstance : ConnectedSpace ℝ)
-
--- The interval [a, b] is connected
-#check @isPreconnected_Icc
-
--- The continuous image of a connected set is connected
-#check @IsPreconnected.image
 ```
+
+The interval `[a, b]` is connected:
+
+{docstring isPreconnected_Icc}
+
+The continuous image of a connected set is connected:
+
+{docstring IsPreconnected.image}
 
 # Metric spaces
 %%%
@@ -214,14 +250,10 @@ example (x y : ℝ) : dist x y = 0 ↔ x = y :=
 ```
 
 In a metric space, `nhds x` is generated by open balls:
-```lean
--- An open ball
-#check @Metric.ball
--- Metric.ball x r = {y | dist x y < r}
 
--- nhds is generated by open balls
-#check @Metric.nhds_basis_ball
-```
+{docstring Metric.ball}
+
+{docstring Metric.nhds_basis_ball}
 
 # Continuity in metric spaces
 %%%
@@ -231,11 +263,9 @@ tag := "metric-continuity"
 For metric spaces, continuity at a point can be stated in the familiar
 epsilon-delta form:
 
-```lean
--- The epsilon-delta characterization
-#check @Metric.continuousAt_iff
--- ContinuousAt f x ↔ ∀ ε > 0, ∃ δ > 0, ∀ y, dist y x < δ → dist (f y) (f x) < ε
+{docstring Metric.continuousAt_iff}
 
+```lean
 -- Example: the function x ↦ 2 * x is continuous on ℝ
 example : Continuous (fun x : ℝ ↦ 2 * x) := by
   exact continuous_const.mul continuous_id
@@ -261,9 +291,11 @@ example : Continuous (Prod.fst : ℝ × ℝ → ℝ) :=
 example : Continuous (Prod.snd : ℝ × ℝ → ℝ) :=
   continuous_snd
 
--- A function into a product is continuous iff both components are
-#check @Continuous.prodMk
 ```
+
+A function into a product is continuous iff both components are:
+
+{docstring Continuous.prodMk}
 
 # Summary of key Mathlib API for topology
 %%%

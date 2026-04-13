@@ -129,3 +129,62 @@ example [CompleteLattice α] (s : Set α) (a : α) (ha : a ∈ s) :
 -- Exercise 26: sSup of the empty set is ⊥
 example [CompleteLattice α] : sSup (∅ : Set α) = ⊥ := by
   sorry
+
+/- ## Part 7: The Knaster-Tarski Fixed Point Theorem -/
+
+-- Exercise 27: A fixed point of f.
+-- If f a = a, then a is a fixed point.
+example [CompleteLattice α] (f : α →o α) (a : α) (h : f a = a) :
+    a = f a := by
+  sorry
+
+-- Exercise 28: lfp f is a fixed point of f.
+example [CompleteLattice α] (f : α →o α) :
+    f (OrderHom.lfp f) = OrderHom.lfp f := by
+  sorry
+
+-- Exercise 29: lfp is the least prefixed point:
+-- if f a ≤ a, then lfp f ≤ a.
+example [CompleteLattice α] (f : α →o α) (a : α) (h : f a ≤ a) :
+    OrderHom.lfp f ≤ a := by
+  sorry
+
+-- Exercise 30: lfp is in particular the least fixed point.
+example [CompleteLattice α] (f : α →o α) (a : α) (h : f a = a) :
+    OrderHom.lfp f ≤ a := by
+  sorry
+
+-- Exercise 31: gfp f is a fixed point of f.
+example [CompleteLattice α] (f : α →o α) :
+    f (OrderHom.gfp f) = OrderHom.gfp f := by
+  sorry
+
+-- Exercise 32: gfp is the greatest postfixed point.
+example [CompleteLattice α] (f : α →o α) (a : α) (h : a ≤ f a) :
+    a ≤ OrderHom.gfp f := by
+  sorry
+
+-- Exercise 33: lfp ≤ gfp.
+example [CompleteLattice α] (f : α →o α) :
+    OrderHom.lfp f ≤ OrderHom.gfp f := by
+  sorry
+
+-- Exercise 34: For the identity OrderHom, lfp id = ⊥.
+example [CompleteLattice α] :
+    OrderHom.lfp (OrderHom.id : α →o α) = ⊥ := by
+  sorry
+
+-- Exercise 35: For the identity OrderHom, gfp id = ⊤.
+example [CompleteLattice α] :
+    OrderHom.gfp (OrderHom.id : α →o α) = ⊤ := by
+  sorry
+
+-- Exercise 36: A monotone map on Set X has a fixed point.
+-- (Just an existence statement.)
+example {X : Type*} (f : Set X →o Set X) : ∃ A : Set X, f A = A := by
+  sorry
+
+-- Exercise 37: If f a ≤ a, then iterating f keeps a as an upper bound.
+example [CompleteLattice α] (f : α →o α) (a : α) (h : f a ≤ a) (n : ℕ) :
+    f^[n] a ≤ a := by
+  sorry

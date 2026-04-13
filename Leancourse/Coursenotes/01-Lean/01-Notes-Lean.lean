@@ -116,6 +116,50 @@ example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
     exact hst hx
 ```
 
+# Exploring definitions with `#check`, `#print` and `inferInstance`
+%%%
+tag := "checkprint"
+%%%
+
+Lean provides a handful of *commands* that are invaluable for exploring
+a library like Mathlib.  They all start with `#` and only print
+information -- they do not contribute to a proof.
+
+- `#check e` prints the type of the term or expression `e`.  This is
+  the fastest way to learn what a lemma says, or what type a definition
+  has.
+- `#check @lemma` (with a leading `@`) prints the type of the lemma
+  *without* hiding implicit and instance arguments.  Use `@` when you
+  want to see every argument.
+- `#print name` prints the *definition* of the constant `name`.  For a
+  typeclass, this shows you the list of fields; for a `def`, the body;
+  for a `structure`, the constructor and fields.
+- `#eval e` evaluates the term `e` (when it is computable) and prints
+  the result.  It works on concrete `ℕ`, `List`, etc., but not on
+  abstract propositions.
+
+A very common idiom is to ask Lean whether a given type has a specific
+instance (e.g. "is `ℕ` a commutative monoid?"):
+
+```lean
+-- "Does ℕ have an AddCommMonoid instance?" -- yes.
+#check (inferInstance : AddCommMonoid ℕ)
+```
+
+The term `inferInstance` asks Lean to synthesize an instance of the
+indicated type; if no such instance exists the command will fail with
+a readable error message.
+
+Two tactics complement these commands during an interactive proof:
+
+- `exact?` searches Mathlib for a single lemma that closes the current
+  goal and prints a `exact <lemma>` line you can copy.
+- `apply?` is the same, but it suggests lemmas whose *conclusion*
+  matches the goal, leaving side conditions as new subgoals.
+
+Together, `#check`, `#print`, `inferInstance`, `exact?` and `apply?`
+are the main tools for navigating an unfamiliar part of Mathlib.
+
 # Two abbreviations
 %%%
 tag := "abreviation"

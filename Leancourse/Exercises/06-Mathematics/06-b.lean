@@ -122,3 +122,82 @@ example (a b c : ℕ → ℝ) (l : ℝ)
     (hbc : ∀ᶠ n in atTop, b n ≤ c n) :
     Tendsto b atTop (nhds l) := by
   sorry
+
+/- ## Part 6: Building filters from scratch
+
+These exercises follow the b-mehta/Buzzard pedagogy: a filter is a
+"generalized subset" defined by which actual subsets contain it.
+Here you construct filters by hand, verifying the three axioms
+(univ_sets, sets_of_superset, inter_sets).
+-/
+
+-- Exercise 21: Construct the principal filter 𝓟 s by hand.
+-- A set t is "in 𝓟 s" iff s ⊆ t.
+example {α : Type*} (s : Set α) : Filter α where
+  sets := {t | s ⊆ t}
+  univ_sets := by sorry
+  sets_of_superset := by sorry
+  inter_sets := by sorry
+
+-- Exercise 22: Construct the cofinite filter by hand.
+-- Hint: compl_univ, Set.finite_empty, compl_subset_compl,
+-- Set.Finite.subset, compl_inter, Set.Finite.union.
+example (α : Type*) : Filter α where
+  sets := {s : Set α | sᶜ.Finite}
+  univ_sets := by sorry
+  sets_of_superset := by sorry
+  inter_sets := by sorry
+
+-- Exercise 23: Construct atTop' on a nonempty linear order.
+-- A set is "big" if it contains a tail [x, ∞).
+example (L : Type*) [LinearOrder L] (e : L) : Filter L where
+  sets := {X : Set L | ∃ x : L, ∀ y, x ≤ y → y ∈ X}
+  univ_sets := by sorry
+  sets_of_superset := by sorry
+  inter_sets := by sorry
+
+-- Exercise 24: Construct the neighborhood filter nhds' x by hand.
+-- A set is a neighborhood of x if it contains an open set
+-- containing x.
+example {X : Type*} [TopologicalSpace X] (x : X) : Filter X where
+  sets := {s : Set X | ∃ U : Set X, x ∈ U ∧ IsOpen U ∧ U ⊆ s}
+  univ_sets := by sorry
+  sets_of_superset := by sorry
+  inter_sets := by sorry
+
+-- Exercise 25: Construct the pushforward map' by hand.
+-- Hint: a set s : Set β is in (map' m F) iff m ⁻¹' s ∈ F.
+example {α β : Type*} (F : Filter α) (m : α → β) : Filter β where
+  sets := {s | m ⁻¹' s ∈ F}
+  univ_sets := by sorry
+  sets_of_superset := by sorry
+  inter_sets := by sorry
+
+/- ## Part 7: The order on filters
+
+Filters carry a partial order: F ≤ G means G.sets ⊆ F.sets, i.e.
+"the smaller filter has more sets". This matches the generalized-subset
+intuition: F ≤ G means F is contained in G as a generalized subset.
+-/
+
+-- Exercise 26: 𝓟 s ≤ 𝓟 t ↔ s ⊆ t.
+example {α : Type*} (s t : Set α) : 𝓟 s ≤ 𝓟 t ↔ s ⊆ t := by
+  sorry
+
+-- Exercise 27: F ≤ 𝓟 s ↔ s ∈ F.
+example {α : Type*} (F : Filter α) (s : Set α) :
+    F ≤ 𝓟 s ↔ s ∈ F := by
+  sorry
+
+-- Exercise 28: ⊥ ≤ F for every filter F.
+example {α : Type*} (F : Filter α) : ⊥ ≤ F := by
+  sorry
+
+-- Exercise 29: F ≤ ⊤ for every filter F.
+example {α : Type*} (F : Filter α) : F ≤ ⊤ := by
+  sorry
+
+-- Exercise 30: On ℕ, the cofinite filter is ≤ atTop.
+-- (Every set in atTop has finite complement.)
+example : (cofinite : Filter ℕ) ≤ atTop := by
+  sorry

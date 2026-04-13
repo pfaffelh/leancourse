@@ -8,6 +8,7 @@ open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
+set_option verso.docstring.allowMissing true
 
 #doc (Manual) "The Algebraic Hierarchy in Mathlib" =>
 %%%
@@ -19,6 +20,47 @@ One of the great achievements of Mathlib is a carefully designed hierarchy of
 algebraic structures, encoded using Lean's typeclass system. In this section we
 explore this hierarchy from the ground up: from basic operations to groups,
 rings, fields, and their morphisms and substructures.
+
+# Notation and naming conventions
+%%%
+tag := "algebra-notation"
+%%%
+
+Unicode symbols can be typed via a backslash escape (e.g. `\inv` produces
+`⁻¹`).  Hover over a symbol in VS Code to see how to type it.
+
+| Symbol  | Lean name               | Reads as                         | Typed as            |
+|---------|-------------------------|----------------------------------|---------------------|
+| `*`     | `Mul.mul a b`           | "a times b"                      | (ASCII)             |
+| `+`     | `Add.add a b`           | "a plus b"                       | (ASCII)             |
+| `0`     | `Zero.zero`             | "zero"                           | (ASCII)             |
+| `1`     | `One.one`               | "one"                            | (ASCII)             |
+| `a⁻¹`   | `Inv.inv a`             | "a inverse"                      | `\inv` or `\-1`     |
+| `-a`    | `Neg.neg a`             | "minus a"                        | (ASCII)             |
+| `a / b` | `HDiv.hDiv a b`         | "a divided by b"                 | (ASCII)             |
+| `→*`    | `MonoidHom α β`         | "monoid homomorphism"            | `\to*`              |
+| `→+`    | `AddMonoidHom α β`      | "additive monoid homomorphism"   | `\to+`              |
+| `→+*`   | `RingHom α β`           | "ring homomorphism"              | `\to+*`             |
+| `R ⧸ I` | `HasQuotient.Quotient`  | "R modulo I"                     | `\quot`             |
+| `⊥`     | `Bot.bot`               | "the trivial sub-object"         | `\bot`              |
+| `⊤`     | `Top.top`               | "the whole object as a sub-object" | `\top`            |
+
+Naming hints.
+
+- *Additive versus multiplicative.*  Mathlib systematically duplicates
+  algebraic notions into an additive (`Add`, `+`, `0`, `-a`) and a
+  multiplicative (`Mul`, `*`, `1`, `a⁻¹`) version.  Lemmas for the
+  additive side are prefixed with `add_`: `add_assoc`, `add_comm`,
+  `add_zero`, `neg_add_cancel`, etc.
+- *"Class" suffix.*  `MulOneClass`, `AddZeroClass` are the bare
+  algebraic laws for unit elements; they are weaker than a full monoid.
+- *Bundled morphisms.*  `→*`, `→+`, `→+*` are bundled: they package a
+  function together with proofs that it preserves the relevant
+  operations.  Lemmas are named `map_mul`, `map_add`, `map_one`,
+  `map_zero`, `map_pow`, `map_neg`.
+- *Subgroups and ideals.*  `Subgroup G`, `Subring R`, `Ideal R` are
+  bundled sub-objects with membership `a ∈ H`, closed under the
+  relevant operations (`H.mul_mem`, `H.inv_mem`, `H.add_mem`, etc.).
 
 # From operations to monoids
 %%%
@@ -50,12 +92,6 @@ example (a : ℕ) : a + 0 = a :=
   add_zero a
 ```
 
-You can explore the hierarchy with `#check` and `#print`:
-```lean
-#check Monoid
-#print Monoid
-```
-
 # Groups
 %%%
 tag := "groups"
@@ -78,7 +114,8 @@ example (a b : ℤ) : a + b - b = a := by
 example {G : Type*} [Group G] (a : G) : a * a⁻¹ = 1 :=
   mul_inv_cancel a
 
-example {G : Type*} [Group G] (a b : G) : (a * b)⁻¹ = b⁻¹ * a⁻¹ :=
+example {G : Type*} [Group G] (a b : G) :
+    (a * b)⁻¹ = b⁻¹ * a⁻¹ :=
   mul_inv_rev a b
 ```
 
@@ -192,10 +229,11 @@ ring.
 -- The quotient of a commutative ring by an ideal
 example (R : Type*) [CommRing R] (I : Ideal R) : CommRing (R ⧸ I) :=
   inferInstance
-
--- The quotient map is a ring homomorphism
-#check @Ideal.Quotient.mk
 ```
+
+The quotient map is a ring homomorphism:
+
+{docstring Ideal.Quotient.mk}
 
 # The ext tactic for algebraic structures
 %%%
@@ -225,16 +263,16 @@ example {R S : Type*} [Ring R] [Ring S] (f g : R →+* S) (h : ∀ r, f r = g r)
 tag := "navigating-hierarchy"
 %%%
 
-When working with Mathlib's algebraic hierarchy, the following strategies
-are helpful:
+When working with Mathlib's algebraic hierarchy, recall the
+exploration commands introduced in the Lean chapter: `#check` for
+types, `#print` for definitions and fields of typeclasses,
+`inferInstance` for checking whether a given instance exists, and
+`exact?` / `apply?` for lemma search.  In addition:
 
-1. Use `#check` to find the type of a term or the statement of a lemma.
-2. Use `#print` to see the definition of a typeclass and its fields.
-3. Use `example : SomeClass SomeType := inferInstance` to check if an instance
-   exists.
-4. Use `exact?` or `apply?` in tactic mode to search for the right lemma.
-5. Look at the `Mathlib.Algebra` and `Mathlib.GroupTheory` folders for
-   relevant files.
+- Look at `Mathlib.Algebra` and `Mathlib.GroupTheory` for the files
+  relevant to the structure you are working with.
+- Lemma names follow the predictable pattern `<operation>_<result>`,
+  e.g. `mul_assoc`, `add_comm`, `map_mul`, `inv_inv`.
 
 ```lean
 -- Check what instances ℝ has

@@ -8,6 +8,7 @@ open Verso.Genre.Manual.InlineLean
 open MyDef
 
 set_option pp.rawOnError true
+set_option verso.docstring.allowMissing true
 
 #doc (Manual) "Filters in Mathlib" =>
 %%%
@@ -15,70 +16,182 @@ htmlSplit := .never
 tag := "filters"
 %%%
 
-Filters are one of the most important and distinctive design choices in
-Mathlib. They provide a unified framework for talking about limits,
-neighborhoods, convergence, and "eventually" -- replacing the multitude of
-epsilon-delta definitions that proliferate in classical analysis textbooks.
+Filters are one of the most distinctive design choices in Mathlib. They
+provide a unified framework for limits, neighborhoods, convergence, and
+"eventually" -- replacing the many different epsilon-delta definitions
+that appear in classical analysis.
+
+The exposition below follows the pedagogical approach of Kevin Buzzard and
+Bhavik Mehta in their
+[Formalising Mathematics notes](https://github.com/b-mehta/formalising-mathematics-notes):
+a filter is a *generalized subset*.
+
+# Notation and naming conventions
+%%%
+tag := "filters-notation"
+%%%
+
+Many filter-related symbols are unicode and typed via backslash escapes
+in VS Code (hover over a symbol to see its input sequence).
+
+| Symbol             | Lean name                  | Reads as                            | Typed as        |
+|--------------------|----------------------------|-------------------------------------|-----------------|
+| `Filter α`         | `Filter α`                 | "filter on α"                       | (ASCII)         |
+| `F.sets`           | `Filter.sets F`            | "the sets of the filter F"          | (ASCII)         |
+| `s ∈ F`            | `s ∈ F.sets`               | "s is a member of F" (F-large)      | `\in`           |
+| `F ≤ G`            | `LE.le F G`                | "F is finer than G"                 | `\le`           |
+| `𝓟 s`              | `Filter.principal s`       | "the principal filter of s"         | `\McP`          |
+| `⊤`                | `Top.top`                  | "the top filter" (only Set.univ)    | `\top`          |
+| `⊥`                | `Bot.bot`                  | "the bottom filter" (every set)     | `\bot`          |
+| `atTop`            | `Filter.atTop`             | "at top" / "going to ∞"             | (ASCII)         |
+| `atBot`            | `Filter.atBot`             | "at bottom" / "going to −∞"         | (ASCII)         |
+| `cofinite`         | `Filter.cofinite`          | "the cofinite filter"               | (ASCII)         |
+| `nhds x`           | `nhds x`                   | "neighborhood filter at x"          | `\nhds` for `𝓝` |
+| `𝓝 x`              | `nhds x`                   | same as above                       | `\nhds`         |
+| `f ⁻¹' s`          | `Set.preimage f s`         | "preimage of s under f"             | `\inv'`         |
+| `Filter.map f F`   | `Filter.map f F`           | "pushforward of F along f"          | (ASCII)         |
+| `Filter.comap f G` | `Filter.comap f G`         | "pullback of G along f"             | (ASCII)         |
+| `Tendsto f F G`    | `Filter.Tendsto f F G`     | "f tends from F to G"               | (ASCII)         |
+| `∀ᶠ x in F, p x`   | `Filter.Eventually p F`    | "eventually p, along F"             | `\all\^f`       |
+| `∃ᶠ x in F, p x`   | `Filter.Frequently p F`    | "frequently p, along F"             | `\ex\^f`        |
+
+Naming hints.
+
+- `F ≤ G` is pronounced "F is *finer* than G": smaller filters contain
+  more sets. The slogan is: the smaller the filter, the bigger its
+  collection of sets.
+- The prefix `mem_` (as in `mem_principal`, `mem_atTop_sets`,
+  `mem_nhds_iff`) names lemmas that *characterize membership* in a
+  given filter.
+- `𝓟` and `𝓝` are mathematical script letters, typed `\McP` and
+  `\nhds`; they are *notation*, not definitions.
+- `⁻¹'` is the preimage of a set under a function (not to be confused
+  with the inverse `⁻¹` of a group element); it is typed `\inv'` (or
+  `\i\n\v '` in sequence).
 
 # Motivation: why filters?
 %%%
 tag := "filter-motivation"
 %%%
 
-In a traditional analysis course, one encounters many similar-looking
+In a traditional analysis course one meets many similar-looking
 definitions:
-- A sequence `a : ℕ → ℝ` converges to `l` if for every `ε > 0` there exists
-  `N` such that for all `n ≥ N`, `|a n - l| < ε`.
-- A function `f : ℝ → ℝ` has limit `l` at `x₀` if for every `ε > 0` there
-  exists `δ > 0` such that for all `x` with `0 < |x - x₀| < δ`,
+
+- A sequence `a : ℕ → ℝ` converges to `l` if for every `ε > 0` there
+  exists `N` such that for all `n ≥ N`, `|a n - l| < ε`.
+- A function `f : ℝ → ℝ` has limit `l` at `x₀` if for every `ε > 0`
+  there exists `δ > 0` such that for all `x` with `0 < |x - x₀| < δ`,
   `|f x - l| < ε`.
-- A function `f : ℝ → ℝ` tends to `+∞` as `x → +∞` if for every `M` there
-  exists `N` such that for all `x ≥ N`, `f x ≥ M`.
+- A function `f : ℝ → ℝ` tends to `+∞` as `x → +∞` if for every `M`
+  there exists `N` such that for all `x ≥ N`, `f x ≥ M`.
 
-All of these share the same pattern: "for sufficiently large/close inputs,
-the output is in a given set." Filters capture this pattern abstractly.
+All of these have the shape: "for sufficiently large/close inputs, the
+output lies in a given set." Filters capture this pattern abstractly.
 
-# Definition of a filter
+# Filters as generalized subsets
+%%%
+tag := "filter-generalized-subset"
+%%%
+
+Morally, a filter on a type `α` is a *generalized subset* of `α`.  Every
+ordinary subset gives rise to a filter, but there are other filters
+representing "ideas" that cannot be described by a single subset, such as
+an infinitesimal neighborhood of a point in a topological space, or a
+neighborhood of `∞` in a totally ordered set.  Isaac Newton wanted `dx`
+to be "a real number infinitesimally close to `0`"; filters are a modern
+way to recover such thoughts.
+
+The property we want a generalized subset `F` to have is that it is
+uniquely determined by the *actual* subsets which contain `F`.  If `F` is
+a generalized subset of `α`, what properties should the collection of
+actual subsets containing `F` have?
+
+1. If `S` contains `F` and `S ⊆ T`, then `T` contains `F`.
+2. If `S` and `T` both contain `F`, then so does `S ∩ T`.
+3. The whole type `Set.univ : Set α` contains `F`.
+
+These three axioms turn out to be enough: a filter is modelled precisely
+as a collection of subsets of `α` satisfying them.
+
+# The formal definition
 %%%
 tag := "filter-definition"
 %%%
 
-A `Filter α` is a collection `F` of sets in `α` satisfying:
-1. `Set.univ ∈ F` (the whole space is in the filter).
-2. If `s ∈ F` and `s ⊆ t`, then `t ∈ F` (upward closed).
-3. If `s ∈ F` and `t ∈ F`, then `s ∩ t ∈ F` (closed under finite intersections).
+The Mathlib definition, rendered directly from the library:
 
-Intuitively, the sets in a filter are "large" or "eventually true" sets.
+{docstring Filter}
 
-```lean
--- The definition in Mathlib
-#print Filter
+Some authors add a fourth axiom forbidding `∅ ∈ sets`. Mathlib does not:
+this is analogous to disallowing a ring as an ideal of itself. It makes
+the initial definition cleaner but introduces many awkward edge cases
+later, so Mathlib keeps the "empty filter" `⊥` as a legitimate object.
 
--- A filter is a structure with fields:
--- sets : Set (Set α)
--- univ_sets : Set.univ ∈ sets
--- sets_of_superset : s ∈ sets → s ⊆ t → t ∈ sets
--- inter_sets : s ∈ sets → t ∈ sets → s ∩ t ∈ sets
+If `F : Filter α` and `S : Set α`, the notation `S ∈ F` is sugar for
+`S ∈ F.sets`.  Think of it as morally meaning `F ⊆ S` -- but of course
+that expression does not type-check, because `F` is a filter, not a set.
+
+The axioms are restated in the `Filter` namespace under friendlier
+names, rendered here directly from Mathlib:
+
+{docstring Filter.univ_mem}
+
+{docstring Filter.mem_of_superset}
+
+{docstring Filter.inter_mem}
+
+# The order on filters
+%%%
+tag := "filter-order"
+%%%
+
+Filters form a partial order by `≤`.  The definition is
+
 ```
+F ≤ G ↔ G.sets ⊆ F.sets
+```
+
+which looks reversed, but matches the "generalized subset" intuition: if
+`F` is contained in `G` as generalized subsets, then every actual subset
+containing `G` also contains `F`, so `G.sets ⊆ F.sets`.  A useful slogan:
+
+> The smaller the filter, the more sets it has.
+
+The API lemma is:
+
+{docstring Filter.le_def}
 
 # The principal filter
 %%%
 tag := "principal-filter"
 %%%
 
-The simplest filter is the *principal filter* `Filter.principal s` (or `𝓟 s`),
-which consists of all supersets of a given set `s`.
+The simplest filter is the *principal filter*, with notation `𝓟 s`.
+It is the filter whose sets are exactly the supersets of `s` -- i.e.
+the generalized subset corresponding to the ordinary subset `s`.
+
+{docstring Filter.principal}
 
 ```lean
-#check @Filter.principal
-
 -- 𝓟 s contains exactly the supersets of s
-example {α : Type*} (s t : Set α) : t ∈ Filter.principal s ↔ s ⊆ t :=
+example {α : Type*} (s t : Set α) :
+    t ∈ Filter.principal s ↔ s ⊆ t :=
   Filter.mem_principal
 
--- The principal filter on the whole space is the trivial filter ⊤
-example {α : Type*} : Filter.principal (Set.univ : Set α) = ⊤ :=
+-- Every s belongs to its own principal filter
+example {α : Type*} (s : Set α) :
+    s ∈ Filter.principal s :=
+  Filter.mem_principal_self s
+
+-- The principal filter on the whole space is ⊤
+example {α : Type*} :
+    Filter.principal (Set.univ : Set α) = ⊤ :=
   Filter.principal_univ
+
+-- The order on principal filters matches subset inclusion
+example {α : Type*} (s t : Set α) :
+    Filter.principal s ≤ Filter.principal t ↔ s ⊆ t :=
+  Filter.principal_mono
 ```
 
 # The atTop filter
@@ -86,123 +199,164 @@ example {α : Type*} : Filter.principal (Set.univ : Set α) = ⊤ :=
 tag := "atTop-filter"
 %%%
 
-For any linearly ordered type, `Filter.atTop` is the filter of sets that
-contain all sufficiently large elements. A set `s` belongs to `Filter.atTop`
-if there exists some `a` such that for all `b ≥ a`, `b ∈ s`.
+On any preorder, `Filter.atTop` is the filter of sets that contain all
+sufficiently large elements.  Morally, `atTop` is a "neighborhood of
+`∞`": it represents "arbitrarily large elements" even though no single
+largest element exists.
 
-This is the filter we use for limits of sequences.
+{docstring Filter.atTop}
 
 ```lean
-#check @Filter.atTop
-
 -- Characterization of membership in atTop
-example (s : Set ℕ) : s ∈ Filter.atTop ↔ ∃ a, ∀ b, a ≤ b → b ∈ s :=
+example (s : Set ℕ) :
+    s ∈ Filter.atTop ↔ ∃ a, ∀ b, a ≤ b → b ∈ s :=
   Filter.mem_atTop_sets
 
--- The set {n : ℕ | n ≥ 100} is in atTop
-example : {n : ℕ | n ≥ 100} ∈ (Filter.atTop : Filter ℕ) := by
+example :
+    {n : ℕ | n ≥ 100} ∈ (Filter.atTop : Filter ℕ) := by
   rw [Filter.mem_atTop_sets]
   exact ⟨100, fun b hb ↦ hb⟩
 ```
+
+# The cofinite filter
+%%%
+tag := "cofinite-filter"
+%%%
+
+Another instructive example: on any type `α`, the *cofinite filter*
+consists of sets whose complement is finite.
+
+{docstring Filter.cofinite}
+
+```lean
+example (α : Type*) (s : Set α) :
+    s ∈ (Filter.cofinite : Filter α) ↔ sᶜ.Finite :=
+  Iff.rfl
+```
+
+This filter is a generalized subset of `α` representing "almost every
+element".  On `ℕ`, the cofinite filter is strictly smaller than `atTop`
+(every cofinite set eventually contains all large `n`, but the set of
+even numbers is in `atTop`... wait -- actually it is not; and conversely,
+the set of even numbers is not cofinite).  Comparing these two filters
+is a good way to train the "generalized subset" intuition.
+
+# Filter.map: the pushforward
+%%%
+tag := "filter-map"
+%%%
+
+Given `F : Filter α` and `m : α → β`, there is a natural way to build a
+filter on `β`: a set `s : Set β` is in the pushforward if its preimage
+is in `F`.  This is the filter-theoretic counterpart of the image of a
+subset.
+
+{docstring Filter.map}
+
+```lean
+example {α β : Type*} (m : α → β) (F : Filter α)
+    (s : Set β) :
+    s ∈ Filter.map m F ↔ m ⁻¹' s ∈ F := Iff.rfl
+```
+
+There is also a pullback:
+
+{docstring Filter.comap}
+
+`map` and `comap` form a Galois connection:
+
+{docstring Filter.map_le_iff_le_comap}
 
 # Filter.Tendsto: the general notion of limit
 %%%
 tag := "filter-tendsto"
 %%%
 
-The key definition is `Filter.Tendsto f F G`, which means: the preimage of
-every set in `G` belongs to `F`. Equivalently, `F.map f ≤ G`.
+With `map` in hand, the general definition of a limit is strikingly
+short:
 
-This single definition unifies all notions of limit:
+{docstring Filter.Tendsto}
 
-```lean
-#check @Filter.Tendsto
--- Filter.Tendsto (f : α → β) (F : Filter α) (G : Filter β) : Prop
--- Defined as: Filter.map f F ≤ G
--- i.e., ∀ s ∈ G, f ⁻¹' s ∈ F
-```
+Unpacking: `Tendsto f l₁ l₂` says that for every `s ∈ l₂`, the preimage
+`f ⁻¹' s` is in `l₁`.  In the generalized-subset picture, it says that
+`f` sends the generalized subset `l₁` into the generalized subset `l₂`.
 
-**Limits of sequences**: A sequence `a : ℕ → ℝ` converges to `l` if
-`Filter.Tendsto a Filter.atTop (nhds l)`. This says: for every neighborhood
-`U` of `l`, the set `{n | a n ∈ U}` is in `atTop`, i.e., `a n ∈ U` for all
-sufficiently large `n`.
+This single definition unifies all classical limits:
 
-**Limits of functions at a point**: A function `f : ℝ → ℝ` has limit `l` at
-`x₀` if `Filter.Tendsto f (nhds x₀) (nhds l)` (or using `nhdsWithin` for
-one-sided limits).
-
-**Limits at infinity**: `Filter.Tendsto f Filter.atTop (nhds l)` means `f(x) → l`
-as `x → ∞`.
+| Classical statement                 | Filter version                                |
+|-------------------------------------|-----------------------------------------------|
+| `aₙ → l` as `n → ∞`                 | `Tendsto a atTop (nhds l)`                    |
+| `f(x) → l` as `x → x₀`              | `Tendsto f (nhds x₀) (nhds l)`                |
+| `f(x) → l` as `x → ∞`               | `Tendsto f atTop (nhds l)`                    |
+| `f(x) → ∞` as `x → ∞`               | `Tendsto f atTop atTop`                       |
 
 ```lean
--- Sequence convergence in Mathlib
+-- Sanity check: Tendsto for sequences
+-- is the epsilon-N definition
 example (a : ℕ → ℝ) (l : ℝ) :
     Filter.Tendsto a Filter.atTop (nhds l) ↔
     ∀ ε > 0, ∃ N, ∀ n ≥ N, |a n - l| < ε := by
   rw [Metric.tendsto_atTop]
   simp [Real.dist_eq]
 
--- Composition of limits (if a → l and f is continuous at l, then f ∘ a → f l)
-#check @Filter.Tendsto.comp
 ```
+
+Composition: if `a → l` and `f` is continuous at `l`, then `f ∘ a → f l`:
+
+{docstring Filter.Tendsto.comp}
 
 # Filter.Eventually and Filter.Frequently
 %%%
 tag := "eventually-frequently"
 %%%
 
-`Filter.Eventually p F` (notation: `∀ᶠ x in F, p x`) means `{x | p x} ∈ F`.
-It captures "the property `p` holds for `F`-almost-all `x`."
+Filters let us speak precisely about something being true "eventually".
+`Filter.Eventually p F`, with notation `∀ᶠ x in F, p x`, is defined as
+`{x | p x} ∈ F`.  Read it as: "`p` holds for generalized-almost-all `x`
+with respect to `F`."
 
-`Filter.Frequently p F` (notation: `∃ᶠ x in F, p x`) is the negation of
-`Eventually (¬p)`. It means "`p` holds on a `F`-non-negligible set."
+- For `F = atTop` on `ℕ`, `∀ᶠ n in atTop, p n` means "for all sufficiently large `n`, `p n`".
+- For `F = nhds x₀`, `∀ᶠ x in nhds x₀, p x` means "`p` holds on a neighborhood of `x₀`".
+- For `F = cofinite`, it means "`p` holds off a finite set".
+
+The dual `Filter.Frequently p F` (notation `∃ᶠ x in F, p x`) is the
+negation of `Eventually (¬ p)` and means "`p` holds on an `F`-non-negligible
+set".
 
 ```lean
--- Eventually for atTop: "for all sufficiently large n"
-example : ∀ᶠ n in Filter.atTop, n ≥ 42 := by
-  rw [Filter.eventually_atTop]
-  exact ⟨42, fun b hb ↦ hb⟩
+-- Eventually for atTop unfolds to an existential
+example {p : ℕ → Prop} :
+    (∀ᶠ n in Filter.atTop, p n) ↔
+      ∃ N, ∀ n ≥ N, p n :=
+  Filter.eventually_atTop
 
--- If p holds eventually and q holds eventually, then p ∧ q holds eventually
+-- Finite conjunctions of eventually hold eventually
 example {α : Type*} {F : Filter α} {p q : α → Prop}
     (hp : ∀ᶠ x in F, p x) (hq : ∀ᶠ x in F, q x) :
     ∀ᶠ x in F, p x ∧ q x :=
   hp.and hq
 
--- Eventually can be combined with Tendsto
+-- Tendsto preserves Eventually
 #check @Filter.Tendsto.eventually
 ```
 
-# Filter.map and Filter.comap
-%%%
-tag := "filter-map-comap"
-%%%
-
-- `Filter.map f F` is the *pushforward*: `s ∈ F.map f ↔ f ⁻¹' s ∈ F`.
-- `Filter.comap f G` is the *pullback*: `s ∈ F.comap f ↔ ∃ t ∈ G, f ⁻¹' t ⊆ s`.
-
-These form a Galois connection:
-`Filter.map f F ≤ G ↔ F ≤ Filter.comap f G`.
-
-```lean
-#check @Filter.map_le_iff_le_comap
-```
+A remark on `≥`.  Lean generally prefers `≤` over `≥`, and most lemmas
+are stated with `≤`.  The binder `∀ n ≥ N, ...` is a special exception
+(because `∀ N ≤ n, ...` would bind `N` rather than `n`), but in bare
+inequalities prefer to write `1 < n` over `n > 1`.
 
 # Ultrafilters
 %%%
 tag := "ultrafilters"
 %%%
 
-An *ultrafilter* is a maximal proper filter: for every set `s`, either `s` or
-`sᶜ` belongs to the ultrafilter. Ultrafilters are important in logic (they
-correspond to consistent complete theories) and in topology (the Stone-Cech
-compactification).
+An *ultrafilter* is a maximal proper filter: for every set `s`, either
+`s` or `sᶜ` belongs to the ultrafilter.  Ultrafilters are fundamental in
+logic (they correspond to consistent complete theories) and in topology
+(compactifications, nonstandard analysis).
 
 ```lean
 #check Ultrafilter
--- An ultrafilter on α is a filter F such that for all s, s ∈ F ∨ sᶜ ∈ F
-
--- Every point gives a principal ultrafilter
 #check (pure : ℕ → Ultrafilter ℕ)
 ```
 
@@ -211,16 +365,16 @@ compactification).
 tag := "filters-advantages"
 %%%
 
-Filters may seem abstract at first, but they offer significant advantages
-for formal mathematics:
+Filters may feel abstract at first, but they pay off:
 
-1. **Unification**: One definition of `Tendsto` replaces dozens of epsilon-delta
-   definitions.
-2. **Composability**: Limits compose naturally via `Filter.Tendsto.comp`.
-3. **Algebraic structure**: Filters form a complete lattice, so we can take
-   meets and joins of filters.
-4. **Avoidance of partial functions**: Instead of "the limit of `f` at `x`"
-   (which may not exist), we use `Tendsto f (nhds x) (nhds l)` as a
-   proposition.
-5. **Smooth interaction with topology**: The neighborhood filter `nhds x` is
-   the bridge between filters and topological spaces.
+1. *Unification.*  One definition of `Tendsto` replaces dozens of
+   epsilon-delta variants.
+2. *Composability.*  Limits compose naturally via `Filter.Tendsto.comp`.
+3. *Algebraic structure.*  Filters form a complete lattice, so we can
+   take meets and joins of families of filters and reason about them
+   order-theoretically.
+4. *Avoidance of partial functions.*  Instead of "the limit of `f` at
+   `x`" (which may not exist), we use `Tendsto f (nhds x) (nhds l)` as
+   a proposition.
+5. *Smooth interaction with topology.*  The neighborhood filter
+   `nhds x` is the bridge between filters and topological spaces.

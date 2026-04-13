@@ -12,7 +12,7 @@ set_option pp.rawOnError true
 #doc (Manual) "The Algebraic Hierarchy in Mathlib" =>
 %%%
 htmlSplit := .never
-tag := "algebraic-hierarchy"
+tag := "algebraic-hierarchy-mathlib"
 %%%
 
 One of the great achievements of Mathlib is a carefully designed hierarchy of

@@ -1,0 +1,1 @@
+window.docContents[69].resolve({"/#advanced-mathematics":{"contents":"\n\n\n\n\n\n\n\n\n\n","context":"Interactive Theorem Proving using Lean, Winter 2026/27","header":"8. Advanced Mathematics","id":"/#advanced-mathematics"}});

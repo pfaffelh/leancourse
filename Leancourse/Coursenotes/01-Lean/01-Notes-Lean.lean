@@ -138,3 +138,67 @@ Sometimes, bracketing is critical, and it appears frequently that it has the for
 example (P Q : Prop) (hP : P) (hnP : ¬P) : Q := by
     apply False.elim <| hnP hP
 ```
+
+# Defining new notation
+%%%
+tag := "notation"
+%%%
+
+Lean allows you to define custom notation using the `notation` command. This is useful when you want a concise mathematical symbol for a frequently used expression. The general syntax is
+```
+notation "symbol" arg1 arg2 ... => expression
+```
+where the left-hand side describes the syntax pattern (with arguments) and the right-hand side is the Lean expression it expands to. Here is a simple example:
+
+```lean
+section NotationDemo
+
+notation "δ" => (2 : ℕ)
+#check (δ : ℕ)
+
+```
+
+After this definition, `δ` is replaced by `2` everywhere. The notation is purely syntactic: Lean replaces every occurrence of the new notation by the right-hand side before type checking. Here is a more interesting example with an argument:
+
+```lean
+notation "double" x => x + x
+#eval double 5 -- 10
+
+end NotationDemo
+```
+
+You can also define infix notation with a priority (determining how tightly the operator binds):
+
+```lean
+section InfixDemo
+
+infixl:65 " ⊕⊕ " => fun (a b : ℕ) => a + b + 1
+#eval 3 ⊕⊕ 4 -- 8
+
+end InfixDemo
+```
+
+Here, `infixl` means left-associative infix, `65` is the binding power (the same as `+`), and the spaces around `⊕⊕` are part of the syntax. Similarly, `infixr` gives right-associative infix, and `prefix` / `postfix` are available for unary operators.
+
+For more complex notation involving multiple tokens, you can use the `syntax` and `macro_rules` commands, but `notation` and the infix variants cover most common use cases.
+
+# The `abbrev` command
+%%%
+tag := "abbrev"
+%%%
+
+The `abbrev` command introduces a definition that is *reducibly transparent*, meaning Lean's elaborator will unfold it automatically whenever needed. In contrast, a definition introduced with `def` is *semireducible* and will not be unfolded automatically.
+
+```lean
+abbrev MyNat := ℕ
+```
+
+After this, `MyNat` and `ℕ` are interchangeable everywhere — Lean treats them as definitionally equal without needing any extra work. In particular, all type class instances that apply to `ℕ` are automatically available for `MyNat`. Compare this with
+
+```lean
+def MyNat' := ℕ
+```
+
+where `MyNat'` is a genuinely new type: Lean will *not* automatically apply `ℕ` instances to `MyNat'`, and you would have to derive or register them yourself.
+
+Use `abbrev` when you want a short name for a type or expression but do not want to create a new abstraction barrier. Use `def` when you intentionally want to hide the definition (e.g. to prevent the simplifier from unfolding it).

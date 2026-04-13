@@ -2,744 +2,4904 @@
  {"title": "Sections or chapters of the manual",
   "description": null,
   "contents":
-  {"use":
+  {"why-dependent-types":
+   [{"id": "why-dependent-types",
+     "data":
+     {"title": "Why dependent types matter",
+      "shortTitle": null,
+      "sectionNum": "7.2.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth", "shortTitle": null, "number": "2"},
+       {"title": "Why dependent types matter",
+        "shortTitle": null,
+        "number": "9"}]},
+     "address": "/Type-Theory/"}],
+   "when-classical":
+   [{"id": "when-classical",
+     "data":
+     {"title": "When do you need Classical.choice?",
+      "shortTitle": null,
+      "sectionNum": "7.3.5.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "Constructive vs classical logic",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "When do you need Classical.choice?",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Type-Theory/"}],
+   "what-dependent-types":
+   [{"id": "what-dependent-types",
+     "data":
+     {"title": "What makes dependent types special",
+      "shortTitle": null,
+      "sectionNum": "7.2.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth", "shortTitle": null, "number": "2"},
+       {"title": "What makes dependent types special",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Type-Theory/"}],
+   "vectors-indexed":
+   [{"id": "vectors-indexed",
+     "data":
+     {"title": "Vectors indexed by length",
+      "shortTitle": null,
+      "sectionNum": "7.2.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth", "shortTitle": null, "number": "2"},
+       {"title": "Vectors indexed by length",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Type-Theory/"}],
+   "use":
    [{"id": "use",
      "data":
      {"title": "use",
+      "shortTitle": null,
       "sectionNum": "4.36.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "use", "number": "36"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "use", "shortTitle": null, "number": "36"}]},
      "address": "/Tactics/"}],
+   "updating-structures":
+   [{"id": "updating-structures",
+     "data":
+     {"title": "Updating structures",
+      "shortTitle": null,
+      "sectionNum": "6.2.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"},
+       {"title": "Updating structures", "shortTitle": null, "number": "3"}]},
+     "address": "/Functional-Programming/"}],
+   "universes-axioms":
+   [{"id": "universes-axioms",
+     "data":
+     {"title": "Universes, Axioms, and Foundations",
+      "shortTitle": null,
+      "sectionNum": "7.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Type-Theory/"}],
    "universes":
    [{"id": "universes",
      "data":
      {"title": "Universes, Types and Terms",
+      "shortTitle": null,
       "sectionNum": "3.1.3.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Notes on Lean", "number": "1"},
-       {"title": "Universes, Types and Terms", "number": "3"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Notes on Lean", "shortTitle": null, "number": "1"},
+       {"title": "Universes, Types and Terms",
+        "shortTitle": null,
+        "number": "3"}]},
      "address": "/Lean/"}],
+   "universe-polymorphism":
+   [{"id": "universe-polymorphism",
+     "data":
+     {"title": "Universe polymorphism",
+      "shortTitle": null,
+      "sectionNum": "7.3.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "Universe polymorphism", "shortTitle": null, "number": "3"}]},
+     "address": "/Type-Theory/"}],
+   "universe-issues":
+   [{"id": "universe-issues",
+     "data":
+     {"title": "Universe issues",
+      "shortTitle": null,
+      "sectionNum": "9.3.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Common Pitfalls", "shortTitle": null, "number": "3"},
+       {"title": "Universe issues", "shortTitle": null, "number": "1"}]},
+     "address": "/Proof-Engineering/"}],
+   "universe-hierarchy":
+   [{"id": "universe-hierarchy",
+     "data":
+     {"title": "The universe hierarchy",
+      "shortTitle": null,
+      "sectionNum": "7.3.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "The universe hierarchy", "shortTitle": null, "number": "1"}]},
+     "address": "/Type-Theory/"}],
+   "ultrafilters":
+   [{"id": "ultrafilters",
+     "data":
+     {"title": "Ultrafilters",
+      "shortTitle": null,
+      "sectionNum": "8.3.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"},
+       {"title": "Ultrafilters", "shortTitle": null, "number": "8"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "typeclasses":
+   [{"id": "typeclasses",
+     "data":
+     {"title": "The Typeclass System",
+      "shortTitle": null,
+      "sectionNum": "6.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"}]},
+     "address": "/Functional-Programming/"}],
+   "typeclass-tips":
+   [{"id": "typeclass-tips",
+     "data":
+     {"title": "Practical tips",
+      "shortTitle": null,
+      "sectionNum": "6.3.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"},
+       {"title": "Practical tips", "shortTitle": null, "number": "9"}]},
+     "address": "/Functional-Programming/"}],
+   "typeclass-motivation":
+   [{"id": "typeclass-motivation",
+     "data":
+     {"title": "The problem typeclasses solve",
+      "shortTitle": null,
+      "sectionNum": "6.3.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"},
+       {"title": "The problem typeclasses solve",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Functional-Programming/"}],
+   "typeclass-diamonds":
+   [{"id": "typeclass-diamonds",
+     "data":
+     {"title": "Typeclass diamonds",
+      "shortTitle": null,
+      "sectionNum": "9.3.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Common Pitfalls", "shortTitle": null, "number": "3"},
+       {"title": "Typeclass diamonds", "shortTitle": null, "number": "4"}]},
+     "address": "/Proof-Engineering/"}],
+   "type-theory":
+   [{"id": "type-theory",
+     "data":
+     {"title": "Type Theory",
+      "shortTitle": null,
+      "sectionNum": "7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"}]},
+     "address": "/Type-Theory/"}],
+   "type-families":
+   [{"id": "type-families",
+     "data":
+     {"title": "Type families",
+      "shortTitle": null,
+      "sectionNum": "7.2.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth", "shortTitle": null, "number": "2"},
+       {"title": "Type families", "shortTitle": null, "number": "7"}]},
+     "address": "/Type-Theory/"}],
    "triv":
    [{"id": "triv",
      "data":
      {"title": "triv",
+      "shortTitle": null,
       "sectionNum": "4.35.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "triv", "number": "35"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "triv", "shortTitle": null, "number": "35"}]},
      "address": "/Tactics/"}],
+   "topology-api-summary":
+   [{"id": "topology-api-summary",
+     "data":
+     {"title": "Summary of key Mathlib API for topology",
+      "shortTitle": null,
+      "sectionNum": "8.4.10.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "Summary of key Mathlib API for topology",
+        "shortTitle": null,
+        "number": "10"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "topology":
+   [{"id": "topology",
+     "data":
+     {"title": "Topology via Filters",
+      "shortTitle": null,
+      "sectionNum": "8.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "topological-space":
+   [{"id": "topological-space",
+     "data":
+     {"title": "TopologicalSpace",
+      "shortTitle": null,
+      "sectionNum": "8.4.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "TopologicalSpace", "shortTitle": null, "number": "1"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "timeout-issues":
+   [{"id": "timeout-issues",
+     "data":
+     {"title": "Timeout issues",
+      "shortTitle": null,
+      "sectionNum": "9.3.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Common Pitfalls", "shortTitle": null, "number": "3"},
+       {"title": "Timeout issues", "shortTitle": null, "number": "7"}]},
+     "address": "/Proof-Engineering/"}],
    "term":
    [{"id": "term",
      "data":
      {"title": "Proving propositions and evaluating functions",
+      "shortTitle": null,
       "sectionNum": "3.1.7.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Notes on Lean", "number": "1"},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Notes on Lean", "shortTitle": null, "number": "1"},
        {"title": "Proving propositions and evaluating functions",
+        "shortTitle": null,
         "number": "7"}]},
      "address": "/Lean/"}],
    "tauto":
    [{"id": "tauto",
      "data":
      {"title": "tauto",
+      "shortTitle": null,
       "sectionNum": "4.34.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "tauto", "number": "34"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "tauto", "shortTitle": null, "number": "34"}]},
      "address": "/Tactics/"}],
    "tactics":
    [{"id": "tactics",
      "data":
      {"title": "Tactics",
+      "shortTitle": null,
       "sectionNum": "4.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"}]},
      "address": "/Tactics/"}],
+   "tactic-to-term":
+   [{"id": "tactic-to-term",
+     "data":
+     {"title": "How tactic proofs build terms behind the scenes",
+      "shortTitle": null,
+      "sectionNum": "7.1.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "How tactic proofs build terms behind the scenes",
+        "shortTitle": null,
+        "number": "9"}]},
+     "address": "/Type-Theory/"}],
+   "subtypes":
+   [{"id": "subtypes",
+     "data":
+     {"title": "Subtypes",
+      "shortTitle": null,
+      "sectionNum": "7.2.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth", "shortTitle": null, "number": "2"},
+       {"title": "Subtypes", "shortTitle": null, "number": "8"}]},
+     "address": "/Type-Theory/"}],
+   "substructures":
+   [{"id": "substructures",
+     "data":
+     {"title": "Substructures",
+      "shortTitle": null,
+      "sectionNum": "8.2.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "The Algebraic Hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Substructures", "shortTitle": null, "number": "5"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "structures-math-examples":
+   [{"id": "structures-math-examples",
+     "data":
+     {"title": "Mathematical examples",
+      "shortTitle": null,
+      "sectionNum": "6.2.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"},
+       {"title": "Mathematical examples", "shortTitle": null, "number": "6"}]},
+     "address": "/Functional-Programming/"}],
+   "structures":
+   [{"id": "structures",
+     "data":
+     {"title": "Structures and Records",
+      "shortTitle": null,
+      "sectionNum": "6.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"}]},
+     "address": "/Functional-Programming/"}],
+   "state-monad":
+   [{"id": "state-monad",
+     "data":
+     {"title": "Stateful computation with  StateM",
+      "shortTitle": null,
+      "sectionNum": "6.4.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "Stateful computation with  StateM",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Functional-Programming/"}],
+   "square-bracket-notation":
+   [{"id": "square-bracket-notation",
+     "data":
+     {"title": "The square bracket notation",
+      "shortTitle": null,
+      "sectionNum": "6.3.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"},
+       {"title": "The square bracket notation",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Functional-Programming/"}],
    "specialize":
    [{"id": "specialize",
      "data":
      {"title": "specialize",
+      "shortTitle": null,
       "sectionNum": "4.33.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "specialize", "number": "33"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "specialize", "shortTitle": null, "number": "33"}]},
      "address": "/Tactics/"}],
    "some-notes":
    [{"id": "some-notes",
      "data":
      {"title": "Some notes on Lean and Mathlib",
+      "shortTitle": null,
       "sectionNum": "2.3.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Introduction", "number": "2"},
-       {"title": "Some notes on Lean and Mathlib", "number": "3"}]},
+       {"title": "Introduction", "shortTitle": null, "number": "2"},
+       {"title": "Some notes on Lean and Mathlib",
+        "shortTitle": null,
+        "number": "3"}]},
      "address": "/Introduction/"}],
+   "simp-tactic":
+   [{"id": "simp-tactic",
+     "data":
+     {"title": "The  simp  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  simp  tactic", "shortTitle": null, "number": "1"}]},
+     "address": "/Proof-Engineering/"}],
+   "simp-loops":
+   [{"id": "simp-loops",
+     "data":
+     {"title": "Simp loop issues",
+      "shortTitle": null,
+      "sectionNum": "9.3.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Common Pitfalls", "shortTitle": null, "number": "3"},
+       {"title": "Simp loop issues", "shortTitle": null, "number": "5"}]},
+     "address": "/Proof-Engineering/"}],
    "simp":
    [{"id": "simp",
      "data":
      {"title": "simp",
+      "shortTitle": null,
       "sectionNum": "4.32.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "simp", "number": "32"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "simp", "shortTitle": null, "number": "32"}]},
      "address": "/Tactics/"}],
+   "sigma-vs-exists":
+   [{"id": "sigma-vs-exists",
+     "data":
+     {"title": "Difference between Sigma and Exists",
+      "shortTitle": null,
+      "sectionNum": "7.2.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth", "shortTitle": null, "number": "2"},
+       {"title": "Difference between Sigma and Exists",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Type-Theory/"}],
+   "sigma-types":
+   [{"id": "sigma-types",
+     "data":
+     {"title": "Sigma types: dependent pair types",
+      "shortTitle": null,
+      "sectionNum": "7.2.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth", "shortTitle": null, "number": "2"},
+       {"title": "Sigma types: dependent pair types",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Type-Theory/"}],
+   "search-tactics":
+   [{"id": "search-tactics",
+     "data":
+     {"title": "Searching for results:  exact? ,  apply? ,  rw?",
+      "shortTitle": null,
+      "sectionNum": "9.2.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "Searching for results:  exact? ,  apply? ,  rw?",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Proof-Engineering/"}],
    "rw":
    [{"id": "rw",
      "data":
      {"title": "rw",
+      "shortTitle": null,
       "sectionNum": "4.31.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "rw", "number": "31"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "rw", "shortTitle": null, "number": "31"}]},
      "address": "/Tactics/"}],
    "rintro":
    [{"id": "rintro",
      "data":
      {"title": "rintro",
+      "shortTitle": null,
       "sectionNum": "4.30.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "rintro", "number": "30"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "rintro", "shortTitle": null, "number": "30"}]},
      "address": "/Tactics/"}],
+   "rings-and-fields":
+   [{"id": "rings-and-fields",
+     "data":
+     {"title": "Rings and fields",
+      "shortTitle": null,
+      "sectionNum": "8.2.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "The Algebraic Hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Rings and fields", "shortTitle": null, "number": "3"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "ring-tactic":
+   [{"id": "ring-tactic",
+     "data":
+     {"title": "The  ring  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  ring  tactic", "shortTitle": null, "number": "6"}]},
+     "address": "/Proof-Engineering/"}],
    "ring":
    [{"id": "ring",
      "data":
      {"title": "ring",
+      "shortTitle": null,
       "sectionNum": "4.29.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "ring", "number": "29"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "ring", "shortTitle": null, "number": "29"}]},
      "address": "/Tactics/"}],
    "right":
    [{"id": "right",
      "data":
      {"title": "right",
+      "shortTitle": null,
       "sectionNum": "4.28.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "right", "number": "28"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "right", "shortTitle": null, "number": "28"}]},
      "address": "/Tactics/"}],
    "rfl":
    [{"id": "rfl",
      "data":
      {"title": "rfl",
+      "shortTitle": null,
       "sectionNum": "4.27.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "rfl", "number": "27"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "rfl", "shortTitle": null, "number": "27"}]},
      "address": "/Tactics/"}],
    "revert":
    [{"id": "revert",
      "data":
      {"title": "revert",
+      "shortTitle": null,
       "sectionNum": "4.26.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "revert", "number": "26"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "revert", "shortTitle": null, "number": "26"}]},
      "address": "/Tactics/"}],
    "refine":
    [{"id": "refine",
      "data":
      {"title": "refine",
+      "shortTitle": null,
       "sectionNum": "4.25.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "refine", "number": "25"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "refine", "shortTitle": null, "number": "25"}]},
      "address": "/Tactics/"}],
+   "recursion":
+   [{"id": "recursion",
+     "data":
+     {"title": "Recursion and structural recursion",
+      "shortTitle": null,
+      "sectionNum": "6.1.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Basics of Functional Programming",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Recursion and structural recursion",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Functional-Programming/"}],
+   "reading-source":
+   [{"id": "reading-source",
+     "data":
+     {"title": "Reading Mathlib source code",
+      "shortTitle": null,
+      "sectionNum": "9.2.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "Reading Mathlib source code",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Proof-Engineering/"}],
    "rcases":
    [{"id": "rcases",
      "data":
      {"title": "rcases",
+      "shortTitle": null,
       "sectionNum": "4.24.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "rcases", "number": "24"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "rcases", "shortTitle": null, "number": "24"}]},
      "address": "/Tactics/"}],
+   "quotients":
+   [{"id": "quotients",
+     "data":
+     {"title": "Quotient structures",
+      "shortTitle": null,
+      "sectionNum": "8.2.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "The Algebraic Hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Quotient structures", "shortTitle": null, "number": "6"}]},
+     "address": "/Advanced-Mathematics/"}],
    "push_neg":
    [{"id": "push_neg",
      "data":
      {"title": "push_neg",
+      "shortTitle": null,
       "sectionNum": "4.23.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "push_neg", "number": "23"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "push_neg", "shortTitle": null, "number": "23"}]},
      "address": "/Tactics/"}],
+   "pure-functions":
+   [{"id": "pure-functions",
+     "data":
+     {"title": "Pure functions",
+      "shortTitle": null,
+      "sectionNum": "6.1.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Basics of Functional Programming",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Pure functions", "shortTitle": null, "number": "1"}]},
+     "address": "/Functional-Programming/"}],
+   "props-as-types":
+   [{"id": "props-as-types",
+     "data":
+     {"title": "Propositions as types, proofs as terms",
+      "shortTitle": null,
+      "sectionNum": "7.1.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Propositions as types, proofs as terms",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Type-Theory/"}],
+   "prop-vs-type":
+   [{"id": "prop-vs-type",
+     "data":
+     {"title": "Prop vs Type: proof irrelevance",
+      "shortTitle": null,
+      "sectionNum": "7.3.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "Prop vs Type: proof irrelevance",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Type-Theory/"}],
+   "proof-engineering":
+   [{"id": "proof-engineering",
+     "data":
+     {"title": "Proof Engineering",
+      "shortTitle": null,
+      "sectionNum": "9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"}]},
+     "address": "/Proof-Engineering/"}],
+   "proof-automation":
+   [{"id": "proof-automation",
+     "data":
+     {"title": "Proof Automation",
+      "shortTitle": null,
+      "sectionNum": "9.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"}]},
+     "address": "/Proof-Engineering/"}],
    "proof":
    [{"id": "proof",
      "data":
      {"title": "Proofs in Lean",
+      "shortTitle": null,
       "sectionNum": "3.2.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Proofs in Lean", "number": "2"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"}]},
      "address": "/Lean/"}],
    "projects":
    [{"id": "projects",
      "data":
      {"title": "Projects",
+      "shortTitle": null,
       "sectionNum": "5.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Projects", "number": "5"}]},
+       {"title": "Projects", "shortTitle": null, "number": "5"}]},
      "address": "/Projects/"}],
+   "product-topology":
+   [{"id": "product-topology",
+     "data":
+     {"title": "Product topology",
+      "shortTitle": null,
+      "sectionNum": "8.4.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "Product topology", "shortTitle": null, "number": "9"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "probability-measures":
+   [{"id": "probability-measures",
+     "data":
+     {"title": "Probability measures",
+      "shortTitle": null,
+      "sectionNum": "8.5.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Probability measures", "shortTitle": null, "number": "7"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "principal-filter":
+   [{"id": "principal-filter",
+     "data":
+     {"title": "The principal filter",
+      "shortTitle": null,
+      "sectionNum": "8.3.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"},
+       {"title": "The principal filter", "shortTitle": null, "number": "3"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "powerset-order":
+   [{"id": "powerset-order",
+     "data":
+     {"title": "The power set as a partial order",
+      "shortTitle": null,
+      "sectionNum": "8.1.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Orders, Lattices, and Complete Lattices",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "The power set as a partial order",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "positivity-tactic":
+   [{"id": "positivity-tactic",
+     "data":
+     {"title": "The  positivity  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  positivity  tactic",
+        "shortTitle": null,
+        "number": "9"}]},
+     "address": "/Proof-Engineering/"}],
+   "polyrith-linear-combination":
+   [{"id": "polyrith-linear-combination",
+     "data":
+     {"title": "polyrith  and  linear_combination",
+      "shortTitle": null,
+      "sectionNum": "9.1.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "polyrith  and  linear_combination",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Proof-Engineering/"}],
+   "pi-types":
+   [{"id": "pi-types",
+     "data":
+     {"title": "Pi types: dependent function types",
+      "shortTitle": null,
+      "sectionNum": "7.2.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth", "shortTitle": null, "number": "2"},
+       {"title": "Pi types: dependent function types",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Type-Theory/"}],
+   "pattern-matching":
+   [{"id": "pattern-matching",
+     "data":
+     {"title": "Pattern matching and  match",
+      "shortTitle": null,
+      "sectionNum": "6.1.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Basics of Functional Programming",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Pattern matching and  match",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Functional-Programming/"}],
+   "partial-orders":
+   [{"id": "partial-orders",
+     "data":
+     {"title": "Partial orders",
+      "shortTitle": null,
+      "sectionNum": "8.1.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Orders, Lattices, and Complete Lattices",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Partial orders", "shortTitle": null, "number": "1"}]},
+     "address": "/Advanced-Mathematics/"}],
    "parenthesis":
    [{"id": "parenthesis",
      "data":
      {"title": "Different parentheses in  Lean",
+      "shortTitle": null,
       "sectionNum": "3.1.6.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Notes on Lean", "number": "1"},
-       {"title": "Different parentheses in  Lean", "number": "6"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Notes on Lean", "shortTitle": null, "number": "1"},
+       {"title": "Different parentheses in  Lean",
+        "shortTitle": null,
+        "number": "6"}]},
      "address": "/Lean/"}],
+   "other-type-theories":
+   [{"id": "other-type-theories",
+     "data":
+     {"title": "Brief mention of other type theories",
+      "shortTitle": null,
+      "sectionNum": "7.3.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "Brief mention of other type theories",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Type-Theory/"}],
    "other-theorem-provers":
    [{"id": "other-theorem-provers",
      "data":
      {"title": "Other material and Theorem provers",
+      "shortTitle": null,
       "sectionNum": "2.2.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Introduction", "number": "2"},
-       {"title": "Other material and Theorem provers", "number": "2"}]},
+       {"title": "Introduction", "shortTitle": null, "number": "2"},
+       {"title": "Other material and Theorem provers",
+        "shortTitle": null,
+        "number": "2"}]},
      "address": "/Introduction/"}],
+   "orders-and-lattices":
+   [{"id": "orders-and-lattices",
+     "data":
+     {"title": "Orders, Lattices, and Complete Lattices",
+      "shortTitle": null,
+      "sectionNum": "8.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Orders, Lattices, and Complete Lattices",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "order-api-summary":
+   [{"id": "order-api-summary",
+     "data":
+     {"title": "Summary of key API",
+      "shortTitle": null,
+      "sectionNum": "8.1.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Orders, Lattices, and Complete Lattices",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Summary of key API", "shortTitle": null, "number": "7"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "option-type":
+   [{"id": "option-type",
+     "data":
+     {"title": "The problem: chaining computations that may fail",
+      "shortTitle": null,
+      "sectionNum": "6.4.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "The problem: chaining computations that may fail",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Functional-Programming/"}],
+   "operations-to-monoids":
+   [{"id": "operations-to-monoids",
+     "data":
+     {"title": "From operations to monoids",
+      "shortTitle": null,
+      "sectionNum": "8.2.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "The Algebraic Hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "From operations to monoids",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "open-closed-sets":
+   [{"id": "open-closed-sets",
+     "data":
+     {"title": "Open and closed sets",
+      "shortTitle": null,
+      "sectionNum": "8.4.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "Open and closed sets", "shortTitle": null, "number": "2"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "omega-tactic":
+   [{"id": "omega-tactic",
+     "data":
+     {"title": "The  omega  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  omega  tactic", "shortTitle": null, "number": "3"}]},
+     "address": "/Proof-Engineering/"}],
    "obtain":
    [{"id": "obtain",
      "data":
      {"title": "obtain",
+      "shortTitle": null,
       "sectionNum": "4.22.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "obtain", "number": "22"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "obtain", "shortTitle": null, "number": "22"}]},
      "address": "/Tactics/"}],
    "nth_rewrite":
    [{"id": "nth_rewrite",
      "data":
      {"title": "nth_rewrite",
+      "shortTitle": null,
       "sectionNum": "4.21.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "nth_rewrite", "number": "21"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "nth_rewrite", "shortTitle": null, "number": "21"}]},
      "address": "/Tactics/"}],
    "notesonlean":
    [{"id": "notesonlean",
      "data":
      {"title": "Notes on Lean",
+      "shortTitle": null,
       "sectionNum": "3.1.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Notes on Lean", "number": "1"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Notes on Lean", "shortTitle": null, "number": "1"}]},
      "address": "/Lean/"}],
    "norm_num":
    [{"id": "norm_num",
      "data":
      {"title": "norm_num",
+      "shortTitle": null,
       "sectionNum": "4.20.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "norm_num", "number": "20"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "norm_num", "shortTitle": null, "number": "20"}]},
      "address": "/Tactics/"}],
+   "norm-num-tactic":
+   [{"id": "norm-num-tactic",
+     "data":
+     {"title": "The  norm_num  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  norm_num  tactic", "shortTitle": null, "number": "5"}]},
+     "address": "/Proof-Engineering/"}],
+   "nhds-filter":
+   [{"id": "nhds-filter",
+     "data":
+     {"title": "The neighborhood filter nhds",
+      "shortTitle": null,
+      "sectionNum": "8.4.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "The neighborhood filter nhds",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "negation-false":
+   [{"id": "negation-false",
+     "data":
+     {"title": "Negation = function to False",
+      "shortTitle": null,
+      "sectionNum": "7.1.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Negation = function to False",
+        "shortTitle": null,
+        "number": "6"}]},
+     "address": "/Type-Theory/"}],
+   "navigating-mathlib":
+   [{"id": "navigating-mathlib",
+     "data":
+     {"title": "Navigating Mathlib",
+      "shortTitle": null,
+      "sectionNum": "9.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"}]},
+     "address": "/Proof-Engineering/"}],
+   "navigating-hierarchy":
+   [{"id": "navigating-hierarchy",
+     "data":
+     {"title": "Navigating the hierarchy",
+      "shortTitle": null,
+      "sectionNum": "8.2.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "The Algebraic Hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Navigating the hierarchy",
+        "shortTitle": null,
+        "number": "8"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "naming-conventions":
+   [{"id": "naming-conventions",
+     "data":
+     {"title": "Naming conventions in Mathlib",
+      "shortTitle": null,
+      "sectionNum": "9.2.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "Naming conventions in Mathlib",
+        "shortTitle": null,
+        "number": "6"}]},
+     "address": "/Proof-Engineering/"}],
+   "namespaces":
+   [{"id": "namespaces",
+     "data":
+     {"title": "Namespaces",
+      "shortTitle": null,
+      "sectionNum": "6.2.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"},
+       {"title": "Namespaces", "shortTitle": null, "number": "9"}]},
+     "address": "/Functional-Programming/"}],
    "names":
    [{"id": "names",
      "data":
      {"title": "Names of  Mathlib  Results",
+      "shortTitle": null,
       "sectionNum": "3.2.4.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Proofs in Lean", "number": "2"},
-       {"title": "Names of  Mathlib  Results", "number": "4"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"},
+       {"title": "Names of  Mathlib  Results",
+        "shortTitle": null,
+        "number": "4"}]},
      "address": "/Lean/"}],
+   "multiple-instances":
+   [{"id": "multiple-instances",
+     "data":
+     {"title": "Defining multiple instances",
+      "shortTitle": null,
+      "sectionNum": "6.3.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"},
+       {"title": "Defining multiple instances",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Functional-Programming/"}],
+   "morphisms":
+   [{"id": "morphisms",
+     "data":
+     {"title": "Morphisms",
+      "shortTitle": null,
+      "sectionNum": "8.2.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "The Algebraic Hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Morphisms", "shortTitle": null, "number": "4"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "moogle-loogle":
+   [{"id": "moogle-loogle",
+     "data":
+     {"title": "External search tools: Moogle and Loogle",
+      "shortTitle": null,
+      "sectionNum": "9.2.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "External search tools: Moogle and Loogle",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Proof-Engineering/"}],
+   "monotone-antitone":
+   [{"id": "monotone-antitone",
+     "data":
+     {"title": "Monotone and antitone functions",
+      "shortTitle": null,
+      "sectionNum": "8.1.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Orders, Lattices, and Complete Lattices",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Monotone and antitone functions",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "monads-summary":
+   [{"id": "monads-summary",
+     "data":
+     {"title": "Summary",
+      "shortTitle": null,
+      "sectionNum": "6.4.10.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "Summary", "shortTitle": null, "number": "10"}]},
+     "address": "/Functional-Programming/"}],
+   "monads-category-theory":
+   [{"id": "monads-category-theory",
+     "data":
+     {"title": "Connection to category theory",
+      "shortTitle": null,
+      "sectionNum": "6.4.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "Connection to category theory",
+        "shortTitle": null,
+        "number": "9"}]},
+     "address": "/Functional-Programming/"}],
+   "monads":
+   [{"id": "monads",
+     "data":
+     {"title": "Monads and Computation Patterns",
+      "shortTitle": null,
+      "sectionNum": "6.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Functional-Programming/"}],
+   "monad-typeclass":
+   [{"id": "monad-typeclass",
+     "data":
+     {"title": "The  Monad  typeclass",
+      "shortTitle": null,
+      "sectionNum": "6.4.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "The  Monad  typeclass", "shortTitle": null, "number": "4"}]},
+     "address": "/Functional-Programming/"}],
+   "metric-spaces":
+   [{"id": "metric-spaces",
+     "data":
+     {"title": "Metric spaces",
+      "shortTitle": null,
+      "sectionNum": "8.4.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "Metric spaces", "shortTitle": null, "number": "7"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "metric-continuity":
+   [{"id": "metric-continuity",
+     "data":
+     {"title": "Continuity in metric spaces",
+      "shortTitle": null,
+      "sectionNum": "8.4.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "Continuity in metric spaces",
+        "shortTitle": null,
+        "number": "8"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "measures":
+   [{"id": "measures",
+     "data":
+     {"title": "Measures",
+      "shortTitle": null,
+      "sectionNum": "8.5.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Measures", "shortTitle": null, "number": "3"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "measure-theory":
+   [{"id": "measure-theory",
+     "data":
+     {"title": "Measure Theory in Mathlib",
+      "shortTitle": null,
+      "sectionNum": "8.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "measure-api-summary":
+   [{"id": "measure-api-summary",
+     "data":
+     {"title": "Summary of key Mathlib API for measure theory",
+      "shortTitle": null,
+      "sectionNum": "8.5.10.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Summary of key Mathlib API for measure theory",
+        "shortTitle": null,
+        "number": "10"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "measurable-space":
+   [{"id": "measurable-space",
+     "data":
+     {"title": "Sigma-algebras: MeasurableSpace",
+      "shortTitle": null,
+      "sectionNum": "8.5.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Sigma-algebras: MeasurableSpace",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "measurable-functions":
+   [{"id": "measurable-functions",
+     "data":
+     {"title": "Measurable functions",
+      "shortTitle": null,
+      "sectionNum": "8.5.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Measurable functions", "shortTitle": null, "number": "2"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "matrices-dependent":
+   [{"id": "matrices-dependent",
+     "data":
+     {"title": "Matrices as dependent types",
+      "shortTitle": null,
+      "sectionNum": "7.2.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth", "shortTitle": null, "number": "2"},
+       {"title": "Matrices as dependent types",
+        "shortTitle": null,
+        "number": "6"}]},
+     "address": "/Type-Theory/"}],
+   "mathlib-organization":
+   [{"id": "mathlib-organization",
+     "data":
+     {"title": "How Mathlib is organized",
+      "shortTitle": null,
+      "sectionNum": "9.2.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "How Mathlib is organized",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Proof-Engineering/"}],
+   "mathlib-docs":
+   [{"id": "mathlib-docs",
+     "data":
+     {"title": "The Mathlib documentation website",
+      "shortTitle": null,
+      "sectionNum": "9.2.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "The Mathlib documentation website",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Proof-Engineering/"}],
    "mathlib":
    [{"id": "mathlib",
      "data":
      {"title": "Mathlib",
+      "shortTitle": null,
       "sectionNum": "3.2.2.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Proofs in Lean", "number": "2"},
-       {"title": "Mathlib", "number": "2"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"},
+       {"title": "Mathlib", "shortTitle": null, "number": "2"}]},
      "address": "/Lean/"}],
+   "list-monad":
+   [{"id": "list-monad",
+     "data":
+     {"title": "Lists as a monad",
+      "shortTitle": null,
+      "sectionNum": "6.4.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "Lists as a monad", "shortTitle": null, "number": "5"}]},
+     "address": "/Functional-Programming/"}],
    "linearith":
    [{"id": "linearith",
      "data":
      {"title": "linarith",
+      "shortTitle": null,
       "sectionNum": "4.19.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "linarith", "number": "19"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "linarith", "shortTitle": null, "number": "19"}]},
      "address": "/Tactics/"}],
+   "linarith-tactic":
+   [{"id": "linarith-tactic",
+     "data":
+     {"title": "The  linarith  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  linarith  tactic", "shortTitle": null, "number": "8"}]},
+     "address": "/Proof-Engineering/"}],
    "left":
    [{"id": "left",
      "data":
      {"title": "left",
+      "shortTitle": null,
       "sectionNum": "4.18.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "left", "number": "18"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "left", "shortTitle": null, "number": "18"}]},
      "address": "/Tactics/"}],
+   "lebesgue-measure":
+   [{"id": "lebesgue-measure",
+     "data":
+     {"title": "The Lebesgue measure on ℝ",
+      "shortTitle": null,
+      "sectionNum": "8.5.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "The Lebesgue measure on ℝ",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "lean-axioms":
+   [{"id": "lean-axioms",
+     "data":
+     {"title": "The axioms of Lean",
+      "shortTitle": null,
+      "sectionNum": "7.3.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "The axioms of Lean", "shortTitle": null, "number": "4"}]},
+     "address": "/Type-Theory/"}],
    "lean":
    [{"id": "lean",
      "data":
      {"title": "Lean",
+      "shortTitle": null,
       "sectionNum": "3.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"}]},
      "address": "/Lean/"}],
+   "lattices":
+   [{"id": "lattices",
+     "data":
+     {"title": "Lattices",
+      "shortTitle": null,
+      "sectionNum": "8.1.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Orders, Lattices, and Complete Lattices",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Lattices", "shortTitle": null, "number": "3"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "lake-dependencies":
+   [{"id": "lake-dependencies",
+     "data":
+     {"title": "Managing dependencies with  lake",
+      "shortTitle": null,
+      "sectionNum": "9.2.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "Managing dependencies with  lake",
+        "shortTitle": null,
+        "number": "9"}]},
+     "address": "/Proof-Engineering/"}],
+   "io-monad":
+   [{"id": "io-monad",
+     "data":
+     {"title": "The  IO  monad",
+      "shortTitle": null,
+      "sectionNum": "6.4.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "The  IO  monad", "shortTitle": null, "number": "6"}]},
+     "address": "/Functional-Programming/"}],
    "introduction":
    [{"id": "introduction",
      "data":
      {"title": "Introduction",
+      "shortTitle": null,
       "sectionNum": "2.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Introduction", "number": "2"}]},
+       {"title": "Introduction", "shortTitle": null, "number": "2"}]},
      "address": "/Introduction/"}],
    "intro":
    [{"id": "intro",
      "data":
      {"title": "intro",
+      "shortTitle": null,
       "sectionNum": "4.17.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "intro", "number": "17"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "intro", "shortTitle": null, "number": "17"}]},
      "address": "/Tactics/"}],
+   "integration":
+   [{"id": "integration",
+     "data":
+     {"title": "Integration",
+      "shortTitle": null,
+      "sectionNum": "8.5.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Integration", "shortTitle": null, "number": "5"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "instance-resolution":
+   [{"id": "instance-resolution",
+     "data":
+     {"title": "How instance resolution works",
+      "shortTitle": null,
+      "sectionNum": "6.3.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"},
+       {"title": "How instance resolution works",
+        "shortTitle": null,
+        "number": "8"}]},
+     "address": "/Functional-Programming/"}],
+   "inspecting-typeclasses":
+   [{"id": "inspecting-typeclasses",
+     "data":
+     {"title": "Inspecting typeclass arguments with  @",
+      "shortTitle": null,
+      "sectionNum": "6.3.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"},
+       {"title": "Inspecting typeclass arguments with  @",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Functional-Programming/"}],
+   "inductive-vs-structure":
+   [{"id": "inductive-vs-structure",
+     "data":
+     {"title": "Inductive types vs structures",
+      "shortTitle": null,
+      "sectionNum": "6.2.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"},
+       {"title": "Inductive types vs structures",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Functional-Programming/"}],
+   "inductive-types":
+   [{"id": "inductive-types",
+     "data":
+     {"title": "Inductive types",
+      "shortTitle": null,
+      "sectionNum": "6.1.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Basics of Functional Programming",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Inductive types", "shortTitle": null, "number": "3"}]},
+     "address": "/Functional-Programming/"}],
    "induction":
    [{"id": "induction",
      "data":
      {"title": "induction",
+      "shortTitle": null,
       "sectionNum": "4.16.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "induction", "number": "16"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "induction", "shortTitle": null, "number": "16"}]},
      "address": "/Tactics/"}],
+   "implicit-typeclass":
+   [{"id": "implicit-typeclass",
+     "data":
+     {"title": "Understanding implicit arguments and typeclass resolution",
+      "shortTitle": null,
+      "sectionNum": "9.2.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "Understanding implicit arguments and typeclass resolution",
+        "shortTitle": null,
+        "number": "8"}]},
+     "address": "/Proof-Engineering/"}],
+   "implication-function":
+   [{"id": "implication-function",
+     "data":
+     {"title": "Implication = function type",
+      "shortTitle": null,
+      "sectionNum": "7.1.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Implication = function type",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Type-Theory/"}],
    "howto":
    [{"id": "howto",
      "data":
      {"title": "How to use this course",
+      "shortTitle": null,
       "sectionNum": "2.4.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Introduction", "number": "2"},
-       {"title": "How to use this course", "number": "4"}]},
+       {"title": "Introduction", "shortTitle": null, "number": "2"},
+       {"title": "How to use this course", "shortTitle": null, "number": "4"}]},
      "address": "/Introduction/"}],
    "holes":
    [{"id": "holes",
      "data":
      {"title": "Holes in proofs",
+      "shortTitle": null,
       "sectionNum": "3.2.5.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Proofs in Lean", "number": "2"},
-       {"title": "Holes in proofs", "number": "5"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"},
+       {"title": "Holes in proofs", "shortTitle": null, "number": "5"}]},
      "address": "/Lean/"}],
+   "higher-order-functions":
+   [{"id": "higher-order-functions",
+     "data":
+     {"title": "Higher-order functions",
+      "shortTitle": null,
+      "sectionNum": "6.1.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Basics of Functional Programming",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Higher-order functions", "shortTitle": null, "number": "6"}]},
+     "address": "/Functional-Programming/"}],
    "have":
    [{"id": "have",
      "data":
      {"title": "have",
+      "shortTitle": null,
       "sectionNum": "4.15.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "have", "number": "15"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "have", "shortTitle": null, "number": "15"}]},
      "address": "/Tactics/"}],
+   "groups":
+   [{"id": "groups",
+     "data":
+     {"title": "Groups",
+      "shortTitle": null,
+      "sectionNum": "8.2.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "The Algebraic Hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Groups", "shortTitle": null, "number": "2"}]},
+     "address": "/Advanced-Mathematics/"}],
    "goals":
    [{"id": "goals",
      "data":
      {"title": "Goals",
+      "shortTitle": null,
       "sectionNum": "2.1.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Introduction", "number": "2"},
-       {"title": "Goals", "number": "1"}]},
+       {"title": "Introduction", "shortTitle": null, "number": "2"},
+       {"title": "Goals", "shortTitle": null, "number": "1"}]},
      "address": "/Introduction/"}],
+   "gcongr-tactic":
+   [{"id": "gcongr-tactic",
+     "data":
+     {"title": "The  gcongr  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.10.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  gcongr  tactic", "shortTitle": null, "number": "10"}]},
+     "address": "/Proof-Engineering/"}],
    "functions":
    [{"id": "functions",
      "data":
      {"title": "Function definitions",
+      "shortTitle": null,
       "sectionNum": "3.1.4.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Notes on Lean", "number": "1"},
-       {"title": "Function definitions", "number": "4"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Notes on Lean", "shortTitle": null, "number": "1"},
+       {"title": "Function definitions", "shortTitle": null, "number": "4"}]},
      "address": "/Lean/"}],
+   "functional-programming":
+   [{"id": "functional-programming",
+     "data":
+     {"title": "Functional Programming",
+      "shortTitle": null,
+      "sectionNum": "6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"}]},
+     "address": "/Functional-Programming/"}],
    "functional":
    [{"id": "functional",
      "data":
      {"title": "Lean as a programming language",
+      "shortTitle": null,
       "sectionNum": "3.1.1.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Notes on Lean", "number": "1"},
-       {"title": "Lean as a programming language", "number": "1"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Notes on Lean", "shortTitle": null, "number": "1"},
+       {"title": "Lean as a programming language",
+        "shortTitle": null,
+        "number": "1"}]},
      "address": "/Lean/"}],
+   "fp-basics-summary":
+   [{"id": "fp-basics-summary",
+     "data":
+     {"title": "Summary",
+      "shortTitle": null,
+      "sectionNum": "6.1.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Basics of Functional Programming",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Summary", "shortTitle": null, "number": "7"}]},
+     "address": "/Functional-Programming/"}],
+   "fp-basics":
+   [{"id": "fp-basics",
+     "data":
+     {"title": "Basics of Functional Programming",
+      "shortTitle": null,
+      "sectionNum": "6.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Basics of Functional Programming",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Functional-Programming/"}],
    "foundation":
    [{"id": "foundation",
      "data":
      {"title": "Foundation",
+      "shortTitle": null,
       "sectionNum": "3.2.1.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Proofs in Lean", "number": "2"},
-       {"title": "Foundation", "number": "1"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"},
+       {"title": "Foundation", "shortTitle": null, "number": "1"}]},
      "address": "/Lean/"}],
+   "forall-pi":
+   [{"id": "forall-pi",
+     "data":
+     {"title": "Universal quantifier = dependent function type (Pi type)",
+      "shortTitle": null,
+      "sectionNum": "7.1.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Universal quantifier = dependent function type (Pi type)",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Type-Theory/"}],
+   "fixed-points":
+   [{"id": "fixed-points",
+     "data":
+     {"title": "Fixed point theorems",
+      "shortTitle": null,
+      "sectionNum": "8.1.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Orders, Lattices, and Complete Lattices",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Fixed point theorems", "shortTitle": null, "number": "6"}]},
+     "address": "/Advanced-Mathematics/"}],
    "firststeps":
    [{"id": "firststeps",
      "data":
      {"title": "First steps",
+      "shortTitle": null,
       "sectionNum": "3.2.3.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Proofs in Lean", "number": "2"},
-       {"title": "First steps", "number": "3"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"},
+       {"title": "First steps", "shortTitle": null, "number": "3"}]},
      "address": "/Lean/"}],
+   "filters-advantages":
+   [{"id": "filters-advantages",
+     "data":
+     {"title": "Why filters are better for formalization",
+      "shortTitle": null,
+      "sectionNum": "8.3.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"},
+       {"title": "Why filters are better for formalization",
+        "shortTitle": null,
+        "number": "9"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "filters":
+   [{"id": "filters",
+     "data":
+     {"title": "Filters in Mathlib",
+      "shortTitle": null,
+      "sectionNum": "8.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "filter-tendsto":
+   [{"id": "filter-tendsto",
+     "data":
+     {"title": "Filter.Tendsto: the general notion of limit",
+      "shortTitle": null,
+      "sectionNum": "8.3.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"},
+       {"title": "Filter.Tendsto: the general notion of limit",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "filter-motivation":
+   [{"id": "filter-motivation",
+     "data":
+     {"title": "Motivation: why filters?",
+      "shortTitle": null,
+      "sectionNum": "8.3.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"},
+       {"title": "Motivation: why filters?",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "filter-map-comap":
+   [{"id": "filter-map-comap",
+     "data":
+     {"title": "Filter.map and Filter.comap",
+      "shortTitle": null,
+      "sectionNum": "8.3.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"},
+       {"title": "Filter.map and Filter.comap",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "filter-definition":
+   [{"id": "filter-definition",
+     "data":
+     {"title": "Definition of a filter",
+      "shortTitle": null,
+      "sectionNum": "8.3.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"},
+       {"title": "Definition of a filter", "shortTitle": null, "number": "2"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "field-simp-tactic":
+   [{"id": "field-simp-tactic",
+     "data":
+     {"title": "The  field_simp  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.11.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  field_simp  tactic",
+        "shortTitle": null,
+        "number": "11"}]},
+     "address": "/Proof-Engineering/"}],
+   "extending-structures":
+   [{"id": "extending-structures",
+     "data":
+     {"title": "Extending structures",
+      "shortTitle": null,
+      "sectionNum": "6.2.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"},
+       {"title": "Extending structures", "shortTitle": null, "number": "5"}]},
+     "address": "/Functional-Programming/"}],
+   "ext-algebraic":
+   [{"id": "ext-algebraic",
+     "data":
+     {"title": "The ext tactic for algebraic structures",
+      "shortTitle": null,
+      "sectionNum": "8.2.7.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "The Algebraic Hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "The ext tactic for algebraic structures",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "exists-sigma":
+   [{"id": "exists-sigma",
+     "data":
+     {"title": "Existential quantifier = dependent pair type (Sigma type)",
+      "shortTitle": null,
+      "sectionNum": "7.1.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Existential quantifier = dependent pair type (Sigma type)",
+        "shortTitle": null,
+        "number": "8"}]},
+     "address": "/Type-Theory/"}],
    "exfalso":
    [{"id": "exfalso",
      "data":
      {"title": "exfalso",
+      "shortTitle": null,
       "sectionNum": "4.14.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "exfalso", "number": "14"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "exfalso", "shortTitle": null, "number": "14"}]},
      "address": "/Tactics/"}],
    "exercises":
    [{"id": "exercises",
      "data":
      {"title": "Exercises",
+      "shortTitle": null,
       "sectionNum": "3.2.6.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Proofs in Lean", "number": "2"},
-       {"title": "Exercises", "number": "6"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"},
+       {"title": "Exercises", "shortTitle": null, "number": "6"}]},
      "address": "/Lean/"}],
+   "excluded-middle":
+   [{"id": "excluded-middle",
+     "data":
+     {"title": "Excluded middle",
+      "shortTitle": null,
+      "sectionNum": "7.3.5.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "Constructive vs classical logic",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Excluded middle", "shortTitle": null, "number": "1"}]},
+     "address": "/Type-Theory/"}],
+   "except-monad":
+   [{"id": "except-monad",
+     "data":
+     {"title": "Error handling with  Except",
+      "shortTitle": null,
+      "sectionNum": "6.4.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "Error handling with  Except",
+        "shortTitle": null,
+        "number": "8"}]},
+     "address": "/Functional-Programming/"}],
    "exact":
    [{"id": "exact",
      "data":
      {"title": "exact",
+      "shortTitle": null,
       "sectionNum": "4.13.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "exact", "number": "13"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "exact", "shortTitle": null, "number": "13"}]},
      "address": "/Tactics/"}],
+   "eventually-frequently":
+   [{"id": "eventually-frequently",
+     "data":
+     {"title": "Filter.Eventually and Filter.Frequently",
+      "shortTitle": null,
+      "sectionNum": "8.3.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"},
+       {"title": "Filter.Eventually and Filter.Frequently",
+        "shortTitle": null,
+        "number": "6"}]},
+     "address": "/Advanced-Mathematics/"}],
    "equality":
    [{"id": "equality",
      "data":
      {"title": "Equality",
+      "shortTitle": null,
       "sectionNum": "3.1.5.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Notes on Lean", "number": "1"},
-       {"title": "Equality", "number": "5"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Notes on Lean", "shortTitle": null, "number": "1"},
+       {"title": "Equality", "shortTitle": null, "number": "5"}]},
      "address": "/Lean/"}],
+   "dot-notation":
+   [{"id": "dot-notation",
+     "data":
+     {"title": "Accessing fields and dot notation",
+      "shortTitle": null,
+      "sectionNum": "6.2.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"},
+       {"title": "Accessing fields and dot notation",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Functional-Programming/"}],
+   "do-notation":
+   [{"id": "do-notation",
+     "data":
+     {"title": "The  do -notation",
+      "shortTitle": null,
+      "sectionNum": "6.4.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "The  do -notation", "shortTitle": null, "number": "3"}]},
+     "address": "/Functional-Programming/"}],
+   "disjunction-sum":
+   [{"id": "disjunction-sum",
+     "data":
+     {"title": "Disjunction = sum type",
+      "shortTitle": null,
+      "sectionNum": "7.1.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Disjunction = sum type", "shortTitle": null, "number": "5"}]},
+     "address": "/Type-Theory/"}],
+   "deriving":
+   [{"id": "deriving",
+     "data":
+     {"title": "Using  deriving",
+      "shortTitle": null,
+      "sectionNum": "6.2.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"},
+       {"title": "Using  deriving", "shortTitle": null, "number": "8"}]},
+     "address": "/Functional-Programming/"}],
+   "dependent-types":
+   [{"id": "dependent-types",
+     "data":
+     {"title": "Dependent Types in Depth",
+      "shortTitle": null,
+      "sectionNum": "7.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Dependent Types in Depth",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Type-Theory/"}],
    "dependent-type-theory":
    [{"id": "dependent-type-theory",
      "data":
      {"title": "Dependent type theory",
+      "shortTitle": null,
       "sectionNum": "3.1.2.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Notes on Lean", "number": "1"},
-       {"title": "Dependent type theory", "number": "2"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Notes on Lean", "shortTitle": null, "number": "1"},
+       {"title": "Dependent type theory", "shortTitle": null, "number": "2"}]},
      "address": "/Lean/"}],
+   "dependent-type-hell":
+   [{"id": "dependent-type-hell",
+     "data":
+     {"title": "Dependent type complications",
+      "shortTitle": null,
+      "sectionNum": "9.3.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Common Pitfalls", "shortTitle": null, "number": "3"},
+       {"title": "Dependent type complications",
+        "shortTitle": null,
+        "number": "6"}]},
+     "address": "/Proof-Engineering/"}],
+   "definitional-equality":
+   [{"id": "definitional-equality",
+     "data":
+     {"title": "Definitional equality surprises",
+      "shortTitle": null,
+      "sectionNum": "9.3.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Common Pitfalls", "shortTitle": null, "number": "3"},
+       {"title": "Definitional equality surprises",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Proof-Engineering/"}],
+   "defining-typeclasses":
+   [{"id": "defining-typeclasses",
+     "data":
+     {"title": "Defining typeclasses",
+      "shortTitle": null,
+      "sectionNum": "6.3.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"},
+       {"title": "Defining typeclasses", "shortTitle": null, "number": "2"}]},
+     "address": "/Functional-Programming/"}],
+   "defining-structures":
+   [{"id": "defining-structures",
+     "data":
+     {"title": "Defining structures",
+      "shortTitle": null,
+      "sectionNum": "6.2.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"},
+       {"title": "Defining structures", "shortTitle": null, "number": "1"}]},
+     "address": "/Functional-Programming/"}],
+   "default-values":
+   [{"id": "default-values",
+     "data":
+     {"title": "Structures with default values",
+      "shortTitle": null,
+      "sectionNum": "6.2.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Structures and Records", "shortTitle": null, "number": "2"},
+       {"title": "Structures with default values",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Functional-Programming/"}],
+   "decide-tactic":
+   [{"id": "decide-tactic",
+     "data":
+     {"title": "The  decide  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  decide  tactic", "shortTitle": null, "number": "4"}]},
+     "address": "/Proof-Engineering/"}],
+   "decidable-typeclass":
+   [{"id": "decidable-typeclass",
+     "data":
+     {"title": "The Decidable typeclass",
+      "shortTitle": null,
+      "sectionNum": "7.3.5.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "Constructive vs classical logic",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "The Decidable typeclass",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Type-Theory/"}],
+   "debugging-tips":
+   [{"id": "debugging-tips",
+     "data":
+     {"title": "Practical debugging tips",
+      "shortTitle": null,
+      "sectionNum": "9.3.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Common Pitfalls", "shortTitle": null, "number": "3"},
+       {"title": "Practical debugging tips",
+        "shortTitle": null,
+        "number": "8"}]},
+     "address": "/Proof-Engineering/"}],
+   "curry-howard-summary":
+   [{"id": "curry-howard-summary",
+     "data":
+     {"title": "Summary table",
+      "shortTitle": null,
+      "sectionNum": "7.1.10.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Summary table", "shortTitle": null, "number": "10"}]},
+     "address": "/Type-Theory/"}],
+   "curry-howard-history":
+   [{"id": "curry-howard-history",
+     "data":
+     {"title": "Historical context",
+      "shortTitle": null,
+      "sectionNum": "7.1.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Historical context", "shortTitle": null, "number": "1"}]},
+     "address": "/Type-Theory/"}],
+   "curry-howard":
+   [{"id": "curry-howard",
+     "data":
+     {"title": "The Curry-Howard Correspondence",
+      "shortTitle": null,
+      "sectionNum": "7.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Type-Theory/"}],
+   "creating-instances":
+   [{"id": "creating-instances",
+     "data":
+     {"title": "Creating instances",
+      "shortTitle": null,
+      "sectionNum": "6.3.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"},
+       {"title": "Creating instances", "shortTitle": null, "number": "3"}]},
+     "address": "/Functional-Programming/"}],
+   "convergence-theorems":
+   [{"id": "convergence-theorems",
+     "data":
+     {"title": "Convergence theorems",
+      "shortTitle": null,
+      "sectionNum": "8.5.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Convergence theorems", "shortTitle": null, "number": "6"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "continuity-tendsto":
+   [{"id": "continuity-tendsto",
+     "data":
+     {"title": "Continuity via Tendsto",
+      "shortTitle": null,
+      "sectionNum": "8.4.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "Continuity via Tendsto", "shortTitle": null, "number": "4"}]},
+     "address": "/Advanced-Mathematics/"}],
    "constructor":
    [{"id": "constructor",
      "data":
      {"title": "constructor",
+      "shortTitle": null,
       "sectionNum": "4.12.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "constructor", "number": "12"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "constructor", "shortTitle": null, "number": "12"}]},
      "address": "/Tactics/"}],
+   "constructive-classical":
+   [{"id": "constructive-classical",
+     "data":
+     {"title": "Constructive vs classical logic",
+      "shortTitle": null,
+      "sectionNum": "7.3.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "Constructive vs classical logic",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Type-Theory/"}],
+   "connected-spaces":
+   [{"id": "connected-spaces",
+     "data":
+     {"title": "Connected spaces",
+      "shortTitle": null,
+      "sectionNum": "8.4.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "Connected spaces", "shortTitle": null, "number": "6"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "conjunction-product":
+   [{"id": "conjunction-product",
+     "data":
+     {"title": "Conjunction = product type",
+      "shortTitle": null,
+      "sectionNum": "7.1.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "The Curry-Howard Correspondence",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Conjunction = product type",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Type-Theory/"}],
    "congr":
    [{"id": "congr",
      "data":
      {"title": "congr",
+      "shortTitle": null,
       "sectionNum": "4.11.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "congr", "number": "11"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "congr", "shortTitle": null, "number": "11"}]},
      "address": "/Tactics/"}],
+   "conditional-expectation":
+   [{"id": "conditional-expectation",
+     "data":
+     {"title": "Conditional expectation",
+      "shortTitle": null,
+      "sectionNum": "8.5.9.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Conditional expectation",
+        "shortTitle": null,
+        "number": "9"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "complete-lattices":
+   [{"id": "complete-lattices",
+     "data":
+     {"title": "Complete lattices",
+      "shortTitle": null,
+      "sectionNum": "8.1.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Orders, Lattices, and Complete Lattices",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Complete lattices", "shortTitle": null, "number": "4"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "comparison-zfc":
+   [{"id": "comparison-zfc",
+     "data":
+     {"title": "Comparison with ZFC set theory",
+      "shortTitle": null,
+      "sectionNum": "7.3.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "Comparison with ZFC set theory",
+        "shortTitle": null,
+        "number": "6"}]},
+     "address": "/Type-Theory/"}],
+   "compact-spaces":
+   [{"id": "compact-spaces",
+     "data":
+     {"title": "Compact spaces",
+      "shortTitle": null,
+      "sectionNum": "8.4.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Topology via Filters", "shortTitle": null, "number": "4"},
+       {"title": "Compact spaces", "shortTitle": null, "number": "5"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "common-pitfalls":
+   [{"id": "common-pitfalls",
+     "data":
+     {"title": "Common Pitfalls",
+      "shortTitle": null,
+      "sectionNum": "9.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Common Pitfalls", "shortTitle": null, "number": "3"}]},
+     "address": "/Proof-Engineering/"}],
+   "common-patterns":
+   [{"id": "common-patterns",
+     "data":
+     {"title": "Common patterns in Mathlib proofs",
+      "shortTitle": null,
+      "sectionNum": "9.2.10.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "Common patterns in Mathlib proofs",
+        "shortTitle": null,
+        "number": "10"}]},
+     "address": "/Proof-Engineering/"}],
+   "coercion-headaches":
+   [{"id": "coercion-headaches",
+     "data":
+     {"title": "Coercion headaches",
+      "shortTitle": null,
+      "sectionNum": "9.3.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Common Pitfalls", "shortTitle": null, "number": "3"},
+       {"title": "Coercion headaches", "shortTitle": null, "number": "2"}]},
+     "address": "/Proof-Engineering/"}],
    "clear":
    [{"id": "clear",
      "data":
      {"title": "clear",
+      "shortTitle": null,
       "sectionNum": "4.10.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "clear", "number": "10"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "clear", "shortTitle": null, "number": "10"}]},
      "address": "/Tactics/"}],
+   "choosing-tactics":
+   [{"id": "choosing-tactics",
+     "data":
+     {"title": "Choosing the right tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.12.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "Choosing the right tactic",
+        "shortTitle": null,
+        "number": "12"}]},
+     "address": "/Proof-Engineering/"}],
+   "check-print-search":
+   [{"id": "check-print-search",
+     "data":
+     {"title": "Using  #check ,  #print , and  #search",
+      "shortTitle": null,
+      "sectionNum": "9.2.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Navigating Mathlib", "shortTitle": null, "number": "2"},
+       {"title": "Using  #check ,  #print , and  #search",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Proof-Engineering/"}],
    "cheatsheet":
    [{"id": "cheatsheet",
      "data":
      {"title": "Tactics Cheatsheet",
+      "shortTitle": null,
       "sectionNum": "4.1.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "Tactics Cheatsheet", "number": "1"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "Tactics Cheatsheet", "shortTitle": null, "number": "1"}]},
      "address": "/Tactics/"}],
    "change":
    [{"id": "change",
      "data":
      {"title": "change",
+      "shortTitle": null,
       "sectionNum": "4.9.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "change", "number": "9"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "change", "shortTitle": null, "number": "9"}]},
      "address": "/Tactics/"}],
    "cases":
    [{"id": "cases",
      "data":
      {"title": "cases'",
+      "shortTitle": null,
       "sectionNum": "4.8.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "cases'", "number": "8"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "cases'", "shortTitle": null, "number": "8"}]},
      "address": "/Tactics/"}],
    "calc":
    [{"id": "calc",
      "data":
      {"title": "calc",
+      "shortTitle": null,
       "sectionNum": "4.7.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "calc", "number": "7"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "calc", "shortTitle": null, "number": "7"}]},
      "address": "/Tactics/"}],
    "by_contra":
    [{"id": "by_contra",
      "data":
      {"title": "by_contra",
+      "shortTitle": null,
       "sectionNum": "4.6.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "by_contra", "number": "6"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "by_contra", "shortTitle": null, "number": "6"}]},
      "address": "/Tactics/"}],
    "by_cases":
    [{"id": "by_cases",
      "data":
      {"title": "by_cases",
+      "shortTitle": null,
       "sectionNum": "4.5.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "by_cases", "number": "5"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "by_cases", "shortTitle": null, "number": "5"}]},
      "address": "/Tactics/"}],
+   "bind-operation":
+   [{"id": "bind-operation",
+     "data":
+     {"title": "The  Bind  operation",
+      "shortTitle": null,
+      "sectionNum": "6.4.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Monads and Computation Patterns",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "The  Bind  operation", "shortTitle": null, "number": "2"}]},
+     "address": "/Functional-Programming/"}],
+   "axiom-quot":
+   [{"id": "axiom-quot",
+     "data":
+     {"title": "The axiom of quotients",
+      "shortTitle": null,
+      "sectionNum": "7.3.4.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "The axioms of Lean", "shortTitle": null, "number": "4"},
+       {"title": "The axiom of quotients", "shortTitle": null, "number": "3"}]},
+     "address": "/Type-Theory/"}],
+   "axiom-propext":
+   [{"id": "axiom-propext",
+     "data":
+     {"title": "Propositional extensionality ( propext )",
+      "shortTitle": null,
+      "sectionNum": "7.3.4.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "The axioms of Lean", "shortTitle": null, "number": "4"},
+       {"title": "Propositional extensionality ( propext )",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Type-Theory/"}],
+   "axiom-funext":
+   [{"id": "axiom-funext",
+     "data":
+     {"title": "Function extensionality ( funext )",
+      "shortTitle": null,
+      "sectionNum": "7.3.4.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "The axioms of Lean", "shortTitle": null, "number": "4"},
+       {"title": "Function extensionality ( funext )",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Type-Theory/"}],
+   "axiom-choice":
+   [{"id": "axiom-choice",
+     "data":
+     {"title": "The axiom of choice ( Classical.choice )",
+      "shortTitle": null,
+      "sectionNum": "7.3.4.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Type Theory", "shortTitle": null, "number": "7"},
+       {"title": "Universes, Axioms, and Foundations",
+        "shortTitle": null,
+        "number": "3"},
+       {"title": "The axioms of Lean", "shortTitle": null, "number": "4"},
+       {"title": "The axiom of choice ( Classical.choice )",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Type-Theory/"}],
+   "atTop-filter":
+   [{"id": "atTop-filter",
+     "data":
+     {"title": "The atTop filter",
+      "shortTitle": null,
+      "sectionNum": "8.3.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Filters in Mathlib", "shortTitle": null, "number": "3"},
+       {"title": "The atTop filter", "shortTitle": null, "number": "4"}]},
+     "address": "/Advanced-Mathematics/"}],
    "assumption":
    [{"id": "assumption",
      "data":
      {"title": "assumption",
+      "shortTitle": null,
       "sectionNum": "4.4.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "assumption", "number": "4"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "assumption", "shortTitle": null, "number": "4"}]},
      "address": "/Tactics/"}],
-   "apply?":
+   "apply___":
    [{"id": "apply___",
      "data":
      {"title": "apply?",
+      "shortTitle": null,
       "sectionNum": "4.3.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "apply?", "number": "3"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "apply?", "shortTitle": null, "number": "3"}]},
      "address": "/Tactics/"}],
    "apply":
    [{"id": "apply",
      "data":
      {"title": "apply",
+      "shortTitle": null,
       "sectionNum": "4.2.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Tactics", "number": "4"},
-       {"title": "apply", "number": "2"}]},
+       {"title": "Tactics", "shortTitle": null, "number": "4"},
+       {"title": "apply", "shortTitle": null, "number": "2"}]},
      "address": "/Tactics/"}],
+   "anonymous-functions":
+   [{"id": "anonymous-functions",
+     "data":
+     {"title": "Anonymous functions",
+      "shortTitle": null,
+      "sectionNum": "6.1.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "Basics of Functional Programming",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Anonymous functions", "shortTitle": null, "number": "2"}]},
+     "address": "/Functional-Programming/"}],
+   "algebraic-hierarchy-mathlib":
+   [{"id": "algebraic-hierarchy-mathlib",
+     "data":
+     {"title": "The Algebraic Hierarchy in Mathlib",
+      "shortTitle": null,
+      "sectionNum": "8.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "The Algebraic Hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "algebraic-hierarchy":
+   [{"id": "algebraic-hierarchy",
+     "data":
+     {"title": "The algebraic hierarchy in Mathlib",
+      "shortTitle": null,
+      "sectionNum": "6.3.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Functional Programming", "shortTitle": null, "number": "6"},
+       {"title": "The Typeclass System", "shortTitle": null, "number": "3"},
+       {"title": "The algebraic hierarchy in Mathlib",
+        "shortTitle": null,
+        "number": "6"}]},
+     "address": "/Functional-Programming/"}],
+   "aesop-tactic":
+   [{"id": "aesop-tactic",
+     "data":
+     {"title": "The  aesop  tactic",
+      "shortTitle": null,
+      "sectionNum": "9.1.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Proof Engineering", "shortTitle": null, "number": "9"},
+       {"title": "Proof Automation", "shortTitle": null, "number": "1"},
+       {"title": "The  aesop  tactic", "shortTitle": null, "number": "2"}]},
+     "address": "/Proof-Engineering/"}],
+   "ae-filter":
+   [{"id": "ae-filter",
+     "data":
+     {"title": "Almost everywhere and ae-filter",
+      "shortTitle": null,
+      "sectionNum": "8.5.8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"},
+       {"title": "Measure Theory in Mathlib",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Almost everywhere and ae-filter",
+        "shortTitle": null,
+        "number": "8"}]},
+     "address": "/Advanced-Mathematics/"}],
+   "advanced-mathematics":
+   [{"id": "advanced-mathematics",
+     "data":
+     {"title": "Advanced Mathematics",
+      "shortTitle": null,
+      "sectionNum": "8.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Advanced Mathematics", "shortTitle": null, "number": "8"}]},
+     "address": "/Advanced-Mathematics/"}],
    "abreviation":
    [{"id": "abreviation",
      "data":
      {"title": "Two abbreviations",
+      "shortTitle": null,
       "sectionNum": "3.1.8.",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null},
-       {"title": "Lean", "number": "3"},
-       {"title": "Notes on Lean", "number": "1"},
-       {"title": "Two abbreviations", "number": "8"}]},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Notes on Lean", "shortTitle": null, "number": "1"},
+       {"title": "Two abbreviations", "shortTitle": null, "number": "8"}]},
+     "address": "/Lean/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Table-of-Contents":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Table-of-Contents",
+     "data":
+     {"title": "Table of Contents",
+      "shortTitle": null,
+      "sectionNum": "1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Table of Contents", "shortTitle": null, "number": "1"}]},
+     "address": "/Table-of-Contents/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--There-is-only-one-prime-triplet-_LPAR_Patrick-Nasdala___-Max-Lehr_RPAR_":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--There-is-only-one-prime-triplet-_LPAR_Patrick-Nasdala___-Max-Lehr_RPAR_",
+     "data":
+     {"title": "There is only one prime triplet (Patrick Nasdala, Max Lehr)",
+      "shortTitle": null,
+      "sectionNum": "5.5.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Projects", "shortTitle": null, "number": "5"},
+       {"title": "There is only one prime triplet (Patrick Nasdala, Max Lehr)",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Projects/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--Path-connected-spaces-_LPAR_Jasper-Ganten_RPAR_":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--Path-connected-spaces-_LPAR_Jasper-Ganten_RPAR_",
+     "data":
+     {"title": "Path-connected spaces (Jasper Ganten)",
+      "shortTitle": null,
+      "sectionNum": "5.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Projects", "shortTitle": null, "number": "5"},
+       {"title": "Path-connected spaces (Jasper Ganten)",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Projects/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--Own-addition-on-___-_LPAR_Adrian-Eckstein-und-Debora-Ortlieb_RPAR_":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--Own-addition-on-___-_LPAR_Adrian-Eckstein-und-Debora-Ortlieb_RPAR_",
+     "data":
+     {"title": "Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)",
+      "shortTitle": null,
+      "sectionNum": "5.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Projects", "shortTitle": null, "number": "5"},
+       {"title": "Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Projects/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--Induction-_LPAR_Luis-Jaschke-und-Felicitas-Kissel_RPAR_":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--Induction-_LPAR_Luis-Jaschke-und-Felicitas-Kissel_RPAR_",
+     "data":
+     {"title": "Induction (Luis Jaschke und Felicitas Kissel)",
+      "shortTitle": null,
+      "sectionNum": "5.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Projects", "shortTitle": null, "number": "5"},
+       {"title": "Induction (Luis Jaschke und Felicitas Kissel)",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Projects/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--An-equivalence-on-sets-_LPAR_Emma-Reichel___-Luisa-Caspary_RPAR_":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--An-equivalence-on-sets-_LPAR_Emma-Reichel___-Luisa-Caspary_RPAR_",
+     "data":
+     {"title": "An equivalence on sets (Emma Reichel, Luisa Caspary)",
+      "shortTitle": null,
+      "sectionNum": "5.6.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Projects", "shortTitle": null, "number": "5"},
+       {"title": "An equivalence on sets (Emma Reichel, Luisa Caspary)",
+        "shortTitle": null,
+        "number": "6"}]},
+     "address": "/Projects/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--A-homomorphism-is-injective-iff-its-kernel-is-trivial-_LPAR_Moritz-Gra___nitzer___-Natalie-Jahnes_RPAR_":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Projects--A-homomorphism-is-injective-iff-its-kernel-is-trivial-_LPAR_Moritz-Gra___nitzer___-Natalie-Jahnes_RPAR_",
+     "data":
+     {"title":
+      "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)",
+      "shortTitle": null,
+      "sectionNum": "5.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Projects", "shortTitle": null, "number": "5"},
+       {"title":
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Projects/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Lean--Proofs-in-Lean--First-steps--intro-___--exact-___--apply--and--rw":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Lean--Proofs-in-Lean--First-steps--intro-___--exact-___--apply--and--rw",
+     "data":
+     {"title": "intro ,  exact ,  apply  and  rw",
+      "shortTitle": null,
+      "sectionNum": "3.2.3.1.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"},
+       {"title": "First steps", "shortTitle": null, "number": "3"},
+       {"title": "intro ,  exact ,  apply  and  rw",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Lean/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Lean--Proofs-in-Lean--First-steps--have-___--refine-___-and--use":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Lean--Proofs-in-Lean--First-steps--have-___--refine-___-and--use",
+     "data":
+     {"title": "have ,  refine , and  use",
+      "shortTitle": null,
+      "sectionNum": "3.2.3.3.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"},
+       {"title": "First steps", "shortTitle": null, "number": "3"},
+       {"title": "have ,  refine , and  use",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Lean/"}],
+   "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Lean--Proofs-in-Lean--First-steps--apply___--and--simp":
+   [{"id":
+     "Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Lean--Proofs-in-Lean--First-steps--apply___--and--simp",
+     "data":
+     {"title": "apply?  and  simp",
+      "shortTitle": null,
+      "sectionNum": "3.2.3.2.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lean", "shortTitle": null, "number": "3"},
+       {"title": "Proofs in Lean", "shortTitle": null, "number": "2"},
+       {"title": "First steps", "shortTitle": null, "number": "3"},
+       {"title": "apply?  and  simp", "shortTitle": null, "number": "2"}]},
      "address": "/Lean/"}],
    "ITPFr":
    [{"id": "ITPFr",
      "data":
-     {"title": "Interactive Theorem Proving using Lean, Summer 2025",
+     {"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+      "shortTitle": null,
       "sectionNum": "",
       "context":
-      [{"title": "Interactive Theorem Proving using Lean, Summer 2025",
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
         "number": null}]},
      "address": "/"}]}},
  "Verso.Genre.Manual.example":
  {"title": "Verso.Genre.Manual.example",
   "description": null,
   "contents":
-  {"star": [{"id": "star", "data": null, "address": "/Projects/"}],
-   "pt_forward": [{"id": "div3", "data": null, "address": "/Projects/"}],
-   "pt_backward": [{"id": "div3", "data": null, "address": "/Projects/"}],
-   "prime_tripple": [{"id": "div3", "data": null, "address": "/Projects/"}],
+  {"tripleIt":
+   [{"id": "tripleIt",
+     "data":
+     {"/Functional-Programming/#tripleIt":
+      {"display": "tripleIt",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "The square bracket notation"]}},
+     "address": "/Functional-Programming/"}],
+   "ten":
+   [{"id": "ten",
+     "data":
+     {"/Type-Theory/#ten":
+      {"display": "ten",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Subtypes"]}},
+     "address": "/Type-Theory/"}],
+   "star":
+   [{"id": "star",
+     "data":
+     {"/Projects/#star":
+      {"display": "star",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)"]}},
+     "address": "/Projects/"}],
+   "sigmaExample":
+   [{"id": "sigmaExample",
+     "data":
+     {"/Type-Theory/#sigmaExample":
+      {"display": "sigmaExample",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Difference between Sigma and Exists"]}},
+     "address": "/Type-Theory/"}],
+   "seven":
+   [{"id": "seven",
+     "data":
+     {"/Type-Theory/#seven":
+      {"display": "seven",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Subtypes"]}},
+     "address": "/Type-Theory/"}],
+   "safeDivideE":
+   [{"id": "safeDivideE",
+     "data":
+     {"/Functional-Programming/#safeDivideE":
+      {"display": "safeDivideE",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "Error handling with  Except"]}},
+     "address": "/Functional-Programming/"}],
+   "safeDivide":
+   [{"id": "safeDivide",
+     "data":
+     {"/Functional-Programming/#safeDivide":
+      {"display": "safeDivide",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "The problem: chaining computations that may fail"]}},
+     "address": "/Functional-Programming/"}],
+   "safeDiv":
+   [{"id": "safeDiv",
+     "data":
+     {"/Type-Theory/#safeDiv":
+      {"display": "safeDiv",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Why dependent types matter"]}},
+     "address": "/Type-Theory/"}],
+   "q":
+   [{"id": "q",
+     "data":
+     {"/Functional-Programming/#q":
+      {"display": "q",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Extending structures"]}},
+     "address": "/Functional-Programming/"}],
+   "pt_forward":
+   [{"id": "pt_forward",
+     "data":
+     {"/Projects/#pt_forward":
+      {"display": "pt_forward",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "There is only one prime triplet (Patrick Nasdala, Max Lehr)"]}},
+     "address": "/Projects/"}],
+   "pt_backward":
+   [{"id": "pt_backward",
+     "data":
+     {"/Projects/#pt_backward":
+      {"display": "pt_backward",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "There is only one prime triplet (Patrick Nasdala, Max Lehr)"]}},
+     "address": "/Projects/"}],
+   "prime_tripple":
+   [{"id": "prime_tripple",
+     "data":
+     {"/Projects/#prime_tripple":
+      {"display": "prime_tripple",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "There is only one prime triplet (Patrick Nasdala, Max Lehr)"]}},
+     "address": "/Projects/"}],
+   "polyId":
+   [{"id": "polyId",
+     "data":
+     {"/Type-Theory/#polyId":
+      {"display": "polyId",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Pi types: dependent function types"]}},
+     "address": "/Type-Theory/"}],
    "pathConnected_iff":
-   [{"id": "IsPathConnected___", "data": null, "address": "/Projects/"}],
+   [{"id": "pathConnected_iff",
+     "data":
+     {"/Projects/#pathConnected_iff":
+      {"display": "pathConnected_iff",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "Path-connected spaces (Jasper Ganten)"]}},
+     "address": "/Projects/"}],
+   "pairs":
+   [{"id": "pairs",
+     "data":
+     {"/Functional-Programming/#pairs":
+      {"display": "pairs",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "Lists as a monad"]}},
+     "address": "/Functional-Programming/"}],
+   "p3":
+   [{"id": "p3",
+     "data":
+     {"/Functional-Programming/#p3":
+      {"display": "p3",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Updating structures"]}},
+     "address": "/Functional-Programming/"}],
+   "p2":
+   [{"id": "p2",
+     "data":
+     {"/Functional-Programming/#p2":
+      {"display": "p2",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Defining structures"]}},
+     "address": "/Functional-Programming/"}],
+   "p1":
+   [{"id": "p1",
+     "data":
+     {"/Functional-Programming/#p1":
+      {"display": "p1",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Defining structures"]}},
+     "address": "/Functional-Programming/"}],
    "our_unique_inv_inv":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_unique_inv_inv",
+     "data":
+     {"/Projects/#our_unique_inv_inv":
+      {"display": "our_unique_inv_inv",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_unique_inv":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_unique_inv",
+     "data":
+     {"/Projects/#our_unique_inv":
+      {"display": "our_unique_inv",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group.uni":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_Group___uni",
+     "data":
+     {"/Projects/#our_Group___uni":
+      {"display": "uni",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group.one_mul":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_Group___one_mul",
+     "data":
+     {"/Projects/#our_Group___one_mul":
+      {"display": "one_mul",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group.one":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_Group___one",
+     "data":
+     {"/Projects/#our_Group___one":
+      {"display": "one",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group.mul_one":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_Group___mul_one",
+     "data":
+     {"/Projects/#our_Group___mul_one":
+      {"display": "mul_one",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group.mul_inv":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_Group___mul_inv",
+     "data":
+     {"/Projects/#our_Group___mul_inv":
+      {"display": "mul_inv",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group.mul_assoc":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_Group___mul_assoc",
+     "data":
+     {"/Projects/#our_Group___mul_assoc":
+      {"display": "mul_assoc",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group.mul":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_Group___mul",
+     "data":
+     {"/Projects/#our_Group___mul":
+      {"display": "mul",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group.inv_mul":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_Group___inv_mul",
+     "data":
+     {"/Projects/#our_Group___inv_mul":
+      {"display": "inv_mul",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group.inv":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
+   [{"id": "our_Group___inv",
+     "data":
+     {"/Projects/#our_Group___inv":
+      {"display": "inv",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
    "our_Group":
-   [{"id": "our_unique_inv_inv", "data": null, "address": "/Projects/"}],
-   "nat.zero": [{"id": "nat___succ", "data": null, "address": "/Tactics/"}],
-   "nat.succ": [{"id": "nat___succ", "data": null, "address": "/Tactics/"}],
-   "nat": [{"id": "nat___succ", "data": null, "address": "/Tactics/"}],
+   [{"id": "our_Group",
+     "data":
+     {"/Projects/#our_Group":
+      {"display": "our_Group",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "A homomorphism is injective iff its kernel is trivial (Moritz Graßnitzer, Natalie Jahnes)"]}},
+     "address": "/Projects/"}],
+   "origin":
+   [{"id": "origin",
+     "data":
+     {"/Functional-Programming/#origin":
+      {"display": "origin",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Defining structures"]}},
+     "address": "/Functional-Programming/"}],
+   "oneComplex":
+   [{"id": "oneComplex",
+     "data":
+     {"/Functional-Programming/#oneComplex":
+      {"display": "oneComplex",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "nat.zero":
+   [{"id": "nat___zero",
+     "data":
+     {"/Tactics/#nat___zero":
+      {"display": "zero",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Tactics",
+        "left"]}},
+     "address": "/Tactics/"}],
+   "nat.succ":
+   [{"id": "nat___succ",
+     "data":
+     {"/Tactics/#nat___succ":
+      {"display": "succ",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Tactics",
+        "left"]}},
+     "address": "/Tactics/"}],
+   "nat":
+   [{"id": "nat",
+     "data":
+     {"/Tactics/#nat":
+      {"display": "nat",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Tactics",
+        "left"]}},
+     "address": "/Tactics/"}],
    "my_task":
-   [{"id": "IsPathConnected___", "data": null, "address": "/Projects/"}],
-   "mySubtype.mk":
-   [{"id": "mySubtype___mk", "data": null, "address": "/Tactics/"}],
-   "lem2": [{"id": "div3", "data": null, "address": "/Projects/"}],
-   "lem1": [{"id": "div3", "data": null, "address": "/Projects/"}],
-   "goldbach": [{"id": "goldbach", "data": null, "address": "/Lean/"}],
-   "f": [{"id": "f", "data": null, "address": "/Lean/"}],
-   "div3": [{"id": "div3", "data": null, "address": "/Projects/"}],
+   [{"id": "my_task",
+     "data":
+     {"/Projects/#my_task":
+      {"display": "my_task",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "Path-connected spaces (Jasper Ganten)"]}},
+     "address": "/Projects/"}],
+   "myVec":
+   [{"id": "myVec",
+     "data":
+     {"/Type-Theory/#myVec":
+      {"display": "myVec",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Vectors indexed by length"]}},
+     "address": "/Type-Theory/"}],
+   "mySubtype.mk (in  )":
+   [{"id": "mySubtype___mk-_LPAR_in--_RPAR_",
+     "data":
+     {"/Tactics/#mySubtype___mk-_LPAR_in--_RPAR_":
+      {"display": "mySubtype.mk",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Tactics",
+        "constructor",
+        " "]}},
+     "address": "/Tactics/"}],
+   "myMatrix":
+   [{"id": "myMatrix",
+     "data":
+     {"/Type-Theory/#myMatrix":
+      {"display": "myMatrix",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Matrices as dependent types"]}},
+     "address": "/Type-Theory/"}],
+   "myMain":
+   [{"id": "myMain",
+     "data":
+     {"/Functional-Programming/#myMain":
+      {"display": "myMain",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "The  IO  monad"]}},
+     "address": "/Functional-Programming/"}],
+   "myLength":
+   [{"id": "myLength",
+     "data":
+     {"/Functional-Programming/#myLength":
+      {"display": "myLength",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Recursion and structural recursion"]}},
+     "address": "/Functional-Programming/"}],
+   "myId'":
+   [{"id": "myId___",
+     "data":
+     {"/Type-Theory/#myId___":
+      {"display": "myId'",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Universes, Axioms, and Foundations",
+        "Universe polymorphism"]}},
+     "address": "/Type-Theory/"}],
+   "myConfig":
+   [{"id": "myConfig",
+     "data":
+     {"/Functional-Programming/#myConfig":
+      {"display": "myConfig",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Structures with default values"]}},
+     "address": "/Functional-Programming/"}],
+   "myCompose":
+   [{"id": "myCompose",
+     "data":
+     {"/Functional-Programming/#myCompose":
+      {"display": "myCompose",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Higher-order functions"]}},
+     "address": "/Functional-Programming/"}],
+   "myBind":
+   [{"id": "myBind",
+     "data":
+     {"/Functional-Programming/#myBind":
+      {"display": "myBind",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "The  Bind  operation"]}},
+     "address": "/Functional-Programming/"}],
+   "myAnd":
+   [{"id": "myAnd",
+     "data":
+     {"/Functional-Programming/#myAnd":
+      {"display": "myAnd",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Pattern matching and  match"]}},
+     "address": "/Functional-Programming/"}],
+   "multiDivide":
+   [{"id": "multiDivide",
+     "data":
+     {"/Functional-Programming/#multiDivide":
+      {"display": "multiDivide",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "The  do -notation"]}},
+     "address": "/Functional-Programming/"}],
+   "lem2":
+   [{"id": "lem2",
+     "data":
+     {"/Projects/#lem2":
+      {"display": "lem2",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "There is only one prime triplet (Patrick Nasdala, Max Lehr)"]}},
+     "address": "/Projects/"}],
+   "lem1":
+   [{"id": "lem1",
+     "data":
+     {"/Projects/#lem1":
+      {"display": "lem1",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "There is only one prime triplet (Patrick Nasdala, Max Lehr)"]}},
+     "address": "/Projects/"}],
+   "iterate":
+   [{"id": "iterate",
+     "data":
+     {"/Functional-Programming/#iterate":
+      {"display": "iterate",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Higher-order functions"]}},
+     "address": "/Functional-Programming/"}],
+   "isZero":
+   [{"id": "isZero",
+     "data":
+     {"/Functional-Programming/#isZero":
+      {"display": "isZero",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Pattern matching and  match"]}},
+     "address": "/Functional-Programming/"}],
+   "i":
+   [{"id": "i",
+     "data":
+     {"/Functional-Programming/#i":
+      {"display": "i",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "greet":
+   [{"id": "greet",
+     "data":
+     {"/Functional-Programming/#greet":
+      {"display": "greet",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "The  IO  monad"]}},
+     "address": "/Functional-Programming/"}],
+   "goldbach":
+   [{"id": "goldbach",
+     "data":
+     {"/Lean/#goldbach":
+      {"display": "goldbach",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Lean",
+        "Proofs in Lean",
+        "Foundation"]}},
+     "address": "/Lean/"}],
+   "fiberExample":
+   [{"id": "fiberExample",
+     "data":
+     {"/Type-Theory/#fiberExample":
+      {"display": "fiberExample",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Type families"]}},
+     "address": "/Type-Theory/"}],
+   "fiber":
+   [{"id": "fiber",
+     "data":
+     {"/Type-Theory/#fiber":
+      {"display": "fiber",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Type families"]}},
+     "address": "/Type-Theory/"}],
+   "fib":
+   [{"id": "fib",
+     "data":
+     {"/Functional-Programming/#fib":
+      {"display": "fib",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Recursion and structural recursion"]}},
+     "address": "/Functional-Programming/"}],
+   "failingComputation":
+   [{"id": "failingComputation",
+     "data":
+     {"/Functional-Programming/#failingComputation":
+      {"display": "failingComputation",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "Error handling with  Except"]}},
+     "address": "/Functional-Programming/"}],
+   "factorial":
+   [{"id": "factorial",
+     "data":
+     {"/Functional-Programming/#factorial":
+      {"display": "factorial",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Recursion and structural recursion"]}},
+     "address": "/Functional-Programming/"}],
+   "f":
+   [{"id": "f",
+     "data":
+     {"/Lean/#f":
+      {"display": "f",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Lean",
+        "Notes on Lean",
+        "Function definitions"]}},
+     "address": "/Lean/"}],
+   "exampleSigma":
+   [{"id": "exampleSigma",
+     "data":
+     {"/Type-Theory/#exampleSigma":
+      {"display": "exampleSigma",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Sigma types: dependent pair types"]}},
+     "address": "/Type-Theory/"}],
+   "doubleIt":
+   [{"id": "doubleIt",
+     "data":
+     {"/Functional-Programming/#doubleIt":
+      {"display": "doubleIt",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "The square bracket notation"]}},
+     "address": "/Functional-Programming/"}],
+   "double":
+   [{"id": "double",
+     "data":
+     {"/Functional-Programming/#double":
+      {"display": "double",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Pure functions"]}},
+     "address": "/Functional-Programming/"}],
+   "div3":
+   [{"id": "div3",
+     "data":
+     {"/Projects/#div3":
+      {"display": "div3",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "There is only one prime triplet (Patrick Nasdala, Max Lehr)"]}},
+     "address": "/Projects/"}],
+   "counter":
+   [{"id": "counter",
+     "data":
+     {"/Functional-Programming/#counter":
+      {"display": "counter",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "Stateful computation with  StateM"]}},
+     "address": "/Functional-Programming/"}],
+   "countThree":
+   [{"id": "countThree",
+     "data":
+     {"/Functional-Programming/#countThree":
+      {"display": "countThree",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "Stateful computation with  StateM"]}},
+     "address": "/Functional-Programming/"}],
+   "computation":
+   [{"id": "computation",
+     "data":
+     {"/Functional-Programming/#computation":
+      {"display": "computation",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "Error handling with  Except"]}},
+     "address": "/Functional-Programming/"}],
+   "chainDivideDo":
+   [{"id": "chainDivideDo",
+     "data":
+     {"/Functional-Programming/#chainDivideDo":
+      {"display": "chainDivideDo",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "The  do -notation"]}},
+     "address": "/Functional-Programming/"}],
+   "chainDivide'":
+   [{"id": "chainDivide___",
+     "data":
+     {"/Functional-Programming/#chainDivide___":
+      {"display": "chainDivide'",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "The  Bind  operation"]}},
+     "address": "/Functional-Programming/"}],
+   "chainDivide":
+   [{"id": "chainDivide",
+     "data":
+     {"/Functional-Programming/#chainDivide":
+      {"display": "chainDivide",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Monads and Computation Patterns",
+        "The problem: chaining computations that may fail"]}},
+     "address": "/Functional-Programming/"}],
+   "boolFamilyExample":
+   [{"id": "boolFamilyExample",
+     "data":
+     {"/Type-Theory/#boolFamilyExample":
+      {"display": "boolFamilyExample",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Type families"]}},
+     "address": "/Type-Theory/"}],
+   "allPositiveSucc":
+   [{"id": "allPositiveSucc",
+     "data":
+     {"/Type-Theory/#allPositiveSucc":
+      {"display": "allPositiveSucc",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Pi types: dependent function types"]}},
+     "address": "/Type-Theory/"}],
+   "alice":
+   [{"id": "alice",
+     "data":
+     {"/Functional-Programming/#alice":
+      {"display": "alice",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Using  deriving"]}},
+     "address": "/Functional-Programming/"}],
+   "add":
+   [{"id": "add",
+     "data":
+     {"/Functional-Programming/#add":
+      {"display": "add",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Pure functions"]}},
+     "address": "/Functional-Programming/"}],
+   "Vec2.y":
+   [{"id": "Vec2___y",
+     "data":
+     {"/Functional-Programming/#Vec2___y":
+      {"display": "y",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "Creating instances"]}},
+     "address": "/Functional-Programming/"}],
+   "Vec2.x":
+   [{"id": "Vec2___x",
+     "data":
+     {"/Functional-Programming/#Vec2___x":
+      {"display": "x",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "Creating instances"]}},
+     "address": "/Functional-Programming/"}],
+   "Vec2":
+   [{"id": "Vec2",
+     "data":
+     {"/Functional-Programming/#Vec2":
+      {"display": "Vec2",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "Creating instances"]}},
+     "address": "/Functional-Programming/"}],
+   "Student.name":
+   [{"id": "Student___name",
+     "data":
+     {"/Functional-Programming/#Student___name":
+      {"display": "name",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Using  deriving"]}},
+     "address": "/Functional-Programming/"}],
+   "Student.age":
+   [{"id": "Student___age",
+     "data":
+     {"/Functional-Programming/#Student___age":
+      {"display": "age",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Using  deriving"]}},
+     "address": "/Functional-Programming/"}],
+   "Student":
+   [{"id": "Student",
+     "data":
+     {"/Functional-Programming/#Student":
+      {"display": "Student",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Using  deriving"]}},
+     "address": "/Functional-Programming/"}],
+   "Point3D.z":
+   [{"id": "Point3D___z",
+     "data":
+     {"/Functional-Programming/#Point3D___z":
+      {"display": "z",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Extending structures"]}},
+     "address": "/Functional-Programming/"}],
+   "Point3D":
+   [{"id": "Point3D",
+     "data":
+     {"/Functional-Programming/#Point3D":
+      {"display": "Point3D",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Extending structures"]}},
+     "address": "/Functional-Programming/"}],
+   "Point.y":
+   [{"id": "Point___y",
+     "data":
+     {"/Functional-Programming/#Point___y":
+      {"display": "y",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Defining structures"]}},
+     "address": "/Functional-Programming/"}],
+   "Point.x":
+   [{"id": "Point___x",
+     "data":
+     {"/Functional-Programming/#Point___x":
+      {"display": "x",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Defining structures"]}},
+     "address": "/Functional-Programming/"}],
+   "Point.translate":
+   [{"id": "Point___translate",
+     "data":
+     {"/Functional-Programming/#Point___translate":
+      {"display": "translate",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Namespaces"]}},
+     "address": "/Functional-Programming/"}],
+   "Point.scale":
+   [{"id": "Point___scale",
+     "data":
+     {"/Functional-Programming/#Point___scale":
+      {"display": "scale",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Namespaces"]}},
+     "address": "/Functional-Programming/"}],
+   "Point.distToOrigin":
+   [{"id": "Point___distToOrigin",
+     "data":
+     {"/Functional-Programming/#Point___distToOrigin":
+      {"display": "Point.distToOrigin",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Accessing fields and dot notation"]}},
+     "address": "/Functional-Programming/"}],
+   "Point":
+   [{"id": "Point",
+     "data":
+     {"/Functional-Programming/#Point":
+      {"display": "Point",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Defining structures"]}},
+     "address": "/Functional-Programming/"}],
+   "Pair.snd":
+   [{"id": "Pair___snd",
+     "data":
+     {"/Functional-Programming/#Pair___snd":
+      {"display": "snd",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Using  deriving"]}},
+     "address": "/Functional-Programming/"}],
+   "Pair.fst":
+   [{"id": "Pair___fst",
+     "data":
+     {"/Functional-Programming/#Pair___fst":
+      {"display": "fst",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Using  deriving"]}},
+     "address": "/Functional-Programming/"}],
+   "Pair":
+   [{"id": "Pair",
+     "data":
+     {"/Functional-Programming/#Pair":
+      {"display": "Pair",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Using  deriving"]}},
+     "address": "/Functional-Programming/"}],
+   "MyTree.sum":
+   [{"id": "MyTree___sum",
+     "data":
+     {"/Functional-Programming/#MyTree___sum":
+      {"display": "MyTree.sum",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Recursion and structural recursion"]}},
+     "address": "/Functional-Programming/"}],
+   "MyTree.node":
+   [{"id": "MyTree___node",
+     "data":
+     {"/Functional-Programming/#MyTree___node":
+      {"display": "node",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Inductive types"]}},
+     "address": "/Functional-Programming/"}],
+   "MyTree.leaf":
+   [{"id": "MyTree___leaf",
+     "data":
+     {"/Functional-Programming/#MyTree___leaf":
+      {"display": "leaf",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Inductive types"]}},
+     "address": "/Functional-Programming/"}],
+   "MyTree":
+   [{"id": "MyTree",
+     "data":
+     {"/Functional-Programming/#MyTree":
+      {"display": "MyTree",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Inductive types"]}},
+     "address": "/Functional-Programming/"}],
+   "MyNat.zero":
+   [{"id": "MyNat___zero",
+     "data":
+     {"/Functional-Programming/#MyNat___zero":
+      {"display": "zero",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Inductive types"]}},
+     "address": "/Functional-Programming/"}],
+   "MyNat.succ":
+   [{"id": "MyNat___succ",
+     "data":
+     {"/Functional-Programming/#MyNat___succ":
+      {"display": "succ",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Inductive types"]}},
+     "address": "/Functional-Programming/"}],
+   "MyNat":
+   [{"id": "MyNat",
+     "data":
+     {"/Functional-Programming/#MyNat":
+      {"display": "MyNat",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Inductive types"]}},
+     "address": "/Functional-Programming/"}],
+   "MyList.nil":
+   [{"id": "MyList___nil",
+     "data":
+     {"/Functional-Programming/#MyList___nil":
+      {"display": "nil",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Inductive types"]}},
+     "address": "/Functional-Programming/"}],
+   "MyList.cons":
+   [{"id": "MyList___cons",
+     "data":
+     {"/Functional-Programming/#MyList___cons":
+      {"display": "cons",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Inductive types"]}},
+     "address": "/Functional-Programming/"}],
+   "MyList":
+   [{"id": "MyList",
+     "data":
+     {"/Functional-Programming/#MyList":
+      {"display": "MyList",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Basics of Functional Programming",
+        "Inductive types"]}},
+     "address": "/Functional-Programming/"}],
+   "MyLinearMap.toFun":
+   [{"id": "MyLinearMap___toFun",
+     "data":
+     {"/Functional-Programming/#MyLinearMap___toFun":
+      {"display": "toFun",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "MyLinearMap.map_add":
+   [{"id": "MyLinearMap___map_add",
+     "data":
+     {"/Functional-Programming/#MyLinearMap___map_add":
+      {"display": "map_add",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "MyLinearMap":
+   [{"id": "MyLinearMap",
+     "data":
+     {"/Functional-Programming/#MyLinearMap":
+      {"display": "MyLinearMap",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "MyConfig.width":
+   [{"id": "MyConfig___width",
+     "data":
+     {"/Functional-Programming/#MyConfig___width":
+      {"display": "width",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Structures with default values"]}},
+     "address": "/Functional-Programming/"}],
+   "MyConfig.title":
+   [{"id": "MyConfig___title",
+     "data":
+     {"/Functional-Programming/#MyConfig___title":
+      {"display": "title",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Structures with default values"]}},
+     "address": "/Functional-Programming/"}],
+   "MyConfig.height":
+   [{"id": "MyConfig___height",
+     "data":
+     {"/Functional-Programming/#MyConfig___height":
+      {"display": "height",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Structures with default values"]}},
+     "address": "/Functional-Programming/"}],
+   "MyConfig":
+   [{"id": "MyConfig",
+     "data":
+     {"/Functional-Programming/#MyConfig":
+      {"display": "MyConfig",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Structures with default values"]}},
+     "address": "/Functional-Programming/"}],
+   "MyComplex.re":
+   [{"id": "MyComplex___re",
+     "data":
+     {"/Functional-Programming/#MyComplex___re":
+      {"display": "re",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "MyComplex.norm":
+   [{"id": "MyComplex___norm",
+     "data":
+     {"/Functional-Programming/#MyComplex___norm":
+      {"display": "MyComplex.norm",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "MyComplex.mul":
+   [{"id": "MyComplex___mul",
+     "data":
+     {"/Functional-Programming/#MyComplex___mul":
+      {"display": "MyComplex.mul",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "MyComplex.im":
+   [{"id": "MyComplex___im",
+     "data":
+     {"/Functional-Programming/#MyComplex___im":
+      {"display": "im",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "MyComplex.add":
+   [{"id": "MyComplex___add",
+     "data":
+     {"/Functional-Programming/#MyComplex___add":
+      {"display": "MyComplex.add",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "MyComplex":
+   [{"id": "MyComplex",
+     "data":
+     {"/Functional-Programming/#MyComplex":
+      {"display": "MyComplex",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "Structures and Records",
+        "Mathematical examples"]}},
+     "address": "/Functional-Programming/"}],
+   "MyAdd.myAdd":
+   [{"id": "MyAdd___myAdd",
+     "data":
+     {"/Functional-Programming/#MyAdd___myAdd":
+      {"display": "myAdd",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "Defining typeclasses"]}},
+     "address": "/Functional-Programming/"}],
+   "MyAdd":
+   [{"id": "MyAdd",
+     "data":
+     {"/Functional-Programming/#MyAdd":
+      {"display": "MyAdd",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "Defining typeclasses"]}},
+     "address": "/Functional-Programming/"}],
+   "Mod3.zero":
+   [{"id": "Mod3___zero",
+     "data":
+     {"/Functional-Programming/#Mod3___zero":
+      {"display": "zero",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "Defining multiple instances"]}},
+     "address": "/Functional-Programming/"}],
+   "Mod3.two":
+   [{"id": "Mod3___two",
+     "data":
+     {"/Functional-Programming/#Mod3___two":
+      {"display": "two",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "Defining multiple instances"]}},
+     "address": "/Functional-Programming/"}],
+   "Mod3.one":
+   [{"id": "Mod3___one",
+     "data":
+     {"/Functional-Programming/#Mod3___one":
+      {"display": "one",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "Defining multiple instances"]}},
+     "address": "/Functional-Programming/"}],
+   "Mod3":
+   [{"id": "Mod3",
+     "data":
+     {"/Functional-Programming/#Mod3":
+      {"display": "Mod3",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Functional Programming",
+        "The Typeclass System",
+        "Defining multiple instances"]}},
+     "address": "/Functional-Programming/"}],
    "LA1_Sheet1_Task1d":
-   [{"id": "LA1_Sheet1_Task1d", "data": null, "address": "/Projects/"}],
+   [{"id": "LA1_Sheet1_Task1d",
+     "data":
+     {"/Projects/#LA1_Sheet1_Task1d":
+      {"display": "LA1_Sheet1_Task1d",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)"]}},
+     "address": "/Projects/"}],
    "LA1_Sheet1_Task1c":
-   [{"id": "LA1_Sheet1_Task1d", "data": null, "address": "/Projects/"}],
+   [{"id": "LA1_Sheet1_Task1c",
+     "data":
+     {"/Projects/#LA1_Sheet1_Task1c":
+      {"display": "LA1_Sheet1_Task1c",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)"]}},
+     "address": "/Projects/"}],
    "LA1_Sheet1_Task1b":
-   [{"id": "LA1_Sheet1_Task1b", "data": null, "address": "/Projects/"}],
+   [{"id": "LA1_Sheet1_Task1b",
+     "data":
+     {"/Projects/#LA1_Sheet1_Task1b":
+      {"display": "LA1_Sheet1_Task1b",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)"]}},
+     "address": "/Projects/"}],
    "LA1_Sheet1_Task1a":
-   [{"id": "LA1_Sheet1_Task1b", "data": null, "address": "/Projects/"}],
+   [{"id": "LA1_Sheet1_Task1a",
+     "data":
+     {"/Projects/#LA1_Sheet1_Task1a":
+      {"display": "LA1_Sheet1_Task1a",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)"]}},
+     "address": "/Projects/"}],
    "IsPathConnected'":
-   [{"id": "IsPathConnected___", "data": null, "address": "/Projects/"}],
+   [{"id": "IsPathConnected___",
+     "data":
+     {"/Projects/#IsPathConnected___":
+      {"display": "IsPathConnected'",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "Path-connected spaces (Jasper Ganten)"]}},
+     "address": "/Projects/"}],
+   "BoolFamily":
+   [{"id": "BoolFamily",
+     "data":
+     {"/Type-Theory/#BoolFamily":
+      {"display": "BoolFamily",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Type families"]}},
+     "address": "/Type-Theory/"}],
+   "BigNat":
+   [{"id": "BigNat",
+     "data":
+     {"/Type-Theory/#BigNat":
+      {"display": "BigNat",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Type Theory",
+        "Dependent Types in Depth",
+        "Subtypes"]}},
+     "address": "/Type-Theory/"}],
    "Ana1_Sheet1_Task3d":
-   [{"id": "Ana1_Sheet1_Task3d", "data": null, "address": "/Projects/"}]}},
+   [{"id": "Ana1_Sheet1_Task3d",
+     "data":
+     {"/Projects/#Ana1_Sheet1_Task3d":
+      {"display": "Ana1_Sheet1_Task3d",
+       "context":
+       ["Interactive Theorem Proving using Lean, Winter 2026/27",
+        "Projects",
+        "Own addition on ℚ (Adrian Eckstein und Debora Ortlieb)"]}},
+     "address": "/Projects/"}]}},
  "Verso.Genre.Manual.doc.tech":
  {"title": "Terminology",
   "description": "Definitions of technical terms",
@@ -751,6 +4911,10 @@
  "Verso.Genre.Manual.doc.tactic":
  {"title": "Tactic Documentation",
   "description": "Detailed descriptions of tactics",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.suggestion":
+ {"title": "Lean constant suggestions",
+  "description": "Search suggestions for Lean constants",
   "contents": {}},
  "Verso.Genre.Manual.doc.option":
  {"title": "Compiler options", "description": null, "contents": {}},
@@ -826,5 +4990,12 @@
  {"title": "Lake commands",
   "description": "Detailed descriptions of Lake commands",
   "contents": {}},
+ "Manual.examples":
+ {"title": "Manual.examples", "description": null, "contents": {" ": []}},
  "Manual.envVar":
- {"title": "Environment Variables", "description": null, "contents": {}}}
+ {"title": "Environment Variables", "description": null, "contents": {}},
+ "Manual.configFile":
+ {"title": "Configuration Files",
+  "description":
+  "Descriptions of files used to configure Lean and its associated tooling",
+  "contents": {}}}

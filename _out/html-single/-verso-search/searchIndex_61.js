@@ -1,0 +1,1 @@
+window.docContents[61].resolve({"/#tactics":{"contents":"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n","context":"Interactive Theorem Proving using Lean, Winter 2026/27","header":"4. Tactics","id":"/#tactics"}});

@@ -1,0 +1,1 @@
+window.docContents[220].resolve({"/#type-theory":{"contents":"\n\n\n\n\n\n","context":"Interactive Theorem Proving using Lean, Winter 2026/27","header":"7. Type Theory","id":"/#type-theory"}});

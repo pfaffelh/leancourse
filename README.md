@@ -22,6 +22,11 @@ example : 2 + 2 = 4 :=
   by rfl
 ```
 
+Informative output, such as the result of {keywordOf Lean.Parser.Command.eval}`#eval`, is shown like this:
+```leanOutput output (severity := information)
+"The answer is 4"
+```
+
 LeanOutput is 
 ```leanOutput twoplustwo (severity := information)
 

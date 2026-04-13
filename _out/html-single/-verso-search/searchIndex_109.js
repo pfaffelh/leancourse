@@ -1,0 +1,1 @@
+window.docContents[109].resolve({"/#holes":{"contents":"What is a hole in a proof? It is a missing argument...\n\n","context":"Interactive Theorem Proving using Lean, Winter 2026/27\u0009Lean\u0009Proofs in Lean","header":"3.2.5. Holes in proofs","id":"/#holes"}});

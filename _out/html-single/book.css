@@ -3,28 +3,27 @@
 
 :root {
     /** Typography **/
-    /* The font family used for headers, ToC entries, etc */
-    --verso-structure-font-family: "Helvetica Neue","Segoe UI",Arial,sans-serif;
-    /* The font family used for body text */
-    --verso-text-font-family: Georgia, Times, "Times New Roman", serif;
-    /* The font family used for code */
-    --verso-code-font-family: monospace;
     /* What's the maximum line width, for legibility? */
-    --verso-content-max-width: 45rem;
+    --verso-content-max-width: 47rem;
     /* Desktop font size */
-    --verso-font-size: 18px;
+    --verso-font-size: 16px;
     /* Mobile font size */
     --verso-mobile-font-size: 16px;
 
+    /** Header appearance **/
+    --verso-header-height: 3rem;
+    /* Height of the displayed logo **/
+    --verso-logo-height: var(--verso-header-height);
+
     /** Table of Contents appearance **/
     --verso-toc-background-color: #fafafa;
-    --verso-toc-text-color: black;
+    --verso-toc-text-color: var(--verso-text-color);
 
     /* How long should the ToC animation take? */
     --verso-toc-transition-time: 0.4s;
 
     /* How wide should the ToC be on non-mobile? */
-    --verso-toc-width: 15rem;
+    --verso-toc-width: 18rem;
 
     /** Variables that control the “burger menu” appearance **/
     --verso-burger-height: 1.25rem;
@@ -41,7 +40,6 @@
     --verso-mobile-burger-width: 1.5rem;
     --verso-mobile-burger-line-width: 0.3rem;
     --verso-mobile-burger-line-radius: 0.3rem;
-
 }
 
 /******** Global parameters not intended for customization by themes ********/
@@ -50,6 +48,16 @@
     /* How much space to add on the sides of content for small screens and to place widgets. */
     --verso--content-padding-x: 1.5rem;
 
+    /* Vertical margin for definition boxes and examples */
+    --verso--box-vertical-margin: 1.5rem;
+    --verso--box-padding: 1rem;
+}
+
+@media screen and (max-width: 700px) {
+  :root {
+    /* Reduce the standard padding on mobile */
+    --verso--content-padding-x: 1rem;
+  }
 }
 
 /******** Root font size - this is what rem is based on *********/
@@ -82,6 +90,7 @@ h1, h2, h3, h4, h5, h6 {
 
 p, dt, dd {
     font-family: var(--verso-text-font-family);
+    line-height: 1.45;
 }
 
 dt {
@@ -101,6 +110,91 @@ pre, code {
 
 /******** Page Layout ********/
 
+header {
+	position: fixed;
+	top: 0;
+	z-index: 99;
+	left: 0;
+	right: 0;
+	background: white;
+	display: flex;
+	align-items: center;
+	height: var(--verso-header-height);
+	box-shadow: 0 0px 6px lightgray;
+}
+
+.header-logo-wrapper {
+    /* Make the logo always take up the same space as the toc */
+    flex-basis: var(--verso-toc-width);
+    /* Make padding be included in the width calculation */
+    box-sizing: border-box;
+    /* Add padding so it doesn't sit at the very edge of the screen. */
+    padding-left: .5rem;
+}
+
+@media screen and (max-width: 700px) {
+    .header-logo-wrapper {
+        display: none;
+    }
+}
+
+.header-title-wrapper {
+    /* The title wrapper grows to fill up the header */
+    flex: 1;
+}
+
+@media screen and (max-width: 1500px) {
+    /* Add the padding of the content when the content moves to the left */
+    padding-left: var(--verso--content-padding-x);
+}
+
+.header-title {
+    text-decoration: none;
+    color: black;
+    font-size: 2rem;
+    font-weight: bold;
+    display: block;
+    margin: 0 auto;
+    max-width: var(--verso-content-max-width);
+}
+
+@media screen and (max-width: 1500px) {
+    /* Move the title to the left, to align with the content that does the same. */
+    .header-title {
+        margin: 0;
+        max-width: unset;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    /* There's no header logo on mobile, so the title just needs to reserve space for the burger */
+    .header-title {
+        margin-left: calc(var(--verso-burger-width) + 1.5rem); /* There's 0.5 rem padding on the burger, and we want some space */
+        max-width: unset;
+    }
+}
+
+.header-title h1 {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    text-wrap: nowrap;
+}
+
+:root:has(header:empty) {
+    --verso-header-height: 0px;
+}
+
+.with-toc {
+    margin-top: var(--verso-header-height);
+}
+
+main [id] {
+  /* When jumping to something, display it below the header. We also add a little
+     whitespace, so it's easier to see that you are indeed viewing the whole item. */
+  scroll-margin-top: calc(var(--verso-header-height) + 1rem);
+}
+
 .with-toc #toc {
     position: fixed;
     z-index: 10;
@@ -115,7 +209,7 @@ pre, code {
 /** Mobile **/
 @media screen and (max-width: 700px) {
     .with-toc > main {
-        padding-left: 1.5rem;
+        padding-left: 0;
     }
 }
 
@@ -136,7 +230,10 @@ pre, code {
         display: block;
     }
     body:has(#toggle-toc:checked) .toc-backdrop {
-        position: fixed; inset: 0; background-color: #aaa8; z-index: 9;
+        position: fixed;
+        inset: 0;
+        background-color: #aaa8;
+        z-index: 9;
     }
     html:has(#toggle-toc:checked) {
         overflow: hidden;
@@ -149,30 +246,19 @@ pre, code {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100dvh;
+    height: calc(100dvh - var(--verso-header-height));
     width: var(--verso-toc-width);
 }
 
-
-#toc {
-    /* Here, the width transition is delayed until after the translation has pushed
-       the ToC off the screen. */
-    transition: transform var(--verso-toc-transition-time) ease, width 0.1s linear var(--verso-toc-transition-time);
-    transform: translateX(-20rem);
-}
-
-#toc:has(#toggle-toc:checked) {
-    /* Here, the width transition must happen first, before the translation animation,
-       so the translation is delayed.
-     */
-    transition: transform var(--verso-toc-transition-time) ease 0.1s, width 0.1s linear;
-    transform: translateX(0);
-}
-
-/* Disable ToC transition on mobile */
 @media screen and (max-width: 700px) {
-    #toc, #toc:has(#toggle-toc:checked) {
-        transition: none;
+    #toc {
+        /* Push the toc off the page on mobile */
+        right: 100%;
+        transition: transform var(--verso-toc-transition-time) ease;
+    }
+
+    #toc:has(#toggle-toc:checked) {
+        transform: translateX(var(--verso-toc-width));
     }
 }
 
@@ -188,6 +274,16 @@ pre, code {
 #toc a:hover {
     text-decoration: underline;
     color: #000;
+}
+
+.toc-title {
+    /* The ToC title can be displayed when there is no room for the title in the header. */
+    display: none;
+    padding: 0 .5rem;
+}
+
+.toc-title h1 {
+    margin-bottom: 0;
 }
 
 #toc .split-tocs {
@@ -228,6 +324,7 @@ pre, code {
     width: 0;
     z-index: -10;
 }
+
 
 :root {
     --verso-toc-triangle-width: 0.6rem;
@@ -288,7 +385,26 @@ pre, code {
 
 #toc .split-toc td {
     vertical-align: top;
-    font-size: 90%;
+}
+
+#toc .split-toc > ol {
+    border-left: 1px dotted;
+    list-style-type: none;
+    padding-left: 0.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+#toc .split-toc > ol > li {
+    text-indent: -1.5rem;
+    padding-left: 2.5rem;
+}
+
+#toc .split-toc > ol > li:has(.header) {
+    padding-left: 2rem;
 }
 
 #toc .split-toc .current td:not(.num), #toc .split-toc .title .current {
@@ -305,101 +421,112 @@ pre, code {
   padding-bottom: 0.5rem;
 }
 
-#local-buttons {
-    margin-top: 2.5rem;
+.prev-next-buttons {
     font-weight: bold;
     font-family: var(--verso-structure-font-family);
     display: flex;
     justify-content: space-between;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem
+    flex-wrap: wrap;
+    max-width: var(--verso-content-max-width);
 }
 
-#local-buttons > * {
-    width: 4.5rem;
+.prev-next-buttons > * {
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
+    color: black;
+    text-decoration: none;
 }
 
-#local-buttons .local-button .where {
+.prev-next-buttons > [rel=prev] {
+    justify-content: start;
+}
+
+.prev-next-buttons > [rel=next] {
+    justify-content: end;
+}
+
+.prev-next-buttons .local-button .where {
     margin: 0 0.3rem;
+    /* Fix the position relative to the arrows. */
+    position: relative;
+    top: 0.1rem;
 }
 
-.local-button.active {
-    color: var(--verso-toc-text-color);
-    border: 1px solid var(--verso-toc-background-color);
-}
-
-.local-button.inactive {
-    color: color-mix(in srgb, var(--verso-toc-text-color), var(--verso-toc-background-color));
-    border: 1px solid var(--verso-toc-background-color);
-    cursor: default;
-}
-
-
-#local-buttons a.local-button.active {
-    text-decoration: none;
-}
-
-#local-buttons a.local-button.active:hover {
-    text-decoration: none;
-    background-color: color-mix(in srgb, white, var(--verso-toc-background-color));
-    border-color: color-mix(in srgb, var(--verso-toc-text-color) 30%, var(--verso-toc-background-color) 70%);
-}
-
-#local-buttons .local-button.inactive:hover {
-
-}
-
-
-#local-buttons .arrow {
+.prev-next-buttons .arrow {
     font-family: var(--verso-code-font-family);
     font-size: 150%;
 }
 
 #logo {
-  max-width: min(80%, calc(100% - calc(var(--verso-burger-width) + 1rem)));
-  max-height: 4rem;
-  display: block;
-  margin-left: auto;
-  margin-right: 0.5rem;
-  transition: height var(--verso-toc-transition-time) ease-in-out;
+    max-height: 100%;
+    display: block;
 }
 
 #logo img {
-  object-fit: contain;
-  max-width: 100%;
-  max-height: 4rem;
-  margin-left: auto;
-  display: block;
+    object-fit: contain;
+    max-height: var(--verso-logo-height);
+    display: block;
 }
+
+/******** Width-dependent layout elements ********/
+
+.narrow-only {
+    display: none;
+}
+
+@media screen and (max-width: 500px) {
+    .wide-only {
+        display: none;
+    }
+    .narrow-only {
+        display: revert;
+    }
+}
+
+@media screen and (min-width: 700px) and (max-width: 920px){
+    .wide-only {
+        display: none;
+    }
+    .narrow-only {
+        display: revert;
+    }
+}
+
 
 /******** Headerline ********/
 
 #toggle-toc-click {
-    cursor: pointer;
-    /* This is the default, but it's needed to make the math work out so nice to be explicit: */
-    box-sizing: content-box;
-    width: var(--verso-burger-width);
-    height: var(--verso-burger-height);
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 0.5rem;
-    position: fixed;
-    z-index: 100; /* Show on top of ToC/content */
-    filter: drop-shadow(1px 1px var(--verso-burger-toc-hidden-shadow-color)) drop-shadow(-1px -1px var(--verso-burger-toc-hidden-shadow-color));
-    transition:
-        height var(--verso-toc-transition-time) ease-in-out,
-        width var(--verso-toc-transition-time) ease-in-out;
-}
-
-body:has(#toggle-toc:checked) #toggle-toc-click {
-    filter: drop-shadow(1px 1px var(--verso-burger-toc-visible-shadow-color)) drop-shadow(-1px -1px var(--verso-burger-toc-visible-shadow-color));
+    /* Hidden on desktop */
+    display: none;
 }
 
 @media screen and (max-width: 700px) {
+    #toggle-toc-click {
+        display: inline-flex;
+        cursor: pointer;
+        /* This is the default, but it's needed to make the math work out so nice to be explicit: */
+        box-sizing: content-box;
+        width: var(--verso-burger-width);
+        height: var(--verso-burger-height);
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0.5rem;
+        position: fixed;
+        z-index: 100; /* Show on top of ToC/content */
+        /* Calculation to make it sit in the middle of the header. The .5rem is the padding added to #toggle-toc-click. */
+        top: calc((var(--verso-header-height) - var(--verso-burger-height) - 2 * .5rem) / 2);
+        filter: drop-shadow(1px 1px var(--verso-burger-toc-hidden-shadow-color)) drop-shadow(-1px -1px var(--verso-burger-toc-hidden-shadow-color));
+        transition:
+            height var(--verso-toc-transition-time) ease-in-out,
+            width var(--verso-toc-transition-time) ease-in-out;
+    }
+
+    body:has(#toggle-toc:checked) #toggle-toc-click {
+        filter: drop-shadow(1px 1px var(--verso-burger-toc-visible-shadow-color)) drop-shadow(-1px -1px var(--verso-burger-toc-visible-shadow-color));
+    }
+
     body {
         --verso-burger-width: var(--verso-mobile-burger-width);
         --verso-burger-height: var(--verso-mobile-burger-height);
@@ -507,11 +634,61 @@ main .titlepage h1 {
 
 main .authors {
     text-align: center;
+    font-family: var(--verso-structure-font-family);
+}
+
+main .authors {
+    text-align: center;
+    font-family: var(--verso-structure-font-family);
+}
+
+main .authors .author:only-of-type::after {
+    content: "";
+}
+
+main .authors .author:not(:last-of-type)::after {
+    content: ", ";
+}
+
+main .authors .author:nth-last-of-type(2)::after {
+    content: " and ";
+}
+
+main .authors .note {
+    margin: 0;
+    display: inline;
+    font-style: italic;
+
+}
+main .authors:has(.author) .note::before {
+  content: ", ";
+}
+
+/******** Main content ********/
+
+.content-wrapper {
+    padding: var(--verso--content-padding-x);
+    max-width: var(--verso-content-max-width);
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 1500px) {
+    /* Left align the content when less than 1500px, to make room for the footnotes on the right. */
+    .content-wrapper {
+        margin: 0;
+        max-width: unset;
+    }
 }
 
 main > section {
     position: relative;
-    padding: var(--verso--content-padding-x);
+}
+
+@media screen and (max-width: 700px) {
+    /* Remove extra margin on mobile. */
+    main > section > :first-child {
+        margin-top: 0;
+    }
 }
 
 main section {
@@ -619,6 +796,101 @@ main .section-toc a:hover {
 
 .permalink-widget > a:hover {
   text-decoration: none;
+}
+
+/*
+Don't shrink code blocks when there's marginalia that overlaps
+*/
+@media screen and (700px < width <= 1400px) {
+  .hl.lean.block {
+    clear: right;
+  }
+}
+
+/*
+Don't shrink doc blocks when there's marginalia that overlaps
+*/
+@media screen and (700px < width <= 1400px) {
+  .namedocs {
+    clear: right;
+  }
+}
+
+
+section > p, section > ul, section > ol {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+div.paragraph > p:not(:first-child),
+div.paragraph > ul:not(:first-child),
+div.paragraph > ol:not(:first-child),
+div.paragraph > code.hl.lean.block:not(:first-child),
+div.paragraph > pre.syntax-error:not(:first-child),
+div.paragraph > dl:not(:first-child) {
+  margin-top: 0.5rem;
+}
+
+div.paragraph > p:not(:last-child),
+div.paragraph > ul:not(:last-child),
+div.paragraph > ol:not(:last-child),
+div.paragraph > code.hl.lean.block:not(:last-child),
+div.paragraph > pre.syntax-error:not(:last-child),
+div.paragraph > dl:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+ol li::marker {
+  font-family: var(--verso-text-font-family);
+}
+
+/*
+Don't impose margins on lists or list items from their contents.
+*/
+main section li > :first-child {
+  margin-top: 0;
+}
+main section li > :last-child {
+  margin-bottom: 0;
+}
+main section li:not(:first-child) {
+  margin-top: 0.5rem;
+}
+main section li:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+main section li ol {
+  margin-top: .5rem;
+}
+
+.hl.lean.block {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0.75em;
+}
+
+.lean-output {
+    overflow-x: auto;
+    margin: 0px;
+    margin: 0.5em .85em;
+    border-left: 0.2em solid red;
+    padding: 0 0.45em;
+}
+
+/* Different color for warning */
+.lean-output.warning {
+    border-color: var(--verso-warning-color);
+}
+
+/* Different color for information */
+.lean-output.information {
+    border-color: #0000c0;
+}
+
+
+/* TODO: fix upstream */
+.hl.lean code {
+    font-family: var(--verso-code-font-family) !important;
 }
 
 

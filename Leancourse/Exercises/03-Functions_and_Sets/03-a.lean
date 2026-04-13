@@ -58,3 +58,57 @@ example (f : α → β) (g : β → γ) (hf : Injective f) (hg : Injective g) : 
 example (f : α → β) (g : β → γ) (hf : Surjective f) (hg : Surjective g) : Surjective (g ∘ f) := by
   rw [surjective_def] at *
   sorry
+
+-- Exercise 3: A constant function on a type with at least two elements
+-- is not injective.
+example (a b : α) (h : a ≠ b) (c : β) :
+    ¬ Injective (fun _ : α => c) := by
+  sorry
+
+-- Exercise 4: The identity is a bijection
+-- (Bijective = Injective ∧ Surjective).
+example : Bijective (id : α → α) := by
+  sorry
+
+-- Exercise 5: If g ∘ f is injective, then f is injective.
+example (f : α → β) (g : β → γ) (h : Injective (g ∘ f)) :
+    Injective f := by
+  sorry
+
+-- Exercise 6: If g ∘ f is surjective, then g is surjective.
+example (f : α → β) (g : β → γ) (h : Surjective (g ∘ f)) :
+    Surjective g := by
+  sorry
+
+-- Exercise 7: An injective function from α to β, composed with
+-- a left inverse, is the identity.
+example (f : α → β) (g : β → α) (h : ∀ x, g (f x) = x) :
+    Injective f := by
+  sorry
+
+-- Exercise 8: A function with a right inverse is surjective.
+example (f : α → β) (g : β → α) (h : ∀ y, f (g y) = y) :
+    Surjective f := by
+  sorry
+
+-- Exercise 9: The successor function on ℕ is injective.
+example : Injective (fun n : ℕ => n + 1) := by
+  sorry
+
+-- Exercise 10: The successor function on ℕ is not surjective
+-- (0 is not in the image).
+example : ¬ Surjective (fun n : ℕ => n + 1) := by
+  sorry
+
+-- Exercise 11: Composition is associative at the level of values.
+example (f : α → β) (g : β → γ) {δ : Type} (h : γ → δ) (x : α) :
+    (h ∘ g ∘ f) x = h (g (f x)) := by
+  sorry
+
+-- Exercise 12: Composition with the identity on the left.
+example (f : α → β) : id ∘ f = f := by
+  sorry
+
+-- Exercise 13: Composition with the identity on the right.
+example (f : α → β) : f ∘ id = f := by
+  sorry

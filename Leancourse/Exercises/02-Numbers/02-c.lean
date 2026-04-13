@@ -86,3 +86,37 @@ example (a : ℕ → ℝ) (ha : ∀ (n : ℕ), a n = 1 / n) : TendsTo a 0 := by
 theorem tendsTo_add {x y : ℕ → ℝ} {t u : ℝ} (hx : TendsTo x t) (hy : TendsTo y u) :
     TendsTo (fun n ↦ x n + y n) (t + u) := by
   sorry
+
+-- Exercise 5: If `x` tends to `t` then `x - c` tends to `t - c`.
+-- Hint: rewrite `x - c` as `x + (-c)` and reuse `tendsTo_add_const`.
+example {x : ℕ → ℝ} {t : ℝ} (c : ℝ) (h : TendsTo x t) :
+    TendsTo (fun n => x n - c) (t - c) := by
+  sorry
+
+-- Exercise 6: If `x` tends to `t` and `y` tends to `u`, then `x - y`
+-- tends to `t - u`.
+example {x y : ℕ → ℝ} {t u : ℝ} (hx : TendsTo x t) (hy : TendsTo y u) :
+    TendsTo (fun n ↦ x n - y n) (t - u) := by
+  sorry
+
+-- Exercise 7: A bounded sequence times one tending to 0 tends to 0.
+-- (This is a specialization of the squeeze theorem.)
+example (a : ℕ → ℝ) (M : ℝ) (hM : ∀ n, |a n| ≤ M)
+    (b : ℕ → ℝ) (hb : TendsTo b 0) :
+    TendsTo (fun n => a n * b n) 0 := by
+  sorry
+
+-- Exercise 8: A scalar multiple of a convergent sequence is convergent.
+example {x : ℕ → ℝ} {t : ℝ} (c : ℝ) (h : TendsTo x t) :
+    TendsTo (fun n => c * x n) (c * t) := by
+  sorry
+
+-- Exercise 9: The sequence `1 / (n + 1)` tends to 0 (no `0/0` issue).
+example : TendsTo (fun n : ℕ => 1 / ((n : ℝ) + 1)) 0 := by
+  sorry
+
+-- Exercise 10: Limits are unique. If `x` tends to both `t` and `u`,
+-- then `t = u`.
+example {x : ℕ → ℝ} {t u : ℝ}
+    (ht : TendsTo x t) (hu : TendsTo x u) : t = u := by
+  sorry

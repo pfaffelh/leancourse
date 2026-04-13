@@ -59,3 +59,40 @@ example (hPQ : P → Q) (hQR : Q → R ) (hSR : S → R ) : (P → R) ∧ (S →
 
 example : (((P → Q) → P) → P) := by
   sorry
+
+-- Exercise 6) De Morgan via `by_cases`.
+example : ¬(P ∧ Q) ↔ (¬P ∨ ¬Q) := by
+  sorry
+
+-- Exercise 7) Another De Morgan, easier direction first.
+example : ¬(P ∨ Q) ↔ (¬P ∧ ¬Q) := by
+  sorry
+
+-- Exercise 8) Double negation elimination uses excluded middle.
+example : ¬¬P → P := by
+  sorry
+
+-- Exercise 9) Contraposition, both directions.
+example : (P → Q) ↔ (¬Q → ¬P) := by
+  sorry
+
+-- Exercise 10) Using `have` to introduce an intermediate fact.
+example (hPQ : P → Q) (hQR : Q → R) (hP : P) : R := by
+  have hQ : Q := by
+    sorry
+  sorry
+
+-- Exercise 11) `have` with a chain of three implications.
+example (hPQ : P → Q) (hQR : Q → R) (hRS : R → S) (hP : P) : S := by
+  sorry
+
+-- Exercise 12) Use `have` to reuse the same intermediate proof twice.
+example (h : P → Q) (hP : P) : Q ∧ Q := by
+  have hQ : Q := by
+    sorry
+  exact ⟨hQ, hQ⟩
+
+-- Exercise 13) A classical tautology: if `P` or `¬P` each imply a common
+-- conclusion, then that conclusion holds.
+example (h₁ : P → R) (h₂ : ¬P → R) : R := by
+  sorry

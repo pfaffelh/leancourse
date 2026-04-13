@@ -60,3 +60,44 @@ example : g ∘ f ⁻¹' U = f ⁻¹' (g ⁻¹' U) := by
 -- The same holds for images.
 example : g ∘ f '' s = g '' (f '' s) := by
   sorry
+
+-- Exercise 6:
+-- The preimage of a union is the union of preimages.
+example (U V : Set β) : f ⁻¹' (U ∪ V) = f ⁻¹' U ∪ f ⁻¹' V := by
+  sorry
+
+-- Exercise 7:
+-- The preimage of an intersection is the intersection of preimages.
+example (U V : Set β) : f ⁻¹' (U ∩ V) = f ⁻¹' U ∩ f ⁻¹' V := by
+  sorry
+
+-- Exercise 8:
+-- The image of a union is the union of images.
+example (s₁ s₂ : Set α) : f '' (s₁ ∪ s₂) = f '' s₁ ∪ f '' s₂ := by
+  sorry
+
+-- Exercise 9:
+-- The image of an intersection is contained in the intersection of
+-- images, but equality requires injectivity (not asked here).
+example (s₁ s₂ : Set α) : f '' (s₁ ∩ s₂) ⊆ f '' s₁ ∩ f '' s₂ := by
+  sorry
+
+-- Exercise 10:
+-- Pushforward is monotone.
+example (s₁ s₂ : Set α) (h : s₁ ⊆ s₂) : f '' s₁ ⊆ f '' s₂ := by
+  sorry
+
+-- Exercise 11:
+-- Pullback is monotone.
+example (U V : Set β) (h : U ⊆ V) : f ⁻¹' U ⊆ f ⁻¹' V := by
+  sorry
+
+-- Exercise 12:
+-- The pullback of the whole codomain is everything.
+example : f ⁻¹' (Set.univ : Set β) = Set.univ := by
+  sorry
+
+-- Exercise 13:
+-- The pullback of the empty set is empty.
+example : f ⁻¹' (∅ : Set β) = ∅ := by
+  sorry

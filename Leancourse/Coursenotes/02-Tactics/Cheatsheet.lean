@@ -143,4 +143,28 @@ tag := "cheatsheet"
 * + `h : n + 0 = m` {br}[] `⊢ P`
   + `simp at h`
   + `h : n = m` {br}[] `⊢ P`
+* + `f g : ℝ → ℝ` {br}[] `⊢ f = g`
+  + `ext x` or `funext x`
+  + `f g : ℝ → ℝ` {br}[] `x : ℝ` {br}[] `⊢ f x = g x`
+* + `a b : ℕ` {br}[] `h : a ≤ b` {br}[] `⊢ a ≤ b + 1`
+  + `omega`
+  + `no goals 🎉`
+* + `x : ℝ` {br}[] `⊢ 0 ≤ x ^ 2 + 1`
+  + `nlinarith [sq_nonneg x]`
+  + `no goals 🎉`
+* + `a a' b : ℝ` {br}[] `h : a ≤ a'` {br}[] `⊢ a + b ≤ a' + b`
+  + `gcongr`
+  + `⊢ a ≤ a'`
+* + `a b : ℝ` {br}[] `hb : b ≠ 0` {br}[] `⊢ a / b + 1 = (a + b) / b`
+  + `field_simp`
+  + `⊢ a + b = a + b`
+* + `x : ℝ` {br}[] `⊢ (x + 1) * (x - 1) + 1 = x ^ 2`
+  + `ring_nf`
+  + `no goals 🎉`
+* + `n : ℕ` {br}[] `⊢ ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1`
+  + `push_cast`
+  + `no goals 🎉`
+* + `⊢ Continuous (fun x : ℝ => x^2 + Real.sin x)`
+  + `fun_prop`
+  + `no goals 🎉`
 :::

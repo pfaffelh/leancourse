@@ -58,3 +58,39 @@ example (hP : P) (hQ : Q) (hPQ : P → Q) : ¬Q → ¬ P := by
 -- Exercise 5) If both, `P` and `¬P` hold, something cannot be right.
 example : P → ¬P → False := by
   sorry
+
+-- Exercise 6) A direct `apply` chain: from P → Q and Q → R, derive P → R.
+example (hPQ : P → Q) (hQR : Q → R) : P → R := by
+  sorry
+
+-- Exercise 7) Contraposition one direction.
+-- From `P → Q`, derive `¬Q → ¬P`.
+example (hPQ : P → Q) : ¬Q → ¬P := by
+  sorry
+
+-- Exercise 8) Double negation introduction.
+example : P → ¬¬P := by
+  sorry
+
+-- Exercise 9) If `P → Q` and `Q → P`, the biconditional holds (rewrite
+-- of the earlier example in a more condensed style).
+example (hPQ : P → Q) (hQP : Q → P) : P ↔ Q := by
+  sorry
+
+-- Exercise 10) Uncurry: `P → Q → R` gives `P ∧ Q → R` (phrased here
+-- with implication only; `∧` is introduced in a later sheet).
+example (h : P → Q → R) (hP : P) (hQ : Q) : R := by
+  sorry
+
+-- Exercise 11) Curry: from a single hypothesis `(P → Q → R)` we can
+-- extract `(P → Q) → (P → R)`.
+example (h : P → Q → R) (hPQ : P → Q) : P → R := by
+  sorry
+
+-- Exercise 12) Transitivity of biconditionals.
+example (h₁ : P ↔ Q) (h₂ : Q ↔ R) : P ↔ R := by
+  sorry
+
+-- Exercise 13) From `¬P` and `P`, conclude anything.
+example (hnP : ¬P) (hP : P) : Q := by
+  sorry

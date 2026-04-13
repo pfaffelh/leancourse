@@ -74,3 +74,37 @@ example (x y : ℝ) : (x + y) ^ 2 = x ^ 2 + 2 * x * y + y ^ 2 := by
 -- Exercise 4:
 example (n : ℕ) (x : ℝ) (h : 0 ≤ x) : (1 : ℝ) + n * x ≤ (1 + x)^n := by
   sorry
+
+-- Exercise 5: Sum of the first n natural numbers is n*(n+1)/2.
+-- Use induction on n.
+example (n : ℕ) : 2 * (∑ k ∈ Finset.range (n + 1), k) = n * (n + 1) := by
+  induction n with
+  | zero =>
+    sorry
+  | succ n hn =>
+    sorry
+
+-- Exercise 6: Sum of the first n odd numbers is n^2.
+example (n : ℕ) :
+    (∑ k ∈ Finset.range n, (2 * k + 1)) = n ^ 2 := by
+  induction n with
+  | zero =>
+    sorry
+  | succ n hn =>
+    sorry
+
+-- Exercise 7: For all n, 2^n ≥ n + 1 (true by induction).
+example (n : ℕ) : n + 1 ≤ 2 ^ n := by
+  induction n with
+  | zero =>
+    sorry
+  | succ n hn =>
+    sorry
+
+-- Exercise 8: Euclidean division: every n is 2*q + r with r ∈ {0, 1}.
+example (n : ℕ) : ∃ q r : ℕ, n = 2 * q + r ∧ r < 2 := by
+  sorry
+
+-- Exercise 9: A direct application of `omega`: if 0 < n, then n - 1 < n.
+example (n : ℕ) (h : 0 < n) : n - 1 < n := by
+  sorry

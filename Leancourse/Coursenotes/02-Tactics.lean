@@ -14,6 +14,15 @@ import «Leancourse».Coursenotes.«02-Tactics».«Congr»
 import «Leancourse».Coursenotes.«02-Tactics».«Constructor»
 import «Leancourse».Coursenotes.«02-Tactics».«Exact»
 import «Leancourse».Coursenotes.«02-Tactics».«Exfalso»
+import «Leancourse».Coursenotes.«02-Tactics».«Ext»
+import «Leancourse».Coursenotes.«02-Tactics».«Field_simp»
+import «Leancourse».Coursenotes.«02-Tactics».«Fun_prop»
+import «Leancourse».Coursenotes.«02-Tactics».«Funext»
+import «Leancourse».Coursenotes.«02-Tactics».«Gcongr»
+import «Leancourse».Coursenotes.«02-Tactics».«Nlinarith»
+import «Leancourse».Coursenotes.«02-Tactics».«Omega»
+import «Leancourse».Coursenotes.«02-Tactics».«Push_cast»
+import «Leancourse».Coursenotes.«02-Tactics».«Ring_nf»
 import «Leancourse».Coursenotes.«02-Tactics».«Have»
 import «Leancourse».Coursenotes.«02-Tactics».«Induction»
 import «Leancourse».Coursenotes.«02-Tactics».«Intro»
@@ -74,6 +83,24 @@ tag := "tactics"
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Exact»}
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Exfalso»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Ext»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Funext»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Field_simp»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Fun_prop»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Gcongr»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Nlinarith»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Omega»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Push_cast»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Ring_nf»}
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Have»}
 

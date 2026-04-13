@@ -11,28 +11,38 @@ and the axioms of Lean's type theory.
 ## Part 1: Sigma types
 
 Recall: `Σ (x : α), β x` is the type of dependent pairs ⟨a, b⟩
-where `a : α` and `b : β a`. Unlike `∃`, Sigma lives in Type,
-so you can extract the witness computationally.
+where `a : α` and `b : β a`. The second component `β x` must itself
+live in `Type`, not in `Prop`.  Sigma represents computationally
+relevant data: you can extract the witness with `.1` and the
+associated data with `.2`.
+
+If the second component is a *proposition*, use the subtype
+`{x : α // P x}` (covered in Part 3) or the universe-polymorphic
+`PSigma`.  Genuine `Σ` requires `β x : Type`.
 -/
 
--- Exercise 1: Construct an element of a Sigma type
--- A natural number together with a proof that it is positive
-def posNat : Σ (n : ℕ), n > 0 :=
+-- Exercise 1: Construct an element of a Sigma type.
+-- A length `n` together with a vector of that length
+-- (here represented as `Fin n → ℕ`, a list of `n` natural numbers).
+def lengthAndVec : Σ (n : ℕ), Fin n → ℕ :=
   sorry
 
--- Exercise 2: Construct another Sigma element
--- A pair of a natural number and its double
-def withDouble : Σ (n : ℕ), {m : ℕ // m = 2 * n} :=
+-- Exercise 2: Construct another Sigma element.
+-- A natural number n together with a term of Fin (n + 1)
+-- (which is nonempty for every n, since `⟨0, _⟩ : Fin (n+1)`).
+def withPoint : Σ (n : ℕ), Fin (n + 1) :=
   sorry
 
--- Exercise 3: A function on Sigma types
--- Given a Sigma pair, extract and double the first component
-def doubleFst (p : Σ (n : ℕ), n > 0) : ℕ :=
+-- Exercise 3: A function on Sigma types.
+-- Given a Sigma pair, extract and double the first component.
+def doubleFst (p : Σ (n : ℕ), Fin (n + 1)) : ℕ :=
   sorry
 
--- Exercise 4: Map over the second component of a Sigma type
--- If you have ⟨n, h : n > 0⟩, produce ⟨n, h' : n ≥ 1⟩
-def sigmaMap (p : Σ (n : ℕ), n > 0) : Σ (n : ℕ), n ≥ 1 :=
+-- Exercise 4: Map over the second component of a Sigma type.
+-- Given ⟨n, k : Fin (n+1)⟩, produce ⟨n+1, k.castSucc : Fin (n+2)⟩.
+-- Hint: `Fin.castSucc` includes `Fin (n+1)` into `Fin (n+2)`.
+def sigmaShift (p : Σ (n : ℕ), Fin (n + 1)) :
+    Σ (n : ℕ), Fin (n + 1) :=
   sorry
 
 /-
@@ -150,33 +160,44 @@ example : (3 : ℕ) ∣ 12 := by
   sorry
 
 /-
-## Part 6: Sigma vs Exists
+## Part 6: Subtype vs Exists (and a note on PSigma)
 
-Understand the difference between computational and propositional existence.
+Understand the difference between *computational* and *propositional*
+existence.  Because `Σ` demands a `Type`-valued second component,
+the right analogue of `∃ x : α, P x` (with `P : α → Prop`) is the
+subtype `{x : α // P x}`.  It carries the witness as data.
+
+(There is also `PSigma`, which is universe-polymorphic and accepts
+a `Prop`-valued second component; `Subtype` is the more common
+choice in Mathlib for this pattern.)
 -/
 
--- Exercise 19: Sigma gives you data
--- Construct a Sigma and extract the witness
-def sigmaPair : Σ (n : ℕ), n * n = 25 :=
+-- Exercise 19: Subtypes give you data.
+-- Construct a subtype element; you will be able to extract the
+-- witness with `.1`.
+def squareRootOf25 : {n : ℕ // n * n = 25} :=
   sorry
 
--- Now extract the witness (this should evaluate to 5)
--- #eval sigmaPair.1  -- uncomment after solving
+-- Now the witness is computable: squareRootOf25.1 evaluates to 5.
+-- #eval squareRootOf25.1  -- uncomment after solving
 
--- Exercise 20: Exists only gives you a proof
--- You can prove existence but cannot extract the witness computationally
+-- Exercise 20: Exists gives only a proof.
+-- You can prove existence but cannot extract the witness without
+-- classical choice.
 example : ∃ (n : ℕ), n * n = 25 :=
   sorry
 
--- Exercise 21: Converting Sigma to Exists
--- This direction always works (forgetting data)
-def sigmaToExists {α : Type} {P : α → Prop} (s : Σ (x : α), P x) : ∃ (x : α), P x :=
+-- Exercise 21: Converting Subtype to Exists.
+-- This direction always works (forgetting data).
+def subtypeToExists {α : Type} {P : α → Prop}
+    (s : {x : α // P x}) : ∃ (x : α), P x :=
   sorry
 
--- Exercise 22: Converting Exists to Sigma requires choice!
--- This direction requires Classical.choice
+-- Exercise 22: Converting Exists to Subtype requires choice!
+-- Classical.choice produces data from a bare existence proof.
 open Classical in
-noncomputable def existsToSigma {α : Type} {P : α → Prop} (h : ∃ (x : α), P x) : Σ (x : α), P x :=
+noncomputable def existsToSubtype {α : Type} {P : α → Prop}
+    (h : ∃ (x : α), P x) : {x : α // P x} :=
   sorry
 
 /-

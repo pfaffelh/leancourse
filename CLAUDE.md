@@ -72,3 +72,18 @@ chapters 1, 3, and 4+5):
 - [06-e.lean](Leancourse/Exercises/06-Mathematics/06-e.lean) -- *New*.
   Measure theory (measurable sets/functions, measures, Lebesgue,
   probability, almost-everywhere).
+- [06-f.lean](Leancourse/Exercises/06-Mathematics/06-f.lean) -- *New*.
+  Probability mass functions: properties of `PMF`, the Dirac (`pure`),
+  monad laws for `bind`, functor laws for `map`, `join` (defined as
+  `bind id`), and a small concrete coin example. Note: `pure` is
+  ambiguous between `PMF.pure` and `Pure.pure`; exercises qualify it
+  explicitly as `PMF.pure`.
+
+### New chapter: Probability
+
+- [06-Probability.lean](Leancourse/Coursenotes/06-Mathematics/06-Probability.lean)
+  -- *New*. Verso chapter on the `PMF` monad: definition, `pure`
+  (Dirac), `bind` with monad laws, `map` with functor laws, `join`
+  derived as `bind id`, the `Monad PMF` instance, and where
+  measurability still creeps in. Registered in
+  [06-Mathematics.lean](Leancourse/Coursenotes/06-Mathematics.lean).

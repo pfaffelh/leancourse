@@ -229,6 +229,48 @@ Under the hood, this is elaborated to
 die.bind fun x => die.bind fun y => pure (x.val + y.val + 2).
 ```
 
+# Concrete distributions
+%%%
+tag := "pmf-concrete"
+%%%
+
+Mathlib provides several familiar named distributions as `PMF`s:
+
+- `PMF.bernoulli p hp : PMF Bool` -- the Bernoulli distribution with
+  probability `p` of `true`, requiring `p ≤ 1`.
+- `PMF.binomial p hp n : PMF (Fin (n + 1))` -- the Binomial
+  distribution `B(n, p)`.
+- `PMF.uniformOfFinset s hs : PMF α` -- the uniform distribution on
+  a nonempty finite set.
+
+```lean
+-- Fair coin: probability of true is 1/2.
+noncomputable example :
+    PMF.bernoulli (1 / 2) (by norm_num) true = 1 / 2 := by
+  simp [PMF.bernoulli_apply]
+```
+
+# Beyond PMFs: measures, expectation, independence
+%%%
+tag := "pmf-beyond"
+%%%
+
+`PMF` is the right tool for *discrete* distributions, but probability
+theory in Mathlib is much larger.  A sketch of where to go next:
+
+- Every `PMF α` induces a probability measure on `α` via
+  `PMF.toMeasure`; conversely, `Measure α` is the general setting
+  that handles continuous distributions.
+- *Expectation* of a function `f : α → ℝ` against a probability
+  measure `μ` is the Bochner integral `∫ x, f x ∂μ`, found in
+  `Mathlib.MeasureTheory.Integral.Bochner`.
+- *Independence* of two events / sigma-algebras / random variables
+  is `ProbabilityTheory.IndepSets`, `IndepFun`, etc., in
+  `Mathlib.Probability.Independence`.
+- *Conditional probability* and *conditional expectation* live in
+  `Mathlib.Probability.ConditionalProbability` and the measure-theory
+  chapter of these notes.
+
 # When do we still need measurability?
 %%%
 tag := "pmf-measurability"

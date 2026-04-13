@@ -170,4 +170,34 @@ tag := "cheatsheet"
 * + `hp : ∀ᶠ x in F, p x` {br}[] `hq : ∀ᶠ x in F, q x` {br}[] `⊢ ∀ᶠ x in F, p x ∧ q x`
   + `filter_upwards [hp, hq] with x hp hq`
   + `x : α` {br}[] `hp : p x` {br}[] `hq : q x` {br}[] `⊢ p x ∧ q x`
+* + `h : False` {br}[] `⊢ P`
+  + `contradiction`
+  + `no goals 🎉`
+* + `⊢ (P → Q)`
+  + `contrapose`
+  + `⊢ (¬Q → ¬P)`
+* + `⊢ (2 + 2 : ℕ) = 4`
+  + `decide`
+  + `no goals 🎉`
+* + `⊢ True`
+  + `trivial`
+  + `no goals 🎉`
+* + `⊢ a = b`
+  + `symm`
+  + `⊢ b = a`
+* + `⊢ 1 + 1 = 2`
+  + `show 2 = 2`
+  + `⊢ 2 = 2`
+* + `a b : ℕ` {br}[] `⊢ a + b + (a + b) = 2*(a+b)`
+  + `set s := a + b with hs`
+  + `s := a + b` {br}[] `⊢ s + s = 2 * s`
+* + `f : ℕ → ℕ` {br}[] `h : ∀ n, f n = 0` {br}[] `⊢ ∀ n, f n + 1 = 1`
+  + `simp_rw [h]`
+  + `⊢ ∀ n, 0 + 1 = 1`
+* + `n : ℕ` {br}[] `⊢ (n : ℝ) + 1 = ((n+1 : ℕ) : ℝ)`
+  + `norm_cast`
+  + `no goals 🎉`
+* + `x : ℝ` {br}[] `hx : 0 < x` {br}[] `⊢ 0 < x ^ 2 + 1`
+  + `positivity`
+  + `no goals 🎉`
 :::

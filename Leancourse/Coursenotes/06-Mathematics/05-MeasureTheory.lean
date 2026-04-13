@@ -172,6 +172,25 @@ open MeasureTheory in
 #check (volume : Measure ℝ)
 ```
 
+# A small worked computation
+%%%
+tag := "lebesgue-worked"
+%%%
+
+A concrete sanity check: the Lebesgue measure of the closed unit
+interval is `1`.
+
+```lean
+example : volume (Set.Icc (0 : ℝ) 1) = 1 := by
+  rw [Real.volume_Icc]
+  simp
+```
+
+Mathlib also gives the volume of `Ico`, `Ioo`, `Ioc` (all equal to
+`b - a` when `a ≤ b`); a half-open interval can be written as a
+disjoint union with a single point, and points have measure zero
+(`Real.volume_singleton`).
+
 # Integration
 %%%
 tag := "integration"
@@ -280,6 +299,22 @@ For probability theory, Mathlib provides conditional expectation with respect
 to a sub-sigma-algebra. This is an advanced topic, but the key definition is:
 
 {docstring MeasureTheory.condExp}
+
+The conditional expectation `μ[f | m]` (notation
+`MeasureTheory.condExp m μ f`) is the unique (up to
+`μ`-almost-everywhere equality) function `g : α → E` such that
+
+- `g` is `m`-measurable, where `m` is a sub-sigma-algebra of the
+  ambient sigma-algebra on `α`;
+- for every `m`-measurable set `s`,
+  `∫ x in s, f x ∂μ = ∫ x in s, g x ∂μ`.
+
+In probability terms: `μ[f | m]` is the best `m`-measurable
+predictor of `f` in the `L²` sense.  The defining property is
+captured by `MeasureTheory.setIntegral_condExp`.  Mathlib has the
+linearity, monotonicity, tower, and Jensen properties; the API
+lives in the `MeasureTheory` namespace and uses `condExp_` as a
+prefix.
 
 The conditional expectation `μ[f | m]` is the unique (a.e.) `m`-measurable
 function that agrees with `f` in integral over every `m`-measurable set.

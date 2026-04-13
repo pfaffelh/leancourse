@@ -40,7 +40,12 @@ class MyAdd (α : Type) where
   myAdd : α → α → α
 ```
 
-This says: for any type `α`, an instance of `MyAdd α` provides a function `myAdd : α → α → α`. The `class` keyword is similar to `structure`, but it tells Lean to use the typeclass resolution mechanism.
+This says: for any type `α`, an instance of `MyAdd α` provides a function `myAdd : α → α → α`. The `class` keyword is *almost* the same as `structure` -- in fact, every `class` is internally a `structure`. The difference is operational:
+
+- A `structure` is constructed and passed *explicitly*: you write `⟨...⟩` or call its named projections.
+- A `class` is also a structure, but Lean's *instance resolution* will synthesize one for you whenever a function expects an `[Add α]` argument. You never write the instance argument by hand.
+
+So the rule of thumb is: use `structure` when the value is part of the data the user manipulates (a `Point`, a `Person`, a `RingHom`); use `class` when the value is a *canonical* piece of structure attached to a type (a `Group` instance on `ℤ`, an `Add` instance on `ℕ`) and you want Lean to find it automatically.
 
 # Creating instances
 %%%

@@ -189,6 +189,55 @@ example : ∃ (n : ℕ), n + n = 10 :=
 
 Note: There is an important distinction between `∃` (which lives in `Prop`) and `Σ` (which lives in `Type`). We discuss this further in the chapter on dependent types.
 
+# `Nonempty` and propositional truncation
+%%%
+tag := "nonempty"
+%%%
+
+The Curry-Howard view says "to prove `∃ x, P x`, give an `x` and a
+proof of `P x`".  But sometimes you want to express that *some*
+element of a type `α` exists, without committing to a specific
+witness.  For this Lean has the typeclass
+
+```lean
+#check @Nonempty
+```
+
+`Nonempty α` is a *proposition*: it asserts only that `α` has at
+least one element, but it does not give you one.  This is the
+propositional truncation of `α`: it forgets the witness, keeping
+only the bare existence claim.
+
+To extract data from a `Nonempty` (i.e., to actually obtain a term
+of `α`), you must use `Classical.choice`, an axiom of Lean's type
+theory:
+
+```lean
+#check @Classical.choice
+```
+
+This is a real axiom: constructively, knowing only that `α` is
+nonempty does not let you pick an element.  `Classical.choice`
+turns the propositional fact into honest data, at the cost of being
+nonconstructive.
+
+```lean
+example {α : Type} (a : α) : Nonempty α :=
+  ⟨a⟩
+
+noncomputable example {α : Type} (h : Nonempty α) : α :=
+  Classical.choice h
+```
+
+This pair `(Nonempty.intro, Classical.choice)` is the prototypical
+example of moving data between `Type` and `Prop`.  In Mathlib it is
+the foundation for many "exists, therefore choose one" arguments,
+and the reason `noncomputable` appears so often.
+
+A related construction is `Squash α`, the explicit propositional
+truncation of `α` -- it has a single constructor `Squash.mk a` for
+any `a : α`, and sits at the boundary between `Prop` and `Type`.
+
 # How tactic proofs build terms behind the scenes
 %%%
 tag := "tactic-to-term"

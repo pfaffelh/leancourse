@@ -12,6 +12,9 @@ import «Leancourse».Coursenotes.«02-Tactics».«Change»
 import «Leancourse».Coursenotes.«02-Tactics».«Clear»
 import «Leancourse».Coursenotes.«02-Tactics».«Congr»
 import «Leancourse».Coursenotes.«02-Tactics».«Constructor»
+import «Leancourse».Coursenotes.«02-Tactics».«Contradiction»
+import «Leancourse».Coursenotes.«02-Tactics».«Contrapose»
+import «Leancourse».Coursenotes.«02-Tactics».«Decide»
 import «Leancourse».Coursenotes.«02-Tactics».«Exact»
 import «Leancourse».Coursenotes.«02-Tactics».«Exfalso»
 import «Leancourse».Coursenotes.«02-Tactics».«Ext»
@@ -21,7 +24,9 @@ import «Leancourse».Coursenotes.«02-Tactics».«Fun_prop»
 import «Leancourse».Coursenotes.«02-Tactics».«Funext»
 import «Leancourse».Coursenotes.«02-Tactics».«Gcongr»
 import «Leancourse».Coursenotes.«02-Tactics».«Nlinarith»
+import «Leancourse».Coursenotes.«02-Tactics».«Norm_cast»
 import «Leancourse».Coursenotes.«02-Tactics».«Omega»
+import «Leancourse».Coursenotes.«02-Tactics».«Positivity»
 import «Leancourse».Coursenotes.«02-Tactics».«Push_cast»
 import «Leancourse».Coursenotes.«02-Tactics».«Ring_nf»
 import «Leancourse».Coursenotes.«02-Tactics».«Have»
@@ -41,10 +46,15 @@ import «Leancourse».Coursenotes.«02-Tactics».«Right»
 import «Leancourse».Coursenotes.«02-Tactics».«Ring»
 import «Leancourse».Coursenotes.«02-Tactics».«Rintro»
 import «Leancourse».Coursenotes.«02-Tactics».«Rw»
+import «Leancourse».Coursenotes.«02-Tactics».«Set»
+import «Leancourse».Coursenotes.«02-Tactics».«Show»
 import «Leancourse».Coursenotes.«02-Tactics».«Simp»
+import «Leancourse».Coursenotes.«02-Tactics».«Simp_rw»
 import «Leancourse».Coursenotes.«02-Tactics».«Specialize»
+import «Leancourse».Coursenotes.«02-Tactics».«Symm»
 import «Leancourse».Coursenotes.«02-Tactics».«Tauto»
 import «Leancourse».Coursenotes.«02-Tactics».«Triv»
+import «Leancourse».Coursenotes.«02-Tactics».«Trivial»
 import «Leancourse».Coursenotes.«02-Tactics».«Use»
 
 open Verso.Genre Manual
@@ -81,6 +91,12 @@ tag := "tactics"
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Constructor»}
 
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Contradiction»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Contrapose»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Decide»}
+
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Exact»}
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Exfalso»}
@@ -99,7 +115,11 @@ tag := "tactics"
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Nlinarith»}
 
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Norm_cast»}
+
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Omega»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Positivity»}
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Push_cast»}
 
@@ -139,12 +159,22 @@ tag := "tactics"
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Rw»}
 
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Set»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Show»}
+
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Simp»}
 
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Simp_rw»}
+
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Specialize»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Symm»}
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Tauto»}
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Triv»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Trivial»}
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Use»}

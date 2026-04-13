@@ -101,6 +101,38 @@ chapters 1, 3, and 4+5):
   cheatsheet rows.
 - Extended thin exercise files: 01-b, 01-e, 02-b, 02-c, 03-a, 03-c.
 
+### Audit sweep (follow-up)
+
+- Deleted dead files: `Leancourse/Coursenotes/03-Projects copy.lean`
+  and `Leancourse/Coursenotes/projects.lean` (neither was imported).
+- Fixed chapter numbering in
+  [00-Introduction.lean](Leancourse/Coursenotes/00-Introduction.lean)
+  (0–7 to match directory layout) and softened "we formalize" to
+  "we survey how Mathlib organizes".
+- Added intro paragraphs to the part-index files
+  [04-FunctionalProgramming.lean](Leancourse/Coursenotes/04-FunctionalProgramming.lean),
+  [05-TypeTheory.lean](Leancourse/Coursenotes/05-TypeTheory.lean),
+  [06-Mathematics.lean](Leancourse/Coursenotes/06-Mathematics.lean),
+  [07-ProofEngineering.lean](Leancourse/Coursenotes/07-ProofEngineering.lean).
+- Added a "Pattern matching" subsection + an "Inductive types"
+  section to [01-Notes-Lean.lean](Leancourse/Coursenotes/01-Lean/01-Notes-Lean.lean).
+- Added a "structure vs class" clarification to
+  [03-Typeclasses.lean](Leancourse/Coursenotes/04-FunctionalProgramming/03-Typeclasses.lean).
+- Added a "Nonempty and propositional truncation" section to
+  [01-CurryHoward.lean](Leancourse/Coursenotes/05-TypeTheory/01-CurryHoward.lean).
+- Added a worked `1/(n+1) → 0` proof to
+  [03-Filters.lean](Leancourse/Coursenotes/06-Mathematics/03-Filters.lean).
+- Added a "Closure, interior, and frontier" section to
+  [04-Topology.lean](Leancourse/Coursenotes/06-Mathematics/04-Topology.lean).
+- Added a worked Lebesgue-measure computation and a longer
+  `condExp` note to
+  [05-MeasureTheory.lean](Leancourse/Coursenotes/06-Mathematics/05-MeasureTheory.lean).
+- Added "Concrete distributions" and "Beyond PMFs" sections to
+  [06-Probability.lean](Leancourse/Coursenotes/06-Mathematics/06-Probability.lean).
+- Added 10 new tactic entries — `contradiction`, `contrapose`,
+  `decide`, `norm_cast`, `positivity`, `set`, `show`, `simp_rw`,
+  `symm`, `trivial` — wired into the tactics index and cheatsheet.
+
 ### Exercise file naming convention
 
 All exercise files have been renamed from `NN-x.lean` to

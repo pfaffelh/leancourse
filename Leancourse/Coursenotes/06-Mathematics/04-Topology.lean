@@ -109,6 +109,39 @@ Finite intersections and arbitrary unions of open sets are open:
 
 {docstring isOpen_iUnion}
 
+# Closure, interior, and frontier
+%%%
+tag := "closure-interior"
+%%%
+
+For a set `s` in a topological space, three derived sets are
+fundamental:
+
+- `closure s` -- the smallest closed set containing `s`;
+- `interior s` -- the largest open set contained in `s`;
+- `frontier s` -- the boundary, defined as `closure s \ interior s`.
+
+{docstring closure}
+
+{docstring interior}
+
+A point `x` lies in `closure s` if every neighborhood of `x` meets
+`s`; equivalently, if `s` is *frequently* close to `x`:
+
+{docstring mem_closure_iff_frequently}
+
+```lean
+-- A set is closed iff it equals its closure.
+example {α : Type*} [TopologicalSpace α] (s : Set α) :
+    IsClosed s ↔ closure s = s :=
+  ⟨fun h => h.closure_eq, fun h => h ▸ isClosed_closure⟩
+
+-- The interior of a set is open.
+example {α : Type*} [TopologicalSpace α] (s : Set α) :
+    IsOpen (interior s) :=
+  isOpen_interior
+```
+
 # The neighborhood filter nhds
 %%%
 tag := "nhds-filter"

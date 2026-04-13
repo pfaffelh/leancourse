@@ -21,7 +21,7 @@ The course is designed for mathematics students and has several goals:
 * Establishing connections to some mathematical material: At least in the first half, the mathematical details needed in this course should not be the main issue of this course. However, in order to _explain_ how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well - at least if it exceeds a few lines - so that the commands you enter (which we will call tactics) fit together. The course intends to teach both, first steps in `Lean` and learning a bunch of these tactics, and make a deeper dive into some mathematical material.
 * Understanding functional programming: Lean is not only a theorem prover but also a functional programming language. We cover core concepts such as inductive types, structures, typeclasses, and monads, which are essential both for using Lean effectively and for understanding how Mathlib is organized.
 * Learning type theory: The foundation of Lean is dependent type theory. We explore the Curry-Howard correspondence, dependent types, the universe hierarchy, and the axioms underlying Lean, providing the theoretical background for why interactive theorem proving works.
-* Exploring advanced mathematics in Lean: We cover topics such as order theory, the algebraic hierarchy in Mathlib, filters (which provide a unified framework for limits), topology, and measure theory. These topics are not always well covered in standard textbooks from the perspective of formalization.
+* Exploring advanced mathematics in Lean: We survey how Mathlib organizes order theory, the algebraic hierarchy, filters (which provide a unified framework for limits), topology, measure theory, and discrete probability. These topics are not always well covered in standard textbooks from the perspective of formalization.
 * Proof engineering: We learn to use powerful automation tactics, navigate Mathlib effectively, and avoid common pitfalls when working with a large formal library.
 
 # Other material and Theorem provers
@@ -54,15 +54,17 @@ tag := "some-notes"
 tag := "howto"
 %%%
 
-These notes have seven main parts:
+These notes have eight main parts (numbered 0--7, matching the
+directory layout):
 
-* **Introduction and Lean basics** (Chapters 1-2): Starting in the next chapter, we give general hints on Lean, which are rather for reference and background than for starting the course. You will almost certainly find yourself asking fundamental things on Lean (e.g. _What is type theory, and why should I care?_), which we try to explain without too much detail. We also introduce basic mathematical objects in Lean: logical claims, `ℕ`, `ℝ`, sets and functions.
-* **Tactics** (Chapter 3): When interactively writing proofs, a main focus will be the currently _proof state_. In order to modify it, we need tactics, which in some sense feels like learning a new language (which is in fact true). We give an overview of the most important tactics. A more comprehensive overview is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md).
-* **Projects** (Chapter 4): Student projects from previous iterations of this course, demonstrating what can be achieved.
-* **Functional Programming** (Chapter 5): Lean is a functional programming language. We cover recursion, pattern matching, structures, typeclasses, and monads - the building blocks that make both Lean programs and Mathlib work.
-* **Type Theory** (Chapter 6): The theoretical foundation of Lean. We explore the Curry-Howard correspondence, dependent types, universes, and the axioms of Lean's type theory.
-* **Advanced Mathematics** (Chapter 7): We formalize more advanced mathematical topics: order theory, the algebraic hierarchy, filters, topology, and measure theory.
-* **Proof Engineering** (Chapter 8): Practical skills for working with Lean and Mathlib at scale: automation tactics, navigating the library, and avoiding common pitfalls.
+* *Introduction* (Chapter 0): the document you are currently reading.
+* *Lean basics* (Chapter 1): general hints on Lean, intended as reference and background. You will almost certainly find yourself asking fundamental things about Lean (e.g. _What is type theory, and why should I care?_), which we try to explain without too much detail. We also introduce basic mathematical objects in Lean: logical claims, `ℕ`, `ℝ`, sets and functions.
+* *Tactics* (Chapter 2): when interactively writing proofs, a main focus is the current _proof state_. To modify it, we need tactics, which in some sense feels like learning a new language. We give an overview of the most important ones. A more comprehensive list is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md).
+* *Projects* (Chapter 3): student projects from previous iterations of this course, demonstrating what can be achieved.
+* *Functional Programming* (Chapter 4): Lean is a functional programming language. We cover recursion, pattern matching, structures, typeclasses, and monads -- the building blocks that make both Lean programs and Mathlib work.
+* *Type Theory* (Chapter 5): the theoretical foundation of Lean. We explore the Curry-Howard correspondence, dependent types, universes, and the axioms of Lean's type theory.
+* *Advanced Mathematics* (Chapter 6): we survey how Mathlib organizes more advanced mathematical topics -- order theory, the algebraic hierarchy, filters, topology, measure theory, and discrete probability -- with pointers into the relevant Mathlib API rather than full formalizations.
+* *Proof Engineering* (Chapter 7): practical skills for working with Lean and Mathlib at scale: automation tactics, navigating the library, and avoiding common pitfalls.
 
 The heart of the course are the exercises (see the _Exercises_ folder within `Leancourse`). Unlike in other courses, you will get immediate feedback of how well you performed on any single exercise. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.
 

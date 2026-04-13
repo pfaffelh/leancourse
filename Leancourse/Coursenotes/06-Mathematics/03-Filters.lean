@@ -358,6 +358,41 @@ are stated with `≤`.  The binder `∀ n ≥ N, ...` is a special exception
 (because `∀ N ≤ n, ...` would bind `N` rather than `n`), but in bare
 inequalities prefer to write `1 < n` over `n > 1`.
 
+# A worked example: `1 / (n + 1) → 0`
+%%%
+tag := "filter-worked-example"
+%%%
+
+To see all of the pieces working together, let us show that
+`1 / (n + 1) → 0` as `n → ∞`, using `Tendsto`, `atTop`, and `nhds 0`
+in the metric setting:
+
+```lean
+example : Filter.Tendsto
+    (fun n : ℕ => 1 / ((n : ℝ) + 1))
+    Filter.atTop (nhds 0) := by
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  -- Find N with 1/(N+1) < ε:
+  -- it suffices that N + 1 > 1/ε.
+  obtain ⟨N, hN⟩ := exists_nat_gt (1 / ε)
+  refine ⟨N, fun n hn => ?_⟩
+  have hε' : (0 : ℝ) < (n : ℝ) + 1 := by positivity
+  rw [Real.dist_eq, sub_zero, abs_of_pos]
+  · rw [div_lt_iff₀ hε', one_mul]
+    have : (1 : ℝ) / ε < (n : ℝ) + 1 := by
+      calc (1 : ℝ) / ε < N := hN
+        _ ≤ n := by exact_mod_cast hn
+        _ < (n : ℝ) + 1 := by linarith
+    rwa [lt_div_iff₀ hε, mul_comm] at this
+  · positivity
+```
+
+The structure of the proof mirrors the classical epsilon-N argument
+exactly: pick `N`, then show `n ≥ N → |1 / (n+1) - 0| < ε`. The
+filter language lets us *state* convergence in one line; the actual
+work is still the inequality manipulation.
+
 # Ultrafilters
 %%%
 tag := "ultrafilters"

@@ -167,4 +167,7 @@ tag := "cheatsheet"
 * + `⊢ Continuous (fun x : ℝ => x^2 + Real.sin x)`
   + `fun_prop`
   + `no goals 🎉`
+* + `hp : ∀ᶠ x in F, p x` {br}[] `hq : ∀ᶠ x in F, q x` {br}[] `⊢ ∀ᶠ x in F, p x ∧ q x`
+  + `filter_upwards [hp, hq] with x hp hq`
+  + `x : α` {br}[] `hp : p x` {br}[] `hq : q x` {br}[] `⊢ p x ∧ q x`
 :::

@@ -79,6 +79,38 @@ chapters 1, 3, and 4+5):
   ambiguous between `PMF.pure` and `Pure.pure`; exercises qualify it
   explicitly as `PMF.pure`.
 
+### Later additions
+
+- Pattern matching subsection in
+  [01-Notes-Lean.lean](Leancourse/Coursenotes/01-Lean/01-Notes-Lean.lean)
+  with `factorial` and examples on `Bool`, `Option`, `List`.
+- Fixed the Sigma-type exercises in
+  [05-b-DependentTypes.lean](Leancourse/Exercises/05-TypeTheory/05-b-DependentTypes.lean):
+  `Σ` requires a `Type`-valued second component. Prop-valued cases
+  now use `Subtype` / `{x // P x}`, with a pointer to `PSigma` for
+  the Sigma variant that accepts `Prop`.
+- Expanded the "Defining new notation" section with
+  `prefix`/`postfix`, multi-argument `notation`, scoped notation,
+  plus a new notation-exercise file
+  [05-c-Notation.lean](Leancourse/Exercises/05-TypeTheory/05-c-Notation.lean).
+  Note: `notation` is a *command*, so exercise templates are
+  commented-out rather than stubbed with `sorry`.
+- Added tactic entries for `omega`, `field_simp`, `ring_nf`,
+  `push_cast`, `nlinarith`, `gcongr`, `fun_prop`, `ext`, `funext`,
+  `filter_upwards`; wired them into the tactics index and appended
+  cheatsheet rows.
+- Extended thin exercise files: 01-b, 01-e, 02-b, 02-c, 03-a, 03-c.
+
+### Exercise file naming convention
+
+All exercise files have been renamed from `NN-x.lean` to
+`NN-x-Topic.lean` so the subject is visible from the filename, e.g.
+[06-b-Filters.lean](Leancourse/Exercises/06-Mathematics/06-b-Filters.lean),
+[06-e-MeasureTheory.lean](Leancourse/Exercises/06-Mathematics/06-e-MeasureTheory.lean).
+The `Solutions/` and `MyExercises/` trees were renamed in lockstep.
+Tracked files used `git mv` (history preserved); untracked files
+(e.g. `MyExercises/`) used plain `mv`.
+
 ### New chapter: Probability
 
 - [06-Probability.lean](Leancourse/Coursenotes/06-Mathematics/06-Probability.lean)

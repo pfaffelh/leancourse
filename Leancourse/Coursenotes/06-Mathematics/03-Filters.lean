@@ -340,6 +340,19 @@ example {α : Type*} {F : Filter α} {p q : α → Prop}
 #check @Filter.Tendsto.eventually
 ```
 
+When you have several `∀ᶠ`-hypotheses and want to conclude another
+`∀ᶠ`-statement pointwise, the dedicated tactic
+`filter_upwards [h₁, h₂, …] with x h₁ h₂ …` intersects them and
+hands you the pointwise goal:
+
+```lean
+example {α : Type*} {F : Filter α} {p q : α → Prop}
+    (hp : ∀ᶠ x in F, p x) (hq : ∀ᶠ x in F, q x) :
+    ∀ᶠ x in F, p x ∧ q x := by
+  filter_upwards [hp, hq] with x hp hq
+  exact ⟨hp, hq⟩
+```
+
 A remark on `≥`.  Lean generally prefers `≤` over `≥`, and most lemmas
 are stated with `≤`.  The binder `∀ n ≥ N, ...` is a special exception
 (because `∀ N ≤ n, ...` would bind `N` rather than `n`), but in bare

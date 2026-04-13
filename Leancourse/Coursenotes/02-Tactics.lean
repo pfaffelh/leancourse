@@ -16,6 +16,7 @@ import «Leancourse».Coursenotes.«02-Tactics».«Exact»
 import «Leancourse».Coursenotes.«02-Tactics».«Exfalso»
 import «Leancourse».Coursenotes.«02-Tactics».«Ext»
 import «Leancourse».Coursenotes.«02-Tactics».«Field_simp»
+import «Leancourse».Coursenotes.«02-Tactics».«Filter_upwards»
 import «Leancourse».Coursenotes.«02-Tactics».«Fun_prop»
 import «Leancourse».Coursenotes.«02-Tactics».«Funext»
 import «Leancourse».Coursenotes.«02-Tactics».«Gcongr»
@@ -89,6 +90,8 @@ tag := "tactics"
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Funext»}
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Field_simp»}
+
+{include 0  «Leancourse».Coursenotes.«02-Tactics».«Filter_upwards»}
 
 {include 0  «Leancourse».Coursenotes.«02-Tactics».«Fun_prop»}
 

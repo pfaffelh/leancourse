@@ -284,7 +284,74 @@ end InfixDemo
 
 Here, `infixl` means left-associative infix, `65` is the binding power (the same as `+`), and the spaces around `⊕⊕` are part of the syntax. Similarly, `infixr` gives right-associative infix, and `prefix` / `postfix` are available for unary operators.
 
-For more complex notation involving multiple tokens, you can use the `syntax` and `macro_rules` commands, but `notation` and the infix variants cover most common use cases.
+## Prefix and postfix operators
+
+`prefix` and `postfix` define unary notation on a single argument:
+
+```lean
+section UnaryDemo
+
+-- A prefix "bang" operator, 80 precedence (higher than `+`)
+prefix:80 "¡" => fun n : ℕ => n * n
+#eval ¡5    -- 25
+
+-- A postfix factorial-style operator
+postfix:90 "!!" => fun n : ℕ => 2 * n + 1
+#eval 4!!   -- 9
+
+end UnaryDemo
+```
+
+## Multi-argument `notation`
+
+`notation` can take more than one argument and mix custom tokens with them:
+
+```lean
+section TernaryDemo
+
+-- "between a and b" means the half-open interval [a, b)
+notation "between " a " and " b => Set.Ico a b
+#check between (1 : ℕ) and 10    -- Set ℕ
+
+end TernaryDemo
+```
+
+## Notation with binders
+
+Mathlib uses `notation3` (and its underlying machinery `syntax` +
+`macro_rules`) to introduce binder-style notation like
+`∑ k ∈ range n, f k` and `∀ᶠ x in F, p x`.  These let you bind a
+variable inside the expression that follows the comma.  Writing such
+notation from scratch involves a fair amount of macro plumbing and
+is beyond the scope of this section -- the standard reference is the
+[Lean 4 documentation on macros](https://leanprover.github.io/theorem_proving_in_lean4/macros.html).
+For ordinary day-to-day notation, plain `notation`, `infixl`,
+`infixr`, `prefix`, and `postfix` are almost always enough.
+
+## Scoped notation
+
+If a notation should only be active inside a namespace (so it does
+not pollute the global symbol space), mark it `scoped`:
+
+```lean
+namespace MyDemo
+scoped notation "✦" => (42 : ℕ)
+end MyDemo
+
+-- Outside the namespace, `✦` is not in scope by default;
+-- enable it with `open MyDemo` or `open scoped MyDemo`.
+open scoped MyDemo
+#eval ✦    -- 42
+```
+
+This is the pattern used throughout Mathlib for notation like `𝓝`,
+`𝓟`, `∫`, `∀ᶠ`, etc.: they are scoped to the relevant namespace and
+enabled with `open scoped`.
+
+For more complex notation involving multiple tokens or bespoke
+parsing rules, you can use the `syntax` and `macro_rules` commands,
+but `notation`, the infix variants, `prefix`/`postfix`, and
+`notation3` cover most common use cases.
 
 # The `abbrev` command
 %%%

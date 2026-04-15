@@ -228,3 +228,70 @@ and the `{ref}` in
 [Exact.lean](Leancourse/Coursenotes/01-Lean/Tactics/Exact.lean)) so
 that `lake exe leancourse --output _out/` produces clean HTML with
 no "No destination found for tag" warnings.
+
+## Session history (2026-04-15, follow-up)
+
+### GitHub Pages deployment
+
+- Merged `course_2026WS` into `main` (fast-forward) and pushed.
+- GitHub Pages is configured (via `gh api repos/.../pages`) to serve
+  from `main` branch, `/docs` folder. The old `docs` was a symlink;
+  replaced with the real contents of `_out/html-multi` and committed.
+  Each Pages refresh now requires rebuilding and copying
+  `_out/html-multi` → `docs/` before pushing.
+
+### Tables: pipe → `:::table`
+
+Verso does **not** parse markdown pipe tables -- they rendered as
+literal `|` characters inside a `<p>`.  All tables in the coursenotes
+were converted to Verso's directive syntax:
+```
+:::table (align := left) +header
+* + Header 1
+  + Header 2
+* + Row 1 cell 1
+  + Row 1 cell 2
+:::
+```
+The converter lives at `/tmp/convert_tables.py` (re-creatable; not
+committed).  Ten files were touched across 02-TypeTheory,
+03-Mathematics, and 04-AdvancedTopics.
+
+### Search-bar width
+
+`static/search/search-box.css` drops the desktop `--search-bar-width`
+from `24rem` to `14rem` (mobile from `12rem` to `8rem`) to shrink the
+top-of-page search/jump-to widget.
+
+### Concept-ordering audit + intro polish
+
+Audit found several tactics used in
+[02-Notes-Proofs.lean](Leancourse/Coursenotes/01-Lean/02-Notes-Proofs.lean)
+before their glossary entry (`ring`, `simp`, `apply?`,
+`filter_upwards`).  Mitigation: added a **preview cheatsheet table**
+at the top of the *First steps* section listing
+`intro`/`exact`/`apply`/`rw`/`simp`/`apply?`/`have`/`refine`/`obtain`
+with when-to-use and effect, mirroring the style of
+[Cheatsheet.lean](Leancourse/Coursenotes/01-Lean/Tactics/Cheatsheet.lean).
+
+[00-Introduction.lean](Leancourse/Coursenotes/00-Introduction.lean)
+edits:
+
+- Softened the hardware requirement (mentions Gitpod / Lean web editor
+  as fallback).
+- Re-framed the tactics chapter as an *alphabetical reference /
+  glossary*, not a pedagogical sequence.
+- Added a **How the course is organized** section explaining that
+  tactics and theory are interleaved, and that the tactics chapter is
+  meant to be consulted on demand.
+- Concretized the "immediate feedback" promise as "error messages from
+  the elaborator + live proof-state panel".
+
+### AI assistants
+
+Added a bullet to the "Getting help" section of
+[01-Notes-Lean.lean](Leancourse/Coursenotes/01-Lean/01-Notes-Lean.lean)
+encouraging students to use ChatGPT/Claude/Gemini/Copilot alongside
+`#loogle` / `#leansearch`, with the caveat that AI output must be
+verified in Lean (invented lemmas, Mathlib 3 syntax) and a suggested
+"paste goal → candidates → verify" workflow.

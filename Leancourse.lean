@@ -5,12 +5,9 @@ import Mathlib
 
 import «Leancourse».Coursenotes.«00-Introduction»
 import «Leancourse».Coursenotes.«01-Lean»
-import «Leancourse».Coursenotes.«02-Tactics»
-import «Leancourse».Coursenotes.«03-Projects»
-import «Leancourse».Coursenotes.«04-FunctionalProgramming»
-import «Leancourse».Coursenotes.«05-TypeTheory»
-import «Leancourse».Coursenotes.«06-Mathematics»
-import «Leancourse».Coursenotes.«07-ProofEngineering»
+import «Leancourse».Coursenotes.«02-TypeTheory»
+import «Leancourse».Coursenotes.«03-Mathematics»
+import «Leancourse».Coursenotes.«04-AdvancedTopics»
 
 open Verso.Genre Manual
 
@@ -51,14 +48,8 @@ In case you cannot install the course material locally, do the following: Visit 
 
 {include 0 «Leancourse».Coursenotes.«01-Lean»}
 
-{include 0 «Leancourse».Coursenotes.«02-Tactics»}
+{include 0 «Leancourse».Coursenotes.«02-TypeTheory»}
 
-{include 0 «Leancourse».Coursenotes.«03-Projects»}
+{include 0 «Leancourse».Coursenotes.«03-Mathematics»}
 
-{include 0 «Leancourse».Coursenotes.«04-FunctionalProgramming»}
-
-{include 0 «Leancourse».Coursenotes.«05-TypeTheory»}
-
-{include 0 «Leancourse».Coursenotes.«06-Mathematics»}
-
-{include 0 «Leancourse».Coursenotes.«07-ProofEngineering»}
+{include 0 «Leancourse».Coursenotes.«04-AdvancedTopics»}

@@ -285,6 +285,65 @@ Two tactics complement these commands during an interactive proof:
 Together, `#check`, `#print`, `inferInstance`, `exact?` and `apply?`
 are the main tools for navigating an unfamiliar part of Mathlib.
 
+# Getting help: Loogle, LeanSearch, Moogle, and friends
+%%%
+tag := "help-services"
+%%%
+
+Mathlib is enormous, and naming conventions -- however consistent
+-- will only take you so far.  When you know *what* you want to say
+but not *which lemma* says it, a handful of search services can
+save hours of scrolling.  All of them are available both as web
+pages and, more conveniently, as commands inside Lean via the
+`LeanSearchClient` package (already a dependency of Mathlib).
+
+- *Loogle* ([loogle.lean-lang.org](https://loogle.lean-lang.org/))
+  searches by *type shape*.  You write a pattern (using `_` for
+  holes) and Loogle returns every Mathlib lemma whose statement
+  unifies with it.  Inside Lean:
+  ```
+  #loogle (?a + ?b) * ?c = _
+  ```
+  returns distributivity lemmas in all their variants.  Loogle also
+  accepts a comma-separated list of *constants that must appear*,
+  e.g. `#loogle Real.exp, Real.log`, or a target conclusion
+  `#loogle |- tsum _ = _`.
+
+- *LeanSearch* ([leansearch.net](https://leansearch.net/))
+  searches by *natural language*.  You phrase your goal in English
+  ("derivative of composition of functions") and it returns the
+  most relevant Mathlib lemmas, ranked by semantic similarity.
+  From inside Lean:
+  ```
+  #leansearch "the derivative of a product of functions"
+  ```
+
+- *Moogle* ([moogle.ai](https://www.moogle.ai/)) is another
+  natural-language search, with a different ranking model.  In
+  Lean:
+  ```
+  #moogle "bolzano-weierstrass"
+  ```
+  The two tools often surface different lemmas, so it is worth
+  trying both.
+
+- *Mathlib docs* (the generated API reference at
+  `leanprover-community.github.io/mathlib4_docs`).  If you already know the namespace
+  (`Filter`, `MeasureTheory`, `Topology.Basic`, ...), browsing the
+  module is faster than any search.
+
+- *Zulip* (`leanprover.zulipchat.com`, the `#new members` and
+  `#Mathlib4` streams) is the community chat.  For questions that
+  no search answers, posting a minimal `example` together with the
+  goal you're stuck on almost always gets a helpful reply within
+  hours.
+
+As a rule of thumb: try `exact?` / `apply?` first (they know your
+exact proof state), then `#loogle` (precise, fast), then
+`#leansearch` or `#moogle` (when you do not know the vocabulary
+Mathlib uses), and finally the docs or Zulip for open-ended
+questions.
+
 # Two abbreviations
 %%%
 tag := "abreviation"

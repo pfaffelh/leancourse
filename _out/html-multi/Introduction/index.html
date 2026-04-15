@@ -1820,7 +1820,7 @@ if (document.readyState === 'loading') {
             <div class="split-toc book">
               <div class="title">
                 <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class="">Table of Contents</span></div>
-              <table><tr class="numbered"><td class="num">1.</td><td><a href="Table-of-Contents/#Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Table-of-Contents">Table of Contents</a></td></tr><tr class="current numbered"><td class="num">2.</td><td><a href="Introduction/#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="Lean/#lean">Lean</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="Tactics/#tactics">Tactics</a></td></tr><tr class="numbered"><td class="num">5.</td><td><a href="Projects/#projects">Projects</a></td></tr><tr class="numbered"><td class="num">6.</td><td><a href="Functional-Programming/#functional-programming">Functional Programming</a></td></tr><tr class="numbered"><td class="num">7.</td><td><a href="Type-Theory/#type-theory">Type Theory</a></td></tr><tr class="numbered"><td class="num">8.</td><td><a href="Advanced-Mathematics/#advanced-mathematics">Advanced Mathematics</a></td></tr><tr class="numbered"><td class="num">9.</td><td><a href="Proof-Engineering/#proof-engineering">Proof Engineering</a></td></tr></table></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="Table-of-Contents/#Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Table-of-Contents">Table of Contents</a></td></tr><tr class="current numbered"><td class="num">2.</td><td><a href="Introduction/#introduction">Introduction</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="Lean/#lean">Lean</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="Type-Theory/#type-theory">Type Theory</a></td></tr><tr class="numbered"><td class="num">5.</td><td><a href="Advanced-Mathematics/#advanced-mathematics">Advanced Mathematics</a></td></tr><tr class="numbered"><td class="num">6.</td><td><a href="Advanced-Topics/#advanced-topics">Advanced Topics</a></td></tr></table></div>
             <div class="split-toc">
               <div class="title">
                 <label for="--verso-manual-toc-introduction" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-introduction" checked="checked"></label><span class="number">2.</span> <span class="current"><a href="Introduction/#introduction">Introduction</a></span></div>
@@ -1858,7 +1858,7 @@ if (document.readyState === 'loading') {
                   </li>
                 <li>
                   <p>
-                    Understanding functional programming: Lean is not only a theorem prover but also a functional programming language. We cover core concepts such as inductive types, structures, typeclasses, and monads, which are essential both for using Lean effectively and for understanding how Mathlib is organized.</p>
+                    Understanding functional programming: Lean is not only a theorem prover but also a functional programming language. We cover core concepts such as inductive types, structures, typeclasses, and monads, which are essential both for using Lean effectively and for understanding how Mathlib is organized. These topics are distributed across the Lean basics, Type Theory, and Advanced Mathematics parts of the notes rather than collected into a chapter of their own.</p>
                   </li>
                 <li>
                   <p>
@@ -1866,7 +1866,7 @@ if (document.readyState === 'loading') {
                   </li>
                 <li>
                   <p>
-                    Exploring advanced mathematics in Lean: We cover topics such as order theory, the algebraic hierarchy in Mathlib, filters (which provide a unified framework for limits), topology, and measure theory. These topics are not always well covered in standard textbooks from the perspective of formalization.</p>
+                    Exploring advanced mathematics in Lean: We survey how Mathlib organizes order theory, the algebraic hierarchy, filters (which provide a unified framework for limits), topology, measure theory, and discrete probability. These topics are not always well covered in standard textbooks from the perspective of formalization.</p>
                   </li>
                 <li>
                   <p>
@@ -1928,35 +1928,28 @@ if (document.readyState === 'loading') {
               <h2 id="howto">
                 2.4. How to use this course<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=howto" title="Permalink">🔗</a></span></h2>
               <p>
-                These notes have seven main parts:</p>
+                These notes have five main parts (numbered 0--4, matching the
+directory layout):</p>
               <ul>
                 <li>
                   <p>
-                    <strong>Introduction and Lean basics</strong> (Chapters 1-2): Starting in the next chapter, we give general hints on Lean, which are rather for reference and background than for starting the course. You will almost certainly find yourself asking fundamental things on Lean (e.g. <em>What is type theory, and why should I care?</em>), which we try to explain without too much detail. We also introduce basic mathematical objects in Lean: logical claims, <code>ℕ</code>, <code>ℝ</code>, sets and functions.</p>
+                    <strong>Introduction</strong> (Chapter 0): the document you are currently reading.</p>
                   </li>
                 <li>
                   <p>
-                    <strong>Tactics</strong> (Chapter 3): When interactively writing proofs, a main focus will be the currently <em>proof state</em>. In order to modify it, we need tactics, which in some sense feels like learning a new language (which is in fact true). We give an overview of the most important tactics. A more comprehensive overview is <a href="https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md">here</a>.</p>
+                    <strong>Lean</strong> (Chapter 1): general hints on Lean as a language and as a proof assistant. We cover background on dependent type theory, the functional-programming side of Lean (pure functions, pattern matching, recursion, higher-order functions), and a comprehensive reference for the <strong>tactics</strong> you will use to write proofs interactively. A more comprehensive list of tactics is <a href="https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md">here</a>.</p>
                   </li>
                 <li>
                   <p>
-                    <strong>Projects</strong> (Chapter 4): Student projects from previous iterations of this course, demonstrating what can be achieved.</p>
+                    <strong>Type Theory</strong> (Chapter 2): the theoretical foundation of Lean. We explore the Curry-Howard correspondence, dependent types, universes, the axioms of Lean's type theory, and the <code>structure</code> / <code>class</code> machinery that underpins Mathlib.</p>
                   </li>
                 <li>
                   <p>
-                    <strong>Functional Programming</strong> (Chapter 5): Lean is a functional programming language. We cover recursion, pattern matching, structures, typeclasses, and monads - the building blocks that make both Lean programs and Mathlib work.</p>
+                    <strong>Advanced Mathematics</strong> (Chapter 3): we survey how Mathlib organizes more advanced mathematical topics -- order theory, the algebraic hierarchy, filters, topology, measure theory, and monadic discrete probability (<code>PMF</code>) -- with pointers into the relevant Mathlib API rather than full formalizations.</p>
                   </li>
                 <li>
                   <p>
-                    <strong>Type Theory</strong> (Chapter 6): The theoretical foundation of Lean. We explore the Curry-Howard correspondence, dependent types, universes, and the axioms of Lean's type theory.</p>
-                  </li>
-                <li>
-                  <p>
-                    <strong>Advanced Mathematics</strong> (Chapter 7): We formalize more advanced mathematical topics: order theory, the algebraic hierarchy, filters, topology, and measure theory.</p>
-                  </li>
-                <li>
-                  <p>
-                    <strong>Proof Engineering</strong> (Chapter 8): Practical skills for working with Lean and Mathlib at scale: automation tactics, navigating the library, and avoiding common pitfalls.</p>
+                    <strong>Advanced Topics</strong> (Chapter 4): practical skills for working with Lean and Mathlib at scale: automation tactics, navigating the library, and avoiding common pitfalls.</p>
                   </li>
                 </ul>
               <p>

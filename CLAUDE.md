@@ -29,6 +29,17 @@ Project notes for future Claude Code sessions working on the
   Tendsto`). Use a plain ```` ``` ```` fence when showing code that
   should not run.
 - Line-length linter: code inside lean blocks should be ≤ 60 columns.
+- Tag names passed to `{ref "..."}` must not contain `?` or other
+  punctuation that looks like regex/URL syntax — Verso's cross-
+  reference resolver fails silently at build time with
+  `No destination found for tag '...' in none`. Sanitize tags
+  (e.g. `apply?` → `apply-qm`) and adjust every matching `{ref}`.
+- The course notes and exercises use different numbering schemes.
+  Exercise directories ([Leancourse/Exercises/](Leancourse/Exercises/))
+  still use the old `04-FunctionalProgramming`, `06-Mathematics`,
+  `07-ProofEngineering` names — they were *not* renumbered when the
+  course notes were restructured. Keep that in mind when updating
+  cross-links.
 
 ## Session history (2026-04-13)
 
@@ -151,3 +162,69 @@ Tracked files used `git mv` (history preserved); untracked files
   derived as `bind id`, the `Monad PMF` instance, and where
   measurability still creeps in. Registered in
   [06-Mathematics.lean](Leancourse/Coursenotes/06-Mathematics.lean).
+
+## Session history (2026-04-15)
+
+### Chapter restructure
+
+The coursenotes tree was flattened and renumbered. The old layout
+had eight parts (`00`–`07`); the new layout has five (`00`–`04`).
+Mapping:
+
+| Old                             | New                                           |
+|---------------------------------|-----------------------------------------------|
+| `00-Introduction`               | `00-Introduction`                             |
+| `01-Lean`                       | `01-Lean` (now also holds tactics + FP basics)|
+| `02-Tactics/`                   | `01-Lean/Tactics/` (folded in)                |
+| `03-Projects`                   | *deleted*                                     |
+| `04-FunctionalProgramming/`     | *abandoned*; content redistributed            |
+| &nbsp;&nbsp;`01-Basics`         | → `01-Lean/03-FunctionalBasics`               |
+| &nbsp;&nbsp;`02-Structures`     | → `02-TypeTheory/04-Structures`               |
+| &nbsp;&nbsp;`03-Typeclasses`    | → `02-TypeTheory/05-Typeclasses`              |
+| &nbsp;&nbsp;`04-Monads`         | → prepended into `03-Mathematics/06-Probability` |
+| `05-TypeTheory`                 | `02-TypeTheory`                               |
+| `06-Mathematics`                | `03-Mathematics`                              |
+| `07-ProofEngineering`           | `04-AdvancedTopics` (retitled)                |
+
+All moves used `git mv` so history is preserved. The
+[Leancourse.lean](Leancourse.lean) root and every part-index file
+(`01-Lean.lean`, `02-TypeTheory.lean`, `03-Mathematics.lean`,
+`04-AdvancedTopics.lean`) were updated to match, as was the chapter
+listing in [00-Introduction.lean](Leancourse/Coursenotes/00-Introduction.lean).
+
+Monads are now the opening section of the probability chapter
+(`Monads and Probability Mass Functions`): the general
+`Option`/`List`/`IO`/`StateM`/`Except`/`Set`/`Filter`/`Finset`
+discussion comes first, then the PMF-specific material.
+
+### Help / search services
+
+Added a "Getting help" section to
+[01-Notes-Lean.lean](Leancourse/Coursenotes/01-Lean/01-Notes-Lean.lean)
+covering **Loogle**, **LeanSearch**, **Moogle**, the generated
+Mathlib docs, and Zulip, with the `#loogle` / `#leansearch` /
+`#moogle` inline commands and a rule-of-thumb on which to try first.
+
+### Build fixes
+
+Fixed the four pre-existing build errors that had been masked by
+`verso.docstring.allowMissing`:
+
+- [Tactics/Ext.lean](Leancourse/Coursenotes/01-Lean/Tactics/Ext.lean):
+  removed a stray `{docstring Lean.Nat.induction}` (unknown constant).
+- [03-Mathematics/03-Filters.lean](Leancourse/Coursenotes/03-Mathematics/03-Filters.lean):
+  replaced the brittle `rw [div_lt_iff₀, lt_div_iff₀]` chain in the
+  `1/(n+1) → 0` proof with a `linarith`-closed step.
+- [03-Mathematics/05-MeasureTheory.lean](Leancourse/Coursenotes/03-Mathematics/05-MeasureTheory.lean):
+  added `open MeasureTheory in` before the `volume (Set.Icc 0 1) = 1`
+  example.
+- [03-Mathematics/06-Probability.lean](Leancourse/Coursenotes/03-Mathematics/06-Probability.lean):
+  fixed the `PMF.pure_apply_of_ne` call (it takes the centre and the
+  query point explicitly before the hypothesis).
+
+Also renamed the `apply?` tag to `apply-qm` (in
+[Applyqm.lean](Leancourse/Coursenotes/01-Lean/Tactics/Applyqm.lean)
+and the `{ref}` in
+[Exact.lean](Leancourse/Coursenotes/01-Lean/Tactics/Exact.lean)) so
+that `lake exe leancourse --output _out/` produces clean HTML with
+no "No destination found for tag" warnings.

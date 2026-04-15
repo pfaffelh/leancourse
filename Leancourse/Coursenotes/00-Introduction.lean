@@ -45,9 +45,20 @@ Other courses, which you might want to have a look at are:
 tag := "some-notes"
 %%%
 
-* Hardware requirements: In fact, Lean will require a decent hardware, e.g. at least 8GB of RAM in order to function properly. If you do not have this, there are ways of using Lean online; see above.
+* Hardware requirements: running Lean locally is comfortable with roughly 8 GB of RAM or more. If your machine is smaller, you can still follow the course: use a cloud-based setup such as Gitpod or the Lean web editor linked from the [Lean community page](https://leanprover-community.github.io/). With that in mind, here is what you will need to follow along.
 * Lean is not only an interactive theorem prover, but also a programming language. If you want to know/learn more about this aspect, please consult [Functional programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
 * While `Lean` is a programming language, `Mathlib` is a library in the Lean language. It collects various (more or less deep) mathematical results. In this course, we do not make any distinction between `Lean` and `Mathlib`, since we will have `import Mathlib` at the start of any file we will need results from there. In this way, we have access to a large part of mathematics in order to solve exercises.
+
+# How the course is organized
+%%%
+tag := "structure"
+%%%
+
+Unlike a textbook, this course interleaves tactics and theory rather than separating them. Concretely:
+
+* Chapters 01 and 02 introduce both tactical reasoning (writing proofs) and the type theory that underlies it.
+* Tactics are documented *alphabetically* in their own chapter. That chapter is a glossary, not a narrative. You will often meet a tactic in a working example before you read its entry; a preview table at the start of *Proofs in Lean* lists the ones you will need first.
+* We recommend reading in order (00 → 04), but on a first pass it is fine to skip the tactics chapter and consult it when you hit a `sorry` proof.
 
 # How to use this course
 %%%
@@ -58,11 +69,11 @@ These notes have five main parts (numbered 0--4, matching the
 directory layout):
 
 * *Introduction* (Chapter 0): the document you are currently reading.
-* *Lean* (Chapter 1): general hints on Lean as a language and as a proof assistant. We cover background on dependent type theory, the functional-programming side of Lean (pure functions, pattern matching, recursion, higher-order functions), and a comprehensive reference for the *tactics* you will use to write proofs interactively. A more comprehensive list of tactics is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md).
+* *Lean* (Chapter 1): general hints on Lean as a language and as a proof assistant. We cover background on dependent type theory, the functional-programming side of Lean (pure functions, pattern matching, recursion, higher-order functions), and an *alphabetical reference* for the main tactics you will use to write proofs interactively. The tactics chapter is meant as a glossary: you will encounter the most important tactics in the narrative first (a short preview table appears at the start of *Proofs in Lean*), and look up individual entries as needed. An even longer list lives [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md).
 * *Type Theory* (Chapter 2): the theoretical foundation of Lean. We explore the Curry-Howard correspondence, dependent types, universes, the axioms of Lean's type theory, and the `structure` / `class` machinery that underpins Mathlib.
 * *Advanced Mathematics* (Chapter 3): we survey how Mathlib organizes more advanced mathematical topics -- order theory, the algebraic hierarchy, filters, topology, measure theory, and monadic discrete probability (`PMF`) -- with pointers into the relevant Mathlib API rather than full formalizations.
 * *Advanced Topics* (Chapter 4): practical skills for working with Lean and Mathlib at scale: automation tactics, navigating the library, and avoiding common pitfalls.
 
-The heart of the course are the exercises (see the _Exercises_ folder within `Leancourse`). Unlike in other courses, you will get immediate feedback of how well you performed on any single exercise. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.
+The heart of the course are the exercises (see the _Exercises_ folder within `Leancourse`). Unlike in other courses, you will get immediate feedback on any single exercise -- via error messages from the elaborator and a live *proof-state* panel that shows what remains to be proved at every cursor position. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.
 
 While the exercises will cover the first half of the semester, individual assignments will happen in the latter part of this course. (These will mostly be self-assigned, so e.g. you will formalize an exercise from your first year of studies, or you are interested in a specific part of `Mathlib`, or...)

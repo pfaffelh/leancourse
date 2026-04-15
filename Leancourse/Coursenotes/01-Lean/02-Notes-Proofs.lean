@@ -52,18 +52,42 @@ Another way to search Mathlib is [Moogle](https://www.moogle.ai/) and [Loogle](h
 tag := "firststeps"
 %%%
 
-Let us start with some simple examples in order to explain the first tactics in Lean. We will deal here with
-* intro
-* exact
-* apply
-* rw
-* simp
-* apply?
-* have
-* refine
-* obtain
+Let us start with some simple examples in order to explain the first tactics in Lean. Here is a quick preview of the tactics we will meet in this chapter. They are explained in detail below, and a full alphabetical reference — with many more tactics — lives in the {ref "tactics"}[Tactics] chapter.
 
-More tactics are found in Chapter xxx.
+:::table (align := left) +header
+* + Tactic
+  + Use it when
+  + Effect
+* + `intro hP`
+  + goal is `P → Q` or `∀ x, …`
+  + move the hypothesis (or bound variable) into context
+* + `exact e`
+  + the goal matches a known term `e`
+  + close the goal with `e`
+* + `apply h`
+  + `h : P → Q` and goal is `Q`
+  + reduce the goal to `P`
+* + `rw [h]`
+  + `h : a = b` or `h : P ↔ Q`
+  + rewrite occurrences of `a` to `b` (resp. `P` to `Q`) in the goal; `rw [h] at h'` rewrites in a hypothesis; `rw [← h]` rewrites the other way
+* + `simp`
+  + goal / hypothesis can be normalised by standard lemmas
+  + simplify using Mathlib's simp set (`simp?` suggests which lemmas)
+* + `apply?`
+  + stuck — need a suitable lemma from Mathlib
+  + searches the library and proposes a closing `exact …`
+* + `have h : P := …`
+  + want to record an intermediate fact `P`
+  + introduces `h : P` into context (provide the proof on the right, or enter tactic mode with `by`)
+* + `refine e`
+  + like `exact`, but with holes `_` or `?_`
+  + closes the goal up to the remaining holes, which become new goals
+* + `obtain ⟨x, hx⟩ := h`
+  + `h : ∃ x, P x` or `h : P ∧ Q`
+  + destructs the witness / pair into named pieces
+:::
+
+You can also skip this chapter on the first pass and come back to each tactic as you need it; treat {ref "tactics"}[Tactics] as your glossary.
 
 ## `intro`, `exact`, `apply` and `rw`
 

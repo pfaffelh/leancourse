@@ -506,6 +506,21 @@
        {"title": "Type Theory", "shortTitle": null, "number": "4"},
        {"title": "Structures and Records", "shortTitle": null, "number": "4"}]},
      "address": "/Type-Theory/"}],
+   "structure":
+   [{"id": "structure",
+     "data":
+     {"title": "How the course is organized",
+      "shortTitle": null,
+      "sectionNum": "2.4.",
+      "context":
+      [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Introduction", "shortTitle": null, "number": "2"},
+       {"title": "How the course is organized",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/Introduction/"}],
    "state-monad":
    [{"id": "state-monad",
      "data":
@@ -2503,13 +2518,13 @@
      "data":
      {"title": "How to use this course",
       "shortTitle": null,
-      "sectionNum": "2.4.",
+      "sectionNum": "2.5.",
       "context":
       [{"title": "Interactive Theorem Proving using Lean, Winter 2026/27",
         "shortTitle": null,
         "number": null},
        {"title": "Introduction", "shortTitle": null, "number": "2"},
-       {"title": "How to use this course", "shortTitle": null, "number": "4"}]},
+       {"title": "How to use this course", "shortTitle": null, "number": "5"}]},
      "address": "/Introduction/"}],
    "holes":
    [{"id": "holes",

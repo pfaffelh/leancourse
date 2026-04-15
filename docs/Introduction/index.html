@@ -1824,7 +1824,7 @@ if (document.readyState === 'loading') {
             <div class="split-toc">
               <div class="title">
                 <label for="--verso-manual-toc-introduction" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-introduction" checked="checked"></label><span class="number">2.</span> <span class="current"><a href="Introduction/#introduction">Introduction</a></span></div>
-              <table><tr class="numbered"><td class="num">2.1.</td><td><a href="Introduction/#goals">Goals</a></td></tr><tr class="numbered"><td class="num">2.2.</td><td><a href="Introduction/#other-theorem-provers">Other material and Theorem provers</a></td></tr><tr class="numbered"><td class="num">2.3.</td><td><a href="Introduction/#some-notes">Some notes on Lean and Mathlib</a></td></tr><tr class="numbered"><td class="num">2.4.</td><td><a href="Introduction/#howto">How to use this course</a></td></tr></table></div>
+              <table><tr class="numbered"><td class="num">2.1.</td><td><a href="Introduction/#goals">Goals</a></td></tr><tr class="numbered"><td class="num">2.2.</td><td><a href="Introduction/#other-theorem-provers">Other material and Theorem provers</a></td></tr><tr class="numbered"><td class="num">2.3.</td><td><a href="Introduction/#some-notes">Some notes on Lean and Mathlib</a></td></tr><tr class="numbered"><td class="num">2.4.</td><td><a href="Introduction/#structure">How the course is organized</a></td></tr><tr class="numbered"><td class="num">2.5.</td><td><a href="Introduction/#howto">How to use this course</a></td></tr></table></div>
             </div>
           </div>
         <div class="last">
@@ -1912,7 +1912,7 @@ if (document.readyState === 'loading') {
               <ul>
                 <li>
                   <p>
-                    Hardware requirements: In fact, Lean will require a decent hardware, e.g. at least 8GB of RAM in order to function properly. If you do not have this, there are ways of using Lean online; see above.</p>
+                    Hardware requirements: running Lean locally is comfortable with roughly 8 GB of RAM or more. If your machine is smaller, you can still follow the course: use a cloud-based setup such as Gitpod or the Lean web editor linked from the <a href="https://leanprover-community.github.io/">Lean community page</a>. With that in mind, here is what you will need to follow along.</p>
                   </li>
                 <li>
                   <p>
@@ -1925,8 +1925,28 @@ if (document.readyState === 'loading') {
                 </ul>
               </section>
             <section>
+              <h2 id="structure">
+                2.4. How the course is organized<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=structure" title="Permalink">🔗</a></span></h2>
+              <p>
+                Unlike a textbook, this course interleaves tactics and theory rather than separating them. Concretely:</p>
+              <ul>
+                <li>
+                  <p>
+                    Chapters 01 and 02 introduce both tactical reasoning (writing proofs) and the type theory that underlies it.</p>
+                  </li>
+                <li>
+                  <p>
+                    Tactics are documented <strong>alphabetically</strong> in their own chapter. That chapter is a glossary, not a narrative. You will often meet a tactic in a working example before you read its entry; a preview table at the start of <strong>Proofs in Lean</strong> lists the ones you will need first.</p>
+                  </li>
+                <li>
+                  <p>
+                    We recommend reading in order (00 → 04), but on a first pass it is fine to skip the tactics chapter and consult it when you hit a <code>sorry</code> proof.</p>
+                  </li>
+                </ul>
+              </section>
+            <section>
               <h2 id="howto">
-                2.4. How to use this course<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=howto" title="Permalink">🔗</a></span></h2>
+                2.5. How to use this course<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=howto" title="Permalink">🔗</a></span></h2>
               <p>
                 These notes have five main parts (numbered 0--4, matching the
 directory layout):</p>
@@ -1937,7 +1957,7 @@ directory layout):</p>
                   </li>
                 <li>
                   <p>
-                    <strong>Lean</strong> (Chapter 1): general hints on Lean as a language and as a proof assistant. We cover background on dependent type theory, the functional-programming side of Lean (pure functions, pattern matching, recursion, higher-order functions), and a comprehensive reference for the <strong>tactics</strong> you will use to write proofs interactively. A more comprehensive list of tactics is <a href="https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md">here</a>.</p>
+                    <strong>Lean</strong> (Chapter 1): general hints on Lean as a language and as a proof assistant. We cover background on dependent type theory, the functional-programming side of Lean (pure functions, pattern matching, recursion, higher-order functions), and an <strong>alphabetical reference</strong> for the main tactics you will use to write proofs interactively. The tactics chapter is meant as a glossary: you will encounter the most important tactics in the narrative first (a short preview table appears at the start of <strong>Proofs in Lean</strong>), and look up individual entries as needed. An even longer list lives <a href="https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md">here</a>.</p>
                   </li>
                 <li>
                   <p>
@@ -1953,7 +1973,7 @@ directory layout):</p>
                   </li>
                 </ul>
               <p>
-                The heart of the course are the exercises (see the <em>Exercises</em> folder within <code>Leancourse</code>). Unlike in other courses, you will get immediate feedback of how well you performed on any single exercise. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.</p>
+                The heart of the course are the exercises (see the <em>Exercises</em> folder within <code>Leancourse</code>). Unlike in other courses, you will get immediate feedback on any single exercise -- via error messages from the elaborator and a live <strong>proof-state</strong> panel that shows what remains to be proved at every cursor position. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.</p>
               <p>
                 While the exercises will cover the first half of the semester, individual assignments will happen in the latter part of this course. (These will mostly be self-assigned, so e.g. you will formalize an exercise from your first year of studies, or you are interested in a specific part of <code>Mathlib</code>, or...)
 </p>

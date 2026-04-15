@@ -1,1 +1,0 @@
-window.docContents[226].resolve({"/#Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Table-of-Contents":{"contents":"","context":"Interactive Theorem Proving using Lean, Winter 2026/27","header":"1. Table of Contents","id":"/#Interactive-Theorem-Proving-using-Lean___-Winter-2026___27--Table-of-Contents"}});

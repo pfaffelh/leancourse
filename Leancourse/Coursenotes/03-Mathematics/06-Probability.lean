@@ -456,17 +456,48 @@ one introduced above, now applied to probability distributions.
 tag := "pmf-notation"
 %%%
 
-| Symbol        | Lean name             | Reads as                                 | Typed as        |
-|---------------|-----------------------|------------------------------------------|-----------------|
-| `PMF α`       | `PMF α`               | "probability mass function on α"         | (ASCII)         |
-| `p a`         | `DFunLike.coe p a`    | "the probability of a under p"           | (ASCII)         |
-| `p.support`   | `PMF.support p`       | "the support of p"                       | (ASCII)         |
-| `PMF.pure a`  | `PMF.pure`            | "the Dirac measure at a"                 | (ASCII)         |
-| `p.bind f`    | `PMF.bind`            | "bind p with f"                          | (ASCII)         |
-| `p.map f`     | `PMF.map`             | "push p along f"                         | (ASCII)         |
-| `f <$> p`     | `Functor.map`         | "f mapped over p"                        | (ASCII)         |
-| `p >>= f`     | `Bind.bind`           | "p bind f"                               | (ASCII)         |
-| `ℝ≥0∞`        | `ENNReal`             | "extended nonneg reals"                  | `\R\ge0\infty`  |
+:::table +header
+* + Symbol
+  + Lean name
+  + Reads as
+  + Typed as
+* + `PMF α`
+  + `PMF α`
+  + "probability mass function on α"
+  + (ASCII)
+* + `p a`
+  + `DFunLike.coe p a`
+  + "the probability of a under p"
+  + (ASCII)
+* + `p.support`
+  + `PMF.support p`
+  + "the support of p"
+  + (ASCII)
+* + `PMF.pure a`
+  + `PMF.pure`
+  + "the Dirac measure at a"
+  + (ASCII)
+* + `p.bind f`
+  + `PMF.bind`
+  + "bind p with f"
+  + (ASCII)
+* + `p.map f`
+  + `PMF.map`
+  + "push p along f"
+  + (ASCII)
+* + `f <$> p`
+  + `Functor.map`
+  + "f mapped over p"
+  + (ASCII)
+* + `p >>= f`
+  + `Bind.bind`
+  + "p bind f"
+  + (ASCII)
+* + `ℝ≥0∞`
+  + `ENNReal`
+  + "extended nonneg reals"
+  + `\R\ge0\infty`
+:::
 
 ## The definition
 %%%

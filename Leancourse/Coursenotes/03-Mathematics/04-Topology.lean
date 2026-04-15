@@ -27,25 +27,80 @@ and how metric spaces fit in.
 tag := "topology-notation"
 %%%
 
-| Symbol            | Lean name                 | Reads as                              | Typed as         |
-|-------------------|---------------------------|---------------------------------------|------------------|
-| `TopologicalSpace α` | `TopologicalSpace α`   | "topology on α"                       | (ASCII)          |
-| `IsOpen s`        | `IsOpen s`                | "s is open"                           | (ASCII)          |
-| `IsClosed s`      | `IsClosed s`              | "s is closed"                         | (ASCII)          |
-| `IsClopen s`      | `IsClopen s`              | "s is clopen (open and closed)"       | (ASCII)          |
-| `nhds x` or `𝓝 x` | `nhds x`                  | "neighborhood filter at x"            | `\nhds`          |
-| `Continuous f`    | `Continuous f`            | "f is continuous"                     | (ASCII)          |
-| `ContinuousAt f x`| `ContinuousAt f x`        | "f is continuous at x"                | (ASCII)          |
-| `IsCompact s`     | `IsCompact s`             | "s is compact"                        | (ASCII)          |
-| `IsConnected s`   | `IsConnected s`           | "s is connected"                      | (ASCII)          |
-| `IsPreconnected s`| `IsPreconnected s`        | "s is preconnected"                   | (ASCII)          |
-| `dist x y`        | `dist x y`                | "distance between x and y"            | (ASCII)          |
-| `Metric.ball x r` | `Metric.ball x r`         | "open ball of radius r at x"          | (ASCII)          |
-| `Metric.closedBall x r` | `Metric.closedBall x r` | "closed ball"                    | (ASCII)          |
-| `f ⁻¹' s`         | `Set.preimage f s`        | "preimage of s under f"               | `\inv'`          |
-| `f '' s`          | `Set.image f s`           | "image of s under f"                  | (ASCII, two `'`) |
-| `α × β`           | `Prod α β`                | "product of α and β"                  | `\times`         |
-| `sᶜ`              | `compl s`                 | "complement of s"                     | `\compl`         |
+:::table +header
+* + Symbol
+  + Lean name
+  + Reads as
+  + Typed as
+* + `TopologicalSpace α`
+  + `TopologicalSpace α`
+  + "topology on α"
+  + (ASCII)
+* + `IsOpen s`
+  + `IsOpen s`
+  + "s is open"
+  + (ASCII)
+* + `IsClosed s`
+  + `IsClosed s`
+  + "s is closed"
+  + (ASCII)
+* + `IsClopen s`
+  + `IsClopen s`
+  + "s is clopen (open and closed)"
+  + (ASCII)
+* + `nhds x` or `𝓝 x`
+  + `nhds x`
+  + "neighborhood filter at x"
+  + `\nhds`
+* + `Continuous f`
+  + `Continuous f`
+  + "f is continuous"
+  + (ASCII)
+* + `ContinuousAt f x`
+  + `ContinuousAt f x`
+  + "f is continuous at x"
+  + (ASCII)
+* + `IsCompact s`
+  + `IsCompact s`
+  + "s is compact"
+  + (ASCII)
+* + `IsConnected s`
+  + `IsConnected s`
+  + "s is connected"
+  + (ASCII)
+* + `IsPreconnected s`
+  + `IsPreconnected s`
+  + "s is preconnected"
+  + (ASCII)
+* + `dist x y`
+  + `dist x y`
+  + "distance between x and y"
+  + (ASCII)
+* + `Metric.ball x r`
+  + `Metric.ball x r`
+  + "open ball of radius r at x"
+  + (ASCII)
+* + `Metric.closedBall x r`
+  + `Metric.closedBall x r`
+  + "closed ball"
+  + (ASCII)
+* + `f ⁻¹' s`
+  + `Set.preimage f s`
+  + "preimage of s under f"
+  + `\inv'`
+* + `f '' s`
+  + `Set.image f s`
+  + "image of s under f"
+  + (ASCII, two `'`)
+* + `α × β`
+  + `Prod α β`
+  + "product of α and β"
+  + `\times`
+* + `sᶜ`
+  + `compl s`
+  + "complement of s"
+  + `\compl`
+:::
 
 Naming hints.
 
@@ -335,18 +390,30 @@ A function into a product is continuous iff both components are:
 tag := "topology-api-summary"
 %%%
 
-| Concept | Mathlib name |
-|---------|-------------|
-| Open set | `IsOpen s` |
-| Closed set | `IsClosed s` |
-| Neighborhood filter | `nhds x` |
-| Continuous function | `Continuous f` |
-| Continuous at a point | `ContinuousAt f x` |
-| Compact set | `IsCompact s` |
-| Connected set | `IsPreconnected s` |
-| Metric space | `MetricSpace α` |
-| Open ball | `Metric.ball x r` |
-| Distance | `dist x y` |
+:::table +header
+* + Concept
+  + Mathlib name
+* + Open set
+  + `IsOpen s`
+* + Closed set
+  + `IsClosed s`
+* + Neighborhood filter
+  + `nhds x`
+* + Continuous function
+  + `Continuous f`
+* + Continuous at a point
+  + `ContinuousAt f x`
+* + Compact set
+  + `IsCompact s`
+* + Connected set
+  + `IsPreconnected s`
+* + Metric space
+  + `MetricSpace α`
+* + Open ball
+  + `Metric.ball x r`
+* + Distance
+  + `dist x y`
+:::
 
 The key insight is that all of these interact seamlessly with the filter
 framework from the previous section. Limits, continuity, and compactness

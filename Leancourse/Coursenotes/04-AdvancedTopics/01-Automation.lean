@@ -201,18 +201,31 @@ tag := "choosing-tactics"
 
 Here is a rough guide for choosing the right automation tactic:
 
-| Goal type | Tactic |
-|---|---|
-| Numerical computation (`2 + 3 = 5`) | `norm_num` or `decide` |
-| Linear arithmetic over `ℕ`, `ℤ` | `omega` |
-| Linear arithmetic over `ℝ`, `ℚ` | `linarith` |
-| Ring equality (`(x+y)^2 = ...`) | `ring` |
-| Nonlinear inequality | `nlinarith` or `positivity` |
-| Clearing denominators | `field_simp` then `ring` |
-| Simplification with known lemmas | `simp` or `simp only [...]` |
-| Set membership, basic logic | `aesop` |
-| Monotonicity / congruence | `gcongr` |
-| Decidable finite computation | `decide` |
-| Using hypotheses as linear combination | `linear_combination` |
+:::table +header
+* + Goal type
+  + Tactic
+* + Numerical computation (`2 + 3 = 5`)
+  + `norm_num` or `decide`
+* + Linear arithmetic over `ℕ`, `ℤ`
+  + `omega`
+* + Linear arithmetic over `ℝ`, `ℚ`
+  + `linarith`
+* + Ring equality (`(x+y)^2 = ...`)
+  + `ring`
+* + Nonlinear inequality
+  + `nlinarith` or `positivity`
+* + Clearing denominators
+  + `field_simp` then `ring`
+* + Simplification with known lemmas
+  + `simp` or `simp only [...]`
+* + Set membership, basic logic
+  + `aesop`
+* + Monotonicity / congruence
+  + `gcongr`
+* + Decidable finite computation
+  + `decide`
+* + Using hypotheses as linear combination
+  + `linear_combination`
+:::
 
 When in doubt, try `simp`, then `aesop`, then more specialized tactics. Use `simp?` to discover which simp lemmas apply, and then switch to `simp only` for a more maintainable proof.

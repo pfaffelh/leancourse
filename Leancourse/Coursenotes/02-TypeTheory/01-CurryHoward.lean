@@ -273,17 +273,40 @@ tag := "curry-howard-summary"
 
 Here is a summary of the Curry-Howard dictionary:
 
-| Logic | Type Theory | Lean notation |
-|---|---|---|
-| Proposition | Type | `P : Prop` |
-| Proof | Term (inhabitant) | `h : P` |
-| Implication `P → Q` | Function type | `P → Q` |
-| Conjunction `P ∧ Q` | Product type | `P ∧ Q` / `And P Q` |
-| Disjunction `P ∨ Q` | Sum type | `P ∨ Q` / `Or P Q` |
-| True | Unit type | `True` |
-| False | Empty type | `False` |
-| Negation `¬P` | Function to empty | `P → False` |
-| `∀ (x : α), P x` | Dependent function (Π) | `(x : α) → P x` |
-| `∃ (x : α), P x` | Dependent pair (Σ) | `⟨a, ha⟩ : ∃ x, P x` |
+:::table +header
+* + Logic
+  + Type Theory
+  + Lean notation
+* + Proposition
+  + Type
+  + `P : Prop`
+* + Proof
+  + Term (inhabitant)
+  + `h : P`
+* + Implication `P → Q`
+  + Function type
+  + `P → Q`
+* + Conjunction `P ∧ Q`
+  + Product type
+  + `P ∧ Q` / `And P Q`
+* + Disjunction `P ∨ Q`
+  + Sum type
+  + `P ∨ Q` / `Or P Q`
+* + True
+  + Unit type
+  + `True`
+* + False
+  + Empty type
+  + `False`
+* + Negation `¬P`
+  + Function to empty
+  + `P → False`
+* + `∀ (x : α), P x`
+  + Dependent function (Π)
+  + `(x : α) → P x`
+* + `∃ (x : α), P x`
+  + Dependent pair (Σ)
+  + `⟨a, ha⟩ : ∃ x, P x`
+:::
 
 Understanding this correspondence is key to becoming fluent in Lean: when you write a tactic proof, you are really constructing a term; when you write a term proof, you are programming a function. The two perspectives are equivalent, and switching between them often leads to deeper understanding.

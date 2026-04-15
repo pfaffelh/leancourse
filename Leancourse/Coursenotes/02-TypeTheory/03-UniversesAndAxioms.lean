@@ -240,16 +240,35 @@ tag := "comparison-zfc"
 
 Most mathematicians are (at least implicitly) trained in ZFC set theory. Here are the key differences from Lean's type theory:
 
-| Feature | ZFC | Lean |
-|---|---|---|
-| Foundation | Sets and membership `∈` | Types and terms `:` |
-| Everything is a... | Set | Term of some type |
-| `3 ∈ 7` | Well-formed (and true!) | Type error |
-| Functions | Sets of ordered pairs | Primitive notion |
-| Equality | Between any two sets | Only within a type |
-| Proof objects | Not part of the theory | First-class citizens |
-| Computation | Not built in | Built in (terms reduce) |
-| Type checking | Not applicable | Decidable (in practice) |
+:::table +header
+* + Feature
+  + ZFC
+  + Lean
+* + Foundation
+  + Sets and membership `∈`
+  + Types and terms `:`
+* + Everything is a...
+  + Set
+  + Term of some type
+* + `3 ∈ 7`
+  + Well-formed (and true!)
+  + Type error
+* + Functions
+  + Sets of ordered pairs
+  + Primitive notion
+* + Equality
+  + Between any two sets
+  + Only within a type
+* + Proof objects
+  + Not part of the theory
+  + First-class citizens
+* + Computation
+  + Not built in
+  + Built in (terms reduce)
+* + Type checking
+  + Not applicable
+  + Decidable (in practice)
+:::
 
 A key practical difference: in ZFC, you can ask nonsensical questions like "is 3 ∈ π?" and get an answer. In Lean, comparing objects of different types is a type error, which catches many mistakes early.
 

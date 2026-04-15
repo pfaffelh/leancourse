@@ -29,21 +29,64 @@ tag := "measure-notation"
 Several measure-theory symbols are unicode characters.  In VS Code,
 hover over a symbol to see the backslash escape that types it.
 
-| Symbol              | Lean name                       | Reads as                             | Typed as        |
-|---------------------|---------------------------------|--------------------------------------|-----------------|
-| `MeasurableSpace α` | `MeasurableSpace α`             | "sigma-algebra on α"                 | (ASCII)         |
-| `MeasurableSet s`   | `MeasurableSet s`               | "s is measurable"                    | (ASCII)         |
-| `Measurable f`      | `Measurable f`                  | "f is measurable"                    | (ASCII)         |
-| `Measure α`         | `MeasureTheory.Measure α`       | "measure on α"                       | (ASCII)         |
-| `volume`            | `MeasureTheory.volume`          | "the Lebesgue measure"               | (ASCII)         |
-| `μ s`               | `MeasureTheory.Measure.measureOf` | "measure of s under μ"             | (ASCII)         |
-| `ℝ≥0`               | `NNReal`                        | "nonnegative reals"                  | `\R\ge0`        |
-| `ℝ≥0∞`              | `ENNReal`                       | "extended nonneg reals, 0 to ∞"      | `\R\ge0\infty`  |
-| `∫ x, f x ∂μ`       | `MeasureTheory.integral`        | "Bochner integral of f w.r.t. μ"     | `\int`, `\partial` |
-| `∫⁻ x, f x ∂μ`      | `MeasureTheory.lintegral`       | "lower Lebesgue integral"            | `\int\^-`       |
-| `∀ᵐ x ∂μ, p x`      | `MeasureTheory.∀ᵐ`-notation      | "p holds μ-almost-everywhere"        | `\all\^m`       |
-| `f =ᵐ[μ] g`         | `Filter.EventuallyEq`           | "f equals g μ-almost-everywhere"     | `=\^m[...]`     |
-| `μ.ae`              | `MeasureTheory.Measure.ae`      | "the almost-everywhere filter"       | (ASCII)         |
+:::table +header
+* + Symbol
+  + Lean name
+  + Reads as
+  + Typed as
+* + `MeasurableSpace α`
+  + `MeasurableSpace α`
+  + "sigma-algebra on α"
+  + (ASCII)
+* + `MeasurableSet s`
+  + `MeasurableSet s`
+  + "s is measurable"
+  + (ASCII)
+* + `Measurable f`
+  + `Measurable f`
+  + "f is measurable"
+  + (ASCII)
+* + `Measure α`
+  + `MeasureTheory.Measure α`
+  + "measure on α"
+  + (ASCII)
+* + `volume`
+  + `MeasureTheory.volume`
+  + "the Lebesgue measure"
+  + (ASCII)
+* + `μ s`
+  + `MeasureTheory.Measure.measureOf`
+  + "measure of s under μ"
+  + (ASCII)
+* + `ℝ≥0`
+  + `NNReal`
+  + "nonnegative reals"
+  + `\R\ge0`
+* + `ℝ≥0∞`
+  + `ENNReal`
+  + "extended nonneg reals, 0 to ∞"
+  + `\R\ge0\infty`
+* + `∫ x, f x ∂μ`
+  + `MeasureTheory.integral`
+  + "Bochner integral of f w.r.t. μ"
+  + `\int`, `\partial`
+* + `∫⁻ x, f x ∂μ`
+  + `MeasureTheory.lintegral`
+  + "lower Lebesgue integral"
+  + `\int\^-`
+* + `∀ᵐ x ∂μ, p x`
+  + `MeasureTheory.∀ᵐ`-notation
+  + "p holds μ-almost-everywhere"
+  + `\all\^m`
+* + `f =ᵐ[μ] g`
+  + `Filter.EventuallyEq`
+  + "f equals g μ-almost-everywhere"
+  + `=\^m[...]`
+* + `μ.ae`
+  + `MeasureTheory.Measure.ae`
+  + "the almost-everywhere filter"
+  + (ASCII)
+:::
 
 Naming hints.
 
@@ -325,19 +368,32 @@ function that agrees with `f` in integral over every `m`-measurable set.
 tag := "measure-api-summary"
 %%%
 
-| Concept | Mathlib name |
-|---------|-------------|
-| Sigma-algebra | `MeasurableSpace α` |
-| Measurable set | `MeasurableSet s` |
-| Measurable function | `Measurable f` |
-| Measure | `MeasureTheory.Measure α` |
-| Lebesgue measure | `MeasureTheory.volume` |
-| Bochner integral | `∫ x, f x ∂μ` |
-| Lebesgue integral | `∫⁻ x, f x ∂μ` |
-| Probability measure | `IsProbabilityMeasure μ` |
-| Almost everywhere | `∀ᶠ x in μ.ae, p x` |
-| Integrable | `MeasureTheory.Integrable f μ` |
-| Conditional expectation | `MeasureTheory.condexp` |
+:::table +header
+* + Concept
+  + Mathlib name
+* + Sigma-algebra
+  + `MeasurableSpace α`
+* + Measurable set
+  + `MeasurableSet s`
+* + Measurable function
+  + `Measurable f`
+* + Measure
+  + `MeasureTheory.Measure α`
+* + Lebesgue measure
+  + `MeasureTheory.volume`
+* + Bochner integral
+  + `∫ x, f x ∂μ`
+* + Lebesgue integral
+  + `∫⁻ x, f x ∂μ`
+* + Probability measure
+  + `IsProbabilityMeasure μ`
+* + Almost everywhere
+  + `∀ᶠ x in μ.ae, p x`
+* + Integrable
+  + `MeasureTheory.Integrable f μ`
+* + Conditional expectation
+  + `MeasureTheory.condexp`
+:::
 
 Working with measure theory in Mathlib requires familiarity with `ℝ≥0∞`
 (extended nonnegative reals) and the filter framework. Many lemmas require

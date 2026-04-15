@@ -31,20 +31,60 @@ Several symbols below are unicode characters typed in VS Code via a
 backslash escape (e.g. `\le` produces `≤`).  Hover over a symbol in the
 editor to see how to type it.
 
-| Symbol  | Lean name             | Reads as                        | Typed as                |
-|---------|-----------------------|---------------------------------|-------------------------|
-| `≤`     | `LE.le a b`           | "a less than or equal to b"     | `\le`                   |
-| `<`     | `LT.lt a b`           | "a strictly less than b"        | `\lt`                   |
-| `⊆`     | `Set.Subset s t`      | "s is a subset of t"            | `\sub`                  |
-| `⊔`     | `Sup.sup a b`         | "a join b" / "a sup b"          | `\sup`                  |
-| `⊓`     | `Inf.inf a b`         | "a meet b" / "a inf b"          | `\inf`                  |
-| `⊤`     | `Top.top`             | "top"                           | `\top`                  |
-| `⊥`     | `Bot.bot`             | "bottom"                        | `\bot`                  |
-| `sSup`  | `sSup s`              | "supremum of the set s"         | (ASCII)                 |
-| `sInf`  | `sInf s`              | "infimum of the set s"          | (ASCII)                 |
-| `iSup`  | `iSup f`              | "indexed supremum"              | (ASCII)                 |
-| `iInf`  | `iInf f`              | "indexed infimum"               | (ASCII)                 |
-| `→o`    | `OrderHom α β`        | "order homomorphism α to β"     | `\to o` or `\too`       |
+:::table +header
+* + Symbol
+  + Lean name
+  + Reads as
+  + Typed as
+* + `≤`
+  + `LE.le a b`
+  + "a less than or equal to b"
+  + `\le`
+* + `<`
+  + `LT.lt a b`
+  + "a strictly less than b"
+  + `\lt`
+* + `⊆`
+  + `Set.Subset s t`
+  + "s is a subset of t"
+  + `\sub`
+* + `⊔`
+  + `Sup.sup a b`
+  + "a join b" / "a sup b"
+  + `\sup`
+* + `⊓`
+  + `Inf.inf a b`
+  + "a meet b" / "a inf b"
+  + `\inf`
+* + `⊤`
+  + `Top.top`
+  + "top"
+  + `\top`
+* + `⊥`
+  + `Bot.bot`
+  + "bottom"
+  + `\bot`
+* + `sSup`
+  + `sSup s`
+  + "supremum of the set s"
+  + (ASCII)
+* + `sInf`
+  + `sInf s`
+  + "infimum of the set s"
+  + (ASCII)
+* + `iSup`
+  + `iSup f`
+  + "indexed supremum"
+  + (ASCII)
+* + `iInf`
+  + `iInf f`
+  + "indexed infimum"
+  + (ASCII)
+* + `→o`
+  + `OrderHom α β`
+  + "order homomorphism α to β"
+  + `\to o` or `\too`
+:::
 
 Naming hints:
 
@@ -284,19 +324,32 @@ tag := "order-api-summary"
 
 Here is a quick reference for the most important order-theoretic lemmas:
 
-| Lemma | Statement |
-|-------|-----------|
-| `le_refl` | `a ≤ a` |
-| `le_trans` | `a ≤ b → b ≤ c → a ≤ c` |
-| `le_antisymm` | `a ≤ b → b ≤ a → a = b` |
-| `le_sup_left` | `a ≤ a ⊔ b` |
-| `le_sup_right` | `b ≤ a ⊔ b` |
-| `sup_le` | `a ≤ c → b ≤ c → a ⊔ b ≤ c` |
-| `inf_le_left` | `a ⊓ b ≤ a` |
-| `inf_le_right` | `a ⊓ b ≤ b` |
-| `le_inf` | `c ≤ a → c ≤ b → c ≤ a ⊓ b` |
-| `le_sSup` | `a ∈ s → a ≤ sSup s` |
-| `sSup_le` | `(∀ a ∈ s, a ≤ b) → sSup s ≤ b` |
+:::table +header
+* + Lemma
+  + Statement
+* + `le_refl`
+  + `a ≤ a`
+* + `le_trans`
+  + `a ≤ b → b ≤ c → a ≤ c`
+* + `le_antisymm`
+  + `a ≤ b → b ≤ a → a = b`
+* + `le_sup_left`
+  + `a ≤ a ⊔ b`
+* + `le_sup_right`
+  + `b ≤ a ⊔ b`
+* + `sup_le`
+  + `a ≤ c → b ≤ c → a ⊔ b ≤ c`
+* + `inf_le_left`
+  + `a ⊓ b ≤ a`
+* + `inf_le_right`
+  + `a ⊓ b ≤ b`
+* + `le_inf`
+  + `c ≤ a → c ≤ b → c ≤ a ⊓ b`
+* + `le_sSup`
+  + `a ∈ s → a ≤ sSup s`
+* + `sSup_le`
+  + `(∀ a ∈ s, a ≤ b) → sSup s ≤ b`
+:::
 
 The `omega` tactic is very useful for goals involving natural number and integer
 inequalities. For more general ordered structures, `gcongr` can help with

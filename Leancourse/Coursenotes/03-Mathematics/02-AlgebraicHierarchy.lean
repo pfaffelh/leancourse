@@ -29,21 +29,64 @@ tag := "algebra-notation"
 Unicode symbols can be typed via a backslash escape (e.g. `\inv` produces
 `⁻¹`).  Hover over a symbol in VS Code to see how to type it.
 
-| Symbol  | Lean name               | Reads as                         | Typed as            |
-|---------|-------------------------|----------------------------------|---------------------|
-| `*`     | `Mul.mul a b`           | "a times b"                      | (ASCII)             |
-| `+`     | `Add.add a b`           | "a plus b"                       | (ASCII)             |
-| `0`     | `Zero.zero`             | "zero"                           | (ASCII)             |
-| `1`     | `One.one`               | "one"                            | (ASCII)             |
-| `a⁻¹`   | `Inv.inv a`             | "a inverse"                      | `\inv` or `\-1`     |
-| `-a`    | `Neg.neg a`             | "minus a"                        | (ASCII)             |
-| `a / b` | `HDiv.hDiv a b`         | "a divided by b"                 | (ASCII)             |
-| `→*`    | `MonoidHom α β`         | "monoid homomorphism"            | `\to*`              |
-| `→+`    | `AddMonoidHom α β`      | "additive monoid homomorphism"   | `\to+`              |
-| `→+*`   | `RingHom α β`           | "ring homomorphism"              | `\to+*`             |
-| `R ⧸ I` | `HasQuotient.Quotient`  | "R modulo I"                     | `\quot`             |
-| `⊥`     | `Bot.bot`               | "the trivial sub-object"         | `\bot`              |
-| `⊤`     | `Top.top`               | "the whole object as a sub-object" | `\top`            |
+:::table +header
+* + Symbol
+  + Lean name
+  + Reads as
+  + Typed as
+* + `*`
+  + `Mul.mul a b`
+  + "a times b"
+  + (ASCII)
+* + `+`
+  + `Add.add a b`
+  + "a plus b"
+  + (ASCII)
+* + `0`
+  + `Zero.zero`
+  + "zero"
+  + (ASCII)
+* + `1`
+  + `One.one`
+  + "one"
+  + (ASCII)
+* + `a⁻¹`
+  + `Inv.inv a`
+  + "a inverse"
+  + `\inv` or `\-1`
+* + `-a`
+  + `Neg.neg a`
+  + "minus a"
+  + (ASCII)
+* + `a / b`
+  + `HDiv.hDiv a b`
+  + "a divided by b"
+  + (ASCII)
+* + `→*`
+  + `MonoidHom α β`
+  + "monoid homomorphism"
+  + `\to*`
+* + `→+`
+  + `AddMonoidHom α β`
+  + "additive monoid homomorphism"
+  + `\to+`
+* + `→+*`
+  + `RingHom α β`
+  + "ring homomorphism"
+  + `\to+*`
+* + `R ⧸ I`
+  + `HasQuotient.Quotient`
+  + "R modulo I"
+  + `\quot`
+* + `⊥`
+  + `Bot.bot`
+  + "the trivial sub-object"
+  + `\bot`
+* + `⊤`
+  + `Top.top`
+  + "the whole object as a sub-object"
+  + `\top`
+:::
 
 Naming hints.
 

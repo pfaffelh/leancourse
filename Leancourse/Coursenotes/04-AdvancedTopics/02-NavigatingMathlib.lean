@@ -134,22 +134,38 @@ For example:
 
 **Common abbreviations:**
 
-| Full name | Abbreviation |
-|---|---|
-| addition | `add` |
-| multiplication | `mul` |
-| subtraction | `sub` |
-| division | `div` |
-| negation | `neg` |
-| inverse | `inv` |
-| commutativity | `comm` |
-| associativity | `assoc` |
-| left | `left` |
-| right | `right` |
-| if and only if | `iff` |
-| less than | `lt` |
-| less or equal | `le` |
-| greater than | `gt` |
+:::table +header
+* + Full name
+  + Abbreviation
+* + addition
+  + `add`
+* + multiplication
+  + `mul`
+* + subtraction
+  + `sub`
+* + division
+  + `div`
+* + negation
+  + `neg`
+* + inverse
+  + `inv`
+* + commutativity
+  + `comm`
+* + associativity
+  + `assoc`
+* + left
+  + `left`
+* + right
+  + `right`
+* + if and only if
+  + `iff`
+* + less than
+  + `lt`
+* + less or equal
+  + `le`
+* + greater than
+  + `gt`
+:::
 
 **Common patterns:**
 - `X_comm` : commutativity (`a * b = b * a`)

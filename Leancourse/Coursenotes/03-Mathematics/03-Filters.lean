@@ -34,26 +34,84 @@ tag := "filters-notation"
 Many filter-related symbols are unicode and typed via backslash escapes
 in VS Code (hover over a symbol to see its input sequence).
 
-| Symbol             | Lean name                  | Reads as                            | Typed as        |
-|--------------------|----------------------------|-------------------------------------|-----------------|
-| `Filter α`         | `Filter α`                 | "filter on α"                       | (ASCII)         |
-| `F.sets`           | `Filter.sets F`            | "the sets of the filter F"          | (ASCII)         |
-| `s ∈ F`            | `s ∈ F.sets`               | "s is a member of F" (F-large)      | `\in`           |
-| `F ≤ G`            | `LE.le F G`                | "F is finer than G"                 | `\le`           |
-| `𝓟 s`              | `Filter.principal s`       | "the principal filter of s"         | `\McP`          |
-| `⊤`                | `Top.top`                  | "the top filter" (only Set.univ)    | `\top`          |
-| `⊥`                | `Bot.bot`                  | "the bottom filter" (every set)     | `\bot`          |
-| `atTop`            | `Filter.atTop`             | "at top" / "going to ∞"             | (ASCII)         |
-| `atBot`            | `Filter.atBot`             | "at bottom" / "going to −∞"         | (ASCII)         |
-| `cofinite`         | `Filter.cofinite`          | "the cofinite filter"               | (ASCII)         |
-| `nhds x`           | `nhds x`                   | "neighborhood filter at x"          | `\nhds` for `𝓝` |
-| `𝓝 x`              | `nhds x`                   | same as above                       | `\nhds`         |
-| `f ⁻¹' s`          | `Set.preimage f s`         | "preimage of s under f"             | `\inv'`         |
-| `Filter.map f F`   | `Filter.map f F`           | "pushforward of F along f"          | (ASCII)         |
-| `Filter.comap f G` | `Filter.comap f G`         | "pullback of G along f"             | (ASCII)         |
-| `Tendsto f F G`    | `Filter.Tendsto f F G`     | "f tends from F to G"               | (ASCII)         |
-| `∀ᶠ x in F, p x`   | `Filter.Eventually p F`    | "eventually p, along F"             | `\all\^f`       |
-| `∃ᶠ x in F, p x`   | `Filter.Frequently p F`    | "frequently p, along F"             | `\ex\^f`        |
+:::table +header
+* + Symbol
+  + Lean name
+  + Reads as
+  + Typed as
+* + `Filter α`
+  + `Filter α`
+  + "filter on α"
+  + (ASCII)
+* + `F.sets`
+  + `Filter.sets F`
+  + "the sets of the filter F"
+  + (ASCII)
+* + `s ∈ F`
+  + `s ∈ F.sets`
+  + "s is a member of F" (F-large)
+  + `\in`
+* + `F ≤ G`
+  + `LE.le F G`
+  + "F is finer than G"
+  + `\le`
+* + `𝓟 s`
+  + `Filter.principal s`
+  + "the principal filter of s"
+  + `\McP`
+* + `⊤`
+  + `Top.top`
+  + "the top filter" (only Set.univ)
+  + `\top`
+* + `⊥`
+  + `Bot.bot`
+  + "the bottom filter" (every set)
+  + `\bot`
+* + `atTop`
+  + `Filter.atTop`
+  + "at top" / "going to ∞"
+  + (ASCII)
+* + `atBot`
+  + `Filter.atBot`
+  + "at bottom" / "going to −∞"
+  + (ASCII)
+* + `cofinite`
+  + `Filter.cofinite`
+  + "the cofinite filter"
+  + (ASCII)
+* + `nhds x`
+  + `nhds x`
+  + "neighborhood filter at x"
+  + `\nhds` for `𝓝`
+* + `𝓝 x`
+  + `nhds x`
+  + same as above
+  + `\nhds`
+* + `f ⁻¹' s`
+  + `Set.preimage f s`
+  + "preimage of s under f"
+  + `\inv'`
+* + `Filter.map f F`
+  + `Filter.map f F`
+  + "pushforward of F along f"
+  + (ASCII)
+* + `Filter.comap f G`
+  + `Filter.comap f G`
+  + "pullback of G along f"
+  + (ASCII)
+* + `Tendsto f F G`
+  + `Filter.Tendsto f F G`
+  + "f tends from F to G"
+  + (ASCII)
+* + `∀ᶠ x in F, p x`
+  + `Filter.Eventually p F`
+  + "eventually p, along F"
+  + `\all\^f`
+* + `∃ᶠ x in F, p x`
+  + `Filter.Frequently p F`
+  + "frequently p, along F"
+  + `\ex\^f`
+:::
 
 Naming hints.
 
@@ -283,12 +341,18 @@ Unpacking: `Tendsto f l₁ l₂` says that for every `s ∈ l₂`, the preimage
 
 This single definition unifies all classical limits:
 
-| Classical statement                 | Filter version                                |
-|-------------------------------------|-----------------------------------------------|
-| `aₙ → l` as `n → ∞`                 | `Tendsto a atTop (nhds l)`                    |
-| `f(x) → l` as `x → x₀`              | `Tendsto f (nhds x₀) (nhds l)`                |
-| `f(x) → l` as `x → ∞`               | `Tendsto f atTop (nhds l)`                    |
-| `f(x) → ∞` as `x → ∞`               | `Tendsto f atTop atTop`                       |
+:::table +header
+* + Classical statement
+  + Filter version
+* + `aₙ → l` as `n → ∞`
+  + `Tendsto a atTop (nhds l)`
+* + `f(x) → l` as `x → x₀`
+  + `Tendsto f (nhds x₀) (nhds l)`
+* + `f(x) → l` as `x → ∞`
+  + `Tendsto f atTop (nhds l)`
+* + `f(x) → ∞` as `x → ∞`
+  + `Tendsto f atTop atTop`
+:::
 
 ```lean
 -- Sanity check: Tendsto for sequences

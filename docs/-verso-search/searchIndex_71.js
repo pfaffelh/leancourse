@@ -1,0 +1,1 @@
+window.docContents[71].resolve({"/Functional-Programming/#functional-programming":{"contents":"\n\n\n\n\n\n\n\n","context":"Interactive Theorem Proving using Lean, Winter 2026/27","header":"6. Functional Programming","id":"/Functional-Programming/#functional-programming"}});

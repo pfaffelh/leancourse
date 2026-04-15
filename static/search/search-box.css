@@ -10,13 +10,13 @@
 
 @media screen and (700px < width) {
   :root {
-    --search-bar-width: 24rem;
+    --search-bar-width: 14rem;
   }
 }
 
 @media screen and (width <= 700px) {
   :root {
-    --search-bar-width: 12rem;
+    --search-bar-width: 8rem;
   }
 }
 

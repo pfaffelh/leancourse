@@ -5,17 +5,17 @@ open Verso.Genre Manual
 open Verso.Genre.Manual
 open Verso.Genre.Manual.InlineLean
 
-open Verso.Output.Html in
-def searchModule := {{
-    <script type="module" src="/static/search/search-init.js"></script>
-  }}
+-- Search is provided by Verso's built-in search (the `-verso-search`
+-- assets emitted by `manualMain`).  The previous manual wiring of
+-- `static/search/*` came from a pre-v4.28 Verso and conflicted with
+-- the built-in search (two search boxes, one stuck open), so it has
+-- been removed.
 
 open Verso.Output.Html in
 def staticCss := {{
     <link rel="stylesheet" href="/static/colors.css" />
     <link rel="stylesheet" href="/static/theme.css" />
     <link rel="stylesheet" href="/static/print.css" />
-    <link rel="stylesheet" href="/static/search/search-box.css" />
     <link rel="stylesheet" href="/static/fonts/source-serif/source-serif-text.css" />
     <link rel="stylesheet" href="/static/fonts/source-code-pro/source-code-pro.css" />
     <link rel="stylesheet" href="/static/katex/katex.min.css" />
@@ -25,7 +25,6 @@ open Verso.Output.Html in
 def staticJs := {{
     <script src="/static/katex/katex.min.js"></script>
     <script src="/static/math.js"></script>
-    <script src="/static/search/fuzzysort.js"></script>
     <script src="/static/print.js"></script>
   }}
 
@@ -63,7 +62,7 @@ def main :=
 where
   config := {
     extraFiles := [("static", "static")],
-    extraHead := #[searchModule, staticCss, staticJs],
+    extraHead := #[staticCss, staticJs],
     emitTeX := false,
     emitHtmlSingle := .immediately,
     emitHtmlMulti := .immediately,

@@ -1,10 +1,12 @@
 import VersoManual
 import Manual.Meta
 import Leancourse.Misc.Defs
+import Leancourse.Coursenotes.References
 import Mathlib
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
+open Leancourse.Refs
 open MyDef
 
 set_option pp.rawOnError true
@@ -82,32 +84,65 @@ def myId' (α : Type u) (a : α) : α := a
 
 In Mathlib, many definitions are universe-polymorphic. For example, `Set α` works regardless of which universe `α` lives in. When you see `{α : Type*}`, the `*` means "at any universe level" -- this is Lean's way of automatically introducing a universe variable.
 
+# The Calculus of Inductive Constructions
+%%%
+tag := "cic"
+%%%
+
+We have now met the ingredients of Lean's foundation one at a time: the universe hierarchy, `Prop` with its proof irrelevance, dependent functions, and inductive types. Assembled into a single formal system, they are exactly what Lean's kernel implements{citep lean4_2021}[] -- the *Calculus of Inductive Constructions*, or CIC. This is worth stating plainly, because the CIC is the *entire* trusted core of Lean: every definition, theorem, and tactic ultimately elaborates down to terms that the kernel re-checks against these rules, and nothing outside them is trusted.
+
+The CIC is built from exactly three ideas:
+
+1. *Dependent functions* -- the "Constructions". This is the *Calculus of Constructions* of {citet coquandHuet1988}[]: a typed lambda calculus in which the *type* of the output may depend on the *value* of the input, giving the Π-types written `(x : α) → β x`. In one stroke this subsumes ordinary functions, polymorphic functions (which take types as arguments), and type-level functions.
+
+2. *Inductive types* -- the "Inductive", added by {citet coquandPaulin1990}[]. This is the rule that lets you introduce a genuinely new type by listing its constructors. Remarkably, *both* data and logic are built from this one mechanism: `Nat`, `List`, and `Prod` are inductive types, but so are the logical connectives `And`, `Or`, `False`, and even equality `Eq`.
+
+```lean
+-- Data: `Nat` is an inductive type with two constructors
+#check @Nat.zero    -- Nat
+#check @Nat.succ    -- Nat → Nat
+
+-- Logic too: `And`, `Or`, `Eq` are *also* inductive types
+#check @And.intro
+#check @Or.inl
+#check @Eq.refl
+
+-- Every inductive type comes with a recursor, which the
+-- kernel generates automatically; it is how induction
+-- and recursion are justified in the first place:
+#check @Nat.rec
+```
+
+Defining your own inductive type uses exactly the same mechanism the standard library does -- there is no special magic reserved for the built-in types:
+
+```lean
+inductive Traffic where
+  | red | amber | green
+```
+
+3. *A universe hierarchy* (`Prop`, `Type 0`, `Type 1`, ...), exactly as in the first section, which keeps the system logically consistent by forbidding `Type : Type`.
+
+On top of these three ingredients the kernel bakes in one thing that set theory has no notion of: *computation*. Terms reduce, so `(fun n => n + 1) 2` and `3` are not merely provably equal but *definitionally* equal, and the kernel checks this by evaluating. This is the same reduction that makes {keywordOf Lean.Parser.Command.eval}`#eval` and the `decide` tactic work, and it is what lets us speak of *computable* functions at all.
+
+What is striking about the CIC is how little it is. A type checker for it is only a few thousand lines of code, and that small program is the whole of what you must trust in order to believe a Lean proof. Everything in Mathlib -- the integers, the real numbers, manifolds, schemes -- is in the end a tower of inductive types and dependent functions resting on this kernel.
+
 # The axioms of Lean
 %%%
 tag := "lean-axioms"
 %%%
 
-Lean's kernel is built on the Calculus of Inductive Constructions, which by itself is quite weak. To support the mathematics we want to formalize, Lean adds a small number of axioms. Let us examine each one.
-
-## Function extensionality (`funext`)
-%%%
-tag := "axiom-funext"
-%%%
-
-Two functions are equal if and only if they give the same output on every input. This is the axiom `funext`:
+Powerful as it is, the CIC by itself is deliberately *minimal and constructive*: a handful of principles that working mathematicians use without a second thought cannot be proved in it. Lean therefore adds a few axioms on top of the kernel -- and it is worth being precise about *how* few. Lean has exactly *three* axioms, and we can ask Lean itself to confirm it with the `#print axioms` command, which traces a constant back to the axioms it ultimately depends on:
 
 ```lean
--- funext: if f x = g x for all x, then f = g
-#check @funext
--- funext : ∀ {α : Sort u} {β : α → Sort v} {f g : (x : α) → β x},
---   (∀ (x : α), f x = g x) → f = g
-
-example : (fun n : ℕ => n + 0) = (fun n : ℕ => n) := by
-  funext n
-  simp
+#print axioms propext
+-- 'propext' depends on axioms: [propext]
+#print axioms Quot.sound
+-- 'Quot.sound' depends on axioms: [Quot.sound]
+#print axioms Classical.choice
+-- 'Classical.choice' depends on axioms: [Classical.choice]
 ```
 
-Without `funext`, we could not prove that two functions are equal, even if they demonstrably agree everywhere. This axiom is indispensable in mathematics.
+Each of the three depends only on itself -- the signature of a genuine axiom. Everything else that *looks* axiomatic -- function extensionality, the law of excluded middle, the set-theoretic axiom of choice -- is in fact a *theorem* derived from these three, as we verify below. We take the three axioms first.
 
 ## Propositional extensionality (`propext`)
 %%%
@@ -144,6 +179,8 @@ This is how many mathematical constructions are formalized: the integers as a qu
 #check @Quot.lift
 ```
 
+Quotient soundness carries more weight than it looks: function extensionality is *proved* from it, as we see below.
+
 ## The axiom of choice (`Classical.choice`)
 %%%
 tag := "axiom-choice"
@@ -156,39 +193,91 @@ The most powerful (and most controversial) axiom in Lean is the axiom of choice:
 -- Classical.choice : ∀ {α : Sort u}, Nonempty α → α
 ```
 
-Given a proof that a type is nonempty (i.e., inhabited), `Classical.choice` produces an actual element. This is a non-constructive axiom: it asserts existence without providing a construction.
+Given a proof that a type is nonempty (i.e., inhabited), `Classical.choice` produces an actual element. This is a non-constructive axiom: it asserts existence without providing any recipe for the element. From it one also recovers the more familiar set-theoretic axiom of choice and Hilbert's `ε`-operator.
 
-From this single axiom (together with `propext` and `Quot.sound`), one can derive:
-- The law of excluded middle: `∀ (P : Prop), P ∨ ¬P`
-- The axiom of choice in its more familiar set-theoretic form
-- Hilbert's epsilon operator
+# What is *not* an axiom: `funext` and excluded middle
+%%%
+tag := "derived-not-axioms"
+%%%
+
+Two principles that mathematicians treat as bedrock are, perhaps surprisingly, *not* axioms in Lean but theorems derived from the three above.
+
+## Function extensionality is a theorem
+%%%
+tag := "axiom-funext"
+%%%
+
+Two functions are equal if they agree on every input. In practice one *uses* this through the `funext` lemma and tactic:
+
+```lean
+-- funext: if f x = g x for all x, then f = g
+#check @funext
+-- funext : ∀ {α : Sort u} {β : α → Sort v} {f g : (x : α) → β x},
+--   (∀ (x : α), f x = g x) → f = g
+
+example : (fun n : ℕ => n + 0) = (fun n : ℕ => n) := by
+  funext n
+  simp
+```
+
+Despite the name and its fundamental role, `funext` is *not* an axiom: it is provable from quotient soundness. Lean confirms that its only axiomatic dependency is `Quot.sound`:
+
+```lean
+#print axioms funext
+-- 'funext' depends on axioms: [Quot.sound]
+```
+
+## Excluded middle is a theorem (Diaconescu)
+%%%
+tag := "em-derived"
+%%%
+
+Likewise the law of excluded middle `∀ p, p ∨ ¬p` is *not* an axiom. It follows from the three axioms by a classical argument known as *Diaconescu's theorem*: the axiom of choice implies excluded middle. Lean again makes the dependency explicit:
+
+```lean
+#check @Classical.em
+-- Classical.em : ∀ (p : Prop), p ∨ ¬p
+
+#print axioms Classical.em
+-- 'Classical.em' depends on axioms:
+--   [propext, Classical.choice, Quot.sound]
+```
+
+The argument is worth seeing, because it pinpoints exactly where non-constructivity enters. Fix a proposition `p` and form two predicates on `Prop`:
+
+- `U x := (x = True) ∨ p`
+- `V x := (x = False) ∨ p`
+
+Both are nonempty -- `True` satisfies `U` and `False` satisfies `V` -- so `Classical.choice` hands us concrete witnesses `u v : Prop` together with proofs of `u = True ∨ p` and `v = False ∨ p`. Now case-split on those two disjunctions:
+
+- If either disjunction takes its *right* branch, we have a proof of `p` outright -- the left side of `p ∨ ¬p`.
+- Otherwise `u = True` and `v = False`, so `u ≠ v`. But were `p` true, then `propext` would collapse `U` and `V` into the same predicate, forcing the chosen witnesses to coincide, `u = v` -- a contradiction. Hence `¬p`, the right side.
+
+Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data* -- the booleans `True` and `False` -- which is precisely the move a constructive system refuses to make. Mathlib packages the result as `Classical.em`; in practice you simply use it (often via `by_contra` or `by_cases`).
 
 # Constructive vs classical logic
 %%%
 tag := "constructive-classical"
 %%%
 
-By default, Lean's type theory is **constructive**: proofs must provide explicit witnesses and constructions. The axiom of choice introduces **classical** reasoning, which allows non-constructive arguments.
+By default, Lean's type theory is *constructive*: proofs must provide explicit witnesses and constructions. The axiom of choice introduces *classical* reasoning, which allows non-constructive arguments.
 
-## Excluded middle
+## Excluded middle in use
 %%%
 tag := "excluded-middle"
 %%%
 
-In classical logic, every proposition is either true or false. This is expressed by the **law of excluded middle**:
+We saw above that excluded middle is a *theorem*, not an axiom (see {ref "em-derived"}[Diaconescu's theorem]). What makes it indispensable in everyday proofs is that it licenses a case split on *any* proposition, and with it classical staples such as double-negation elimination:
 
 ```lean
-#check @Classical.em
--- Classical.em : ∀ (p : Prop), p ∨ ¬p
-
--- With excluded middle, we can do case splits on any proposition
+-- excluded middle powers `by_contra` and `by_cases`
 example (P : Prop) : ¬¬P → P := by
   intro hnnP
   by_contra hnP
   exact hnnP hnP
 ```
 
-Without `Classical.em`, double negation elimination `¬¬P → P` is not provable. This is one of the key differences between constructive and classical logic.
+Without excluded middle, double negation elimination `¬¬P → P` is not provable -- one of the key differences between constructive and classical logic.
 
 ## The Decidable typeclass
 %%%
@@ -282,10 +371,10 @@ tag := "other-type-theories"
 Lean's type theory is one of several:
 
 - **Simply typed lambda calculus** (Church, 1940): No dependent types. Foundation for Haskell, OCaml.
-- **System F** (Girard, Reynolds, 1970s): Adds polymorphism but not full dependent types.
-- **Martin-Löf Type Theory** (MLTT, 1971+): The origin of dependent types in proof assistants. Used in Agda.
-- **Calculus of Inductive Constructions** (CoIC): Used in Coq/Rocq. Lean's type theory is closely related.
+- **System F** (Girard, Reynolds, 1970s): Adds polymorphism but not full dependent types.{citep girard1972}[]
+- **Martin-Löf Type Theory** (MLTT, 1971+): The origin of dependent types in proof assistants. Used in Agda.{citep martinLof1975}[]
+- **Calculus of Inductive Constructions** (CIC): the system Lean's kernel implements, described earlier in this chapter; also used, in a closely related form, by Coq/Rocq.
 - **Homotopy Type Theory** (HoTT, 2013): Interprets types as topological spaces and equality as paths. Adds the univalence axiom (due to Voevodsky): equivalent types are equal. This is incompatible with Lean's proof irrelevance for `Prop`, so HoTT uses different proof assistants (Agda, cubical Agda, or specialized Lean forks).
-- **Cubical Type Theory** (2015+): Makes HoTT computational by using a cube category to model paths.
+- **Cubical Type Theory** (2015+): Makes HoTT computational by using a cube category to model paths.{citep cohenEtAl2018}[]
 
 For this course, Lean's type theory (CIC + proof irrelevance + quotients + choice) is the framework we work in. It is expressive enough to formalize virtually all of modern mathematics, as the Mathlib library demonstrates.

@@ -8,6 +8,7 @@ import «Leancourse».Coursenotes.«01-Lean»
 import «Leancourse».Coursenotes.«02-TypeTheory»
 import «Leancourse».Coursenotes.«03-Mathematics»
 import «Leancourse».Coursenotes.«04-AdvancedTopics»
+import «Leancourse».Coursenotes.«99-Bibliography»
 
 open Verso.Genre Manual
 
@@ -53,3 +54,5 @@ In case you cannot install the course material locally, do the following: Visit 
 {include 0 «Leancourse».Coursenotes.«03-Mathematics»}
 
 {include 0 «Leancourse».Coursenotes.«04-AdvancedTopics»}
+
+{include 0 «Leancourse».Coursenotes.«99-Bibliography»}

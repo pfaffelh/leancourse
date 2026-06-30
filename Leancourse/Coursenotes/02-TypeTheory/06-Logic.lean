@@ -27,8 +27,20 @@ tag := "wf-acc"
 
 The first mechanism lives *inside* a type and governs recursion.  A
 relation `r : α → α → Prop` is *well-founded* when there are no
-infinite descending chains `… r a₂ r a₁ r a₀`.  Lean expresses this
-through the inductive predicate `Acc` ("accessible"):
+infinite descending chains `… r a₂ r a₁ r a₀` -- following
+`r`-predecessors downward, you always hit bottom after finitely many
+steps.
+
+Why care?  Well-foundedness is *exactly* the condition that makes
+recursion and induction legitimate.  If `f x` is defined in terms of
+`f y` for `r`-smaller `y`, the computation terminates *only* because
+you cannot descend forever; and the induction principle "to prove
+`P x`, assume `P y` for every `y` with `r y x`" is valid *precisely*
+when `r` is well-founded.  In one phrase: well-founded means "you may
+recurse and induct along `r`".
+
+Lean expresses this through the inductive predicate `Acc`
+("accessible"):
 
 ```
 inductive Acc (r : α → α → Prop) : α → Prop where
@@ -48,13 +60,33 @@ A relation is well-founded when every element is accessible:
 ```
 
 The crucial observation is that `Acc` is an *inductive* type -- the
-*least* fixed point, so it is finitely generated.  A proof of `Acc r
-x` is therefore a *finite* tree of predecessors; an infinite
-descending chain would require an infinitely deep proof, which no
-inductive type admits.  This is exactly what powers *well-founded
-recursion* (`WellFounded.fix`): you may recurse along `r` because
-every descent terminates.  The `termination_by` and `decreasing_by`
-clauses use precisely this.
+*least* fixed point, so it is finitely generated.  The constructor
+for `Acc r x` demands accessibility of *every* predecessor, so the
+only way to build the proof is for every downward branch to bottom
+out after finitely many steps: a proof of `Acc r x` is a *finite*
+tree.  An infinite descending chain would force an infinitely deep
+proof, which no inductive type admits -- so, where every element is
+accessible, no such chain exists.  (Were `Acc` instead *coinductive*,
+the *greatest* fixed point, infinite proofs would be allowed and
+every element would count as accessible; the definition would be
+vacuous.  The induction is the whole point.)  This is exactly what
+powers *well-founded recursion* (`WellFounded.fix`): you may recurse
+along `r` because every descent terminates, and `termination_by` /
+`decreasing_by` use precisely this.
+
+It helps to see what *fails*.  These relations are *not*
+well-founded:
+
+- `<` on the integers `ℤ`: the chain `0 > -1 > -2 > …` descends
+  forever, with no bottom.
+- `<` on `ℚ` or `ℝ`: `1 > ½ > ¼ > …` never terminates.
+- *greater-than* `>` on `ℕ`: the chain `0 < 1 < 2 < …` is an infinite
+  `>`-descending chain.
+
+For none of these can Lean offer well-founded recursion -- there is no
+terminating direction to recurse in.  The contrast between `<` and `>`
+on `ℕ` is the lesson: less-than bottoms out at `0`, greater-than runs
+off to infinity.
 
 # Why `Nat` is well-founded
 %%%
@@ -79,6 +111,16 @@ over `zero`, so there is no infinite natural number to descend
 through.  Structural recursion on `Nat` is the prototype of
 well-founded recursion, and the well-foundedness of `<` is just a
 restatement of it.
+
+In practice you almost never prove well-foundedness yourself.  Mathlib
+already supplies it -- the `Nat.lt_wfRel.wf` above is one of many
+`WellFoundedRelation` instances -- and when you write a recursive
+definition with `termination_by` (next section), Lean finds the
+well-founded relation automatically and asks you only, via
+`decreasing_by`, to show that your *measure* decreases.  The induction
+argument just given is the one-time justification the library
+performs, not something you repeat; you would do it by hand only for a
+genuinely new, exotic relation.
 
 # Well-founded recursion in practice: `termination_by`
 %%%

@@ -255,6 +255,8 @@ Both are nonempty -- `True` satisfies `U` and `False` satisfies `V` -- so `Class
 
 Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data* -- the booleans `True` and `False` -- which is precisely the move a constructive system refuses to make. Mathlib packages the result as `Classical.em`; in practice you simply use it (often via `by_contra` or `by_cases`).
 
+You might object that the step "assume `p`, derive a contradiction, conclude `¬p`" already *uses* excluded middle, which would make the argument circular. It does not. Proving `¬p` by assuming `p` and reaching a contradiction is *negation introduction* -- it is simply the definition of `¬p` as `p → False`, and it is constructively valid. The *classical* principle is the opposite direction: concluding a positive `p` from `¬¬p` (that is `by_contra`), which we never invoke here. Likewise, the case splits above *eliminate* disjunctions we already hold (from the choice specification); they do not conjure `p ∨ ¬p` out of nothing -- that disjunction is our *conclusion*, assembled constructively from the cases. The one and only non-constructive ingredient is `Classical.choice`, and using it is not the same as assuming the `p ∨ ¬p` we are proving.
+
 # Declared axioms vs. what the kernel bakes in
 %%%
 tag := "baked-in"

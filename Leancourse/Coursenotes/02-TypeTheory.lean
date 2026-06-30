@@ -5,6 +5,7 @@ import «Leancourse».Coursenotes.«02-TypeTheory».«02-DependentTypes»
 import «Leancourse».Coursenotes.«02-TypeTheory».«03-UniversesAndAxioms»
 import «Leancourse».Coursenotes.«02-TypeTheory».«04-Structures»
 import «Leancourse».Coursenotes.«02-TypeTheory».«05-Typeclasses»
+import «Leancourse».Coursenotes.«02-TypeTheory».«06-Logic»
 
 open Verso.Genre Manual
 
@@ -23,13 +24,16 @@ part unpacks the consequences of that single design choice:
 - _Dependent types_: types that depend on values, giving us `Σ`, `Π`,
   `Subtype`, `Vector n`, and the rest of Lean's type-level vocabulary.
 - _Universes and axioms_: why `Type` cannot contain itself, and which
-  axioms (`funext`, `propext`, `Classical.choice`) Lean adds on top
-  of the kernel.
+  three axioms (`propext`, `Quot.sound`, `Classical.choice`) Lean adds
+  on top of the kernel.
 - _Structures_: bundling data and properties into named-field
   records, and the `extends` mechanism that Mathlib uses to build
   its algebraic hierarchy.
 - _Typeclasses_: how Lean's instance resolution lets you define
   generic operations like `+` once and reuse them across types.
+- _Well-foundedness and paradoxes_: how Lean rules out infinite
+  descent (via `Acc`/`WellFounded`) and self-membership like `s ∈ s`
+  (via typing and universes).
 
 {include 0 «Leancourse».Coursenotes.«02-TypeTheory».«01-CurryHoward»}
 
@@ -40,3 +44,5 @@ part unpacks the consequences of that single design choice:
 {include 0 «Leancourse».Coursenotes.«02-TypeTheory».«04-Structures»}
 
 {include 0 «Leancourse».Coursenotes.«02-TypeTheory».«05-Typeclasses»}
+
+{include 0 «Leancourse».Coursenotes.«02-TypeTheory».«06-Logic»}

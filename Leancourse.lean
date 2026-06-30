@@ -8,6 +8,7 @@ import «Leancourse».Coursenotes.«01-Lean»
 import «Leancourse».Coursenotes.«02-TypeTheory»
 import «Leancourse».Coursenotes.«03-Mathematics»
 import «Leancourse».Coursenotes.«04-AdvancedTopics»
+import «Leancourse».Coursenotes.«97-Diagnostics»
 import «Leancourse».Coursenotes.«98-Keywords»
 import «Leancourse».Coursenotes.«99-Bibliography»
 
@@ -55,6 +56,8 @@ In case you cannot install the course material locally, do the following: Visit 
 {include 0 «Leancourse».Coursenotes.«03-Mathematics»}
 
 {include 0 «Leancourse».Coursenotes.«04-AdvancedTopics»}
+
+{include 0 «Leancourse».Coursenotes.«97-Diagnostics»}
 
 {include 0 «Leancourse».Coursenotes.«98-Keywords»}
 

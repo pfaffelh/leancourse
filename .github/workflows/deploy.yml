@@ -1,0 +1,56 @@
+name: Build and deploy manual
+
+on:
+  push:
+    branches: [main]
+  # Allow manual runs from the Actions tab
+  workflow_dispatch:
+
+# Permissions needed to publish to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment; cancel runs that are superseded
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Installs the Lean toolchain from lean-toolchain, downloads the
+      # Mathlib build cache (lake exe cache get), and runs `lake build`,
+      # which compiles the Leancourse library and the `leancourse`
+      # executable. test/lint are disabled (this project has no drivers).
+      - name: Build Lean project (with Mathlib cache)
+        uses: leanprover/lean-action@v1
+        with:
+          test: false
+          lint: false
+          use-mathlib-cache: true
+
+      # Run the generator: writes the rendered site to _out/html-multi
+      - name: Generate the site
+        run: lake exe leancourse --output _out/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _out/html-multi
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

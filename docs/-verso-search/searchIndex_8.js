@@ -1,1 +1,0 @@
-window.docContents[8].resolve({"/Lean/#clear":{"contents":"Summary: With clear h the hypothesis h is removed from the goal state\n(forgotten).\n\nExample\n\n* Proof state* Tactic* New proof state* h : P  ⊢ Q* clear h* ⊢ Q\n\n","context":"Interactive Theorem Proving using Lean, Winter 2026/27\u0009Lean\u0009Tactics","header":"3.4.10. clear","id":"/Lean/#clear"}});

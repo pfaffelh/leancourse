@@ -255,6 +255,89 @@ Both are nonempty -- `True` satisfies `U` and `False` satisfies `V` -- so `Class
 
 Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data* -- the booleans `True` and `False` -- which is precisely the move a constructive system refuses to make. Mathlib packages the result as `Classical.em`; in practice you simply use it (often via `by_contra` or `by_cases`).
 
+# Declared axioms vs. what the kernel bakes in
+%%%
+tag := "baked-in"
+%%%
+
+Saying Lean has "exactly three axioms" is precise about *declared* axioms -- the `axiom` constants, which are exactly what `#print axioms` reports. But the kernel's typing and definitional-equality rules quietly build in further logical principles that are *not* axioms and leave *no* trace in `#print axioms`. They come for free, and -- unlike the three axioms -- you cannot opt out of them.
+
+The clearest are *definitional*: they hold by `rfl`, yet cost nothing.
+
+```lean
+-- Each holds by `rfl` -- it is *definitional* -- and none
+-- of them costs an axiom.
+theorem pf_irrel (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
+theorem eta_fun (f : Nat → Nat) :
+    (fun x => f x) = f := rfl
+theorem quot_red (a : Nat) (f : Nat → Nat) (h) :
+    Quot.lift f h (Quot.mk (fun _ _ => True) a) = f a :=
+  rfl
+
+#print axioms pf_irrel
+-- 'pf_irrel' does not depend on any axioms
+```
+
+So the following are all *built into the kernel*, not assumed on top of it:
+
+:::table +header
+* + Baked-in principle
+  + What it gives you
+* + Proof irrelevance for `Prop`
+  + any two proofs of the same proposition are *equal*
+* + Eta for functions
+  + `f` and `fun x => f x` are interchangeable
+* + Eta for structures
+  + `s` and `⟨s.1, s.2⟩` are interchangeable
+* + Quotient computation
+  + `Quot.lift f h (Quot.mk r a)` reduces to `f a`
+:::
+
+## More that the kernel bakes in
+%%%
+tag := "baked-in-more"
+%%%
+
+The list does not stop there:
+
+- *Computation* (beta, iota, delta, zeta reduction): the kernel *evaluates* terms, so `2 + 2 = 4` holds by `rfl`.
+- *Native literal arithmetic*: the kernel computes `Nat`, `Int`, and `String` literals with bignum-backed operations rather than unary `succ` -- a baked-in optimization you rely on every time you `decide` or `#eval`.
+- *Impredicative `Prop`*: `∀ (α : Type), p α` is again a `Prop`, no matter how large `α` is.
+- *Inductive types and their recursors*: every `inductive` declaration generates an eliminator together with its built-in computation (iota) rule (see {ref "cic"}[the CIC section]).
+- *The universe hierarchy*: `Type : Type 1`, `Type 1 : Type 2`, and crucially never `Type : Type`.
+- *Subsingleton (large) elimination*: you may eliminate a `Prop` into `Type` only when it is a *subsingleton* -- `False`, `Eq`, `And`, `Acc` qualify, but `Or` and `Exists` do not, because they would let you extract genuine data (which side, which witness) from a mere proof.
+
+That last rule is exactly why an existential lives in `Prop` and you need {ref "axiom-choice"}[choice] to get its witness:
+
+```lean
+-- `False` is a subsingleton: large elimination is fine
+#check (False.elim : False → Nat)
+
+-- `Exists` carries data (its witness), so it may NOT
+-- be eliminated into `Type`: the witness can't escape.
+#check_failure
+  (fun (h : ∃ n : Nat, True) =>
+    Exists.rec (motive := fun _ => Nat)
+      (fun w _ => w) h)
+
+-- `Or` has two constructors -- likewise no data elimination
+#check_failure
+  (fun (h : (0 = 0) ∨ (1 = 1)) =>
+    Or.rec (motive := fun _ => Nat)
+      (fun _ => 0) (fun _ => 1) h)
+```
+
+## What this means
+%%%
+tag := "baked-in-meaning"
+%%%
+
+Two consequences are worth drawing.
+
+First, `#print axioms` sees *only* the declared axioms.  The baked-in principles are invisible to it and cannot be switched off, so the *trusted base* of a Lean proof is not "three axioms" but the whole kernel -- the CIC together with proof irrelevance, eta, the quotient reduction, native computation, and the universe rules.  Believing a Lean theorem means believing all of that.
+
+Second, proof irrelevance for `Prop` is effectively *uniqueness of identity proofs* (axiom K): all proofs of `a = b` are equal.  This is a deliberate design choice -- but it is precisely what makes Lean *incompatible* with the univalence axiom of {ref "other-type-theories"}[Homotopy Type Theory], where distinct equality proofs must be allowed to differ.
+
 # Constructive vs classical logic
 %%%
 tag := "constructive-classical"

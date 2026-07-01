@@ -40,7 +40,17 @@ is exactly how functions work in mathematics: if `f(x) = x + 1`,
 then `f(3)` is always `4`.
 
 In Lean, we define functions with `def` and evaluate them with
-`#eval`:
+`#eval`.  Two pieces of notation appear right away.  First, we write
+`x : α` to say that `x` is a *term of type* `α`; for example `n : ℕ`
+means "`n` is a natural number" (the symbol `ℕ` is typed `\N`).
+Second, a definition has the shape
+
+```
+def name (arguments) : resultType := body
+```
+
+So the following defines `double`, taking one argument `n : ℕ` and
+returning the `ℕ` value `2 * n`:
 
 ```lean
 def double (n : ℕ) : ℕ := 2 * n
@@ -104,8 +114,11 @@ The three most important higher-order functions on lists are
 -- outputs [11, 12, 13]
 ```
 
-Note the `·` notation: `(· + 10)` is shorthand for
-`(fun x ↦ x + 10)`.
+Note the `·` notation (a centered dot, typed `\cdot`): a `·` stands
+for an anonymous argument, so `(· + 10)` is shorthand for
+`fun x ↦ x + 10`.  When several `·` appear they become successive
+arguments, left to right -- `(· + ·)` means `fun x y ↦ x + y` (we use
+this in the `foldl` examples below).
 
 `List.filter` keeps only the elements satisfying a predicate:
 

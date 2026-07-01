@@ -195,7 +195,26 @@ def alice : Student := { name := "Alice", age := 22 }
 #eval alice    -- outputs { name := "Alice", age := 22 }
 ```
 
-Without `deriving Repr`, the `#eval` command would not know how to print a `Student`. The `deriving` clause tells Lean to automatically create a `Repr` instance. Other commonly derived instances include `BEq` (Boolean equality), `Hashable`, and `Inhabited`.
+Without `deriving Repr`, the `#eval` command would not know how to print a `Student`. The `deriving` clause tells Lean to automatically create a `Repr` instance.
+
+`Repr`, `BEq`, and the others are *typeclasses* -- bundles of operations a type can support. We treat typeclasses properly in the {ref "typeclasses"}[next chapter]; for now it is enough to know what the commonly derived ones provide:
+
+:::table +header
+* + Typeclass
+  + What it provides
+* + `Repr`
+  + a way to *display* a value (needed by `#eval`)
+* + `BEq`
+  + Boolean equality `a == b`
+* + `Hashable`
+  + a hash function (for use in hash maps/sets)
+* + `Inhabited`
+  + a designated *default* value `default : α`
+* + `DecidableEq`
+  + a *decidable* equality test `a = b` (returns a proof either way)
+:::
+
+Several instances can be derived at once:
 
 ```lean
 structure Pair (α β : Type) where

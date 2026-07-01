@@ -40,6 +40,49 @@ In Lean, every proposition `P : Prop` is a type. A proof of `P` is a term `h : P
 
 This idea is sometimes called the **BHK interpretation** (Brouwer-Heyting-Kolmogorov), which gives a constructive meaning to the logical connectives. Let us see how each connective maps to a type-theoretic construction.
 
+# Tactic mode, term mode, and the proof state
+%%%
+tag := "term"
+%%%
+
+Before we go through the connectives, we need to know *how* to write a proof, since every example below does.  Because a proof is just a term of the proposition's type, there are two ways to build it.  In *term mode* you write the term directly; in *tactic mode* (after the keyword `by`) you build it step by step with *tactics*.  With the cursor inside a tactic block, Lean shows the *proof state*: the hypotheses appear above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) and the goal to its right.  The `sorry` tactic closes any goal as a placeholder (with a warning), so you can leave holes while developing a proof.
+
+The two modes are two views of the same thing.  Two rules of thumb, which the connectives below make precise:
+
+* the tactic `exact` is the same as calling a function;
+* the tactic `intro` is like taking a variable that becomes the argument of a function.
+
+For example, this term-mode proof
+
+```lean
+example (P : Prop) : False → P := False.elim
+```
+
+is the same as
+
+```lean
+example (P : Prop) : False → P := by
+  exact False.elim
+```
+
+and likewise
+
+```lean
+example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
+    x ∈ s → x ∈ t := fun hx ↦ hst hx
+```
+
+is the tactic proof
+
+```lean
+example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
+    x ∈ s → x ∈ t := by
+  intro hx
+  exact hst hx
+```
+
+The dedicated {ref "proof"}[Proving propositions] chapter later returns to the practical workflow and to *which* tactics to reach for; here we use `by`, `intro`, and `exact` just enough to exhibit the correspondence.
+
 # Implication = function type
 %%%
 tag := "implication-function"

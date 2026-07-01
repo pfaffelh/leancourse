@@ -20,11 +20,16 @@ tag := "proof"
 tag := "foundation"
 %%%
 
-In Lean every object has a type, and -- crucially -- a *proposition*
-is itself a type (living in the universe `Prop`), whose *terms* are
-its *proofs*.  Proving a statement therefore means *constructing a
-term* of the corresponding type.  For instance, Goldbach's conjecture
-is a term of type `Prop`:
+Recall from the {ref "curry-howard"}[Curry-Howard chapter] that a
+*proposition* is itself a type (living in the universe `Prop`) whose
+*terms* are its *proofs*, and that such a term is built either
+directly (*term mode*) or step by step after `by` (*tactic mode*).
+This chapter is the practical bridge to the exercises: it revisits
+that picture on a real open problem and points you at the tactics you
+will actually use.
+
+Proving a statement means *constructing a term* of the corresponding
+type.  For instance, Goldbach's conjecture is a term of type `Prop`:
 
 ```lean
 theorem goldbach : ∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n),
@@ -42,55 +47,6 @@ constructing a term of the Goldbach type would require actually
 proving the conjecture.  (For the type universes this rests on --
 `Prop`, `Type`, and why there is no "type of all types" -- see the
 foundations in the *Mathematics* part.)
-
-# Tactic mode, term mode, and the proof state
-%%%
-tag := "term"
-%%%
-
-There are two ways to build a proof term.  In *term mode* you write
-the term directly; in *tactic mode* (after `by`) you build it step by
-step with *tactics*.  With the cursor inside a tactic block, Lean
-shows the *proof state*: the hypotheses appear above the `⊢`
-([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) and
-the goal to its right.  The `sorry` tactic closes any goal as a
-placeholder (with a warning), so you can leave holes while developing
-a proof.
-
-The two modes are two views of the same thing.  Two rules of thumb:
-
-* the tactic `exact` is the same as calling a function;
-* the tactic `intro` is like taking a variable that becomes the
-  argument of a function.
-
-For example, this term-mode proof
-
-```lean
-example (P : Prop) : False → P := False.elim
-```
-
-is the same as
-
-```lean
-example (P : Prop) : False → P := by
-  exact False.elim
-```
-
-and likewise
-
-```lean
-example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
-    x ∈ s → x ∈ t := fun hx ↦ hst hx
-```
-
-is the tactic proof
-
-```lean
-example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
-    x ∈ s → x ∈ t := by
-  intro hx
-  exact hst hx
-```
 
 # Which tactics, and where to find them
 %%%

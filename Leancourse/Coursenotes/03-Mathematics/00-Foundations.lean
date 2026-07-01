@@ -19,8 +19,8 @@ tag := "math-foundations"
 Before surveying the more advanced corners of Mathlib, it is worth
 slowing down on the two pieces of vocabulary that every later chapter
 takes for granted: *propositions* (together with their proofs) and
-*sets*. Both are already familiar from the {ref "type-theory"}[type
-theory] part, but here we look at them from the working
+*sets*. Both are already familiar from the {ref "lean"}[Lean and its
+type theory] part, but here we look at them from the working
 mathematician's side -- how to read them, and how to write the small
 proofs that appear everywhere once you start formalizing.
 

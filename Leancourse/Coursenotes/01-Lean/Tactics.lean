@@ -1,6 +1,10 @@
 import VersoManual
 
 import «Leancourse».Coursenotes.«01-Lean».«Tactics».«Cheatsheet»
+import «Leancourse».Coursenotes.«01-Lean».«Tactics».«Aesop»
+import «Leancourse».Coursenotes.«01-Lean».«Tactics».«Grind»
+import «Leancourse».Coursenotes.«01-Lean».«Tactics».«Linear_combination»
+import «Leancourse».Coursenotes.«01-Lean».«Tactics».«Polyrith»
 import «Leancourse».Coursenotes.«01-Lean».«Tactics».«Apply»
 import «Leancourse».Coursenotes.«01-Lean».«Tactics».«Applyqm»
 import «Leancourse».Coursenotes.«01-Lean».«Tactics».«Assumption»
@@ -67,7 +71,44 @@ htmlSplit := .never
 tag := "tactics"
 %%%
 
+This chapter is an *alphabetical glossary*: look up a tactic by name.
+Before the list, here is a rough guide to which automation tactic
+fits which kind of goal.
+
+:::table +header
+* + Goal type
+  + Tactic
+* + Numerical computation (`2 + 3 = 5`)
+  + `norm_num` or `decide`
+* + Linear arithmetic over `ℕ`, `ℤ`
+  + `omega`
+* + Linear arithmetic over `ℝ`, `ℚ`
+  + `linarith`
+* + Ring equality (`(x+y)^2 = ...`)
+  + `ring`
+* + Nonlinear inequality
+  + `nlinarith` or `positivity`
+* + Clearing denominators
+  + `field_simp` then `ring`
+* + Simplification with known lemmas
+  + `simp` / `simp only [...]`
+* + Mixed equality, arithmetic, case splits
+  + `grind`
+* + Set membership, basic logic
+  + `aesop`
+* + Monotonicity / congruence
+  + `gcongr`
+* + Equality from a combination of hypotheses
+  + `linear_combination`
+:::
+
+When in doubt, try `simp`, then `grind` or `aesop`, then a more
+specialized tactic. Use `simp?` to see which simp lemmas apply and
+switch to `simp only` for a robust proof.
+
 {include 0 «Leancourse».Coursenotes.«01-Lean».«Tactics».«Cheatsheet»}
+
+{include 0 «Leancourse».Coursenotes.«01-Lean».«Tactics».«Aesop»}
 
 {include 0 «Leancourse».Coursenotes.«01-Lean».«Tactics».«Apply»}
 
@@ -113,11 +154,15 @@ tag := "tactics"
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Gcongr»}
 
+{include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Grind»}
+
 {include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Nlinarith»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Norm_cast»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Omega»}
+
+{include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Polyrith»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Positivity»}
 
@@ -134,6 +179,8 @@ tag := "tactics"
 {include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Left»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Linarith»}
+
+{include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Linear_combination»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics».«Norm_num»}
 

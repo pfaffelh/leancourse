@@ -10,7 +10,7 @@ import «Leancourse».Coursenotes.«03-Mathematics».«06-Probability»
 
 open Verso.Genre Manual
 
-#doc (Manual) "Advanced Mathematics" =>
+#doc (Manual) "Mathematics" =>
 %%%
 htmlSplit := .never
 tag := "advanced-mathematics"

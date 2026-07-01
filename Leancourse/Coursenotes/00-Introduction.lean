@@ -19,7 +19,7 @@ The course is designed for mathematics students and has several goals:
 
 * Learning the techniques for interactive theorem proofing using Lean: In recent years, efforts to prove mathematical theorems with the help of computers have increased dramatically. While a few decades ago, it was more a matter of consistently processing many cases that were left to the computer, interactive theorem provers are different. Here, a very small core can be used to understand or interactively generate all the logical conclusions of a mathematical proof. The computer then reports interactively on the progress of the proof and when all the steps have been completed.
 * Establishing connections to some mathematical material: At least in the first half, the mathematical details needed in this course should not be the main issue of this course. However, in order to _explain_ how a proof (or calculation or other argument) to a computer, you first have to understand it very well yourself. Furthermore, you have to plan the proof well - at least if it exceeds a few lines - so that the commands you enter (which we will call tactics) fit together. The course intends to teach both, first steps in `Lean` and learning a bunch of these tactics, and make a deeper dive into some mathematical material.
-* Understanding functional programming: Lean is not only a theorem prover but also a functional programming language. We cover core concepts such as inductive types, structures, typeclasses, and monads, which are essential both for using Lean effectively and for understanding how Mathlib is organized. These topics are distributed across the Lean basics, Type Theory, and Advanced Mathematics parts of the notes rather than collected into a chapter of their own.
+* Understanding functional programming: Lean is not only a theorem prover but also a functional programming language. We cover core concepts such as inductive types, structures, typeclasses, and monads, which are essential both for using Lean effectively and for understanding how Mathlib is organized. These topics are distributed across the Lean and Mathematics parts of the notes rather than collected into a chapter of their own.
 * Learning type theory: The foundation of Lean is dependent type theory. We explore the Curry-Howard correspondence, dependent types, the universe hierarchy, and the axioms underlying Lean, providing the theoretical background for why interactive theorem proving works.
 * Exploring advanced mathematics in Lean: We survey how Mathlib organizes order theory, the algebraic hierarchy, filters (which provide a unified framework for limits), topology, measure theory, and discrete probability. These topics are not always well covered in standard textbooks from the perspective of formalization.
 * Proof engineering: We learn to use powerful automation tactics, navigate Mathlib effectively, and avoid common pitfalls when working with a large formal library.
@@ -56,28 +56,22 @@ tag := "structure"
 
 Unlike a textbook, this course interleaves tactics and theory rather than separating them. Concretely:
 
-* Chapters 01 and 02 introduce both tactical reasoning (writing proofs) and the type theory that underlies it.
+* The first part, *Lean and its type theory*, introduces both tactical reasoning (writing proofs) and the dependent type theory that underlies it.
 * Tactics are documented *alphabetically* in their own chapter. That chapter is a glossary, not a narrative. You will often meet a tactic in a working example before you read its entry; a preview table at the start of *Proofs in Lean* lists the ones you will need first.
-* We recommend reading in order (00 → 04), but on a first pass it is fine to skip the tactics chapter and consult it when you hit a `sorry` proof.
+* We recommend reading in order, but on a first pass it is fine to skip the tactics chapter and consult it when you hit a `sorry` proof.
 
 # How to use this course
 %%%
 tag := "howto"
 %%%
 
-These notes have five main parts (numbered 0--4, matching the
-directory layout), followed by reference appendices:
+These notes are organized into the following parts, followed by a
+reference appendix and a bibliography:
 
-* *Introduction* (Chapter 0): the document you are currently reading.
-* *Lean* (Chapter 1): general hints on Lean as a language and as a proof assistant. We cover background on dependent type theory, the functional-programming side of Lean (pure functions, pattern matching, recursion, higher-order functions), and an *alphabetical reference* for the main tactics you will use to write proofs interactively. The tactics chapter is meant as a glossary: you will encounter the most important tactics in the narrative first (a short preview table appears at the start of *Proofs in Lean*), and look up individual entries as needed. An even longer list lives [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md).
-* *Type Theory* (Chapter 2): the theoretical foundation of Lean. We explore the Curry-Howard correspondence, dependent types, universes, the three axioms of Lean's type theory (and what the kernel additionally bakes in), the `structure` / `class` machinery that underpins Mathlib, and a closing chapter on well-foundedness and the avoidance of paradoxes.
-* *Advanced Mathematics* (Chapter 3): after an opening chapter on the everyday foundations -- propositions, proofs, and sets -- we survey how Mathlib organizes more advanced topics: order theory, the algebraic hierarchy, filters, topology, measure theory, and monadic discrete probability (`PMF`), with pointers into the relevant Mathlib API rather than full formalizations.
-* *Advanced Topics* (Chapter 4): practical skills for working with Lean and Mathlib at scale: automation tactics, navigating the library, and avoiding common pitfalls.
-
-Three appendices close the notes:
-
-* *Diagnostic Commands*: inspecting your work with `#print axioms` (the axiom footprint), `#find_home`, and `#lint`.
-* *Keyword Reference*: an at-a-glance table of Lean's keywords.
+* *Introduction*: the document you are currently reading.
+* *Lean and its type theory*: Lean both as a proof assistant and as a dependent type theory. We start hands-on -- the language, writing proofs, the functional-programming side of Lean (pure functions, pattern matching, recursion, higher-order functions), navigating Mathlib, and an *alphabetical reference* for the main tactics (a preview table appears at the start of *Proofs in Lean*; an even longer list lives [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)). We then turn to the theory: the Curry-Howard correspondence, dependent types, universes, the three axioms of Lean (and what the kernel additionally bakes in), the `structure` / `class` machinery that underpins Mathlib, and well-foundedness and the avoidance of paradoxes.
+* *Mathematics*: after an opening chapter on the everyday foundations -- propositions, proofs, and sets -- we survey how Mathlib organizes order theory, the algebraic hierarchy, filters, topology, measure theory, and monadic discrete probability (`PMF`), with pointers into the relevant Mathlib API rather than full formalizations.
+* *Appendix*: common pitfalls when working with Lean and Mathlib, the diagnostic commands (`#print axioms`, `#find_home`, `#lint`), and an alphabetical keyword reference.
 * *Bibliography*: the works cited throughout, with links.
 
 The heart of the course are the exercises (see the _Exercises_ folder within `Leancourse`). Unlike in other courses, you will get immediate feedback on any single exercise -- via error messages from the elaborator and a live *proof-state* panel that shows what remains to be proved at every cursor position. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.

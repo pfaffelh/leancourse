@@ -5,11 +5,8 @@ import Mathlib
 
 import «Leancourse».Coursenotes.«00-Introduction»
 import «Leancourse».Coursenotes.«01-Lean»
-import «Leancourse».Coursenotes.«02-TypeTheory»
 import «Leancourse».Coursenotes.«03-Mathematics»
-import «Leancourse».Coursenotes.«04-AdvancedTopics»
-import «Leancourse».Coursenotes.«97-Diagnostics»
-import «Leancourse».Coursenotes.«98-Keywords»
+import «Leancourse».Coursenotes.«04-Appendix»
 import «Leancourse».Coursenotes.«99-Bibliography»
 
 open Verso.Genre Manual
@@ -55,14 +52,8 @@ For the very first exercise sheets you do not even need a local installation: yo
 
 {include 0 «Leancourse».Coursenotes.«01-Lean»}
 
-{include 0 «Leancourse».Coursenotes.«02-TypeTheory»}
-
 {include 0 «Leancourse».Coursenotes.«03-Mathematics»}
 
-{include 0 «Leancourse».Coursenotes.«04-AdvancedTopics»}
-
-{include 0 «Leancourse».Coursenotes.«97-Diagnostics»}
-
-{include 0 «Leancourse».Coursenotes.«98-Keywords»}
+{include 0 «Leancourse».Coursenotes.«04-Appendix»}
 
 {include 0 «Leancourse».Coursenotes.«99-Bibliography»}

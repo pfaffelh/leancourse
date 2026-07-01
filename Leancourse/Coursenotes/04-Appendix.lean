@@ -3,7 +3,7 @@ import VersoManual
 import «Leancourse».Coursenotes.«04-Appendix».«01-CommonPitfalls»
 import «Leancourse».Coursenotes.«04-Appendix».«02-Diagnostics»
 import «Leancourse».Coursenotes.«04-Appendix».«03-Keywords»
-import «Leancourse».Coursenotes.«01-Lean».«Tactics»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics»
 
 open Verso.Genre Manual
 
@@ -24,4 +24,4 @@ glossary of tactics.
 
 {include 0 «Leancourse».Coursenotes.«04-Appendix».«03-Keywords»}
 
-{include 0 «Leancourse».Coursenotes.«01-Lean».«Tactics»}
+{include 0 «Leancourse».Coursenotes.«04-Appendix».«Tactics»}

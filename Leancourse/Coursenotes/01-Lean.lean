@@ -13,8 +13,6 @@ import «Leancourse».Coursenotes.«01-Lean».«10-Equality»
 import «Leancourse».Coursenotes.«01-Lean».«11-Proving»
 import «Leancourse».Coursenotes.«01-Lean».«12-Exploring»
 import «Leancourse».Coursenotes.«01-Lean».«13-Notation»
-import «Leancourse».Coursenotes.«01-Lean».«14-GettingHelp»
-import «Leancourse».Coursenotes.«01-Lean».«15-NavigatingMathlib»
 
 open Verso.Genre Manual
 
@@ -59,7 +57,3 @@ well-foundedness -- are treated in the *Mathematics* part.)
 {include 0  «Leancourse».Coursenotes.«01-Lean».«12-Exploring»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«13-Notation»}
-
-{include 0  «Leancourse».Coursenotes.«01-Lean».«14-GettingHelp»}
-
-{include 0  «Leancourse».Coursenotes.«01-Lean».«15-NavigatingMathlib»}

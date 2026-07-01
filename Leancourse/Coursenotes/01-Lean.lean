@@ -4,7 +4,6 @@ import «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»
 import «Leancourse».Coursenotes.«01-Lean».«02-Notes-Proofs»
 import «Leancourse».Coursenotes.«01-Lean».«03-FunctionalBasics»
 import «Leancourse».Coursenotes.«01-Lean».«04-NavigatingMathlib»
-import «Leancourse».Coursenotes.«01-Lean».«Tactics»
 import «Leancourse».Coursenotes.«02-TypeTheory».«01-CurryHoward»
 import «Leancourse».Coursenotes.«02-TypeTheory».«02-DependentTypes»
 import «Leancourse».Coursenotes.«02-TypeTheory».«03-UniversesAndAxioms»
@@ -23,11 +22,12 @@ tag := "lean"
 This part covers Lean both as a practical proof assistant and as the
 dependent type theory it is built on.  The first chapters are
 hands-on -- the language itself, writing proofs, functional
-programming, navigating Mathlib, and an alphabetical tactic
-reference.  The later chapters turn to the theory: the Curry-Howard
-correspondence, dependent types, universes and the axioms of Lean,
-the `structure` / `class` machinery that underpins Mathlib, and
-finally well-foundedness and the avoidance of paradoxes.
+programming, and navigating Mathlib.  The later chapters turn to the
+theory: the Curry-Howard correspondence, dependent types, universes
+and the axioms of Lean, the `structure` / `class` machinery that
+underpins Mathlib, and finally well-foundedness and the avoidance of
+paradoxes.  (The alphabetical tactic glossary now lives in the
+Appendix.)
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»}
 
@@ -36,8 +36,6 @@ finally well-foundedness and the avoidance of paradoxes.
 {include 0  «Leancourse».Coursenotes.«01-Lean».«03-FunctionalBasics»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«04-NavigatingMathlib»}
-
-{include 0  «Leancourse».Coursenotes.«01-Lean».«Tactics»}
 
 {include 0  «Leancourse».Coursenotes.«02-TypeTheory».«01-CurryHoward»}
 

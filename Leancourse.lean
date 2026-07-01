@@ -43,7 +43,11 @@ After having typed `code .` within the `leancourse` folder, navigate to `Leancou
 * The directory `Leancourse/Exercises` contains the material for the course. We recommend that you first copy this directory, for example to `myExercises`. Otherwise, an update of the repository may overwrite the local files.
 * To update the course materials, enter `git pull` from within the `leancourse`directory.
 
-In case you cannot install the course material locally, do the following: Visit [this page](https://https://github.com/pfaffelh/leancourse) and click on the green Code-button. Navigate to Codespaces and open the course notes there. You get a window which looks a lot like _vscode_, so please follow the instructions from above. You will have to _Restart Lean_ and _Restart File_ and wait several minutes until all is set. (If you see a red vertical bar, something is wrong. If you see an orange vertical bar, you will have to wait longer.) You will probably need a github account in order to open the coursenotes in Codespaces.
+In case you cannot install the course material locally, do the following: Visit [this page](https://github.com/pfaffelh/leancourse) and click on the green Code-button. Navigate to Codespaces and open the course notes there. You get a window which looks a lot like _vscode_, so please follow the instructions from above. You will have to _Restart Lean_ and _Restart File_ and wait several minutes until all is set. (If you see a red vertical bar, something is wrong. If you see an orange vertical bar, you will have to wait longer.) You will probably need a github account in order to open the coursenotes in Codespaces.
+
+:::paragraph
+For the very first exercise sheets you do not even need a local installation: you can run Lean 4 directly in your browser. Two web editors that give you Lean 4 together with _Mathlib_ are [live.lean-lang.org](https://live.lean-lang.org/) (the official Lean 4 playground) and the instance at [lean.math.hhu.de](https://lean.math.hhu.de/) hosted by HHU Düsseldorf. Paste an exercise in, make sure the file starts with `import Mathlib`, and wait a moment for Lean to start up. This is the quickest way to get going; for the full course -- many files, faster feedback, and saving your own work -- a local setup or Codespaces is preferable.
+:::
 
 # Table of Contents
 

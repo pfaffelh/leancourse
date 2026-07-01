@@ -208,6 +208,49 @@ When Lean encounters an expression like `a + b` where `a b : α`, it needs to fi
 
 This process is deterministic and happens at elaboration time (when Lean checks your code), not at runtime. So there is no performance penalty.
 
+# The `Decidable` typeclass
+%%%
+tag := "decidable-typeclass"
+%%%
+
+One typeclass deserves special mention, because it sits at the border
+between *programs* and *proofs*: `Decidable`. A proposition `P` is
+`Decidable` when there is an algorithm that determines whether `P`
+holds -- so the class carries genuine computational content, and lives
+in `Type`, not `Prop`:
+
+```lean
+#check @Decidable
+-- Decidable : Prop → Type
+
+-- Many concrete propositions are decidable, and the
+-- instance is found by typeclass resolution:
+#check (inferInstance : Decidable (2 + 3 = 5))  -- isTrue ..
+#check (inferInstance : Decidable (2 + 3 = 6))  -- isFalse ..
+```
+
+Two everyday features rest on this instance search:
+
+* An `if P then _ else _` requires a `Decidable P` instance -- that is
+  how the program knows which branch to take. This is also why
+  `deriving DecidableEq` (from the {ref "deriving"}[Structures]
+  chapter) is useful: it makes `a = b` decidable, so you may branch on
+  equality of your own type.
+* The `decide` tactic closes any goal whose proposition is decidable,
+  simply by running that algorithm and checking the answer is
+  `isTrue`:
+
+```lean
+example : 2 + 3 = 5 := by decide
+example : ¬(2 + 3 = 6) := by decide
+```
+
+Decidability is the *constructive* half of the story: it works without
+any axioms, which is exactly why the resulting code is executable. The
+*classical* counterpart -- making *every* proposition decidable
+non-constructively, at the cost of executability -- belongs to the
+axioms of Lean and is discussed in the {ref "constructive-classical"}[Mathematics part].
+
 # Practical tips
 %%%
 tag := "typeclass-tips"

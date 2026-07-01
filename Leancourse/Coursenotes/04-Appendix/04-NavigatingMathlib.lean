@@ -65,45 +65,27 @@ example : Continuous (fun x : ℝ ↦ x ^ 2 + 1) := by
 
 These tactics can be slow because they search through a large library. Use them during exploration, but replace them with the concrete result they find for your final proof.
 
-# Using `#check`, `#print`, and `#search`
-%%%
-tag := "check-print-search"
-%%%
-
-The commands `#check` and `#print` are fundamental for exploring the library interactively.
-
-**`#check`** shows the type of a term or lemma:
-```lean
-#check Nat.add_comm     -- Nat.add_comm : ∀ (n m : ℕ), n + m = m + n
-#check Set.mem_union     -- shows the type of the union membership lemma
-```
-
-**`#print`** shows the full definition of a term, including its proof:
-```lean
-#print Nat.add_comm      -- shows the actual proof term
-#print Set               -- shows the definition of Set
-```
-
-If you are in VS Code, you can also use `F12` (Go to Definition) to jump to the source code of any definition or lemma. This is one of the fastest ways to understand how something is defined.
-
-# External search tools: Moogle and Loogle
+# Searching by type shape or in natural language
 %%%
 tag := "moogle-loogle"
 %%%
 
-When you cannot guess the name of a lemma, external search tools can help.
+When you cannot guess a lemma's name, several search *services* help.  (For the `#check`/`#print`/`inferInstance` commands that inspect a known definition, see {ref "checkprint"}[Exploring definitions] in Part 1.)  All of the services below are available both as web pages and, more conveniently, as commands inside Lean via the `LeanSearchClient` package (a Mathlib dependency).
 
-**Loogle** ([loogle.lean-lang.org](https://loogle.lean-lang.org)) lets you search Mathlib by type signature. For example:
-- Searching for `List.map` shows all lemmas involving `List.map`
-- Searching for `_ + _ = _ + _` finds commutativity and related lemmas
-- Searching for `Continuous, Real.exp` finds lemmas about continuity of `exp`
-
-**Moogle** ([moogle.ai](https://www.moogle.ai)) uses natural language search powered by AI. You can type queries like:
-- "continuous function on compact set is bounded"
-- "sum of convergent series"
-- "every finite group is a quotient of a free group"
-
-Both tools link directly to the Mathlib documentation and source code.
+- *Loogle* ([loogle.lean-lang.org](https://loogle.lean-lang.org/)) searches by *type shape*.  You write a pattern (using `_` for holes) and Loogle returns every lemma whose statement unifies with it.  Inside Lean:
+  ```
+  #loogle (?a + ?b) * ?c = _
+  ```
+  It also accepts a comma-separated list of constants that must appear, e.g. `#loogle Real.exp, Real.log`, or a target conclusion `#loogle |- tsum _ = _`.
+- *LeanSearch* ([leansearch.net](https://leansearch.net/)) searches by *natural language*.  From inside Lean:
+  ```
+  #leansearch "the derivative of a product of functions"
+  ```
+- *Moogle* ([moogle.ai](https://www.moogle.ai/)) is another natural-language search with a different ranking model:
+  ```
+  #moogle "bolzano-weierstrass"
+  ```
+  The two often surface different lemmas, so it is worth trying both.
 
 # The Mathlib documentation website
 %%%
@@ -285,3 +267,15 @@ example (h : ∃ n : ℕ, n > 5 ∧ n < 10) : ∃ n : ℕ, n > 3 := by
   obtain ⟨n, hn, _⟩ := h
   exact ⟨n, by omega⟩
 ```
+
+# Getting more help: Zulip and AI assistants
+%%%
+tag := "help-services"
+%%%
+
+Beyond automated search, two more resources are worth knowing.
+
+- *Zulip* (`leanprover.zulipchat.com`, the `#new members` and `#Mathlib4` streams) is the community chat.  For questions that no search answers, posting a minimal `example` together with the goal you are stuck on almost always gets a helpful reply within hours.
+- *AI assistants* (ChatGPT, Claude, Gemini, Copilot, and the Lean-focused tools built on them) have become surprisingly effective at suggesting lemma names, explaining why a tactic fails, and translating informal arguments into Lean.  They are fallible -- they will cheerfully invent lemmas that do not exist or quote outdated Mathlib 3 syntax -- so use them critically: paste your goal state and the surrounding `example`, ask for a couple of candidate approaches, and *verify each suggestion in Lean* (via `exact?`, `#loogle`, or by compiling it).  Treat AI output like a confident but occasionally wrong colleague.
+
+As a rule of thumb: try `exact?` / `apply?` first (they know your exact proof state), then `#loogle` (precise, fast), then `#leansearch` / `#moogle` or an AI assistant (when you do not know the vocabulary Mathlib uses), and finally the docs or Zulip for open-ended questions.

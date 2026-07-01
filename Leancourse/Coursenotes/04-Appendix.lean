@@ -4,7 +4,6 @@ import «Leancourse».Coursenotes.«04-Appendix».«01-CommonPitfalls»
 import «Leancourse».Coursenotes.«04-Appendix».«02-Diagnostics»
 import «Leancourse».Coursenotes.«04-Appendix».«03-Keywords»
 import «Leancourse».Coursenotes.«04-Appendix».«04-NavigatingMathlib»
-import «Leancourse».Coursenotes.«04-Appendix».«05-GettingHelp»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics»
 
 open Verso.Genre Manual
@@ -27,7 +26,5 @@ search Mathlib, and the alphabetical glossary of tactics.
 {include 0 «Leancourse».Coursenotes.«04-Appendix».«03-Keywords»}
 
 {include 0 «Leancourse».Coursenotes.«04-Appendix».«04-NavigatingMathlib»}
-
-{include 0 «Leancourse».Coursenotes.«04-Appendix».«05-GettingHelp»}
 
 {include 0 «Leancourse».Coursenotes.«04-Appendix».«Tactics»}

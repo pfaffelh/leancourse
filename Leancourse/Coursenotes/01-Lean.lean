@@ -3,6 +3,7 @@ import VersoManual
 import «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»
 import «Leancourse».Coursenotes.«01-Lean».«02-Notes-Proofs»
 import «Leancourse».Coursenotes.«01-Lean».«03-FunctionalBasics»
+import «Leancourse».Coursenotes.«01-Lean».«03b-Functions»
 import «Leancourse».Coursenotes.«01-Lean».«04-NavigatingMathlib»
 import «Leancourse».Coursenotes.«02-TypeTheory».«01-CurryHoward»
 import «Leancourse».Coursenotes.«02-TypeTheory».«02-DependentTypes»
@@ -28,6 +29,8 @@ foundations -- universes, the axioms of Lean, and well-foundedness --
 are treated in the *Mathematics* part.)
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«03-FunctionalBasics»}
+
+{include 0  «Leancourse».Coursenotes.«01-Lean».«03b-Functions»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»}
 

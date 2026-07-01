@@ -80,48 +80,6 @@ Anonymous functions are particularly useful when passing functions
 as arguments to other functions.  In mathematics one would write
 `x ↦ x^2`; in Lean we write `fun x ↦ x ^ 2`.
 
-# More examples of recursion
-%%%
-tag := "fp-more-recursion"
-%%%
-
-Recursion lets us define functions by cases on their input.  Here are
-a couple of examples that we will reuse when discussing higher-order
-functions below (inductive types and pattern matching are covered in
-their own chapters).
-
-A binary tree of natural numbers, together with a function that
-sums all its values:
-
-```lean
-namespace FPBasics
-
-inductive Tree where
-  | leaf : Tree
-  | node : Tree → ℕ → Tree → Tree
-
-def Tree.sum : Tree → ℕ
-  | .leaf => 0
-  | .node l v r => Tree.sum l + v + Tree.sum r
-
-#eval Tree.sum
-  (.node (.node .leaf 3 .leaf) 5 .leaf)
--- outputs 8
-
-end FPBasics
-```
-
-The Fibonacci sequence is a classical example with two base cases:
-
-```lean
-def fib : ℕ → ℕ
-  | 0 => 0
-  | 1 => 1
-  | n + 2 => fib n + fib (n + 1)
-
-#eval fib 10    -- outputs 55
-```
-
 # Higher-order functions
 %%%
 tag := "higher-order-functions"

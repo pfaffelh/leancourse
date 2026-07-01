@@ -88,8 +88,6 @@ The heart of the course are the exercises (see the _Exercises_ folder within `Le
 
 While the exercises will cover the first half of the semester, individual assignments will happen in the latter part of this course. (These will mostly be self-assigned, so e.g. you will formalize an exercise from your first year of studies, or you are interested in a specific part of `Mathlib`, or...)
 
-# Table of Contents
-
 {include 0 «Leancourse».Coursenotes.«01-Lean»}
 
 {include 0 «Leancourse».Coursenotes.«03-Mathematics»}

@@ -66,13 +66,19 @@ tag := "howto"
 %%%
 
 These notes have five main parts (numbered 0--4, matching the
-directory layout):
+directory layout), followed by reference appendices:
 
 * *Introduction* (Chapter 0): the document you are currently reading.
 * *Lean* (Chapter 1): general hints on Lean as a language and as a proof assistant. We cover background on dependent type theory, the functional-programming side of Lean (pure functions, pattern matching, recursion, higher-order functions), and an *alphabetical reference* for the main tactics you will use to write proofs interactively. The tactics chapter is meant as a glossary: you will encounter the most important tactics in the narrative first (a short preview table appears at the start of *Proofs in Lean*), and look up individual entries as needed. An even longer list lives [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md).
-* *Type Theory* (Chapter 2): the theoretical foundation of Lean. We explore the Curry-Howard correspondence, dependent types, universes, the axioms of Lean's type theory, and the `structure` / `class` machinery that underpins Mathlib.
-* *Advanced Mathematics* (Chapter 3): we survey how Mathlib organizes more advanced mathematical topics -- order theory, the algebraic hierarchy, filters, topology, measure theory, and monadic discrete probability (`PMF`) -- with pointers into the relevant Mathlib API rather than full formalizations.
+* *Type Theory* (Chapter 2): the theoretical foundation of Lean. We explore the Curry-Howard correspondence, dependent types, universes, the three axioms of Lean's type theory (and what the kernel additionally bakes in), the `structure` / `class` machinery that underpins Mathlib, and a closing chapter on well-foundedness and the avoidance of paradoxes.
+* *Advanced Mathematics* (Chapter 3): after an opening chapter on the everyday foundations -- propositions, proofs, and sets -- we survey how Mathlib organizes more advanced topics: order theory, the algebraic hierarchy, filters, topology, measure theory, and monadic discrete probability (`PMF`), with pointers into the relevant Mathlib API rather than full formalizations.
 * *Advanced Topics* (Chapter 4): practical skills for working with Lean and Mathlib at scale: automation tactics, navigating the library, and avoiding common pitfalls.
+
+Three appendices close the notes:
+
+* *Diagnostic Commands*: inspecting your work with `#print axioms` (the axiom footprint), `#find_home`, and `#lint`.
+* *Keyword Reference*: an at-a-glance table of Lean's keywords.
+* *Bibliography*: the works cited throughout, with links.
 
 The heart of the course are the exercises (see the _Exercises_ folder within `Leancourse`). Unlike in other courses, you will get immediate feedback on any single exercise -- via error messages from the elaborator and a live *proof-state* panel that shows what remains to be proved at every cursor position. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.
 

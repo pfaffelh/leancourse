@@ -88,6 +88,17 @@ terminating direction to recurse in.  The contrast between `<` and `>`
 on `ℕ` is the lesson: less-than bottoms out at `0`, greater-than runs
 off to infinity.
 
+Concretely, this abstract picture is realized in Lean in two ways.
+Each `inductive` type comes with an auto-generated *recursor*
+(`Nat.rec`, `List.rec`, ...) that *is* its structural induction and
+recursion principle -- well-foundedness for that type, guaranteed by
+the kernel.  And for a *uniform* supply of well-founded relations,
+every inductive type carries a `SizeOf` instance, which `sizeOfWFRel`
+turns into a `WellFoundedRelation` whose well-foundedness is pulled
+back from `<` on `Nat` through `InvImage.wf`.  So "inductive, hence
+finite trees, hence well-founded" becomes, in practice, the single
+fact `Nat.lt_wfRel.wf` transported along `sizeOf`.
+
 # Why `Nat` is well-founded
 %%%
 tag := "wf-nat"

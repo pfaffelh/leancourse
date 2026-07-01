@@ -108,8 +108,43 @@ def fib : ℕ → ℕ
 Lean only accepts a recursive definition once it is convinced the
 recursion *terminates*.  For *structural* recursion -- where each
 call is on a syntactic sub-part of the input, as in `factorial`,
-`length'`, and `fib` -- this is automatic.  When the recursive call
-is not on a structural sub-part, you must supply a measure that
-decreases, with the `termination_by` and `decreasing_by` clauses;
-the underlying theory of *well-founded recursion* is developed in the
-Mathematics part.
+`length'`, and `fib` -- this is automatic.
+
+When the recursive call is *not* on a structural sub-part, you
+justify termination by giving a *measure* that strictly decreases:
+the `termination_by` clause names the measure, and `decreasing_by`
+discharges the proof that it goes down.  Euclid's algorithm is the
+classic example -- `euclidGcd m n` recurses on `n % m`, which is not
+a subterm of `m`, but the first argument strictly decreases:
+
+```lean
+def euclidGcd (m n : Nat) : Nat :=
+  if _h : m = 0 then n
+  else euclidGcd (n % m) m
+termination_by m
+decreasing_by
+  exact Nat.mod_lt n (Nat.pos_of_ne_zero _h)
+
+#eval euclidGcd 48 36   -- 12
+```
+
+Reading it off: `termination_by m` declares the measure (the first
+argument); for the recursive call Lean then asks you to show it
+shrinks, i.e. `n % m < m`, which is exactly the goal `decreasing_by`
+proves (`Nat.mod_lt` from `m ≠ 0`; the hypothesis `_h` is in scope
+thanks to the dependent `if`).  When the decrease is routine,
+`decreasing_by` can often close it with `omega`:
+
+```lean
+def log2 (n : Nat) : Nat :=
+  if _h : 2 ≤ n then 1 + log2 (n / 2) else 0
+termination_by n
+decreasing_by omega
+
+#eval log2 16   -- 4
+```
+
+Under the hood this compiles to *well-founded recursion*
+(`WellFounded.fix`); that theory -- what makes a relation
+well-founded, and why `<` on `Nat` qualifies -- is developed in the
+*Mathematics* part.

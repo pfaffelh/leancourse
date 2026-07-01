@@ -126,70 +126,13 @@ restatement of it.
 In practice you almost never prove well-foundedness yourself.  Mathlib
 already supplies it -- the `Nat.lt_wfRel.wf` above is one of many
 `WellFoundedRelation` instances -- and when you write a recursive
-definition with `termination_by` (next section), Lean finds the
-well-founded relation automatically and asks you only, via
-`decreasing_by`, to show that your *measure* decreases.  The induction
+definition with `termination_by` (see the *Function definitions*
+chapter in Part 1), Lean finds the well-founded relation automatically
+and asks you only, via `decreasing_by`, to show that your *measure*
+decreases.  The induction
 argument just given is the one-time justification the library
 performs, not something you repeat; you would do it by hand only for a
 genuinely new, exotic relation.
-
-# Well-founded recursion in practice: `termination_by`
-%%%
-tag := "wf-termination"
-%%%
-
-Lean accepts *structural* recursion automatically -- the kind where
-each recursive call is on a syntactic subterm of an argument.  When a
-recursive call is *not* on a subterm, you justify termination by
-giving a *measure* that strictly decreases along a well-founded
-relation.  The `termination_by` clause names the measure, and
-`decreasing_by` discharges the proof that it goes down.
-
-Euclid's algorithm is the classic example.  Here `euclidGcd m n`
-recurses on `n % m`, which is not a subterm of `m`; but the first
-argument strictly decreases, and `<` on `Nat` is well-founded (the
-previous section):
-
-```lean
-def euclidGcd (m n : Nat) : Nat :=
-  if _h : m = 0 then n
-  else euclidGcd (n % m) m
-termination_by m
-decreasing_by
-  exact Nat.mod_lt n (Nat.pos_of_ne_zero _h)
-
-#eval euclidGcd 48 36   -- 12
-```
-
-Reading it off:
-
-- `termination_by m` declares the measure to be the first argument
-  `m`.
-- For the recursive call `euclidGcd (n % m) m`, Lean asks you to show
-  the measure shrinks -- that is, `n % m < m`.  That inequality is the
-  goal handed to `decreasing_by`.
-- `Nat.mod_lt n (Nat.pos_of_ne_zero _h)` proves `n % m < m` from
-  `m ≠ 0`.  The hypothesis `_h : m = 0` is false in this branch and is
-  in scope thanks to the dependent `if`; the underscore just tells the
-  unused-variable linter that we use it only inside the proof.
-- Under the hood Lean compiles this to `WellFounded.fix` over the
-  well-founded relation `<` on `Nat` -- the `Acc` machinery from the
-  start of the chapter.
-
-When the decrease is routine, `decreasing_by` can often close it with
-`omega`:
-
-```lean
-def log2 (n : Nat) : Nat :=
-  if _h : 2 ≤ n then 1 + log2 (n / 2) else 0
-termination_by n
-decreasing_by omega
-
-#eval log2 16   -- 4
-```
-
-Here the goal `n / 2 < n` follows from `2 ≤ n`, which `omega` finds on
-its own.
 
 # Why `s ∈ s` is impossible
 %%%

@@ -108,12 +108,12 @@ example (n : ℕ) (x : ℝ) (h : 0 ≤ x) : (1 : ℝ) + n * x ≤ (1 + x)^n := b
   | zero =>
     simp
   | succ n hn =>
-    simp only [cast_add, cast_one]
-    rw [add_mul, ← add_assoc, one_mul]
-    calc
-      1 + ↑n * x + x ≤ (1 + x) ^ n + x :=
-        by exact add_le_add_right hn x
-      _ ≤ (1 + x) ^ n + (1 + x)^n * x :=
-        by apply add_le_add_left ; nth_rw 1 [← one_mul x] ; refine mul_le_mul_of_nonneg_right ?_ h ; apply le_trans _ hn ; nth_rw 1 [← add_zero 1] ; rw [add_le_add_iff_left 1] ; apply mul_nonneg (cast_nonneg' n) h
-      _ = (1 + x) ^ (n + 1) :=
-        by ring
+    have hx1 : (1 : ℝ) ≤ 1 + x := by linarith
+    have hpow : (1 : ℝ) ≤ (1 + x) ^ n := one_le_pow₀ hx1
+    push_cast
+    calc (1 : ℝ) + (↑n + 1) * x
+        = (1 + ↑n * x) + x := by ring
+      _ ≤ (1 + x) ^ n + x := by linarith
+      _ ≤ (1 + x) ^ n + (1 + x) ^ n * x := by
+            nlinarith [mul_le_mul_of_nonneg_right hpow h]
+      _ = (1 + x) ^ (n + 1) := by ring

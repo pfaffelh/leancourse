@@ -113,8 +113,8 @@ def buzzardMehta : InProceedings := misc
   (title := inlines!"Formalising Mathematics")
   (authors := #[inlines!"Kevin Buzzard", inlines!"Bhavik Mehta"])
   (year := 2024)
-  (howpublished := inlines!"Lecture notes, Imperial College London")
-  (url := some "https://github.com/ImperialCollegeLondon/formalising-mathematics-2024")
+  (howpublished := inlines!"Online lecture notes")
+  (url := some "https://b-mehta.github.io/formalising-mathematics-notes/")
 
 def theoremProvingInLean4 : InProceedings := misc
   (title := inlines!"Theorem Proving in Lean 4")

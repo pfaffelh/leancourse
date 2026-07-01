@@ -16,17 +16,6 @@ tag := "notesonlean"
 %%%
 
 
-# Universes, Types and Terms
-%%%
-tag := "universes"
-%%%
-
-In all programming languages, you have data types such as `int`, `string` and `float`. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write `x : α` for a term `x` of type `α`, so we write `False : Bool`, `42 : ℕ`, but also `f : ℕ → ℝ` (for a function from ℕ to ℝ, which is an own type) and `0 ≠ 1 : Prop` (the proposition that 0 and 1 are different natural numbers), which is a proposition. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` and `f : (n : ℕ) → (Fin n → ℝ)` (where `Fin n` is the type which carries `{0, ..., n-1}`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
-
-As we see, these new data types are more abstract in the sense that Lean understands `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic. E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate. (Although `ℝ` is implemented as such a quotient within `Lean`, we will not have to deal with these implementation details when working with real numbers, since we will rely on results in `Mathlib`, the mathematical library, taking care of these details.)
-
-In Lean, there are three levels of objects: universes, types and terms. We are concerned here with the last two. Of particular interest is the type `Prop`, which consists of statements that can be `True` or `False`. It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form `hP : P`, which means `P` is true, and this statement is called `hP`. Synonomously, it meansthat `P` is true and `hP` is a proof of `P`. The hypotheses here have names `P Q R S`, and the proofs of the hypotheses `hP hQ hR hS`. All names can be arbitrary. Furthermore, there are hypotheses of the form `P → Q`, which is the statement that `P` implies `Q`. (Note the similarity to function notation as in `f : ℝ → ℝ`.)
-
 # Equality
 %%%
 tag := "equality"
@@ -55,71 +44,6 @@ gt_iff_lt : ∀ {α : Type u_1} [_inst_1 : has_lt α] {a b : α}, a > b ↔ b < 
 ```
 
 When this result is applied, the statements in `{...}` and `[...]` are added by `Lean` itself. The statements in `{...}` depend on the type of the objects that have to be given, and can therefore be inferred. (Above, when applying `gt_iff_lt`, the variables `a` and `b` have to be given.) Therefore, their type is also known, and one does not have to `α` is not explicitly specified. Since the application is made to a concrete `α` (for example, `ℕ`), and `Lean` knows a lot about the natural numbers, the type class system can look up many properties of `ℕ`, and also finds that `has_lt ℕ` holds (i.e. on `ℕ` at least a partial order is defined).
-
-# Inductive types
-%%%
-tag := "inductive"
-%%%
-
-Many everyday types in Lean -- `Nat`, `List`, `Option`, `Bool`, even
-`Empty` -- are *inductive* types. You declare one by giving a name,
-the type's universe, and a list of *constructors*: each constructor
-says how to build a new element of the type out of existing pieces.
-
-The classical example is the natural numbers:
-
-```lean
-namespace Demo
-inductive MyNat where
-  | zero : MyNat
-  | succ (n : MyNat) : MyNat
-end Demo
-```
-
-This declaration introduces three things at once:
-
-- a new type `Demo.MyNat`;
-- two constructors `Demo.MyNat.zero` and `Demo.MyNat.succ`, so every
-  element of `MyNat` is either `zero` or `succ n` for some `n`;
-- a *recursor* `Demo.MyNat.rec` which lets you define functions on
-  `MyNat` by specifying what happens in each constructor case.
-
-Definitions on an inductive type are typically written with the
-pattern-matching syntax of the previous section:
-
-```lean
-namespace Demo
-def double : MyNat → MyNat
-  | .zero    => .zero
-  | .succ n => .succ (.succ (double n))
-end Demo
-```
-
-Proofs about an inductive type use the `induction` tactic, which
-applies the recursor for you: one subgoal per constructor, with an
-induction hypothesis for each recursive argument.
-
-Inductive types also cover non-recursive data:
-
-```lean
-inductive Colour where
-  | red | green | blue
-```
-
-and parameterized types:
-
-```lean
--- `Option α` is either `none` or `some a` for some `a : α`.
-namespace Demo
-inductive MyOption (α : Type) where
-  | none : MyOption α
-  | some (a : α) : MyOption α
-end Demo
-```
-
-Inductive types are the main mechanism by which new data types enter
-Lean; `Mathlib` uses them extensively, and understanding them is
-essential for reading the library.
 
 # Exploring definitions with `#check`, `#print` and `inferInstance`
 %%%

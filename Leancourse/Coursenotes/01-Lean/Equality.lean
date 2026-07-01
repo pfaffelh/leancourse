@@ -1,0 +1,26 @@
+import VersoManual
+import Manual.Meta
+import Leancourse.Misc.Defs
+import Mathlib
+
+open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
+open MyDef
+
+set_option pp.rawOnError true
+
+#doc (Manual) "Equality" =>
+%%%
+htmlSplit := .never
+tag := "equality"
+%%%
+
+Due to the multitude of types in Lean, we have to be careful about equality. In Lean, there are three types of equality:
+
+* Syntactic equality: If two terms are letter-for-letter equal, then they are syntactically equal. However, there are a few more situations in which two terms are syntactically equal. Namely, if one term is just an abbreviation for the other (for example, `x = y` is an abbreviation for ` Eq x y`, where `Eq` is a function which takes two terms of the same type, and assigns `True` if they are the same and `False` otherwise), then these both terms are syntactically equal. Also equal are terms in which globally quantified variables have different letters. For example, `∀ x, ∃ y, f x y` and `∀ y, ∃ x, f y x` are syntactically equal.
+
+* Definitional equality: Some terms are equal by definition in Lean. For example, `x : ℕ`, `x + 0` is by definition identical to `x`. However, `0 + x` is not   definitionally identical to `x`. This is apparently only due to the     internal definition of addition of natural numbers in Lean.
+
+* Propositional equality: If there is a proof of `x = y`, then `x` and `y` are said to be propositionally equal. Similarly, terms `P` and `Q` are said to be propositionally equal if you can prove `P ↔ Q`. Some Lean tactics only work up to syntactic equality (such as `rw`), others (most) work up to definitional equality (such as `apply`, `exact`,...) This means that the tactic automatically transforms terms if they are syntactically or definitional equality.
+
+There is a special kind of equality to be observed with sets and functions. For example, two functions are exactly the same if they return the same value for all values in the domain. This behavior is called *extensionality* in the theory of programming languages. (If extensionality applies, then, for example, two sorting algorithms are the same if they always produce the same result).

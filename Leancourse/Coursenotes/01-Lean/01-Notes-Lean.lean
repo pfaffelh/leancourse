@@ -16,13 +16,6 @@ tag := "notesonlean"
 %%%
 
 
-# Lean as a programming language
-%%%
-tag := "functional"
-%%%
-
-Lean is a [functional programming language](https://en.wikipedia.org/wiki/Functional_programming) (i.e. it actually only consists of functions). This paradigm is in contrast to [imperative programming](https://en.wikipedia.org/wiki/Imperative_programming)  such as Python, Java and C. Lean comes with many features you might be familiar with, such as a library for output and input, but is still young and many things need to be developed.
-
 # Dependent type theory
 %%%
 tag := "dependent-type-theory"

@@ -9,27 +9,25 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Functional Programming Basics" =>
+#doc (Manual) "Lean as a programming language" =>
 %%%
 htmlSplit := .never
 tag := "fp-basics"
 %%%
 
-Lean is, before anything else, a *functional* programming language.
-If you have a background in mathematics but not in programming, do
-not worry: functional programming is in many ways closer to
-mathematics than imperative programming (like Python or Java).  The
-central idea is that programs are built from *functions* in the
-mathematical sense -- they take inputs and produce outputs, without
-hidden side effects.
+Lean is, before anything else, a *functional* programming language --
+it essentially consists only of functions.  This paradigm contrasts
+with *imperative* languages such as Python, Java, or C.  If you have
+a background in mathematics but not in programming, do not worry:
+functional programming is in many ways closer to mathematics than
+imperative programming.  The central idea is that programs are built
+from *functions* in the mathematical sense -- they take inputs and
+produce outputs, without hidden side effects.
 
-Earlier sections in this chapter already introduced the basic
-machinery we need: `def` for defining functions, `fun` for anonymous
-functions, `inductive` for defining new types, and pattern matching
-/ structural recursion for writing functions on inductive types.
-The aim of this section is to collect a few extra examples and to
-introduce *higher-order functions*, one of the hallmarks of the
-functional style.
+This chapter introduces the basics of the functional style: defining
+and evaluating functions, anonymous functions, and *higher-order
+functions*.  Inductive types, pattern matching, and structural
+recursion get their own chapters later.
 
 # Pure functions and `#eval`
 %%%
@@ -87,9 +85,10 @@ as arguments to other functions.  In mathematics one would write
 tag := "fp-more-recursion"
 %%%
 
-The `Inductive types` and `Pattern matching` sections above already
-covered the fundamentals.  Here are a few further examples that we
-will reuse when discussing higher-order functions below.
+Recursion lets us define functions by cases on their input.  Here are
+a couple of examples that we will reuse when discussing higher-order
+functions below (inductive types and pattern matching are covered in
+their own chapters).
 
 A binary tree of natural numbers, together with a function that
 sums all its values:
@@ -198,15 +197,13 @@ simply as `∘` (typed `\circ`).
 tag := "fp-basics-summary"
 %%%
 
-Functional programming in Lean is built on a few core ideas:
+Functional programming in Lean rests on a few core ideas seen in
+this chapter:
 
 * *Pure functions*: outputs depend only on inputs.
-* *Inductive types*: define new types by specifying constructors.
-* *Pattern matching*: define functions by cases on the constructors.
-* *Structural recursion*: define recursive functions that provably terminate.
+* *Anonymous functions*: `fun x ↦ ...` for throwaway functions.
 * *Higher-order functions*: pass functions as arguments or return them.
 
-These ideas align closely with mathematical practice: inductive
-types correspond to inductively defined sets, pattern matching
-corresponds to case analysis, and recursion corresponds to
-inductive definitions.
+Inductive types, pattern matching, and structural recursion -- the
+other pillars of the functional style -- are treated in their own
+chapters.

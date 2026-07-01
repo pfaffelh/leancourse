@@ -27,11 +27,11 @@ alphabetical tactic glossary lives in the Appendix; the deeper
 foundations -- universes, the axioms of Lean, and well-foundedness --
 are treated in the *Mathematics* part.)
 
+{include 0  «Leancourse».Coursenotes.«01-Lean».«03-FunctionalBasics»}
+
 {include 0  «Leancourse».Coursenotes.«01-Lean».«01-Notes-Lean»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«02-Notes-Proofs»}
-
-{include 0  «Leancourse».Coursenotes.«01-Lean».«03-FunctionalBasics»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«04-NavigatingMathlib»}
 

@@ -96,3 +96,24 @@ example (h : P → Q) (hP : P) : Q ∧ Q := by
 -- conclusion, then that conclusion holds.
 example (h₁ : P → R) (h₂ : ¬P → R) : R := by
   sorry
+
+/-
+  A longer worked example (bonus). Here `have`, `obtain`, `refine`,
+  and `use` work together. We prove that there is a natural number
+  whose square is even.
+
+  * `have h : ∃ n, Even n` records an intermediate fact; we prove it
+    with `refine ⟨48, ⟨24, by rfl⟩⟩` (48 is even because 48 = 24 + 24).
+  * `obtain ⟨n, ⟨k, hk⟩⟩ := h` takes the existential apart, giving a
+    number `n` and a proof `hk : n = k + k`.
+  * `use n, 2 * k ^ 2` supplies the witnesses for the goal (the outer
+    `∃`, and the `∃ r, n * n = r + r` hidden inside `Even`).
+  * `rw [hk]` and `ring` finish the arithmetic.
+-/
+example : ∃ (n : ℕ), Even (n * n) := by
+  have h : ∃ (n : ℕ), Even n := by
+    refine ⟨48, ⟨24, by rfl⟩⟩
+  obtain ⟨n, ⟨k, hk⟩⟩ := h
+  use n, 2 * k ^ 2
+  rw [hk]
+  ring

@@ -9,7 +9,7 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "The Curry-Howard Correspondence" =>
+#doc (Manual) "Propositions and proofs" =>
 %%%
 htmlSplit := .never
 tag := "curry-howard"
@@ -81,7 +81,7 @@ example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
   exact hst hx
 ```
 
-The dedicated {ref "proof"}[Proving propositions] chapter later returns to the practical workflow and to *which* tactics to reach for; here we use `by`, `intro`, and `exact` just enough to exhibit the correspondence.
+The practical workflow -- and *which* tactics to reach for -- is taken up in the {ref "proof"}[last section of this chapter]; here we use `by`, `intro`, and `exact` just enough to exhibit the correspondence.
 
 # Implication = function type
 %%%
@@ -353,3 +353,50 @@ Here is a summary of the Curry-Howard dictionary:
 :::
 
 Understanding this correspondence is key to becoming fluent in Lean: when you write a tactic proof, you are really constructing a term; when you write a term proof, you are programming a function. The two perspectives are equivalent, and switching between them often leads to deeper understanding.
+
+# From correspondence to practice
+%%%
+tag := "proof"
+%%%
+
+The correspondence is not only elegant, it is *how you actually prove
+things*: to prove a statement you construct a term of its type.  Most
+statements you meet are far beyond a one-liner -- Goldbach's
+conjecture, for instance, is a perfectly well-formed term of type
+`Prop`:
+
+```lean
+theorem goldbach : ∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n),
+    ∃ (i j : ℕ), (Prime i) ∧ (Prime j) ∧ (n = i + j) := by
+  sorry
+```
+
+A term of this type -- something that would replace the `sorry` -- *is*
+a proof of the conjecture.  Constructing a term of type `ℕ` is easy
+(`0 : ℕ` will do); constructing this one would require actually
+proving Goldbach.
+
+## Which tactics, and where to find them
+%%%
+tag := "firststeps"
+%%%
+
+The core tactics you meet first are `intro`, `exact`, `apply`, `rw`,
+`have`, `obtain`, `refine`, and `use`, together with the
+library-search helpers `apply?` and `simp?`.  Rather than tabulate
+them here, we introduce each one *hands-on in the exercises*, right
+where you first need it -- so you can experiment immediately.  The
+complete alphabetical reference, with many more tactics, lives in the
+{ref "tactics"}[Tactics] appendix, and searching Mathlib for the
+right lemma is covered in {ref "navigating-mathlib"}[Navigating
+Mathlib].
+
+## Exercises
+%%%
+tag := "exercises"
+%%%
+
+It is now time to move to the exercises.  Proceed to `vscode` (or
+`gitpod`), copy the exercises folder, and start coding.  Each sheet
+introduces the tactics it needs; the {ref "tactics"}[Tactics]
+appendix gives the alphabetical reference.

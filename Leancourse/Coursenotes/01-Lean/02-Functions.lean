@@ -203,69 +203,49 @@ Under the hood this compiles to *well-founded recursion*
 well-founded, and why `<` on `Nat` qualifies -- is developed in the
 *Mathematics* part.
 
-# Higher-order functions
+# Exploring definitions with `#check`, `#print` and `inferInstance`
 %%%
-tag := "higher-order-functions"
+tag := "checkprint"
 %%%
 
-A *higher-order function* is one that takes a function as an
-argument or returns a function as a result.  This is one of the
-central ideas of functional programming, and it is also very
-natural mathematically.  For instance, the derivative is a
-higher-order function: it takes a function and returns a function.
+We have already been using `#eval` to run our functions.  Lean
+provides a handful more *commands* that are invaluable for exploring a
+library like Mathlib.  They all start with `#` and only print
+information -- they do not contribute to a proof.
 
-The three most important higher-order functions on lists are
-`List.map`, `List.filter`, and `List.foldl` (also known as
-`fold`).
+- `#check e` prints the type of the term or expression `e`.  This is
+  the fastest way to learn what a lemma says, or what type a definition
+  has.
+- `#check @lemma` (with a leading `@`) prints the type of the lemma
+  *without* hiding implicit and instance arguments.  Use `@` when you
+  want to see every argument.
+- `#print name` prints the *definition* of the constant `name`.  For a
+  typeclass, this shows you the list of fields; for a `def`, the body;
+  for a `structure`, the constructor and fields.
+- `#eval e` evaluates the term `e` (when it is computable) and prints
+  the result.  It works on concrete `ℕ`, `List`, etc., but not on
+  abstract propositions.
 
-`List.map` applies a function to every element of a list:
-
-```lean
-#eval [1, 2, 3, 4].map (fun x ↦ x * x)
--- outputs [1, 4, 9, 16]
-#eval [1, 2, 3].map (· + 10)
--- outputs [11, 12, 13]
-```
-
-`List.filter` keeps only the elements satisfying a predicate:
-
-```lean
-#eval [1, 2, 3, 4, 5, 6].filter
-  (fun x ↦ x % 2 == 0)
--- outputs [2, 4, 6]
-```
-
-`List.foldl` combines all elements of a list using a binary
-operation and an initial value.  It "folds" the list from the left:
+A very common idiom is to ask Lean whether a given type has a specific
+instance (e.g. "is `ℕ` a commutative monoid?"):
 
 ```lean
-#eval [1, 2, 3, 4].foldl (· + ·) 0
--- outputs 10 (sum)
-#eval [1, 2, 3, 4].foldl (· * ·) 1
--- outputs 24 (product)
+-- "Does ℕ have an AddCommMonoid instance?" -- yes.
+#check (inferInstance : AddCommMonoid ℕ)
 ```
 
-We can define our own higher-order functions.  For example, here is
-a function that applies a function `n` times:
+The term `inferInstance` asks Lean to synthesize an instance of the
+indicated type; if no such instance exists the command will fail with
+a readable error message.
 
-```lean
-def iterate {α : Type} (f : α → α) : ℕ → α → α
-  | 0, x => x
-  | n + 1, x => f (iterate f n x)
+Two tactics complement these commands during an interactive proof:
 
-#eval iterate (· + 1) 5 0        -- outputs 5
-#eval iterate (· * 2) 4 1        -- outputs 16
-```
+- `exact?` searches Mathlib for a single lemma that closes the current
+  goal and prints a `exact <lemma>` line you can copy.
+- `apply?` is the same, but it suggests lemmas whose *conclusion*
+  matches the goal, leaving side conditions as new subgoals.
 
-We can also write a function that composes two functions:
-
-```lean
-def myCompose {α β γ : Type}
-    (g : β → γ) (f : α → β) : α → γ :=
-  fun x ↦ g (f x)
-
-#eval myCompose (· + 1) (· * 2) 3    -- outputs 7
-```
-
-In Lean, function composition is available as `Function.comp` or
-simply as `∘` (typed `\circ`).
+Together, `#check`, `#print`, `inferInstance`, `exact?` and `apply?`
+are the main tools for navigating an unfamiliar part of Mathlib; for
+searching the library by content or name, see
+{ref "navigating-mathlib"}[Navigating Mathlib] in the appendix.

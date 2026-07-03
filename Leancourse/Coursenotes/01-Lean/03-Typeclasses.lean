@@ -82,6 +82,51 @@ instance : ToString Vec2 where
 
 We defined two instances: `Add Vec2` so we can use `+`, and `ToString Vec2` so Lean can print `Vec2` values.
 
+# Using `deriving`
+%%%
+tag := "deriving"
+%%%
+
+Writing instances by hand is not always necessary: for a range of
+standard typeclasses Lean can generate the instance automatically, if
+you append a `deriving` clause to the type definition.
+
+```lean
+structure Student where
+  name : String
+  age : ℕ
+  deriving Repr
+
+def alice : Student := { name := "Alice", age := 22 }
+#eval alice    -- outputs { name := "Alice", age := 22 }
+```
+
+Without `deriving Repr`, the `#eval` command would not know how to print a `Student`. The `deriving` clause tells Lean to automatically create a `Repr` instance. Here is what the commonly derived classes provide:
+
+:::table +header
+* + Typeclass
+  + What it provides
+* + `Repr`
+  + a way to *display* a value (needed by `#eval`)
+* + `BEq`
+  + Boolean equality `a == b`
+* + `Hashable`
+  + a hash function (for use in hash maps/sets)
+* + `Inhabited`
+  + a designated *default* value `default : α`
+* + `DecidableEq`
+  + a *decidable* equality test `a = b` (returns a proof either way)
+:::
+
+Several instances can be derived at once:
+
+```lean
+structure Pair (α β : Type) where
+  fst : α
+  snd : β
+  deriving Repr, BEq, Hashable
+```
+
 # The square bracket notation
 %%%
 tag := "square-bracket-notation"
@@ -233,9 +278,8 @@ Two everyday features rest on this instance search:
 
 * An `if P then _ else _` requires a `Decidable P` instance -- that is
   how the program knows which branch to take. This is also why
-  `deriving DecidableEq` (from the {ref "deriving"}[Structures]
-  chapter) is useful: it makes `a = b` decidable, so you may branch on
-  equality of your own type.
+  {ref "deriving"}[`deriving DecidableEq`] (above) is useful: it makes
+  `a = b` decidable, so you may branch on equality of your own type.
 * The `decide` tactic closes any goal whose proposition is decidable,
   simply by running that algorithm and checking the answer is
   `isTrue`:

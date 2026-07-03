@@ -271,7 +271,7 @@ tag := "baked-in-more"
 
 The list does not stop there:
 
-- *Computation* (beta, iota, delta, zeta reduction): the kernel *evaluates* terms, so `2 + 2 = 4` holds by `rfl` (these {ref "reduction-rules"}[reduction rules] are detailed in Part 1).
+- *Computation* (beta, iota, delta, zeta reduction): the kernel *evaluates* terms, so `2 + 2 = 4` holds by `rfl` (these {ref "reduction-rules"}[reduction rules] are detailed in the appendix).
 - *Native literal arithmetic*: the kernel computes `Nat`, `Int`, and `String` literals with bignum-backed operations rather than unary `succ` -- a baked-in optimization you rely on every time you `decide` or `#eval`.
 - *Impredicative `Prop`*: `∀ (α : Type), p α` is again a `Prop`, no matter how large `α` is.
 - *Inductive types and their recursors*: every `inductive` declaration generates an eliminator together with its built-in computation (iota) rule (see {ref "cic"}[the CIC section]).

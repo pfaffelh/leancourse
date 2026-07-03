@@ -45,7 +45,7 @@ tag := "kw-declarations"
   + `example : 2 = 2 := rfl`
 * + `abbrev`
   + Reducible abbreviation (unfolds eagerly).
-  + `abbrev MyNat := ℕ`
+  + `abbrev NatAlias := ℕ`
 * + `instance`
   + Register a typeclass instance.
   + `instance : Inhabited ℕ := ⟨0⟩`

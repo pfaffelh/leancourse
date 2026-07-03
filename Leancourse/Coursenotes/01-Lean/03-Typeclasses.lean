@@ -253,6 +253,19 @@ When Lean encounters an expression like `a + b` where `a b : α`, it needs to fi
 
 This process is deterministic and happens at elaboration time (when Lean checks your code), not at runtime. So there is no performance penalty.
 
+You can trigger instance resolution yourself with the term
+`inferInstance`, which asks Lean to synthesize an instance of a stated
+type -- a handy way to ask "does this type have that structure?":
+
+```lean
+-- "Does ℕ have an AddCommMonoid instance?" -- yes.
+#check (inferInstance : AddCommMonoid ℕ)
+```
+
+If no such instance exists, the command fails with a readable error
+message. This is exactly the mechanism the `[...]` arguments rely on
+behind the scenes.
+
 # The `Decidable` typeclass
 %%%
 tag := "decidable-typeclass"

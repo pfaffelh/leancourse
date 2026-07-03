@@ -70,7 +70,7 @@ These tactics can be slow because they search through a large library. Use them 
 tag := "moogle-loogle"
 %%%
 
-When you cannot guess a lemma's name, several search *services* help.  (For the `#check`/`#print`/`inferInstance` commands that inspect a known definition, see {ref "checkprint"}[Exploring definitions] in Part 1.)  All of the services below are available both as web pages and, more conveniently, as commands inside Lean via the `LeanSearchClient` package (a Mathlib dependency).
+When you cannot guess a lemma's name, several search *services* help.  (For the `#check`/`#print`/`inferInstance` commands that inspect a known definition, see {ref "checkprint"}[Exploring definitions] earlier in this appendix.)  All of the services below are available both as web pages and, more conveniently, as commands inside Lean via the `LeanSearchClient` package (a Mathlib dependency).
 
 - *Loogle* ([loogle.lean-lang.org](https://loogle.lean-lang.org/)) searches by *type shape*.  You write a pattern (using `_` for holes) and Loogle returns every lemma whose statement unifies with it.  Inside Lean:
   ```

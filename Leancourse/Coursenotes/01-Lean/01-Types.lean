@@ -103,23 +103,9 @@ no matter how big the domain is:
 
 The last line is the striking case: `∀ α : Type, α → α` quantifies
 over *every* type, yet the statement itself is an ordinary `Prop`.
-
-*Universe polymorphism.* A definition that should work at *any* level
-takes a universe variable. You may introduce one explicitly with the
-`universe` command, or -- most commonly -- write `Type*`, which tells
-Lean to insert a fresh universe variable for you:
-
-```lean
-universe u
-def idOne (α : Type u) (a : α) : α := a
-
--- `Type*` is the everyday shorthand you will see all over Mathlib
-def idStar {α : Type*} (a : α) : α := a
-```
-
-This is why signatures throughout Mathlib read `{α : Type*}`: the same
-definition then applies whether `α` is a small type like `ℕ` or a large
-one like `Type` itself.
+(A definition can be made to work at *any* universe level at once; that
+uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter
+on functions].)
 
 # Inductive types
 %%%
@@ -134,32 +120,34 @@ says how to build a new element of the type out of existing pieces.
 The classical example is the natural numbers:
 
 ```lean
-namespace Demo
 inductive MyNat where
   | zero : MyNat
   | succ (n : MyNat) : MyNat
-end Demo
 ```
 
 This declaration introduces three things at once:
 
-- a new type `Demo.MyNat`;
-- two constructors `Demo.MyNat.zero` and `Demo.MyNat.succ`, so every
-  element of `MyNat` is either `zero` or `succ n` for some `n`;
-- a *recursor* `Demo.MyNat.rec` which lets you define functions on
-  `MyNat` by specifying what happens in each constructor case.
+- a new type `MyNat`;
+- two constructors `MyNat.zero` and `MyNat.succ`, so every element of
+  `MyNat` is either `zero` or `succ n` for some `n`;
+- a *recursor* `MyNat.rec` which lets you define functions on `MyNat`
+  by specifying what happens in each constructor case.
 
 Definitions on an inductive type are typically written with the
 pattern-matching syntax from the {ref "functions"}[chapter on
 functions]:
 
 ```lean
-namespace Demo
-def double : MyNat → MyNat
-  | .zero    => .zero
-  | .succ n => .succ (.succ (double n))
-end Demo
+def MyNat.double : MyNat → MyNat
+  | .zero   => .zero
+  | .succ n => .succ (.succ (MyNat.double n))
 ```
+
+The leading dot in `.zero` and `.succ` is *anonymous constructor
+notation*: because Lean already knows from the type that the result
+must be a `MyNat`, we may write `.zero` in place of the full
+`MyNat.zero`. Writing plain `zero` would fail -- there is no `zero` in
+scope, only `MyNat.zero`.
 
 Proofs about an inductive type use the `induction` tactic, which
 applies the recursor for you: one subgoal per constructor, with an
@@ -175,12 +163,10 @@ inductive Colour where
 and parameterized types:
 
 ```lean
--- `Option α` is either `none` or `some a` for some `a : α`.
-namespace Demo
+-- `MyOption α` is either `none` or `some a` for some `a : α`.
 inductive MyOption (α : Type) where
   | none : MyOption α
   | some (a : α) : MyOption α
-end Demo
 ```
 
 Inductive types are the main mechanism by which new data types enter
@@ -195,11 +181,6 @@ tag := "structures"
 %%%
 
 While inductive types let us define types with multiple constructors, many mathematical objects are better described as a *collection of named fields*. For example, a point in the plane has an `x`-coordinate and a `y`-coordinate. In Lean, we use `structure` for this.
-
-## Defining structures
-%%%
-tag := "defining-structures"
-%%%
 
 A `structure` is a special case of an inductive type with exactly one constructor and named fields. Here is a simple example:
 
@@ -219,11 +200,6 @@ def p2 : Point := Point.mk 3.0 4.0
 
 All three syntaxes create a `Point`. The angle brackets `⟨...⟩` (typed `\<` and `\>`) are the anonymous constructor.
 
-## Accessing fields and dot notation
-%%%
-tag := "dot-notation"
-%%%
-
 We access fields using dot notation:
 
 ```lean
@@ -242,11 +218,6 @@ def Point.distToOrigin (p : Point) : Float :=
 
 This works because Lean sees that `p2` has type `Point`, so it looks for `Point.distToOrigin`.
 
-## Updating structures
-%%%
-tag := "updating-structures"
-%%%
-
 We can create a new structure value based on an existing one, changing only some fields. This uses the `with` keyword:
 
 ```lean
@@ -255,11 +226,6 @@ def p3 : Point := { p1 with y := 10.0 }
 ```
 
 Since structures are immutable (as everything in functional programming), this creates a new `Point` rather than modifying `p1`.
-
-## Structures with default values
-%%%
-tag := "default-values"
-%%%
 
 Fields can have default values:
 
@@ -272,11 +238,6 @@ structure MyConfig where
 def myConfig : MyConfig := { title := "My Window" }
 -- myConfig.width = 80, myConfig.height = 24
 ```
-
-## Extending structures
-%%%
-tag := "extending-structures"
-%%%
 
 One structure can extend another, inheriting all of its fields:
 
@@ -291,11 +252,6 @@ def q : Point3D := { x := 1.0, y := 2.0, z := 3.0 }
 ```
 
 This is particularly important in Mathlib, where the algebraic hierarchy uses structure extension extensively. For example, `CommRing` extends `Ring`, which extends `Semiring`, and so on.
-
-## Mathematical examples
-%%%
-tag := "structures-math-examples"
-%%%
 
 Structures are natural for representing mathematical objects. Here is a complex number type:
 
@@ -330,7 +286,7 @@ structure MyLinearMap (α β : Type) [Add α] [Add β] [HMul ℕ α α] [HMul �
 
 Notice that the structure contains both data (the function `toFun`) and a property (`map_add`). This pattern of bundling data with properties is fundamental to how Mathlib organizes mathematics.
 
-## Inductive types vs structures
+# Inductive types vs structures
 %%%
 tag := "inductive-vs-structure"
 %%%

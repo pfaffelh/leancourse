@@ -156,15 +156,15 @@ tag := "abbrev"
 The `abbrev` command introduces a definition that is *reducibly transparent*, meaning Lean's elaborator will unfold it automatically whenever needed. In contrast, a definition introduced with `def` is *semireducible* and will not be unfolded automatically.
 
 ```lean
-abbrev MyNat := ℕ
+abbrev NatAlias := ℕ
 ```
 
-After this, `MyNat` and `ℕ` are interchangeable everywhere — Lean treats them as definitionally equal without needing any extra work. In particular, all type class instances that apply to `ℕ` are automatically available for `MyNat`. Compare this with
+After this, `NatAlias` and `ℕ` are interchangeable everywhere — Lean treats them as definitionally equal without needing any extra work. In particular, all type class instances that apply to `ℕ` are automatically available for `NatAlias`. Compare this with
 
 ```lean
-def MyNat' := ℕ
+def NatAlias' := ℕ
 ```
 
-where `MyNat'` is a genuinely new type: Lean will *not* automatically apply `ℕ` instances to `MyNat'`, and you would have to derive or register them yourself.
+where `NatAlias'` is a genuinely new type: Lean will *not* automatically apply `ℕ` instances to `NatAlias'`, and you would have to derive or register them yourself.
 
 Use `abbrev` when you want a short name for a type or expression but do not want to create a new abstraction barrier. Use `def` when you intentionally want to hide the definition (e.g. to prevent the simplifier from unfolding it).

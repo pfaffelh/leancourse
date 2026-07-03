@@ -60,3 +60,32 @@ functions are fully constructive. -/
 
 -- #print axioms steps2
 -- #print axioms bits
+
+/- ## Part 4: Proof irrelevance
+
+`Prop` has a defining feature that the `Type` universes lack: any two
+proofs of the same proposition are *equal* -- and equal *by
+definition*, so `rfl` proves it.  This is *proof irrelevance*: for a
+proposition we care only *that* it holds, never *which* proof we
+have. -/
+
+-- Any two proofs of the same proposition are equal.
+example (p : Prop) (h1 h2 : p) : h1 = h2 := by
+  sorry
+
+-- Consequently, two elements of a subtype are equal as soon as their
+-- underlying values agree -- the embedded proof is irrelevant.
+example (n : ℕ) (h1 h2 : 0 < n) :
+    (⟨n, h1⟩ : {m : ℕ // 0 < m}) = ⟨n, h2⟩ := by
+  sorry
+
+-- Proof irrelevance is baked into the kernel and costs no axiom.
+-- After filling in the first proof, uncomment to confirm it reports
+-- "does not depend on any axioms":
+-- theorem proof_irrel_ex (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
+-- #print axioms proof_irrel_ex
+
+-- Contrast: `Type` is NOT proof-irrelevant.  Two natural numbers are
+-- not equal merely because they share a type, so this `rfl` fails
+-- (uncomment to see the error):
+-- example (a b : ℕ) : a = b := rfl

@@ -32,3 +32,13 @@ No `sorry`, so no `sorryAx`; both are constructive (no
 
 #print axioms steps2
 #print axioms bits
+
+/- ## Part 4: Proof irrelevance -/
+
+example (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
+
+example (n : ℕ) (h1 h2 : 0 < n) :
+    (⟨n, h1⟩ : {m : ℕ // 0 < m}) = ⟨n, h2⟩ := rfl
+
+theorem proof_irrel_ex (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
+#print axioms proof_irrel_ex   -- does not depend on any axioms

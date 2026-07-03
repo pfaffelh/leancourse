@@ -27,9 +27,10 @@ and terms, then turn hands-on -- defining functions, inductive types,
 structures and typeclasses -- and then to the theory (Curry-Howard,
 dependent types, equality) and to proving propositions interactively.
 The final chapters cover exploration and notation.
-(The alphabetical tactic glossary and Navigating Mathlib live in the
-Appendix; the deeper foundations -- the axioms of Lean and
-well-foundedness -- are treated in the *Mathematics* part.)
+(The {ref "tactics"}[alphabetical tactic glossary] and
+{ref "navigating-mathlib"}[Navigating Mathlib] live in the Appendix;
+the deeper foundations -- the axioms of Lean and well-foundedness --
+are treated in the *Mathematics* part.)
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«01-Universes»}
 

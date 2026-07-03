@@ -150,7 +150,9 @@ membership relation: `∈` is *typed*.  The instance behind it,
 
 says that `x ∈ s` requires `x : α` and `s : Set α`.  For `s ∈ s` the
 same `s` would need type `α` *and* type `Set α` at once -- that is,
-`α = Set α`, i.e. `α = (α → Prop)`.  No such type exists (there is no
+`α = Set α`, i.e. `α = (α → Prop)` (recall that a
+{ref "foundations-sets"}[set is just a predicate]).  No such type
+exists (there is no
 matching `Membership` instance, and by *Cantor's theorem*
 `α ≄ (α → Prop)`).  So `s ∈ s` is not a *false* statement; it is
 *ill-formed*:
@@ -189,12 +191,12 @@ runs into a contradiction.
 tag := "wf-universes"
 %%%
 
-The same typing discipline, one level up, forbids `Type : Type`.  If
-`Type` contained itself, Girard's paradox (a type-theoretic Russell)
-would make every proposition provable.  The
-{ref "universe-hierarchy"}[universe hierarchy] prevents it:
-`Type : Type 1`,
-`Type 1 : Type 2`, and so on, but never `Type : Type`.
+The same typing discipline, one level up, forbids `Type : Type`.  Were
+`Type` to contain itself, Girard's paradox -- a type-theoretic Russell
+-- would make every proposition provable.  The
+{ref "universe-hierarchy"}[universe hierarchy from the previous
+chapter] is exactly what rules this out, so the ill-formed term is
+rejected where the well-formed one is accepted:
 
 ```lean
 #check (Type : Type 1)         -- fine

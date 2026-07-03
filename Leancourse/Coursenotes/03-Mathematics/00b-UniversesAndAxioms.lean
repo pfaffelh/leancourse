@@ -53,14 +53,11 @@ This is a deliberate design choice. It means:
 - Proofs can be erased at compile time without affecting program behavior.
 - Two mathematical proofs of the same theorem are interchangeable.
 
-```lean
--- Proof irrelevance: any two proofs of the same Prop are equal
-example (P : Prop) (h1 h2 : P) : h1 = h2 :=
-  rfl
-
--- This is why ∃ lives in Prop: you cannot extract the witness computationally
--- If you need the witness, use Σ (which lives in Type)
-```
+That any two proofs of the same `P : Prop` are *equal* is itself
+provable by `rfl` and costs no axiom; this, and the reason an
+existential therefore lives in `Prop` -- so that recovering its witness
+needs {ref "axiom-choice"}[choice] -- are taken up in
+{ref "baked-in"}[Declared axioms vs. what the kernel bakes in] below.
 
 The distinction between `Prop` and `Type` corresponds to the mathematical distinction between "asserting that something exists" (Prop) and "constructing a specific example" (Type).
 
@@ -306,7 +303,7 @@ The list does not stop there:
 - *Native literal arithmetic*: the kernel computes `Nat`, `Int`, and `String` literals with bignum-backed operations rather than unary `succ` -- a baked-in optimization you rely on every time you `decide` or `#eval`.
 - *Impredicative `Prop`*: `∀ (α : Type), p α` is again a `Prop`, no matter how large `α` is.
 - *Inductive types and their recursors*: every `inductive` declaration generates an eliminator together with its built-in computation (iota) rule (see {ref "cic"}[the CIC section]).
-- *The universe hierarchy*: `Type : Type 1`, `Type 1 : Type 2`, and crucially never `Type : Type`.
+- *The universe hierarchy* ({ref "universe-hierarchy"}[the first section]): in particular, never `Type : Type`.
 - *Subsingleton (large) elimination*: you may eliminate a `Prop` into `Type` only when it is a *subsingleton* -- `False`, `Eq`, `And`, `Acc` qualify, but `Or` and `Exists` do not, because they would let you extract genuine data (which side, which witness) from a mere proof.
 
 That last rule is exactly why an existential lives in `Prop` and you need {ref "axiom-choice"}[choice] to get its witness:

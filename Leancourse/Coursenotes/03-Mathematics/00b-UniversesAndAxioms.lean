@@ -24,22 +24,14 @@ Lean's type theory rests on a carefully designed system of universes, a small nu
 tag := "universe-hierarchy"
 %%%
 
-In Lean, every type itself has a type. To avoid paradoxes (like Russell's paradox), types are organized into a hierarchy of **universes**:
-
-- `Prop` is the universe of propositions. It is also called `Sort 0`.
-- `Type 0` (or simply `Type`) is the universe of "ordinary" types. It is also called `Sort 1`.
-- `Type 1` is the universe of types whose elements are themselves types in `Type 0`. It is `Sort 2`.
-- In general, `Type n` is `Sort (n + 1)`.
-
-The key rule is that `Sort n : Sort (n + 1)`, so:
+Part 1 introduced the {ref "type-universes"}[universe hierarchy] as a working tool: `Prop = Sort 0`, `Type = Type 0 = Sort 1`, `Type u = Sort (u+1)`, the single rule `Sort u : Sort (u + 1)`, and universe-polymorphism via `Type*`. Here we record *why* the absence of `Type : Type` is not optional. Were `Type : Type` to hold, one could reproduce Russell's paradox at the level of types -- *Girard's paradox* -- and thereby prove `False`. The stratification
 
 ```lean
-#check (Prop : Type 0)      -- Prop : Type
 #check (Type 0 : Type 1)    -- Type : Type 1
 #check (Type 1 : Type 2)    -- Type 1 : Type 2
 ```
 
-This hierarchy prevents `Type : Type`, which would lead to Girard's paradox (a type-theoretic analogue of Russell's paradox).
+is exactly what blocks this, and it is what keeps the whole system consistent. Everything else in this chapter -- the axioms, proof irrelevance, the CIC -- rests on top of it.
 
 # Prop vs Type: proof irrelevance
 %%%
@@ -60,26 +52,6 @@ needs {ref "axiom-choice"}[choice] -- are taken up in
 {ref "baked-in"}[Declared axioms vs. what the kernel bakes in] below.
 
 The distinction between `Prop` and `Type` corresponds to the mathematical distinction between "asserting that something exists" (Prop) and "constructing a specific example" (Type).
-
-# Universe polymorphism
-%%%
-tag := "universe-polymorphism"
-%%%
-
-Many definitions in Lean need to work across multiple universe levels. For this, Lean supports **universe polymorphism**. You can declare universe variables and use them in definitions:
-
-```lean
-universe u v
-
--- A universe-polymorphic identity function
-def myId' (α : Type u) (a : α) : α := a
-
--- Works at any universe level
-#check myId' ℕ 42           -- ℕ
-#check myId' (Type 0) ℕ     -- Type
-```
-
-In Mathlib, many definitions are universe-polymorphic. For example, `Set α` works regardless of which universe `α` lives in. When you see `{α : Type*}`, the `*` means "at any universe level" -- this is Lean's way of automatically introducing a universe variable.
 
 # The Calculus of Inductive Constructions
 %%%

@@ -44,7 +44,7 @@ At the bottom sit the two universes you meet first (Here, the `#check` command g
 #check (Type 1 : Type 2)    -- Type 1 : Type 2
 ```
 
-:::collapsedDetails "The connection of `Type` to `Sort`"
+:::example "The connection of `Type` to `Sort`"
 
 The whole tower is captured by a single keyword `Sort`:
 

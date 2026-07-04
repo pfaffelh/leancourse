@@ -9,28 +9,26 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types and universes" =>
+#doc (Manual) "Types" =>
 %%%
 htmlSplit := .never
 tag := "types"
 %%%
 
-In all programming languages, you have data types such as `int`, `string` and `float`. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write `x : α` for a term `x` of type `α`, so we write `False : Bool`, `42 : ℕ`, but also `f : ℕ → ℝ` (for a function from ℕ to ℝ, which is an own type) and `0 ≠ 1 : Prop` (the proposition that 0 and 1 are different natural numbers), which is a proposition. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` and `f : (n : ℕ) → (Fin n → ℝ)` (where `Fin n` is the type which carries `{0, ..., n-1}`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
+In all programming languages, you have data types such as `int`, `string` and `float`. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write `x : α` for a term `x` of type `α`, so we write `False : Bool`, `42 : ℕ`, but also `f : ℕ → ℝ` (for a function from ℕ to ℝ, which is an own type) and `0 ≠ 1 : Prop` (the proposition that 0 and 1 are different natural numbers), which is a proposition. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → (Fin n → ℝ)` where `Fin n` is the type which carries `{0, ..., n-1}` (here, the type `Fin n → ℝ` depends on `n : ℕ`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
 
-As we see, these new data types are more abstract in the sense that Lean understands `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic. E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate. (Although `ℝ` is implemented as such a quotient within `Lean`, we will not have to deal with these implementation details when working with real numbers, since we will rely on results in `Mathlib`, the mathematical library, taking care of these details.)
+As we see, these new data types are more abstract in the sense that Lean understands `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic. E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). (Frequently, this construction is attributed to Giuseppe Peano.) Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate. (Although `ℝ` is implemented as such a quotient within `Lean`, we will not have to deal with these implementation details when working with real numbers, since we will rely on results in `Mathlib`, the mathematical library, taking care of these details.)
 
-In Lean, there are three levels of objects: *universes*, *types* and *terms*. A term has a type, and -- this is the point of the present chapter -- a type again has a type, called its *universe*. Of particular interest is the type `Prop`, which consists of statements that can be `True` or `False`. It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form `hP : P`, which means `P` is true, and this statement is called `hP`. Synonomously, it means that `P` is true and `hP` is a proof of `P`. The hypotheses here have names `P Q R S`, and the proofs of the hypotheses `hP hQ hR hS`. All names can be arbitrary. Furthermore, there are hypotheses of the form `P → Q`, which is the statement that `P` implies `Q`. (Note the similarity to function notation as in `f : ℝ → ℝ`.)
+In Lean, all objects are terms, and every term needs a type. Interestingly, since a type is also some term in the language, it needs a type as well. This leads to a hierarchy of these types.
 
 # The universe hierarchy
 %%%
 tag := "type-universes"
 %%%
 
-Every term has a type; but a type is itself a term of some type. That
-type-of-a-type is called a *universe*. To keep the system consistent,
-universes are organized into an infinite hierarchy.
+Every term has a type; but a type is itself a term of some type. To keep the system consistent, these type-of-a-type (also called universes) are organized into a countably infinite hierarchy.
 
-At the bottom sit the two universes you meet first:
+At the bottom sit the two universes you meet first (Here, the `#check` command gives the type of a term):
 
 ```lean
 #check (42 : ℕ)         -- a term ...
@@ -39,19 +37,16 @@ At the bottom sit the two universes you meet first:
 #check (Prop : Type)    -- ... and `Prop` itself lives in `Type`
 ```
 
-`Type` is the universe of ordinary data types (`ℕ`, `ℝ`, `Bool`,
-`List α`, ...), and `Prop` is the universe of *propositions*. But
-`Type` cannot contain itself -- that would be paradoxical -- so `Type`
-in turn lives in a larger universe `Type 1`, which lives in `Type 2`,
-and so on without end:
+`Type` (which is the same as `Type 0`) is the universe of ordinary data types (`ℕ`, `ℝ`, `Bool`, `List α`, ...), and `Prop` (which is the universe of *propositions*, i.e. True/False-statements). But `Type` cannot contain itself -- that would be paradoxical -- so `Type` in turn lives in a larger universe `Type 1`, which lives in `Type 2`, and so on without end:
 
 ```lean
 #check (Type : Type 1)      -- Type   : Type 1
 #check (Type 1 : Type 2)    -- Type 1 : Type 2
 ```
 
-Here `Type` is shorthand for `Type 0`. The whole tower is captured by a
-single keyword `Sort`:
+:::collapsedDetails "The connection of `Type` to `Sort`"
+
+The whole tower is captured by a single keyword `Sort`:
 
 * `Sort 0` is `Prop`;
 * `Sort 1` is `Type 0`, i.e. `Type`;
@@ -63,37 +58,38 @@ example : Sort 1 = Type := rfl
 example : Type = Type 0 := rfl
 ```
 
-So `Sort` is the umbrella that unifies `Prop` and all the `Type u`,
-and the one rule governing the hierarchy is `Sort u : Sort (u+1)`.
-There is deliberately no `Type : Type`; *why* this restriction is
-needed -- it blocks a type-theoretic version of Russell's paradox --
-is taken up in the {ref "universe-hierarchy"}[Mathematics part].
+So `Sort` is the umbrella that unifies `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`. There is deliberately no `Type : Type`; *why* this restriction is needed -- it blocks a type-theoretic version of Russell's paradox -- is taken up in the {ref "universe-hierarchy"}[Mathematics part].
+:::
 
-*Why `Prop` is special.* `Prop` sits at the very bottom, `Sort 0`, and
-is set apart from every `Type u` by *proof irrelevance*: any two proofs
-of the same proposition are considered equal, because for a proposition
-we only care *that* it holds, not *which* proof we have (see
-{ref "prop-vs-type"}[Prop vs Type] in Part 2). It is also
-*impredicative*: a `∀`-statement quantifying over an arbitrarily large
-type is still just a `Prop`.
+Of particular interest is the type `Prop`, which consists of statements that can be `True` or `False`. It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form `hP : P`, which means `P` is true, and this statement is called `hP`. Synonomously, it means that `P` is true and `hP` is a proof of `P`. The hypotheses here have names `P Q R S`, and the proofs of the hypotheses `hP hQ hR hS`. All names can be arbitrary. Furthermore, there are hypotheses of the form `P → Q`, which is the statement that `P` implies `Q`. (Note the similarity to function notation as in `f : ℝ → ℝ`.)
+
+We can make one consequence of this concrete already. Because a `Prop` only records *that* a statement holds -- never *which* proof we chose -- the kernel treats any two proofs of the same proposition as equal. This is *proof irrelevance*, and it means the following goal closes by `rfl`:
+
+```lean
+example (P : Prop) (h₁ h₂ : P) : h₁ = h₂ := rfl
+```
+
+For data living in a `Type` there is no such collapse: two terms are equal only when they genuinely are. The syntactically identical statement about natural numbers therefore fails to typecheck, since `a` and `b` are not definitionally equal:
+
+```lean +error
+example (a b : ℕ) : a = b := rfl
+```
+
+*Why `Prop` is special.* `Prop` sits at the very bottom, `Sort 0`, and is set apart from every `Type u` by *proof irrelevance*: any two proofs of the same proposition are considered equal, because for a proposition we only care *that* it holds, not *which* proof we have (see {ref "prop-vs-type"}[Prop vs Type] in Part 2). It is also *impredicative*: a `∀`-statement quantifying over an arbitrarily large type is still just a `Prop`.
 
 ## How the universe of a type is determined
 %%%
 tag := "universe-determined"
 %%%
 
-You rarely write universe levels by hand -- Lean computes the universe
-of a compound type from the universes of its parts. A function type
-`α → β` lands in the *larger* of the two universes involved:
+You rarely write universe levels by hand -- Lean computes the universe of a compound type from the universes of its parts. A function type `α → β` lands in the *larger* of the two universes involved:
 
 ```lean
 #check (ℕ → ℕ)        -- Type
 #check (ℕ → Type)     -- Type 1  (because `Type : Type 1`)
 ```
 
-The impredicativity of `Prop` shows up here: as soon as the *codomain*
-is a proposition, the whole function type collapses back into `Prop`,
-no matter how big the domain is:
+The impredicativity of `Prop` shows up here: as soon as the *codomain* is a proposition, the whole function type collapses back into `Prop`, no matter how big the domain is:
 
 ```lean
 #check (ℕ → Prop)              -- Type  (a family of propositions)

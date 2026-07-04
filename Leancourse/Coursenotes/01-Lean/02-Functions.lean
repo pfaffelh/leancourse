@@ -2,6 +2,8 @@ import VersoManual
 import Manual.Meta
 import Leancourse.Misc.Defs
 import Mathlib
+-- reuse the types (`Point`, `MyNat`, `MyComplex`, ...) declared there
+import «Leancourse».Coursenotes.«01-Lean».«01-Types»
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
@@ -9,29 +11,107 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Functions" =>
+#doc (Manual) "Constructing terms of a given type" =>
 %%%
 htmlSplit := .never
 tag := "functions"
 %%%
 
-Lean is, before anything else, a *functional* programming language --
-it essentially consists only of functions.  This paradigm contrasts
-with *imperative* languages such as Python, Java, or C.  If you have
-a background in mathematics but not in programming, do not worry:
-functional programming is in many ways closer to mathematics than
-imperative programming -- programs are built from *functions* in the
-mathematical sense, taking inputs to outputs without hidden side
-effects.
+The previous chapter showed how *types* are formed. This chapter is about the other side: how to *define terms* -- named inhabitants of those types. Since a function is itself a term (one whose type is a function type `α → β`), functions are the central case, and Lean is before anything else a *functional* programming language -- it essentially consists almost only of functions. But we begin more generally, with plain values and with values of the structures and inductive types from the previous chapter.
+
+This paradigm contrasts with *imperative* languages such as Python, Java, or C.  If you have a background in mathematics but not in programming, do not worry: functional programming is in many ways closer to mathematics than imperative programming -- terms are built from *functions* in the mathematical sense, taking inputs to outputs (without hidden side effects, i.e. printing to screen or many other possibilities).
+
+# Naming terms with `def`
+%%%
+tag := "naming-terms"
+%%%
+
+The command `def` gives a name to a term. In its simplest form,
+
+```
+def name : T := term
+```
+
+names a term of type `T`. Recall (previous chapter) that `x : α` means "`x` is a term of type `α`". Using the `Point` structure from the previous chapter, here are three ways to name a term of type `Point`:
+
+```lean
+def origin : Point := { x := 0.0, y := 0.0 }
+def p1 : Point := ⟨1.0, 2.5⟩
+def p2 : Point := Point.mk 3.0 4.0
+```
+
+All three invoke the single constructor of `Point`: the record form `{ x := …, y := … }`, the *anonymous constructor* `⟨...⟩` (typed `\<` and `\>`), and the explicit `Point.mk`.
+
+# Constructing and using structure values
+%%%
+tag := "structure-values"
+%%%
+
+We read fields back with dot notation:
+
+```lean
+#eval p1.x          -- outputs 1.0
+#eval p1.y          -- outputs 2.5
+```
+
+We build a new value from an existing one, changing only some fields, with the `with` keyword:
+
+```lean
+def p3 : Point := { p1 with y := 10.0 }
+-- p3.x = 1.0, p3.y = 10.0
+```
+
+Since structures are immutable (as everything in functional programming), this creates a new `Point` rather than modifying `p1`. When a structure declares field defaults, a value may omit those fields:
+
+```lean
+def myConfig : MyConfig := { title := "My Window" }
+-- myConfig.width = 80, myConfig.height = 24
+```
+
+For an extended structure we supply all fields, inherited and new:
+
+```lean
+def q : Point3D := { x := 1.0, y := 2.0, z := 3.0 }
+
+#eval q.x    -- outputs 1.0 (inherited from Point)
+#eval q.z    -- outputs 3.0
+```
+
+Operations on a structure are ordinary functions; placing them in the type's namespace lets us call them with dot notation:
+
+```lean
+def Point.distToOrigin (p : Point) : Float :=
+  Float.sqrt (p.x * p.x + p.y * p.y)
+
+#eval p2.distToOrigin    -- outputs 5.0
+```
+
+`p2.distToOrigin` works because Lean sees that `p2 : Point` and looks for `Point.distToOrigin`. The complex-number type gives a fuller example -- data and its operations together:
+
+```lean
+def MyComplex.add (a b : MyComplex) : MyComplex :=
+  { re := a.re + b.re, im := a.im + b.im }
+
+def MyComplex.mul (a b : MyComplex) : MyComplex :=
+  { re := a.re * b.re - a.im * b.im,
+    im := a.re * b.im + a.im * b.re }
+
+def MyComplex.norm (a : MyComplex) : Float :=
+  Float.sqrt (a.re * a.re + a.im * a.im)
+
+def i : MyComplex := { re := 0.0, im := 1.0 }
+
+#eval (MyComplex.mul i i).re    -- outputs -1.0
+```
 
 # Defining and evaluating functions
 %%%
 tag := "pure-functions"
 %%%
 
-We define functions with `def` and evaluate them with `#eval`.
-Recall (previous chapter) that `x : α` means "`x` is a term of type
-`α`".  A definition has the shape
+A *function* is again just a term -- one whose type is a function
+type.  We define one with `def`, now writing its *arguments* before
+the `:=`, and evaluate it with `#eval`.  The shape is
 
 ```
 def name (arguments) : resultType := body
@@ -152,6 +232,16 @@ Each branch may use the variables introduced by its pattern (here
    complains.
 2. *Termination.*  The recursive call `factorial n` is on a strictly
    smaller argument than `n + 1`, so the definition is well-founded.
+
+It works just as well for the inductive types you declare yourself. For `MyNat` from the {ref "inductive"}[previous chapter], doubling is defined by matching on the two constructors:
+
+```lean
+def MyNat.double : MyNat → MyNat
+  | .zero   => .zero
+  | .succ n => .succ (.succ (MyNat.double n))
+```
+
+The leading dot in `.zero` and `.succ` is *anonymous constructor notation*: because Lean already knows the result must be a `MyNat`, we may write `.zero` in place of the full `MyNat.zero`. Writing plain `zero` would fail -- there is no `zero` in scope, only `MyNat.zero`.
 
 Pattern matching works for any inductive type:
 

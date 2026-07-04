@@ -61,21 +61,43 @@ example : Type = Type 0 := rfl
 So `Sort` is the umbrella that unifies `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`. There is deliberately no `Type : Type`; *why* this restriction is needed -- it blocks a type-theoretic version of Russell's paradox -- is taken up in the {ref "universe-hierarchy"}[Mathematics part].
 :::
 
+*Why `Prop` is special.*
 Of particular interest is the type `Prop`, which consists of statements that can be `True` or `False`. It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form `hP : P`, which means `P` is true, and this statement is called `hP`. Synonomously, it means that `P` is true and `hP` is a proof of `P`. The hypotheses here have names `P Q R S`, and the proofs of the hypotheses `hP hQ hR hS`. All names can be arbitrary. Furthermore, there are hypotheses of the form `P → Q`, which is the statement that `P` implies `Q`. (Note the similarity to function notation as in `f : ℝ → ℝ`.)
 
-We can make one consequence of this concrete already. Because a `Prop` only records *that* a statement holds -- never *which* proof we chose -- the kernel treats any two proofs of the same proposition as equal. This is *proof irrelevance*, and it means the following goal closes by `rfl`:
+We note two specifics which only applies to `Prop`:
+
+*Proof irrelevance*: Note that `Prop` only records *that* a statement holds, but not *which* proof we chose. This is *proof irrelevance*, which means the following goal closes by `rfl`:
 
 ```lean
 example (P : Prop) (h₁ h₂ : P) : h₁ = h₂ := rfl
 ```
 
-For data living in a `Type` there is no such collapse: two terms are equal only when they genuinely are. The syntactically identical statement about natural numbers therefore fails to typecheck, since `a` and `b` are not definitionally equal:
+For data living in a `Type` there is no such collapse, for obvious reasons. (The red squiggly line indicates an error, i.e. a proof which does not work.)
 
 ```lean +error
 example (a b : ℕ) : a = b := rfl
 ```
+See also {ref "prop-vs-type"}[Prop vs Type].
 
-*Why `Prop` is special.* `Prop` sits at the very bottom, `Sort 0`, and is set apart from every `Type u` by *proof irrelevance*: any two proofs of the same proposition are considered equal, because for a proposition we only care *that* it holds, not *which* proof we have (see {ref "prop-vs-type"}[Prop vs Type] in Part 2). It is also *impredicative*: a `∀`-statement quantifying over an arbitrarily large type is still just a `Prop`.
+*`Prop` is impredicative*: As long as the body of a `∀` statement is a proposition, the whole `∀` is a `Prop` -- even when we range over an arbitrarily large universe of types:
+
+```lean
+-- Prop-valued body: stays `Prop`, however big the domain.
+#check (∀ α : Type, α = α)     -- Prop
+#check (∀ α : Type 5, α = α)   -- Prop
+```
+
+No `Type u` behaves this way. Replace the proposition `α = α` by `α → α`, and the universe of the `∀` is forced to grow with the domain, exactly as predicativity demands:
+
+```lean
+-- Type-valued body: the universe grows with the domain.
+#check (∀ α : Type, α → α)     -- Type 1
+#check (∀ α : Type 5, α → α)   -- Type 6
+```
+
+So the two syntactically parallel statements `∀ α : Type 5, α = α` and `∀ α : Type 5, α → α` land in wildly different places -- `Prop` versus `Type 6` -- purely because the first has a `Prop` body and the second a `Type` body. This asymmetry (a `∀` into `Prop` stays small; a `∀` into `Type u` must climb) is exactly what it means to say *`Prop` is impredicative and the `Type u` are predicative*.
+
+(A definition can be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
 
 ## How the universe of a type is determined
 %%%
@@ -89,42 +111,12 @@ You rarely write universe levels by hand -- Lean computes the universe of a comp
 #check (ℕ → Type)     -- Type 1  (because `Type : Type 1`)
 ```
 
-The impredicativity of `Prop` shows up here: as soon as the *codomain* is a proposition, the whole function type collapses back into `Prop`, no matter how big the domain is:
-
-```lean
-#check (ℕ → Prop)              -- Type  (a family of propositions)
-#check (∀ n : ℕ, n = n)        -- Prop  (a single proposition)
-```
-
-Impredicativity is a statement about the *body* of the `∀` (its codomain), not about the domain we quantify over. As long as the body is a proposition, the whole `∀` is a `Prop` -- even when we range over an arbitrarily large universe of types:
-
-```lean
--- Prop-valued body: stays `Prop`, however big the domain.
-#check (∀ α : Type, α = α)     -- Prop
-#check (∀ α : Type 5, α = α)   -- Prop
-```
-
-That is the impredicative case: `∀ α : Type 5, α = α` quantifies over *every* type in a huge universe, yet is itself a humble `Prop` at the very bottom of the hierarchy. No `Type u` behaves this way. Replace the proposition `α = α` by the *data* `α → α`, and the universe of the `∀` is forced to grow with the domain, exactly as predicativity demands:
-
-```lean
--- Type-valued body: the universe grows with the domain.
-#check (∀ α : Type, α → α)     -- Type 1
-#check (∀ α : Type 5, α → α)   -- Type 6
-```
-
-So the two syntactically parallel statements `∀ α : Type 5, α = α` and `∀ α : Type 5, α → α` land in wildly different places -- `Prop` versus `Type 6` -- purely because the first has a `Prop` body and the second a `Type` body. This asymmetry (a `∀` into `Prop` stays small; a `∀` into `Type u` must climb) is exactly what it means to say *`Prop` is impredicative and the `Type u` are predicative*.
-
-(A definition can be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
-
 # Inductive types
 %%%
 tag := "inductive"
 %%%
 
-Many everyday types in Lean -- `Nat`, `List`, `Option`, `Bool`, even
-`Empty` -- are *inductive* types. You declare one by giving a name,
-the type's universe, and a list of *constructors*: each constructor
-says how to build a new element of the type out of existing pieces.
+Many everyday types in Lean -- `Nat`, `List`, `Option`, `Bool`, even `Empty` -- are *inductive* types. You declare one by giving a name, the type's universe, and a list of *constructors*: each constructor says how to build a new element of the type out of existing pieces.
 
 The classical example is the natural numbers:
 
@@ -137,30 +129,12 @@ inductive MyNat where
 This declaration introduces three things at once:
 
 - a new type `MyNat`;
-- two constructors `MyNat.zero` and `MyNat.succ`, so every element of
-  `MyNat` is either `zero` or `succ n` for some `n`;
-- a *recursor* `MyNat.rec` which lets you define functions on `MyNat`
-  by specifying what happens in each constructor case.
+- two constructors `MyNat.zero` and `MyNat.succ`, so every element of `MyNat` is either `zero` or `succ n` for some `n`;
+- a *recursor* `MyNat.rec` which lets you define functions on `MyNat` by specifying what happens in each constructor case.
 
-Definitions on an inductive type are typically written with the
-pattern-matching syntax from the {ref "functions"}[chapter on
-functions]:
+The declaration only *forms the type*. How to actually build its elements and *define functions* on it -- typically by pattern matching on the constructors -- is the subject of {ref "functions"}[the next chapter], on constructing terms.
 
-```lean
-def MyNat.double : MyNat → MyNat
-  | .zero   => .zero
-  | .succ n => .succ (.succ (MyNat.double n))
-```
-
-The leading dot in `.zero` and `.succ` is *anonymous constructor
-notation*: because Lean already knows from the type that the result
-must be a `MyNat`, we may write `.zero` in place of the full
-`MyNat.zero`. Writing plain `zero` would fail -- there is no `zero` in
-scope, only `MyNat.zero`.
-
-Proofs about an inductive type use the `induction` tactic, which
-applies the recursor for you: one subgoal per constructor, with an
-induction hypothesis for each recursive argument.
+Proofs about an inductive type use the `induction` tactic, which applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.
 
 Inductive types also cover non-recursive data:
 
@@ -178,11 +152,7 @@ inductive MyOption (α : Type) where
   | some (a : α) : MyOption α
 ```
 
-Inductive types are the main mechanism by which new data types enter
-Lean; `Mathlib` uses them extensively, and understanding them is
-essential for reading the library. This also answers the question of
-the previous section from the other side: the universe of an inductive
-type must be large enough to hold all of its constructor arguments.
+Inductive types are the main mechanism by which new data types enter Lean; `Mathlib` uses them extensively, and understanding them is essential for reading the library. This also answers the question of the previous section from the other side: the universe of an inductive type must be large enough to hold all of its constructor arguments.
 
 # Structures
 %%%
@@ -199,101 +169,53 @@ structure Point where
   y : Float
 ```
 
-This defines a type `Point` with two fields, `x` and `y`, both of type `Float`. We create values of type `Point` using anonymous constructor syntax or by naming the constructor explicitly:
+This declares a new type `Point` whose elements are records with two `Float` fields. Like every declaration, it produces more than the type alone: a constructor `Point.mk` and one projection per field. We can inspect their types without building any value yet:
 
 ```lean
-def origin : Point := { x := 0.0, y := 0.0 }
-def p1 : Point := ⟨1.0, 2.5⟩
-def p2 : Point := Point.mk 3.0 4.0
+#check (Point.mk : Float → Float → Point)
+#check (Point.x : Point → Float)
+#check (Point.y : Point → Float)
 ```
 
-All three syntaxes create a `Point`. The angle brackets `⟨...⟩` (typed `\<` and `\>`) are the anonymous constructor.
-
-We access fields using dot notation:
-
-```lean
-#eval p1.x          -- outputs 1.0
-#eval p1.y          -- outputs 2.5
-```
-
-We can also define functions in the `Point` namespace, and then call them with dot notation:
-
-```lean
-def Point.distToOrigin (p : Point) : Float :=
-  Float.sqrt (p.x * p.x + p.y * p.y)
-
-#eval p2.distToOrigin    -- outputs 5.0
-```
-
-This works because Lean sees that `p2` has type `Point`, so it looks for `Point.distToOrigin`.
-
-We can create a new structure value based on an existing one, changing only some fields. This uses the `with` keyword:
-
-```lean
-def p3 : Point := { p1 with y := 10.0 }
--- p3.x = 1.0, p3.y = 10.0
-```
-
-Since structures are immutable (as everything in functional programming), this creates a new `Point` rather than modifying `p1`.
-
-Fields can have default values:
+Fields may be given *default values* as part of the declaration:
 
 ```lean
 structure MyConfig where
   width : ℕ := 80
   height : ℕ := 24
   title : String := "Untitled"
-
-def myConfig : MyConfig := { title := "My Window" }
--- myConfig.width = 80, myConfig.height = 24
 ```
 
-One structure can extend another, inheriting all of its fields:
+These defaults are used whenever a value is built without specifying every field.
+
+One structure can *extend* another, inheriting all of its fields:
 
 ```lean
 structure Point3D extends Point where
   z : Float
-
-def q : Point3D := { x := 1.0, y := 2.0, z := 3.0 }
-
-#eval q.x    -- outputs 1.0 (inherited from Point)
-#eval q.z    -- outputs 3.0
 ```
 
-This is particularly important in Mathlib, where the algebraic hierarchy uses structure extension extensively. For example, `CommRing` extends `Ring`, which extends `Semiring`, and so on.
+so a `Point3D` has fields `x`, `y` (from `Point`) and `z`. This is particularly important in Mathlib, where the algebraic hierarchy uses structure extension extensively: `CommRing` extends `Ring`, which extends `Semiring`, and so on.
 
-Structures are natural for representing mathematical objects. Here is a complex number type:
+Structures are natural for representing mathematical objects. A complex number is a pair of `Float`s,
 
 ```lean
 structure MyComplex where
   re : Float
   im : Float
-
-def MyComplex.add (a b : MyComplex) : MyComplex :=
-  { re := a.re + b.re, im := a.im + b.im }
-
-def MyComplex.mul (a b : MyComplex) : MyComplex :=
-  { re := a.re * b.re - a.im * b.im,
-    im := a.re * b.im + a.im * b.re }
-
-def MyComplex.norm (a : MyComplex) : Float :=
-  Float.sqrt (a.re * a.re + a.im * a.im)
-
-def i : MyComplex := { re := 0.0, im := 1.0 }
-def oneComplex : MyComplex := { re := 1.0, im := 0.0 }
-
-#eval (MyComplex.mul i i).re    -- outputs -1.0
 ```
 
-Here is a structure representing a linear map between two types that have addition and scalar multiplication:
+and a structure may bundle *data together with a property* -- here a linear map, carrying both a function and a proof that it respects addition:
 
 ```lean
-structure MyLinearMap (α β : Type) [Add α] [Add β] [HMul ℕ α α] [HMul ℕ β β] where
+structure MyLinearMap (α β : Type) [Add α] [Add β] where
   toFun : α → β
   map_add : ∀ x y : α, toFun (x + y) = toFun x + toFun y
 ```
 
-Notice that the structure contains both data (the function `toFun`) and a property (`map_add`). This pattern of bundling data with properties is fundamental to how Mathlib organizes mathematics.
+This pattern of bundling data with properties is fundamental to how Mathlib organizes mathematics.
+
+How to *construct* values of these types, read their fields, and define operations on them is the subject of {ref "functions"}[the next chapter].
 
 # Inductive types vs structures
 %%%

@@ -17,6 +17,8 @@ tag := "types"
 
 In all programming languages, you have data types such as `int`, `string` and `float`. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write `x : α` for a term `x` of type `α`, so we write `False : Bool`, `42 : ℕ`, but also `f : ℕ → ℝ` (for a function from ℕ to ℝ, which is an own type) and `0 ≠ 1 : Prop` (the proposition that 0 and 1 are different natural numbers), which is a proposition. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → (Fin n → ℝ)` where `Fin n` is the type which carries `{0, ..., n-1}` (here, the type `Fin n → ℝ` depends on `n : ℕ`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
 
+Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
+
 As we see, these new data types are more abstract in the sense that Lean understands `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic. E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). (Frequently, this construction is attributed to Giuseppe Peano.) Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate. (Although `ℝ` is implemented as such a quotient within `Lean`, we will not have to deal with these implementation details when working with real numbers, since we will rely on results in `Mathlib`, the mathematical library, taking care of these details.)
 
 In Lean, all objects are terms, and every term needs a type. Interestingly, since a type is also some term in the language, it needs a type as well. This leads to a hierarchy of these types.
@@ -108,7 +110,40 @@ example (a b : Prop) (h : a ∨ b) : Bool :=
   | Or.inr _ => false
 ```
 
-The error is telling: `recursor 'Or.casesOn' can only eliminate into 'Prop'`. The one exception is *subsingleton elimination*: a proposition with *at most one constructor*, all of whose fields are *themselves proofs*, provably has at most one inhabitant -- so eliminating it can reveal nothing, and Lean does allow it into *any* type. This covers `False` (no constructors, which is exactly why `False.elim` closes *any* goal), `Eq` (which is why we may `rw` even inside data-carrying goals), and `And`; but not `Or` (two constructors) nor `∃` (whose witness is genuine data). None of this restriction applies to `Type`: an inductive type in `Type` always eliminates into anything.
+The error is telling: `recursor 'Or.casesOn' can only eliminate into 'Prop'`. The one exception is *subsingleton elimination*: a proposition with *at most one constructor*, all of whose fields are *themselves proofs*, provably has at most one inhabitant -- so eliminating it can reveal nothing, and Lean does allow it into *any* type. This covers `False` (no constructors, which is exactly why `False.elim` closes *any* goal), `Eq` (which is why we may `rw` even inside data-carrying goals), and `And` (both fields are proofs); but not `Or` (two constructors) nor `∃` (its first field is a genuine witness, not a proof). None of this restriction applies to `Type`: an inductive type in `Type` always eliminates into anything.
+
+Why must it be this way? It is not bureaucracy -- consistency forces it, and for `Or` the argument is a little gem. What cannot escape here is not a *witness* (as it would be for `∃`) but the *tag*: the information *which* of the two branches holds. Take a true `a` and look at the proposition `a ∨ a`. Its two opposite injections are definitionally equal, by proof irrelevance:
+
+```lean
+example {a : Prop} (h : a) :
+    (Or.inl h : a ∨ a) = Or.inr h := rfl
+```
+
+"Left or right?" is simply not a well-posed question about a proof of `a ∨ a` -- the tag does not exist as distinguishable content. So had the rejected `(a ∨ b) → Bool` above been allowed, then with `b := a` it would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h`, so `true ≡ false` -- a contradiction. The indistinguishability of proofs forces the tag to stay trapped, exactly as it would have forced `3 ≡ 5` for a leaked `∃`-witness.
+
+The escape mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a`, which -- crucially -- lives in `Type`, not `Prop`:
+
+```
+inductive Decidable (p : Prop) : Type where
+  | isFalse (h : ¬p)
+  | isTrue  (h :  p)
+```
+
+Because `Decidable p` is in `Type`, it *may* eliminate into `Type` -- which is exactly why `if h : p then _ else _` and `decide` compute. The two stories line up exactly:
+
+:::table (align := left) +header
+* + Proposition (in `Prop`)
+  + Data version (in `Type`)
+  + what stays hidden
+* + `∃ x, q x`
+  + `Σ x, q x`
+  + the *witness*
+* + `a ∨ ¬a`
+  + `Decidable a`
+  + the *tag* (which side)
+:::
+
+And the classical route mirrors `Classical.choose` precisely: `Classical.em : a ∨ ¬a` is always available (a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable`. The two halves -- `∃`/`Σ`/`choose` about the *witness*, `∨`/`Decidable`/`em` about the *tag* -- are one and the same story: computationally relevant information can leave the `Prop` world only if you place it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` version of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)
 
 ## How the universe of a type is determined
 %%%

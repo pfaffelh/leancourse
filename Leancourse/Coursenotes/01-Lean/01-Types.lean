@@ -94,14 +94,27 @@ The impredicativity of `Prop` shows up here: as soon as the *codomain* is a prop
 ```lean
 #check (ℕ → Prop)              -- Type  (a family of propositions)
 #check (∀ n : ℕ, n = n)        -- Prop  (a single proposition)
-#check (∀ α : Type, α → α)     -- Prop  (still just a proposition!)
 ```
 
-The last line is the striking case: `∀ α : Type, α → α` quantifies
-over *every* type, yet the statement itself is an ordinary `Prop`.
-(A definition can be made to work at *any* universe level at once; that
-uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter
-on functions].)
+Impredicativity is a statement about the *body* of the `∀` (its codomain), not about the domain we quantify over. As long as the body is a proposition, the whole `∀` is a `Prop` -- even when we range over an arbitrarily large universe of types:
+
+```lean
+-- Prop-valued body: stays `Prop`, however big the domain.
+#check (∀ α : Type, α = α)     -- Prop
+#check (∀ α : Type 5, α = α)   -- Prop
+```
+
+That is the impredicative case: `∀ α : Type 5, α = α` quantifies over *every* type in a huge universe, yet is itself a humble `Prop` at the very bottom of the hierarchy. No `Type u` behaves this way. Replace the proposition `α = α` by the *data* `α → α`, and the universe of the `∀` is forced to grow with the domain, exactly as predicativity demands:
+
+```lean
+-- Type-valued body: the universe grows with the domain.
+#check (∀ α : Type, α → α)     -- Type 1
+#check (∀ α : Type 5, α → α)   -- Type 6
+```
+
+So the two syntactically parallel statements `∀ α : Type 5, α = α` and `∀ α : Type 5, α → α` land in wildly different places -- `Prop` versus `Type 6` -- purely because the first has a `Prop` body and the second a `Type` body. This asymmetry (a `∀` into `Prop` stays small; a `∀` into `Type u` must climb) is exactly what it means to say *`Prop` is impredicative and the `Type u` are predicative*.
+
+(A definition can be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
 
 # Inductive types
 %%%

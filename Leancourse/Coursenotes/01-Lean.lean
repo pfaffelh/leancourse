@@ -1,7 +1,7 @@
 import VersoManual
 
 import «Leancourse».Coursenotes.«01-Lean».«01-Types»
-import «Leancourse».Coursenotes.«01-Lean».«02-Functions»
+import «Leancourse».Coursenotes.«01-Lean».«02-Terms»
 import «Leancourse».Coursenotes.«01-Lean».«03-Typeclasses»
 import «Leancourse».Coursenotes.«01-Lean».«04-CurryHoward»
 import «Leancourse».Coursenotes.«01-Lean».«05-DependentTypes»
@@ -31,7 +31,7 @@ and well-foundedness, are treated in the *Mathematics* part.)
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«01-Types»}
 
-{include 0  «Leancourse».Coursenotes.«01-Lean».«02-Functions»}
+{include 0  «Leancourse».Coursenotes.«01-Lean».«02-Terms»}
 
 {include 0  «Leancourse».Coursenotes.«01-Lean».«03-Typeclasses»}
 

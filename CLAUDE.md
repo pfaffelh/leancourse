@@ -234,11 +234,11 @@ no "No destination found for tag" warnings.
 ### GitHub Pages deployment
 
 - Merged `course_2026WS` into `main` (fast-forward) and pushed.
-- GitHub Pages is configured (via `gh api repos/.../pages`) to serve
-  from `main` branch, `/docs` folder. The old `docs` was a symlink;
-  replaced with the real contents of `_out/html-multi` and committed.
-  Each Pages refresh now requires rebuilding and copying
-  `_out/html-multi` → `docs/` before pushing.
+- **Superseded (see 2026-07-04 below).** At the time, GitHub Pages
+  served from `main` branch, `/docs` folder, and every refresh needed
+  a manual rebuild + copy `_out/html-multi` → `docs/`. This is no
+  longer true: deployment is now automated via GitHub Actions and
+  `docs/` is git-ignored.
 
 ### Tables: pipe → `:::table`
 
@@ -295,3 +295,47 @@ encouraging students to use ChatGPT/Claude/Gemini/Copilot alongside
 `#loogle` / `#leansearch`, with the caveat that AI output must be
 verified in Lean (invented lemmas, Mathlib 3 syntax) and a suggested
 "paste goal → candidates → verify" workflow.
+
+## Session history (2026-07-04)
+
+### Deployment is now via GitHub Actions (no committed `docs/`)
+
+The manual-deployment scheme documented above (rebuild + copy
+`_out/html-multi` → `docs/`, commit, push) is **obsolete**. Since
+commit `bf7e4ac` ("Deploy manual via GitHub Actions; drop committed
+docs/ + deploy script"):
+
+- `.github/workflows/deploy.yml` builds and deploys on every push to
+  `main` (and via manual `workflow_dispatch`). It installs the Lean
+  toolchain + Mathlib cache, runs `lake exe leancourse --output _out/`,
+  uploads `_out/html-multi` as the Pages artifact, and deploys with
+  `actions/deploy-pages@v4`.
+- `docs/` is **git-ignored** (`.gitignore` has `/_out` and `/docs`).
+  Any local `docs/` directory is a stale leftover from the old scheme;
+  do **not** commit it or treat it as the source of truth for what is
+  live.
+- **To publish a change: just push to `main`.** No `docs/` copy step.
+- The workflow uses `concurrency: { group: pages,
+  cancel-in-progress: true }`. Rapid successive pushes therefore
+  **cancel** the earlier run's deploy — only the newest push's build
+  goes live. After a burst of commits, check
+  `gh run list --workflow=deploy.yml` and, if the latest run was
+  cancelled, wait for (or re-trigger) a clean run so the newest content
+  actually deploys.
+- Live site: <https://pfaffelh.github.io/leancourse/>. Verify a change
+  landed by fetching the page and grepping the rendered HTML (e.g.
+  `curl -sL <page-url> | grep ...`), not by inspecting local `docs/`.
+
+### `:::example` is the project's collapsible box
+
+For content the reader may skip but that should stay available behind
+a clickable summary, use Verso Manual's built-in `:::example "title"`
+directive (from `Manual.Meta`, already imported wherever
+`import Manual.Meta` is present). It renders as
+`<details class="example">` with a bordered box, an italic summary
+prefixed by "Example: ", and JS that auto-opens the box when an anchor
+targets inside it. This is what the tactic descriptions use
+(`:::example " "`, 57 occurrences). Do **not** hand-roll a `<details>`
+block extension — a bare `<details>` misses the `.example` CSS (no
+box, no click affordance). The title argument is `.inlinesString`, so
+inline code like `` "The connection of `Type` to `Sort`" `` works.

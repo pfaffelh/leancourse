@@ -64,7 +64,7 @@ So `Sort` is the umbrella that unifies `Prop` and all the `Type u`, and the one 
 *Why `Prop` is special.*
 Of particular interest is the type `Prop`, which consists of statements that can be `True` or `False`. It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form `hP : P`, which means `P` is true, and this statement is called `hP`. Synonomously, it means that `P` is true and `hP` is a proof of `P`. The hypotheses here have names `P Q R S`, and the proofs of the hypotheses `hP hQ hR hS`. All names can be arbitrary. Furthermore, there are hypotheses of the form `P → Q`, which is the statement that `P` implies `Q`. (Note the similarity to function notation as in `f : ℝ → ℝ`.)
 
-We note two specifics which only applies to `Prop`:
+We note three specifics which only apply to `Prop`:
 
 *Proof irrelevance*: Note that `Prop` only records *that* a statement holds, but not *which* proof we chose. This is *proof irrelevance*, which means the following goal closes by `rfl`:
 
@@ -98,6 +98,17 @@ No `Type u` behaves this way. Replace the proposition `α = α` by `α → α`, 
 So the two syntactically parallel statements `∀ α : Type 5, α = α` and `∀ α : Type 5, α → α` land in wildly different places -- `Prop` versus `Type 6` -- purely because the first has a `Prop` body and the second a `Type` body. This asymmetry (a `∀` into `Prop` stays small; a `∀` into `Type u` must climb) is exactly what it means to say *`Prop` is impredicative and the `Type u` are predicative*.
 
 (A definition can be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
+
+*Restricted (subsingleton) elimination*: A proof carries no observable content, so Lean forbids *reading data off a proof* by case analysis -- otherwise a value could depend on *which* proof we had, which proof irrelevance declares meaningless. Eliminating a proposition may therefore, in general, only produce further propositions, not data. Deciding as a `Bool` which side of a disjunction holds is rejected:
+
+```lean +error
+example (a b : Prop) (h : a ∨ b) : Bool :=
+  match h with
+  | Or.inl _ => true
+  | Or.inr _ => false
+```
+
+The error is telling: `recursor 'Or.casesOn' can only eliminate into 'Prop'`. The one exception is *subsingleton elimination*: a proposition with *at most one constructor*, all of whose fields are *themselves proofs*, provably has at most one inhabitant -- so eliminating it can reveal nothing, and Lean does allow it into *any* type. This covers `False` (no constructors, which is exactly why `False.elim` closes *any* goal), `Eq` (which is why we may `rw` even inside data-carrying goals), and `And`; but not `Or` (two constructors) nor `∃` (whose witness is genuine data). None of this restriction applies to `Type`: an inductive type in `Type` always eliminates into anything.
 
 ## How the universe of a type is determined
 %%%

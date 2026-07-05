@@ -178,7 +178,7 @@ This declaration introduces three things at once:
 - two constructors `MyNat.zero` and `MyNat.succ`, so every element of `MyNat` is either `zero` or `succ n` for some `n`;
 - a *recursor* `MyNat.rec` which lets you define functions on `MyNat` by specifying what happens in each constructor case.
 
-The declaration only *forms the type*. How to actually build its elements and *define functions* on it -- typically by pattern matching on the constructors -- is the subject of {ref "functions"}[the next chapter], on constructing terms.
+The declaration only *forms the type*. How to actually build its elements and *define functions* on it -- typically by pattern matching on the constructors -- is the subject of {ref "terms"}[the next chapter], on constructing terms.
 
 Proofs about an inductive type use the `induction` tactic, which applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.
 
@@ -261,7 +261,7 @@ structure MyLinearMap (α β : Type) [Add α] [Add β] where
 
 This pattern of bundling data with properties is fundamental to how Mathlib organizes mathematics.
 
-How to *construct* values of these types, read their fields, and define operations on them is the subject of {ref "functions"}[the next chapter].
+How to *construct* values of these types, read their fields, and define operations on them is the subject of {ref "terms"}[the next chapter].
 
 # Inductive types vs structures
 %%%

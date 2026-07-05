@@ -11,10 +11,10 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Constructing terms of a given type" =>
+#doc (Manual) "Terms" =>
 %%%
 htmlSplit := .never
-tag := "functions"
+tag := "terms"
 %%%
 
 The previous chapter showed how *types* are formed. This chapter is about the other side: how to *define terms* -- named inhabitants of those types. Since a function is itself a term (one whose type is a function type `α → β`), functions are the central case, and Lean is before anything else a *functional* programming language -- it essentially consists almost only of functions. But we begin more generally, with plain values and with values of the structures and inductive types from the previous chapter.

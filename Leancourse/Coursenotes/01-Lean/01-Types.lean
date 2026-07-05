@@ -19,7 +19,7 @@ In all programming languages, you have data types such as `int`, `string` and `f
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
 
-As we see, these new data types are more abstract in the sense that Lean understands `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic. E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). (Frequently, this construction is attributed to Giuseppe Peano.) Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate. (Although `ℝ` is implemented as such a quotient within `Lean`, we will not have to deal with these implementation details when working with real numbers, since we will rely on results in `Mathlib`, the mathematical library, taking care of these details.)
+As we see, these new data types are more abstract in the sense that Lean understands `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic. E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). (Frequently, this construction is attributed to Giuseppe Peano.) Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate.
 
 In Lean, all objects are terms, and every term needs a type. Interestingly, since a type is also some term in the language, it needs a type as well. This leads to a hierarchy of these types.
 
@@ -211,16 +211,16 @@ A `structure` is a special case of an inductive type with exactly one constructo
 
 ```lean
 structure Point where
-  x : Float
-  y : Float
+  x : ℕ
+  y : ℕ
 ```
 
-This declares a new type `Point` whose elements are records with two `Float` fields. Like every declaration, it produces more than the type alone: a constructor `Point.mk` and one projection per field. We can inspect their types without building any value yet:
+This declares a new type `Point` whose elements are records with two `ℕ` fields. (Both must be given in order to define a `Point`, which is the only way we can make such a Point, i.e. it only has a single constructor.) Like every declaration, it produces more than the type alone: a constructor `Point.mk` and one projection per field. We can inspect their types without building any value yet:
 
 ```lean
-#check (Point.mk : Float → Float → Point)
-#check (Point.x : Point → Float)
-#check (Point.y : Point → Float)
+#check (Point.mk : ℕ → ℕ → Point)
+#check (Point.x : Point → ℕ)
+#check (Point.y : Point → ℕ)
 ```
 
 Fields may be given *default values* as part of the declaration:
@@ -238,17 +238,17 @@ One structure can *extend* another, inheriting all of its fields:
 
 ```lean
 structure Point3D extends Point where
-  z : Float
+  z : ℕ
 ```
 
 so a `Point3D` has fields `x`, `y` (from `Point`) and `z`. This is particularly important in Mathlib, where the algebraic hierarchy uses structure extension extensively: `CommRing` extends `Ring`, which extends `Semiring`, and so on.
 
-Structures are natural for representing mathematical objects. A complex number is a pair of `Float`s,
+Structures are natural for representing mathematical objects. A *Gaussian integer* (a complex number with integer parts) is a pair of `ℤ`s,
 
 ```lean
 structure MyComplex where
-  re : Float
-  im : Float
+  re : ℤ
+  im : ℤ
 ```
 
 and a structure may bundle *data together with a property* -- here a linear map, carrying both a function and a proof that it respects addition:
@@ -277,15 +277,15 @@ A `structure` is syntactic sugar for an inductive type with one constructor. The
 
 ```
 structure Point where
-  x : Float
-  y : Float
+  x : ℕ
+  y : ℕ
 ```
 
 is essentially equivalent to
 
 ```
 inductive Point where
-  | mk : Float → Float → Point
+  | mk : ℕ → ℕ → Point
 ```
 
-but the `structure` version gives us named fields, dot notation, default values, and the `extends` mechanism. (A `class` is in turn a `structure` marked for use by instance search; we return to it in the {ref "typeclasses"}[Typeclass] chapter.)
+but the `structure` version gives us named fields, {ref "structure-values"}[dot notation], the possibility for default values, and the `extends` mechanism. (A `class` is in turn a `structure` marked for use by instance search; we return to it in the {ref "typeclasses"}[Typeclass] chapter.)

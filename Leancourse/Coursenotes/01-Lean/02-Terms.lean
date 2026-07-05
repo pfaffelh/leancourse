@@ -30,25 +30,24 @@ The command `def` gives a name to a term. In its simplest form,
 def name : T := term
 ```
 
-gives the name `name` to a term of type `T`. Recall (previous chapter) that `x : α` means "`x` is a term of type `α`". Using the `Point` structure from the previous chapter, here are three ways to name a term of type `Point`:
+gives the name `name` to a term of type `T`. Using the `Point` structure from the previous chapter, here are four ways to define a term of type `Point`:
 
 ```lean
-def origin : Point := { x := 0.0, y := 0.0 }
-def p1 : Point := ⟨1.0, 2.5⟩
-def p2 : Point := Point.mk 3.0 4.0
+def origin : Point := { x := 0, y := 0 }
+def p1 : Point := ⟨1, 2⟩
+def p2 : Point := Point.mk 3 4
+def p3 : Point where
+  x := 0
+  y := 0
 ```
 
-All three invoke the single constructor of `Point`: the record form `{ x := …, y := … }`, the *anonymous constructor* `⟨...⟩` (typed `\<` and `\>`), and the explicit `Point.mk`.
+All four invoke the single constructor of `Point`: the record form `{ x := …, y := … }`, the *anonymous constructor* `⟨...⟩` (typed `\<` and `\>`), the explicit `Point.mk`, and the *block* `where` form -- one `field := value` line per field, with no braces or commas. The `where` form is just the record form spread over several lines; it is the same syntax we will use to supply {ref "typeclasses"}[typeclass instances] (`instance : Add Vec2 where …`), and it has nothing to do with the `|`-branches of pattern matching (fields are `field := value`, not `| pattern => …`).
 
-There is a fourth, *block* form using the `where` keyword and one `field := value` line per field (no braces, no commas) -- convenient when the values are long:
+Here the target type is fixed by the `: Point` on the left of `:=`, so Lean knows which constructor `{ … }` and `⟨…⟩` mean. When the type is *not* clear from the context, you can annotate the record itself:
 
 ```lean
-def origin' : Point where
-  x := 0.0
-  y := 0.0
+#check ({ x := 0, y := 0 } : Point)
 ```
-
-This is exactly the record form spread over several lines. It is the same syntax we will use to supply {ref "typeclasses"}[typeclass instances] (`instance : Add Vec2 where …`). Note that `where` here has nothing to do with the `|`-branches of pattern matching -- fields are given by `field := value`, not by `| pattern => …`.
 
 # Constructing and using structure values
 %%%
@@ -58,18 +57,18 @@ tag := "structure-values"
 We read fields back with dot notation:
 
 ```lean
-#eval p1.x          -- outputs 1.0
-#eval p1.y          -- outputs 2.5
+#eval p1.x          -- outputs 1
+#eval p1.y          -- outputs 2
 ```
 
 We build a new value from an existing one, changing only some fields, with the `with` keyword:
 
 ```lean
-def p3 : Point := { p1 with y := 10.0 }
--- p3.x = 1.0, p3.y = 10.0
+def p4 : Point := { p1 with y := 10 }
+-- p4.x = 1, p4.y = 10
 ```
 
-Since structures are immutable (as everything in functional programming), this creates a new `Point` rather than modifying `p1`. When a structure declares field defaults, a value may omit those fields:
+Since structures are immutable (as everything in functional programming), this creates a new `Point` rather than modifying `p1`. You may even draw from several records at once -- `{ p, q with … }` takes each remaining field from the first of `p`, `q` that supplies it. When a structure declares field defaults, a value may omit those fields:
 
 ```lean
 def myConfig : MyConfig := { title := "My Window" }
@@ -79,22 +78,22 @@ def myConfig : MyConfig := { title := "My Window" }
 For an extended structure we supply all fields, inherited and new:
 
 ```lean
-def q : Point3D := { x := 1.0, y := 2.0, z := 3.0 }
+def q : Point3D := { x := 1, y := 2, z := 3 }
 
-#eval q.x    -- outputs 1.0 (inherited from Point)
-#eval q.z    -- outputs 3.0
+#eval q.x    -- outputs 1 (inherited from Point)
+#eval q.z    -- outputs 3
 ```
 
 Operations on a structure are ordinary functions; placing them in the type's namespace lets us call them with dot notation:
 
 ```lean
-def Point.distToOrigin (p : Point) : Float :=
-  Float.sqrt (p.x * p.x + p.y * p.y)
+def Point.normSq (p : Point) : ℕ :=
+  p.x * p.x + p.y * p.y
 
-#eval p2.distToOrigin    -- outputs 5.0
+#eval p2.normSq    -- outputs 25
 ```
 
-`p2.distToOrigin` works because Lean sees that `p2 : Point` and looks for `Point.distToOrigin`. The complex-number type gives a fuller example -- data and its operations together:
+`p2.normSq` (the squared distance from the origin) works because Lean sees that `p2 : Point` and looks for `Point.normSq`. The Gaussian-integer type gives a fuller example -- data and its operations together:
 
 ```lean
 def MyComplex.add (a b : MyComplex) : MyComplex :=
@@ -104,12 +103,12 @@ def MyComplex.mul (a b : MyComplex) : MyComplex :=
   { re := a.re * b.re - a.im * b.im,
     im := a.re * b.im + a.im * b.re }
 
-def MyComplex.norm (a : MyComplex) : Float :=
-  Float.sqrt (a.re * a.re + a.im * a.im)
+def MyComplex.norm (a : MyComplex) : ℤ :=
+  a.re * a.re + a.im * a.im
 
-def i : MyComplex := { re := 0.0, im := 1.0 }
+def i : MyComplex := { re := 0, im := 1 }
 
-#eval (MyComplex.mul i i).re    -- outputs -1.0
+#eval (MyComplex.mul i i).re    -- outputs -1
 ```
 
 # Defining and evaluating functions

@@ -195,6 +195,8 @@ def tripleIt [inst : Add α] (x : α) : α := inst.add x (inst.add x x)
 
 But usually the unnamed form `[Add α]` is preferred, since Lean resolves it behind the scenes.
 
+So `[...]` is the *typeclass bracket*: it marks an instance argument, filled by instance search -- as opposed to `(...)`, which you supply yourself, and `{...}`, which Lean infers by unification. The four kinds of binder brackets `()`, `{}`, `⦃⦄`, and `[]` are contrasted side by side in {ref "parenthesis"}[the appendix on parentheses].
+
 # Inspecting typeclass arguments with `@`
 %%%
 tag := "inspecting-typeclasses"
@@ -310,6 +312,22 @@ If no such instance exists, the command fails with a readable error
 message. This is exactly the mechanism the `[...]` arguments rely on
 behind the scenes.
 
+# Output parameters
+%%%
+tag := "outparam"
+%%%
+
+By default, instance search treats *all* of a class's arguments as search keys: it must know them to look up an instance. Occasionally one argument is *determined by* the instance rather than given in advance. Marking it `outParam` tells Lean: do not wait for this argument -- find the instance from the others, and *read this one off* the result.
+
+The standard example is heterogeneous multiplication `a * b`, whose result type need not match the arguments:
+
+```lean
+#check @HMul
+-- HMul : Type → Type → outParam Type → Type
+```
+
+Because the result `γ` is an `outParam`, Lean resolves `HMul α β ?γ` from `α` and `β` alone and *learns* `γ` from the chosen instance. The same device lets `a ∈ s` infer the element type from the collection -- `Membership`'s element type is an `outParam` too. This is why you often see it in Mathlib signatures, and why the `CoeSort … → outParam Sort` from the previous section is written that way.
+
 # The `Decidable` typeclass
 %%%
 tag := "decidable-typeclass"
@@ -401,6 +419,48 @@ example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
 ```
 
 Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean silently reads it as `↑n + r`. The flip side is that a goal can quietly fill with `↑`s that block tactics like `ring` or `linarith`; the {ref "coercion-headaches"}[appendix] covers the numeric chain `ℕ → ℤ → ℚ → ℝ` and the `norm_cast` / `push_cast` tactics that tidy them up.
+
+# Where numerals come from (`OfNat`)
+%%%
+tag := "ofnat"
+%%%
+
+Even a plain numeral is resolved through a typeclass. Writing `2` is sugar for `OfNat.ofNat 2`:
+
+```lean
+#check @OfNat.ofNat
+-- {α : Type} → (n : ℕ) → [OfNat α n] → α
+```
+
+So `(2 : α)` means "the element of `α` denoted by the numeral `2`", available for any `α` that has an `OfNat α 2` instance. That is why the same `2` works across types,
+
+```lean
+#check (2 : ℤ)
+#check (2 : ℝ)
+```
+
+and why you can give a numeral to your own type simply by providing the instance:
+
+```lean
+structure Countdown where
+  val : Nat
+
+instance (n : Nat) : OfNat Countdown n where
+  ofNat := ⟨n⟩
+
+#eval (5 : Countdown).val    -- 5
+```
+
+# Managing instances
+%%%
+tag := "managing-instances"
+%%%
+
+A few further knobs control *which* instance is found. You rarely need them at first, but they show up when reading Mathlib:
+
+* *Priorities.* `instance (priority := 1000) : …` makes an instance tried earlier (the default priority is `1000`). Since Lean takes the first solution it finds, priorities resolve overlaps.
+* *`local` and `scoped` instances.* A `local instance` is active only until the end of the current section, namespace, or file; a `scoped instance` is active only inside its namespace or once you `open` it. Mathlib uses `scoped` heavily -- `open scoped Classical`, for instance, switches on classical decidability exactly where you want it.
+* *Default instances.* `@[default_instance]` supplies a fallback when synthesis would otherwise be ambiguous -- it is how a bare numeral like `2` defaults to `ℕ` when nothing else pins down its type.
 
 # Practical tips
 %%%

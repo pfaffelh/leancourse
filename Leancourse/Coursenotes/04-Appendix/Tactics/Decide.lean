@@ -86,3 +86,24 @@ example :   IsSquare (9 : ℕ) := by decide
 
 :::
 ::::
+
+`e < π` is the opposite situation: a *true* statement whose only `Decidable` instance is the classical order on `ℝ` -- it depends on `Classical.choice`, so no instance can rescue it, and `<` on `ℝ` is not computably decidable at all.
+
+```lean +error
+-- stuck for good: the instance is `Classical.choice`-based
+example : Real.exp 1 < Real.pi := by decide
+```
+
+Here `decide` is simply the wrong tool: such a statement is *proved*, not decided -- for instance by squeezing it between rationals.
+
+::::keepEnv
+:::example " "
+```lean
+example : Real.exp 1 < Real.pi := by
+  have h1 : Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+  have h2 : (3 : ℝ) < Real.pi := Real.pi_gt_three
+  linarith
+```
+
+:::
+::::

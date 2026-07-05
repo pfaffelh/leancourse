@@ -364,6 +364,17 @@ example : 2 + 3 = 5 := by decide
 example : ¬(2 + 3 = 6) := by decide
 ```
 
+Where do those instances come from? A `Decidable P` instance is just a term returning one of the class's two constructors -- `isTrue h` carrying a proof `h : P`, or `isFalse h` carrying a proof `h : ¬P`. You can write one by hand. Here is decidability of "is `n` zero?", by cases on `n`:
+
+```lean
+def decZero (n : Nat) : Decidable (n = 0) :=
+  match n with
+  | 0     => isTrue rfl                    -- a proof that 0 = 0
+  | m + 1 => isFalse (Nat.succ_ne_zero m)  -- a proof that m + 1 ≠ 0
+```
+
+Each branch supplies a *genuine proof* -- that is what makes `Decidable` live in `Type` and carry content. Registered as an `instance`, `decZero` is exactly what `decide` runs and what `if n = 0 then … else …` consults; `deriving DecidableEq` just generates such a definition for you automatically.
+
 Decidability is the *constructive* half of the story: it works without
 any axioms, which is exactly why the resulting code is executable. The
 *classical* counterpart -- making *every* proposition decidable

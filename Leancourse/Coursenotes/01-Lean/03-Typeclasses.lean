@@ -352,6 +352,56 @@ any axioms, which is exactly why the resulting code is executable. The
 non-constructively, at the cost of executability -- belongs to the
 axioms of Lean and is discussed in the {ref "constructive-classical"}[Mathematics part].
 
+# Coercions
+%%%
+tag := "coercions"
+%%%
+
+A *coercion* is a conversion that Lean inserts *automatically* when a term of one type appears where another is expected -- for instance a `ℕ` used where a `ℤ` is wanted. Like everything in this chapter, it is driven by *instance resolution*: coercions are registered as instances of the class `Coe`, and when a mismatch could be bridged by one, Lean finds it and inserts the conversion, written `↑`.
+
+```lean
+example (n : ℕ) : ℤ := n      -- inserted silently
+example (n : ℕ) : ℤ := ↑n     -- the same, written explicitly
+```
+
+There are three flavours, according to *what* the target is:
+
+:::table (align := left) +header
+* + Class
+  + Converts a term into ...
+  + Example
+* + `Coe`
+  + ... a term of another type
+  + `ℕ → ℤ`; a subtype into its base type
+* + `CoeSort`
+  + ... a *type* (where a `Sort` is expected)
+  + a set as a type; `Bool → Prop`
+* + `CoeFun`
+  + ... a *function* (in applied position)
+  + a bundled morphism `f` applied as `f x`
+:::
+
+`Coe` is the ordinary case -- one value becomes another:
+
+```lean
+example (s : {n : ℕ // n > 0}) : ℕ := s   -- the subtype's `.val`
+```
+
+`CoeSort` lets a term stand in for a *type*. This is exactly the `Bool → Prop` bridge from the {ref "decidable-typeclass"}[previous section] (`b` becomes `b = true`), and it is how a `Set α` may be written where a type is expected:
+
+```lean
+example (b : Bool) : Prop := b
+example (s : Set ℕ) : Type := s   -- the subtype ↥s of its members
+```
+
+`CoeFun` lets a *bundled* object be applied like a plain function -- so an algebra homomorphism can be written `f x` even though `f` is really a structure carrying that function together with its properties:
+
+```lean
+example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
+```
+
+Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean silently reads it as `↑n + r`. The flip side is that a goal can quietly fill with `↑`s that block tactics like `ring` or `linarith`; the {ref "coercion-headaches"}[appendix] covers the numeric chain `ℕ → ℤ → ℚ → ℝ` and the `norm_cast` / `push_cast` tactics that tidy them up.
+
 # Practical tips
 %%%
 tag := "typeclass-tips"

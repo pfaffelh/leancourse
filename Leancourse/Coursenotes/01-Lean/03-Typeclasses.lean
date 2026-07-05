@@ -9,7 +9,7 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "The Typeclass System" =>
+#doc (Manual) "Typeclasses" =>
 %%%
 htmlSplit := .never
 tag := "typeclasses"
@@ -46,6 +46,50 @@ This says: for any type `α`, an instance of `MyAdd α` provides a function `myA
 - A `class` is also a structure, but Lean's *instance resolution* will synthesize one for you whenever a function expects an `[Add α]` argument. You never write the instance argument by hand.
 
 So the rule of thumb is: use `structure` when the value is part of the data the user manipulates (a `Point`, a `Person`, a `RingHom`); use `class` when the value is a *canonical* piece of structure attached to a type (a `Group` instance on `ℤ`, an `Add` instance on `ℕ`) and you want Lean to find it automatically.
+
+# Data classes and Prop classes
+%%%
+tag := "class-universe"
+%%%
+
+Because a `class` is a `structure`, the applied class `C α` is an ordinary *type*, and an *instance* is simply a *term* of that type. Its universe follows the same rule as any {ref "structures"}[structure] -- the largest universe among its fields -- and this splits typeclasses into two kinds.
+
+*Data classes* bundle operations, so they carry `Type`-valued fields and live in `Type`. Their instances are *data*: a record of operations and proofs, carried at runtime and projected like any structure.
+
+```lean
+#check (Monoid ℕ)                    -- Type
+#check (inferInstance : Monoid ℕ)    -- a term of it -- data
+```
+
+*Prop classes* have only propositional fields, so they live in `Prop`, and their instances are *proofs*. Mathlib's `Fact` is the standard example -- it merely packages a proof of `p` as a searchable instance.
+
+```lean
+#check @Fact                          -- Prop → Prop
+```
+
+Being a proposition, a `Prop` class inherits {ref "types"}[proof irrelevance]: any two instances are definitionally equal. That is a feature -- such an instance can never *conflict* with another, and it is erased at runtime.
+
+```lean
+example (h₁ h₂ : Fact (2 = 2)) : h₁ = h₂ := rfl
+```
+
+So typeclasses simply inherit the *proof* / *data* split we drew for terms in general: an instance is data or a proof exactly according to whether its class lives in `Type` or `Prop`.
+
+It is worth being precise about the *role* such a term plays. You genuinely *do* construct it -- that is exactly what `instance … where …` does, and its fields are ordinary values you can project and run. But you then use it as a *property of the type*: declared once, synthesized automatically wherever `[C α]` is required, and essentially never named or passed by hand. For a data class it stays genuine data (carried at runtime); for a `Prop` class it degenerates to *just the fact that it holds* -- a proof, erased. So "an instance is only a property, not a term" is right about the *usage* but not the *substance*: the term is really there; you simply delegate its construction and handling to instance resolution.
+
+The parallel is exact at the term level, too. Just as `class` is a `structure` marked for instance search, `instance` is a `def` marked for instance search: `instance foo : C := …` is sugar for `@[instance] def foo : C := …`. (A plain `def` of a class type is a perfectly good term -- only invisible to the search.)
+
+:::table (align := left) +header
+* + Level
+  + plain
+  + registered for search
+* + type (constructor)
+  + `structure`
+  + `class`
+* + term (value)
+  + `def`
+  + `instance`
+:::
 
 # Creating instances
 %%%

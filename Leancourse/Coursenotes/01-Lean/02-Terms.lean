@@ -17,9 +17,7 @@ htmlSplit := .never
 tag := "terms"
 %%%
 
-The previous chapter showed how *types* are formed. This chapter is about the other side: how to *define terms* -- named inhabitants of those types. Since a function is itself a term (one whose type is a function type `α → β`), functions are the central case, and Lean is before anything else a *functional* programming language -- it essentially consists almost only of functions. But we begin more generally, with plain values and with values of the structures and inductive types from the previous chapter.
-
-This paradigm contrasts with *imperative* languages such as Python, Java, or C.  If you have a background in mathematics but not in programming, do not worry: functional programming is in many ways closer to mathematics than imperative programming -- terms are built from *functions* in the mathematical sense, taking inputs to outputs (without hidden side effects, i.e. printing to screen or many other possibilities).
+The previous chapter showed how *types* are formed. This chapter is about the other side: how to *define terms* -- named inhabitants of those types.
 
 # Naming terms with `def`
 %%%
@@ -32,7 +30,7 @@ The command `def` gives a name to a term. In its simplest form,
 def name : T := term
 ```
 
-names a term of type `T`. Recall (previous chapter) that `x : α` means "`x` is a term of type `α`". Using the `Point` structure from the previous chapter, here are three ways to name a term of type `Point`:
+gives the name `name` to a term of type `T`. Recall (previous chapter) that `x : α` means "`x` is a term of type `α`". Using the `Point` structure from the previous chapter, here are three ways to name a term of type `Point`:
 
 ```lean
 def origin : Point := { x := 0.0, y := 0.0 }
@@ -41,6 +39,16 @@ def p2 : Point := Point.mk 3.0 4.0
 ```
 
 All three invoke the single constructor of `Point`: the record form `{ x := …, y := … }`, the *anonymous constructor* `⟨...⟩` (typed `\<` and `\>`), and the explicit `Point.mk`.
+
+There is a fourth, *block* form using the `where` keyword and one `field := value` line per field (no braces, no commas) -- convenient when the values are long:
+
+```lean
+def origin' : Point where
+  x := 0.0
+  y := 0.0
+```
+
+This is exactly the record form spread over several lines. It is the same syntax we will use to supply {ref "typeclasses"}[typeclass instances] (`instance : Add Vec2 where …`). Note that `where` here has nothing to do with the `|`-branches of pattern matching -- fields are given by `field := value`, not by `| pattern => …`.
 
 # Constructing and using structure values
 %%%

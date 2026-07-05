@@ -178,6 +178,18 @@ This declaration introduces three things at once:
 - two constructors `MyNat.zero` and `MyNat.succ`, so every element of `MyNat` is either `zero` or `succ n` for some `n`;
 - a *recursor* `MyNat.rec` which lets you define functions on `MyNat` by specifying what happens in each constructor case.
 
+That recursor is the primitive into which pattern matching, `cases`, and `induction` all translate. `MyNat.rec` says: to produce a result for an arbitrary `MyNat`, supply one case per constructor -- a value for `zero`, and for `succ n` a value that may use both `n` and the result already computed for `n`:
+
+```lean
+#check @MyNat.rec
+-- {motive : MyNat → Sort u} →
+--   motive .zero →                             -- the `zero` case
+--   ((n : MyNat) → motive n → motive n.succ) → -- the `succ` case
+--   (t : MyNat) → motive t
+```
+
+With a `Prop`-valued `motive` this is exactly the *induction principle*; with a data-valued one it is *recursion*. It also *computes*: applied to a concrete constructor it reduces to the matching case -- `MyNat.rec z s (.succ n) ⟶ s n (MyNat.rec z s n)` -- which is the {ref "reduction-rules"}[iota rule] of the kernel. And this is not special to `inductive`: since a `structure` is a single-constructor inductive, it too has a recursor -- `Point.rec` (from the next section) takes a single case, a function of the fields, and the projections `Point.x`, `Point.y` are defined through it.
+
 The declaration only *forms the type*. How to actually build its elements and *define functions* on it -- typically by pattern matching on the constructors -- is the subject of {ref "terms"}[the next chapter], on constructing terms.
 
 Proofs about an inductive type use the `induction` tactic, which applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.

@@ -101,7 +101,7 @@ So the two syntactically parallel statements `∀ α : Type 5, α = α` and `∀
 
 (A definition can be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
 
-*Restricted (subsingleton) elimination*: A proof carries no observable content, so Lean forbids *reading data off a proof* by case analysis -- otherwise a value could depend on *which* proof we had, which proof irrelevance declares meaningless. Eliminating a proposition may therefore, in general, only produce further propositions, not data. Deciding as a `Bool` which side of a disjunction holds is rejected:
+*Restricted (subsingleton) elimination*: A word on *elimination* first. A type's constructors *introduce* its values -- they build them (`Or.inl`, `isTrue`, `Nat.succ`, …). To *eliminate* a value is the opposite: to *use* it, by case analysis on which constructor produced it. That is what `match` does, and ultimately the job of the type's {ref "inductive"}[recursor]. *Eliminating into a type `T`* then means that this case analysis yields a result of type `T`. The restriction on `Prop` is about exactly this: a proof carries no observable content, so Lean forbids *reading data off a proof* by such case analysis -- otherwise a value could depend on *which* proof we had, which proof irrelevance declares meaningless. Eliminating a proposition may therefore, in general, only produce further propositions, not data. Deciding as a `Bool` which side of a disjunction holds is rejected:
 
 ```lean +error
 example (a b : Prop) (h : a ∨ b) : Bool :=
@@ -178,7 +178,7 @@ This declaration introduces three things at once:
 - two constructors `MyNat.zero` and `MyNat.succ`, so every element of `MyNat` is either `zero` or `succ n` for some `n`;
 - a *recursor* `MyNat.rec` which lets you define functions on `MyNat` by specifying what happens in each constructor case.
 
-That recursor is the primitive into which pattern matching, `cases`, and `induction` all translate. `MyNat.rec` says: to produce a result for an arbitrary `MyNat`, supply one case per constructor -- a value for `zero`, and for `succ n` a value that may use both `n` and the result already computed for `n`:
+That recursor -- the type's *eliminator*, the counterpart of its constructors -- is the primitive into which pattern matching, `cases`, and `induction` all translate. `MyNat.rec` says: to produce a result for an arbitrary `MyNat`, supply one case per constructor -- a value for `zero`, and for `succ n` a value that may use both `n` and the result already computed for `n`:
 
 ```lean
 #check @MyNat.rec

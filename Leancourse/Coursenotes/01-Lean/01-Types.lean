@@ -212,6 +212,31 @@ inductive MyOption (α : Type) where
 
 Inductive types are the main mechanism by which new data types enter Lean; `Mathlib` uses them extensively, and understanding them is essential for reading the library. This also answers the question of the previous section from the other side: the universe of an inductive type must be large enough to hold all of its constructor arguments.
 
+Not every `inductive` declaration is accepted, though. A constructor may mention the type being defined, but only *positively* -- never to the *left* of an arrow inside one of its arguments. This *strict positivity* condition keeps inductive types built from well-founded data and free of paradox. A tree branching over `ℕ` is fine, because `MyTree` occurs only to the *right* of `→`:
+
+```lean
+inductive MyTree where
+  | node : (ℕ → MyTree) → MyTree   -- accepted: `MyTree` is positive
+```
+
+But a constructor that stores a *function out of* the type is rejected:
+
+```
+inductive Bad where
+  | mk : (Bad → False) → Bad
+-- error: (kernel) arg #1 of 'Bad.mk' has a non positive
+--        occurrence of the datatypes being declared
+```
+
+The rejection is not pedantry: were `Bad` allowed, one could prove `False`. Project the stored function out of a `b : Bad` and apply it to `b` itself,
+
+```
+def app : Bad → (Bad → False) | .mk f => f
+def neg (b : Bad) : False := app b b
+```
+
+so `neg : Bad → False`. Then `Bad.mk neg : Bad`, and `neg (Bad.mk neg) : False` is a closed proof of `False` (it even loops, `neg (Bad.mk neg) ⟶ neg (Bad.mk neg)` -- the untyped Ω combinator smuggled into the theory). Strict positivity outlaws exactly the negative occurrence that ties this self-applying knot -- the same consistency concern that rules out `Type : Type`. (That positivity is also *sufficient* for consistency -- every strictly positive type is the least fixed point of a monotone functor, so the theory has a model -- is a deep metatheorem, not something Lean proves about itself.)
+
 # Structures
 %%%
 tag := "structures"
@@ -301,3 +326,26 @@ inductive Point where
 ```
 
 but the `structure` version gives us named fields, {ref "structure-values"}[dot notation], the possibility for default values, and the `extends` mechanism. (A `class` is in turn a `structure` marked for use by instance search; we return to it in the {ref "typeclasses"}[Typeclass] chapter.)
+
+# Quotient types
+%%%
+tag := "quotient-types"
+%%%
+
+Alongside universes, function types, and inductive types, Lean has one more basic way to *form* a type: the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates -- it is `α` "seen up to `r`". This is how the chapter's opening remark, that `ℝ` is Cauchy sequences up to an equivalence, becomes an actual construction; `ℤ`, `ℚ`, `Multiset α` (lists up to reordering), and `ZMod n` are quotients too.
+
+Its entire interface is four constants:
+
+```lean
+#check @Quot.mk     -- (r : α → α → Prop) → α → Quot r
+#check @Quot.sound  -- r a b → Quot.mk r a = Quot.mk r b
+#check @Quot.lift   -- (f : α → β) → (∀ a b, r a b → f a = f b) → Quot r → β
+#check @Quot.ind
+```
+
+- `Quot.mk r` sends each element to its class.
+- `Quot.sound` is the crux: if `r a b`, then the two classes are *the same term*. It is one of Lean's few genuine axioms (`#print axioms Quot.sound` reports `[Quot.sound]`).
+- `Quot.lift` defines a function *out of* the quotient -- but only once you *prove* it respects `r` (the `∀ a b, r a b → f a = f b` argument), which is exactly the mathematician's "check that this is well-defined". And it computes: `Quot.lift f h (Quot.mk r a)` reduces to `f a`.
+- `Quot.ind` proves a property of every quotient element by checking it on the classes `Quot.mk r a`.
+
+In practice one usually goes through `Quotient`, a thin wrapper of `Quot` over a bundled equivalence relation (a `Setoid`). The status of `Quot.sound` as an axiom is taken up again in the {ref "axiom-quot"}[axioms chapter].

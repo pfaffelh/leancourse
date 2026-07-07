@@ -21,7 +21,23 @@ Two words for terms recur throughout, depending on their type: a term `h : P` wh
 
 As we see, these new data types are more abstract in the sense that Lean understands `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic. E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). (Frequently, this construction is attributed to Giuseppe Peano.) Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate.
 
-In Lean, all objects are terms, and every term needs a type. Interestingly, since a type is also some term in the language, it needs a type as well. This leads to a hierarchy of these types.
+In Lean, all objects are terms, and every term needs a type. Interestingly, since a type is also some term in the language, it needs a type as well.
+
+# Definitional equality and `rfl`
+%%%
+tag := "defeq"
+%%%
+
+One feature runs through everything below, so it is worth naming up front: terms in Lean *compute*. A term *reduces*, by a fixed set of steps, toward a simpler form -- `(fun x => x + 1) 4` becomes `5`, and `2 + 2` becomes `4`. Two terms are *definitionally equal* when they reduce to a common form, and Lean then treats them as fully *interchangeable* -- including when it compares types during type-checking.
+
+The tactic `rfl` proves exactly a definitional equality. That is why goals whose two sides are written differently but *compute* to the same thing close by `rfl`:
+
+```lean
+example : 2 + 2 = 4 := rfl
+example : Sort 1 = Type := rfl
+```
+
+The `#eval` command (used throughout the {ref "terms"}[next chapter]) runs the same computation and prints the resulting value. So `rfl`, `#eval`, and every "reduces to" below are one and the same phenomenon. The precise steps -- the reductions named β, δ, ι, ζ -- and the cases where `rfl` gets *stuck* are collected in {ref "reduction-rules"}[the appendix on equality].
 
 # The universe hierarchy
 %%%

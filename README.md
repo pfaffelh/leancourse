@@ -22,6 +22,15 @@ these instructions:
    ```
    Accept the offered `PATH` change, then open a fresh terminal (or run
    `source ~/.elan/env`) so that `lean` and `lake` are available.
+
+   You do **not** have to pick the course's Lean version by hand. The
+   `leancourse` directory pins it in the file `lean-toolchain` (currently
+   `leanprover/lean4:v4.28.0`), and `elan` installs and selects exactly that
+   version automatically the first time you run `lake` or open the folder in
+   VS Code. If the installer asks for a *default toolchain* (a global fallback
+   for work outside any project), answering `none` — or just accepting the
+   offered default — is fine; the project's pinned version overrides it inside
+   the course directory.
 6. **Get the course materials onto the remote host** by cloning the
    repository:
    ```

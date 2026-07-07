@@ -52,6 +52,15 @@ these instructions:
 You now edit and navigate files in VS Code exactly as you would locally; only
 the heavy computation happens remotely.
 
+**No root/`sudo` is required.** Everything above installs into your home
+directory — `elan` into `~/.elan`, the Mathlib cache into the project's
+`.lake/` and `~/.cache`, and the VS Code server and Lean extension into
+`~/.vscode-server`. Checking `.lean` files needs no compiler either (`elan`
+ships prebuilt `lean`/`lake` binaries and `lake exe cache get` fetches
+precompiled Mathlib). The advisors only need to ensure that `curl` and `git`
+are available on the server (they normally are); a C compiler is needed solely
+if you build native executables, not for the exercises.
+
 ## Building and authoring (development notes)
 
 To build the example website and place the results in _out/examples/demosite, run:

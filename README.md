@@ -20,8 +20,17 @@ these instructions:
    ```
    curl https://elan.lean-lang.org/elan-init.sh -sSf | sh
    ```
-   Accept the offered `PATH` change, then open a fresh terminal (or run
-   `source ~/.elan/env`) so that `lean` and `lake` are available.
+   Accept the offered `PATH` change (say yes to updating your shell config).
+   To use `lean` and `lake` in the *current* shell right away, run
+   ```
+   source $HOME/.elan/env
+   ```
+   A freshly opened terminal picks this up automatically. Check that it
+   worked:
+   ```
+   elan --version
+   lake --version
+   ```
 
    You do **not** have to pick the course's Lean version by hand. The
    `leancourse` directory pins it in the file `lean-toolchain` (currently

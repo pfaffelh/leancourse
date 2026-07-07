@@ -8,8 +8,34 @@ than 32 GB.) Please contact the advisors for a login. Once you have it, follow
 these instructions:
 
 1. Connect your computer to the university network via VPN.
-2. Create an SSH key and copy it to the remote machine
-   (`ssh-keygen`, then `ssh-copy-id <user>@<host>`).
+2. **Create an SSH key and register it on the remote machine.**
+
+   First generate a key pair. This step is the same on every operating system
+   (all ship OpenSSH's `ssh-keygen`). Press Enter to accept the default
+   location, and optionally set a passphrase:
+   ```
+   ssh-keygen -t ed25519
+   ```
+   This creates a private key `id_ed25519` (keep it secret) and a public key
+   `id_ed25519.pub` in `~/.ssh/` (on Windows: `%USERPROFILE%\.ssh\`).
+
+   Then copy the **public** key to the server. You will be asked for your
+   server password this one time; afterwards the key logs you in without it.
+
+   - **Linux** — `ssh-copy-id` is available:
+     ```
+     ssh-copy-id <user>@<host>
+     ```
+   - **macOS** — `ssh-copy-id` is not installed by default; append the key
+     manually (or `brew install ssh-copy-id` and use the Linux command):
+     ```
+     cat ~/.ssh/id_ed25519.pub | ssh <user>@<host> "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+     ```
+   - **Windows (PowerShell)** — there is no `ssh-copy-id`; append the key
+     manually:
+     ```
+     type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh <user>@<host> "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+     ```
 3. Install the **Remote - SSH** extension for VS Code on your machine.
 4. Connect to the remote host (command palette → *Remote-SSH: Connect to
    Host…*). From here on you work inside VS Code, but everything runs on the

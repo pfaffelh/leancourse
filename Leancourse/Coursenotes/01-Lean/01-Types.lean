@@ -77,6 +77,10 @@ Definitional equality is not magic -- it is *generated* by a fixed list of reduc
   + `let x := 4; x + x ⟶ 4 + 4`
 :::
 
+The ι rule is the subtlest, because it mentions two notions we only develop in full in {ref "inductive"}[the section on inductive types below] -- so here is the short version. A *constructor* is one of the fixed ways to *build* a value of an inductive type. The type `Nat`, for instance, has exactly two: `Nat.zero` (the numeral `0`) and `Nat.succ` (the successor, so `n + 1` is really `Nat.succ n`); every natural number is a finite tower of these, like `Nat.succ (Nat.succ Nat.zero)` for `2`. The matching tool for *taking such a value apart* is the *recursor*: for each inductive type Lean automatically generates one -- for `Nat` it is `Nat.rec` -- which defines a function on the *whole* type by supplying one case per constructor. For `Nat` that means a value `z` for the `zero` case and, for the `succ n` case, a value `s` that may reuse the result already computed for `n`. Pattern matching, `cases`, and `induction` all compile down to this recursor.
+
+The ι rule is then simply what happens when a recursor meets a value that is *literally a constructor applied to its arguments*: it fires, selecting the matching case. For `Nat` the two firings are `Nat.rec z s Nat.zero ⟶ z` and `Nat.rec z s (Nat.succ n) ⟶ s n (Nat.rec z s n)`. This is exactly why the addition example further below splits the way it does: in `n + 0` the argument being recursed on is the constructor `Nat.zero`, so the recursor fires; in `0 + n` it is the bare variable `n`, not yet a constructor, so the recursor is *stuck* and nothing reduces.
+
 The η rule also applies to *structures*: a structure value equals the record of its own projections, `s ≡ ⟨s.1, s.2, …⟩` (η *for structures*). Beyond the six lambda-calculus rules, the kernel's definitional equality carries two further rules specific to Lean's foundations:
 
 * *Proof irrelevance*: any two proofs `h₁ h₂ : P` of the same proposition `P : Prop` are definitionally equal. (This is the *`Prop` is special* point of the section below.)

@@ -39,18 +39,15 @@ Nat.succ : Nat → Nat
 
 so every natural number is a finite tower of them: `Nat.zero` is `0`, `Nat.succ Nat.zero` is `1`, `Nat.succ (Nat.succ Nat.zero)` is `2`, and so on. (The numerals `0`, `1`, `2` are just notation for these terms.) The general `inductive` declaration -- how you build your *own* types this way -- is the subject of {ref "inductive"}[a later section]; here we only need `Nat` itself.
 
-Paired with the constructors, and generated automatically alongside the type, is one further tool: the *recursor* `Nat.rec`. Where the constructors *build* a value, the recursor *consumes* one -- it is the primitive way to define a function *out of* `Nat`. Its type spells out exactly what you must supply:
+Paired with the constructors, and generated automatically alongside the type, is one further tool: the *recursor* `Nat.rec`. Where the constructors *build* a value, the recursor *consumes* one -- it is the primitive way to define a function *out of* `Nat`. To define a function `Nat → C` into some fixed result type `C`, you supply exactly two things: a base value in `C` for the `zero` case, and a step `Nat → C → C` that, for `succ n`, may reuse both `n` and the result already computed for `n`:
 
 ```lean
-#check @Nat.rec
--- {motive : Nat → Sort u} →
---   motive .zero →                     -- zero case
---   ((n : Nat) → motive n →
---      motive n.succ) →                -- succ case
---   (t : Nat) → motive t
+example (C : Type) (z : C) (s : Nat → C → C) :
+    Nat → C :=
+  fun n => Nat.rec z s n
 ```
 
-To define a function on *every* `Nat`, give one case per constructor: a value for `zero`, and for `succ n` a value that may reuse both `n` and the result already computed for `n`. With a data-valued `motive` this is ordinary *recursion*; with a `Prop`-valued one it is the *induction principle* -- one and the same primitive. Pattern matching, and the `cases` and `induction` tactics, all compile down to `Nat.rec`.
+Pattern matching, and the `cases` and `induction` tactics, all compile down to `Nat.rec`. (The recursor has a still more general form, in which the result *type* may itself vary with the `Nat`, and which turns out to unify recursion with the induction principle. That needs the language of *universes*, so we return to it in the {ref "inductive"}[section on inductive types].)
 
 What matters for the next section is that `Nat.rec` *computes*. Applied to a value that is *literally one of the two constructors*, it fires and selects the matching case -- this firing is the *iota rule* (ι) made precise below:
 
@@ -63,7 +60,7 @@ For a full example, define "double" through the recursor and watch it reduce on 
 
 ```lean
 def myDouble (n : Nat) : Nat :=
-  Nat.rec (motive := fun _ => Nat) 0 (fun _ ih => ih + 2) n
+  Nat.rec 0 (fun _ ih => ih + 2) n
 
 -- writing s for the step `fun _ ih => ih + 2`, ι fires
 -- once per `succ` and returns 0 on `zero`:
@@ -321,6 +318,19 @@ inductive MyNat where
 ```
 
 As with `Nat`, this single declaration introduces three things at once: the type `MyNat`; its two constructors `MyNat.zero` and `MyNat.succ`, so every element is either `zero` or `succ n`; and a *recursor* `MyNat.rec` -- the type's *eliminator*, the counterpart of its constructors -- of the same shape as `Nat.rec`, into which pattern matching, `cases`, and `induction` all translate. Its {ref "reduction-rules"}[iota rule], `MyNat.rec z s (.succ n) ⟶ s n (MyNat.rec z s n)`, is the firing we watched for `Nat`. And a recursor is not special to `inductive`: since a `structure` is a single-constructor inductive, it too has one -- `Point.rec` (from the next section) takes a single case, a function of the fields, and the projections `Point.x`, `Point.y` are defined through it.
+
+Now that we have {ref "type-universes"}[universes] in hand, we can state the recursor in full generality. The introduction used its *non-dependent* form, into a fixed result type; the true `MyNat.rec` lets that type *depend* on the value being consumed, a dependency recorded by a *motive* `MyNat → Sort u`:
+
+```lean
+#check @MyNat.rec
+-- {motive : MyNat → Sort u} →
+--   motive .zero →                      -- zero case
+--   ((n : MyNat) → motive n →
+--      motive n.succ) →                 -- succ case
+--   (t : MyNat) → motive t
+```
+
+With a data-valued `motive` this is the *recursion* the introduction showed; with a `Prop`-valued one it is precisely the *induction principle*. Recursion and induction are thus two readings of the single primitive `MyNat.rec` -- which is why the `induction` tactic and recursive definitions feel so alike.
 
 The declaration only *forms the type*. How to actually build its elements and *define functions* on it -- typically by pattern matching on the constructors -- is the subject of {ref "terms"}[the next chapter], on constructing terms.
 

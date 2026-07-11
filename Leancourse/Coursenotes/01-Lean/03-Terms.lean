@@ -3,7 +3,7 @@ import Manual.Meta
 import Leancourse.Misc.Defs
 import Mathlib
 -- reuse the types (`Point`, `MyNat`, `MyComplex`, ...) declared there
-import «Leancourse».Coursenotes.«01-Lean».«01-Types»
+import «Leancourse».Coursenotes.«01-Lean».«02-Types»
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean

@@ -339,3 +339,52 @@ targets inside it. This is what the tactic descriptions use
 block extension — a bare `<details>` misses the `.example` CSS (no
 box, no click affordance). The title argument is `.inlinesString`, so
 inline code like `` "The connection of `Type` to `Sort`" `` works.
+
+## Session history (2026-07-11)
+
+### New chapter `01-Nat`; Lean part renumbered
+
+The `Nat` / definitional-equality / reduction-rules material that used
+to open the *Types* chapter is now a chapter of its own,
+[01-Nat.lean](Leancourse/Coursenotes/01-Lean/01-Nat.lean), titled
+*"The natural numbers and reduction rules"* and placed **before**
+*Types*. It holds the `Nat` constructors + `Nat.rec` walkthrough
+(`myDouble`), the `# Definitional equality and `rfl`` section, and the
+`## The reduction rules` table. The chapters of the Lean part were
+renumbered with `git mv` (history preserved):
+
+| Old                    | New                     |
+|------------------------|-------------------------|
+| —                      | `01-Nat` *(new)*        |
+| `01-Types`             | `02-Types`              |
+| `02-Terms`             | `03-Terms`              |
+| `03-Typeclasses`       | `04-Typeclasses`        |
+| `04-CurryHoward`       | `05-CurryHoward`        |
+| `05-DependentTypes`    | `06-DependentTypes`     |
+| `06-Notation`          | `07-Notation`           |
+
+Knock-on edits:
+
+- [01-Lean.lean](Leancourse/Coursenotes/01-Lean.lean): imports,
+  `{include}`s, and the part intro paragraph.
+- [03-Terms.lean](Leancourse/Coursenotes/01-Lean/03-Terms.lean) still
+  imports the Types chapter (for `Point`, `MyNat`, `MyComplex`) — the
+  import path was updated to `«02-Types»`.
+- Tag `types-intro` was renamed to `nat-intro`; the `{ref}`s in
+  [02-Types.lean](Leancourse/Coursenotes/01-Lean/02-Types.lean)
+  (*Inductive types* section) and inside the new chapter follow.
+  Tags `defeq` / `reduction-rules` kept their names, so the external
+  refs from
+  [04-Equality.lean](Leancourse/Coursenotes/04-Appendix/04-Equality.lean)
+  and
+  [00b-UniversesAndAxioms.lean](Leancourse/Coursenotes/03-Mathematics/00b-UniversesAndAxioms.lean)
+  still resolve (the Appendix wording "of the Types chapter" was
+  updated).
+
+### `myDouble` reduction trace fixed
+
+The commented trace under `def myDouble` mislabelled the first step
+(`myDouble 2 ⟶ Nat.rec 0 step 2`) as ι; it is δ (unfolding the
+definition). The second step is ι *plus* δβ (unfolding and applying
+`step`). Also noted in the prose that numerals such as `2` are put
+into constructor form before ι can fire.

@@ -63,7 +63,37 @@ example : Type = Type 0 := rfl
 So `Sort` is the umbrella that unifies `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`. There is deliberately no `Type : Type`; *why* this restriction is needed -- it blocks a type-theoretic version of Russell's paradox -- is taken up in the {ref "universe-hierarchy"}[Mathematics part].
 :::
 
-*Why `Prop` is special.*
+# How the universe of a type is determined
+%%%
+tag := "universe-determined"
+%%%
+
+You rarely write universe levels by hand -- Lean computes the universe of a compound type from the universes of its parts. A function type `α → β` lands in the *larger* of the two universes involved:
+
+```lean
+#check (ℕ → ℕ)        -- Type
+#check (ℕ → Type)     -- Type 1  (because `Type : Type 1`)
+```
+
+The same holds for a `∀` (a *dependent* function type), whose universe is read off from the universe it ranges over together with that of its body. When the body is data -- something in a `Type` -- the whole `∀` is forced to grow with the domain:
+
+```lean
+-- Type-valued body: the universe grows with the domain.
+#check (∀ α : Type, α → α)     -- Type 1
+#check (∀ α : Type 5, α → α)   -- Type 6
+```
+
+This climbing is what it means for the `Type u` to be *predicative*. The word says it: a *predicative* definition may refer only to things already available *below* it -- whatever a type quantifies over must be strictly smaller, so the type it forms can never land back inside its own domain. That is exactly why `∀ α : Type 5, α → α` is pushed up to `Type 6`, safely *above* everything it ranges over, and it is what keeps the whole hierarchy well-founded. (The terminology goes back to Poincaré and Russell, who imposed predicativity to outlaw the self-referential definitions behind the set-theoretic paradoxes.)
+
+(A definition can also be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
+
+There is exactly one universe that is allowed to break this rule -- `Prop` -- and that exception is the subject of the next section.
+
+# Why `Prop` is special
+%%%
+tag := "prop-special"
+%%%
+
 Of particular interest is the type `Prop`, which consists of statements that can be `True` or `False`. It includes mathematical statements, so either the hypotheses, or the goal of what is to be proven. A hypothesis in Lean has the form `hP : P`, which means `P` is true, and this statement is called `hP`. Synonomously, it means that `P` is true and `hP` is a proof of `P`. The hypotheses here have names `P Q R S`, and the proofs of the hypotheses `hP hQ hR hS`. All names can be arbitrary. Furthermore, there are hypotheses of the form `P → Q`, which is the statement that `P` implies `Q`. (Note the similarity to function notation as in `f : ℝ → ℝ`.)
 
 We note three specifics which only apply to `Prop`:
@@ -81,7 +111,7 @@ example (a b : ℕ) : a = b := rfl
 ```
 See also {ref "prop-vs-type"}[Prop vs Type].
 
-*`Prop` is impredicative*: As long as the body of a `∀` statement is a proposition, the whole `∀` is a `Prop` -- even when we range over an arbitrarily large universe of types:
+*`Prop` is impredicative*: `Prop` is the one universe that escapes the predicativity of the {ref "universe-determined"}[previous section]. As long as the body of a `∀` statement is a proposition, the whole `∀` is a `Prop` -- even when we range over an arbitrarily large universe of types:
 
 ```lean
 -- Prop-valued body: stays `Prop`, however big the domain.
@@ -89,21 +119,9 @@ See also {ref "prop-vs-type"}[Prop vs Type].
 #check (∀ α : Type 5, α = α)   -- Prop
 ```
 
-No `Type u` behaves this way. Replace the proposition `α = α` by `α → α`, and the universe of the `∀` is forced to grow with the domain, exactly as predicativity demands:
+Compare this with the `Type`-valued `∀ α : Type 5, α → α`, which had to climb to `Type 6`. The two statements are syntactically parallel and differ only in their body, yet land in wildly different places -- `Prop` versus `Type 6`. A `∀` into `Prop` stays small; a `∀` into `Type u` must climb. This is exactly what *impredicative* means: a proposition may be defined by quantifying over a totality *to which it itself belongs*. `∀ P : Prop, P` is again a `Prop`, so it ranges over a collection that already contains it -- the definition, so to speak, feeds on itself. `Prop` is allowed this self-reference because proof irrelevance keeps it harmless.
 
-```lean
--- Type-valued body: the universe grows with the domain.
-#check (∀ α : Type, α → α)     -- Type 1
-#check (∀ α : Type 5, α → α)   -- Type 6
-```
-
-So the two syntactically parallel statements `∀ α : Type 5, α = α` and `∀ α : Type 5, α → α` land in wildly different places -- `Prop` versus `Type 6` -- purely because the first has a `Prop` body and the second a `Type` body. This asymmetry (a `∀` into `Prop` stays small; a `∀` into `Type u` must climb) is exactly what it means to say *`Prop` is impredicative and the `Type u` are predicative*.
-
-The word itself says what is going on. An *impredicative* definition defines an object by quantifying over a totality *to which that very object belongs*: `∀ P : Prop, P` is again a `Prop`, so it ranges over a collection that already contains it -- the definition, so to speak, feeds on itself. A *predicative* definition forbids exactly this: whatever it quantifies over must be strictly smaller, which is why a `∀` into `Type u` is pushed up into a higher universe, safely *above* everything in its domain. (The terminology goes back to Poincaré and Russell, who imposed predicativity to outlaw the self-referential definitions behind the set-theoretic paradoxes; `Prop` is allowed to break the rule because proof irrelevance keeps it harmless.)
-
-(A definition can be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
-
-*Restricted (subsingleton) elimination*: First, a word on what *elimination* means. A type's constructors *introduce* its values -- they are the ways we build them (`Or.inl`, `isTrue`, `Nat.succ`, and so on). *Eliminating* a value is the opposite: we *use* it, by looking at which constructor produced it. This is what a `match` does, and, as we saw in the {ref "nat-intro"}[introduction], it is ultimately the job of the type's {ref "inductive"}[recursor] (there, `Nat.rec`). To *eliminate into a type `T`* means that this case analysis returns a result of type `T`. The restriction on `Prop` is about exactly this. A proof carries no observable content, so Lean does not let us *read data off a proof* in this way: otherwise the result could depend on *which* proof we started from, and proof irrelevance says there is no such difference to observe. So eliminating a proposition may, in general, only produce further propositions, never data. For example, deciding as a `Bool` which side of a disjunction holds is rejected:
+*Restricted (subsingleton) elimination*: First, a word on what *elimination* means. A type's constructors *introduce* its values -- they are the ways we build them (`Or.inl`, `isTrue`, `Nat.succ`, and so on). *Eliminating* a value is the opposite: we *use* it, by looking at which constructor produced it. This is what a `match` does -- the {ref "pattern-matching"}[pattern-matching] construct `match h with | … => …`, taken up properly in the chapter on terms -- and, as we saw in the {ref "nat-intro"}[introduction], it is ultimately the job of the type's {ref "inductive"}[recursor] (there, `Nat.rec`). To *eliminate into a type `T`* means that this case analysis returns a result of type `T`. The restriction on `Prop` is about exactly this. A proof carries no observable content, so Lean does not let us *read data off a proof* in this way: otherwise the result could depend on *which* proof we started from, and proof irrelevance says there is no such difference to observe. So eliminating a proposition may, in general, only produce further propositions, never data. For example, deciding as a `Bool` which side of a disjunction holds is rejected:
 
 ```lean +error
 example (a b : Prop) (h : a ∨ b) : Bool :=
@@ -112,7 +130,7 @@ example (a b : Prop) (h : a ∨ b) : Bool :=
   | Or.inr _ => false
 ```
 
-The error message is telling: `recursor 'Or.casesOn' can only eliminate into 'Prop'`. There is one exception, called *subsingleton elimination*. If a proposition has *at most one constructor* and all of its fields are *themselves proofs*, then it has at most one inhabitant, so eliminating it can reveal nothing -- and Lean does allow it into *any* type. This covers `False` (no constructors at all, which is exactly why `False.elim` closes *any* goal), `Eq` (which is why we may `rw` even in goals that carry data), and `And` (both of its fields are proofs). It does *not* cover `Or` (two constructors) or `∃` (its first field is a genuine witness, not a proof). None of this applies to `Type`: an inductive type in `Type` always eliminates into anything.
+The error message is telling: `recursor 'Or.casesOn' can only eliminate into 'Prop'`. There is one exception, called *subsingleton elimination*. If a proposition has *at most one constructor* and all of its fields are *themselves proofs*, then it has at most one inhabitant, so eliminating it can reveal nothing -- and Lean does allow it into *any* type. This covers `False` (no constructors at all, which is exactly why `False.elim` closes *any* goal), `Eq` (which is why we may `rw` even in goals that carry data), and `And` (both of its fields are proofs). It does *not* cover `Or` (the {ref "disjunction-sum"}[disjunction] `∨`, which has two constructors) or `∃` (its first field is a genuine witness, not a proof). None of this applies to `Type`: an inductive type in `Type` always eliminates into anything.
 
 Why must it be this way? This is not red tape -- consistency forces it, and for `Or` the reason is worth spelling out. What cannot escape here is not a *witness* (as it would be for `∃`) but the *tag*: the information about *which* of the two branches holds. Take a true `a` and consider the proposition `a ∨ a`. Its two constructors give definitionally equal terms, by proof irrelevance:
 
@@ -121,9 +139,9 @@ example {a : Prop} (h : a) :
     (Or.inl h : a ∨ a) = Or.inr h := rfl
 ```
 
-"Left or right?" is simply not a well-posed question about a proof of `a ∨ a`: the tag is not distinguishable content. So if the rejected `(a ∨ b) → Bool` above were allowed, then setting `b := a` would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h`, so we would get `true ≡ false`, a contradiction. Because proofs are indistinguishable, the tag has to stay trapped -- just as a leaked `∃`-witness would have forced `3 ≡ 5`.
+"Left or right?" is simply not a well-posed question about a proof of `a ∨ a`: the tag is not distinguishable content. So if the rejected `(a ∨ b) → Bool` above were allowed, then setting `b := a` would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h` (they are {ref "defeq"}[definitionally equal], the `≡` from the previous chapter), so we would get `true ≡ false`, a contradiction. Because proofs are indistinguishable, the tag has to stay trapped -- just as a leaked `∃`-witness would have forced `3 ≡ 5`.
 
-The way out mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a`, which -- crucially -- lives in `Type`, not `Prop`:
+The way out mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a` (the {ref "decidable-typeclass"}[`Decidable` typeclass]), which -- crucially -- lives in `Type`, not `Prop`:
 
 ```
 inductive Decidable (p : Prop) : Type where
@@ -131,14 +149,14 @@ inductive Decidable (p : Prop) : Type where
   | isTrue  (h :  p)
 ```
 
-Because `Decidable p` is in `Type`, it *may* eliminate into `Type` -- which is exactly why `if h : p then _ else _` and `decide` compute. The two stories line up exactly:
+Because `Decidable p` is in `Type`, it *may* eliminate into `Type` -- which is exactly why `if h : p then _ else _` (a *dependent* `if`, whose `h : p` names the proof made available in the then-branch) and the {ref "decide"}[`decide`] tactic compute. The two stories line up exactly:
 
 :::table (align := left) +header
 * + Proposition (in `Prop`)
   + Data version (in `Type`)
   + what stays hidden
 * + `∃ x, q x`
-  + `Σ x, q x`
+  + {ref "sigma-types"}[`Σ x, q x`]
   + the *witness*
 * + `a ∨ ¬a`
   + `Decidable a`
@@ -146,18 +164,6 @@ Because `Decidable p` is in `Type`, it *may* eliminate into `Type` -- which is e
 :::
 
 The classical route mirrors `Classical.choose` in the same way: `Classical.em : a ∨ ¬a` is always available (it is a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable`. So the two halves -- `∃`/`Σ`/`choose` for the *witness*, `∨`/`Decidable`/`em` for the *tag* -- are really the same story: computationally relevant information can leave the `Prop` world only if we put it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` form of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)
-
-## How the universe of a type is determined
-%%%
-tag := "universe-determined"
-%%%
-
-You rarely write universe levels by hand -- Lean computes the universe of a compound type from the universes of its parts. A function type `α → β` lands in the *larger* of the two universes involved:
-
-```lean
-#check (ℕ → ℕ)        -- Type
-#check (ℕ → Type)     -- Type 1  (because `Type : Type 1`)
-```
 
 # Inductive types
 %%%
@@ -176,7 +182,7 @@ inductive MyNat where
 
 As with `Nat`, this single declaration introduces three things at once: the type `MyNat`; its two constructors `MyNat.zero` and `MyNat.succ`, so every element is either `zero` or `succ n`; and a *recursor* `MyNat.rec` -- the type's *eliminator*, the counterpart of its constructors -- of the same shape as `Nat.rec`, into which pattern matching, `cases`, and `induction` all translate. Its {ref "reduction-rules"}[iota rule], `MyNat.rec z s (.succ n) ⟶ s n (MyNat.rec z s n)`, is the firing we watched for `Nat`. And a recursor is not special to `inductive`: since a `structure` is a single-constructor inductive, it too has one -- `Point.rec` (from the next section) takes a single case, a function of the fields, and the projections `Point.x`, `Point.y` are defined through it.
 
-Now that we have {ref "type-universes"}[universes] in hand, we can state the recursor in full generality. The introduction used its *non-dependent* form, into a fixed result type; the true `MyNat.rec` lets that type *depend* on the value being consumed, a dependency recorded by a *motive* `MyNat → Sort u`:
+Now that we have {ref "type-universes"}[universes] in hand, we can state the recursor in full generality. The introduction used its *non-dependent* form, into a fixed result type; the true `MyNat.rec` lets that type *depend* on the value being consumed, a dependency recorded by a *motive* `MyNat → Sort u` (the leading `@` in `@MyNat.rec` makes Lean's normally-hidden implicit arguments -- here the `motive` -- explicit, so that `#check` prints them; see {ref "strict-implicit"}[the appendix on parentheses]):
 
 ```lean
 #check @MyNat.rec
@@ -287,7 +293,7 @@ structure MyComplex where
   im : ℤ
 ```
 
-and a structure may bundle *data together with a property* -- here a linear map, carrying both a function and a proof that it respects addition:
+and a structure may bundle *data together with a property* -- here a linear map, carrying both a function and a proof that it respects addition (the square brackets `[Add α]` are an *instance-implicit* argument, requiring `α` to carry an addition; see {ref "square-bracket-notation"}[the typeclasses chapter]):
 
 ```lean
 structure MyLinearMap (α β : Type) [Add α] [Add β] where
@@ -351,7 +357,7 @@ In practice one usually goes through `Quotient`, a thin wrapper of `Quot` over a
 
 ::::keepEnv
 :::example "How `ℝ` is built as a quotient"
-Mathlib's real numbers are a concrete instance of exactly this construction. First, a `CauSeq` is a *subtype*: a rational sequence `f : ℕ → ℚ` bundled with a proof that it is Cauchy.
+Mathlib's real numbers are a concrete instance of exactly this construction. First, a `CauSeq` is a {ref "subtypes"}[*subtype*]: the notation `{ f : ℕ → ℚ // IsCauSeq abs f }` means a rational sequence `f : ℕ → ℚ` bundled with a proof that it is Cauchy.
 
 ```lean
 #check (CauSeq ℚ abs)
@@ -368,7 +374,8 @@ example (f : CauSeq ℚ abs) : ℕ → ℚ := f.1
 #check @CauSeq.Completion.mk
 -- CauSeq ℚ abs → CauSeq.Completion.Cauchy abs
 
--- two sequences give the same real iff (f - g) → 0
+-- two sequences give the same real iff (f - g) → 0;
+-- `≈` is the Setoid equivalence relation on `CauSeq`
 example (f g : CauSeq ℚ abs) :
     f ≈ g ↔ (f - g).LimZero := Iff.rfl
 ```

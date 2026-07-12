@@ -19,7 +19,7 @@ In all programming languages, you have data types such as `int`, `string` and `f
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
 
-As we see, these new data types are more abstract in the sense that Lean understands `ℕ` (and `ℝ`) as infinite types, which are not limited by floating point arithmetic. E.g., `ℕ` actually represents an infinite set that is characterized by containing `0`, and if it contains `n`, then it also contains the successor of `n` (represented by `succ n`). (Frequently, this construction is attributed to Giuseppe Peano.) Accordingly, the real numbers are defined by an equivalence relation on Cauchy sequences, which is quite elaborate.
+As we see, these new data types are more abstract: Lean understands `ℕ` (and `ℝ`) as genuinely infinite types, not limited by floating-point arithmetic. The `zero`/`succ` construction of `ℕ` was the subject of the {ref "nat"}[introduction]; the real numbers, by contrast, are built from an equivalence relation on Cauchy sequences, which is considerably more elaborate -- a {ref "quotient-types"}[quotient type], as we will see at the end of this chapter.
 
 In Lean, all objects are terms, and every term needs a type. Interestingly, since a type is also some term in the language, it needs a type as well.
 
@@ -28,7 +28,7 @@ In Lean, all objects are terms, and every term needs a type. Interestingly, sinc
 tag := "type-universes"
 %%%
 
-Every term has a type; but a type is itself a term of some type. To keep the system consistent, these type-of-a-type (also called universes) are organized into a countably infinite hierarchy.
+The answer is a hierarchy: these types-of-types (called *universes*) are organized into a countably infinite tower, which is exactly what keeps the system consistent.
 
 At the bottom sit the two universes you meet first (Here, the `#check` command gives the type of a term):
 
@@ -74,7 +74,7 @@ We note three specifics which only apply to `Prop`:
 example (P : Prop) (h₁ h₂ : P) : h₁ = h₂ := rfl
 ```
 
-For data living in a `Type` there is no such collapse, for obvious reasons. (The red squiggly line indicates an error, i.e. a proof which does not work.)
+For data living in a `Type` there is no such collapse, for obvious reasons.
 
 ```lean +error
 example (a b : ℕ) : a = b := rfl
@@ -99,9 +99,11 @@ No `Type u` behaves this way. Replace the proposition `α = α` by `α → α`, 
 
 So the two syntactically parallel statements `∀ α : Type 5, α = α` and `∀ α : Type 5, α → α` land in wildly different places -- `Prop` versus `Type 6` -- purely because the first has a `Prop` body and the second a `Type` body. This asymmetry (a `∀` into `Prop` stays small; a `∀` into `Type u` must climb) is exactly what it means to say *`Prop` is impredicative and the `Type u` are predicative*.
 
+The word itself says what is going on. An *impredicative* definition defines an object by quantifying over a totality *to which that very object belongs*: `∀ P : Prop, P` is again a `Prop`, so it ranges over a collection that already contains it -- the definition, so to speak, feeds on itself. A *predicative* definition forbids exactly this: whatever it quantifies over must be strictly smaller, which is why a `∀` into `Type u` is pushed up into a higher universe, safely *above* everything in its domain. (The terminology goes back to Poincaré and Russell, who imposed predicativity to outlaw the self-referential definitions behind the set-theoretic paradoxes; `Prop` is allowed to break the rule because proof irrelevance keeps it harmless.)
+
 (A definition can be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
 
-*Restricted (subsingleton) elimination*: A word on *elimination* first. A type's constructors *introduce* its values -- they build them (`Or.inl`, `isTrue`, `Nat.succ`, …). To *eliminate* a value is the opposite: to *use* it, by case analysis on which constructor produced it. That is what `match` does, and ultimately the job of the type's {ref "inductive"}[recursor]. *Eliminating into a type `T`* then means that this case analysis yields a result of type `T`. The restriction on `Prop` is about exactly this: a proof carries no observable content, so Lean forbids *reading data off a proof* by such case analysis -- otherwise a value could depend on *which* proof we had, which proof irrelevance declares meaningless. Eliminating a proposition may therefore, in general, only produce further propositions, not data. Deciding as a `Bool` which side of a disjunction holds is rejected:
+*Restricted (subsingleton) elimination*: First, a word on what *elimination* means. A type's constructors *introduce* its values -- they are the ways we build them (`Or.inl`, `isTrue`, `Nat.succ`, and so on). *Eliminating* a value is the opposite: we *use* it, by looking at which constructor produced it. This is what a `match` does, and, as we saw in the {ref "nat-intro"}[introduction], it is ultimately the job of the type's {ref "inductive"}[recursor] (there, `Nat.rec`). To *eliminate into a type `T`* means that this case analysis returns a result of type `T`. The restriction on `Prop` is about exactly this. A proof carries no observable content, so Lean does not let us *read data off a proof* in this way: otherwise the result could depend on *which* proof we started from, and proof irrelevance says there is no such difference to observe. So eliminating a proposition may, in general, only produce further propositions, never data. For example, deciding as a `Bool` which side of a disjunction holds is rejected:
 
 ```lean +error
 example (a b : Prop) (h : a ∨ b) : Bool :=
@@ -110,18 +112,18 @@ example (a b : Prop) (h : a ∨ b) : Bool :=
   | Or.inr _ => false
 ```
 
-The error is telling: `recursor 'Or.casesOn' can only eliminate into 'Prop'`. The one exception is *subsingleton elimination*: a proposition with *at most one constructor*, all of whose fields are *themselves proofs*, provably has at most one inhabitant -- so eliminating it can reveal nothing, and Lean does allow it into *any* type. This covers `False` (no constructors, which is exactly why `False.elim` closes *any* goal), `Eq` (which is why we may `rw` even inside data-carrying goals), and `And` (both fields are proofs); but not `Or` (two constructors) nor `∃` (its first field is a genuine witness, not a proof). None of this restriction applies to `Type`: an inductive type in `Type` always eliminates into anything.
+The error message is telling: `recursor 'Or.casesOn' can only eliminate into 'Prop'`. There is one exception, called *subsingleton elimination*. If a proposition has *at most one constructor* and all of its fields are *themselves proofs*, then it has at most one inhabitant, so eliminating it can reveal nothing -- and Lean does allow it into *any* type. This covers `False` (no constructors at all, which is exactly why `False.elim` closes *any* goal), `Eq` (which is why we may `rw` even in goals that carry data), and `And` (both of its fields are proofs). It does *not* cover `Or` (two constructors) or `∃` (its first field is a genuine witness, not a proof). None of this applies to `Type`: an inductive type in `Type` always eliminates into anything.
 
-Why must it be this way? It is not bureaucracy -- consistency forces it, and for `Or` the argument is a little gem. What cannot escape here is not a *witness* (as it would be for `∃`) but the *tag*: the information *which* of the two branches holds. Take a true `a` and look at the proposition `a ∨ a`. Its two opposite injections are definitionally equal, by proof irrelevance:
+Why must it be this way? This is not red tape -- consistency forces it, and for `Or` the reason is worth spelling out. What cannot escape here is not a *witness* (as it would be for `∃`) but the *tag*: the information about *which* of the two branches holds. Take a true `a` and consider the proposition `a ∨ a`. Its two constructors give definitionally equal terms, by proof irrelevance:
 
 ```lean
 example {a : Prop} (h : a) :
     (Or.inl h : a ∨ a) = Or.inr h := rfl
 ```
 
-"Left or right?" is simply not a well-posed question about a proof of `a ∨ a` -- the tag does not exist as distinguishable content. So had the rejected `(a ∨ b) → Bool` above been allowed, then with `b := a` it would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h`, so `true ≡ false` -- a contradiction. The indistinguishability of proofs forces the tag to stay trapped, exactly as it would have forced `3 ≡ 5` for a leaked `∃`-witness.
+"Left or right?" is simply not a well-posed question about a proof of `a ∨ a`: the tag is not distinguishable content. So if the rejected `(a ∨ b) → Bool` above were allowed, then setting `b := a` would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h`, so we would get `true ≡ false`, a contradiction. Because proofs are indistinguishable, the tag has to stay trapped -- just as a leaked `∃`-witness would have forced `3 ≡ 5`.
 
-The escape mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a`, which -- crucially -- lives in `Type`, not `Prop`:
+The way out mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a`, which -- crucially -- lives in `Type`, not `Prop`:
 
 ```
 inductive Decidable (p : Prop) : Type where
@@ -143,7 +145,7 @@ Because `Decidable p` is in `Type`, it *may* eliminate into `Type` -- which is e
   + the *tag* (which side)
 :::
 
-And the classical route mirrors `Classical.choose` precisely: `Classical.em : a ∨ ¬a` is always available (a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable`. The two halves -- `∃`/`Σ`/`choose` about the *witness*, `∨`/`Decidable`/`em` about the *tag* -- are one and the same story: computationally relevant information can leave the `Prop` world only if you place it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` version of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)
+The classical route mirrors `Classical.choose` in the same way: `Classical.em : a ∨ ¬a` is always available (it is a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable`. So the two halves -- `∃`/`Σ`/`choose` for the *witness*, `∨`/`Decidable`/`em` for the *tag* -- are really the same story: computationally relevant information can leave the `Prop` world only if we put it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` form of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)
 
 ## How the universe of a type is determined
 %%%
@@ -341,8 +343,45 @@ Its entire interface is four constants:
 ```
 
 - `Quot.mk r` sends each element to its class.
-- `Quot.sound` is the crux: if `r a b`, then the two classes are *the same term*. It is one of Lean's few genuine axioms (`#print axioms Quot.sound` reports `[Quot.sound]`).
+- `Quot.sound` is the crux: if `r a b`, then the two classes are *the same term*. It is one of Lean's few genuine axioms -- the `#print axioms name` command traces a constant back to the axioms it depends on, and here `#print axioms Quot.sound` reports `[Quot.sound]`.
 - `Quot.lift` defines a function *out of* the quotient -- but only once you *prove* it respects `r` (the `∀ a b, r a b → f a = f b` argument), which is exactly the mathematician's "check that this is well-defined". And it computes: `Quot.lift f h (Quot.mk r a)` reduces to `f a`.
 - `Quot.ind` proves a property of every quotient element by checking it on the classes `Quot.mk r a`.
 
 In practice one usually goes through `Quotient`, a thin wrapper of `Quot` over a bundled equivalence relation (a `Setoid`). The status of `Quot.sound` as an axiom is taken up again in the {ref "axiom-quot"}[axioms chapter].
+
+::::keepEnv
+:::example "How `ℝ` is built as a quotient"
+Mathlib's real numbers are a concrete instance of exactly this construction. First, a `CauSeq` is a *subtype*: a rational sequence `f : ℕ → ℚ` bundled with a proof that it is Cauchy.
+
+```lean
+#check (CauSeq ℚ abs)
+-- CauSeq ℚ abs = { f : ℕ → ℚ // IsCauSeq abs f }
+example (f : CauSeq ℚ abs) : ℕ → ℚ := f.1
+```
+
+`ℝ` is then a one-field structure wrapping the *quotient* of these sequences by the relation "the difference tends to `0`". The class map `CauSeq.Completion.mk` is the `Quot.mk` of that quotient:
+
+```lean
+#check @Real.ofCauchy
+-- CauSeq.Completion.Cauchy abs → ℝ
+
+#check @CauSeq.Completion.mk
+-- CauSeq ℚ abs → CauSeq.Completion.Cauchy abs
+
+-- two sequences give the same real iff (f - g) → 0
+example (f g : CauSeq ℚ abs) :
+    f ≈ g ↔ (f - g).LimZero := Iff.rfl
+```
+
+Addition is the payoff of `Quot.lift`. To add two reals you add *representative* sequences termwise -- but this is only well-defined because `+` respects the relation (if `f ≈ f'` and `g ≈ g'` then `f + g ≈ f' + g'`). Having checked that, `Quot.lift` hands you exactly the computation rule that `mk` is an additive homomorphism:
+
+```lean
+example (f g : CauSeq ℚ abs) :
+    CauSeq.Completion.mk f + CauSeq.Completion.mk g
+      = CauSeq.Completion.mk (f + g) :=
+  CauSeq.Completion.mk_add f g
+```
+
+This `mk (f) + mk (g) = mk (f + g)` equation *is* the `Quot.lift f h (Quot.mk r a) ⟶ f a` reduction from the {ref "reduction-rules"}[reduction rules], applied to a two-argument operation.
+:::
+::::

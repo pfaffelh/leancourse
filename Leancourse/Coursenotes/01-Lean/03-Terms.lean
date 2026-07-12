@@ -54,7 +54,7 @@ Here the target type is fixed by the `: Point` on the left of `:=`, so Lean know
 tag := "structure-values"
 %%%
 
-We read fields back with dot notation:
+We read fields back with dot notation. Here the `#eval` command evaluates a (computable) term and prints the resulting value -- the same reduction that `rfl` performs, only with the answer displayed:
 
 ```lean
 #eval p1.x          -- outputs 1

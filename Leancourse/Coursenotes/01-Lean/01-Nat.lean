@@ -9,7 +9,7 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "The natural numbers and reduction rules" =>
+#doc (Manual) "Introduction" =>
 %%%
 htmlSplit := .never
 tag := "nat"
@@ -149,6 +149,8 @@ Conversely, `rfl` *fails* when no chain of reductions connects the two sides -- 
 -- `n + 0` reduces to `n`, so this is `rfl`:
 example (n : Nat) : n + 0 = n := rfl
 ```
+
+Here, the red squiggly line indicates an error, i.e. a proof which does not work.
 
 ```lean +error
 -- `0 + n` is stuck (nothing to recurse on), so `rfl`

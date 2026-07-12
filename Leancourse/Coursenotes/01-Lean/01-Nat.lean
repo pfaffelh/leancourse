@@ -208,3 +208,120 @@ example (p : Nat × Nat) : p = (p.1, p.2) := rfl
 How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[reducible]` definition is unfolded freely, an ordinary `def` is unfolded on demand, and an `@[irreducible]` one is left folded. And the kernel usually does not reduce all the way to a *normal form*; it stops at *weak head normal form* (WHNF) -- just far enough to expose the outermost constructor or binder -- which is all that comparing two terms requires. Because this reduction system is *confluent* and *strongly normalizing*, definitional equality is decidable, which is exactly what lets `rfl` and the type-checker terminate.
 :::
 ::::
+
+
+# Bool
+%%%
+tag := "bool"
+%%%
+
+There are inductive types even simpler than `Nat`. One of them, `Bool`, is the type with two values, which are called `true` and `false`. It has exactly two constructors, neither taking any argument. Here is its definition, verbatim from Lean's core library (the `where` keyword introduces the list of constructors):
+
+```
+inductive Bool : Type where
+  | false : Bool
+  | true  : Bool
+```
+
+Its recursor `Bool.rec` consumes a `Bool` by offering one value for each constructor -- first the `false` case, then the `true` case -- and returns the matching one. Into a fixed result `C : Type`, its (non-dependent) signature is just this, exactly as `Nat.rec` above:
+
+```
+-- the `false` case first, then the `true` case:
+Bool.rec : C → C → Bool → C
+```
+This is exactly an *if-then-else*: reading `Bool.rec e f b` as "if `b` then `f` else `e`" (note the order: the `false` result `e` comes first). Applied to a literal constructor it reduces by the ι rule (the {ref "reduction-rules"}[reduction rules] below). Equivalently (and definitionally equal) is the following construction (read `bif` as _Boolean if_):
+
+```lean
+-- `bif true …` picks the then-branch:
+example :
+    (bif true  then "Hi" else "Salut") = "Hi" := rfl
+-- and in general `bif b then f else e` is `Bool.rec e f b`:
+example {α : Type} (e f : α) :
+    (bif false then f else e) = Bool.rec e f false := rfl
+```
+
+Note, as above in the `0 + n = n` example, the `bif` fails to reduce if the value of `b` is unknown:
+```lean +error
+example (b : Bool) :
+    (bif b then "Hi" else "Salut")
+      = Bool.rec "Salut" "Hi" b := by
+  rfl
+```
+
+The fix is to make a case analysis as follows (`cases` is a simpler form of `induction`; see {ref "cases"}[`cases`] and {ref "induction"}[`induction`]):
+```lean
+example (b : Bool) :
+    (bif b then "Hi" else "Salut")
+      = Bool.rec "Salut" "Hi" b := by
+  cases b <;> rfl
+```
+
+Note that `Bool` also carries the usual `&&`, `||`, `!`.
+
+
+
+::::keepEnv
+:::example "How `bif` is defined under the hood"
+Internally, Lean does not build runnable definitions from `Bool.rec` directly -- the code generator cannot compile a bare recursor, whereas it *can* compile a `match`. So `bif` is not primitive: it is notation for a function `cond`, which does the actual branching with a `match`:
+
+```
+-- the underlying function, defined by matching on `c`:
+def cond {α : Type} (c : Bool) (x y : α) : α :=
+  match c with
+  | true  => x
+  | false => y
+
+-- `bif` is *notation* that expands to a `cond` call:
+macro "bif " c:term " then " t:term " else " e:term :
+    term => `(cond $c $t $e)
+```
+:::
+::::
+
+
+
+
+# The propositions `True` and `False`
+%%%
+tag := "true-false"
+%%%
+
+Both types in this section live in `Prop`, the universe of *propositions*. Before defining them, a word on `Prop` itself. Unlike `Bool`, `Nat`, or the `True` and `False` below -- each an `inductive` type whose definition you can read off -- `Prop` has *no* such definition. It is *not* an inductive type, and there is no `def Prop := …` to unfold; asking Lean to print it (`#print Prop`) even fails, because there is nothing written in Lean to print. Instead, `Prop` is a *primitive*, baked directly into Lean's kernel: it is the bottom universe `Sort 0` (with `Type u` being `Sort (u+1)`; more on the {ref "type-universes"}[universe hierarchy] in the next chapter). What makes `Prop` usable is therefore not a definition but the *rules* the kernel attaches to it -- proof irrelevance and the rest, taken up in {ref "prop-special"}[why `Prop` is special].
+
+::::keepEnv
+:::example "What is the Lean *kernel*?"
+The *kernel* is the small, trusted core of Lean that has the final say on whether a term has the type it claims. Everything else you write -- tactics, notation, `match`, the elaborator -- lives *outside* the kernel: it all ultimately produces a bare term that the kernel re-checks from scratch against a fixed, tiny set of rules (the {ref "reduction-rules"}[reduction rules], the typing rules, and the primitive universes `Sort u`). A handful of things are *built into* this core rather than defined on top of it: the universes `Prop` and `Type u`, the way an `inductive` type generates its constructors and recursor, and proof irrelevance. The point of keeping the kernel small is *trust* -- to believe a Lean proof you need only believe the kernel, not the large machinery of tactics and automation above it. The kernel's logic has a name, the *Calculus of Inductive Constructions*, discussed in the {ref "cic"}[Mathematics part].
+:::
+::::
+
+*The trivial proposition `True`.* `True` is the proposition that always holds. Being a `Prop`, its terms are *proofs*. It has a single constructor, taking no argument, which is therefore already a complete proof of it (note that the type after the colon is now `Prop`, not `Type`):
+
+```
+inductive True : Prop where
+  | intro : True
+```
+
+So proving `True` is as easy as naming that constructor:
+
+```lean
+example : True := True.intro
+```
+
+There is correspondingly nothing to *learn* from a proof of `True`: with only one constructor, its recursor has only one case, which is why `True` carries no information.
+
+*The empty proposition `False`.* `False` is the opposite extreme: the proposition that is *never* true. It is the `inductive` type with *no constructors at all* -- so its definition has no `where` clause and no `|` lines:
+
+```
+inductive False : Prop
+```
+
+Since there is no constructor, there is no way to build a term of `False` -- exactly as it should be for a statement that has no proof. Its recursor is the striking one: with *zero* cases to supply, `False.rec` may return a value of *any* type whatsoever. This is the principle *ex falso quodlibet* ("from a falsehood, anything follows"), packaged as `False.elim`: from a proof of `False`, every goal closes.
+
+```lean
+example (h : False) : 0 = 1 := False.elim h
+example (h : False) (P : Prop) : P := h.elim
+```
+
+This is exactly what makes `False` the yardstick of *consistency*. Because `False.elim` turns a single proof of `False` into a proof of *every* proposition `P` (the second example above), one term of type `False` would make every statement a theorem at once -- `0 = 1`, its negation, everything -- and the logic would no longer distinguish the provable from the false. A system in which `False` is inhabited therefore proves nothing of value; it is *contradictory*. So the entire point of the type theory is arranged around a single requirement: that no term of `False` can ever be built. Whenever we later call a construction *consistent*, or note that Lean rejects `Type : Type`, or that a tactic is *sound*, it comes back to this -- `False` must stay empty.
+
+We meet `False` again as the reason a contradiction closes any goal, and all three types return in the {ref "prop-special"}[discussion of why `Prop` is special], where `False`'s empty elimination and `Bool`'s two-way split are exactly what mark the line between *data* and *proof*.

@@ -138,21 +138,28 @@ Why must it be this way? This is not red tape -- consistency forces it, and for 
 
 ```lean
 example {a : Prop} (h : a) :
-    (Or.inl h : a ∨ a) = Or.inr h := rfl
+    (Or.inl (b := a) h) = Or.inr (b := a) h := rfl
 ```
 
 Here `h : a` is a proof of the (true) proposition `a`. "Left or right?" is simply not a well-posed question about a proof of `a ∨ a`: the tag is not distinguishable content. So if the rejected `(a ∨ b) → Bool` above were allowed -- call the resulting function `which` -- then setting `b := a` would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h` (they are {ref "defeq"}[definitionally equal], the `≡` from the previous chapter), so we would get `true ≡ false`, a contradiction. Because proofs are indistinguishable, the tag has to stay trapped -- just as a leaked `∃`-witness would have forced `3 ≡ 5`.
 
-We cannot *build* such a `which` -- Lean rejects it -- but we can *assume* one exists, with its two computation rules as hypotheses `hl` and `hr`, and watch `true = false` drop out. That is the contradiction, spelled out in Lean:
+We cannot *build* such a `which` -- Lean rejects it -- but we can *assume* one exists for *every* `a ∨ b` (with its left- and right-branch computation rules as hypotheses) and then instantiate at `b := a`, where the two injections collide. Watch `true = false` -- hence `False` -- drop out:
 
 ```lean
-example {a : Prop} (h : a)
-    (which : a ∨ a → Bool)
-    (hl : which (Or.inl h) = true)
-    (hr : which (Or.inr h) = false) :
-    true = false := by
-  have e : (Or.inl h : a ∨ a) = Or.inr h := rfl
-  rw [← hl, e, hr]
+example
+    (which : ∀ {a b : Prop}, a ∨ b → Bool)
+    (left : ∀ {a b : Prop} (h : a),
+      which (Or.inl h : a ∨ b) = true)
+    (right : ∀ {a b : Prop} (h : a),
+      which (Or.inr h : b ∨ a) = false) :
+    False := by
+  -- at `a, b := True`, the injections collide:
+  have e : (Or.inl trivial : True ∨ True)
+      = Or.inr trivial := rfl
+  have htf : (true : Bool) = false := by
+    rw [← left (a := True) (b := True) trivial, e,
+        right (a := True) (b := True) trivial]
+  exact Bool.noConfusion htf
 ```
 
 The way out mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a` (the {ref "decidable-typeclass"}[`Decidable` typeclass]), which -- crucially -- lives in `Type`, not `Prop` (its declaration uses the constructor-list `where` from the {ref "bool"}[`Bool` section]):

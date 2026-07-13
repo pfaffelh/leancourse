@@ -17,7 +17,7 @@ tag := "types"
 
 In all programming languages, you have data types such as `int`, `string` and `float`. In Lean, these exist as well, but you can (and will in this course) define own data types. In all cases, we write `x : α` for a term `x` of type `α`, so we write `False : Bool`, `42 : ℕ`, but also `f : ℕ → ℝ` (for a function from ℕ to ℝ, which is an own type) and `0 ≠ 1 : Prop` (the proposition that 0 and 1 are different natural numbers), which is a proposition. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → (Fin n → ℝ)` where `Fin n` is the type which carries `{0, ..., n-1}` (here, the type `Fin n → ℝ` depends on `n : ℕ`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
 
-Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
+Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` will be called a universe) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
 
 As we see, these new data types are more abstract: Lean understands `ℕ` (and `ℝ`) as genuinely infinite types, not limited by floating-point arithmetic. The `zero`/`succ` construction of `ℕ` was the subject of the {ref "nat"}[introduction]; the real numbers, by contrast, are built from an equivalence relation on Cauchy sequences, which is considerably more elaborate -- a {ref "quotient-types"}[quotient type], as we will see at the end of this chapter.
 
@@ -83,7 +83,7 @@ The same holds for a `∀` (a *dependent* function type), whose universe is read
 #check (∀ α : Type 5, α → α)   -- Type 6
 ```
 
-This climbing is what it means for the `Type u` to be *predicative*. The word says it: a *predicative* definition may refer only to things already available *below* it -- whatever a type quantifies over must be strictly smaller, so the type it forms can never land back inside its own domain. That is exactly why `∀ α : Type 5, α → α` is pushed up to `Type 6`, safely *above* everything it ranges over, and it is what keeps the whole hierarchy well-founded. (The terminology goes back to Poincaré and Russell, who imposed predicativity to outlaw the self-referential definitions behind the set-theoretic paradoxes.)
+This climbing is what it means for the `Type u` to be *predicative*: a *predicative* definition refers to things already available *below* it -- whatever a type quantifies over must be strictly smaller, so the type it forms can never land back inside its own domain. That is exactly why `∀ α : Type 5, α → α` is pushed up to `Type 6`, safely *above* everything it ranges over, and it is what keeps the whole hierarchy well-founded. (The terminology goes back to Poincaré and Russell, who imposed predicativity to outlaw the self-referential definitions behind the set-theoretic paradoxes.)
 
 This is not mere bookkeeping. Suppose `∀ α : Type, α → α` were allowed to have type `Type` rather than `Type 1` -- i.e. a `∀` over `Type` could land back inside `Type`. That is the first step toward a universe that contains itself, `Type : Type`, and *that* is fatal: from `Type : Type` one can encode Russell's paradox at the level of types -- *Girard's paradox* -- and derive an honest proof of `False`, so *every* proposition becomes provable and the system is worthless. Predicativity, by forcing the climb to `Type 1`, is exactly what rules this out. (The proof is not short, and Lean's kernel enforces the bump, so you cannot even state `∀ α : Type, α → α : Type` to try it; the construction of the paradox from `Type : Type` is spelled out in {ref "universe-hierarchy"}[the Mathematics part].)
 
@@ -123,7 +123,7 @@ See also {ref "prop-vs-type"}[Prop vs Type].
 
 Compare this with the `Type`-valued `∀ α : Type 5, α → α`, which had to climb to `Type 6`. The two statements are syntactically parallel and differ only in their body, yet land in wildly different places -- `Prop` versus `Type 6`. A `∀` into `Prop` stays small; a `∀` into `Type u` must climb. This is exactly what *impredicative* means: a proposition may be defined by quantifying over a totality *to which it itself belongs*. `∀ P : Prop, P` is again a `Prop`, so it ranges over a collection that already contains it -- the definition, so to speak, feeds on itself. `Prop` is allowed this self-reference because proof irrelevance keeps it harmless.
 
-*Restricted (subsingleton) elimination*: First, a word on what *elimination* means. A type's constructors *introduce* its values -- they are the ways we build them (`Or.inl`, `isTrue`, `Nat.succ`, and so on). *Eliminating* a value is the opposite: we *use* it, by looking at which constructor produced it. This is what a `match` does -- the {ref "pattern-matching"}[pattern-matching] construct `match h with | … => …`, taken up properly in the chapter on terms -- and, as we saw in the {ref "nat-intro"}[introduction], it is ultimately the job of the type's {ref "inductive"}[recursor] (there, `Nat.rec`). To *eliminate into a type `T`* means that this case analysis returns a result of type `T`. The restriction on `Prop` is about exactly this. A proof carries no observable content, so Lean does not let us *read data off a proof* in this way: otherwise the result could depend on *which* proof we started from, and proof irrelevance says there is no such difference to observe. So eliminating a proposition may, in general, only produce further propositions, never data. For example, deciding as a {ref "bool"}[`Bool`] which side of a disjunction holds is rejected:
+*Restricted (subsingleton) elimination*: First, a word on what *elimination* means. A type's constructors *introduce* its values -- they are the ways we build them (`Or.inl`, `isTrue`, `Nat.succ`, and so on). *Eliminating* a value is the opposite: we *use* it, by looking at which constructor produced it. This is what a `match` does -- the {ref "pattern-matching"}[pattern-matching] construct `match h with | … => …`, taken up properly in the chapter on terms -- and, as we saw in the {ref "nat-intro"}[introduction], it is ultimately the job of the type's {ref "inductive"}[recursor]. For a *proposition* `P : Prop`, then, eliminating a proof means running `P`'s own recursor -- `Or.rec`, `And.rec`, and the like (the error below names `Or.casesOn`, the `match`-friendly form of `Or.rec`) -- and the restriction we are about to meet is a restriction on exactly that recursor. To *eliminate into a type `T`* means that this case analysis returns a result of type `T`; eliminating into `T`, defining a function into `T` by the recursor, and letting that recursor compute are three names for one act. The restriction on `Prop` is about exactly this. A proof carries no observable content, so Lean does not let us *read data off a proof* in this way: otherwise the result could depend on *which* proof we started from, and proof irrelevance says there is no such difference to observe. So eliminating a proposition may, in general, only produce further propositions, never data. For example, deciding as a {ref "bool"}[`Bool`] which side of a disjunction holds is rejected:
 
 ```lean +error
 example (a b : Prop) (h : a ∨ b) : Bool :=
@@ -141,9 +141,21 @@ example {a : Prop} (h : a) :
     (Or.inl h : a ∨ a) = Or.inr h := rfl
 ```
 
-"Left or right?" is simply not a well-posed question about a proof of `a ∨ a`: the tag is not distinguishable content. So if the rejected `(a ∨ b) → Bool` above were allowed, then setting `b := a` would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h` (they are {ref "defeq"}[definitionally equal], the `≡` from the previous chapter), so we would get `true ≡ false`, a contradiction. Because proofs are indistinguishable, the tag has to stay trapped -- just as a leaked `∃`-witness would have forced `3 ≡ 5`.
+Here `h : a` is a proof of the (true) proposition `a`. "Left or right?" is simply not a well-posed question about a proof of `a ∨ a`: the tag is not distinguishable content. So if the rejected `(a ∨ b) → Bool` above were allowed -- call the resulting function `which` -- then setting `b := a` would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h` (they are {ref "defeq"}[definitionally equal], the `≡` from the previous chapter), so we would get `true ≡ false`, a contradiction. Because proofs are indistinguishable, the tag has to stay trapped -- just as a leaked `∃`-witness would have forced `3 ≡ 5`.
 
-The way out mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a` (the {ref "decidable-typeclass"}[`Decidable` typeclass]), which -- crucially -- lives in `Type`, not `Prop`:
+We cannot *build* such a `which` -- Lean rejects it -- but we can *assume* one exists, with its two computation rules as hypotheses `hl` and `hr`, and watch `true = false` drop out. That is the contradiction, spelled out in Lean:
+
+```lean
+example {a : Prop} (h : a)
+    (which : a ∨ a → Bool)
+    (hl : which (Or.inl h) = true)
+    (hr : which (Or.inr h) = false) :
+    true = false := by
+  have e : (Or.inl h : a ∨ a) = Or.inr h := rfl
+  rw [← hl, e, hr]
+```
+
+The way out mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a` (the {ref "decidable-typeclass"}[`Decidable` typeclass]), which -- crucially -- lives in `Type`, not `Prop` (its declaration uses the constructor-list `where` from the {ref "bool"}[`Bool` section]):
 
 ```
 inductive Decidable (p : Prop) : Type where
@@ -165,14 +177,14 @@ Because `Decidable p` is in `Type`, it *may* eliminate into `Type` -- which is e
   + the *tag* (which side)
 :::
 
-The classical route mirrors `Classical.choose` in the same way: `Classical.em : a ∨ ¬a` is always available (it is a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable`. So the two halves -- `∃`/`Σ`/`choose` for the *witness*, `∨`/`Decidable`/`em` for the *tag* -- are really the same story: computationally relevant information can leave the `Prop` world only if we put it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` form of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)
+The classical route mirrors `Classical.choose` in the same way: `Classical.em : a ∨ ¬a` is always available (it is a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable` -- a keyword marking a definition Lean cannot turn into runnable code, needed here because `Classical.choice` has no computational content to execute (this is the usual trigger for `noncomputable`, though not the only one). So the two halves -- `∃`/`Σ`/`choose` for the *witness*, `∨`/`Decidable`/`em` for the *tag* -- are really the same story: computationally relevant information can leave the `Prop` world only if we put it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` form of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)
 
 # Inductive types
 %%%
 tag := "inductive"
 %%%
 
-Many everyday types in Lean -- `Nat`, `List`, `Option`, `Bool`, even `Empty` -- are *inductive* types. We have already dissected one of them, `Nat`, in the {ref "nat-intro"}[previous chapter]: its two constructors `Nat.zero`/`Nat.succ`, and its recursor `Nat.rec`. This section is about the general mechanism -- how you *declare* such a type yourself, and which declarations Lean accepts.
+Many everyday types in Lean -- `Nat`, `List`, `Option`, `Bool`, even `Empty` -- are *inductive* types. We have already dissected two of them, `Nat` and `Bool`, in the {ref "nat-intro"}[previous chapter]. This section is about the general mechanism -- how you *declare* such a type yourself, and which declarations Lean accepts.
 
 You declare an inductive type by giving a name, the type's universe, and a list of *constructors*, each saying how to build a new element out of existing pieces. Declaring the natural numbers by hand reproduces exactly the structure of `Nat`:
 
@@ -219,12 +231,21 @@ inductive MyOption (α : Type) where
 
 Inductive types are the main mechanism by which new data types enter Lean; `Mathlib` uses them extensively, and understanding them is essential for reading the library. This also answers the question of the previous section from the other side: the universe of an inductive type must be large enough to hold all of its constructor arguments.
 
-Not every `inductive` declaration is accepted, though. A constructor may mention the type being defined, but only *positively* -- never to the *left* of an arrow inside one of its arguments. This *strict positivity* condition keeps inductive types built from well-founded data and free of paradox. A tree branching over `ℕ` is fine, because `MyTree` occurs only to the *right* of `→`:
+Not every `inductive` declaration is accepted, though. A constructor may mention the type being defined, but only *positively* -- never to the *left* of an arrow inside one of its arguments. This *strict positivity* condition keeps inductive types built from well-founded data and free of paradox. An *infinitely-branching* tree -- where a `node` carries one subtree for each natural number -- is fine, because in the `node` constructor `MyTree` occurs only to the *right* of `→`:
 
 ```lean
 inductive MyTree where
-  | node : (ℕ → MyTree) → MyTree   -- accepted: `MyTree` is positive
+  | leaf : ℕ → MyTree              -- a leaf holds a value
+  | node : (ℕ → MyTree) → MyTree   -- positive occurrence
+
+-- leaves now carry data, and trees can be built:
+example : MyTree := .leaf 7
+example : MyTree := .node (fun n => .leaf n)
 ```
+
+The `leaf` case is what gets the type off the ground, and it is worth pausing on *why* it is needed. Positivity constrains only *where* `MyTree` may occur, not whether the type has any elements: drop `leaf`, and the declaration is *still accepted*, but no closed `MyTree` can ever be built -- every `node` already demands a whole family `ℕ → MyTree` of subtrees, with nothing to start from, so the type is *empty* (like `Empty`; one can even prove `MyTree → False`). With `leaf` present you build upward -- `leaf 7`, then `node (fun n => leaf n)`, then trees over those. Note that `leaf` here *carries* a `ℕ`, so different leaves are genuinely different; a bare `leaf : MyTree` would give a single, featureless leaf, indistinguishable from every other.
+
+A word on the *shape*, too. Because `node` takes a *function* `ℕ → MyTree`, every node has one child per natural number -- it branches *infinitely*. It is not that *every* `MyTree` is infinite: a leaf is finite (`leaf 7` is a complete tree), so only trees that actually use `node` are. This infinite branching is inseparable from a function-typed argument; for a finitely-branching tree you would instead write something like `node : MyTree → MyTree → MyTree`, but there `MyTree` occurs *directly*, not inside a function, so the right-of-`→` subtlety we are illustrating would not even arise.
 
 But a constructor that stores a *function out of* the type is rejected:
 

@@ -290,7 +290,7 @@ Both types in this section live in `Prop`, the universe of *propositions*. Befor
 
 ::::keepEnv
 :::example "What is the Lean *kernel*?"
-The *kernel* is the small, trusted core of Lean that has the final say on whether a term has the type it claims. Everything else you write -- tactics, notation, `match`, the elaborator -- lives *outside* the kernel: it all ultimately produces a bare term that the kernel re-checks from scratch against a fixed, tiny set of rules (the {ref "reduction-rules"}[reduction rules], the typing rules, and the primitive universes `Sort u`). A handful of things are *built into* this core rather than defined on top of it: the universes `Prop` and `Type u`, the way an `inductive` type generates its constructors and recursor, and proof irrelevance. The point of keeping the kernel small is *trust* -- to believe a Lean proof you need only believe the kernel, not the large machinery of tactics and automation above it. The kernel's logic has a name, the *Calculus of Inductive Constructions*, discussed in the {ref "cic"}[Mathematics part].
+The *kernel* is the small, trusted core of Lean that has the final say on whether a term has the type it claims. Everything else you write -- tactics, notation, `match`, the elaborator -- lives *outside* the kernel: it all ultimately produces a bare term that the kernel re-checks from scratch against a fixed, tiny set of rules (the {ref "reduction-rules"}[reduction rules], the typing rules, and the primitive universes `Sort u`). A handful of things are *built into* this core rather than defined on top of it: the universes `Prop` and `Type u`, the way an `inductive` type generates its constructors and recursor, and proof irrelevance. The point of keeping the kernel small is *trust* -- to believe a Lean proof you need only believe the kernel, not the large machinery of tactics and automation above it. That trust is reinforced by there being *several independent implementations* of the kernel: besides Lean's own reference kernel (written in C++), the same proof terms can be re-checked by separate type-checkers written in other languages, and even by one (`Lean4Lean`) written and formally verified in Lean itself. A proof accepted by one kernel can thus be cross-checked by another. The kernel's logic has a name, the *Calculus of Inductive Constructions*, discussed in the {ref "cic"}[Mathematics part].
 :::
 ::::
 
@@ -307,7 +307,14 @@ So proving `True` is as easy as naming that constructor:
 example : True := True.intro
 ```
 
-There is correspondingly nothing to *learn* from a proof of `True`: with only one constructor, its recursor has only one case, which is why `True` carries no information.
+Its recursor has exactly *one* case, for the single constructor `True.intro`, so into a fixed result type `C` its (non-dependent) signature is:
+
+```
+-- one constructor, hence one case:
+True.rec : C → True → C
+```
+
+There is correspondingly nothing to *learn* from a proof of `True`: the recursor just hands back the value you supplied for that one case (`True.rec c h` reduces to `c`), which is why `True` carries no information.
 
 *The empty proposition `False`.* `False` is the opposite extreme: the proposition that is *never* true. It is the `inductive` type with *no constructors at all* -- so its definition has no `where` clause and no `|` lines:
 
@@ -315,7 +322,24 @@ There is correspondingly nothing to *learn* from a proof of `True`: with only on
 inductive False : Prop
 ```
 
-Since there is no constructor, there is no way to build a term of `False` -- exactly as it should be for a statement that has no proof. Its recursor is the striking one: with *zero* cases to supply, `False.rec` may return a value of *any* type whatsoever. This is the principle *ex falso quodlibet* ("from a falsehood, anything follows"), packaged as `False.elim`: from a proof of `False`, every goal closes.
+Since there is no constructor, there is no way to build a term of `False` -- exactly as it should be for a statement that has no proof. Its recursor is the striking one, and here we give its *full* signature (the result universe `Sort u` is treated in the {ref "type-universes"}[next chapter]):
+
+```
+False.rec : (motive : False → Sort u) → (t : False) → motive t
+```
+
+::::keepEnv
+:::example "Implicit vs. explicit `motive`: why `False.rec` looks different"
+This looks different from `Bool.rec` and `True.rec` above for one reason -- *implicit* versus *explicit*: there the `motive` sat in curly braces `{motive …}` and Lean inferred it from the case values, which is why we could drop it and even present those signatures non-dependently as `C → C → Bool → C` and `C → True → C`. `False` has *no* case values, so nothing lets Lean infer the `motive`; it is therefore *explicit* (round brackets `(motive …)`), and you must supply it -- you write `False.rec (fun _ => C) h`, or `False.rec _ h` letting the goal fix it, but never plain `False.rec h` (which would read `h` as the motive). Note also that between the `motive` and the input `t` there is *no* case argument at all -- `Bool.rec` had two there, `True.rec` one, `False.rec` none -- which is exactly why its result `motive t` may be of *any* type: the principle *ex falso quodlibet* ("from a falsehood, anything follows"). The filled-in form is packaged as `False.elim`, so that `False.elim h = False.rec (fun _ => C) h`.
+:::
+::::
+
+For *ex falso quodlibet*, Lean does not use `False.rec` but `False.elim`, which is the following:
+
+```
+def False.elim {C : Sort u} (h : False) : C :=
+  False.rec (fun _ => C) h
+```
 
 ```lean
 example (h : False) : 0 = 1 := False.elim h
@@ -324,4 +348,4 @@ example (h : False) (P : Prop) : P := h.elim
 
 This is exactly what makes `False` the yardstick of *consistency*. Because `False.elim` turns a single proof of `False` into a proof of *every* proposition `P` (the second example above), one term of type `False` would make every statement a theorem at once -- `0 = 1`, its negation, everything -- and the logic would no longer distinguish the provable from the false. A system in which `False` is inhabited therefore proves nothing of value; it is *contradictory*. So the entire point of the type theory is arranged around a single requirement: that no term of `False` can ever be built. Whenever we later call a construction *consistent*, or note that Lean rejects `Type : Type`, or that a tactic is *sound*, it comes back to this -- `False` must stay empty.
 
-We meet `False` again as the reason a contradiction closes any goal, and all three types return in the {ref "prop-special"}[discussion of why `Prop` is special], where `False`'s empty elimination and `Bool`'s two-way split are exactly what mark the line between *data* and *proof*.
+-- We meet `False` again as the reason a contradiction closes any goal, and all three types return in the {ref "prop-special"}[discussion of why `Prop` is special], where `False`'s empty elimination and `Bool`'s two-way split are exactly what mark the line between *data* and *proof*.

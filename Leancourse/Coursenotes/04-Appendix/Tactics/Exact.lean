@@ -31,7 +31,7 @@ tag := "exact"
 
 *Remarks:*
 
-* The related tyctics `exact?` searches for terms which close the goal; see {ref "apply-qm"}[`apply?`].
+* The related tactic `exact?` searches Mathlib for a term which closes the goal (and offers to insert it); it is the term-level counterpart of {ref "apply-qm"}[`apply?`].
 * If the proof consists of a single call of `exact`, it is easy to translate it to `term` mode; see {ref "term"}[easy proofs in term mode].
 * In the third example, note the order in which the two hypotheses `hP` and `hnP` are applied. The first hypothesis after `exact` is always the one whose right side matches the goal. If the goal requires further input, it is appended afterwards.
 

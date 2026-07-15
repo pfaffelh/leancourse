@@ -72,8 +72,23 @@ tag := "tactics"
 %%%
 
 This chapter is an *alphabetical glossary*: look up a tactic by name.
-Before the list, here is a rough guide to which automation tactic
-fits which kind of goal.
+
+*The everyday core.* A handful of tactics do most of the work in most
+proofs: {ref "exact"}[`exact`] (hand over the goal's proof term
+directly), {ref "apply"}[`apply`] (reduce the goal to a lemma's
+hypotheses), {ref "rw"}[`rw`] (rewrite with an equation or `↔`),
+{ref "intro"}[`intro`] (move a hypothesis into context), and
+{ref "simp"}[`simp`] (simplify with known lemmas).
+
+*When you don't know what to use, ask.* The *search* tactics propose a
+step for you -- reach for them constantly: {ref "exact"}[`exact?`]
+looks for a library term that closes the goal, {ref "apply-qm"}[`apply?`]
+for a lemma to `apply`, {ref "rw"}[`rw?`] for a rewrite that fits, and
+{ref "simp"}[`simp?`] reports which simp lemmas fired (so you can then
+switch to a robust `simp only [...]`).
+
+Before the alphabetical list, here is a rough guide to which
+*automation* tactic fits which kind of goal.
 
 :::table +header
 * + Goal type

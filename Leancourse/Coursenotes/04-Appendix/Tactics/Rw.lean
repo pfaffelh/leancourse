@@ -65,6 +65,7 @@ In the first of the four examples, `rw` applies to the first occurrence of a ter
 * `rw` immediately executes a `refl` after its application. This leads to the second and third examples of the applications of `add_comm` and `add_zero` that the new proof state is not as specified, but *no goals*.
 * If you do not want to perform a `rw` in sequence (as in the double elimination of the `+0` above), you can use `nth_rewrite` to rewrite the second occurrence of a term.
 * The `rw` tactic does not work when it comes after a *binder*, which could be a `∀ ∃ ∑`. In this case, `simp_rw` will hopefully help.
+* `rw?` *searches* for a rewrite that applies to the goal: it lists library equations and `↔`-statements whose left- (or, with `←`, right-) hand side matches a subterm, and you pick one. Useful when you are sure a rewrite should exist but do not know its name.
 
 ::::keepEnv
 :::example " "

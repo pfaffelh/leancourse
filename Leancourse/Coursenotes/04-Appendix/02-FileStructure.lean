@@ -16,11 +16,39 @@ tag := "file-structure"
 %%%
 
 A Lean file is a sequence of *commands* -- `def`, `theorem`,
-`structure`, `#check`, and so on -- processed top to bottom.  A handful
-of keywords organize those commands and control *where* the names they
+`structure`, `#check`, and so on -- processed top to bottom.  It opens
+with its `import`s, which pull in other files, and then a handful of
+keywords organize the rest and control *where* the names they
 introduce are visible: `namespace`, `open`, `section`, `variable`, and
 the scope modifiers `private`, `local`, and `scoped`.  This appendix
 collects them in one place.
+
+# Imports
+%%%
+tag := "imports"
+%%%
+
+Every Lean file begins with its *imports*.  Writing `import Foo.Bar`
+makes the contents of the module `Foo/Bar.lean` available in the
+current file, and imports are *transitive* -- importing a module also
+brings in everything that module itself imports.  All `import` lines
+must come *first*, before any other command; an `import` after the
+first `def` or `#check` is a syntax error.
+
+The module name mirrors the file path: `import Mathlib.Order.Basic`
+refers to `Mathlib/Order/Basic.lean`.  Importing the umbrella module
+`Mathlib` pulls in the entire library at once -- convenient for
+exploration, though slower to load -- whereas a targeted import brings
+in only what you need:
+
+```
+import Mathlib.Order.Basic   -- just one module
+import Mathlib                -- the whole library
+```
+
+Every chapter file in this course opens with `import Mathlib` (plus a
+few Verso modules), which is why any Mathlib lemma is available in the
+examples without further ceremony.
 
 # Namespaces
 %%%

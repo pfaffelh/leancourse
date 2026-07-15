@@ -250,7 +250,7 @@ example : ∃ (n : ℕ), n + n = 10 :=
   ⟨5, by norm_num⟩
 ```
 
-Note: There is an important distinction between `∃` (which lives in `Prop`) and `Σ` (which lives in `Type`). We discuss this further in the {ref "dependent-types"}[chapter on dependent types].
+Note: There is an important distinction between `∃` (which lives in `Prop`) and `Σ` (which lives in `Type`). We discuss this further in {ref "sigma-vs-exists"}[the difference between `∃` and `Σ`].
 
 # `Nonempty` and propositional truncation
 %%%

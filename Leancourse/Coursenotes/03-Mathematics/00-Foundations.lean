@@ -10,19 +10,19 @@ open MyDef
 set_option pp.rawOnError true
 set_option verso.docstring.allowMissing true
 
-#doc (Manual) "Some Mathematical Foundations" =>
+#doc (Manual) "Sets and Types" =>
 %%%
 htmlSplit := .never
-tag := "math-foundations"
+tag := "sets-and-types"
 %%%
 
-Before surveying the more advanced corners of Mathlib, it is worth
-slowing down on the two pieces of vocabulary that every later chapter
-takes for granted: *propositions* (together with their proofs) and
-*sets*. Both are already familiar from the {ref "lean"}[Lean and its
-type theory] part, but here we look at them from the working
-mathematician's side -- how to read them, and how to write the small
-proofs that appear everywhere once you start formalizing.
+A mathematician thinks in *sets*; Lean thinks in *types*. This chapter
+pins down how the two relate -- how a set is represented, how its
+operations unfold to familiar logical connectives, how set equality
+works, and how sets, subtypes, and types differ. The other staple that
+every later chapter takes for granted -- *propositions* and their
+*proofs* -- was covered in {ref "curry-howard"}[the Curry-Howard
+chapter] of the {ref "lean"}[Lean part]; from here on we use it freely.
 
 # Notation and naming conventions
 %%%
@@ -71,81 +71,6 @@ its input sequence.
   + "the set of `x` with `p x`"
   + (literal braces)
 :::
-
-# Propositions are types
-%%%
-tag := "foundations-prop"
-%%%
-
-Recall the {ref "curry-howard"}[Curry-Howard] view: a *proposition* is
-a term of the special type `Prop`, and a *proof* of a proposition `P`
-is simply a term `h : P`.  Proving a statement therefore means
-*constructing* a term of the corresponding type.
-
-```lean
--- A proposition is a term of type `Prop`
-#check (2 + 2 = 4 : Prop)
-#check (3 < 5 : Prop)
-
--- `True` and `False` are the two trivial propositions
-#check True
-#check False
-
--- Connectives build new propositions from old ones
-#check (2 = 2 ∧ 3 = 3 : Prop)   -- and
-#check (2 = 2 ∨ 2 = 3 : Prop)   -- or
-#check (2 = 3 → False : Prop)   -- implies / not
-```
-
-Because `Prop` enjoys *proof irrelevance* (see
-{ref "prop-vs-type"}[Prop vs Type]), we never care *which* proof of
-`P` we have, only *that* we have one.
-
-# Simple proofs
-%%%
-tag := "foundations-proofs"
-%%%
-
-There are two interchangeable styles.  In *term mode* we write the
-proof term directly; in *tactic mode* (after `by`) we build it step by
-step.  Here are the basic moves in term mode.
-
-```lean
--- `True` holds trivially
-example : True := trivial
-
--- Equalities true by computation are closed by `rfl`
-example : 2 + 2 = 4 := rfl
-
--- An implication is a function: assume `h : P`, return it
-example (P : Prop) (h : P) : P := h
-
--- A conjunction is a pair: `⟨_, _⟩` supplies both halves
-example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q :=
-  ⟨hP, hQ⟩
-
--- A disjunction picks a side with `Or.inl` / `Or.inr`
-example (P Q : Prop) (hP : P) : P ∨ Q := Or.inl hP
-
--- An existential bundles a witness with a proof about it
-example : ∃ n : ℕ, n > 3 := ⟨4, by decide⟩
-```
-
-The same statements in tactic mode read more like a checklist of
-goals to discharge.
-
-```lean
--- `constructor` splits a conjunction into its two goals
-example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q := by
-  constructor
-  · exact hP
-  · exact hQ
-
--- `intro` introduces the bound variable of a `∀`
-example : ∀ n : ℕ, n + 0 = n := by
-  intro n
-  rfl
-```
 
 # Sets are predicates
 %%%
@@ -260,5 +185,5 @@ example : ↥Evens :=
   ⟨4, by show 4 % 2 = 0; decide⟩
 ```
 
-With propositions, proofs, and sets in hand, we are ready to look at
-the structures Mathlib builds on top of them.
+With sets, subtypes, and their relationship to types in hand, we are
+ready to look at the structures Mathlib builds on top of them.

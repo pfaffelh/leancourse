@@ -204,7 +204,7 @@ def ten : BigNat := ⟨10, by norm_num⟩
 
 This is how many mathematical objects are defined in Mathlib. For example, the type of prime numbers could be defined as `{n : ℕ // Nat.Prime n}`.
 
-A subtype is closely related to, but distinct from, a *set* `s : Set α`: a set selects elements of `α` (which keep their type `α`), whereas the subtype `{x : α // P x}` is a *new* type. The relationship -- including the coercion `↥s` from a set to its subtype of members -- is spelled out in {ref "math-foundations"}[the foundations chapter on sets and subtypes].
+A subtype is closely related to, but distinct from, a *set* `s : Set α`: a set selects elements of `α` (which keep their type `α`), whereas the subtype `{x : α // P x}` is a *new* type. The relationship -- including the coercion `↥s` from a set to its subtype of members -- is spelled out in {ref "sets-and-types"}[the chapter on sets and types].
 
 # Why dependent types matter
 %%%

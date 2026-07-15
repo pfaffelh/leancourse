@@ -261,7 +261,7 @@ example {G : Type*} [Group G] (H : Subgroup G) (a b : G)
 tag := "quotients"
 %%%
 
-Given a normal subgroup `N` of a group `G`, the quotient `G ⧸ N` is again a
+Given a normal subgroup `N` of a group `G`, the {ref "quotient-types"}[quotient] `G ⧸ N` is again a
 group. Similarly, given an ideal `I` of a ring `R`, the quotient `R ⧸ I` is a
 ring.
 

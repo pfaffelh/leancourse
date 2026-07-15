@@ -139,7 +139,7 @@ example (a b : ℕ) (h : a < b) : a ≠ b :=
 tag := "powerset-order"
 %%%
 
-For any type `α`, the type `Set α` carries a partial order given by set
+For any type `α`, the type {ref "foundations-sets"}[`Set α`] carries a partial order given by set
 inclusion `⊆`. This is a canonical example of a partial order that is not
 linear in general.
 

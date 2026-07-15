@@ -18,7 +18,7 @@ tag := "measure-theory"
 
 Measure theory in Mathlib is a substantial part of the library, covering
 sigma-algebras, measurable functions, measures, integration, and probability.
-It builds on the filter framework for convergence theorems. This section
+It builds on the {ref "filters"}[filter] framework for convergence theorems. This section
 gives an overview of the main definitions and how to work with them.
 
 # Notation and naming conventions
@@ -280,7 +280,7 @@ sequence of nonnegative measurable functions, then
 {docstring MeasureTheory.tendsto_integral_of_dominated_convergence}
 
 These theorems are stated using filters: convergence of the integrals is
-expressed as `Filter.Tendsto` with respect to `Filter.atTop`.
+expressed as {ref "filter-tendsto"}[`Filter.Tendsto`] with respect to `Filter.atTop`.
 
 # Probability measures
 %%%
@@ -329,7 +329,7 @@ example {α : Type*} [MeasurableSpace α]
 ```
 
 This is a beautiful example of the filter framework in action: "almost
-everywhere" is just "eventually" with respect to the ae-filter.
+everywhere" is just {ref "eventually-frequently"}["eventually"] with respect to the ae-filter.
 
 # Conditional expectation
 %%%

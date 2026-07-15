@@ -29,7 +29,7 @@ The correspondence is named after Haskell Curry and William Alvin Howard, but it
 - **Nicolaas Govert de Bruijn** independently discovered the correspondence while developing the Automath system (1968), one of the first proof checkers.
 - **Per Martin-Löf** (1971 onwards) developed intuitionistic type theory, extending the correspondence to predicate logic with dependent types.
 
-Lean's type theory is a descendant of Martin-Löf's work, enriched with features from the Calculus of Inductive Constructions (as used in Coq).
+Lean's type theory is a descendant of Martin-Löf's work, enriched with features from the {ref "cic"}[Calculus of Inductive Constructions] (as used in Coq).
 
 # Propositions as types, proofs as terms
 %%%
@@ -214,7 +214,7 @@ example (P : Prop) (h : False) : P :=
 tag := "forall-pi"
 %%%
 
-The universal quantifier `∀ (x : α), P x` corresponds to the **dependent function type** (Pi type) `(x : α) → P x`. A proof is a function that, for each `x : α`, produces a proof of `P x`.
+The universal quantifier `∀ (x : α), P x` corresponds to the **dependent function type** ({ref "pi-types"}[Pi type]) `(x : α) → P x`. A proof is a function that, for each `x : α`, produces a proof of `P x`.
 
 ```lean
 -- Tactic proof
@@ -234,7 +234,7 @@ Notice that in Lean, `∀` and the dependent arrow `→` are actually the same t
 tag := "exists-sigma"
 %%%
 
-The existential quantifier `∃ (x : α), P x` corresponds to the **dependent pair type**. A proof consists of a witness `a : α` together with a proof that `P a` holds.
+The existential quantifier `∃ (x : α), P x` corresponds to the {ref "sigma-types"}[dependent pair type]. A proof consists of a witness `a : α` together with a proof that `P a` holds.
 
 ```lean
 -- Tactic proof

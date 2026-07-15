@@ -24,7 +24,7 @@ tag := "universe-issues"
 
 Every type in Lean lives in a {ref "universe-hierarchy"}[universe]. The hierarchy is:
 
-- `Prop` (also called `Sort 0`) — the universe of propositions
+- {ref "prop-special"}[`Prop`] (also called `Sort 0`) — the universe of propositions
 - `Type 0` (also called `Type`) — the universe of "ordinary" types like `ℕ`, `ℝ`
 - `Type 1`, `Type 2`, ... — higher universes
 

@@ -217,7 +217,7 @@ and several `·` become successive arguments -- `(· + ·)` means
 tag := "pattern-matching"
 %%%
 
-For functions on inductive types (like `ℕ`, `List α`, `Option α`,
+For functions on {ref "inductive"}[inductive types] (like `ℕ`, `List α`, `Option α`,
 `Bool`), the most natural way to define them is by *pattern matching*
 on the constructors of the input.  The syntax uses `match ... with`
 and one branch per constructor, each prefixed by a `|`.

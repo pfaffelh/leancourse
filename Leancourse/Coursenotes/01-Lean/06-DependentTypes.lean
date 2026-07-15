@@ -101,7 +101,7 @@ This is a subtle but important distinction in Lean:
 - `Σ (x : α), β x` lives in `Type` -- you can extract the witness and use it computationally.
 - `∃ (x : α), P x` lives in `Prop` -- the witness is "erased" and cannot be used in computations (only in proofs).
 
-This reflects the principle of **proof irrelevance**: in `Prop`, the specific proof does not matter, only whether the proposition is true or false. In `Type`, the data matters.
+This reflects the principle of {ref "prop-special"}[proof irrelevance]: in `Prop`, the specific proof does not matter, only whether the proposition is true or false. In `Type`, the data matters.
 
 ```lean
 -- Sigma: we can extract the witness

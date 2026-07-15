@@ -178,7 +178,7 @@ Here is what `map` does for each of our examples:
 
 * `Set`: `map f s` is the image of `s` under `f`, i.e. `{f a | a ∈ s}`. This is the familiar image operation from mathematics.
 
-* `Filter`: `Filter.map f F` is the pushforward filter. A set `s` belongs to `Filter.map f F` if and only if `f ⁻¹' s ∈ F`. This generalizes the image operation to filters.
+* `Filter`: `Filter.map f F` is the {ref "filter-map"}[pushforward filter]. A set `s` belongs to `Filter.map f F` if and only if `f ⁻¹' s ∈ F`. This generalizes the image operation to filters.
 
 * `Finset`: `map f s` applies an embedding `f` to each element of the finite set. For a plain function, one uses `Finset.image f s` instead.
 
@@ -367,7 +367,7 @@ number := false
 tag := "filter-monad"
 %%%
 
-Recall that a filter `F : Filter α` is a collection of sets that is upward closed and closed under finite intersections. Filters generalize the notion of "sets of large elements" or "neighborhoods." Mathlib defines `pure` and `bind` operations for filters:
+Recall that a {ref "filters"}[filter] `F : Filter α` is a collection of sets that is upward closed and closed under finite intersections. Filters generalize the notion of "sets of large elements" or "neighborhoods." Mathlib defines `pure` and `bind` operations for filters:
 
 ```lean
 #check @Filter.bind
@@ -457,7 +457,7 @@ Mathlib's `PMF α` models a *discrete probability distribution* on a
 type `α`: it is a function `α → ℝ≥0∞` whose values sum (as a
 `tsum`) to `1`.  Unlike full measure theory, working with `PMF` lets
 us avoid most measurability hypotheses: the support of a `PMF` is
-automatically countable, and there is no sigma-algebra on `α` to
+automatically countable, and there is no {ref "measurable-space"}[sigma-algebra] on `α` to
 keep track of.
 
 The goal of the rest of this chapter is to explain the *monadic*
@@ -735,7 +735,7 @@ tag := "pmf-beyond"
 theory in Mathlib is much larger.  A sketch of where to go next:
 
 - Every `PMF α` induces a probability measure on `α` via
-  `PMF.toMeasure`; conversely, `Measure α` is the general setting
+  `PMF.toMeasure`; conversely, {ref "measures"}[`Measure α`] is the general setting
   that handles continuous distributions.
 - *Expectation* of a function `f : α → ℝ` against a probability
   measure `μ` is the {ref "integration"}[Bochner integral] `∫ x, f x ∂μ`, found in
@@ -743,7 +743,7 @@ theory in Mathlib is much larger.  A sketch of where to go next:
 - *Independence* of two events / sigma-algebras / random variables
   is `ProbabilityTheory.IndepSets`, `IndepFun`, etc., in
   `Mathlib.Probability.Independence`.
-- *Conditional probability* and *conditional expectation* live in
+- *Conditional probability* and {ref "conditional-expectation"}[conditional expectation] live in
   `Mathlib.Probability.ConditionalProbability` and the measure-theory
   chapter of these notes.
 

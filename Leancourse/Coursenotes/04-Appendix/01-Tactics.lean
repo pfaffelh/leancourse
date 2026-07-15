@@ -38,6 +38,7 @@ import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Have»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Induction»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Intro»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Left»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Let»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Linarith»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Norm_num»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Nth_rewrite»
@@ -202,6 +203,8 @@ switch to `simp only` for a robust proof.
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Intro»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Left»}
+
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Let»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Linarith»}
 

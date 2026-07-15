@@ -216,13 +216,9 @@ How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[re
 tag := "bool"
 %%%
 
-There are inductive types even simpler than `Nat`. One of them, `Bool`, is the type with two values, which are called `true` and `false`. It has exactly two constructors, neither taking any argument. Here is its definition, verbatim from Lean's core library (the `where` keyword introduces the list of constructors):
+There are inductive types even simpler than `Nat`. One of them, `Bool`, is the type with two values, which are called `true` and `false`. It has exactly two constructors, neither taking any argument. Here is its definition, straight from Lean's core library (the `where` keyword introduces the list of constructors):
 
-```
-inductive Bool : Type where
-  | false : Bool
-  | true  : Bool
-```
+{docstring Bool}
 
 Its recursor `Bool.rec` consumes a `Bool` by offering one value for each constructor -- first the `false` case, then the `true` case -- and returns the matching one. Into a fixed result `C : Type`, its (non-dependent) signature is just this, exactly as `Nat.rec` above:
 

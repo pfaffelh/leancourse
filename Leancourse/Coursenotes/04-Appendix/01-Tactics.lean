@@ -13,12 +13,14 @@ import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«By_contra»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Calc»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Cases»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Change»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Choose»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Clear»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Congr»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Constructor»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Contradiction»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Contrapose»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Conv»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Convert»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Decide»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exact»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exfalso»
@@ -35,6 +37,7 @@ import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Positivity»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Push_cast»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Ring_nf»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Have»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Hint»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Induction»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Intro»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Left»
@@ -55,13 +58,17 @@ import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Rw»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Set»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Show»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Simp»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Simp_all»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Simp_rw»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Specialize»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Symm»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Tauto»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Trans»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Triv»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Trivial»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Unfold»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Use»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Wlog»
 
 open Verso.Genre Manual
 
@@ -150,6 +157,8 @@ switch to `simp only` for a robust proof.
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Change»}
 
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Choose»}
+
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Clear»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Congr»}
@@ -161,6 +170,8 @@ switch to `simp only` for a robust proof.
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Contrapose»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Conv»}
+
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Convert»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Decide»}
 
@@ -197,6 +208,8 @@ switch to `simp only` for a robust proof.
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Ring_nf»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Have»}
+
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Hint»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Induction»}
 
@@ -240,6 +253,8 @@ switch to `simp only` for a robust proof.
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Simp»}
 
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Simp_all»}
+
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Simp_rw»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Specialize»}
@@ -248,8 +263,14 @@ switch to `simp only` for a robust proof.
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Tauto»}
 
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Trans»}
+
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Triv»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Trivial»}
 
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Unfold»}
+
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Use»}
+
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Wlog»}

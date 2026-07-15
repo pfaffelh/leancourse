@@ -32,9 +32,7 @@ If you have a term `P : Prop` as a hypothesis, `by_cases hP : P` returns two goa
   + `x: bool` {br}[] `h: x = True` {br}[] `⊢ x = True ∨ x = False` {br}[]  `x: bool` {br}[] `h: ¬x = True` {br}[] `⊢ x = True ∨ x = False`
 :::
 
-In the second example, we use a variable of type `bool` This is defined as follows:
-
-{docstring Bool}
+The second example case-splits on a variable `x : Bool`; that type, {ref "bool"}[`Bool`], is introduced in the chapter on the natural numbers.
 
 ::::keepEnv
 :::example " "

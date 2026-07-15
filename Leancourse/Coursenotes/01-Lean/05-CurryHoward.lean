@@ -272,7 +272,7 @@ propositional truncation of `α`: it forgets the witness, keeping
 only the bare existence claim.
 
 To extract data from a `Nonempty` (i.e., to actually obtain a term
-of `α`), you must use `Classical.choice`, an axiom of Lean's type
+of `α`), you must use `Classical.choice`, {ref "axiom-choice"}[an axiom] of Lean's type
 theory:
 
 ```lean

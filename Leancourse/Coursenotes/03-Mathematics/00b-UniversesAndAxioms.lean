@@ -139,7 +139,7 @@ number := false
 tag := "axiom-quot"
 %%%
 
-Lean has built-in support for quotient types. Given a type `α` and an equivalence relation `r` on `α`, you can form the quotient type `Quot r`. The axiom `Quot.sound` says that if `r a b`, then `Quot.mk r a = Quot.mk r b`.
+Lean has built-in support for {ref "quotient-types"}[quotient types] (introduced in the Types chapter). Given a type `α` and an equivalence relation `r` on `α`, you can form the quotient type `Quot r`. The axiom `Quot.sound` says that if `r a b`, then `Quot.mk r a = Quot.mk r b`.
 
 This is how many mathematical constructions are formalized: the integers as a quotient of `ℕ × ℕ`, the rationals as a quotient of `ℤ × ℤ`, the reals as a quotient of Cauchy sequences, and so on.
 

@@ -27,10 +27,6 @@ lattices are essential for fixed-point theorems and {ref "topology"}[topology].
 tag := "orders-notation"
 %%%
 
-Several symbols below are unicode characters typed in VS Code via a
-backslash escape (e.g. `\le` produces `≤`).  Hover over a symbol in the
-editor to see how to type it.
-
 :::table +header
 * + Symbol
   + Lean name

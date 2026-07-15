@@ -26,9 +26,6 @@ gives an overview of the main definitions and how to work with them.
 tag := "measure-notation"
 %%%
 
-Several measure-theory symbols are unicode characters.  In VS Code,
-hover over a symbol to see the backslash escape that types it.
-
 :::table +header
 * + Symbol
   + Lean name

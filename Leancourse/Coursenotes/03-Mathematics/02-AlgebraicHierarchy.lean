@@ -26,9 +26,6 @@ rings, fields, and their morphisms and substructures.
 tag := "algebra-notation"
 %%%
 
-Unicode symbols can be typed via a backslash escape (e.g. `\inv` produces
-`⁻¹`).  Hover over a symbol in VS Code to see how to type it.
-
 :::table +header
 * + Symbol
   + Lean name

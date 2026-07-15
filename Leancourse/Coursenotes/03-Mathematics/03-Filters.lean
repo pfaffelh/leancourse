@@ -31,9 +31,6 @@ a filter is a *generalized subset*.
 tag := "filters-notation"
 %%%
 
-Many filter-related symbols are unicode and typed via backslash escapes
-in VS Code (hover over a symbol to see its input sequence).
-
 :::table +header
 * + Symbol
   + Lean name

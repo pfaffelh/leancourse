@@ -35,6 +35,7 @@ tag := "have"
 * Assume you want to use `have`. You could as well formulate a separate lemma and use it afterwards. It is not always clear which is better.
 * If the proof of the statement is short and is only used once in your proof, you might want to consider replacing its proof in the place where it is needed.
 * Suppose we have two goals (let's call them `⊢ 1` and `⊢ 2`), and we need the statement of `⊢ 1` in the proof of `⊢ 2`. We can first introduce a third goal with `have h := ⊢ 1` (where `⊢ 1` is to be replaced by the statement). Then `⊢ 1` can be proved with `exact`, and has the statement `⊢ 1` available in the proof of `⊢ 2`.
+* The instance-cache variant `haveI` (and its value-keeping siblings `letI` and `let`) live in their own entry, {ref "let"}[`let`, `letI`, `haveI`] -- filed under *l*.
 
 ::::keepEnv
 :::example " "

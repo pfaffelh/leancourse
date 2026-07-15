@@ -135,10 +135,9 @@ example : 3 ∉ Evens := by
   decide
 ```
 
-This `α → Prop` definition is why
-{ref "axiom-propext"}[propositional extensionality] matters in
-everyday mathematics: it is what lets two predicates that are
-logically equivalent count as the *same* set.
+Because a set *is* a predicate, two predicates that hold of exactly
+the same elements describe the *same* set -- set equality is
+*extensional*. We make this precise just below.
 
 # Subset, union, intersection, complement
 %%%
@@ -162,17 +161,16 @@ example (s t : Set ℕ) : Set ℕ := s ∪ t   -- union
 example (s : Set ℕ)   : Set ℕ := sᶜ      -- complement
 ```
 
-# Set equality and the axioms
+# Set equality
 %%%
 tag := "foundations-set-eq"
 %%%
 
-Two sets are equal exactly when they have the same members.  This is
-the *set extensionality* principle `Set.ext`, and it is where the
-foundations of the previous part pay off: a set is a function into
-`Prop`, so "same members" gives equality through
-{ref "axiom-funext"}[function extensionality] and
-{ref "axiom-propext"}[propositional extensionality].
+Two sets are equal exactly when they have the same members -- the *set
+extensionality* principle `Set.ext`. That this holds at all, and is not
+merely a definition, is a real foundational fact: since a set is a
+function into `Prop`, it rests on the extensionality axioms taken up in
+the next chapter. Here we simply use it.
 
 ```lean
 -- equality of sets is membership-wise equality

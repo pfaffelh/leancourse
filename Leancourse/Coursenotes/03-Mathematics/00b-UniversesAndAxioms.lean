@@ -131,7 +131,7 @@ example (P : Prop) : (P ∧ True) = P := by
   simp
 ```
 
-This axiom is essential for working with sets (since `Set α` is defined as `α → Prop`, and we want equal predicates to give equal sets).
+This axiom is exactly what makes {ref "foundations-set-eq"}[set equality] *extensional*: since `Set α` is `α → Prop`, `propext` is what lets predicates that are logically equivalent count as the *same* set.
 
 ## The axiom of quotients
 %%%
@@ -180,7 +180,7 @@ number := false
 tag := "axiom-funext"
 %%%
 
-Two functions are equal if they agree on every input. In practice one *uses* this through the `funext` lemma and tactic:
+Two functions are equal if they agree on every input -- which, together with `propext`, is what makes {ref "foundations-set-eq"}[set equality] extensional (two sets with the same members are equal because they are equal *functions* into `Prop`). In practice one *uses* it through the `funext` lemma and tactic:
 
 ```lean
 -- funext: if f x = g x for all x, then f = g

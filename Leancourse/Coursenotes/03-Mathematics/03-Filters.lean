@@ -484,7 +484,7 @@ Filters may feel abstract at first, but they pay off:
 1. *Unification.*  One definition of `Tendsto` replaces dozens of
    epsilon-delta variants.
 2. *Composability.*  Limits compose naturally via `Filter.Tendsto.comp`.
-3. *Algebraic structure.*  Filters form a complete lattice, so we can
+3. *Algebraic structure.*  Filters form a {ref "complete-lattices"}[complete lattice], so we can
    take meets and joins of families of filters and reason about them
    order-theoretically.
 4. *Avoidance of partial functions.*  Instead of "the limit of `f` at

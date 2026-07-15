@@ -20,7 +20,7 @@ In this chapter we explore how Mathlib formalizes the fundamental notions of
 order theory. Ordered structures pervade all of mathematics: partial orders
 appear in set inclusion, divisibility of natural numbers, and subgroup
 relations; lattices arise whenever we can form meets and joins; and complete
-lattices are essential for fixed-point theorems and topology.
+lattices are essential for fixed-point theorems and {ref "topology"}[topology].
 
 # Notation and naming conventions
 %%%

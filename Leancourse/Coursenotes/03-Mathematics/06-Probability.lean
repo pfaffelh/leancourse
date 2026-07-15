@@ -738,7 +738,7 @@ theory in Mathlib is much larger.  A sketch of where to go next:
   `PMF.toMeasure`; conversely, `Measure α` is the general setting
   that handles continuous distributions.
 - *Expectation* of a function `f : α → ℝ` against a probability
-  measure `μ` is the Bochner integral `∫ x, f x ∂μ`, found in
+  measure `μ` is the {ref "integration"}[Bochner integral] `∫ x, f x ∂μ`, found in
   `Mathlib.MeasureTheory.Integral.Bochner`.
 - *Independence* of two events / sigma-algebras / random variables
   is `ProbabilityTheory.IndepSets`, `IndepFun`, etc., in

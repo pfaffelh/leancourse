@@ -413,6 +413,7 @@ proving Goldbach.
 
 ## Which tactics, and where to find them
 %%%
+number := false
 tag := "firststeps"
 %%%
 
@@ -428,6 +429,7 @@ Mathlib].
 
 ## Exercises
 %%%
+number := false
 tag := "exercises"
 %%%
 

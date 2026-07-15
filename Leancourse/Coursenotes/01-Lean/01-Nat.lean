@@ -88,6 +88,7 @@ The `#eval` command (used throughout the {ref "terms"}[chapter on terms]) runs t
 
 ## The reduction rules
 %%%
+number := false
 tag := "reduction-rules"
 %%%
 

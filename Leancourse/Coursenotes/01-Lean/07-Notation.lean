@@ -57,6 +57,9 @@ end InfixDemo
 Here, `infixl` means left-associative infix, `65` is the binding power (the same as `+`), and the spaces around `⊕⊕` are part of the syntax. Similarly, `infixr` gives right-associative infix, and `prefix` / `postfix` are available for unary operators.
 
 ## Prefix and postfix operators
+%%%
+number := false
+%%%
 
 `prefix` and `postfix` define unary notation on a single argument:
 
@@ -75,6 +78,9 @@ end UnaryDemo
 ```
 
 ## Multi-argument `notation`
+%%%
+number := false
+%%%
 
 `notation` can take more than one argument and mix custom tokens with them:
 
@@ -89,6 +95,9 @@ end TernaryDemo
 ```
 
 ## Notation with binders
+%%%
+number := false
+%%%
 
 Mathlib uses `notation3` (and its underlying machinery `syntax` +
 `macro_rules`) to introduce binder-style notation like
@@ -101,6 +110,9 @@ For ordinary day-to-day notation, plain `notation`, `infixl`,
 `infixr`, `prefix`, and `postfix` are almost always enough.
 
 ## Scoped notation
+%%%
+number := false
+%%%
 
 If a notation should only be active inside a namespace (so it does
 not pollute the global symbol space), mark it `scoped`:

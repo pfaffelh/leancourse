@@ -33,6 +33,7 @@ Monads are a design pattern from functional programming that provide a uniform w
 
 ## The problem: chaining computations that may fail
 %%%
+number := false
 tag := "option-type"
 %%%
 
@@ -70,6 +71,7 @@ This nesting becomes deeply unreadable with more steps. Monads solve this proble
 
 ## The `Bind` operation
 %%%
+number := false
 tag := "bind-operation"
 %%%
 
@@ -100,6 +102,7 @@ So `pure` wraps a value in `some`, and `bind` propagates `none` or applies the c
 
 ## The `do`-notation
 %%%
+number := false
 tag := "do-notation"
 %%%
 
@@ -130,6 +133,7 @@ def multiDivide (a b c d : ℕ) : Option ℕ := do
 
 ## The `Functor` typeclass
 %%%
+number := false
 tag := "functor-typeclass"
 %%%
 
@@ -182,6 +186,7 @@ In summary, `map` always means "apply a function inside the container." The key 
 
 ## The `Monad` typeclass
 %%%
+number := false
 tag := "monad-typeclass"
 %%%
 
@@ -196,6 +201,7 @@ Lean already provides `Monad Option`, `Monad List`, `Monad IO`, and many more. F
 
 ## Lists as a monad
 %%%
+number := false
 tag := "list-monad"
 %%%
 
@@ -224,6 +230,7 @@ So `pure` creates a singleton list, and `bind` applies `f` to each element and c
 
 ## The `IO` monad
 %%%
+number := false
 tag := "io-monad"
 %%%
 
@@ -254,6 +261,7 @@ Internally, `IO α` is defined as `EStateM IO.Error IO.RealWorld α`, a state mo
 
 ## Stateful computation with `StateM`
 %%%
+number := false
 tag := "state-monad"
 %%%
 
@@ -285,6 +293,7 @@ The operations `get : StateM σ σ := fun s => (s, s)` and `set (s' : σ) : Stat
 
 ## Error handling with `Except`
 %%%
+number := false
 tag := "except-monad"
 %%%
 
@@ -321,6 +330,7 @@ This is exactly analogous to `Option`, but the failure case carries an error val
 
 ## Sets as a monad
 %%%
+number := false
 tag := "set-monad"
 %%%
 
@@ -353,6 +363,7 @@ This is exactly the mathematical counterpart of the `List` monad: where `List.bi
 
 ## Filters as a monad
 %%%
+number := false
 tag := "filter-monad"
 %%%
 
@@ -372,6 +383,7 @@ However, Mathlib does *not* register a `Monad Filter` instance. The reason is th
 
 ## Finite sets and `Finset`
 %%%
+number := false
 tag := "finset-monad"
 %%%
 
@@ -400,6 +412,7 @@ This is the finite analogue of the `Set` monad.
 
 ## Connection to category theory
 %%%
+number := false
 tag := "monads-category-theory"
 %%%
 
@@ -414,6 +427,7 @@ correspond precisely to the coherence conditions for monads in category theory. 
 
 ## Summary of monads seen so far
 %%%
+number := false
 tag := "monads-summary"
 %%%
 
@@ -453,6 +467,7 @@ one introduced above, now applied to probability distributions.
 
 ## Notation and naming conventions
 %%%
+number := false
 tag := "pmf-notation"
 %%%
 
@@ -501,6 +516,7 @@ tag := "pmf-notation"
 
 ## The definition
 %%%
+number := false
 tag := "pmf-definition"
 %%%
 
@@ -523,6 +539,7 @@ many values, so integrals against a `PMF` reduce to infinite sums.
 
 ## `pure`: the Dirac distribution
 %%%
+number := false
 tag := "pmf-pure"
 %%%
 
@@ -548,6 +565,7 @@ example (n : ℕ) (h : n ≠ 0) : (PMF.pure (0 : ℕ)) n = 0 :=
 
 ## `bind`: composing distributions
 %%%
+number := false
 tag := "pmf-bind"
 %%%
 
@@ -583,6 +601,7 @@ introduced earlier in this chapter, specialised from `Option` and
 
 ## `map`: pushing a distribution along a function
 %%%
+number := false
 tag := "pmf-map"
 %%%
 
@@ -627,6 +646,7 @@ requires it.
 
 ## `join`: flattening distributions of distributions
 %%%
+number := false
 tag := "pmf-join"
 %%%
 
@@ -661,6 +681,7 @@ measurability is used anywhere.
 
 ## The `Monad PMF` instance
 %%%
+number := false
 tag := "monad-pmf-instance"
 %%%
 
@@ -684,6 +705,7 @@ die.bind fun x => die.bind fun y => pure (x.val + y.val + 2).
 
 ## Concrete distributions
 %%%
+number := false
 tag := "pmf-concrete"
 %%%
 
@@ -705,6 +727,7 @@ noncomputable example :
 
 ## Beyond PMFs: measures, expectation, independence
 %%%
+number := false
 tag := "pmf-beyond"
 %%%
 
@@ -726,6 +749,7 @@ theory in Mathlib is much larger.  A sketch of where to go next:
 
 ## When do we still need measurability?
 %%%
+number := false
 tag := "pmf-measurability"
 %%%
 

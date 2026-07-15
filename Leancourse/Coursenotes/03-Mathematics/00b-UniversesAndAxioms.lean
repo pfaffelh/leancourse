@@ -115,6 +115,7 @@ Each of the three depends only on itself -- the signature of a genuine axiom. Ev
 
 ## Propositional extensionality (`propext`)
 %%%
+number := false
 tag := "axiom-propext"
 %%%
 
@@ -134,6 +135,7 @@ This axiom is essential for working with sets (since `Set α` is defined as `α 
 
 ## The axiom of quotients
 %%%
+number := false
 tag := "axiom-quot"
 %%%
 
@@ -152,6 +154,7 @@ Quotient soundness carries more weight than it looks: function extensionality is
 
 ## The axiom of choice (`Classical.choice`)
 %%%
+number := false
 tag := "axiom-choice"
 %%%
 
@@ -173,6 +176,7 @@ Two principles that mathematicians treat as bedrock are, perhaps surprisingly, *
 
 ## Function extensionality is a theorem
 %%%
+number := false
 tag := "axiom-funext"
 %%%
 
@@ -198,6 +202,7 @@ Despite the name and its fundamental role, `funext` is *not* an axiom: it is pro
 
 ## Excluded middle is a theorem (Diaconescu)
 %%%
+number := false
 tag := "em-derived"
 %%%
 
@@ -266,6 +271,7 @@ So the following are all *built into the kernel*, not assumed on top of it:
 
 ## More that the kernel bakes in
 %%%
+number := false
 tag := "baked-in-more"
 %%%
 
@@ -300,6 +306,7 @@ That last rule is exactly why an existential lives in `Prop` and you need {ref "
 
 ## What this means
 %%%
+number := false
 tag := "baked-in-meaning"
 %%%
 
@@ -318,6 +325,7 @@ By default, Lean's type theory is *constructive*: proofs must provide explicit w
 
 ## Excluded middle in use
 %%%
+number := false
 tag := "excluded-middle"
 %%%
 
@@ -335,6 +343,7 @@ Without excluded middle, double negation elimination `¬¬P → P` is not provab
 
 ## Decidability, classically
 %%%
+number := false
 tag := "decidable-classically"
 %%%
 
@@ -351,6 +360,7 @@ constructive core and the classical extension.
 
 ## When do you need Classical.choice?
 %%%
+number := false
 tag := "when-classical"
 %%%
 

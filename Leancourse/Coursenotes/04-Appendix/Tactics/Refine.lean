@@ -13,7 +13,7 @@ set_option pp.rawOnError true
 tag := "refine"
 %%%
 
-*Summary:* `refine` is `exact` with *holes*: you give the proof term but leave some parts open, and each hole comes back as a new goal. Write a hole as `?_` for an explicit new goal; a plain `_` instead asks Lean to *infer* that part, and only turns into a goal if it cannot. This makes `refine` the tool for building a proof term *outside-in* -- state its shape now, discharge the pieces as separate goals. A *named* hole `?h` labels its goal `case h`, which is convenient when several are open.
+*Summary:* `refine` is `exact` with *holes*: you give the proof term but leave some parts open as `?_`, and each comes back as a new goal (for `?_` versus a plain `_`, see the note at the start of this chapter). This makes `refine` the tool for building a proof term *outside-in* -- state its shape now, discharge the pieces as separate goals. A *named* hole `?h` labels its goal `case h`, which is convenient when several are open.
 
 The most common use is to *split* a goal by naming the constructor or lemma that produces it and leaving its arguments as holes -- an anonymous constructor `⟨…⟩` for an `∧`, `↔`, `∃`, structure, or subtype, or a lemma such as `le_antisymm` for an equality.
 

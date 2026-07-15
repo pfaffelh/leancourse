@@ -234,7 +234,7 @@ set_option trace.Elab.definition true         -- trace definition elaboration
 
 **7. Check Zulip.** The [Lean Zulip chat](https://leanprover.zulipchat.com/) is an active community where you can ask questions. Search the archive first -- your question has likely been asked before.
 
-**8. Use `conv` for surgical rewriting.** When `rw` rewrites in the wrong place, use `conv` to target a specific subexpression:
+**8. Use `conv` for surgical rewriting.** When `rw` rewrites in the wrong place, use {ref "conv"}[`conv`] to target a specific subexpression:
 ```lean
 example (a b : ℝ) : a + b + a = a + a + b := by
   conv_lhs => rw [add_comm a b]

@@ -89,6 +89,9 @@ tag := "cheatsheet"
 * + `h : P ↔ Q` {br}[] `hQ : Q`
   + `rw ← h at hQ`
   + `h : P ↔ Q` {br}[] `hQ : P`
+* + `h : a = b` {br}[] `⊢ a + a = b + a`
+  + `conv_lhs => lhs; rw [h]`
+  + `⊢ b + a = b + a`
 * + `⊢ P ∨ Q`
   + `left`
   + `⊢ P`

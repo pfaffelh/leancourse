@@ -18,6 +18,7 @@ import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Congr»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Constructor»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Contradiction»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Contrapose»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Conv»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Decide»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exact»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exfalso»
@@ -87,6 +88,13 @@ for a lemma to `apply`, {ref "rw"}[`rw?`] for a rewrite that fits, and
 {ref "simp"}[`simp?`] reports which simp lemmas fired (so you can then
 switch to a robust `simp only [...]`).
 
+*Holes: `_` versus `?_`.* Where a proof term is expected, you may leave
+a hole. A plain `_` asks Lean to *infer* that part -- it turns into a
+goal only if inference fails. A `?_` *always* leaves a new goal for you
+to prove (and `?name` labels it `case name`). This is exactly the
+difference between {ref "exact"}[`exact`] and {ref "refine"}[`refine`]:
+`refine` is `exact` that also tolerates `?_` holes.
+
 Before the alphabetical list, here is a rough guide to which
 *automation* tactic fits which kind of goal.
 
@@ -150,6 +158,8 @@ switch to `simp only` for a robust proof.
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Contradiction»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Contrapose»}
+
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Conv»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Decide»}
 

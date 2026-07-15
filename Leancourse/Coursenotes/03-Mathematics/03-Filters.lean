@@ -293,11 +293,11 @@ example (α : Type*) (s : Set α) :
 ```
 
 This filter is a generalized subset of `α` representing "almost every
-element".  On `ℕ`, the cofinite filter is strictly smaller than `atTop`
-(every cofinite set eventually contains all large `n`, but the set of
-even numbers is in `atTop`... wait -- actually it is not; and conversely,
-the set of even numbers is not cofinite).  Comparing these two filters
-is a good way to train the "generalized subset" intuition.
+element".  On `ℕ` it in fact *coincides* with `atTop` (the lemma
+`Nat.cofinite_eq_atTop`): a set omits only finitely many naturals
+exactly when it contains every sufficiently large one.  On other types
+the two differ, and comparing filters like these is a good way to train
+the "generalized subset" intuition.
 
 # Filter.map: the pushforward
 %%%

@@ -392,7 +392,7 @@ tag := "measure-api-summary"
 * + Integrable
   + `MeasureTheory.Integrable f μ`
 * + Conditional expectation
-  + `MeasureTheory.condexp`
+  + `MeasureTheory.condExp`
 :::
 
 Working with measure theory in Mathlib requires familiarity with `ℝ≥0∞`

@@ -15,7 +15,7 @@ tag := "left"
 
 *Summary:*
 
-The application of `left,` is identical to `apply h` for `h : P → P ∨ Q`. So if you have a goal of the form `⊢ P ∨ Q`, `left,` causes you to have only the goal `⊢ P`. After all, it is sufficient to show `P` to close the goal.
+If the goal is a disjunction `⊢ P ∨ Q`, then `left` reduces it to `⊢ P` -- it is exactly `apply Or.inl`, so it suffices to prove the left disjunct. Symmetrically, {ref "right"}[`right`] reduces `⊢ P ∨ Q` to `⊢ Q` (`apply Or.inr`). More generally, for any goal whose type is an inductive with two constructors, `left` picks the *first* constructor and `right` the *second*.
 
 *Examples:*
 
@@ -23,30 +23,25 @@ The application of `left,` is identical to `apply h` for `h : P → P ∨ Q`. So
 * + Proof state
   + Tactic
   + New proof state
-* + ⊢ P ∨ Q
-  + left
-  + ⊢ P
-* + ⊢ ℕ
-  + left
-  + *no goals🎉*
+* + `⊢ P ∨ Q`
+  + `left`
+  + `⊢ P`
+* + `⊢ P ∨ Q`
+  + `right`
+  + `⊢ Q`
 :::
 
-The second example requires a little explanation. First of all, you have to understand that the goal `⊢ ℕ` is to show that there is a term of type `ℕ`, i.e. that there is a natural number. Now you have to know how `ℕ` is implemented in Lean. This is
-
+::::keepEnv
+:::example " "
 ```lean
-inductive nat
-| zero : nat
-| succ (n : nat) : nat
+example (P Q : Prop) (hP : P) : P ∨ Q := by
+  left
+  exact hP
 ```
-
-together with
-
-```
-notation `ℕ` := nat
-```
-This means: The type `ℕ` is defined by the fact that `zero` is a term of this type, and that there is a function `succ : ℕ → ℕ`. Thus, in the second example, the input `left,` is closed because by definition `zero : ℕ` holds, so in particular there is a term of type `ℕ`.
+:::
+::::
 
 *Remarks:*
 
-* See also `right,` for the equivalent tactic, which is `apply h` for `h : Q → P ∨ Q`.
-* As in the second example, `left,` can always be applied when dealing with an inductive type with two constructors (such like `ℕ`).
+* See also {ref "right"}[`right`], the symmetric choice (`apply Or.inr`).
+* `left` and `right` apply to any goal that is a two-constructor inductive type, not only `∨`; on `∨` they are the everyday "prove the left / right disjunct".

@@ -154,12 +154,11 @@ example
       which (Or.inr h : b ∨ a) = false) :
     False := by
   -- at `a, b := True`, the injections collide:
-  have e : (Or.inl trivial : True ∨ True)
-      = Or.inr trivial := rfl
-  have htf : (true : Bool) = false := by
-    rw [← left (a := True) (b := True) trivial, e,
+  have htf : true = false := by
+    rw [← left (a := True) (b := True) trivial,
         right (a := True) (b := True) trivial]
-  exact Bool.noConfusion htf
+  revert htf
+  decide
 ```
 
 The way out mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a` (the {ref "decidable-typeclass"}[`Decidable` typeclass]), which -- crucially -- lives in `Type`, not `Prop` (its declaration uses the constructor-list `where` from the {ref "bool"}[`Bool` section]):

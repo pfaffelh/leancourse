@@ -59,8 +59,7 @@ Lean inserts coercions automatically in many cases, but sometimes the coercion c
 **Tactics for coercion issues:**
 
 - `push_cast` pushes coercions inward: it rewrites `↑(a + b)` to `↑a + ↑b`, `↑(a * b)` to `↑a * ↑b`, etc.
-- `pull_cast` pulls coercions outward (the reverse direction).
-- `norm_cast` normalizes cast expressions and can close goals involving casts.
+- `norm_cast` normalizes cast expressions (moving coercions outward and simplifying) and can close goals involving casts.
 - `exact_mod_cast` and `apply_mod_cast` are versions of `exact` and `apply` that handle casts automatically.
 
 ```lean

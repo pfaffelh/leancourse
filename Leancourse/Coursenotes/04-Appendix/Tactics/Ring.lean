@@ -40,5 +40,5 @@ example (P : Prop) : False → P := by
 
 *Remarks:*
 
-* The second example works even though `ℕ` is not a ring (but only a half-ring). It would also work with `n : ℝ` (since `ℝ` has more calculation rules than `ℕ`).
+* The second example works even though `ℕ` is not a ring (but only a *semiring*). It would also work with `n : ℝ` (since `ℝ` has more calculation rules than `ℕ`).
 * `ring` is only used to close the goal.

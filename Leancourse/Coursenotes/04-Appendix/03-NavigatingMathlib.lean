@@ -54,11 +54,12 @@ example : (0 : ℝ) < 1 := by exact?
 -- This might suggest: exact zero_lt_one
 ```
 
-**`apply?`** searches for a lemma whose conclusion matches the goal, possibly leaving subgoals.
+**`apply?`** searches for a lemma whose conclusion matches the goal, possibly leaving its hypotheses as new subgoals.
 
-```lean
-example : Continuous (fun x : ℝ ↦ x ^ 2 + 1) := by
-  fun_prop
+```
+-- Goal `a ≤ b`, with `h : a < b` in context. Try:
+example (a b : ℝ) (h : a < b) : a ≤ b := by apply?
+-- suggests: exact le_of_lt h
 ```
 
 **`rw?`** searches for a lemma that can rewrite part of the goal.

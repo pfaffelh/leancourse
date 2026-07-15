@@ -331,6 +331,19 @@ False.rec : (motive : False → Sort u) → (t : False) → motive t
 ::::keepEnv
 :::example "Implicit vs. explicit `motive`: why `False.rec` looks different"
 This looks different from `Bool.rec` and `True.rec` above for one reason -- *implicit* versus *explicit*: there the `motive` sat in curly braces `{motive …}` and Lean inferred it from the case values, which is why we could drop it and even present those signatures non-dependently as `C → C → Bool → C` and `C → True → C`. `False` has *no* case values, so nothing lets Lean infer the `motive`; it is therefore *explicit* (round brackets `(motive …)`), and you must supply it -- you write `False.rec (fun _ => C) h`, or `False.rec _ h` letting the goal fix it, but never plain `False.rec h` (which would read `h` as the motive). Note also that between the `motive` and the input `t` there is *no* case argument at all -- `Bool.rec` had two there, `True.rec` one, `False.rec` none -- which is exactly why its result `motive t` may be of *any* type: the principle *ex falso quodlibet* ("from a falsehood, anything follows"). The filled-in form is packaged as `False.elim`, so that `False.elim h = False.rec (fun _ => C) h`.
+
+The very same split appears one universe down, in `Type` -- which shows that it turns on the *number of constructors*, not on `Prop`. The `Type`-level twins of `True` and `False` are `Unit` (one constructor, written `()`) and `Empty` (no constructor at all):
+
+```
+-- one constructor → motive implicit, as for `True.rec`
+PUnit.rec : {motive …} → motive PUnit.unit →
+              (t : PUnit) → motive t
+-- no constructor  → motive explicit, as for `False.rec`
+Empty.rec : (motive : Empty → Sort u) →
+              (t : Empty) → motive t
+```
+
+So `Empty.rec` is the data version of `False.rec` -- explicit `motive`, no case argument -- and its packaged form `Empty.elim : Empty → C` is the `Type`-level *ex falso*, the exact twin of `False.elim`. (One wrinkle: `Unit` is a *reducible abbreviation* for `PUnit`, so its recursor is called `PUnit.rec`, not `Unit.rec`.) Whether the `motive` is implicit or explicit is therefore settled solely by whether there is a case value to infer it from; `Prop` versus `Type` never enters in.
 :::
 ::::
 

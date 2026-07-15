@@ -26,7 +26,7 @@ In a simply typed language (like Haskell without extensions, or basic OCaml), th
 
 In a dependently typed language, you *can* do this. The type of the output may mention the input value. For example:
 
-- `(n : ℕ) → Fin n → ℝ` is the type of a function that takes a natural number `n` and then an element of `{0, 1, ..., n-1}`, returning a real number.
+- `(n : ℕ) → Fin n → ℝ` is the type of a function that takes a natural number `n` and then an element of `Fin n`, returning a real number.
 - `(n : ℕ) → Vector ℝ n` is the type of a function that, given `n`, returns a vector of `n` real numbers.
 
 This expressiveness is what allows Lean to serve simultaneously as a programming language and a theorem prover.
@@ -122,7 +122,7 @@ Mathematically, `Σ` is like a disjoint union (indexed coproduct), while `∃` i
 tag := "vectors-indexed"
 %%%
 
-A classic example of dependent types is the type of vectors (lists of a fixed length). In Mathlib, one way to represent a vector of length `n` with entries in `α` is as a function `Fin n → α`, where `Fin n` is the type with exactly `n` elements `{0, 1, ..., n-1}`.
+A classic example of dependent types is the type of vectors (lists of a fixed length). In Mathlib, one way to represent a vector of length `n` with entries in `α` is as a function `Fin n → α` (recall `Fin n`, the type with `n` elements, from the {ref "types"}[Types chapter]).
 
 ```lean
 -- A vector of 3 natural numbers, represented as a function from Fin 3

@@ -26,15 +26,6 @@ tag := "revert"
   + `⊢ P → Q`
 :::
 
-::::keepEnv
-:::example " "
-```lean
-example (P : Prop) : False → P := by
-  exact False.elim
-```
-:::
-::::
-
 *Remarks:*
 
 `revert` is rarely needed; actually only when you want to apply an already proven result exactly and first want to establish the correct form of the goal.

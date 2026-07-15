@@ -31,7 +31,6 @@ The application of `left,` is identical to `apply h` for `h : P → P ∨ Q`. So
   + *no goals🎉*
 :::
 
-
 The second example requires a little explanation. First of all, you have to understand that the goal `⊢ ℕ` is to show that there is a term of type `ℕ`, i.e. that there is a natural number. Now you have to know how `ℕ` is implemented in Lean. This is
 
 ```lean
@@ -46,15 +45,6 @@ together with
 notation `ℕ` := nat
 ```
 This means: The type `ℕ` is defined by the fact that `zero` is a term of this type, and that there is a function `succ : ℕ → ℕ`. Thus, in the second example, the input `left,` is closed because by definition `zero : ℕ` holds, so in particular there is a term of type `ℕ`.
-
-::::keepEnv
-:::example " "
-```lean
-example (P : Prop) : False → P := by
-  exact False.elim
-```
-:::
-::::
 
 *Remarks:*
 

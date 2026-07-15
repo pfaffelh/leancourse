@@ -51,9 +51,5 @@ example (x : ℝ) (d : ℕ): 0 ≤ (d : ℝ) * x^2 := by
   exact Nat.cast_nonneg' d
 ```
 
-```
-example (P : Prop) : False → P := by
-  exact False.elim
-```
 :::
 ::::

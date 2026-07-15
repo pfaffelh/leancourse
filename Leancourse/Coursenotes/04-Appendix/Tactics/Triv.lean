@@ -32,11 +32,3 @@ tag := "triv"
   + *No goals*
 :::
 
-::::keepEnv
-:::example " "
-```lean
-example (P : Prop) : False → P := by
-  exact False.elim
-```
-:::
-::::

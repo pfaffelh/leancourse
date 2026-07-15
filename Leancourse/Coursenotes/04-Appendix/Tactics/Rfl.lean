@@ -35,10 +35,6 @@ The second example works because both sides are by definition equal to `succ suc
 
 ::::keepEnv
 :::example " "
-```lean
-example (P : Prop) : False → P := by
-  exact False.elim
-```
 
 {docstring Lean.Elab.Tactic.Rfl.evalApplyRfl}
 

@@ -43,11 +43,3 @@ If you want to know which lemmas were used, try `simp?`. This provides some clue
   `simp only add_zero, eq_self_iff_true`
 :::
 
-::::keepEnv
-:::example " "
-```lean
-example (P : Prop) : False → P := by
-  exact False.elim
-```
-:::
-::::

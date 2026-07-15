@@ -45,13 +45,8 @@ tag := "rcases"
 
 The last example shows how to use `rcases` to directly resolve a ∃ quantifier in a hypothesis that has more than one constraint (here: 0 ≤ m) and m < n can be resolved directly.
 
-
 ::::keepEnv
 :::example " "
-```lean
-example (P : Prop) : False → P := by
-  exact False.elim
-```
 
 {docstring Lean.Elab.Tactic.RCases.RCasesPatt}
 

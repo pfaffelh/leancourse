@@ -47,7 +47,6 @@ tag := "rw"
   + k m : ℕ {br}[] ⊢ k + m = m + k
 :::
 
-
 For the last four examples, you first need to know that add_comm and add_zero are the statements
 
 ```
@@ -67,11 +66,3 @@ In the first of the four examples, `rw` applies to the first occurrence of a ter
 * The `rw` tactic does not work when it comes after a *binder*, which could be a `∀ ∃ ∑`. In this case, `simp_rw` will hopefully help.
 * `rw?` *searches* for a rewrite that applies to the goal: it lists library equations and `↔`-statements whose left- (or, with `←`, right-) hand side matches a subterm, and you pick one. Useful when you are sure a rewrite should exist but do not know its name.
 
-::::keepEnv
-:::example " "
-```lean
-example (P : Prop) : False → P := by
-  exact False.elim
-```
-:::
-::::

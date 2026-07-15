@@ -293,10 +293,7 @@ The *kernel* is the small, trusted core of Lean that has the final say on whethe
 
 *The trivial proposition `True`.* `True` is the proposition that always holds. Being a `Prop`, its terms are *proofs*. It has a single constructor, taking no argument, which is therefore already a complete proof of it (note that the type after the colon is now `Prop`, not `Type`):
 
-```
-inductive True : Prop where
-  | intro : True
-```
+{docstring True}
 
 So proving `True` is as easy as naming that constructor:
 
@@ -315,9 +312,7 @@ There is correspondingly nothing to *learn* from a proof of `True`: the recursor
 
 *The empty proposition `False`.* `False` is the opposite extreme: the proposition that is *never* true. It is the `inductive` type with *no constructors at all* -- so its definition has no `where` clause and no `|` lines:
 
-```
-inductive False : Prop
-```
+{docstring False}
 
 Since there is no constructor, there is no way to build a term of `False` -- exactly as it should be for a statement that has no proof. Its recursor is the striking one, and here we give its *full* signature (the result universe `Sort u` is treated in the {ref "type-universes"}[next chapter]):
 

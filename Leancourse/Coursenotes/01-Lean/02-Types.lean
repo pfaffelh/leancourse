@@ -163,11 +163,7 @@ example
 
 The way out mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a` (the {ref "decidable-typeclass"}[`Decidable` typeclass]), which -- crucially -- lives in `Type`, not `Prop` (its declaration uses the constructor-list `where` from the {ref "bool"}[`Bool` section]):
 
-```
-inductive Decidable (p : Prop) : Type where
-  | isFalse (h : ¬p)
-  | isTrue  (h :  p)
-```
+{docstring Decidable}
 
 Because `Decidable p` is in `Type`, it *may* eliminate into `Type` -- which is exactly why `if h : p then _ else _` (a *dependent* `if`, whose `h : p` names the proof made available in the then-branch) and the {ref "decide"}[`decide`] tactic compute. The two stories line up exactly:
 

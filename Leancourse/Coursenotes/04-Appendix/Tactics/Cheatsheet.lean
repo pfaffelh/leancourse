@@ -128,6 +128,12 @@ tag := "cheatsheet"
 * + `hQ : Q` {br}[] `⊢ P ∧ Q`
   + `refine ⟨ _, hQ ⟩`
   + `hQ : Q` {br}[] `⊢ P`
+* + `⊢ P ↔ Q`
+  + `refine ⟨?_, ?_⟩`
+  + `⊢ P → Q` {br}[] `⊢ Q → P`
+* + `a b : ℝ` {br}[] `⊢ a = b`
+  + `refine le_antisymm ?_ ?_`
+  + `⊢ a ≤ b` {br}[] `⊢ b ≤ a`
 * + `⊢ P ∨ Q → R`
   + `rintro (hP | hQ)` {br}[] = {br}[] `intro h` {br}[] `cases h with hP hQ`
   + `hP : P` {br}[] `⊢ R` {br}[] `hQ : Q` {br}[] `⊢ R`

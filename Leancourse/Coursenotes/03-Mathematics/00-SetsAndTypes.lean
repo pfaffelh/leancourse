@@ -24,6 +24,38 @@ every later chapter takes for granted -- *propositions* and their
 *proofs* -- was covered in {ref "curry-howard"}[the Curry-Howard
 chapter] of the {ref "lean"}[Lean part]; from here on we use it freely.
 
+# Sets versus types
+%%%
+tag := "set-vs-type"
+%%%
+
+The first reflex to unlearn is the set-theoretic one that *everything
+is a set*. In set theory `∈` is the single primitive, an object can be
+a member of many sets, and there is no fixed notion of "the type of
+`x`". Type theory inverts this: the primitive is the *type*, and every
+term `a : α` has *exactly one* type, fixed once and for all.
+
+So what is a *set* in Lean? It is **not** a new type. A `Set α` is a
+*predicate* on the already-existing type `α` -- in fact `Set α` is
+*definitionally* `α → Prop` -- that carves out some of `α`'s terms. An
+element of `s : Set α` therefore still has type `α`; the set only
+records *which* terms of `α` lie in it, and `a ∈ s` is just `s a`.
+
+Three notions are worth keeping firmly apart:
+
+- a *type* `α` -- the ambient collection of terms;
+- a *set* `s : Set α` -- a predicate selecting terms of `α`, whose
+  elements *keep* their type `α`;
+- a *subtype* `{ x : α // p x }` (see {ref "subtypes"}[Subtypes]) -- a
+  genuinely *new* type, whose terms are pairs of a value and a proof
+  that it satisfies `p`.
+
+So there *is* a difference between a set and a type, and it is the one
+a mathematician must internalize. The rest of this chapter makes it
+precise: sets as predicates and their operations, when two sets are
+equal, and finally how to cross the gap -- turning a set back into a
+type.
+
 # Notation and naming conventions
 %%%
 tag := "foundations-notation"
@@ -155,24 +187,16 @@ example : { n : ℕ | n % 2 = 0 } = { n | 2 ∣ n } := by
   constructor <;> intro h <;> omega
 ```
 
-# Sets, subtypes, and types
+# From a set back to a type: subtypes and coercion
 %%%
 tag := "foundations-sets-subtypes"
 %%%
 
-It is worth keeping three closely related notions apart.
-
-- A *type* `α` is the ambient collection of terms.
-- A *set* `s : Set α` is a predicate carving out some terms of `α`;
-  crucially, its elements still have type `α`.
-- A *subtype* `{ x : α // p x }` (see
-  {ref "subtypes"}[Subtypes]) is a brand-new type whose terms are
-  pairs of a value and a proof that it satisfies `p`.
-
-A set can be *promoted* to a type by coercion: `↥s` denotes the
-subtype `{ x // x ∈ s }` of its members.  This is how a set becomes a
-type in its own right -- for instance when we want to speak of a
-function defined only on `s`.
+A set is not a type -- but sometimes you need one, for instance to
+speak of a function defined only on `s`, or to sum over its elements. A
+set can be *promoted* to a type by coercion: `↥s` denotes the subtype
+`{ x // x ∈ s }` of its members, a genuinely new type whose terms pair
+an element of `α` with a proof of membership.
 
 ```lean
 -- coercing a set to a type gives the subtype of members

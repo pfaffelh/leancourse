@@ -1,6 +1,6 @@
 import VersoManual
 
-import «Leancourse».Coursenotes.«03-Mathematics».«00-Foundations»
+import «Leancourse».Coursenotes.«03-Mathematics».«00-SetsAndTypes»
 import «Leancourse».Coursenotes.«03-Mathematics».«00b-UniversesAndAxioms»
 import «Leancourse».Coursenotes.«03-Mathematics».«00c-Logic»
 import «Leancourse».Coursenotes.«03-Mathematics».«01-OrdersAndLattices»
@@ -34,7 +34,7 @@ introduced before they appear, and uses Verso's `{docstring}` block
 to render Mathlib definitions and lemmas inline so the notes stay in
 sync with the library.
 
-{include 0 «Leancourse».Coursenotes.«03-Mathematics».«00-Foundations»}
+{include 0 «Leancourse».Coursenotes.«03-Mathematics».«00-SetsAndTypes»}
 
 {include 0 «Leancourse».Coursenotes.«03-Mathematics».«00b-UniversesAndAxioms»}
 

@@ -22,7 +22,7 @@ Even experienced Lean users regularly run into frustrating situations where a pr
 tag := "universe-issues"
 %%%
 
-Every type in Lean lives in a universe. The hierarchy is:
+Every type in Lean lives in a {ref "universe-hierarchy"}[universe]. The hierarchy is:
 
 - `Prop` (also called `Sort 0`) — the universe of propositions
 - `Type 0` (also called `Type`) — the universe of "ordinary" types like `ℕ`, `ℝ`
@@ -45,7 +45,7 @@ In practice, if you are working with concrete types (`ℕ`, `ℝ`, etc.) and Mat
 tag := "coercion-headaches"
 %%%
 
-In mathematics, we freely treat a natural number as an integer, a rational as a real, and so on. In Lean, these are different types, and moving between them requires _coercions_, written `↑` (or `Nat.cast`, `Int.cast`, etc.).
+In mathematics, we freely treat a natural number as an integer, a rational as a real, and so on. In Lean, these are different types, and moving between them requires {ref "coercions"}[coercions], written `↑` (or `Nat.cast`, `Int.cast`, etc.).
 
 Lean inserts coercions automatically in many cases, but sometimes the coercion chain gets confused, especially when mixing several numeric types.
 
@@ -74,7 +74,7 @@ example (n : ℕ) (h : n < 5) : (n : ℤ) < 5 := by exact_mod_cast h
 tag := "definitional-equality"
 %%%
 
-In Lean, some equalities hold _by definition_ (definitional equality), while others require a proof (propositional equality). The distinction can be surprising.
+In Lean, some equalities hold _by definition_ ({ref "defeq"}[definitional equality]), while others require a proof (propositional equality). The distinction can be surprising.
 
 **When `rfl` works:** `rfl` closes a goal `a = b` when `a` and `b` are definitionally equal. For example:
 ```lean
@@ -90,14 +90,14 @@ example (n : ℕ) : n + 0 = n := by rfl -- by definition of Nat.add
 -- 0 + n is not definitionally equal to n.
 ```
 
-The `change` tactic lets you replace the goal with a definitionally equal one:
+The {ref "change"}[`change`] tactic lets you replace the goal with a definitionally equal one:
 ```lean
 example (n : ℕ) : Nat.succ n = n + 1 := by
   change n + 1 = n + 1
   rfl
 ```
 
-The `show` tactic does the same thing but is more readable when used at the start of a proof:
+The {ref "show"}[`show`] tactic does the same thing but is more readable when used at the start of a proof:
 ```lean
 example (n : ℕ) : Nat.succ n = n + 1 := by
   show n + 1 = n + 1

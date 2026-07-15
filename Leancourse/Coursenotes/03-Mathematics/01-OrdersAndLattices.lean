@@ -354,3 +354,10 @@ Here is a quick reference for the most important order-theoretic lemmas:
 The `omega` tactic is very useful for goals involving natural number and integer
 inequalities. For more general ordered structures, `gcongr` can help with
 monotonicity goals.
+
+# Exercises
+%%%
+tag := "orders-exercises"
+%%%
+
+Now try it yourself. The exercise sheet [06-a-Orders.lean](https://github.com/pfaffelh/leancourse/blob/main/Leancourse/Exercises/06-Mathematics/06-a-Orders.lean) turns the material above into `sorry`-holes to fill in your editor -- partial orders, lattices, `sSup`/`sInf`, and monotone functions. To run it in the browser with no local install (the first launch builds Mathlib, so give it a minute), open the repository in [Gitpod](https://gitpod.io/#https://github.com/pfaffelh/leancourse) and go to that file.

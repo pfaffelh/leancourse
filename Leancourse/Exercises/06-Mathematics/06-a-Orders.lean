@@ -6,6 +6,9 @@ import Mathlib
 These exercises cover partial orders, lattices, and complete lattices.
 You will work with ≤, ⊔, ⊓, sSup, and monotone functions.
 Replace each `sorry` with a proof.
+
+Explanations and worked examples are in the course notes:
+https://pfaffelh.github.io/leancourse/Mathematics/#orders-and-lattices
 -/
 
 variable {α : Type*}

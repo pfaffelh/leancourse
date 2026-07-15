@@ -88,35 +88,20 @@ The practical workflow -- and *which* tactics to reach for -- is taken up in the
 tag := "false-true-types"
 %%%
 
-The correspondence is clearest at the two extremes. A proposition that is *always* provable should be a type that is *always* inhabited; a proposition that can *never* be proved should be a type with *no* inhabitants at all. Lean's `True` and `False` are exactly these two types, and both are ordinary inductive types. Here is how they are built (we put them in a `namespace` to avoid a clash with the built-in `True`/`False`; for the use of namespaces, see {ref "namespaces"}[the appendix]):
+The correspondence is clearest at the two extremes. A proposition that is *always* provable should be a type that is *always* inhabited; a proposition that can *never* be proved should be a type with *no* inhabitants at all. Lean's `True` and `False` are exactly these two types -- both ordinary inductive types, {ref "true-false"}[introduced in the chapter on the natural numbers] (`True` with a single constructor, `False` with none). Here we only look at them through the Curry-Howard lens.
+
+`True` has the canonical proof `True.intro`, so it is inhabited and proving it is trivial:
 
 ```lean
-namespace Playground
-
--- one trivial constructor -> always provable
-inductive True : Prop where
-  | intro : True
-
--- no constructors at all -> no proof can exist
-inductive False : Prop
-
-end Playground
+example : True := True.intro
 ```
 
-`True` has the single constructor `True.intro`, which is its canonical proof, so `True` is inhabited:
+`False` has *no* constructor, so no proof of it can ever be built; and its recursor, having no cases, hands us *any* goal from a proof of `False` -- the principle *ex falso quodlibet* (packaged as `False.elim`):
 
 ```lean
-example : Playground.True := Playground.True.intro
-```
-
-`False` has *no* constructor, so no proof of it can ever be built. Its recursor takes one case per constructor -- that is, no cases at all -- and therefore hands us *any* goal from a proof of `False`. This is the principle *ex falso quodlibet*:
-
-```lean
-example (C : Prop) : Playground.False → C :=
+example (C : Prop) : False → C :=
   fun h => nomatch h
 ```
-
-Lean's built-in `True` and `False` are defined in exactly this way, and the `False.elim` used above is precisely this eliminator for the empty type.
 
 # Implication = function type
 %%%

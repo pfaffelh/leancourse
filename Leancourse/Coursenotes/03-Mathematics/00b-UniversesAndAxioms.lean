@@ -38,7 +38,7 @@ is exactly what blocks this, and it is what keeps the whole system consistent. E
 tag := "prop-vs-type"
 %%%
 
-The universe `Prop` has a special property that distinguishes it from all `Type n`: **proof irrelevance**. This means that if `P : Prop` and `h1 h2 : P`, then `h1 = h2`. In other words, all proofs of the same proposition are considered equal.
+The universe `Prop` has a special property that distinguishes it from all `Type n`: **proof irrelevance** (introduced in {ref "prop-special"}[why `Prop` is special]). Recall that if `P : Prop` and `h1 h2 : P`, then `h1 = h2`: all proofs of the same proposition are considered equal. Here we revisit it from the foundational side.
 
 This is a deliberate design choice. It means:
 - You cannot pattern-match on a proof to extract computational data.

@@ -183,7 +183,7 @@ The ι rule is the one we met concretely with `Nat` in the {ref "nat-intro"}[pre
 ::::keepEnv
 :::example "Two further rules: proof irrelevance and quotient computation"
 Beyond the six lambda-calculus rules, the kernel's definitional equality carries two further rules specific to Lean's foundations:
-* *Proof irrelevance*: any two proofs `h₁ h₂ : P` of the same proposition `P : Prop` are definitionally equal. (This is the *`Prop` is special* point, taken up in {ref "prop-vs-type"}[the section on proof irrelevance].)
+* *Proof irrelevance*: any two proofs `h₁ h₂ : P` of the same proposition `P : Prop` are definitionally equal. (This is the *`Prop` is special* point, taken up in {ref "prop-special"}[why `Prop` is special].)
 * *Quotient computation*: the ι-like rule for {ref "quotient-types"}[quotient types], `Quot.lift f h (Quot.mk r a) ⟶ f a`. On `Nat`, a lifted function applied to a `Quot.mk` reduces to the underlying function:
 
 ```lean

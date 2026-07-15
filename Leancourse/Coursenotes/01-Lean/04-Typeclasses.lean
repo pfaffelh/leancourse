@@ -67,7 +67,7 @@ Because a `class` is a `structure`, the applied class `C α` is an ordinary *typ
 #check @Fact                          -- Prop → Prop
 ```
 
-Being a proposition, a `Prop` class inherits {ref "types"}[proof irrelevance]: any two instances are definitionally equal. That is a feature -- such an instance can never *conflict* with another, and it is erased at runtime.
+Being a proposition, a `Prop` class inherits {ref "prop-special"}[proof irrelevance]: any two instances are definitionally equal. That is a feature -- such an instance can never *conflict* with another, and it is erased at runtime.
 
 ```lean
 example (h₁ h₂ : Fact (2 = 2)) : h₁ = h₂ := rfl

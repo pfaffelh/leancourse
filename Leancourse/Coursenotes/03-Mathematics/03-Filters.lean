@@ -461,7 +461,7 @@ work is still the inequality manipulation.
 tag := "ultrafilters"
 %%%
 
-An *ultrafilter* is a maximal proper filter: for every set `s`, either
+An *ultrafilter* is a maximal proper filter (xxx: *proper filter* is not defined): for every set `s`, either
 `s` or `sᶜ` belongs to the ultrafilter.  Ultrafilters are fundamental in
 logic (they correspond to consistent complete theories) and in topology
 (compactifications, nonstandard analysis).

@@ -109,7 +109,7 @@ tag := "measurable-space"
 
 A *sigma-algebra* (or *measurable space*) on a type `α` is specified by the
 typeclass `MeasurableSpace α`. It tells Lean which subsets of `α` are
-*measurable*.
+*measurable*. (xxx: the σ-algebra axioms -- contains `∅`, closed under complement and countable union -- are not stated in prose.)
 
 {docstring MeasurableSpace}
 
@@ -239,7 +239,7 @@ tag := "integration"
 
 Mathlib provides the Bochner integral `∫ x, f x ∂μ` (typed `\int`), which
 generalizes both the Lebesgue integral for real-valued functions and the
-integral for Banach-space-valued functions.
+integral for Banach-space-valued functions. (xxx: the construction of the integral -- simple-function approximation, `lintegral` -- and `SigmaFinite` are named but never sketched.)
 
 {docstring MeasureTheory.integral}
 

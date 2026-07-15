@@ -523,7 +523,7 @@ tag := "pmf-definition"
 {docstring PMF}
 
 So a `PMF α` is a function `p : α → ℝ≥0∞` together with a proof
-`HasSum p 1`.  In particular:
+`HasSum p 1`. (xxx: unconditional summation `tsum`/`HasSum` -- the crux of `PMF` -- is not defined.)  In particular:
 
 - `p a : ℝ≥0∞` is the probability mass at `a`;
 - `∑' a, p a = 1` (total mass is one);

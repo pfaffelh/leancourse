@@ -264,7 +264,7 @@ tag := "compact-spaces"
 A set `s` is *compact* if every open cover has a finite subcover. In Mathlib,
 compactness is defined using filters: `s` is compact if every filter that
 contains `s` (via the principal filter) and is nontrivial has a cluster point
-in `s`.
+in `s`. (xxx: *nontrivial filter* and *cluster point* are used here but not defined.)
 
 {docstring IsCompact}
 
@@ -289,7 +289,7 @@ tag := "connected-spaces"
 
 A topological space is *connected* if it cannot be written as the union of
 two nonempty disjoint open sets. A set `s` is connected if, viewed as a
-subspace, it is connected.
+subspace, it is connected. (xxx: the distinction *connected* vs *preconnected* -- used in the notation table and summary -- is not explained.)
 
 ```lean
 -- ℝ is connected

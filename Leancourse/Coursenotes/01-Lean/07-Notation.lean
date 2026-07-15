@@ -165,7 +165,7 @@ example (P Q : Prop) (hP : P) (hnP : ¬P) : Q := by
 tag := "abbrev"
 %%%
 
-The `abbrev` command introduces a definition that is *reducibly transparent*, meaning Lean's elaborator will unfold it automatically whenever needed. In contrast, a definition introduced with `def` is *semireducible* and will not be unfolded automatically.
+The `abbrev` command introduces a definition that is *reducibly transparent*, meaning Lean's {ref "elaborator"}[elaborator] will unfold it automatically whenever needed. In contrast, a definition introduced with `def` is *semireducible* and will not be unfolded automatically.
 
 ```lean
 abbrev NatAlias := ℕ

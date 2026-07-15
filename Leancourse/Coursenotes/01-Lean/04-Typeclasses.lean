@@ -297,7 +297,7 @@ When Lean encounters an expression like `a + b` where `a b : α`, it needs to fi
 3. If an instance itself requires other instances (e.g., `Add (Prod α β)` might require `Add α` and `Add β`), Lean recursively resolves those.
 4. If exactly one chain of instances leads to a solution, Lean uses it. If none or multiple exist, it reports an error.
 
-This process is deterministic and happens at elaboration time (when Lean checks your code), not at runtime. So there is no performance penalty.
+This process is deterministic and happens at {ref "elaborator"}[elaboration time] (when Lean checks your code), not at runtime. So there is no performance penalty.
 
 You can trigger instance resolution yourself with the term
 `inferInstance`, which asks Lean to synthesize an instance of a stated

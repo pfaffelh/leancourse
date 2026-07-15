@@ -210,6 +210,14 @@ How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[re
 :::
 ::::
 
+## The kernel and the elaborator
+%%%
+number := false
+tag := "elaborator"
+%%%
+
+The *kernel* is the small, trusted core of Lean that has the final say on whether a term has the type it claims. Everything else you write -- tactics, notation, `match`, coercions, `[…]` instance holes -- is handled *outside* the kernel by the *elaborator*: the elaborator takes your surface syntax and turns it into a single, fully explicit term, which the kernel then re-checks from scratch against a fixed, tiny set of rules (the {ref "reduction-rules"}[reduction rules], the typing rules, and the primitive universes `Sort u`). A handful of things are *built into* this core rather than defined on top of it: the universes `Prop` and `Type u`, the way an `inductive` type generates its constructors and recursor, and proof irrelevance. The point of keeping the kernel small is *trust* -- to believe a Lean proof you need only believe the kernel, not the large machinery of tactics and automation above it. That trust is reinforced by there being *several independent implementations* of the kernel: besides Lean's own reference kernel (written in C++), the same proof terms can be re-checked by separate type-checkers written in other languages, and even by one (`Lean4Lean`) written and formally verified in Lean itself. A proof accepted by one kernel can thus be cross-checked by another. The kernel's logic has a name, the *Calculus of Inductive Constructions*, discussed in the {ref "cic"}[Mathematics part].
+
 
 # Bool
 %%%
@@ -284,12 +292,6 @@ tag := "true-false"
 %%%
 
 Both types in this section live in `Prop`, the universe of *propositions*. Before defining them, a word on `Prop` itself. Unlike `Bool`, `Nat`, or the `True` and `False` below -- each an `inductive` type whose definition you can read off -- `Prop` has *no* such definition. It is *not* an inductive type, and there is no `def Prop := …` to unfold; asking Lean to print it (`#print Prop`) even fails, because there is nothing written in Lean to print. Instead, `Prop` is a *primitive*, baked directly into Lean's kernel: it is the bottom universe `Sort 0` (with `Type u` being `Sort (u+1)`; more on the {ref "type-universes"}[universe hierarchy] in the next chapter). What makes `Prop` usable is therefore not a definition but the *rules* the kernel attaches to it -- proof irrelevance and the rest, taken up in {ref "prop-special"}[why `Prop` is special].
-
-::::keepEnv
-:::example "The kernel and the elaborator"
-The *kernel* is the small, trusted core of Lean that has the final say on whether a term has the type it claims. Everything else you write -- tactics, notation, `match`, coercions, `[…]` instance holes -- is handled *outside* the kernel by the *elaborator*: the elaborator takes your surface syntax and turns it into a single, fully explicit term, which the kernel then re-checks from scratch against a fixed, tiny set of rules (the {ref "reduction-rules"}[reduction rules], the typing rules, and the primitive universes `Sort u`). A handful of things are *built into* this core rather than defined on top of it: the universes `Prop` and `Type u`, the way an `inductive` type generates its constructors and recursor, and proof irrelevance. The point of keeping the kernel small is *trust* -- to believe a Lean proof you need only believe the kernel, not the large machinery of tactics and automation above it. That trust is reinforced by there being *several independent implementations* of the kernel: besides Lean's own reference kernel (written in C++), the same proof terms can be re-checked by separate type-checkers written in other languages, and even by one (`Lean4Lean`) written and formally verified in Lean itself. A proof accepted by one kernel can thus be cross-checked by another. The kernel's logic has a name, the *Calculus of Inductive Constructions*, discussed in the {ref "cic"}[Mathematics part].
-:::
-::::
 
 *The trivial proposition `True`.* `True` is the proposition that always holds. Being a `Prop`, its terms are *proofs*. It has a single constructor, taking no argument, which is therefore already a complete proof of it (note that the type after the colon is now `Prop`, not `Type`):
 

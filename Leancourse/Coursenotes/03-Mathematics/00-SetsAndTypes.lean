@@ -182,6 +182,20 @@ example : (⋃ n : ℕ, {n}) = Set.univ := by
   ext a; simp
 ```
 
+A common variant restricts the index to a *set* `a : Set ι` rather than the whole index type -- written `⋃ i ∈ a, s i` and `⋂ i ∈ a, s i`. This is just the indexed operation ranging over the members of `a`, and membership carries the bound along:
+
+```lean
+-- union over `i` ranging in a set `a`
+example (a : Set ℕ) (s : ℕ → Set ℕ) (x : ℕ) :
+    (x ∈ ⋃ i ∈ a, s i) ↔ ∃ i ∈ a, x ∈ s i := by
+  simp only [Set.mem_iUnion, exists_prop]
+
+-- and the bounded intersection
+example (a : Set ℕ) (s : ℕ → Set ℕ) (x : ℕ) :
+    (x ∈ ⋂ i ∈ a, s i) ↔ ∀ i ∈ a, x ∈ s i := by
+  simp only [Set.mem_iInter]
+```
+
 When the family is given not by an index but as a *set of sets* `S : Set (Set α)`, the same operations are written `⋃₀ S` (`sUnion`) and `⋂₀ S` (`sInter`):
 
 ```lean

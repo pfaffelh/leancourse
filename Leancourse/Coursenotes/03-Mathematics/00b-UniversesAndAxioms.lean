@@ -103,6 +103,30 @@ theorem girard : False :=
 
 `lem` proves that every hereditary property holds at the diagonal point `Ω`; instantiating it at `Δ` proves `Δ Ω`, while the last argument supplies *exactly* the statement that `Δ Ω = ¬ (…)` negates -- the two collide, and the term has type `False`. The whole edifice rests on the single step Lean refused, `s U`. That one act of stratification is what stops the paradox.
 
+Can we *watch* `False` fall out anyway? Lean has no `Type : Type` switch, and an `axiom` does not *reduce*, so the elegant term above -- which leans on `σ (τ t)` computing -- cannot simply be "switched on". But we can postulate exactly the ingredient `Type : Type` would hand us: a universe `U` whose own power set `Set U` injects back into it. That is the {ref "wf-membership"}[Cantor/Russell] core of the paradox, and from it `False` really does follow, in checkable Lean:
+
+```lean
+namespace GirardAxiom
+
+-- What `Type : Type` would let us build, postulated directly:
+axiom U : Type
+axiom enc : Set U → U        -- an injection `Set U ↪ U`
+axiom enc_inj : Function.Injective enc
+
+-- Cantor's diagonal turns that injection into a contradiction:
+theorem paradox : False :=
+  Function.cantor_injective enc enc_inj
+
+#print axioms paradox
+-- 'GirardAxiom.paradox' depends on axioms:
+--   [propext, GirardAxiom.U, GirardAxiom.enc,
+--    GirardAxiom.enc_inj, Quot.sound]
+
+end GirardAxiom
+```
+
+`#print axioms` lays the smuggle bare: the contradiction rests entirely on the three postulated axioms `U`, `enc`, `enc_inj`. Delete them -- as predicative Lean does by *refusing* to build such a `U` -- and consistency returns.
+
 A natural objection: Lean's `Prop` is itself *impredicative* -- `(∀ p : Prop, p) : Prop` quantifies over all of `Prop` yet stays in `Prop` -- so why does the same argument not detonate there? Because impredicativity is only *half* of Girard's ingredient; the other half is a sort that quantifies over itself *and* whose elements can be used as data to eliminate on. `Prop` is walled off from both:
 
 * `Prop : Type`, not `Prop : Prop`. So `U` cannot even be *stated* with `Prop` in the role of the self-containing universe: `∀ X : Prop, …` produces a term whose type mentions `Prop`, and that type does not itself live in `Prop`. The self-reference the paradox feeds on is absent -- exactly as it is for `Type`.

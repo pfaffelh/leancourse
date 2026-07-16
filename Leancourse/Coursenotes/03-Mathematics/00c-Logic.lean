@@ -186,22 +186,12 @@ paradox are the same construction, with Cantor drawing the consistent
 conclusion (no such surjection exists) exactly where naive set theory
 runs into a contradiction.
 
-# The universe hierarchy and `Type : Type`
-%%%
-tag := "wf-universes"
-%%%
-
-The same typing discipline, one level up, forbids `Type : Type`.  Were
-`Type` to contain itself, Girard's paradox -- a type-theoretic Russell
--- would make every proposition provable.  The
-{ref "universe-hierarchy"}[universe hierarchy from the previous
-chapter] is exactly what rules this out, so the ill-formed term is
-rejected where the well-formed one is accepted:
-
-```lean
-#check (Type : Type 1)         -- fine
-#check_failure (Type : Type)   -- forbidden
-```
+The very same typing discipline, one level up, forbids `Type : Type`:
+were `Type` to contain itself, Girard's paradox -- a type-theoretic
+Russell -- would make every proposition provable, and the
+{ref "universe-hierarchy"}[universe hierarchy] is exactly what rules it
+out. {ref "girard"}[The previous chapter] builds Girard's term in Lean
+and traces where predicativity stops it.
 
 # Two kinds of "no vicious circle"
 %%%

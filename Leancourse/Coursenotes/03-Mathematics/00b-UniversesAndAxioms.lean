@@ -132,7 +132,7 @@ end GirardAxiom
 
 Coquand's abstract version of the paradox needs only the *single* power set. Call a universe `U` with `σ : U → ℘U` and `τ : ℘U → U` *paradoxical* if `σ (τ X) = ` `{τ (σ x) | x ∈ X}` for every `X : ℘U`. *Every* such universe is contradictory -- and the Lean refutation uses *no axioms at all*, not even `Classical.choice`: it is the well-founded (Burali-Forti) form of the paradox.
 
-Write `j := τ ∘ σ` and read `a ∈ σ b` as "`a` is a member of `b`". The paradoxical relation gives `σ (j x) = j '' (σ x)`. A naive self-loop `Ω ∈ σ Ω` fails because `τ` is not injective; instead track `Bad x := j x ∈ σ x`. It propagates one step (`Bad x → Bad (j x)`), so *no accessible element is `Bad`*. Yet the diagonal `Ω := τ {x | Acc r x}` is itself accessible, hence lands in its own defining set and is forced `Bad` -- contradiction.
+Write `j := τ ∘ σ`. The trick is that each `b : U` doubles as a *set*: its members are `σ b : ℘U`. So `U` is a universe of sets, `σ` is the membership/extension map, and we read `a ∈ σ b` as "`a` is a member of `b`" (a defined *internal* membership on `U`, not `a` literally lying inside `b`). The paradoxical relation gives `σ (j x) = j '' (σ x)`. A naive self-loop `Ω ∈ σ Ω` fails because `τ` is not injective; instead track `Bad x := j x ∈ σ x`. It propagates one step (`Bad x → Bad (j x)`), so *no accessible element is `Bad`*. Yet the diagonal `Ω := τ {x | Acc r x}` is itself accessible, hence lands in its own defining set and is forced `Bad` -- contradiction.
 
 ```lean
 namespace Coquand

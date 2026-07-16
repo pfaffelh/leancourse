@@ -54,7 +54,7 @@ Lean makes the collapse impossible by *stratifying*: `Type u` never has type `Ty
 example : Type = Type 0 := rfl
 ```
 
-The paradox cannot be *run* here for the very reason it keeps Lean consistent: every step of Hurkens' term needs a universe that contains itself, and Lean has none. Writing `℘ X := X → Prop` for the power operation, the paradoxical "powerful universe" is, schematically,
+The paradox cannot be *run* here for the very reason it keeps Lean consistent: every step of Hurkens' term needs a universe that contains itself, and Lean has none. To write down the *shape* of the term we need one piece of notation, the *power operation* `℘`. For a type `X`, write `℘ X := X → Prop` for the type of predicates on `X`. This is exactly the `Set X` of {ref "sets-and-types"}[the previous chapter] -- the type-theoretic *power set*, whose "elements" are the subsets of `X`. Iterating it, `℘ (℘ X)` is the power set of the power set. With this shorthand the paradoxical "powerful universe" is, schematically,
 
 ```
 -- NOT accepted by Lean: quantifying over all of `Type` forces the

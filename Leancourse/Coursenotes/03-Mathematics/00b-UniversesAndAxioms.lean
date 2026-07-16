@@ -54,15 +54,47 @@ Lean makes the collapse impossible by *stratifying*: `Type u` never has type `Ty
 example : Type = Type 0 := rfl
 ```
 
-The paradox cannot be *run* here for the very reason it keeps Lean consistent: every step of Hurkens' term needs a universe that contains itself, and Lean has none. To write down the *shape* of the term we need one piece of notation, the *power operation* `℘`. For a type `X`, write `℘ X := X → Prop` for the type of predicates on `X`. This is exactly the `Set X` of {ref "sets-and-types"}[the previous chapter] -- the type-theoretic *power set*, whose "elements" are the subsets of `X`. Iterating it, `℘ (℘ X)` is the power set of the power set. With this shorthand the paradoxical "powerful universe" is, schematically,
+The paradox cannot be *run* here for the very reason it keeps Lean consistent, but we can still write it out. The only type former it needs is the *power set*: for a type `X` this is `Set X`, which -- from {ref "sets-and-types"}[the previous chapter] -- is definitionally `X → Prop` (classical set theory writes it `℘ X`). Iterating gives the double power set `Set (Set X)`. Hurkens' term (Girard's universe `U`) is the following *closed proof of `False`*. Every line is ordinary Lean, save that the very first one needs `Type : Type`:
 
 ```
--- NOT accepted by Lean: quantifying over all of `Type` forces the
--- result into `Type 1`, so it cannot itself have type `Type`.
-def U : Type := (X : Type) → (℘ (℘ X) → X) → ℘ (℘ X)
+-- Requires `Type : Type`, so Lean rejects `U` right away. Recall
+-- `Set X` is `X → Prop`, so applying a set to a point, `s a`,
+-- is just `a ∈ s`.
+
+-- A universe powerful enough to talk about its own power sets:
+def U : Type := (X : Type) → (Set (Set X) → X) → Set (Set X)
+
+-- Fold `U` into its double power set and back.
+def τ (t : Set (Set U)) : U :=
+  fun X f p => t (fun x => p (f (x X f)))
+def σ (s : U) : Set (Set U) := s U τ
+-- Key reduction:  σ (τ t) p  =  t (fun x => p (τ (σ x)))
+
+-- The Russell-style "bad" set, and the diagonal point Ω:
+def Δ : Set U := fun y => ¬ ∀ p : Set U, σ y p → p (τ (σ y))
+def Ω : U := τ (fun p => ∀ x : U, σ x p → p x)
+
+-- Anything holding hereditarily along σ already holds at Ω:
+def lem : ∀ p : Set U, (∀ x : U, σ x p → p x) → p Ω :=
+  fun p H => H Ω (fun x => H (τ (σ x)))
+
+-- Feeding `lem` the bad set Δ yields both Δ Ω and ¬ Δ Ω:
+theorem girard : False :=
+  lem Δ
+    (fun x l₂ l₃ => l₃ Δ l₂ (fun p => l₃ (fun y => p (τ (σ y)))))
+    (fun p => lem (fun y => p (τ (σ y))))
 ```
 
-From a `U` with such power-set closure one manufactures the self-membership Russell's argument needs. But because the `∀ X : Type` pushes `U` up into `Type 1` (the {ref "universe-hierarchy"}[`Type u` are predicative]), the definition does not type-check -- and the paradox never gets off the ground.
+Read it as Russell's paradox one universe up. The pair `σ` / `τ` lets a `U` describe its own power sets and reconstruct itself; `Δ y` is the type-theoretic `{x | x ∉ x}` -- "`y` fails a property it hereditarily determines". `lem` proves that every such hereditary property holds at the diagonal point `Ω`. Instantiating it at `Δ` (the first argument) proves `Δ Ω`; the last argument supplies *exactly* the statement that `Δ Ω = ¬ (…)` negates. The two collide, and the whole term has type `False`.
+
+Lean never gets this far. The judgement `U : Type` already fails: the quantifier `∀ X : Type` forces `U` up into `Type 1` (the {ref "universe-hierarchy"}[`Type u` are predicative]), so `U : Type` is ill-typed and every line below it collapses. That single act of stratification is what stops the paradox.
+
+A natural objection: Lean's `Prop` is itself *impredicative* -- `(∀ p : Prop, p) : Prop` quantifies over all of `Prop` yet stays in `Prop` -- so why does the same argument not detonate there? Because impredicativity is only *half* of Girard's ingredient; the other half is a sort that quantifies over itself *and* whose elements can be used as data to eliminate on. `Prop` is walled off from both:
+
+* `Prop : Type`, not `Prop : Prop`. So `U` cannot even be *stated* with `Prop` in the role of the self-containing universe: `∀ X : Prop, …` produces a term whose type mentions `Prop`, and that type does not itself live in `Prop`. The self-reference the paradox feeds on is absent -- exactly as it is for `Type`.
+* Proofs cannot be eliminated into data ({ref "prop-vs-type"}[proof irrelevance], the next section): from `h : P` with `P : Prop` one may build another proof, never a `Type`-level element `X`. Hurkens' `σ`/`τ` machinery lives in `Type` and treats inhabitants of `U` as *data* to eliminate; the construction has no `Prop`-level twin, because the elimination it needs is forbidden.
+
+So impredicative `Prop` sitting on top of the *predicative* `Type` hierarchy is consistent -- this is Coquand's Calculus of Constructions, and it has a set-theoretic model. What is inconsistent is Girard's System `U`, where an impredicative sort *also* contains itself as data. Lean deliberately keeps the safe half (impredicative `Prop`) and rejects the dangerous one (`Type : Type`).
 
 This is the same consistency instinct as {ref "inductive"}[strict positivity] one level down: there, a constructor storing `Bad → False` was rejected to stop a self-applying `neg (Bad.mk neg) : False`; here, `Type : Type` is rejected to stop its universe-level twin.
 

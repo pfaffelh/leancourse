@@ -161,6 +161,37 @@ example (s t : Set ℕ) : Set ℕ := s ∪ t   -- union
 example (s : Set ℕ)   : Set ℕ := sᶜ      -- complement
 ```
 
+# Indexed unions and intersections
+%%%
+tag := "foundations-indexed-ops"
+%%%
+
+The binary `∪` and `∩` extend to *arbitrary* families. Given `s : ι → Set α` -- a set `s i` for each index `i : ι` -- the *indexed union* `⋃ i, s i` and *indexed intersection* `⋂ i, s i` collect members across the whole family. As always, membership just unfolds to a quantifier:
+
+```lean
+-- `a ∈ ⋃ i, s i` iff `a` lies in *some* member of the family
+example (s : ℕ → Set ℕ) (a : ℕ) :
+    (a ∈ ⋃ i, s i) ↔ ∃ i, a ∈ s i := Set.mem_iUnion
+
+-- `a ∈ ⋂ i, s i` iff `a` lies in *every* member
+example (s : ℕ → Set ℕ) (a : ℕ) :
+    (a ∈ ⋂ i, s i) ↔ ∀ i, a ∈ s i := Set.mem_iInter
+
+-- a concrete union: the singletons cover all of `ℕ`
+example : (⋃ n : ℕ, {n}) = Set.univ := by
+  ext a; simp
+```
+
+When the family is given not by an index but as a *set of sets* `S : Set (Set α)`, the same operations are written `⋃₀ S` (`sUnion`) and `⋂₀ S` (`sInter`):
+
+```lean
+-- `a ∈ ⋃₀ S` iff `a` lies in some `t ∈ S`
+example (S : Set (Set ℕ)) (a : ℕ) :
+    (a ∈ ⋃₀ S) ↔ ∃ t ∈ S, a ∈ t := Set.mem_sUnion
+```
+
+These are exactly the set/indexed suprema and infima of the {ref "complete-lattices"}[complete lattice of sets]: `⋃ i, s i` *is* `iSup s`, and `⋃₀ S` *is* `sSup S`. They are also what {ref "measurable-space"}[σ-algebras] are closed under -- a *countable* union or intersection is just the indexed one over `ι = ℕ`.
+
 # Set equality
 %%%
 tag := "foundations-set-eq"

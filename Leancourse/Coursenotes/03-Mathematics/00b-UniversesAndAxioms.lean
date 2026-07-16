@@ -33,6 +33,39 @@ Part 1 introduced the {ref "type-universes"}[universe hierarchy] as a working to
 
 is exactly what blocks this, and it is what keeps the whole system consistent. Everything else in this chapter -- the axioms, proof irrelevance, the CIC -- rests on top of it.
 
+## Girard's paradox
+%%%
+number := false
+tag := "girard"
+%%%
+
+Why is `Type : Type` fatal? Because it lets you form a "type of all types" that contains *itself*, and self-membership at that scale is exactly the ingredient of Russell's paradox. Recall Russell: the collection `R = { x | x ∉ x }` of all sets that do not contain themselves satisfies `R ∈ R ↔ R ∉ R`, a contradiction. *Girard's paradox* is the type-theoretic version: given an impredicative universe that may contain itself -- which `Type : Type` would provide -- one can build a term playing the role of `R` and derive a *closed proof of `False`*. Historically it is a Burali-Forti-style argument (a well-ordering of all ordinals that is its own proper initial segment); A. Hurkens (1995) distilled it to a remarkably short term in the inconsistent system "λU".
+
+Lean makes the collapse impossible by *stratifying*: `Type u` never has type `Type u`, only `Type (u+1)`, so the self-reference cannot even be written down. The ascription `Type : Type` is rejected outright:
+
+```lean +error
+-- `Type` has type `Type 1`, not `Type` -- the hierarchy forbids this
+#check (Type : Type)
+```
+
+```lean
+-- what is actually true: each universe sits one level up
+#check (Type : Type 1)
+example : Type = Type 0 := rfl
+```
+
+The paradox cannot be *run* here for the very reason it keeps Lean consistent: every step of Hurkens' term needs a universe that contains itself, and Lean has none. Writing `℘ X := X → Prop` for the power operation, the paradoxical "powerful universe" is, schematically,
+
+```
+-- NOT accepted by Lean: quantifying over all of `Type` forces the
+-- result into `Type 1`, so it cannot itself have type `Type`.
+def U : Type := (X : Type) → (℘ (℘ X) → X) → ℘ (℘ X)
+```
+
+From a `U` with such power-set closure one manufactures the self-membership Russell's argument needs. But because the `∀ X : Type` pushes `U` up into `Type 1` (the {ref "universe-hierarchy"}[`Type u` are predicative]), the definition does not type-check -- and the paradox never gets off the ground.
+
+This is the same consistency instinct as {ref "inductive"}[strict positivity] one level down: there, a constructor storing `Bad → False` was rejected to stop a self-applying `neg (Bad.mk neg) : False`; here, `Type : Type` is rejected to stop its universe-level twin.
+
 # Prop vs Type: proof irrelevance
 %%%
 tag := "prop-vs-type"

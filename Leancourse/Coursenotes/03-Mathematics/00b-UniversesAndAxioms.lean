@@ -103,29 +103,27 @@ theorem girard : False :=
 
 `lem` proves that every hereditary property holds at the diagonal point `Ω`; instantiating it at `Δ` proves `Δ Ω`, while the last argument supplies *exactly* the statement that `Δ Ω = ¬ (…)` negates -- the two collide, and the term has type `False`. The whole edifice rests on the single step Lean refused, `s U`. That one act of stratification is what stops the paradox.
 
-Can we *watch* `False` fall out anyway? Lean has no `Type : Type` switch, and an `axiom` does not *reduce*, so the elegant term above -- which leans on `σ (τ t)` computing -- cannot simply be "switched on". But we can postulate exactly the ingredient `Type : Type` would hand us: a universe `U` whose own power set `Set U` injects back into it. That is the {ref "wf-membership"}[Cantor/Russell] core of the paradox, and from it `False` really does follow, in checkable Lean:
+Can we *watch* `False` fall out anyway? Lean has no `Type : Type` switch, and an `axiom` does not *reduce*, so the elegant term above -- which leans on `σ (τ t)` computing -- cannot simply be "switched on". We can, though, feed the paradox the one ingredient `Type : Type` would hand us: a universe `U` whose own power set `Set U` injects back into it. The safe way to do this is as a *hypothesis*, not a global `axiom` -- a global axiom would make `False` provable *everywhere* in the rest of the book and cannot be switched off again. As a hypothesis it stays local, and the result is a genuine, axiom-free implication (its {ref "wf-membership"}[Cantor/Russell] core):
 
 ```lean
 namespace GirardAxiom
 
--- What `Type : Type` would let us build, postulated directly:
-axiom U : Type
-axiom enc : Set U → U        -- an injection `Set U ↪ U`
-axiom enc_inj : Function.Injective enc
-
--- Cantor's diagonal turns that injection into a contradiction:
-theorem paradox : False :=
+-- The injection `Set U ↪ U` that `Type : Type` would build is taken
+-- as a hypothesis, so nothing leaks into the rest of the book:
+theorem paradox
+    (U : Type) (enc : Set U → U)
+    (enc_inj : Function.Injective enc) : False :=
   Function.cantor_injective enc enc_inj
 
+-- No new axioms were added to the environment:
 #print axioms paradox
 -- 'GirardAxiom.paradox' depends on axioms:
---   [propext, GirardAxiom.U, GirardAxiom.enc,
---    GirardAxiom.enc_inj, Quot.sound]
+--   [propext, Quot.sound]
 
 end GirardAxiom
 ```
 
-`#print axioms` lays the smuggle bare: the contradiction rests entirely on the three postulated axioms `U`, `enc`, `enc_inj`. Delete them -- as predicative Lean does by *refusing* to build such a `U` -- and consistency returns.
+`#print axioms` confirms the point: `paradox` rests on Lean's *standard* axioms only -- the smuggle left no trace. The entire inconsistency lives in the hypothesis `enc : Set U ↪ U`, something predicative Lean never lets you construct, which is exactly why the book stays consistent.
 
 A natural objection: Lean's `Prop` is itself *impredicative* -- `(∀ p : Prop, p) : Prop` quantifies over all of `Prop` yet stays in `Prop` -- so why does the same argument not detonate there? Because impredicativity is only *half* of Girard's ingredient; the other half is a sort that quantifies over itself *and* whose elements can be used as data to eliminate on. `Prop` is walled off from both:
 

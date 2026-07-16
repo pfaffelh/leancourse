@@ -56,29 +56,36 @@ example : Type = Type 0 := rfl
 
 The paradox cannot be *run* here, but -- rather than wave at it -- we can build it in Lean and watch *exactly* where the type-checker stops it. The only type former it needs is the *power set*: for a type `X` this is `Set X`, definitionally `X → Prop` ({ref "sets-and-types"}[the previous chapter]; classical set theory writes it `℘ X`), and iterating gives the double power set `Set (Set X)`. Girard's universe `U` is engineered so that its *own* double power set `Set (Set U)` embeds back into `U`; that self-embedding is the forbidden fruit. Watch how far Lean plays along:
 
-```
+```lean
+namespace Girard  -- self-contained; nothing leaks to later chapters
+
 -- With predicative `Type`, the outer `∀ X : Type` pushes `U` one
 -- level up: it lives in `Type 1`, not `Type`.  Lean accepts this.
 def U : Type 1 := (X : Type) → (Set (Set X) → X) → Set (Set X)
 
--- σ and τ form a *retraction* making `Set (Set U)` a retract of
--- `U`: τ encodes a set-of-sets-of-U as one element of U, and σ
--- reads it back out.  (`Set X` is `X → Prop`, so a set applied to
--- a point, `s a`, is just `a ∈ s`.)  τ type-checks -- and here
--- `x : U`:
+-- τ *encodes* a "set of sets of U" as a single element of U (σ,
+-- below, would *decode* it back).  Recall `Set X` is `X → Prop`,
+-- so a set applied to a point, `s a`, is just `a ∈ s`.  τ
+-- type-checks -- and here `x : U`:
 def τ (t : Set (Set U)) : U :=
   fun (X : Type) (f : Set (Set X) → X) (p : Set X) =>
     t (fun (x : U) => p (f (x X f)))
 
--- σ does NOT type-check: `s U` instantiates the `∀ X : Type` in
--- `s` at the type `U` itself, but `U : Type 1`, not `Type`.  This
--- is the self-application that predicativity outlaws.
-def σ (s : U) : Set (Set U) := s U τ
+-- The next step is where it breaks. Defining σ needs `s U` --
+-- instantiating `s : U` at the type `U` itself -- but `U : Type 1`,
+-- not `Type`. Lean rejects `s U`, so `#check_failure` *succeeds*:
+#check_failure (fun (s : U) => s U)
+
+end Girard
 ```
 
 So the wheels come off already at `σ`, not at the final theorem -- and the universe level we chose makes no difference. `U` always sits one level above the `Type` its quantifier ranges over (the {ref "universe-hierarchy"}[`Type u` are predicative]), so `s U` is off by one *everywhere*: lift `U`'s domain to `Type 1` and `U` climbs to `Type 2`, and now `s U` wants a `Type 1`. The self-instantiation can never be typed. Grant `Type : Type` and the gap closes: `σ` goes through, and the rest -- well-typed *relative to* `σ`, `τ` and their reduction `σ (τ t) p = t (fun x => p (τ (σ x)))` -- runs all the way to `False`:
 
 ```
+-- Under `Type : Type`, σ becomes definable (with the reduction
+--   σ (τ t) p  =  t (fun x => p (τ (σ x)))  ), and the rest goes:
+def σ (s : U) : Set (Set U) := s U τ
+
 -- Δ is the Russell set `{x | x ∉ x}`; Ω is its diagonal fixpoint.
 def Δ : Set U := fun y => ¬ ∀ p : Set U, σ y p → p (τ (σ y))
 def Ω : U := τ (fun p => ∀ x : U, σ x p → p x)

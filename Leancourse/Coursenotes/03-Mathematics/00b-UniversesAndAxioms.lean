@@ -128,6 +128,83 @@ end GirardAxiom
 
 `#print axioms` confirms it: `paradox` rests on Lean's *standard* axioms alone. The whole inconsistency sits in the hypothesis `enc` -- the embedding `Type : Type` would manufacture and predicative Lean, backed by Cantor, refuses to build.
 
+:::example "Coquand's paradoxical universe, refuted with no axioms"
+
+Coquand's abstract version of the paradox needs only the *single* power set. Call a universe `U` with `σ : U → ℘U` and `τ : ℘U → U` *paradoxical* if `σ (τ X) = ` `{τ (σ x) | x ∈ X}` for every `X : ℘U`. *Every* such universe is contradictory -- and the Lean refutation uses *no axioms at all*, not even `Classical.choice`: it is the well-founded (Burali-Forti) form of the paradox.
+
+Write `j := τ ∘ σ` and read `a ∈ σ b` as "`a` is a member of `b`". The paradoxical relation gives `σ (j x) = j '' (σ x)`. A naive self-loop `Ω ∈ σ Ω` fails because `τ` is not injective; instead track `Bad x := j x ∈ σ x`. It propagates one step (`Bad x → Bad (j x)`), so *no accessible element is `Bad`*. Yet the diagonal `Ω := τ {x | Acc r x}` is itself accessible, hence lands in its own defining set and is forced `Bad` -- contradiction.
+
+```lean
+namespace Coquand
+
+structure ParadoxicalUniverse where
+  U : Type
+  σ : U → Set U
+  τ : Set U → U
+  isParadoxical :
+    ∀ X : Set U, σ (τ X) = (fun x => τ (σ x)) '' X
+
+theorem ParadoxicalUniverse.absurd
+    (pu : ParadoxicalUniverse) : False := by
+  obtain ⟨U, σ, τ, h⟩ := pu
+  let j : U → U := fun x => τ (σ x)
+  let r : U → U → Prop := fun a b => a ∈ σ b
+  have H : ∀ x : U, σ (j x) = j '' (σ x) :=
+    fun x => h (σ x)
+  have R : ∀ X : Set U, σ (τ X) = j '' X := fun X => h X
+  -- `Bad x := j x ∈ σ x` propagates from `x` to `j x`:
+  have bad_step :
+      ∀ x : U, j x ∈ σ x → j (j x) ∈ σ (j x) := by
+    intro x hx
+    have hh : j (j x) ∈ j '' σ x :=
+      Set.mem_image_of_mem j hx
+    rw [← H x] at hh
+    exact hh
+  -- so no accessible element is `Bad`:
+  have acc_not_bad :
+      ∀ x : U, Acc r x → j x ∉ σ x := by
+    intro x hx
+    induction hx with
+    | intro x _ ih =>
+      intro hbad
+      exact ih (j x) hbad (bad_step x hbad)
+  -- `j` preserves accessibility:
+  have accj : ∀ x : U, Acc r x → Acc r (j x) := by
+    intro x hx
+    induction hx with
+    | intro x _ ih =>
+      refine Acc.intro (j x) ?_
+      intro w hw
+      have hw' : w ∈ j '' σ x := by
+        rw [← H x]; exact hw
+      obtain ⟨z, hz, rfl⟩ := hw'
+      exact ih z hz
+  -- the diagonal: the set of all accessible elements
+  let A : Set U := {x | Acc r x}
+  let Ω : U := τ A
+  have accΩ : Acc r Ω := by
+    refine Acc.intro Ω ?_
+    intro w hw
+    have hw' : w ∈ j '' A := by rw [← R A]; exact hw
+    obtain ⟨z, hz, rfl⟩ := hw'
+    exact accj z hz
+  -- Ω is accessible, so Ω ∈ A, so Ω is `Bad`:
+  have badΩ : j Ω ∈ σ Ω := by
+    have hh : j Ω ∈ j '' A :=
+      Set.mem_image_of_mem j accΩ
+    rw [← R A] at hh
+    exact hh
+  exact acc_not_bad Ω accΩ badΩ
+
+end Coquand
+
+#print axioms Coquand.ParadoxicalUniverse.absurd
+-- ...does not depend on any axioms (fully constructive)
+```
+
+Note the payoff: this `False` is a *theorem about any hypothetical paradoxical universe* -- it needs no `Type : Type`. `Type : Type` is only what would let you *build* such a `U` (the `σ`/`τ` machinery above); predicative Lean cannot, so the hypothesis is never met and consistency is safe.
+:::
+
 A natural objection: Lean's `Prop` is itself *impredicative* -- `(∀ p : Prop, p) : Prop` quantifies over all of `Prop` yet stays in `Prop` -- so why does the same argument not detonate there? Because impredicativity is only *half* of Girard's ingredient; the other half is a sort that quantifies over itself *and* whose elements can be used as data to eliminate on. `Prop` is walled off from both:
 
 * `Prop : Type`, not `Prop : Prop`. So `U` cannot even be *stated* with `Prop` in the role of the self-containing universe: `∀ X : Prop, …` produces a term whose type mentions `Prop`, and that type does not itself live in `Prop`. The self-reference the paradox feeds on is absent -- exactly as it is for `Type`.

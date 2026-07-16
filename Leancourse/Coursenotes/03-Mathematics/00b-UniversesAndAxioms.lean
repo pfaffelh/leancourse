@@ -103,27 +103,30 @@ theorem girard : False :=
 
 `lem` proves that every hereditary property holds at the diagonal point `Ω`; instantiating it at `Δ` proves `Δ Ω`, while the last argument supplies *exactly* the statement that `Δ Ω = ¬ (…)` negates -- the two collide, and the term has type `False`. The whole edifice rests on the single step Lean refused, `s U`. That one act of stratification is what stops the paradox.
 
-Can we *watch* `False` fall out anyway? Lean has no `Type : Type` switch, and an `axiom` does not *reduce*, so the elegant term above -- which leans on `σ (τ t)` computing -- cannot simply be "switched on". We can, though, feed the paradox the one ingredient `Type : Type` would hand us: a universe `U` whose own power set `Set U` injects back into it. The safe way to do this is as a *hypothesis*, not a global `axiom` -- a global axiom would make `False` provable *everywhere* in the rest of the book and cannot be switched off again. As a hypothesis it stays local, and the result is a genuine, axiom-free implication (its {ref "wf-membership"}[Cantor/Russell] core):
+Can we *watch* `False` fall out anyway? First, *why* is such a universe impossible? That is **Cantor's theorem**, and -- crucially -- it needs no `Type : Type` at all: for every type `U` there is no injection `Set U ↪ U`, since a type always has strictly more subsets than elements. Lean proves this outright, as `Function.cantor_injective`.
+
+So where does `Type : Type` enter? It is exactly what would *break* Cantor's bound. Girard's universe `U` above (the `τ`/`σ` machinery) packs the *double* power set `Set (Set U)` into `U` -- an injection `Set (Set U) ↪ U`. A single singleton step `S ↦ {S}` injects `Set U` into `Set (Set U)`, so composing gives an injection `Set U ↪ U` -- precisely what Cantor forbids. `Type : Type` and Cantor's theorem are thus on a collision course, and the universe hierarchy is what holds them apart: it refuses to build the `U` that would outrun Cantor. Taking that embedding as a *hypothesis* -- never a global `axiom`, which could not be switched off afterwards -- turns the collision into a genuine, axiom-free implication:
 
 ```lean
 namespace GirardAxiom
 
--- The injection `Set U ↪ U` that `Type : Type` would build is taken
--- as a hypothesis, so nothing leaks into the rest of the book:
+-- The embedding `Set (Set U) ↪ U` that `Type : Type` would build,
+-- taken as a hypothesis so nothing leaks into the rest of the book:
 theorem paradox
-    (U : Type) (enc : Set U → U)
+    (U : Type) (enc : Set (Set U) → U)
     (enc_inj : Function.Injective enc) : False :=
-  Function.cantor_injective enc enc_inj
+  -- one singleton step `Set U ↪ Set (Set U)`, then Cantor bites:
+  Function.cantor_injective (enc ∘ (fun s => {s}))
+    (enc_inj.comp Set.singleton_injective)
 
--- No new axioms were added to the environment:
+-- Only Lean's standard axioms are used -- the smuggle leaks nothing:
 #print axioms paradox
--- 'GirardAxiom.paradox' depends on axioms:
---   [propext, Quot.sound]
+-- 'GirardAxiom.paradox' depends on axioms: [propext, Quot.sound]
 
 end GirardAxiom
 ```
 
-`#print axioms` confirms the point: `paradox` rests on Lean's *standard* axioms only -- the smuggle left no trace. The entire inconsistency lives in the hypothesis `enc : Set U ↪ U`, something predicative Lean never lets you construct, which is exactly why the book stays consistent.
+`#print axioms` confirms it: `paradox` rests on Lean's *standard* axioms alone. The whole inconsistency sits in the hypothesis `enc` -- the embedding `Type : Type` would manufacture and predicative Lean, backed by Cantor, refuses to build.
 
 A natural objection: Lean's `Prop` is itself *impredicative* -- `(∀ p : Prop, p) : Prop` quantifies over all of `Prop` yet stays in `Prop` -- so why does the same argument not detonate there? Because impredicativity is only *half* of Girard's ingredient; the other half is a sort that quantifies over itself *and* whose elements can be used as data to eliminate on. `Prop` is walled off from both:
 

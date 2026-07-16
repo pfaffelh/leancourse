@@ -166,7 +166,13 @@ example (s : Set ℕ)   : Set ℕ := sᶜ      -- complement
 tag := "foundations-indexed-ops"
 %%%
 
-The binary `∪` and `∩` extend to *arbitrary* families. Given `s : ι → Set α` -- a set `s i` for each index `i : ι` -- the *indexed union* `⋃ i, s i` and *indexed intersection* `⋂ i, s i` collect members across the whole family. As always, membership just unfolds to a quantifier:
+The binary `∪` and `∩` extend to *arbitrary* families. Given `s : ι → Set α` -- a set `s i` for each index `i : ι` -- the *indexed union* `⋃ i, s i` and *indexed intersection* `⋂ i, s i` collect members across the whole family.
+
+{docstring Set.iUnion}
+
+{docstring Set.iInter}
+
+As always, membership just unfolds to a quantifier:
 
 ```lean
 -- `a ∈ ⋃ i, s i` iff `a` lies in *some* member of the family
@@ -197,6 +203,10 @@ example (a : Set ℕ) (s : ℕ → Set ℕ) (x : ℕ) :
 ```
 
 When the family is given not by an index but as a *set of sets* `S : Set (Set α)`, the same operations are written `⋃₀ S` (`sUnion`) and `⋂₀ S` (`sInter`):
+
+{docstring Set.sUnion}
+
+{docstring Set.sInter}
 
 ```lean
 -- `a ∈ ⋃₀ S` iff `a` lies in some `t ∈ S`

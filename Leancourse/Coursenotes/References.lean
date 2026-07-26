@@ -41,6 +41,12 @@ def cohenEtAl2018 : ArXiv where
   year := 2018
   id := "1611.02108"
 
+def coquand1986 : InProceedings where
+  title := inlines!"An Analysis of Girard's Paradox"
+  authors := #[inlines!"Thierry Coquand"]
+  year := 1986
+  booktitle := inlines!"Proceedings of the First Annual IEEE Symposium on Logic in Computer Science (LICS 1986)"
+
 def coquandHuet1988 : Article where
   title := inlines!"The Calculus of Constructions"
   authors := #[inlines!"Thierry Coquand", inlines!"Gérard Huet"]
@@ -66,6 +72,14 @@ def girard1972 : Thesis where
   year := 1972
   university := inlines!"Université Paris VII"
   degree := inlines!"PhD thesis"
+
+def hurkens1995 : InProceedings where
+  title := inlines!"A Simplification of Girard's Paradox"
+  authors := #[inlines!"Antonius J. C. Hurkens"]
+  year := 1995
+  booktitle := inlines!"Typed Lambda Calculi and Applications (TLCA 1995)"
+  series := some inlines!"Lecture Notes in Computer Science 902"
+  url := some "https://doi.org/10.1007/BFb0014058"
 
 def leanSystem2015 : InProceedings where
   title := inlines!"The Lean Theorem Prover (System Description)"
@@ -123,6 +137,13 @@ def theoremProvingInLean4 : InProceedings := misc
   (year := 2024)
   (howpublished := inlines!"Online textbook")
   (url := some "https://leanprover.github.io/theorem_proving_in_lean4/")
+
+def mathematicsInLean : InProceedings := misc
+  (title := inlines!"Mathematics in Lean")
+  (authors := #[inlines!"Jeremy Avigad", inlines!"Patrick Massot"])
+  (year := 2025)
+  (howpublished := inlines!"Online textbook")
+  (url := some "https://leanprover-community.github.io/mathematics_in_lean/")
 
 def mathlibDocs : InProceedings := misc
   (title := inlines!"Mathlib Documentation")

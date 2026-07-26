@@ -190,8 +190,8 @@ The very same typing discipline, one level up, forbids `Type : Type`:
 were `Type` to contain itself, Girard's paradox -- a type-theoretic
 Russell -- would make every proposition provable, and the
 {ref "universe-hierarchy"}[universe hierarchy] is exactly what rules it
-out. {ref "girard"}[The previous chapter] builds Girard's term in Lean
-and traces where predicativity stops it.
+out. Building Girard's term in Lean and tracing where predicativity
+stops it is {ref "project-girard"}[one of the course projects].
 
 # Two kinds of "no vicious circle"
 %%%

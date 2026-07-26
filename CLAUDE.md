@@ -429,6 +429,13 @@ into constructor form before ι can fire.
   export. Exercise files import only Mathlib, so nothing else needs
   to be copied. Workflow: edit exercises here → run script → commit +
   push inside the exercises repo.
+- Built-in safety net: before exporting, the script type-checks every
+  `.lean` file that would change (`rsync -cin` dry run → `lake env
+  lean` with this repo's prebuilt Mathlib, 2 files in parallel).
+  Errors abort the export before anything is copied; warnings such as
+  `declaration uses sorry` pass. Skip with `--no-check`. There is
+  deliberately **no CI** in the exercises repo — this pre-export
+  check is the substitute, and it is cheaper (no cache download).
 - The student repo is **live**:
   <https://github.com/pfaffelh/leancourse_exercises> (public, created
   2026-07-26, sibling checkout at `../leancourse_exercises`). The

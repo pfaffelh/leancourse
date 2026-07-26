@@ -3,13 +3,17 @@
 # Export the student exercises into a standalone repository.
 #
 # Usage:
-#   scripts/export_exercises.sh [TARGET_DIR] [--with-solutions]
+#   scripts/export_exercises.sh [TARGET_DIR] [--with-solutions] [--no-check]
 #
 # TARGET_DIR defaults to ../leancourse_exercises (a sibling of this
 # repository).  The script is idempotent: run it again after editing
 # exercises here, then commit and push inside TARGET_DIR.
 #
 # What it does:
+#   * type-checks every exercise file that would change with
+#     `lake env lean` (using this repo's prebuilt Mathlib), and
+#     aborts before exporting anything if one has errors --
+#     `sorry` warnings are fine.  Skip with --no-check.
 #   * copies Leancourse/Exercises/ -> TARGET_DIR/Exercises/
 #     (Solutions/ is skipped unless --with-solutions is given)
 #   * writes lean-toolchain, lakefile.lean, and a lake-manifest.json
@@ -23,8 +27,10 @@ set -euo pipefail
 ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 TARGET="${1:-$ROOT/../leancourse_exercises}"
 WITH_SOLUTIONS=0
+CHECK=1
 for arg in "$@"; do
   [ "$arg" = "--with-solutions" ] && WITH_SOLUTIONS=1
+  [ "$arg" = "--no-check" ] && CHECK=0
 done
 
 mkdir -p "$TARGET"
@@ -34,6 +40,33 @@ RSYNC_ARGS=(-a --delete --exclude 'MyExercises')
 if [ "$WITH_SOLUTIONS" -eq 0 ]; then
   RSYNC_ARGS+=(--exclude 'Solutions')
 fi
+
+# Type-check the .lean files this export would add or change, using
+# the course repo's prebuilt Mathlib.  Errors abort the export;
+# warnings (in particular `declaration uses sorry`) do not.
+if [ "$CHECK" -eq 1 ]; then
+  mapfile -t CHANGED < <(
+    rsync "${RSYNC_ARGS[@]}" -cin \
+      "$ROOT/Leancourse/Exercises/" "$TARGET/Exercises/" \
+    | awk '/^>f/ { $1=""; sub(/^ /,""); print }'
+  )
+  TO_CHECK=()
+  for f in "${CHANGED[@]}"; do
+    case "$f" in
+      *.lean)
+        [ -f "$ROOT/Leancourse/Exercises/$f" ] && TO_CHECK+=("$f") ;;
+    esac
+  done
+  if [ "${#TO_CHECK[@]}" -gt 0 ]; then
+    echo "Type-checking ${#TO_CHECK[@]} changed file(s) before export..."
+    if ! (cd "$ROOT" && printf '%s\n' "${TO_CHECK[@]}" \
+          | xargs -P 2 -I {} lake env lean "Leancourse/Exercises/{}"); then
+      echo "ERROR: at least one exercise file has errors; nothing was exported." >&2
+      exit 1
+    fi
+  fi
+fi
+
 rsync "${RSYNC_ARGS[@]}" "$ROOT/Leancourse/Exercises/" "$TARGET/Exercises/"
 
 # --- toolchain ------------------------------------------------------

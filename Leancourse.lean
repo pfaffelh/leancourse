@@ -6,6 +6,7 @@ import Mathlib
 import «Leancourse».Coursenotes.«01-Lean»
 import «Leancourse».Coursenotes.«03-Mathematics»
 import «Leancourse».Coursenotes.«04-Appendix»
+import «Leancourse».Coursenotes.«05-Projects»
 import «Leancourse».Coursenotes.«99-Bibliography»
 
 open Verso.Genre Manual
@@ -21,25 +22,25 @@ These are the notes for a course on formal proving with the interactive theorem 
 * Installation of [vscode](https://code.visualstudio.com/).
 * Open `vscode`, hit the _extensions_ icon (fifth from the top) on the left, and install the _Lean 4 language extension_.
 * If you haven't done already, install `git`. For this, the best way is to open `vscode`, hit the _git_ icon (third from the top on the left), and follow the instructions.
-* Installing the course repository: Navigate to a location where you would like to put the course materials and use
+* Installing the exercises repository: Navigate to a location where you would like to put the course materials and use
 ```
-git clone https://github.com/pfaffelh/leancourse
-cd leancourse
+git clone https://github.com/pfaffelh/leancourse_exercises
+cd leancourse_exercises
 lake exe cache get
 code .
 ```
-Then, _vscode_ should open and you see the course materials.
+Then, _vscode_ should open and you see the course materials. (The exercises live in their own repository; the course notes you are reading are generated from [pfaffelh/leancourse](https://github.com/pfaffelh/leancourse), which you do not need to clone.)
 
 :::paragraph
 Note: Yet another description how to install _Lean_ is found [here](https://leanprover-community.github.io/get_started.html#regular-install).
 :::
 
 
-After having typed `code .` within the `leancourse` folder, navigate to `Leancourse/Exercises/01-Logic/01-a.lean`. Everything is fine once orange and/or red bars disapprear, and navigating in the left hand side of the windom leads to changes in the right hand side (the infoview). You should see some code which looks a bit like mathematics.
-* The directory `Leancourse/Exercises` contains the material for the course. We recommend that you first copy this directory, for example to `myExercises`. Otherwise, an update of the repository may overwrite the local files.
-* To update the course materials, enter `git pull` from within the `leancourse`directory.
+After having typed `code .` within the `leancourse_exercises` folder, navigate to `Exercises/01-Logic/01-a-Propositions.lean`. Everything is fine once orange and/or red bars disapprear, and navigating in the left hand side of the windom leads to changes in the right hand side (the infoview). You should see some code which looks a bit like mathematics.
+* The directory `Exercises` contains the material for the course. We recommend that you first copy this directory to `MyExercises` and work there: `MyExercises` is ignored by git, so an update of the repository will never overwrite your local files.
+* To update the course materials, enter `git pull` from within the `leancourse_exercises` directory.
 
-In case you cannot install the course material locally, do the following: Visit [this page](https://github.com/pfaffelh/leancourse) and click on the green Code-button. Navigate to Codespaces and open the course notes there. You get a window which looks a lot like _vscode_, so please follow the instructions from above. You will have to _Restart Lean_ and _Restart File_ and wait several minutes until all is set. (If you see a red vertical bar, something is wrong. If you see an orange vertical bar, you will have to wait longer.) You will probably need a github account in order to open the coursenotes in Codespaces.
+In case you cannot install the course material locally, do the following: Visit [this page](https://github.com/pfaffelh/leancourse_exercises) and click on the green Code-button. Navigate to Codespaces and open the course notes there. You get a window which looks a lot like _vscode_, so please follow the instructions from above. You will have to _Restart Lean_ and _Restart File_ and wait several minutes until all is set. (If you see a red vertical bar, something is wrong. If you see an orange vertical bar, you will have to wait longer.) You will probably need a github account in order to open the coursenotes in Codespaces.
 
 :::paragraph
 For the very first exercise sheets you do not even need a local installation: you can run Lean 4 directly in your browser. Two web editors that give you Lean 4 together with _Mathlib_ are [live.lean-lang.org](https://live.lean-lang.org/) (the official Lean 4 playground) and the instance at [lean.math.hhu.de](https://lean.math.hhu.de/) hosted by HHU Düsseldorf. Paste an exercise in, make sure the file starts with `import Mathlib`, and wait a moment for Lean to start up. This is the quickest way to get going; for the full course -- many files, faster feedback, and saving your own work -- a local setup or Codespaces is preferable.
@@ -82,16 +83,19 @@ Other courses, which you might want to have a look at are:
 * *Lean and its type theory*: Lean both as a proof assistant and as a dependent type theory. We start hands-on -- the language, writing proofs, the functional-programming side of Lean (pure functions, pattern matching, recursion, higher-order functions), and navigating Mathlib. We then turn to the theory: the Curry-Howard correspondence, dependent types, universes, the three axioms of Lean (and what the kernel additionally bakes in), the `structure` / `class` machinery that underpins Mathlib, and well-foundedness and the avoidance of paradoxes.
 * *Mathematics*: after an opening chapter on the everyday foundations -- propositions, proofs, and sets -- we survey how Mathlib organizes order theory, the algebraic hierarchy, filters, topology, measure theory, and monadic discrete probability (`PMF`), with pointers into the relevant Mathlib API rather than full formalizations.
 * *Appendix*: common pitfalls when working with Lean and Mathlib, the diagnostic commands (`#print axioms`, `#find_home`, `#lint`), an alphabetical keyword reference, and an *alphabetical glossary of tactics* (an even longer list lives [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)).
+* *Projects*: five suggested topics for the individual formalization projects in the second half of the course, each with a description, a sketch of a possible implementation, and references.
 * *Bibliography*: the works cited throughout, with links.
 
 The heart of the course are the exercises (see the _Exercises_ folder within `Leancourse`). Unlike in other courses, you will get immediate feedback on any single exercise -- via error messages from the elaborator and a live *proof-state* panel that shows what remains to be proved at every cursor position. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.
 
-While the exercises will cover the first half of the semester, individual assignments will happen in the latter part of this course. (These will mostly be self-assigned, so e.g. you will formalize an exercise from your first year of studies, or you are interested in a specific part of `Mathlib`, or...)
+While the exercises will cover the first half of the semester, individual assignments will happen in the latter part of this course. (These will mostly be self-assigned, so e.g. you will formalize an exercise from your first year of studies, or you are interested in a specific part of `Mathlib`, or... The {ref "projects"}[Projects chapter] collects five worked-out suggestions.)
 
 {include 0 «Leancourse».Coursenotes.«01-Lean»}
 
 {include 0 «Leancourse».Coursenotes.«03-Mathematics»}
 
 {include 0 «Leancourse».Coursenotes.«04-Appendix»}
+
+{include 0 «Leancourse».Coursenotes.«05-Projects»}
 
 {include 0 «Leancourse».Coursenotes.«99-Bibliography»}

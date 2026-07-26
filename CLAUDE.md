@@ -388,3 +388,54 @@ The commented trace under `def myDouble` mislabelled the first step
 definition). The second step is ι *plus* δβ (unfolding and applying
 `step`). Also noted in the prose that numerals such as `2` are put
 into constructor form before ι can fire.
+
+## Session history (2026-07-26)
+
+### New chapter: Projects
+
+- [05-Projects.lean](Leancourse/Coursenotes/05-Projects.lean) -- *new*
+  top-level chapter (included between Appendix and Bibliography) with
+  five suggested student projects, each with description,
+  implementation sketch, and references: (1) Girard's paradox,
+  (2) Cantor-Schröder-Bernstein via Knaster-Tarski, (3) limits with
+  and without filters, (4) ℤ as a quotient of ℕ × ℕ,
+  (5) Monty Hall with `PMF`. Tags: `projects`, `project-girard`,
+  `project-csb`, `project-limits`, `project-integers`,
+  `project-monty-hall`. Code in this chapter uses plain ``` fences
+  (nothing executes), so the file needs no Mathlib import.
+- The long "Girard's paradox" section (τ/σ construction, smuggled
+  Cantor paradox, Coquand's paradoxical universe -- the work of the
+  2026-07 "Girard:" commit series) was **removed** from
+  [00b-UniversesAndAxioms.lean](Leancourse/Coursenotes/03-Mathematics/00b-UniversesAndAxioms.lean)
+  and distilled into Project 1. The tag `girard` no longer exists;
+  cross-refs in `00c-Logic.lean` and `01-Lean/02-Types.lean` now
+  point to `project-girard`. If the full text is ever wanted again,
+  it is in git history (commit `fdd5b69` and ancestors).
+- New bibliography entries in
+  [References.lean](Leancourse/Coursenotes/References.lean):
+  `coquand1986`, `hurkens1995`, `mathematicsInLean`; listed in
+  [99-Bibliography.lean](Leancourse/Coursenotes/99-Bibliography.lean).
+
+### Exercises export script
+
+- [scripts/export_exercises.sh](scripts/export_exercises.sh) exports
+  `Leancourse/Exercises/` into a standalone student repository
+  (default target `../leancourse_exercises`; `--with-solutions` to
+  include `Solutions/`). It writes a Mathlib-only `lakefile.lean`
+  (rev extracted from this repo's lakefile), copies `lean-toolchain`,
+  and filters `lake-manifest.json` down to Mathlib + its 8 deps so
+  `lake exe cache get` matches the pinned revisions. `README.md` and
+  `.gitignore` (ignores `/MyExercises`) are written only on first
+  export. Exercise files import only Mathlib, so nothing else needs
+  to be copied. Workflow: edit exercises here → run script → commit +
+  push inside the exercises repo.
+- The student repo is **live**:
+  <https://github.com/pfaffelh/leancourse_exercises> (public, created
+  2026-07-26, sibling checkout at `../leancourse_exercises`). The
+  setup instructions in [Leancourse.lean](Leancourse.lean) now tell
+  students to clone *that* repo (paths `Exercises/...`, copy to
+  `MyExercises`); the course repo itself no longer needs to be cloned
+  by students. When exercises change here, re-run the export script
+  and push in the sibling checkout — the script never touches the
+  sibling's `README.md`/`.gitignore` after the first export, but
+  everything under `Exercises/` is mirrored with `--delete`.

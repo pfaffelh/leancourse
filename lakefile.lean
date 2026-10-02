@@ -6,6 +6,8 @@ require verso from git "https://github.com/leanprover/verso.git"@"v4.34.0"
 
 require «verso-manual» from git "https://github.com/leanprover/reference-manual.git"@"v4.34.0"
 
+require «verso-slides» from git "https://github.com/leanprover/verso-slides.git"@"v4.34.0"
+
 package «leancourse» where
   -- add package configuration options here
   -- building the C code cost much more than the optimizations save
@@ -26,3 +28,10 @@ lean_exe «leancourse» where
 
 
 -- let MD4lean.MD_FLAG_TABLES true
+
+lean_lib «Slides» where
+  -- slide decks generated with VersoSlides; not part of the manual
+
+lean_exe «slides» where
+  srcDir := "./"
+  root := `SlidesMain

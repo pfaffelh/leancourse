@@ -26,9 +26,9 @@ proving routine inequalities of compound expressions.
 * + Proof state
   + Tactic
   + New proof state
-* + `a a' b : ℝ` {br}`h : a ≤ a'` {br}[] ⊢ a + b ≤ a' + b
+* + `a a' b : ℝ` {br}[] `h : a ≤ a'` {br}[] ⊢ a + b ≤ a' + b
   + `gcongr`
-  + `a a' b : ℝ` {br}`h : a ≤ a'` {br}[] ⊢ a ≤ a'
+  + `a a' b : ℝ` {br}[] `h : a ≤ a'` {br}[] ⊢ a ≤ a'
 :::
 
 *Remarks:*

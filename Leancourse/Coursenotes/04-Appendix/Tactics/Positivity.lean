@@ -26,7 +26,7 @@ square roots, ...).
 * + Proof state
   + Tactic
   + New proof state
-* + `x : ℝ` {br}`hx : 0 < x` {br}[] ⊢ 0 < x ^ 2 + 1
+* + `x : ℝ` {br}[] `hx : 0 < x` {br}[] ⊢ 0 < x ^ 2 + 1
   + `positivity`
   + (no goals)
 :::

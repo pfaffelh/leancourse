@@ -26,9 +26,9 @@ hypotheses appear specialized at the point `x`.
 * + Proof state
   + Tactic
   + New proof state
-* + `F : Filter α` {br}`h₁ : ∀ᶠ x in F, p x` {br}`h₂ : ∀ᶠ x in F, q x` {br}[] ⊢ ∀ᶠ x in F, p x ∧ q x
+* + `F : Filter α` {br}[] `h₁ : ∀ᶠ x in F, p x` {br}[] `h₂ : ∀ᶠ x in F, q x` {br}[] ⊢ ∀ᶠ x in F, p x ∧ q x
   + `filter_upwards [h₁, h₂] with x hp hq`
-  + `F : Filter α` {br}`x : α` {br}`hp : p x` {br}`hq : q x` {br}[] ⊢ p x ∧ q x
+  + `F : Filter α` {br}[] `x : α` {br}[] `hp : p x` {br}[] `hq : q x` {br}[] ⊢ p x ∧ q x
 :::
 
 *Remarks:*

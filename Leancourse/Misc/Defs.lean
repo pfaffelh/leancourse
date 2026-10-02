@@ -1,14 +1,18 @@
 import VersoManual
 
-open Verso.Genre Manual
+open Lean Verso.Genre Manual
+open Verso.Doc.Elab
 
 -- The following defines the possibility to get a newline within a table.
 
 def Inline.br : Manual.Inline where
   name := `MyDef.br
 
-def MyDef.br (_ : Array (Verso.Doc.Inline Manual)) : Verso.Doc.Inline Manual :=
-  .other Inline.br #[]
+@[role_expander MyDef.br]
+def MyDef.br : RoleExpander
+  | #[], #[] => do
+    pure #[← `(Verso.Doc.Inline.other Inline.br #[])]
+  | _, _ => throwError "`br` takes no arguments"
 
 open Verso.Output.Html in
 @[inline_extension MyDef.br]

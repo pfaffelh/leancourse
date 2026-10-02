@@ -28,10 +28,10 @@ relies on the `funext` axiom from Lean's type theory.
   + New proof state
 * + `f g : ℕ → ℕ` {br}[] ⊢ f = g
   + `funext n`
-  + `f g : ℕ → ℕ` {br}`n : ℕ` {br}[] ⊢ f n = g n
+  + `f g : ℕ → ℕ` {br}[] `n : ℕ` {br}[] ⊢ f n = g n
 * + `f g : (x : α) → β x` {br}[] ⊢ f = g
   + `funext x`
-  + `f g : (x : α) → β x` {br}`x : α` {br}[] ⊢ f x = g x
+  + `f g : (x : α) → β x` {br}[] `x : α` {br}[] ⊢ f x = g x
 :::
 
 *Remarks:*

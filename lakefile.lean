@@ -1,10 +1,10 @@
 import Lake
 open Lake DSL
 
-require mathlib from git "https://github.com/leanprover-community/mathlib4"@"v4.28.0"
-require verso from git "https://github.com/leanprover/verso.git"@"v4.28.0"
+require mathlib from git "https://github.com/leanprover-community/mathlib4"@"v4.34.0"
+require verso from git "https://github.com/leanprover/verso.git"@"v4.34.0"
 
-require «verso-manual» from git "https://github.com/leanprover/reference-manual.git"@"v4.28.0"
+require «verso-manual» from git "https://github.com/leanprover/reference-manual.git"@"v4.34.0"
 
 package «leancourse» where
   -- add package configuration options here

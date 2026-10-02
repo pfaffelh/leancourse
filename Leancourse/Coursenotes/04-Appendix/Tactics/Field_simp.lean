@@ -26,9 +26,9 @@ rational expressions into one without division. Combined with
 * + Proof state
   + Tactic
   + New proof state
-* + `a b : ℝ` {br}`hb : b ≠ 0` {br}[] ⊢ a / b + 1 = (a + b) / b
+* + `a b : ℝ` {br}[] `hb : b ≠ 0` {br}[] ⊢ a / b + 1 = (a + b) / b
   + `field_simp`
-  + `a b : ℝ` {br}`hb : b ≠ 0` {br}[] ⊢ a + b = a + b
+  + `a b : ℝ` {br}[] `hb : b ≠ 0` {br}[] ⊢ a + b = a + b
 :::
 
 *Remarks:*

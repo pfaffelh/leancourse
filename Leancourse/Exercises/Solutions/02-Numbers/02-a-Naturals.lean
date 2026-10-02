@@ -42,7 +42,7 @@ These and many more statements can also be found here, for example: https://lean
 
 example (n : ℕ) (h : n > 1) : ∃ (k : ℕ), n = k + 2 := by
   rw [gt_iff_lt] at h
-  have h' : n ≠ 0 := by exact not_eq_zero_of_lt h
+  have h' : n ≠ 0 := by exact Nat.ne_zero_of_lt h
   obtain ⟨i, hi⟩ := exists_eq_succ_of_ne_zero h'
   rw [hi, ← zero_add 1, Nat.succ_lt_succ_iff] at h
   obtain ⟨j, hj⟩ := exists_eq_succ_of_ne_zero h.ne.symm
@@ -163,12 +163,12 @@ example (m n : ℕ) : m^(n+2) = m * m^n * m := by
 
 example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k^2 ≤ n^3 := by
   have h₀ : k^2 ≤ m^2 := by
-    exact pow_le_pow_of_le_left hkm 2
+    exact Nat.pow_le_pow_left hkm 2
   have h₁ : m^2 ≤ n^2 := by
-    exact pow_le_pow_of_le_left hmn 2
+    exact Nat.pow_le_pow_left hmn 2
   have h₂ : n^2 ≤ n^3 := by
     by_cases hn : n = 0
     · rw [hn]; rfl
     · have hn' : n > 0 := by exact zero_lt_of_ne_zero hn
-      apply pow_le_pow_of_le_right hn' (by linarith)
+      apply Nat.pow_le_pow_right hn' (by linarith)
   apply le_trans h₀ (le_trans h₁ h₂)

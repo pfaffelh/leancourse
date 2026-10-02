@@ -24,10 +24,10 @@ contains two contradictory hypotheses, or a hypothesis of type
 * + Proof state
   + Tactic
   + New proof state
-* + `h : False` {br}`⊢ P`
+* + `h : False` {br}[] `⊢ P`
   + `contradiction`
   + (no goals)
-* + `h₁ : P` {br}`h₂ : ¬P` {br}`⊢ Q`
+* + `h₁ : P` {br}[] `h₂ : ¬P` {br}[] `⊢ Q`
   + `contradiction`
   + (no goals)
 :::

@@ -25,7 +25,7 @@ it rewrites with exactly the lemmas you supply.
 * + Proof state
   + Tactic
   + New proof state
-* + `f : ℕ → ℕ` {br}`h : ∀ n, f n = 0` {br}`⊢ ∀ n, f n + 1 = 1`
+* + `f : ℕ → ℕ` {br}[] `h : ∀ n, f n = 0` {br}[] `⊢ ∀ n, f n + 1 = 1`
   + `simp_rw [h]`
   + `⊢ ∀ n, 0 + 1 = 1`
 :::

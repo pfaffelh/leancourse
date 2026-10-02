@@ -24,7 +24,7 @@ tag := "ext"
   + New proof state
 * + `f g : ℝ → ℝ` {br}[] ⊢ f = g
   + `ext x`
-  + `f g : ℝ → ℝ` {br}`x : ℝ` {br}[] ⊢ f x = g x
+  + `f g : ℝ → ℝ` {br}[] `x : ℝ` {br}[] ⊢ f x = g x
 :::
 
 *Remarks:*

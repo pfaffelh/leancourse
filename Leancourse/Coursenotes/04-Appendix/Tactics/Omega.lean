@@ -27,10 +27,10 @@ closing routine numerical side conditions.
 * + Proof state
   + Tactic
   + New proof state
-* + `a b : ℕ` {br}`h : a ≤ b` {br}[] ⊢ a ≤ b + 1
+* + `a b : ℕ` {br}[] `h : a ≤ b` {br}[] ⊢ a ≤ b + 1
   + `omega`
   + (no goals)
-* + `n : ℕ` {br}`h : n ≠ 0` {br}[] ⊢ 0 < n
+* + `n : ℕ` {br}[] `h : n ≠ 0` {br}[] ⊢ 0 < n
   + `omega`
   + (no goals)
 :::

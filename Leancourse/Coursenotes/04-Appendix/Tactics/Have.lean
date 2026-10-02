@@ -42,7 +42,7 @@ tag := "have"
 ```lean
 example (x : ℝ) (d : ℕ): 0 ≤ (d : ℝ) * x^2 := by
   have h : d ≥ 0 := by
-    exact zero_le d
+    exact Nat.zero_le d
   have h1 : (0 : ℝ) = d * 0 := by
     simp
   rw [h1]

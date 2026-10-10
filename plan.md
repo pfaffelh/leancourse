@@ -36,9 +36,13 @@ nach zwanzig Minuten erzählt, aber der Mittwoch bräuchte das Doppelte,
 weil alle langsam tippen und die Hälfte noch Installationsprobleme hat.
 
 Die Antwort ist nicht, den Montag mit Theorie zu füllen, die niemand
-einordnen kann, sondern **in den ersten drei Wochen beide Termine als
+einordnen kann, sondern **in den Wochen 2 und 3 beide Termine als
 Labor zu fahren**: Montag 25 Minuten Input, dann 60 Minuten üben.
 Mittwoch wie gewohnt. Ab Woche 4 auf das normale Muster kippen.
+
+Woche 1 fällt auch dadurch heraus: dort ist am Montag noch nichts
+installiert und am Mittwoch wird installiert. Beide Termine sind
+Sonderfälle und unten einzeln beschrieben.
 
 Das 2×90-Format ist ein Gefäß, kein Gesetz.
 
@@ -51,6 +55,69 @@ Viertelstündchen. Einplanen statt erleben.
 
 Entsprechend liegt Test 1 erst in Woche 4: davor scheitern noch Leute
 an `lake exe cache get`, und das will man nicht prüfen.
+
+### Die erste Sitzung, Mo 19.10.
+
+Kein Üben -- installiert ist noch nichts. **30 Minuten Organisation,
+60 Minuten Kontext.**
+
+**Organisation.** Format, ECTS, die fünf Tests mit der 3-von-5-Regel,
+Projekt im Anschluss, mündliche Prüfung. Tutor vorstellen. Zwei Dinge,
+die sonst untergehen:
+
+- *KI ist in den Hausaufgaben erlaubt -- und warum.* Nicht aus
+  Großzügigkeit: `grind` löst 127 der 128 Aussagen von Blatt 01 ohne
+  jede KI. Ein Verbot wäre Theater. Geprüft wird auf Papier. Am ersten
+  Tag gesagt, gibt es später keine Diskussion.
+- *Für Mittwoch: Laptop mit Administratorrechten.* Häufigster Grund,
+  warum der Installationstermin bei Einzelnen scheitert, und nur
+  vorher lösbar.
+
+**Kontext, drei Blöcke.**
+
+*Geschichte (15 min).* Frege 1879, Russells Brief 1902. Principia
+Mathematica: `1+1=2` in Band II, mit der Anmerkung der Autoren „The
+above proposition is occasionally useful." De Bruijn, Automath 1967;
+1977 geht Landaus *Grundlagen der Analysis* komplett durch die
+Maschine. Vierfarbensatz (Appel-Haken 1976, Gonthier 2005) --
+*Computerbeweis ist nicht computergeprüfter Beweis*. Kepler: Hales
+1998, zwölf Gutachter, vier Jahre, dann „zu 99 % sicher, mehr geht
+nicht"; Flyspeck 2014 -- *Peer Review ist an eine Grenze gestoßen*.
+Pointe: die Idee ist 150 Jahre alt, das Werkzeug 20.
+
+*Mathlib ansehen (20 min).* Nicht erzählen, klicken. Zahlen aus dem
+eigenen Checkout rechnen, nicht von der Folie -- Stand 15.09.2026:
+8.529 Dateien, 2,33 Mio Zeilen, rund 189.000 Theoreme, 64.000
+Definitionen, 34.768 Commits, 1.031 Beitragende. Entscheidend ist die
+letzte Zahl: **820 Commits in 30 Tagen, also 27 pro Tag.** Alle anderen
+sagen „groß", diese sagt „lebt". Dann: `intermediate_value_Icc` im
+Quelltext aufmachen; ein offener PR mit Review-Diskussion; Zulip; die
+„1000+ theorems"-Liste der Community; Loogle live. Mathematik als
+gemeinsam gepflegtes Artefakt -- dazu gibt es keinen zweiten
+Gegenstand.
+
+*Aktuelle Entwicklungen (25 min).* Der Umschwung: Liquid Tensor
+Experiment, Dezember 2020 stellt Scholze seinen eigenen Satz zur
+Debatte; Juli 2022 fertig; Buzzards ICM-Plenarvortrag 2022 als
+Markierung. Verteiltes Arbeiten: Taos PFR (Nov. 2023, drei Wochen),
+Equational Theories Project 2024, Buzzards *Formalising Fermat* seit
+2024. Die KI-Welle: Erdős' unit distance (OpenAI, Mai 2026),
+Anthropics Fermat-Formalisierung, Navier-Stokes-Blowup, zwei
+unabhängige Poincaré-Formalisierungen, seit Anfang 2026 rund
+achtfache Zunahme der arXiv-Preprints mit Lean.
+
+Und dann die Einordnung, die die Sitzung ehrlich macht (Material:
+`1.1-pertinence.md` im MSCA-Antrag): diese Projekte sind *goal-driven*
+-- kürzester Weg zum Schlagzeilensatz, Zwischenresultate nicht in
+natürlicher Allgemeinheit, teils schrullige Definitionen, fragil
+gegenüber Versionswechseln. Zwei liefen bei Firmen: das Ergebnis ist
+öffentlich, der Weg dahin nicht. Deshalb braucht es Leute, die das
+Handwerk können.
+
+Schlusssatz: Sprachmodelle produzieren überzeugend aussehende falsche
+Beweise. Der Proof Assistant ist die einzige Prüfinstanz, die
+mitskaliert. Das ist der Grund, warum KI in den Hausaufgaben erlaubt
+ist und in den Tests nicht.
 
 ## Termine
 
@@ -66,16 +133,16 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 
 | W | Mo | Mi | Vorlesung | Blätter | |
 |---|---|---|---|---|---|
-| 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | 01-a, 01-b | |
-| 2 | 26.10. | 28.10. | Was ist ein Beweis? BHK-Interpretation | 01-c, 01-d | |
-| 3 | 02.11. | 04.11. | Konstruktiv gegen klassisch | 01-e, 01-f | |
-| 4 | 09.11. | 11.11. | Automatik und Suche; `Nat` | 01-g, 02-a | **Test 1** |
-| 5 | 16.11. | 18.11. | Induktion, Reduktionsregeln, Grenzwerte | 02-b, 02-c | |
-| 6 | 23.11. | 25.11. | Mengen und Typen; Quantoren | 03-00, 03-01 | |
-| 7 | 30.11. | 02.12. | Funktionen und Mengen in Mathlib | 03-a, 03-b | **Test 2** |
-| 8 | 07.12. | 09.12. | Bild und Urbild; Typklassen | 03-c, 04-a | |
+| 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | 01-a | |
+| 2 | 26.10. | 28.10. | Was ist ein Beweis? BHK-Interpretation | 01-b, 01-c | |
+| 3 | 02.11. | 04.11. | Konstruktiv gegen klassisch | 01-d, 01-e | |
+| 4 | 09.11. | 11.11. | Beweisstruktur; Automatik und Suche | 01-f, 01-g | **Test 1** |
+| 5 | 16.11. | 18.11. | `Nat`, Reduktionsregeln, Induktion | 02-a, 02-b | |
+| 6 | 23.11. | 25.11. | Grenzwerte; Quantoren und Typen | 02-c, 03-00 | |
+| 7 | 30.11. | 02.12. | Prädikate; Funktionen in Mathlib | 03-01, 03-a | **Test 2** |
+| 8 | 07.12. | 09.12. | Mengen, Bild und Urbild | 03-b, 03-c | |
 | 9 | 14.12. | 16.12. | Curry-Howard, abhängige Typen | 05-a, 05-b | **Test 3** |
-| 10 | 21.12. | -- | Proof Engineering; `conv` | 07-a, 07-b | |
+| 10 | 21.12. | -- | Proof Engineering; `conv` | 07-a, 07-b, 04-a | |
 | | | | *Pause 23.12. -- 06.01.* | | |
 | 11 | 11.01. | 13.01. | Ordnungen und Verbände | 06-a | |
 | 12 | 18.01. | 20.01. | Algebraische Hierarchie | 06-d | |
@@ -85,6 +152,17 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 
 27 der 29 Blätter.
 
+**Woche 1 trägt nur ein Blatt.** Montag ist reiner Kontext, Mittwoch
+reine Installation -- in dieser Woche sieht niemand eine geführte
+Minute Lean. Zwei Blätter wären dort Unfug. Der Rutsch läuft durch bis
+Woche 10, die dafür drei Blätter über die dreiwöchige Pause trägt.
+
+Nebeneffekt, und ein guter: die Paarungen passen jetzt besser zum
+Montagsthema. BHK trifft auf `∧`, `∨` statt auf die Negation;
+konstruktiv gegen klassisch trifft auf genau die Blätter 01-d und
+01-e; die Quantoren liegen in derselben Woche wie die Grenzwerte, die
+sie brauchen.
+
 ### Der Theoriefaden der ersten Wochen
 
 Die Frage, was man am Montag erzählt, wenn die Studierenden noch
@@ -92,13 +170,10 @@ nichts können, hat drei Antworten, die ohne Vorwissen funktionieren.
 Abhängige Typen und Universen gehören *nicht* dazu -- die kommen in
 Woche 9, wenn Lean lesbar geworden ist.
 
-**Woche 1 -- Warum überhaupt formalisieren?** Vierfarbensatz,
-Flyspeck, Liquid Tensor Experiment. Mathlib als Objekt: wie groß, wer
-pflegt es, wie wird reviewt. Und die aktuelle Lage -- seit Anfang 2026
-rund achtfache Zunahme der arXiv-Preprints mit Lean, Erdős' unit
-distance. Material dazu liegt im MSCA-Antrag (`1.1-pertinence.md`).
-Null Vorwissen nötig, und es erklärt, wofür die nächsten Wochen Mühe
-gut sind.
+**Woche 1 -- Warum überhaupt formalisieren?** Geschichte, Mathlib,
+aktuelle Lage; ausgearbeitet oben unter *Die erste Sitzung*. Null
+Vorwissen nötig, und es erklärt, wofür die nächsten Wochen Mühe gut
+sind.
 
 **Woche 2--3 -- Konstruktive gegen klassische Logik.** Echte Theorie,
 braucht nur die Blätter 01-a bis 01-c als Vorwissen, und sie dient
@@ -109,11 +184,14 @@ Der Clou: sie können es **selbst nachprüfen**. `itauto` gegen `tauto`
 ist genau dieses Experiment, und Blatt 01-g baut darauf auf. Theorie,
 die man im Labor testen kann, ist die beste Theorie für Woche 3.
 
-**Woche 4--5 -- `Nat` und Reduktionsregeln.** Die erste Dosis
+**Woche 5 -- `Nat` und Reduktionsregeln.** Die erste Dosis
 Typentheorie, und die richtige: `Nat` mit zwei Konstruktoren,
 `Nat.rec`, definitionelle Gleichheit, die Reduktionsregeln. Das Kapitel
 `01-Lean/01-Nat.lean` steht seit Juli 2026 bewusst *vor* *Types* --
 diese Entscheidung trägt genau hier.
+
+Woche 4 braucht nichts dergleichen mehr: Beweisstruktur, Automatik und
+Suche sind dann eine ganz gewöhnliche Vorlesung.
 
 Der Faden ist damit: *wozu* → *was ist ein Beweis* → *was ist ein
 Term*. Und erst ab Woche 9: *was ist ein Typ, wirklich*.
@@ -131,8 +209,11 @@ und zwar besser als alles andere: Proof Engineering und `conv` sind
 für alle wichtig, die später zu Mathlib beitragen wollen, und die
 Blätter `07-a` und `07-b` sind in sich geschlossen.
 
-**Die beiden Blätter laufen als Ferienaufgabe über die Pause.** Drei
-Wochen sind dafür reichlich, und das erste Labor nach der Pause
+**Drei Blätter laufen als Ferienaufgabe über die Pause:** `07-a`,
+`07-b` und dazu `04-a` (Rekursion, Pattern Matching, Funktionen höherer
+Ordnung). `04-a` hat keine eigene Vorlesung und braucht auch keine --
+es steht für sich, genau wie die beiden anderen. Drei Wochen sind für
+drei solche Blätter reichlich, und das erste Labor nach der Pause
 (13.01., ohne Test) beginnt mit Fragen dazu.
 
 `conv` kommt damit *vor* Filter und Topologie -- genau rechtzeitig,

@@ -420,8 +420,9 @@ into constructor form before ι can fire.
 
 - [scripts/export_exercises.sh](scripts/export_exercises.sh) exports
   `Leancourse/Exercises/` into a standalone student repository
-  (default target `../leancourse_exercises`; `--with-solutions` to
-  include `Solutions/`). It writes a Mathlib-only `lakefile.lean`
+  (default target `../leancourse_exercises`). **Superseded in part
+  (see 2026-10-10 below): the `--with-solutions` flag is gone and
+  `Solutions/` no longer exists.** It writes a Mathlib-only `lakefile.lean`
   (rev extracted from this repo's lakefile), copies `lean-toolchain`,
   and filters `lake-manifest.json` down to Mathlib + its 8 deps so
   `lake exe cache get` matches the pinned revisions. `README.md` and
@@ -446,3 +447,198 @@ into constructor form before ι can fire.
   and push in the sibling checkout — the script never touches the
   sibling's `README.md`/`.gitignore` after the first export, but
   everything under `Exercises/` is mirrored with `--delete`.
+
+## Session history (2026-10-10)
+
+### `Exercises/Solutions/` → `Leancourse/Checks/`
+
+Model solutions for students are no longer maintained. The tree moved
+with `git mv` out of the exercises directory entirely:
+
+| Old                            | New                   |
+|--------------------------------|-----------------------|
+| `Leancourse/Exercises/Solutions/` | `Leancourse/Checks/` |
+
+Moving it *out* of `Exercises/` rather than renaming it in place is
+deliberate: `export_exercises.sh` rsyncs `Leancourse/Exercises/` with
+`--delete`, so anything inside that tree is one missing `--exclude`
+away from being published. Outside it, the witnesses cannot leak
+structurally.
+
+Knock-on edits:
+
+- `--with-solutions` removed from
+  [scripts/export_exercises.sh](scripts/export_exercises.sh) (flag
+  parsing, the conditional `--exclude 'Solutions'`, the usage line and
+  the closing message).
+- New [scripts/check_solvable.sh](scripts/check_solvable.sh): checks
+  every file under `Leancourse/Checks/` with `lake env lean`, 4 in
+  parallel. **Unlike the pre-export check, a `sorry` is a failure
+  here** — the whole point of a witness is that the exercise can be
+  finished. Takes optional file/directory arguments.
+- [Leancourse/Checks/README.md](Leancourse/Checks/README.md) states
+  the purpose, the non-goals (not pedagogical, not complete, not
+  published) and the coverage table.
+- [README.md](README.md) layout section updated.
+
+Rationale, for whoever wonders why the solutions vanished: they were
+only 13 of 28 sheets, they were never exported anyway
+(`--with-solutions` was opt-in and the live student repo has no
+`Solutions/`), and any student now gets a better-commented solution
+from a chat model in seconds. What *was* worth keeping is the one
+thing a type-check cannot do: confirm an exercise is actually
+solvable.
+
+### Haiku one-shot run over `01-Logic`
+
+Eight Haiku instances, one per sheet, single pass, no Lean feedback,
+forbidden from running any build. Result: **68 of 72 solvable `sorry`s
+(94%)**; six of eight sheets compiled fully clean and `sorry`-free.
+Statement integrity was verified afterwards (md5 over all
+`example`/`lemma`/`theorem`/`variable` lines per file) — no instance
+weakened a statement.
+
+Failures, all four worth knowing about:
+
+- `01-e` Ex 2: `exact absurd hq` (missing argument), and `·` bullets
+  nested inside a `cases h with | inr h => ...` arm, which does not
+  parse.
+- `01-h` Ex 4: one `intro` too many. Ex 6: `choose f hf` without
+  `using h`.
+- `01-h` Ex 2: **a defect in the sheet, not the model.** The exercise
+  hands the student `rw [l1]` as the first line, but
+  `l1 : (P → Q) ↔ (Q ∨ ¬P)` matches the *outer* implication of
+  `((P → Q) → P) → P` first, turning the goal into
+  `P ∨ ¬((P → Q) → P)` (verified with `trace_state`). `intro` then
+  fails with "no binders to introduce".
+
+Two consequences recorded here so they are not rediscovered:
+
+1. **`Exercises/01-h` and its witness had silently diverged.** The
+   witness proves Ex 2 with three `rw [imp_iff_or_not]` and Ex 3 with
+   `rw [not_imp_not]` — neither uses `l1`, although both exercise
+   texts tell the student to. The witness also already says
+   "you can use `apply?`" where the sheet still says
+   `library_search` (the Lean 3 name). Unfixed as of this entry.
+2. **Sheet 01 is no barrier to LLM use.** The cheapest model, one
+   shot, no feedback, gets 94%. It also correctly flagged *both*
+   deliberately unprovable statements in `01-a` (the uncommented
+   `example : False` and `P → P → Q` from Exercise 4), so the
+   "decide which of these are valid" exercise does not survive
+   contact either. Relevant to `exam.md` and to any plan that rests
+   on homework being done unaided.
+
+Style note: Haiku writes `cases h with | inl .. | inr ..` throughout
+and never `cases'`, and reaches for `choose`, `absurd` and `simp` —
+none of which sheet 01 introduces. Solutions students obtain will not
+resemble what the sheets teach.
+
+### Undocumented earlier work (2026-10-02, commits `de54897`, `aca12e1`)
+
+Recorded late: the toolchain was upgraded to
+`leanprover/lean4:v4.34.0` (lakefile Mathlib rev `v4.34.0`, student
+repo exported and pushed in lockstep), and
+[Slides/Filters.lean](Slides/Filters.lean) +
+[SlidesMain.lean](SlidesMain.lean) added a VersoSlides deck for the
+Filters chapter — currently the only deck.
+
+### `01-Logic` rebuilt (same day)
+
+Sheet 01 was rewritten from scratch under two constraints from the
+course author: **propositional logic only** (no type variables, no
+predicates, no `ℕ`), and **every tactic explained and demonstrated
+before the first exercise that needs it**. House style: short
+sentences, no chat.
+
+| Old                   | New                  | Tactics introduced                                   |
+|-----------------------|----------------------|------------------------------------------------------|
+| `01-a-Propositions`   | `01-a-Propositions`  | `trivial` `intro` `exact` `assumption` `apply` `revert` |
+| `01-b-Apply`          | `01-b-AndIff`        | `constructor` `⟨_,_⟩` `.1/.2` `.mp/.mpr` `obtain`     |
+| `01-c-Negation`       | `01-c-Or`            | `left` `right` `Or.inl/inr` `obtain (_\|_)`           |
+| `01-d-AndOr`          | `01-d-Negation`      | `show` `exfalso` `False.elim` `contradiction` `absurd` |
+| `01-e-ByCasesHave`    | `01-e-Classical`     | `by_cases` `Classical.em` `by_contra` `push_neg`      |
+| `01-f-PatternTactics` | `01-f-Structure`     | `have` `suffices` `refine ?_` `rintro` `rcases`       |
+| —                     | `01-g-Automation`    | `exact?` `apply?` `tauto` `itauto` `simp`             |
+
+81 exercises in total. The old `01-b` … `01-f` were deleted, not
+edited; `git log` has them.
+
+**The organising principle is the constructive/classical cut between
+`01-d` and `01-e`.** Everything up to and including `01-d` is provable
+without the excluded middle; `01-e` is exactly the sheet where it is
+needed. This is not a claim, it is checked: `itauto` proves all 14
+relevant statements on `01-c`/`01-d` and fails on all 12 of `01-e`.
+Re-run that probe if you move an exercise across the boundary. It also
+kills the old bug where `01-d` asked for `¬(P ∧ Q) → ¬P ∨ ¬Q` one
+sheet before `by_cases` existed — that statement now cannot land
+before `01-e` by construction.
+
+`01-g` turns the same mechanism into an exercise: students run
+`itauto` and `tauto` on the same goal and see which statements need
+classical logic. That replaces a paragraph of assertion with an
+experiment.
+
+New tactics that sheet 01 never had: `revert`, `contradiction`,
+`absurd`, `show`, `suffices`, `push_neg`, `tauto`, `itauto`, and
+`exact?`/`apply?` as executable code rather than prose mentions.
+`cases'` is gone; `obtain`/`rcases` is taught from `01-b` on.
+
+### Quantifiers and predicates left `01-Logic`
+
+They need a type, and any type puts you in `Set` territory at once, so
+they move to the head of the sets chapter (author's call):
+
+| Old                           | New                                      |
+|-------------------------------|------------------------------------------|
+| `01-Logic/01-g-Quantifiers`   | `03-Functions_and_Sets/03-00-Quantifiers` |
+| `01-Logic/01-h-Predicates`    | `03-Functions_and_Sets/03-01-Predicates`  |
+
+`git mv`, witnesses moved in lockstep. **Both files are still in the
+old style and still carry the known defects** (the misleading
+`rw [l1]` scaffold, `library_search` instead of `exact?`, the `xxx`
+author note, and the sheet/witness divergence on exercises 2 and 3).
+They were relocated, not rewritten.
+
+### Coursenotes not yet updated
+
+The Verso chapters still reference the old sheet names and the old
+`Solutions/` tree in places. Not touched in this session.
+
+### `grind` solves sheet 01 outright
+
+Measured on all seven `01-Logic` sheets: every `example` statement
+(128 of them, demonstrations included) proved by a bare `grind`, no
+arguments. **127 succeeded.** The single failure is
+`example : P → P → Q` in `01-a` — the statement that is deliberately
+not provable.
+
+So `grind` closes 100% of what is provable on sheet 01. That is a
+stronger result than the Haiku run above, and it needs no AI at all:
+the tactic ships with Lean and is documented in this repo's own
+appendix (`04-Appendix/Tactics/Grind.lean`).
+
+Two consequences:
+
+1. **Homework cannot be graded on correctness**, and that conclusion
+   does not depend on language models. It is recorded in `plan.md`.
+2. **`01-g` now teaches `grind` explicitly** rather than leaving it to
+   be discovered. Hiding it would be futile — it is one `grind` away
+   in a file students already have. The sheet puts the honest case
+   instead: `grind` is a finishing tactic, it is silent on which lemma
+   to state and how to structure a theory, and unlike `itauto` it
+   proves constructive and classical statements without distinguishing
+   them. Exercise 8 asks which `01-a` statement it fails on and why.
+
+The three-way comparison `itauto` ⊂ `tauto` ⊂ `grind` is the spine of
+`01-g`: constructive propositional, classical propositional, and
+general automation with arithmetic and congruence closure.
+
+### `plan.md`
+
+The semester plan now lives in [plan.md](plan.md): computed dates
+(19.10.2026–13.02.2027, 15 lectures but only 14 labs because the
+Christmas break eats three Wednesdays and two Mondays), the week-by-
+week content plan, the five paper tests (11.11., 02.12., 16.12.,
+27.01., 10.02.; pass 3 of 5), the AI policy, and the project
+arrangement. Weighting: nine weeks of craft before the break, five
+weeks of mathematics after it.

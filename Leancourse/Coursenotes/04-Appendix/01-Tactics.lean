@@ -23,6 +23,7 @@ import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Conv»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Convert»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Decide»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exact»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exactqm»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exfalso»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Ext»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Field_simp»
@@ -40,6 +41,7 @@ import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Have»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Hint»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Induction»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Intro»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Itauto»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Left»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Let»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Linarith»
@@ -61,10 +63,10 @@ import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Simp»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Simp_all»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Simp_rw»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Specialize»
+import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Suffices»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Symm»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Tauto»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Trans»
-import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Triv»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Trivial»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Unfold»
 import «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Use»
@@ -177,6 +179,8 @@ switch to `simp only` for a robust proof.
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exact»}
 
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exactqm»}
+
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Exfalso»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Ext»}
@@ -214,6 +218,8 @@ switch to `simp only` for a robust proof.
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Induction»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Intro»}
+
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Itauto»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Left»}
 
@@ -259,13 +265,13 @@ switch to `simp only` for a robust proof.
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Specialize»}
 
+{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Suffices»}
+
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Symm»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Tauto»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Trans»}
-
-{include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Triv»}
 
 {include 0  «Leancourse».Coursenotes.«04-Appendix».«Tactics».«Trivial»}
 

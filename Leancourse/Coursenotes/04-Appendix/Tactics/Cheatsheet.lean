@@ -32,17 +32,20 @@ tag := "cheatsheet"
 * + `h : P` {br}[] `⊢ P`
   + `assumption`
   + `no goals 🎉`
-* + `h : P → Q` {br}[] `⊢ P`
+* + `h : P → Q` {br}[] `⊢ Q`
   + `apply h`
-  + `⊢ Q`
+  + `⊢ P`
 * + `h₁ : P → Q` {br}[] `h₂ : Q → R` {br}[] `⊢ R`
-  + `apply h₂ h₁`
-  + `h₁ : P → Q` {br}[] `h₂ : Q → R` {br}[] `⊢ P`
+  + `apply h₂`
+  + `h₁ : P → Q` {br}[] `h₂ : Q → R` {br}[] `⊢ Q`
 * + `⊢ P ∧ Q → P`
-  + `tauto` oder `tauto!`
+  + `tauto`
   + `no goals 🎉`
-* + `⊢ true`
-  + `triv`
+* + `⊢ P ∧ Q → P` (no excluded middle)
+  + `itauto`
+  + `no goals 🎉`
+* + `⊢ True`
+  + `trivial`
   + `no goals 🎉`
 * + `h : P` {br}[] `⊢ Q`
   + `exfalso`

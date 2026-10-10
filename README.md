@@ -19,9 +19,16 @@ in the introduction of the course notes.
 - `Leancourse/Coursenotes/` — the Verso chapters (built by Lean).
 - `Leancourse/Exercises/` — the *source of truth* for the exercise
   sheets. They are exported to the student repository with
-  `scripts/export_exercises.sh` (add `--with-solutions` to publish
-  `Solutions/`); after an export, commit and push inside
-  `../leancourse_exercises`.
+  `scripts/export_exercises.sh`; after an export, commit and push
+  inside `../leancourse_exercises`.
+- `Leancourse/Checks/` — solvability witnesses for the sheets: worked
+  proofs whose only job is to show that an exercise *can* be finished.
+  A sheet full of `sorry` type-checks happily, so the export check
+  cannot catch a broken or mis-scaffolded exercise; this tree can.
+  Not teaching material, never exported. Verify with
+  `scripts/check_solvable.sh`. These are the former
+  `Exercises/Solutions/`; model solutions for students are no longer
+  maintained (see `Leancourse/Checks/README.md`).
 - `.github/workflows/deploy.yml` — builds and deploys the site.
 
 ## Building the notes locally

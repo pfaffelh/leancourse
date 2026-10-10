@@ -21,11 +21,14 @@ tag := "tauto"
 * + Proof state
   + Tactic
   + New proof state
-* + `⊢ P ∧ Q → P`
-  + `tauto` oder `tauto!`
+* + ⊢ P ∧ Q → P
+  + `tauto`
   + *No goals*
-* + `⊢ ((P → Q) → P) → P`
-  + `tauto!`
+* + ⊢ ((P → Q) → P) → P
+  + `tauto`
+  + *No goals*
+* + ⊢ ¬(P ∧ Q) ↔ ¬P ∨ ¬Q
+  + `tauto`
   + *No goals*
 :::
 
@@ -78,5 +81,7 @@ The truth tables for `¬P`, `P ∧ Q` and `P ∨ Q` are as follows; if more term
 
 *Notes*
 
-The difference between `tauto` and `tauto!` is that in the latter tactic, the rule of the excluded middle is allowed.  The second example can therefore only be solved with `tauto!`, but not with `tauto`.
+Reasoning by truth table assumes that every proposition is either true or false. So `tauto` uses the law of the excluded middle, and the second example above -- Peirce's law -- is proved by it.
+
+The constructive counterpart is {ref "itauto"}[`itauto`], which never uses that law. Comparing the two is how you find out whether a statement really needs classical logic.
 

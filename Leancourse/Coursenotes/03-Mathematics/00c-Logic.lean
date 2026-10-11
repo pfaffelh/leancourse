@@ -172,8 +172,8 @@ where `s ∈ s` *is* a well-formed proposition and is excluded only by
 the separate axiom of foundation.  Lean rules it out one step
 earlier, by typing.
 
-A word on the *Cantor's theorem* invoked above.  It states that for
-any type `α` there is no surjection `α → Set α`: the type of subsets
+*Cantor's theorem*, invoked above, states that for any type `α` there
+is no surjection `α → Set α`: the type of subsets
 `Set α = α → Prop` is always *strictly larger* than `α` itself
 (Mathlib's `Function.cantor_surjective`).  In particular `α` and
 `α → Prop` can never be the *same* type, which is exactly what rules

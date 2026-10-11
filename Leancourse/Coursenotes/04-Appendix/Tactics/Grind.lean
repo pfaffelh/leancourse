@@ -71,7 +71,7 @@ example (a b : Int) (h1 : a ≤ b) (h2 : b ≤ a) :
 
 *Remarks:*
 
-* *When to reach for it.* `grind` shines on goals that interleave a
+* *When to reach for it.* `grind` is for goals that interleave a
   handful of hypotheses, some case analysis, equalities, and a bit of
   arithmetic -- exactly the situations where you would otherwise
   write a tedious chain of `rcases`, `simp`, and `omega`.  It is a

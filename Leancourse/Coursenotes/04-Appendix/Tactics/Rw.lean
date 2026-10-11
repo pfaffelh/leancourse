@@ -59,7 +59,7 @@ In the first of the four examples, `rw` applies to the first occurrence of a ter
 
 *Notes*
 
-* `rw` is used very often in practice to apply statements from the `mathlib` (at least if they are of the type `=` or `↔`).
+* `rw` is the usual way to apply a `mathlib` statement of the form `=` or `↔`.
 * If you want to combine several `rw` commands, you can do so in square brackets, for example `rw [h1, h2]` or `rw [h1, ←h2, h3]`.
 * `rw` immediately executes a `refl` after its application. This leads to the second and third examples of the applications of `add_comm` and `add_zero` that the new proof state is not as specified, but *no goals*.
 * If you do not want to perform a `rw` in sequence (as in the double elimination of the `+0` above), you can use `nth_rewrite` to rewrite the second occurrence of a term.

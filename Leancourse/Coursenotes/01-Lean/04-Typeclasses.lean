@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "typeclasses"
 %%%
 
-Typeclasses are one of the most important features of Lean, and they are central to how Mathlib organizes mathematics. A typeclass is a way to associate operations and properties with types, and to have Lean find the right implementation automatically. If you have seen abstract algebra, typeclasses are the mechanism that lets Lean know that the integers form a ring, that the real numbers form a field, and so on.
+A typeclass associates operations and properties with a type and lets Lean find the right implementation on its own. It is the mechanism by which Lean knows that the integers form a ring and the reals a field, and it is how Mathlib organizes mathematics.
 
 # The problem typeclasses solve
 %%%
@@ -45,7 +45,7 @@ This says: for any type `α`, an instance of `MyAdd α` provides a function `myA
 - A `structure` is constructed and passed *explicitly*: you write `⟨...⟩` or call its named projections.
 - A `class` is also a structure, but Lean's *instance resolution* will synthesize one for you whenever a function expects an `[Add α]` argument. You never write the instance argument by hand.
 
-So the rule of thumb is: use `structure` when the value is part of the data the user manipulates (a `Point`, a `Person`, a `RingHom`); use `class` when the value is a *canonical* piece of structure attached to a type (a `Group` instance on `ℤ`, an `Add` instance on `ℕ`) and you want Lean to find it automatically.
+Use `structure` when the value is data the user manipulates: a `Point`, a `Person`, a `RingHom`. Use `class` when it is a *canonical* piece of structure attached to a type -- a `Group` on `ℤ`, an `Add` on `ℕ` -- that Lean should find on its own.
 
 # Data classes and Prop classes
 %%%
@@ -77,7 +77,7 @@ Typeclasses inherit the *proof* / *data* split drawn for terms in general: an in
 
 An instance is a term you construct: that is what `instance … where …` does, and its fields are values you can project and run. You then use it as a *property of the type* -- declared once, synthesized wherever `[C α]` is required, rarely named or passed by hand. For a data class it stays data, carried at runtime; for a `Prop` class it is a proof and is erased. So "an instance is only a property, not a term" describes the usage, not the substance: the term is there, and its construction is delegated to instance resolution.
 
-The parallel is exact at the term level, too. Just as `class` is a `structure` marked for instance search, `instance` is a `def` marked for instance search: `instance foo : C := …` is sugar for `@[instance] def foo : C := …`. (A plain `def` of a class type is a perfectly good term -- only invisible to the search.)
+The parallel holds at the term level: `class` is a `structure` marked for instance search, and `instance` is a `def` marked for instance search, with `instance foo : C := …` sugar for `@[instance] def foo : C := …`. A plain `def` of a class type is a perfectly good term, only invisible to the search.
 
 :::table (align := left) +header
 * + Level
@@ -333,9 +333,8 @@ Because the result `γ` is an `outParam`, Lean resolves `HMul α β ?γ` from `�
 tag := "decidable-typeclass"
 %%%
 
-One typeclass deserves special mention, because it sits at the border
-between *programs* and *proofs*: `Decidable`. A proposition `P` is
-`Decidable` when there is an algorithm that determines whether `P`
+`Decidable` sits at the border between *programs* and *proofs*. A
+proposition `P` is `Decidable` when an algorithm determines whether `P`
 holds -- so the class carries genuine computational content, and lives
 in `Type`, not `Prop`:
 
@@ -364,7 +363,7 @@ example : 2 + 3 = 5 := by decide
 example : ¬(2 + 3 = 6) := by decide
 ```
 
-Where do those instances come from? A `Decidable P` instance is just a term returning one of the class's two constructors -- `isTrue h` carrying a proof `h : P`, or `isFalse h` carrying a proof `h : ¬P`. You can write one by hand. Here is decidability of "is `n` zero?", by cases on `n`:
+A `Decidable P` instance is a term returning one of the class's two constructors: `isTrue h` carrying a proof `h : P`, or `isFalse h` carrying a proof `h : ¬P`. You can write one by hand. Decidability of "is `n` zero?", by cases on `n`:
 
 ```lean
 def decZero (n : Nat) : Decidable (n = 0) :=
@@ -373,12 +372,12 @@ def decZero (n : Nat) : Decidable (n = 0) :=
   | m + 1 => isFalse (Nat.succ_ne_zero m)  -- a proof that m + 1 ≠ 0
 ```
 
-Each branch supplies a *genuine proof* -- that is what makes `Decidable` live in `Type` and carry content. Registered as an `instance`, `decZero` is exactly what `decide` runs and what `if n = 0 then … else …` consults; `deriving DecidableEq` just generates such a definition for you automatically.
+Each branch supplies a proof, which is why `Decidable` lives in `Type` and carries content. Registered as an `instance`, `decZero` is what `decide` runs and what `if n = 0 then … else …` consults. `deriving DecidableEq` generates such a definition for you.
 
-Decidability is the *constructive* half of the story: it works without
-any axioms, which is exactly why the resulting code is executable. The
-*classical* counterpart -- making *every* proposition decidable
-non-constructively, at the cost of executability -- belongs to the
+Decidability is the *constructive* half: it works without axioms, and
+that is why the resulting code is executable. The *classical*
+counterpart makes *every* proposition decidable non-constructively and
+not executable; it belongs to the
 axioms of Lean and is discussed in the {ref "constructive-classical"}[Mathematics part].
 
 # Coercions
@@ -386,7 +385,7 @@ axioms of Lean and is discussed in the {ref "constructive-classical"}[Mathematic
 tag := "coercions"
 %%%
 
-A *coercion* is a conversion that Lean inserts *automatically* when a term of one type appears where another is expected -- for instance a `ℕ` used where a `ℤ` is wanted. Like everything in this chapter, it is driven by *instance resolution*: coercions are registered as instances of the class `Coe`, and when a mismatch could be bridged by one, Lean finds it and inserts the conversion, written `↑`.
+A *coercion* is a conversion Lean inserts automatically when a term of one type appears where another is expected, such as a `ℕ` where a `ℤ` is wanted. Coercions are registered as instances of the class `Coe`, so instance resolution drives them too: on a mismatch Lean finds the instance and inserts the conversion, written `↑`.
 
 ```lean
 example (n : ℕ) : ℤ := n      -- inserted silently
@@ -429,7 +428,7 @@ example (s : Set ℕ) : Type := s   -- the subtype ↥s of its members
 example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
 ```
 
-Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean silently reads it as `↑n + r`. The flip side is that a goal can quietly fill with `↑`s that block tactics like `ring` or `linarith`; the {ref "coercion-headaches"}[appendix] covers the numeric chain `ℕ → ℤ → ℚ → ℝ` and the `norm_cast` / `push_cast` tactics that tidy them up.
+Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean reads it as `↑n + r`. A goal can also fill with `↑`s that block tactics like `ring` or `linarith`; the {ref "coercion-headaches"}[appendix] covers the numeric chain `ℕ → ℤ → ℚ → ℝ` and the `norm_cast` / `push_cast` tactics that tidy them up.
 
 # Where numerals come from (`OfNat`)
 %%%

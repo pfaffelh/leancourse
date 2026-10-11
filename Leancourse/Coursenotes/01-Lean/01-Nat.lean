@@ -29,7 +29,7 @@ Nat.zero : Nat
 Nat.succ : Nat → Nat
 ```
 
-so every natural number is a finite tower of them: `Nat.zero` is `0`, `Nat.succ Nat.zero` is `1`, `Nat.succ (Nat.succ Nat.zero)` is `2`, and so on. (The numerals `0`, `1`, `2` are just notation for these terms.) The general `inductive` declaration -- how you build your *own* types this way -- is the subject of {ref "inductive"}[a later section]; here we only need `Nat` itself.
+so every natural number is a finite tower of them: `Nat.zero` is `0`, `Nat.succ Nat.zero` is `1`, `Nat.succ (Nat.succ Nat.zero)` is `2`, and so on. (The numerals `0`, `1`, `2` are just notation for these terms.) The general `inductive` declaration comes {ref "inductive"}[later]; here we need only `Nat`.
 
 Generated alongside the type is the *recursor* `Nat.rec`. The constructors *build* a value; the recursor *consumes* one. It is the primitive way to define a function with domain `Nat`. To define some `f : Nat → C` (where `C` is some type), you supply exactly two things: a base value `base : C` for the `zero` case (i.e. `f 0 := base`, where `f 0` is the Lean way to write `f(0)`), and a `step : Nat → C → C` such that, for `succ n` (which equals `n + 1`), you may reuse both `n` and the result already computed for `n`, i.e. you define in this way `f (n + 1) := step n (f n)`. (Note the important notation here: We write `α → β → γ` -- with implicit brackets `g : α → (β → γ)` for a function `g` mapping every `a : α` to a function `β → γ`. So, `g a b : γ`. In other words, this is the Lean and more flexible way to write a function depending on two variables.)
 
@@ -41,16 +41,16 @@ example (C : Type) (base : C) (step : Nat → C → C) :
   fun n ↦ Nat.rec base step n
 ```
 
-Pattern matching and the `cases` and `induction` tactics all compile down to `Nat.rec`. (The recursor has a still more general form, in which the result *type* may itself vary with the `Nat`, and which turns out to unify recursion with the induction principle. That needs the language of *universes*, so we return to it in the {ref "inductive"}[section on inductive types].)
+Pattern matching and the `cases` and `induction` tactics all compile down to `Nat.rec`. (A more general form lets the result *type* vary with the `Nat`, which unifies recursion with the induction principle. It needs *universes*, so it comes with the {ref "inductive"}[inductive types].)
 
-What matters for the next sections is that `Nat.rec` *computes*. Applied to a value that is *literally one of the two constructors*, it selects the matching case -- and the *iota rule* (ι) made precise below is applied (numerals such as `2` are put into constructor form first, so the rule applies to them too):
+`Nat.rec` *computes*. Applied to a value that is literally one of the two constructors, it selects the matching case by the *iota rule* (ι), made precise below (numerals such as `2` are put into constructor form first, so the rule applies to them too):
 
 ```
 Nat.rec base step Nat.zero      ⟶ base
 Nat.rec base step (Nat.succ n)  ⟶ step n (Nat.rec base step n)
 ```
 
-For a full example, define "double" (note the keyword `def` at the beginning of the line, and the function name `myDouble`, the input `n : Nat` of the function, which returns a `Nat`) through the recursor and watch it reduce on `2` (here, `_` is the name of a variable, which is not used):
+As an example, define "double" through the recursor and reduce it on `2`. The keyword `def` opens the definition, `myDouble` is the name, `n : Nat` the input, and `_` an unused variable:
 
 ```lean
 def step (_ j : Nat) : Nat := j + 2
@@ -68,7 +68,7 @@ def myDouble (n : Nat) : Nat :=
 example : myDouble 2 = 4 := rfl
 ```
 
-The equality `myDouble 2 = 4` needs no proof beyond `rfl` (which is the Lean way of saying that two thing are definitionally equal): both sides *reduce* to a common form. Naming those reduction steps precisely -- and pinning down when two terms are _the same by computation_ -- is what the rest of this chapter is about.
+`myDouble 2 = 4` needs no proof beyond `rfl`, Lean's way of saying that two terms are definitionally equal: both sides *reduce* to a common form. The rest of this chapter names those reduction steps and says when two terms are the same by computation.
 
 # Definitional equality and `rfl`
 %%%
@@ -84,7 +84,7 @@ example : 2 + 2 = 4 := rfl
 example : Nat.succ 0 = 1 := rfl
 ```
 
-The `#eval` command (used throughout the {ref "terms"}[chapter on terms]) runs the same reduction and prints the resulting value. So `rfl`, `#eval`, and every "reduces to" below are one and the same phenomenon. The precise steps are the *reduction rules* of the kernel, which we now name in full -- they recur throughout the course whenever a later step is claimed to hold "by definition".
+The `#eval` command (used throughout the {ref "terms"}[chapter on terms]) runs the same reduction and prints the value. `rfl`, `#eval` and every "reduces to" below are the same phenomenon. The steps are the kernel's *reduction rules*, named in full next; they recur whenever a later step is claimed to hold "by definition".
 
 ## The reduction rules
 %%%
@@ -224,7 +224,7 @@ The *kernel* is the small, trusted core of Lean that has the final say on whethe
 tag := "bool"
 %%%
 
-There are inductive types even simpler than `Nat`. One of them, `Bool`, is the type with two values, which are called `true` and `false`. It has exactly two constructors, neither taking any argument. Here is its definition, straight from Lean's core library (the `where` keyword introduces the list of constructors):
+`Bool` is simpler than `Nat`: two values, `true` and `false`, and two constructors, neither taking an argument. Its definition, from Lean's core library (`where` introduces the constructors):
 
 {docstring Bool}
 
@@ -316,7 +316,7 @@ There is correspondingly nothing to *learn* from a proof of `True`: the recursor
 
 {docstring False}
 
-Since there is no constructor, there is no way to build a term of `False` -- exactly as it should be for a statement that has no proof. Its recursor is the striking one, and here we give its *full* signature (the result universe `Sort u` is treated in the {ref "type-universes"}[next chapter]):
+With no constructor there is no way to build a term of `False`, as it must be for a statement that has no proof. Its recursor, in full (the result universe `Sort u` is treated in the {ref "type-universes"}[next chapter]):
 
 ```
 False.rec : (motive : False → Sort u) → (t : False) → motive t
@@ -337,7 +337,7 @@ Empty.rec : (motive : Empty → Sort u) →
               (t : Empty) → motive t
 ```
 
-So `Empty.rec` is the data version of `False.rec` -- explicit `motive`, no case argument -- and its packaged form `Empty.elim : Empty → C` is the `Type`-level *ex falso*, the exact twin of `False.elim`. (One wrinkle: `Unit` is a *reducible abbreviation* for `PUnit`, so its recursor is called `PUnit.rec`, not `Unit.rec`.) Whether the `motive` is implicit or explicit is therefore settled solely by whether there is a case value to infer it from; `Prop` versus `Type` never enters in.
+So `Empty.rec` is the data version of `False.rec` -- explicit `motive`, no case argument -- and its packaged form `Empty.elim : Empty → C` is the `Type`-level *ex falso*, the exact twin of `False.elim`. (One wrinkle: `Unit` is a *reducible abbreviation* for `PUnit`, so its recursor is called `PUnit.rec`, not `Unit.rec`.) Whether the `motive` is implicit or explicit depends only on whether there is a case value to infer it from, never on `Prop` versus `Type`.
 :::
 ::::
 

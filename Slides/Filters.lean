@@ -15,8 +15,7 @@ A filter is a *generalized subset*.
 :::
 
 :::notes
-This is the one idea of the lecture. Everything else follows from it.
-Keep coming back to this sentence.
+The one idea of the lecture. Come back to it.
 :::
 
 # Learning goal
@@ -69,7 +68,7 @@ That move is the whole trick.
 
 # The three axioms
 
-Which sets may contain $`F`?
+The sets that may contain $`F`:
 
 :::table +rowHeaders +rowSeps
 *
@@ -125,8 +124,8 @@ $`a_n \to l` is `Tendsto a atTop (nhds l)`.
 :::
 
 :::notes
-Close the loop: the same definition gives sequence limits, function
-limits, and limits at infinity.
+The same definition gives sequence limits, function limits and limits
+at infinity.
 :::
 
 # In one line

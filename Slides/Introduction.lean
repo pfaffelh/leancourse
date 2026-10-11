@@ -8,9 +8,9 @@ set_option pp.rawOnError true
 
 /-
 Deck for the first lecture (week 1, Monday).  It follows the opening
-chapter of the course notes section by section, so that the two can be
-shown together: *Why formalize?*, the prehistory, what changed in 2026,
-and where the field stands.  The claims and figures are the same ones.
+chapter of the course notes section by section, so the two can be shown
+together: what formalizing means, where things stand in 2026, how it got
+there, and the landmark projects.  Same claims, same figures.
 -/
 
 #doc (Slides) "Why formalize?" =>
@@ -30,6 +30,10 @@ img.portrait {
                     gap: 1.6rem; margin-bottom: 0.3rem; }
 .reveal .r-hstack > * { margin: 0; }
 .reveal section img.logo { height: 11vh; width: auto; margin: 0 1.2rem; }
+/* a comparison table has to leave room for the lines under it */
+.reveal section table { font-size: 0.62em; margin: 0.2em auto 0.4em; }
+.reveal section table th,
+.reveal section table td { padding: 0.18em 0.9em; }
 ```
 
 # Why formalize?
@@ -533,16 +537,27 @@ earlier.
 
 # Three systems
 
-:::fragment fadeUp
-- *Lean 4* -- dependent types, one library: Mathlib
+:::table +colHeaders +rowSeps
+*
+  * System
+  * Logic
+  * Library
+*
+  * *Lean 4*
+  * dependent types
+  * one: *Mathlib*
+*
+  * *Rocq* (Coq until 2025)
+  * dependent types
+  * many packages
+*
+  * *Isabelle/HOL*
+  * simple type theory
+  * the *AFP*
 :::
 
 :::fragment fadeUp
-- *Rocq* (until 2025 Coq) -- dependent types, many packages
-:::
-
-:::fragment fadeUp
-- *Isabelle/HOL* -- simple type theory, no dependent types, the strongest automation
+Only Isabelle has no dependent types. Its automation is the strongest of the three.
 :::
 
 :::fragment highlightBlue

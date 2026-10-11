@@ -878,3 +878,31 @@ Gefunden und behoben:
 
 Folien und Kapitel verwenden jetzt dieselben Formulierungen an den
 Stellen, wo beide dasselbe sagen.
+
+## 2026-10-11 (7) -- Skill-Update, Folien nach den neuen Regeln
+
+Das Update per Remote Control lag rund 30 Minuten nach der Aenderung
+noch nicht auf der Platte; eine vollstaendige Sync-Runde lief dazwischen
+und brachte es nicht. Ein Hintergrund-Watcher auf die Datei hat es dann
+nach 20 Sekunden gesehen (manifest `updatedAt` 21:48:07Z). Fuers
+naechste Mal: nicht raten, ob ein RC-Update da ist -- `manifest.json`
+im Sync-Ordner nennt `updatedAt` je Skill.
+
+Der Skill hat jetzt einen Abschnitt *Structure*. Der groesste Teil
+davon zielt auf Skripte mit nummerierten Saetzen (Lemma-Titel in
+Klammern, nummerierte Teilaussagen, "see Definition 1.7", Fussnoten)
+und greift auf Folien nicht. Angewandt wurden:
+- Regel 3 (Relationen kompakt zeigen): die Folie "Three systems" war
+  eine Liste aus drei Fragmenten und ist jetzt eine Tabelle
+  System / Logic / Library, wie im Kapitel.
+- Regel 10 (keine rhetorischen Fragen): "Which sets may contain F?"
+  im Filters-Deck -> "The sets that may contain F:".
+- Regel 11 (keine Rueckblicke): drei Notizen gekuerzt.
+
+Folien-Tabellen brauchen `.reveal section table { font-size: 0.62em }`,
+sonst fuellt eine vierzeilige Tabelle die Folie und schiebt alles
+darunter aus dem Bild.
+
+Offen: Kapitel 0 ist noch nicht gegen die neuen Structure-Regeln
+geprueft. Dort gibt es keine nummerierten Saetze, aber die Roadmap in
+"How to use this course" und die Querverweise waeren Kandidaten.

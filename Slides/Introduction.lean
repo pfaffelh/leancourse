@@ -39,8 +39,7 @@ A proof *found* by computer is not a proof *checked* by computer.
 :::
 
 :::notes
-This is the whole lecture in one line. Everything that follows is
-an illustration of it. Come back to it at the end.
+The whole lecture in one line. Come back to it at the end.
 :::
 
 # What formalizing means
@@ -56,8 +55,7 @@ Anything you leave out is refused.
 :::
 
 :::notes
-This is the definition, and it is the whole of it. Everything that
-follows in this lecture is motivation for caring about it.
+That is the definition. The rest of the lecture is why it matters.
 :::
 
 # Two things it is not
@@ -136,8 +134,7 @@ None of the withdrawn papers had a Lean proof.
 Machines now produce mathematics faster than mathematicians can
 referee it. The only check that keeps up is a formal one.
 
-This is the argument for the course. Do not oversell it -- the next
-slide takes it back a step.
+Do not oversell it. The next slide takes it back a step.
 :::
 
 # But be precise
@@ -149,14 +146,13 @@ Whether that statement is the theorem in the paper is a *human* question.
 :::
 
 :::fragment highlightBlue
-Reading a formal statement and judging what it says is a skill.
-It is most of what this course teaches.
+Reading a formal statement and judging what it says is most of what
+this course teaches.
 :::
 
 :::notes
-OpenAI's own repository documents, per paper, which checks cover a
-main theorem and which only a supporting result. That honesty is the
-model to point at.
+OpenAI's repository documents, per paper, which checks cover a main
+theorem and which only a supporting result.
 :::
 
 # Where people are going
@@ -180,9 +176,9 @@ January: a handful a week. September: around forty.
 :::
 
 :::notes
-This is the slide that answers "why should I spend a semester on
-this". Within a few years, reading and writing a formal proof will
-be ordinary equipment.
+Within a few years, reading and writing a formal proof will be
+ordinary equipment. This is the answer to "why spend a semester on
+this".
 :::
 
 # How it got here
@@ -204,7 +200,7 @@ be ordinary equipment.
 :::
 
 :::notes
-That was the state of things. Now how it got there, in order.
+Now how it got there, in order.
 
 Not chronology for its own sake: each episode adds a different reason.
 What a computer proof is worth, where peer review stops, whether the
@@ -240,10 +236,9 @@ The idea is 150 years old. The tool is 20.
 :::
 
 
-
 :::notes
 Lean itself: de Moura, Microsoft Research, 2013. Lean 4 in 2021.
-Lean FRO, about twenty people. Buzzard campaigning since 2018.
+Lean FRO, about twenty people. Buzzard arguing for it since 2018.
 :::
 
 # 1976: four colours
@@ -271,11 +266,9 @@ A computer checks the list.
 :::
 
 
-
-
 :::notes
 Two decades of argument about whether this counted as a proof.
-Gonthier did not settle the argument; he made it unnecessary.
+Gonthier did not settle it; he made it unnecessary.
 :::
 
 # 1998: stacking oranges
@@ -311,9 +304,8 @@ Hales started Flyspeck. Complete formal proof, 2014.
 :::
 
 :::notes
-This is the strongest of the three, and it is not about computers.
-Peer review met a proof it could not certify. More effort would not
-have helped.
+Not about computers. Peer review met a proof it could not certify,
+and more effort would not have helped.
 :::
 
 # 2013: the author concedes
@@ -335,16 +327,15 @@ Vladimir Voevodsky
 :::
 
 
-
 :::notes
 Note the dates: the paper is from 1989, but the episode only ends in
 2013, which is why it sits here and not before Kepler.
 
-Fifteen years. Not an obscure corner either -- both authors were well
-known, and Voevodsky got the Fields Medal in between, in 2002.
+Fifteen years, and not an obscure corner: both authors were well
+known, and Voevodsky received the Fields Medal in between, in 2002.
 
-The point is not that they made a mistake. Everyone does. The point is
-how long it took to resolve, and why.
+Everyone makes mistakes. What matters here is how long it took to
+resolve, and why.
 :::
 
 # Why it took fifteen years
@@ -369,9 +360,9 @@ it in 1999. Several seminars had read the paper by then.
 His conclusion: a hard technical argument by a trusted author is
 *hardly ever checked in detail*.
 
-So he went looking for a proof assistant, found none he could use, and
-built the foundations for one -- univalent foundations, the IAS special
-year 2012-13, the HoTT book. In Coq, not Lean; and not the foundations
+He then looked for a proof assistant, found none he could use, and
+built the foundations for one: univalent foundations, the IAS special
+year 2012-13, the HoTT book. In Coq, not Lean, and not the foundations
 Mathlib uses. We take the diagnosis, not the cure. He died in 2017.
 :::
 
@@ -400,8 +391,6 @@ Not combinatorics with a thousand cases -- condensed mathematics.
 :::
 
 
-
-
 :::notes
 Buzzard's ICM plenary in 2022 is a fair marker for the moment this
 stopped being a curiosity.
@@ -415,7 +404,7 @@ Each one showed that something new was possible.
 
 :::notes
 Five projects between Flyspeck and 2026. The course material is built
-out of the libraries they left behind -- that is why they are named.
+out of the libraries they left behind.
 :::
 
 # Perfectoid spaces, 2019
@@ -435,13 +424,12 @@ They formalized a *definition*, not a theorem.
 :::
 
 
-
 :::notes
 Scholze's perfectoid spaces, 2012. Whether an object of that complexity
-could even be *stated* in a proof assistant was open. Stating is a
-different problem from proving.
+could be *stated* at all in a proof assistant was open, and stating is
+a different problem from proving.
 
-This is where Lean's reputation among mathematicians begins.
+Lean's reputation among mathematicians dates from this project.
 :::
 
 # Sphere eversion, 2022
@@ -465,14 +453,11 @@ In three dimensions the obstruction is gone.
 :::
 
 
-
 :::notes
-Gromov's h-principle. Differential topology, not algebra -- so the
-project had to build a differential-geometry API first and prove
-anything only afterwards.
-
-That is the ordinary shape of formalization work, and the reason
-Mathlib matters more than any single theorem in it.
+Gromov's h-principle. Differential topology, not algebra, so the
+project built a differential-geometry API first and proved the theorem
+afterwards. That order is the ordinary shape of formalization work,
+and the reason Mathlib matters more than any single theorem in it.
 :::
 
 # Freiman-Ruzsa, 2023
@@ -492,14 +477,13 @@ Formalized in about three weeks -- *before* the paper was refereed.
 :::
 
 
-
 :::notes
-The method is what carried. A *blueprint* cuts a formalization into
-independent pieces with stated interfaces, so volunteers can work in
-parallel without talking to each other.
+The method carried further than the theorem. A *blueprint* cuts a
+formalization into independent pieces with stated interfaces, so
+volunteers can work in parallel without talking to each other.
 
-Formalization stopped being a job for one team over years. This is the
-missing step between "LTE, two years" and "Fermat, eleven days".
+Formalization stopped being a job for one team over years: the step
+between "LTE, two years" and "Fermat, eleven days".
 :::
 
 # Equational Theories, 2024-25
@@ -515,13 +499,12 @@ Terence Tao
 :::
 
 
-
 :::notes
 All implications between equational laws on magmas, settled, with new
 constructions found on the way.
 
-Not a hard theorem -- an impossible amount of bookkeeping. A kind of
-result that does not exist without a machine.
+The difficulty is not depth but bookkeeping, on a scale that needs a
+machine.
 :::
 
 # Sphere packing, dim. 8 and 24
@@ -544,8 +527,8 @@ Human formalization project from 2024, finished by an autoformalizer in
 February 2026 -- dimension 8 in five days. This is the February entry
 from the 2026 slide; it belongs to both stories.
 
-This closes the thread that opened with Kepler. Four hundred years, one
-dimension at a time.
+This closes the thread that opened with Kepler, four hundred years
+earlier.
 :::
 
 # Three systems
@@ -559,7 +542,7 @@ dimension at a time.
 :::
 
 :::fragment fadeUp
-- *Isabelle/HOL* -- simple type theory, no dependent types, the best automation
+- *Isabelle/HOL* -- simple type theory, no dependent types, the strongest automation
 :::
 
 :::fragment highlightBlue
@@ -589,9 +572,8 @@ One library, one repository, one version. Everything in this course imports it.
 :::
 
 :::notes
-Open the import map live and let them look at it. It is the single
-most convincing object in this lecture: one connected library, not a
-pile of packages. This is the reason we use Lean and not Rocq.
+Open the import map live and let them look at it: one connected
+library, not a pile of packages. That is why we use Lean and not Rocq.
 
 Point at a node, follow an edge, show how analysis sits on order sits
 on algebra.
@@ -613,9 +595,9 @@ on algebra.
 
 :::notes
 The Natural Number Game runs in a browser and takes an evening. If
-they do nothing else before Wednesday, they should do that.
+they do one thing before Wednesday, that is it.
 
-The other two are references for the whole semester, not homework.
+The other two are references for the semester, not homework.
 :::
 
 # Wednesday

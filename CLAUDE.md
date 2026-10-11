@@ -853,3 +853,28 @@ Linklisten und der Lean-Block. Gekuerzt wurde, was Prosa war.
 
 Die Orga-Abschnitte (Goals, Installation) waren am staerksten
 aufgeblaeht und sind am deutlichsten geschrumpft.
+
+## 2026-10-11 (6) -- Skill im Repo, Folien durchgegangen
+
+`plain-math-prose` liegt jetzt unter
+`.claude/skills/plain-math-prose/SKILL.md` und ist damit im Git, statt
+nur ueber Remote Control aktiv zu sein. Wichtig fuers naechste Mal:
+ein so aktivierter Skill taucht nicht in der Skill-Liste der laufenden
+Session auf -- erst nach Neustart oder wenn der Name genannt wird.
+
+Folien-Durchgang: Sprechernotizen 1 119 -> 1 023 Woerter, Folientext
+praktisch unveraendert (1 069 -> 1 065). Das ist richtig so, der
+Folientext war schon telegrafisch; die Prosa stand in den Notizen.
+
+Gefunden und behoben:
+- Die Eroeffnungsnotiz und die Notiz zu "What formalizing means"
+  sagten beide "Everything that follows is ...".
+- Ankuendigungen darueber, was die naechste Folie tut.
+- "This is where Lean's reputation begins" (dieselbe Wendung wie im
+  Kapitel), "the best automation", "an impossible amount of
+  bookkeeping".
+- Im Filters-Deck hiess eine Folie "The payoff" -- jetzt "One
+  definition instead of three", und der doppelte Satz darunter ist weg.
+
+Folien und Kapitel verwenden jetzt dieselben Formulierungen an den
+Stellen, wo beide dasselbe sagen.

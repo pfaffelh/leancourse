@@ -111,9 +111,7 @@ open Filter
 #check (cofinite : Filter ℕ)
 ```
 
-# The payoff
-
-One definition instead of three:
+# One definition instead of three
 
 ```lean -panel -stretch
 open Filter in

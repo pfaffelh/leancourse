@@ -59,17 +59,14 @@ figure:has(img[src*="/portraits/"]) > p > img[src*="/portraits/"] {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
-/* company wordmarks.  ANTHROPIC is all caps while OpenAI has ascenders
-   and a descender, so equal box heights look unequal -- the two heights
-   below match the capital letters instead. */
+/* product marks: both square, so one size does */
 figure img[src*="/logos/"] {
   display: block;
+  height: 3.4rem;
   width: auto;
   max-width: 100%;
   object-fit: contain;
 }
-figure img[src*="/logos/anthropic"] { height: 1.8rem; }
-figure img[src*="/logos/openai"]    { height: 2.3rem; }
 
 figure:has(img[src*="/portraits/"]) > figcaption,
 figure:has(img[src*="/logos/"]) > figcaption {

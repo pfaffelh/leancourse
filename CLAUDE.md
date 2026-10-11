@@ -788,3 +788,43 @@ Beispiel: Gleichung 4 (`x = x ◇ y`) impliziert Gleichung 3
 (`x = x ◇ x`) durch Substitution, die Umkehrung scheitert an `Bool`
 mit `&&`. Nummerierung aus dem Projekt-Repo
 (`equational_theories/Equations/Basic.lean`), nicht geraten.
+
+## 2026-10-11 (4) -- KI-Abschnitt nach vorn, Folien entschlackt
+
+Die beiden Kurven (GitHub, arXiv) stehen jetzt direkt hinter dem
+2026-Abschnitt statt hinter den Meilensteinen. Weil Rocq und Isabelle
+dort erstmals auftauchen, aber erst am Kapitelende erklaert werden,
+nennt ein Halbsatz sie mit Links und verweist nach hinten.
+
+Kugelpackung Dimension 8 hat zusaetzlich einen datierten Punkt im
+2026-Abschnitt (Februar, vor FLT). Sie ist der sauberste Fall: die
+Mathematik war fertig, nur das Formalisieren fehlte. Der Meilenstein-
+Eintrag bleibt stehen und verweist darauf.
+
+Logos sind jetzt Claude und ChatGPT (die Produkte) statt Anthropic und
+OpenAI (die Firmen) -- beide quadratisch, dadurch faellt die
+Kapitalhoehen-Korrektur weg.
+
+**Folien.** Bild und Portraits stehen in einem `:::hstack` direkt unter
+der Ueberschrift, nicht mehr untereinander am Folienende; das war der
+Grund, warum Bilder zu viel vertikalen Platz brauchten. Portraits von
+92px auf 17vh (skaliert mit der Foliengroesse). Milestone-Bilder
+einheitlich 21vh, die quadratischen Ausnahmen (e8_roots 30vh,
+four_colour 26vh, kepler_packing 27vh) groesser -- eine Hoehengrenze,
+die fuer breite Bilder passt, laesst quadratische verschwinden.
+
+Die Voevodsky-Folie hiess "1989" und stand hinter "1998", lief also
+rueckwaerts. Sie heisst jetzt "2013: the author concedes" -- datiert
+nach dem Ende der Episode, wie in der Uebersicht -- und nennt 1989 im
+Text.
+
+Neu am Ende: eine Mathlib-Folie (Repository und interaktive
+Import-Karte) und eine Folie "Where to start" (NNG, Mehta, Mathematics
+in Lean). Die Schlussfolie verlinkt die Installationsanleitung und das
+Skript.
+
+**Bildrechte, Stand.** Buzzard: auf Commons gibt es nur 1995, 1996 und
+2007; wir nehmen den Bergman-Headshot 1996. Massolit (massolit.io) und
+Zulip-Avatare gehen nicht -- kommerzielle Plattform bzw. von den Leuten
+selbst hochgeladen, in beiden Faellen keine Lizenz fuer Dritte. Das
+bleibt bei den drei angefragten Personen.

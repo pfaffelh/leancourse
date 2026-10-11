@@ -17,20 +17,19 @@ and where the field stands.  The claims and figures are the same ones.
 
 ```css
 img.portrait {
-  width: 92px; height: 92px; object-fit: cover; object-position: 50% 20%;
-  border-radius: 50%; margin: 0 0.3rem; vertical-align: middle;
+  width: 17vh; height: 17vh; object-fit: cover; object-position: 50% 20%;
+  border-radius: 50%; margin: 0 0.35rem; vertical-align: middle;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 .names { font-size: 0.45em; color: #52514e; letter-spacing: 0.02em;
          margin-top: 0.1em; }
 .reveal section img { margin: 0.4rem 0; }
-.reveal section img.logo {
-  width: auto; margin: 0 1.6rem; vertical-align: middle;
-}
-/* ANTHROPIC is all caps, OpenAI has ascenders and a descender, so
-   equal box heights look unequal; match the capital letters instead */
-.reveal section img.logo-anthropic { height: 4.2vh; }
-.reveal section img.logo-openai    { height: 5.4vh; }
+/* picture and faces share one horizontal band, directly under the
+   heading, so the slide does not grow downwards */
+.reveal .r-hstack { align-items: center; justify-content: center;
+                    gap: 1.6rem; margin-bottom: 0.3rem; }
+.reveal .r-hstack > * { margin: 0; }
+.reveal section img.logo { height: 11vh; width: auto; margin: 0 1.2rem; }
 ```
 
 # Why formalize?
@@ -89,6 +88,14 @@ This course is about the first direction. They write the proofs.
 
 # 2026
 
+:::hstack
+{image "../static/figures/logos/claude.png" (class := "logo")}[Claude] {image "../static/figures/logos/chatgpt.png" (class := "logo")}[ChatGPT]
+:::
+
+:::fragment fadeUp
+*Feb* -- sphere packing in dimension 8, finished by a machine in five days.
+:::
+
 :::fragment fadeUp
 *4 Sep* -- Fermat's Last Theorem, computer-checked. 11 days, 13 million lines of Lean.
 :::
@@ -105,14 +112,16 @@ This course is about the first direction. They write the proofs.
 *7 Oct* -- three of them withdrawn. A sign error.
 :::
 
-{image "../static/figures/logos/anthropic.png" (class := "logo logo-anthropic")}[Anthropic] {image "../static/figures/logos/openai.png" (class := "logo logo-openai")}[OpenAI]
-
 :::notes
 FLT: Anthropic, Claude, building on Mathlib, following a simplified
 Wiles. Buzzard confirmed it assumes nothing but the axioms.
 
 Navier-Stokes: the *forced* equation. Not the Millennium problem.
 The prize is unclaimed. Say this plainly.
+
+February first, and it is the cleanest case: the statement was
+settled mathematics, only the formalizing was left. Everything after
+it is harder to judge.
 
 The last two dates belong together -- next slide.
 :::
@@ -150,6 +159,32 @@ main theorem and which only a supporting result. That honesty is the
 model to point at.
 :::
 
+# Where people are going
+
+{image "../static/figures/itp_github_repos_per_million.png"}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
+
+:::notes
+Until about 2023 the three were comparable, and Coq was the larger.
+
+Not evidence that Lean is better. Isabelle's automation is still
+ahead in places; Rocq has decades of verified software behind it.
+Evidence about where people are going.
+:::
+
+# Papers checked in Lean
+
+{image "../static/figures/arxiv_lean_formalized_weekly.png"}[Weekly count of arXiv papers with Lean-checked results during 2026]
+
+:::fragment highlightBlue
+January: a handful a week. September: around forty.
+:::
+
+:::notes
+This is the slide that answers "why should I spend a semester on
+this". Within a few years, reading and writing a formal proof will
+be ordinary equipment.
+:::
+
 # How it got here
 
 :::fragment fadeUp
@@ -178,6 +213,12 @@ author can trust himself, and who is asking for this now.
 
 # The idea is old
 
+{image "../static/figures/portraits/demoura.jpg" (class := "portrait")}[Leonardo de Moura]
+
+:::class "names"
+Leonardo de Moura, who started Lean in 2013
+:::
+
 :::fragment fadeUp
 - 1879 Frege -- proofs become objects
 :::
@@ -198,11 +239,7 @@ author can trust himself, and who is asking for this now.
 The idea is 150 years old. The tool is 20.
 :::
 
-{image "../static/figures/portraits/demoura.jpg" (class := "portrait")}[Leonardo de Moura]
 
-:::class "names"
-Leonardo de Moura, who started Lean in 2013
-:::
 
 :::notes
 Lean itself: de Moura, Microsoft Research, 2013. Lean 4 in 2021.
@@ -210,6 +247,16 @@ Lean FRO, about twenty people. Buzzard campaigning since 2018.
 :::
 
 # 1976: four colours
+
+:::hstack
+{image "../static/figures/four_colour.png" (height := "26vh")}[A map of thirty-four regions coloured with four colours]
+
+{image "../static/figures/portraits/placeholder_gonthier.png" (class := "portrait")}[Georges Gonthier]
+:::
+
+:::class "names"
+Georges Gonthier
+:::
 
 Appel and Haken reduce the problem to a long list of configurations.
 
@@ -223,13 +270,8 @@ A computer checks the list.
 2005: Gonthier formalizes all of it in Coq -- case analysis included.
 :::
 
-{image "../static/figures/four_colour.png" (height := "32vh")}[A map of thirty-four regions coloured with four colours]
 
-{image "../static/figures/portraits/placeholder_gonthier.png" (class := "portrait")}[Georges Gonthier]
 
-:::class "names"
-Georges Gonthier
-:::
 
 :::notes
 Two decades of argument about whether this counted as a proof.
@@ -238,9 +280,11 @@ Gonthier did not settle the argument; he made it unnecessary.
 
 # 1998: stacking oranges
 
-{image "../static/figures/kepler_packing.png" (height := "34vh")}[A pyramid of equal spheres, the face-centred cubic packing]
+:::hstack
+{image "../static/figures/kepler_packing.png" (height := "27vh")}[A pyramid of equal spheres, the face-centred cubic packing]
 
 {image "../static/figures/portraits/hales.jpg" (class := "portrait")}[Thomas Hales]
+:::
 
 :::class "names"
 Thomas Hales
@@ -272,9 +316,15 @@ Peer review met a proof it could not certify. More effort would not
 have helped.
 :::
 
-# 1989: a theorem about higher groupoids
+# 2013: the author concedes
 
-Voevodsky and Kapranov identify $`\infty`-groupoids with homotopy types.
+{image "../static/figures/portraits/voevodsky.jpg" (class := "portrait")}[Vladimir Voevodsky]
+
+:::class "names"
+Vladimir Voevodsky
+:::
+
+*1989* -- Voevodsky and Kapranov identify $`\infty`-groupoids with homotopy types.
 
 :::fragment fadeUp
 *Oct 1998* -- Simpson posts an argument that it cannot be true.
@@ -284,13 +334,12 @@ Voevodsky and Kapranov identify $`\infty`-groupoids with homotopy types.
 *Autumn 2013* -- Voevodsky accepts that Simpson was right.
 :::
 
-{image "../static/figures/portraits/voevodsky.jpg" (class := "portrait")}[Vladimir Voevodsky]
 
-:::class "names"
-Vladimir Voevodsky
-:::
 
 :::notes
+Note the dates: the paper is from 1989, but the episode only ends in
+2013, which is why it sits here and not before Kepler.
+
 Fifteen years. Not an obscure corner either -- both authors were well
 known, and Voevodsky got the Fields Medal in between, in 2002.
 
@@ -328,6 +377,16 @@ Mathlib uses. We take the diagnosis, not the cure. He died in 2017.
 
 # 2020: a Fields medallist is unsure
 
+:::hstack
+{image "../static/figures/cantor_profinite.png" (height := "21vh")}[Seven stages of the middle-thirds construction]
+
+{image "../static/figures/portraits/scholze.jpg" (class := "portrait")}[Peter Scholze] {image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
+:::
+
+:::class "names"
+Peter Scholze, Johan Commelin
+:::
+
 Scholze posts a challenge on Buzzard's blog.
 
 He is not certain of his own theorem.
@@ -340,13 +399,8 @@ Liquid Tensor Experiment, led by Commelin. Finished July 2022.
 Not combinatorics with a thousand cases -- condensed mathematics.
 :::
 
-{image "../static/figures/cantor_profinite.png" (height := "22vh")}[Seven stages of the middle-thirds construction]
 
-{image "../static/figures/portraits/scholze.jpg" (class := "portrait")}[Peter Scholze] {image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
 
-:::class "names"
-Peter Scholze, Johan Commelin
-:::
 
 :::notes
 Buzzard's ICM plenary in 2022 is a fair marker for the moment this
@@ -366,17 +420,21 @@ out of the libraries they left behind -- that is why they are named.
 
 # Perfectoid spaces, 2019
 
-{image "../static/figures/padic_tree.png" (height := "30vh")}[The 3-adic integers as a ternary tree]
+:::hstack
+{image "../static/figures/padic_tree.png" (height := "21vh")}[The 3-adic integers as a ternary tree]
+
+{image "../static/figures/portraits/buzzard.jpg" (class := "portrait")}[Kevin Buzzard] {image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin] {image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot]
+:::
+
+:::class "names"
+Kevin Buzzard, Johan Commelin, Patrick Massot
+:::
 
 :::fragment highlightBlue
 They formalized a *definition*, not a theorem.
 :::
 
-{image "../static/figures/portraits/buzzard.jpg" (class := "portrait")}[Kevin Buzzard] {image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin] {image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot]
 
-:::class "names"
-Kevin Buzzard, Johan Commelin, Patrick Massot
-:::
 
 :::notes
 Scholze's perfectoid spaces, 2012. Whether an object of that complexity
@@ -388,7 +446,15 @@ This is where Lean's reputation among mathematicians begins.
 
 # Sphere eversion, 2022
 
-{image "../static/figures/turning_number.png" (height := "26vh")}[Four closed plane curves with their turning numbers]
+:::hstack
+{image "../static/figures/turning_number.png" (height := "21vh")}[Four closed plane curves with their turning numbers]
+
+{image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot] {image "../static/figures/portraits/placeholder_vandoorn.png" (class := "portrait")}[Floris van Doorn] {image "../static/figures/portraits/placeholder_nash.png" (class := "portrait")}[Oliver Nash]
+:::
+
+:::class "names"
+Patrick Massot, Floris van Doorn, Oliver Nash
+:::
 
 :::fragment fadeUp
 In the plane the turning number blocks it: $`+1` cannot become $`-1`.
@@ -398,11 +464,7 @@ In the plane the turning number blocks it: $`+1` cannot become $`-1`.
 In three dimensions the obstruction is gone.
 :::
 
-{image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot] {image "../static/figures/portraits/placeholder_vandoorn.png" (class := "portrait")}[Floris van Doorn] {image "../static/figures/portraits/placeholder_nash.png" (class := "portrait")}[Oliver Nash]
 
-:::class "names"
-Patrick Massot, Floris van Doorn, Oliver Nash
-:::
 
 :::notes
 Gromov's h-principle. Differential topology, not algebra -- so the
@@ -415,17 +477,21 @@ Mathlib matters more than any single theorem in it.
 
 # Freiman-Ruzsa, 2023
 
-{image "../static/figures/sumset.png" (height := "22vh")}[A set of small doubling beside its sumset]
+:::hstack
+{image "../static/figures/sumset.png" (height := "21vh")}[A set of small doubling beside its sumset]
+
+{image "../static/figures/portraits/gowers.jpg" (class := "portrait")}[Timothy Gowers] {image "../static/figures/portraits/green.jpg" (class := "portrait")}[Ben Green] {image "../static/figures/portraits/tao.jpg" (class := "portrait")}[Terence Tao] {image "../static/figures/portraits/placeholder_manners.png" (class := "portrait")}[Freddie Manners]
+:::
+
+:::class "names"
+Timothy Gowers, Ben Green, Terence Tao, Freddie Manners
+:::
 
 :::fragment fadeUp
 Formalized in about three weeks -- *before* the paper was refereed.
 :::
 
-{image "../static/figures/portraits/gowers.jpg" (class := "portrait")}[Timothy Gowers] {image "../static/figures/portraits/green.jpg" (class := "portrait")}[Ben Green] {image "../static/figures/portraits/tao.jpg" (class := "portrait")}[Terence Tao] {image "../static/figures/portraits/placeholder_manners.png" (class := "portrait")}[Freddie Manners]
 
-:::class "names"
-Timothy Gowers, Ben Green, Terence Tao, Freddie Manners
-:::
 
 :::notes
 The method is what carried. A *blueprint* cuts a formalization into
@@ -438,15 +504,17 @@ missing step between "LTE, two years" and "Fermat, eleven days".
 
 # Equational Theories, 2024-25
 
-:::fitText
-22 028 942 implications between 4 694 laws.
-:::
-
 {image "../static/figures/portraits/tao.jpg" (class := "portrait")}[Terence Tao]
 
 :::class "names"
 Terence Tao
 :::
+
+:::fitText
+22 028 942 implications between 4 694 laws.
+:::
+
+
 
 :::notes
 All implications between equational laws on magmas, settled, with new
@@ -458,9 +526,11 @@ result that does not exist without a machine.
 
 # Sphere packing, dim. 8 and 24
 
-{image "../static/figures/e8_roots.png" (height := "34vh")}[The 240 roots of E8 in the Coxeter plane]
+:::hstack
+{image "../static/figures/e8_roots.png" (height := "30vh")}[The 240 roots of E8 in the Coxeter plane]
 
 {image "../static/figures/portraits/viazovska.jpg" (class := "portrait")}[Maryna Viazovska]
+:::
 
 :::class "names"
 Maryna Viazovska
@@ -471,36 +541,11 @@ Viazovska 2016, Fields Medal 2022. The packing is the E8 lattice; these
 are its 240 shortest vectors.
 
 Human formalization project from 2024, finished by an autoformalizer in
-February 2026 -- dimension 8 in five days.
+February 2026 -- dimension 8 in five days. This is the February entry
+from the 2026 slide; it belongs to both stories.
 
 This closes the thread that opened with Kepler. Four hundred years, one
 dimension at a time.
-:::
-
-# Where people are going
-
-{image "../static/figures/itp_github_repos_per_million.png"}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
-
-:::notes
-Until about 2023 the three were comparable, and Coq was the larger.
-
-Not evidence that Lean is better. Isabelle's automation is still
-ahead in places; Rocq has decades of verified software behind it.
-Evidence about where people are going.
-:::
-
-# Papers checked in Lean
-
-{image "../static/figures/arxiv_lean_formalized_weekly.png"}[Weekly count of arXiv papers with Lean-checked results during 2026]
-
-:::fragment highlightBlue
-January: a handful a week. September: around forty.
-:::
-
-:::notes
-This is the slide that answers "why should I spend a semester on
-this". Within a few years, reading and writing a formal proof will
-be ordinary equipment.
 :::
 
 # Three systems
@@ -531,22 +576,73 @@ trust, and arbitrarily unreliable automation above it. That is why
 `grind` is allowed to be as clever as it likes.
 :::
 
+# Mathlib
+
+One library, one repository, one version. Everything in this course imports it.
+
+:::fragment fadeUp
+[The library itself](https://github.com/leanprover-community/mathlib4)
+:::
+
+:::fragment highlightBlue
+[The interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) -- the whole of *Mathlib* as a graph of its areas.
+:::
+
+:::notes
+Open the import map live and let them look at it. It is the single
+most convincing object in this lecture: one connected library, not a
+pile of packages. This is the reason we use Lean and not Rocq.
+
+Point at a node, follow an edge, show how analysis sits on order sits
+on algebra.
+:::
+
+# Where to start
+
+:::fragment fadeUp
+[Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/nng4) -- in the browser, nothing to install. Start here.
+:::
+
+:::fragment fadeUp
+[Formalising Mathematics](https://b-mehta.github.io/formalising-mathematics-notes/) -- Bhavik Mehta, after Kevin Buzzard.
+:::
+
+:::fragment fadeUp
+[Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/) -- Avigad and Massot. The closest thing to an official course.
+:::
+
+:::notes
+The Natural Number Game runs in a browser and takes an evening. If
+they do nothing else before Wednesday, they should do that.
+
+The other two are references for the whole semester, not homework.
+:::
+
 # Wednesday
 
 :::fitText
 Bring a laptop. With administrator rights.
 :::
 
+:::fragment fadeUp
+Follow the instructions to [install Lean and Mathlib](https://leanprover-community.github.io/get_started.html) beforehand.
+:::
+
+:::fragment fadeUp
+The full list is in the [course notes](https://pfaffelh.github.io/leancourse/), at the end of the first chapter.
+:::
+
 :::fragment highlightBlue
-And run `lake exe cache get` *before* you come.
+Then run `lake exe cache get` *before* you come.
 :::
 
 :::notes
 Installation session. VS Code, the Lean extension, git clone,
-`lake exe cache get`. Ask them to try it at home first.
+`lake exe cache get`. Ask them to try it at home first, so that
+Wednesday is for the ones it did not work for.
 
 Say the last point twice. `lake exe cache get` downloads the compiled
 Mathlib; without it every machine in the room compiles Mathlib from
-source at the same time, which takes hours and kills the session.
+source at once, which takes hours and kills the session.
 :::
 

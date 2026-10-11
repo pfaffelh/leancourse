@@ -35,20 +35,37 @@ This course is about the first direction. You will write the proofs.
 
 *Where things stand, autumn 2026.* Until recently, formalizing a serious theorem took a team and several years. That is no longer the constraint, and the change happened quickly enough that it is worth writing down with dates.
 
+* *February 2026.* The [sphere packing](https://en.wikipedia.org/wiki/Sphere_packing) theorem in dimension 8 was finished by an autoformalizer in five days. A human project had been working on it since 2024. This is the first of these results in time, and the clearest: the statement was settled mathematics, so only the formalizing was left to do.
 * *4 September 2026.* Anthropic announced the first complete computer-checked proof of [Fermat's Last Theorem](https://en.wikipedia.org/wiki/Fermat%27s_Last_Theorem), produced by Claude over eleven days: roughly 13 million lines of Lean and some 29 500 intermediate theorems, following a simplified version of Wiles's 1995 proof and building on *Mathlib*. Kevin Buzzard, who has led the community formalization effort since 2024 on a five-year grant, reviewed it and confirmed that it *proves Fermat's Last Theorem with no assumptions other than the axioms of mathematics*. Note the shape of that confirmation: it is a claim a machine can check, and you will meet the command that checks it -- `#print axioms` -- in this course.
 * *8 September 2026.* OpenAI announced a proof, with a Lean formalization, that a smooth three-dimensional fluid obeying the [Navier-Stokes equations](https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_existence_and_smoothness) *under a smooth external force* can develop a singularity in finite time. This is not the Millennium Prize problem, which concerns the unforced equation, and the prize is unclaimed. The announcement was followed by a public argument among mathematicians about credit, and about what it does to the subject when open problems are treated as benchmarks.
 * *6 October 2026.* OpenAI published a catalogue of results from an unreleased internal model -- at the time of writing 719 manuscripts grouped into 372 families, of which about 42 % of the top-line results carry a Lean formalization. Each result took, on average, about three hours of the model's thinking time; roughly 4 000 problems were posed in all.
 * *7 October 2026.* One day later, three of those manuscripts were withdrawn: a sign error invalidated an argument in one, and two further papers depended on it. Fourteen more were revised. None of the withdrawn papers had a Lean proof.
 
-:::figure "The two announcements of September 2026. Both were delivered with Lean files attached" (tag := "ai-labs")
-![Anthropic](/static/figures/logos/anthropic.png)
+:::figure "The two systems behind the September 2026 announcements. Both delivered Lean files with their proofs" (tag := "ai-labs")
+![Claude](/static/figures/logos/claude.png)
 
-![OpenAI](/static/figures/logos/openai.png)
+![ChatGPT](/static/figures/logos/chatgpt.png)
 :::
 
 Those last two dates are the best argument for this course we could have asked for. Machines now produce mathematics faster than mathematicians can referee it, and the only check that keeps up is a formal one.
 
 But be precise about what that check buys. A Lean proof certifies that *a particular formal statement* follows from the axioms. Whether that formal statement is the theorem the paper claims is a different question, and a human one. OpenAI's own repository is careful here: it ships machine-checkable comparison setups and documents, per paper, which of them verify a main theorem and which only verify a supporting result. Reading a formal statement and judging whether it says what you think it says is a skill. It is, in large part, the skill this course teaches.
+
+*Where the field stands.* Two pictures, both from public data. They compare Lean with [Rocq](https://rocq-prover.org/) (called *Coq* until 2025) and [Isabelle/HOL](https://isabelle.in.tum.de/), the two other large proof assistants; what distinguishes them is a question of foundations, and it is taken up at the end of this chapter.
+
+:::figure "New GitHub repositories per quarter, per million new repositories overall" (tag := "itp-repos")
+![Line chart: new GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle from 2018 to 2026, each per million new repositories overall; Lean rises from under ten to about two hundred while the others stay near ten](/static/figures/itp_github_repos_per_million.png)
+:::
+
+The counts are given per million new repositories overall, because the absolute numbers mislead at the right-hand edge: in September 2026 the number of new repositories on GitHub rose by 37 % in a single month, which has nothing to do with Lean. One distortion is left in deliberately. The Justin Sun Prize, announced on 16 September 2026, pays up to a million dollars for a solved problem but only against a machine-verified proof; 666 of that month's 3 224 new Lean repositories carry a prize identifier, and a single account created 284 of them. Strip the prize repositories and the near-empty ones out, and the growth from August to September is a factor of 1.5 rather than 2.
+
+Until about 2023 the three systems were comparable, and Coq was the larger one. The curve that leaves the picture is recent, and it is not evidence that Lean is better -- Isabelle's automation is still ahead in places, and Rocq has decades of verified-software work behind it. It is evidence about where people are going.
+
+:::figure "arXiv papers per week whose results are checked in Lean" (tag := "arxiv-lean")
+![Bar chart: weekly count of arXiv papers with Lean-checked results during 2026, rising from about three per week in January to around forty per week in September](/static/figures/arxiv_lean_formalized_weekly.png)
+:::
+
+In January 2026 a handful of papers a week arrived with a machine-checked result; by September it was around forty. This is the development that makes a course like this one worth your time: within a few years, being able to read and write a formal proof will be an ordinary part of the mathematician's equipment, in the way that being able to use a computer algebra system already is.
 
 *How it got here.* None of that happened suddenly. Four episodes spread over fifty years each added a different reason to want a machine to check mathematics, and the idea itself is older still.
 
@@ -171,7 +188,7 @@ example : ¬ Equation4 Bool := by decide
 
 That is one entry. The project settled 22 028 942 of them.
 
-*[Sphere packing](https://en.wikipedia.org/wiki/Sphere_packing) in dimensions 8 and 24*. Viazovska proved the dimension-8 case in 2016 and received the Fields Medal for it. The packing in question is the $`E_8` lattice, and its 240 shortest vectors carry the symmetry that makes the proof work:
+*[Sphere packing](https://en.wikipedia.org/wiki/Sphere_packing) in dimensions 8 and 24*. Viazovska proved the dimension-8 case in 2016 and received the Fields Medal for it. It belongs in the list above as much as here -- the human project is the landmark, the five days in February 2026 are the news. The packing in question is the $`E_8` lattice, and its 240 shortest vectors carry the symmetry that makes the proof work:
 
 :::figure "The 240 roots of the E8 lattice, projected onto the Coxeter plane. Maryna Viazovska, who proved the dimension-8 case" (tag := "e8")
 ![Two hundred and forty points arranged in eight concentric rings of thirty, joined by many short chords](/static/figures/e8_roots.png)
@@ -180,22 +197,6 @@ That is one entry. The project settled 22 028 942 of them.
 :::
 
 A human formalization project started in 2024 and was completed with an autoformalizer in February 2026, the eight-dimensional proof in five days. The thread that opens with Kepler above closes here, four hundred years later and one dimension at a time.
-
-*Where the field stands.* Two pictures, both from public data.
-
-:::figure "New GitHub repositories per quarter, per million new repositories overall" (tag := "itp-repos")
-![Line chart: new GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle from 2018 to 2026, each per million new repositories overall; Lean rises from under ten to about two hundred while the others stay near ten](/static/figures/itp_github_repos_per_million.png)
-:::
-
-The counts are given per million new repositories overall, because the absolute numbers mislead at the right-hand edge: in September 2026 the number of new repositories on GitHub rose by 37 % in a single month, which has nothing to do with Lean. One distortion is left in deliberately. The Justin Sun Prize, announced on 16 September 2026, pays up to a million dollars for a solved problem but only against a machine-verified proof; 666 of that month's 3 224 new Lean repositories carry a prize identifier, and a single account created 284 of them. Strip the prize repositories and the near-empty ones out, and the growth from August to September is a factor of 1.5 rather than 2.
-
-Until about 2023 the three systems were comparable, and Coq was the larger one. The curve that leaves the picture is recent, and it is not evidence that Lean is better -- Isabelle's automation is still ahead in places, and Rocq has decades of verified-software work behind it. It is evidence about where people are going.
-
-:::figure "arXiv papers per week whose results are checked in Lean" (tag := "arxiv-lean")
-![Bar chart: weekly count of arXiv papers with Lean-checked results during 2026, rising from about three per week in January to around forty per week in September](/static/figures/arxiv_lean_formalized_weekly.png)
-:::
-
-In January 2026 a handful of papers a week arrived with a machine-checked result; by September it was around forty. This is the development that makes a course like this one worth your time: within a few years, being able to read and write a formal proof will be an ordinary part of the mathematician's equipment, in the way that being able to use a computer algebra system already is.
 
 *Other theorem provers.* Lean is not the only one, and the two it is usually compared with differ from it in ways worth knowing, because the differences are about foundations rather than taste.
 
@@ -339,7 +340,7 @@ If you have trouble installing the course material on your own computer, please 
 * Vladimir Voevodsky -- Renate Schmid, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:VladimirVoevodsky.jpg)
 * Terence Tao -- Institute for Pure and Applied Mathematics, CC BY 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Terence_Tao_at_IPAM%27s_Fireside_Chat_2026_%2850m16s%29_%28cropped%29.jpg)
 
-The two company wordmarks in this chapter -- Anthropic and OpenAI -- are also from Wikimedia Commons and are in the public domain, the marks themselves being below the threshold of originality. They remain registered trademarks of their owners and are used here only to say who made which announcement.
+The two product marks in this chapter -- Claude and ChatGPT -- are also from Wikimedia Commons, under CC0 and in the public domain respectively. They remain trademarks of their owners and are used here only to say which system produced which proof.
 
 Several people who appear in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the [Feit-Thompson theorem](https://en.wikipedia.org/wiki/Feit%E2%80%93Thompson_theorem), Johan Commelin, who led the Liquid Tensor Experiment, Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. They appear above as grey silhouettes with their initials. The photographs are therefore a fair sample of who is *famous*, not of who did this work, and the silhouettes are left visible rather than quietly omitted for that reason.
 

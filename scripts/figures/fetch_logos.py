@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch the two company logos used in the 2026 section, with credits.
+"""Fetch the two product logos used in the 2026 section, with credits.
 
 Both files are hosted on Wikimedia Commons under a free licence (the
 marks themselves are below the threshold of originality).  They remain
@@ -12,9 +12,9 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parents[2] / "static" / "figures" / "logos"
 UA = {"User-Agent": "leancourse-course-notes/1.0 (teaching material; https://github.com/pfaffelh/leancourse)"}
-WANT = {
-    "openai":    "File:OpenAI logo 2025 (wordmark).svg",
-    "anthropic": "File:Anthropic logo.svg",
+WANT = {                       # the products, not the companies
+    "claude":  "File:Claude AI symbol.svg",
+    "chatgpt": "File:ChatGPT logo.svg",
 }
 FREE = ("public domain", "cc0", "cc")
 

@@ -185,32 +185,6 @@ ordinary equipment. This is the answer to "why spend a semester on
 this".
 :::
 
-# How it got here
-
-:::fragment fadeUp
-- 1976 -- the four colour theorem
-:::
-
-:::fragment fadeUp
-- 1998 -- the Kepler conjecture
-:::
-
-:::fragment fadeUp
-- 2013 -- Voevodsky concedes
-:::
-
-:::fragment fadeUp
-- 2020 -- the Liquid Tensor Experiment
-:::
-
-:::notes
-Now how it got there, in order.
-
-Not chronology for its own sake: each episode adds a different reason.
-What a computer proof is worth, where peer review stops, whether the
-author can trust himself, and who is asking for this now.
-:::
-
 # The idea is old
 
 {image "../static/figures/portraits/demoura.jpg" (class := "portrait")}[Leonardo de Moura]
@@ -241,8 +215,38 @@ The idea is 150 years old. The tool is 20.
 
 
 :::notes
+A century and a half of the idea, and almost nothing to show for it
+until there were machines to run it on.
+
 Lean itself: de Moura, Microsoft Research, 2013. Lean 4 in 2021.
 Lean FRO, about twenty people. Buzzard arguing for it since 2018.
+:::
+
+# How it got here
+
+:::fragment fadeUp
+- 1976 -- the four colour theorem
+:::
+
+:::fragment fadeUp
+- 1998 -- the Kepler conjecture
+:::
+
+:::fragment fadeUp
+- 2013 -- Voevodsky concedes
+:::
+
+:::fragment fadeUp
+- 2020 -- the Liquid Tensor Experiment
+:::
+
+:::notes
+That was the long run-up. The four episodes that made it urgent are
+all from the last fifty years.
+
+Not chronology for its own sake: each episode adds a different reason.
+What a computer proof is worth, where peer review stops, whether the
+author can trust himself, and who is asking for this now.
 :::
 
 # 1976: four colours

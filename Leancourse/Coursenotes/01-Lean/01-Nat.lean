@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "nat"
 %%%
 
-Before we start with more specific course content, we start by introducing the natural numbers, `ℕ` (which is notation for the type `Nat`), in order to get things rolling and have a running example. Everything else in this part -- types, terms, proofs -- should be easier to read once you have seen how a single type is built and how Lean *computes* with it.
+We begin with the natural numbers, `ℕ` (notation for the type `Nat`), as a running example. Types, terms and proofs are easier to read once you have seen how one type is built and how Lean *computes* with it.
 
 # The natural numbers
 %%%
@@ -92,7 +92,7 @@ number := false
 tag := "reduction-rules"
 %%%
 
-Definitional equality is not magic -- it is *generated* by a fixed list of reduction rules that the kernel applies to compute terms. Most of the names come from the *lambda calculus* of Alonzo Church in the 1930s, where functions are written `fun x => e` and each rewriting rule carries a Greek letter. Lean's kernel uses six of them:
+Definitional equality is *generated* by a fixed list of reduction rules that the kernel applies to compute terms. Most of the names come from the *lambda calculus* of Alonzo Church in the 1930s, where functions are written `fun x => e` and each rewriting rule carries a Greek letter. Lean's kernel uses six of them:
 
 :::table (align := left) +header
 * + Rule

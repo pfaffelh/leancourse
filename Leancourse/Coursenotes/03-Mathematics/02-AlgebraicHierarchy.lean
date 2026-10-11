@@ -16,10 +16,9 @@ htmlSplit := .never
 tag := "algebraic-hierarchy-mathlib"
 %%%
 
-One of the great achievements of Mathlib is a carefully designed hierarchy of
-algebraic structures, encoded using Lean's typeclass system. In this section we
-explore this hierarchy from the ground up: from basic operations to groups,
-rings, fields, and their morphisms and substructures.
+Mathlib encodes the algebraic structures as a hierarchy of typeclasses. We
+go through it from the ground up: basic operations, then groups, rings and
+fields, then their morphisms and substructures.
 
 # Notation and naming conventions
 %%%
@@ -325,7 +324,7 @@ example {R : Type*} [CommRing R] (a b : R) : (a + b) ^ 2 = a ^ 2 + 2 * a * b + b
   ring
 ```
 
-The `ring` tactic is a powerful decision procedure that closes goals that are
+The `ring` tactic is a decision procedure that closes goals that are
 identities in commutative (semi)rings. Similarly, `group` works for group
 identities, and `field_simp` helps simplify field expressions involving
 division.

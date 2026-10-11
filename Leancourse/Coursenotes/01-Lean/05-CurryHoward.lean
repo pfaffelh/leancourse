@@ -379,8 +379,8 @@ Understanding this correspondence is key to becoming fluent in Lean: when you wr
 tag := "proof"
 %%%
 
-The correspondence is not only elegant, it is *how you actually prove
-things*: to prove a statement you construct a term of its type.  Most
+The correspondence is *how you prove things* in Lean: to prove a
+statement you construct a term of its type.  Most
 statements you meet are far beyond a one-liner -- Goldbach's
 conjecture, for instance, is a perfectly well-formed term of type
 `Prop`:

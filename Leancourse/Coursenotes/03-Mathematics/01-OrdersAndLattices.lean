@@ -16,11 +16,12 @@ htmlSplit := .never
 tag := "orders-and-lattices"
 %%%
 
-In this chapter we explore how Mathlib formalizes the fundamental notions of
-order theory. Ordered structures pervade all of mathematics: partial orders
-appear in set inclusion, divisibility of natural numbers, and subgroup
-relations; lattices arise whenever we can form meets and joins; and complete
-lattices are essential for fixed-point theorems and {ref "topology"}[topology].
+Order structures run through all of mathematics: partial orders in set
+inclusion, in divisibility of natural numbers and in subgroup relations;
+lattices wherever meets and joins exist; complete lattices in fixed-point
+theorems and in {ref "topology"}[topology]. Mathlib encodes them as a
+hierarchy of typeclasses, and the aim here is to say which assumption each
+result actually needs.
 
 # Notation and naming conventions
 %%%

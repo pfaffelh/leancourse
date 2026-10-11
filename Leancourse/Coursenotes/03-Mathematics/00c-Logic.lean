@@ -59,7 +59,7 @@ A relation is well-founded when every element is accessible:
 #check @WellFounded.fix
 ```
 
-The crucial observation is that `Acc` is an *inductive* type -- the
+`Acc` is an *inductive* type -- the
 *least* fixed point, so it is finitely generated.  The constructor
 for `Acc r x` demands accessibility of *every* predecessor, so the
 only way to build the proof is for every downward branch to bottom

@@ -233,4 +233,4 @@ def safeDiv (a b : ℤ) (hb : b ≠ 0) : ℤ :=
 -- #eval safeDiv 10 0 (by norm_num)  -- norm_num cannot prove 0 ≠ 0
 ```
 
-The price of this expressiveness is that type checking becomes undecidable in general (though Lean uses various heuristics to make it practical). But for mathematics, the payoff is enormous: the type system itself becomes a logic in which we can state and prove theorems.
+Type checking is then undecidable in general, and Lean uses heuristics to make it practical. What this buys for mathematics is that the type system is itself a logic, in which we state and prove theorems.

@@ -103,7 +103,7 @@ What is striking about the CIC is how little it is. A type checker for it is onl
 tag := "lean-axioms"
 %%%
 
-Powerful as it is, the CIC by itself is deliberately *minimal and constructive*: a handful of principles that working mathematicians use without a second thought cannot be proved in it. Lean therefore adds a few axioms on top of the kernel -- and it is worth being precise about *how* few. Lean has exactly *three* axioms, and we can ask Lean itself to confirm it with the `#print axioms` command, which traces a constant back to the axioms it ultimately depends on:
+The CIC by itself is *minimal and constructive*: a handful of principles that working mathematicians use without a second thought cannot be proved in it. Lean therefore adds axioms on top of the kernel. There are exactly *three*, and we can ask Lean itself to confirm it with the `#print axioms` command, which traces a constant back to the axioms it ultimately depends on:
 
 ```lean
 #print axioms propext
@@ -153,7 +153,7 @@ This is how many mathematical constructions are formalized: the integers as a qu
 #check @Quot.lift
 ```
 
-Quotient soundness carries more weight than it looks: function extensionality is *proved* from it, as we see below.
+Function extensionality is *proved* from quotient soundness; see below.
 
 ## The axiom of choice (`Classical.choice`)
 %%%
@@ -161,7 +161,7 @@ number := false
 tag := "axiom-choice"
 %%%
 
-The most powerful (and most controversial) axiom in Lean is the axiom of choice:
+The third and most consequential axiom is the axiom of choice:
 
 ```lean
 #check @Classical.choice
@@ -175,7 +175,7 @@ Given a proof that a type is nonempty (i.e., inhabited), `Classical.choice` prod
 tag := "derived-not-axioms"
 %%%
 
-Two principles that mathematicians treat as bedrock are, perhaps surprisingly, *not* axioms in Lean but theorems derived from the three above.
+Two principles that mathematicians treat as bedrock are *not* axioms in Lean. They are theorems derived from the three above.
 
 ## Function extensionality is a theorem
 %%%

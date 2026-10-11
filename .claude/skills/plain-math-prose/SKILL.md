@@ -22,16 +22,17 @@ Goal: The reader gets the point in as few words as possible. Every sentence carr
 
 9. **No sales or economic language.** Avoid: price, cost, pay, buy, gain, payoff, in return, powerful, elegant, remarkable, beautiful, crucial, key, seamless, magic, for free. German: Preis, kostet, mächtig, elegant, bemerkenswert, spannend, entscheidend. Say what happens instead.
 10. **No staged contrasts or rhetorical questions.** Avoid "The price is… The gain is…", "Not only… but…", "You may ask whether…". State facts in logical order.
-11. **No recaps** of what was just said.
-12. **Jargon only when used later.** Otherwise the ordinary word.
-13. **Short sentences, plain "we".** Split chains joined by "and", "because", "so that" when they carry separate facts.
-14. **Transitions in one sentence:** what we have, what is missing, what comes next. Typical forms: "We now show…", "It remains to show…", "The next result shows how…", "The following theorem explains why…".
+11. **No claims measured against an assumed impression of the reader.** Avoid "X is narrower/simpler/subtler than it looks", "more than you might think", "surprisingly", "it turns out". The writer does not know how X looks to the reader. State what X does and does not do. Instead of "A formal check is narrower than it looks": "A formal check shows that the proof establishes the statement as written. It does not show that the statement says what was intended."
+12. **No recaps** of what was just said.
+13. **Jargon only when used later.** Otherwise the ordinary word.
+14. **Short sentences, plain "we".** Split chains joined by "and", "because", "so that" when they carry separate facts.
+15. **Transitions in one sentence:** what we have, what is missing, what comes next. Typical forms: "We now show…", "It remains to show…", "The next result shows how…", "The following theorem explains why…".
 
 ## Examples and proofs
 
-15. **Examples must do a job:** check a definition on a standard case ("Indeed: …"), connect to a known course result, or show that a hypothesis cannot be dropped (counterexample). Drop decorative examples. Never end a paragraph on one.
-16. **Terse proofs where the step is routine:** "Clear.", "'⇒': clear.", "We only show X; Y follows analogously." Longer proofs get "Step 1: … Step 2: …" with a short label each.
-17. **Keep all mathematical content.** Shortening must not drop hypotheses, definitions or claims.
+16. **Examples must do a job:** check a definition on a standard case ("Indeed: …"), connect to a known course result, or show that a hypothesis cannot be dropped (counterexample). Drop decorative examples. Never end a paragraph on one.
+17. **Terse proofs where the step is routine:** "Clear.", "'⇒': clear.", "We only show X; Y follows analogously." Longer proofs get "Step 1: … Step 2: …" with a short label each.
+18. **Keep all mathematical content.** Shortening must not drop hypotheses, definitions or claims.
 
 ## When editing
 

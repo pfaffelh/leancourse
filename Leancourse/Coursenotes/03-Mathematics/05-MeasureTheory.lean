@@ -328,8 +328,7 @@ example {α : Type*} [MeasurableSpace α]
   Iff.rfl
 ```
 
-This is a beautiful example of the filter framework in action: "almost
-everywhere" is just {ref "eventually-frequently"}["eventually"] with respect to the ae-filter.
+"Almost everywhere" is {ref "eventually-frequently"}["eventually"] with respect to the ae-filter.
 
 # Conditional expectation
 %%%

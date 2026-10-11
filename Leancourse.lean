@@ -45,7 +45,7 @@ This course is about the first direction. You will write the proofs.
 
 Those last two dates belong together. Machines now produce mathematics faster than mathematicians can referee it, and the only check that keeps up is a formal one.
 
-A formal check is narrower than it looks. A Lean proof certifies that *a particular formal statement* follows from the axioms. Whether that statement is the theorem the paper claims is a separate, human question. OpenAI's repository documents, per paper, which checks cover a main theorem and which only a supporting result. Reading a formal statement and judging what it says is most of what this course teaches.
+A Lean proof shows that the formal statement follows from the axioms. It does not show that the statement says what the paper claims; that is a separate, human question. OpenAI's repository documents, per paper, which checks cover a main theorem and which only a supporting result. Reading a formal statement and judging what it says is most of what this course teaches.
 
 *Where the field stands.* Two pictures from public data. They compare Lean with [Rocq](https://rocq-prover.org/) (*Coq* until 2025) and [Isabelle/HOL](https://isabelle.in.tum.de/), the two other large proof assistants; how they differ is a question of foundations, taken up at the end of this chapter.
 
@@ -63,7 +63,9 @@ Until about 2023 the three were comparable, with Coq the largest. The rise is re
 
 In January 2026 a handful of papers a week carried a machine-checked result; by September it was around forty. Within a few years, reading and writing a formal proof will be ordinary equipment.
 
-*How it got here.* Four episodes over fifty years, each adding a different reason to want a machine to check mathematics. The idea is older than the tools. Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated; Bertrand Russell's letter of 1902 showed that the system was inconsistent. Whitehead and Russell spent *Principia Mathematica* rebuilding; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it. De Bruijn's *[Automath](https://en.wikipedia.org/wiki/Automath)* (1967) was the first system to check proofs mechanically, and in 1977 van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it -- the first complete mathematics book verified by machine.
+*How it got here.* The idea is a century and a half old. The four episodes that made it urgent all fall in the last fifty years, and each added a different reason to want a machine to check mathematics.
+
+Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated; Bertrand Russell's letter of 1902 showed that the system was inconsistent. Whitehead and Russell spent *Principia Mathematica* rebuilding; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it. De Bruijn's *[Automath](https://en.wikipedia.org/wiki/Automath)* (1967) was the first system to check proofs mechanically, and in 1977 van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it -- the first complete mathematics book verified by machine.
 
 In 1976 Kenneth Appel and Wolfgang Haken proved the [four colour theorem](https://en.wikipedia.org/wiki/Four_color_theorem). Their argument reduced the problem to a long list of configurations and then checked that list by computer. No human has ever read that part, and for two decades the community argued about whether it counted as a proof at all.
 

@@ -19,9 +19,9 @@ In all programming languages, you have data types such as `int`, `string` and `f
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` will be called a universe) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
 
-As we see, these new data types are more abstract: Lean understands `ℕ` (and `ℝ`) as genuinely infinite types, not limited by floating-point arithmetic. The `zero`/`succ` construction of `ℕ` was the subject of the {ref "nat"}[introduction]; the real numbers, by contrast, are built from an equivalence relation on Cauchy sequences, which is considerably more elaborate -- a {ref "quotient-types"}[quotient type], as we will see at the end of this chapter.
+These data types are more abstract: Lean understands `ℕ` (and `ℝ`) as genuinely infinite types, not limited by floating-point arithmetic. The `zero`/`succ` construction of `ℕ` was the subject of the {ref "nat"}[introduction]; the real numbers, by contrast, are built from an equivalence relation on Cauchy sequences, which is considerably more elaborate -- a {ref "quotient-types"}[quotient type], as we will see at the end of this chapter.
 
-In Lean, all objects are terms, and every term needs a type. Interestingly, since a type is also some term in the language, it needs a type as well.
+In Lean every object is a term, and every term has a type. A type is itself a term, so it has a type as well.
 
 # The universe hierarchy
 %%%
@@ -405,7 +405,7 @@ example (f g : CauSeq ℚ abs) :
     f ≈ g ↔ (f - g).LimZero := Iff.rfl
 ```
 
-Addition is the payoff of `Quot.lift`. To add two reals you add *representative* sequences termwise -- but this is only well-defined because `+` respects the relation (if `f ≈ f'` and `g ≈ g'` then `f + g ≈ f' + g'`). Having checked that, `Quot.lift` hands you exactly the computation rule that `mk` is an additive homomorphism:
+Addition is the first use of `Quot.lift`. To add two reals you add *representative* sequences termwise -- but this is only well-defined because `+` respects the relation (if `f ≈ f'` and `g ≈ g'` then `f + g ≈ f' + g'`). Having checked that, `Quot.lift` hands you exactly the computation rule that `mk` is an additive homomorphism:
 
 ```lean
 example (f g : CauSeq ℚ abs) :

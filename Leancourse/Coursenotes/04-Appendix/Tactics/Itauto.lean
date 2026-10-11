@@ -43,7 +43,7 @@ tag := "itauto"
 
 The point of `itauto` is not that it is stronger than `tauto` — it is strictly weaker. The point is what its failure tells you.
 
-A statement that `tauto` proves and `itauto` does not is a statement that *needs* the excluded middle. So the pair is a decision procedure for the question "is this classical?", and that question is otherwise surprisingly hard to answer by inspection. Both De Morgan laws look alike; only one of them is constructive.
+A statement that `tauto` proves and `itauto` does not is a statement that *needs* the excluded middle. So the pair decides the question "is this classical?". Inspection does not: both De Morgan laws have the same shape, and only one of them is constructive.
 
 This is worth trying on any goal where you wonder whether a proof has to go through {ref "by_cases"}[`by_cases`] or {ref "by_contra"}[`by_contra`]. If `itauto` closes the goal, a direct proof exists and the case split was avoidable.
 

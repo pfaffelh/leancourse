@@ -78,8 +78,10 @@ If you have trouble installing the course material on your own computer, please 
 
 In 1976 Kenneth Appel and Wolfgang Haken proved the four colour theorem. Their argument reduced the problem to a long list of configurations and then checked that list by computer. No human has ever read that part, and for two decades the community argued about whether it counted as a proof at all.
 
-:::figure "Four colours suffice for any map in the plane" (tag := "four-colour")
+:::figure "Four colours suffice for any map in the plane. Georges Gonthier, who formalized the proof" (tag := "four-colour")
 ![A map of thirty-four regions, coloured with four colours so that no two neighbours share one](/static/figures/four_colour.png)
+
+![Georges Gonthier (no photograph available)](/static/figures/portraits/placeholder_gonthier.png)
 :::
 
 In 2005 Georges Gonthier ended the argument from the other side: he formalized the whole thing, case analysis included, in Coq. The distinction those two events separate is the one this course rests on -- *a proof found by computer is not the same thing as a proof checked by computer.*
@@ -96,10 +98,12 @@ A panel of twelve referees worked on it for four years and then reported that th
 
 In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog. He had a theorem in condensed mathematics whose proof he was not sure of -- a Fields medallist, publicly unsure of his own argument, asking for a machine to check it. The *Liquid Tensor Experiment*, led by Johan Commelin, finished in July 2022. The theorem belongs to *condensed mathematics*, which rebuilds topology on profinite sets rather than on open covers.
 
-:::figure "A profinite set: the Cantor set, built by removing middle thirds. Peter Scholze, who posed the challenge" (tag := "profinite")
+:::figure "A profinite set: the Cantor set, built by removing middle thirds. Peter Scholze, who posed the challenge, and Johan Commelin, who led the project" (tag := "profinite")
 ![Seven stages of the middle-thirds construction, each row twice as many and three times as short as the one above](/static/figures/cantor_profinite.png)
 
 ![Peter Scholze](/static/figures/portraits/scholze.jpg)
+
+![Johan Commelin (no photograph available)](/static/figures/portraits/placeholder_commelin.png)
 :::
  Buzzard's plenary lecture at the ICM in 2022 is a fair marker for the moment formalization stopped being a curiosity.
 
@@ -115,23 +119,33 @@ Lean itself is recent. Leonardo de Moura started it at Microsoft Research in 201
 
 *Perfectoid spaces*, 2019, by Buzzard, Commelin and Massot. They did not prove a theorem; they formalized a *definition* from the research frontier, Scholze's perfectoid spaces of 2012. Whether an object of that complexity could even be stated in a proof assistant was genuinely open, and stating something is a different problem from proving it. This is where Lean's reputation among mathematicians begins. Perfectoid spaces are built over $`p`-adic fields, and the $`p`-adic integers are the first thing to understand about them:
 
-:::figure "The 3-adic integers as an inverse limit. Kevin Buzzard, one of the three authors" (tag := "padic")
+:::figure "The 3-adic integers as an inverse limit. The three authors: Kevin Buzzard, Johan Commelin, Patrick Massot" (tag := "padic")
 ![A rooted ternary tree of depth four; the rows are labelled Z/3^0 up to Z/3^4, and each branch of the infinite tree is a 3-adic integer](/static/figures/padic_tree.png)
 
 ![Kevin Buzzard](/static/figures/portraits/buzzard.jpg)
+
+![Johan Commelin (no photograph available)](/static/figures/portraits/placeholder_commelin.png)
+
+![Patrick Massot (no photograph available)](/static/figures/portraits/placeholder_massot.png)
 :::
 
 *Sphere eversion*, 2022, by Massot, van Doorn and Nash: Gromov's h-principle, and with it the fact that a sphere can be turned inside out without tearing or creasing. For closed curves in the plane no such thing is possible, and the reason is an invariant:
 
-:::figure "Turning numbers of closed curves in the plane" (tag := "turning-number")
+:::figure "Turning numbers of closed curves in the plane. The three authors: Patrick Massot, Floris van Doorn, Oliver Nash" (tag := "turning-number")
 ![Four closed plane curves with their turning numbers: a circle with 1, a figure eight with 0, a limacon with 2, and a three-looped curve with 3](/static/figures/turning_number.png)
+
+![Patrick Massot (no photograph available)](/static/figures/portraits/placeholder_massot.png)
+
+![Floris van Doorn (no photograph available)](/static/figures/portraits/placeholder_vandoorn.png)
+
+![Oliver Nash (no photograph available)](/static/figures/portraits/placeholder_nash.png)
 :::
 
 A regular homotopy cannot change the turning number, and everting a circle would have to send $`+1` to $`-1`. In three dimensions the corresponding obstruction vanishes, which is why the sphere behaves differently from the circle. Formalizing this meant differential topology rather than algebra or combinatorics, so the project had to build a usable differential-geometry API first and only then prove anything with it. That is the ordinary shape of formalization work, and it is why *Mathlib* matters more than any single theorem in it.
 
 *The polynomial Freiman-Ruzsa conjecture*, 2023, by Gowers, Green, Manners and Tao, formalized under Tao's direction in about three weeks -- before the paper had been refereed. It says that a set whose sumset is barely larger than itself must be structured:
 
-:::figure "A set of small doubling and its sumset. Three of the four authors: Timothy Gowers, Ben Green, Terence Tao" (tag := "sumset")
+:::figure "A set of small doubling and its sumset. The four authors: Timothy Gowers, Ben Green, Terence Tao, Freddie Manners" (tag := "sumset")
 ![A set A of ten lattice points beside the set A+A of twenty-nine points, with the doubling constant 2.90](/static/figures/sumset.png)
 
 ![Timothy Gowers](/static/figures/portraits/gowers.jpg)
@@ -139,6 +153,8 @@ A regular homotopy cannot change the turning number, and everting a circle would
 ![Ben Green](/static/figures/portraits/green.jpg)
 
 ![Terence Tao](/static/figures/portraits/tao.jpg)
+
+![Freddie Manners (no photograph available)](/static/figures/portraits/placeholder_manners.png)
 :::
 
 The method is what carried, though. A *blueprint* cuts a formalization into independent pieces with stated interfaces, so that volunteers can work in parallel without talking to each other. Formalization stopped being a job for one team over years.
@@ -257,7 +273,7 @@ While the exercises will cover the first half of the semester, individual assign
 * Ben Green -- Renate Schmid, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ben_Green.jpg)
 * Terence Tao -- Institute for Pure and Applied Mathematics, CC BY 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Terence_Tao_at_IPAM%27s_Fireside_Chat_2026_%2850m16s%29_%28cropped%29.jpg)
 
-Several people who appear in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the Feit-Thompson theorem, Johan Commelin, who led the Liquid Tensor Experiment, and Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion. The pictures above are therefore a fair sample of who is *famous*, not of who did this work.
+Several people who appear in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the Feit-Thompson theorem, Johan Commelin, who led the Liquid Tensor Experiment, Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. They appear above as grey silhouettes with their initials. The photographs are therefore a fair sample of who is *famous*, not of who did this work, and the silhouettes are left visible rather than quietly omitted for that reason.
 
 {include 0 «Leancourse».Coursenotes.«01-Lean»}
 

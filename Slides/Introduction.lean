@@ -24,6 +24,13 @@ img.portrait {
 .names { font-size: 0.45em; color: #52514e; letter-spacing: 0.02em;
          margin-top: 0.1em; }
 .reveal section img { margin: 0.4rem 0; }
+.reveal section img.logo {
+  width: auto; margin: 0 1.6rem; vertical-align: middle;
+}
+/* ANTHROPIC is all caps, OpenAI has ascenders and a descender, so
+   equal box heights look unequal; match the capital letters instead */
+.reveal section img.logo-anthropic { height: 4.2vh; }
+.reveal section img.logo-openai    { height: 5.4vh; }
 ```
 
 # Why formalize?
@@ -37,7 +44,113 @@ This is the whole lecture in one line. Everything that follows is
 an illustration of it. Come back to it at the end.
 :::
 
-# Three episodes
+# What formalizing means
+
+Write the proof in a language precise enough for a machine to check every step.
+
+:::fragment fadeUp
+The machine does not *find* the proof. It reads yours and checks it.
+:::
+
+:::fragment highlightBlue
+Anything you leave out is refused.
+:::
+
+:::notes
+This is the definition, and it is the whole of it. Everything that
+follows in this lecture is motivation for caring about it.
+:::
+
+# Two things it is not
+
+:::fragment fadeUp
+*Finding* a proof is not *checking* one. 1976: a computer checked the case list, nothing checked the argument around it.
+:::
+
+:::fragment fadeUp
+*Autoformalizing* runs the other way -- informal mathematics in, formal text out.
+:::
+
+:::fragment highlightBlue
+Both end in the same place: a text the kernel accepts.
+:::
+
+:::notes
+Sphere packing in dimension 8 is both at once. A human formalization
+project started in 2024; a machine finished it in five days in
+February 2026.
+
+The program that writes a proof may be unreliable in any way it likes.
+The program that checks it is small and fixed. That asymmetry is why
+any of this works, and it comes back later as the de Bruijn criterion.
+
+This course is about the first direction. They write the proofs.
+:::
+
+# 2026
+
+:::fragment fadeUp
+*4 Sep* -- Fermat's Last Theorem, computer-checked. 11 days, 13 million lines of Lean.
+:::
+
+:::fragment fadeUp
+*8 Sep* -- Navier-Stokes with a smooth force: finite-time singularity, formalized.
+:::
+
+:::fragment fadeUp
+*6 Oct* -- 719 manuscripts, 372 families, about 42 % with a Lean proof.
+:::
+
+:::fragment fadeUp
+*7 Oct* -- three of them withdrawn. A sign error.
+:::
+
+{image "../static/figures/logos/anthropic.png" (class := "logo logo-anthropic")}[Anthropic] {image "../static/figures/logos/openai.png" (class := "logo logo-openai")}[OpenAI]
+
+:::notes
+FLT: Anthropic, Claude, building on Mathlib, following a simplified
+Wiles. Buzzard confirmed it assumes nothing but the axioms.
+
+Navier-Stokes: the *forced* equation. Not the Millennium problem.
+The prize is unclaimed. Say this plainly.
+
+The last two dates belong together -- next slide.
+:::
+
+# One day apart
+
+:::fitText
+None of the withdrawn papers had a Lean proof.
+:::
+
+:::notes
+Machines now produce mathematics faster than mathematicians can
+referee it. The only check that keeps up is a formal one.
+
+This is the argument for the course. Do not oversell it -- the next
+slide takes it back a step.
+:::
+
+# But be precise
+
+A Lean proof certifies that *a formal statement* follows from the axioms.
+
+:::fragment fadeUp
+Whether that statement is the theorem in the paper is a *human* question.
+:::
+
+:::fragment highlightBlue
+Reading a formal statement and judging what it says is a skill.
+It is most of what this course teaches.
+:::
+
+:::notes
+OpenAI's own repository documents, per paper, which checks cover a
+main theorem and which only a supporting result. That honesty is the
+model to point at.
+:::
+
+# How it got here
 
 :::fragment fadeUp
 - 1976 -- the four colour theorem
@@ -48,13 +161,52 @@ an illustration of it. Come back to it at the end.
 :::
 
 :::fragment fadeUp
+- 2013 -- Voevodsky concedes
+:::
+
+:::fragment fadeUp
 - 2020 -- the Liquid Tensor Experiment
 :::
 
 :::notes
-Not chronology for its own sake. Each one makes a different point:
-what a computer proof is worth, where peer review stops, and who is
-asking for this now.
+That was the state of things. Now how it got there, in order.
+
+Not chronology for its own sake: each episode adds a different reason.
+What a computer proof is worth, where peer review stops, whether the
+author can trust himself, and who is asking for this now.
+:::
+
+# The idea is old
+
+:::fragment fadeUp
+- 1879 Frege -- proofs become objects
+:::
+
+:::fragment fadeUp
+- 1902 Russell's letter -- the system is inconsistent
+:::
+
+:::fragment fadeUp
+- *Principia*: `1 + 1 = 2`, with the note *"the above proposition is occasionally useful"*
+:::
+
+:::fragment fadeUp
+- 1967 Automath, 1977 Landau's *Grundlagen* by machine
+:::
+
+:::fragment highlightBlue
+The idea is 150 years old. The tool is 20.
+:::
+
+{image "../static/figures/portraits/demoura.jpg" (class := "portrait")}[Leonardo de Moura]
+
+:::class "names"
+Leonardo de Moura, who started Lean in 2013
+:::
+
+:::notes
+Lean itself: de Moura, Microsoft Research, 2013. Lean 4 in 2021.
+Lean FRO, about twenty people. Buzzard campaigning since 2018.
 :::
 
 # 1976: four colours
@@ -120,6 +272,60 @@ Peer review met a proof it could not certify. More effort would not
 have helped.
 :::
 
+# 1989: a theorem about higher groupoids
+
+Voevodsky and Kapranov identify $`\infty`-groupoids with homotopy types.
+
+:::fragment fadeUp
+*Oct 1998* -- Simpson posts an argument that it cannot be true.
+:::
+
+:::fragment highlightBlue
+*Autumn 2013* -- Voevodsky accepts that Simpson was right.
+:::
+
+{image "../static/figures/portraits/voevodsky.jpg" (class := "portrait")}[Vladimir Voevodsky]
+
+:::class "names"
+Vladimir Voevodsky
+:::
+
+:::notes
+Fifteen years. Not an obscure corner either -- both authors were well
+known, and Voevodsky got the Fields Medal in between, in 2002.
+
+The point is not that they made a mistake. Everyone does. The point is
+how long it took to resolve, and why.
+:::
+
+# Why it took fifteen years
+
+Simpson had a counterexample -- but could not say *which step* was wrong.
+
+:::fragment fadeUp
+So it was unclear who had erred. Nobody challenged them.
+:::
+
+:::fragment highlightBlue
+Mathematics runs on *a complex system of mutual trust based on reputations*.
+:::
+
+:::notes
+Voevodsky's own words, from his 2014 IAS lecture.
+
+Second story, same lesson: a mistake in a lemma of his own from 1992
+stayed in print until someone checking his lectures step by step found
+it in 1999. Several seminars had read the paper by then.
+
+His conclusion: a hard technical argument by a trusted author is
+*hardly ever checked in detail*.
+
+So he went looking for a proof assistant, found none he could use, and
+built the foundations for one -- univalent foundations, the IAS special
+year 2012-13, the HoTT book. In Coq, not Lean; and not the foundations
+Mathlib uses. We take the diagnosis, not the cure. He died in 2017.
+:::
+
 # 2020: a Fields medallist is unsure
 
 Scholze posts a challenge on Buzzard's blog.
@@ -145,39 +351,6 @@ Peter Scholze, Johan Commelin
 :::notes
 Buzzard's ICM plenary in 2022 is a fair marker for the moment this
 stopped being a curiosity.
-:::
-
-# The idea is old
-
-:::fragment fadeUp
-- 1879 Frege -- proofs become objects
-:::
-
-:::fragment fadeUp
-- 1902 Russell's letter -- the system is inconsistent
-:::
-
-:::fragment fadeUp
-- *Principia*: `1 + 1 = 2`, with the note *"the above proposition is occasionally useful"*
-:::
-
-:::fragment fadeUp
-- 1967 Automath, 1977 Landau's *Grundlagen* by machine
-:::
-
-:::fragment highlightBlue
-The idea is 150 years old. The tool is 20.
-:::
-
-{image "../static/figures/portraits/demoura.jpg" (class := "portrait")}[Leonardo de Moura]
-
-:::class "names"
-Leonardo de Moura, who started Lean in 2013
-:::
-
-:::notes
-Lean itself: de Moura, Microsoft Research, 2013. Lean 4 in 2021.
-Lean FRO, about twenty people. Buzzard campaigning since 2018.
 :::
 
 # In between
@@ -304,67 +477,6 @@ This closes the thread that opened with Kepler. Four hundred years, one
 dimension at a time.
 :::
 
-# 2026
-
-:::fragment fadeUp
-*4 Sep* -- Fermat's Last Theorem, computer-checked. 11 days, 13 million lines of Lean.
-:::
-
-:::fragment fadeUp
-*8 Sep* -- Navier-Stokes with a smooth force: finite-time singularity, formalized.
-:::
-
-:::fragment fadeUp
-*6 Oct* -- 719 manuscripts, 372 families, about 42 % with a Lean proof.
-:::
-
-:::fragment fadeUp
-*7 Oct* -- three of them withdrawn. A sign error.
-:::
-
-:::notes
-FLT: Anthropic, Claude, building on Mathlib, following a simplified
-Wiles. Buzzard confirmed it assumes nothing but the axioms.
-
-Navier-Stokes: the *forced* equation. Not the Millennium problem.
-The prize is unclaimed. Say this plainly.
-
-The last two dates belong together -- next slide.
-:::
-
-# One day apart
-
-:::fitText
-None of the withdrawn papers had a Lean proof.
-:::
-
-:::notes
-Machines now produce mathematics faster than mathematicians can
-referee it. The only check that keeps up is a formal one.
-
-This is the argument for the course. Do not oversell it -- the next
-slide takes it back a step.
-:::
-
-# But be precise
-
-A Lean proof certifies that *a formal statement* follows from the axioms.
-
-:::fragment fadeUp
-Whether that statement is the theorem in the paper is a *human* question.
-:::
-
-:::fragment highlightBlue
-Reading a formal statement and judging what it says is a skill.
-It is most of what this course teaches.
-:::
-
-:::notes
-OpenAI's own repository documents, per paper, which checks cover a
-main theorem and which only a supporting result. That honesty is the
-model to point at.
-:::
-
 # Where people are going
 
 {image "../static/figures/itp_github_repos_per_million.png"}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
@@ -425,7 +537,16 @@ trust, and arbitrarily unreliable automation above it. That is why
 Bring a laptop. With administrator rights.
 :::
 
+:::fragment highlightBlue
+And run `lake exe cache get` *before* you come.
+:::
+
 :::notes
 Installation session. VS Code, the Lean extension, git clone,
 `lake exe cache get`. Ask them to try it at home first.
+
+Say the last point twice. `lake exe cache get` downloads the compiled
+Mathlib; without it every machine in the room compiles Mathlib from
+source at the same time, which takes hours and kills the session.
 :::
+

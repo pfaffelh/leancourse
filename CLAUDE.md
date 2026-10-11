@@ -731,3 +731,60 @@ Die Lücke in der Folienmitte ist also kein Fehler.
 
 Beide Decks sind in `Leancourse.lean` unter *How to use this course*
 verlinkt; die Filter-Folien zusätzlich aus dem Filter-Kapitel.
+
+## 2026-10-11 (3) -- Kapitel 0 umgebaut
+
+**Reihenfolge.** Das Kapitel beginnt jetzt mit einer Definition
+(*What formalizing means*), grenzt gegen Beweissuche und
+Autoformalisierung ab, zeigt dann den Stand (Herbst 2026) und geht erst
+danach *vorwaerts* durch die Geschichte. Voll rueckwaerts-chronologisch
+wurde erwogen und verworfen: die vier Episoden sind eine Begruendungs-
+kette, die gegen die Leserichtung nicht traegt. Der Orga-Teil (Goals,
+Ablauf, Folien, Hardware, Installation) steht am Kapitelende.
+
+**Voevodsky** ist als dritte Episode dazugekommen -- der Fall, in dem der
+Autor selbst der Zweifelnde ist. Quelle ist sein IAS-Essay von 2014
+(ias.edu/ideas/2014/voevodsky-origins, ueber web.archive.org, die Seite
+liefert sonst 403). Belegt daraus: Kapranov/Voevodsky 1989, Simpsons
+Einwand Oktober 1998, Einsicht erst Herbst 2013; der zweite Fehler im
+eigenen Lemma von 1992, gefunden 1999. Lean 2 hatte einen HoTT-Modus
+(van Doorn, von Raumer, Buchholtz), Lean 3 nicht mehr -- das
+Definitionspaket braucht Axiom K.
+
+**Bilder.** Voevodsky-Foto: MFO Oberwolfach 2011, CC BY-SA 2.0 de, vom
+Mini-Workshop zur Homotopie-Interpretation der Typentheorie. Buzzard
+wurde vom 2007er Schnappschuss (642x930, Blick nach unten) auf den
+Bergman-Headshot von 1996 umgestellt -- gleiche Quelle wie das
+Scholze-Bild. Firmen-Wortmarken von Anthropic und OpenAI liegen unter
+`static/figures/logos/`, beide gemeinfrei (unterhalb der Schoepfungs-
+hoehe), aber eingetragene Marken; im Kapitel nur zur Zuordnung, wer was
+angekuendigt hat. Holskript: `scripts/figures/fetch_logos.py`.
+
+**Figuren-Layout** (`static/figures.css`). Grafik und Portraits stehen
+jetzt als Flex-Reihe nebeneinander, gleiche Hoehe, alle Portraits
+ueberall gleich gross (12.5rem -- der groesste Wert, bei dem drei noch in
+eine Reihe passen). Zwei Fallen dabei:
+- Die Regel fuer die Mathe-Grafik (`figure:has(...) > p > img`) hat eine
+  hoehere Spezifitaet als `figure img[src*="/portraits/"]` und
+  ueberschreibt deren `width`/`height`. Ohne `:not([src*="/portraits/"])`
+  werden aus den Kreisen Ellipsen -- und zwar unauffaellig, weil die
+  quadratischen Platzhalter korrekt aussehen.
+- Ein Portrait darf nicht schrumpfen (`flex: 0 0 auto`); laeuft die Reihe
+  um zwei Pixel ueber, staucht Flexbox sonst das erste Bild zur Ellipse.
+
+**Verso-Fallen, neu.**
+- Inline-Mathe (`$`...``) funktioniert in VersoSlides *nicht in
+  Ueberschriften*: "Failed to convert ... inline_math".
+- In einem Manual-`lean`-Block ist `and` ein Token, kein Bezeichner --
+  `⟨and⟩` scheitert, `⟨(· && ·)⟩` geht. Ausserhalb von Verso compiliert
+  dasselbe Snippet.
+- Fuer gepruefte Lean-Bloecke im Wurzeldokument braucht es
+  `import Manual.Meta` und `open Verso.Genre.Manual.InlineLean`.
+- `.reveal section img` schlaegt `img.logo`; Folien-Bildklassen muessen
+  als `.reveal section img.logo` geschrieben werden.
+
+**Equational Theories** hat statt einer Grafik ein gepruefts Lean-
+Beispiel: Gleichung 4 (`x = x ◇ y`) impliziert Gleichung 3
+(`x = x ◇ x`) durch Substitution, die Umkehrung scheitert an `Bool`
+mit `&&`. Nummerierung aus dem Projekt-Repo
+(`equational_theories/Equations/Basic.lean`), nicht geraten.

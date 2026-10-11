@@ -1,29 +1,81 @@
-/* Portraits placed inside a :::figure, after the mathematical image.
-   Verso puts each image in its own <p>, so making those paragraphs
-   inline-block lays consecutive portraits out in a row that wraps.
-   The images are reproduced unchanged; object-fit only crops the view,
-   it does not alter the file.  Credits are in the chapter text. */
+/* Figures that pair a mathematical picture with portraits of the people.
 
-figure p:has(> img[src*="/portraits/"]) {
-  display: inline-block;
-  vertical-align: top;
-  margin: 0.7rem 0.3rem 0 0.3rem;
+   Verso emits one <p> per image inside the <figure>, then the
+   <figcaption>.  The figure is a centred flex row, so picture and
+   portraits stand side by side at the same height whenever they fit;
+   otherwise the row wraps and the portraits keep their size.
+
+   Every portrait is the same size, everywhere, and that size is the
+   height cap of the mathematical pictures.  12.5rem is the largest value
+   at which three portraits still share one row in this text column;
+   the one figure that carries four of them wraps instead.
+
+   The image files are reproduced unchanged; object-fit only crops the
+   view.  Credits are in the chapter text. */
+
+:root { --fig-h: 12.5rem; }
+
+figure:has(img[src*="/portraits/"]),
+figure:has(img[src*="/logos/"]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem 1.2rem;
 }
 
-figure img[src*="/portraits/"] {
+figure:has(img[src*="/portraits/"]) > p,
+figure:has(img[src*="/logos/"]) > p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* a portrait never shrinks -- a squeezed circle turns into an ellipse,
+   so the row wraps instead */
+figure > p:has(> img[src*="/portraits/"]) { flex: 0 0 auto; }
+
+/* the mathematical picture: aspect ratio preserved, height capped.
+   The :not() keeps this rule off the portraits -- without it this
+   selector outranks the one below and the circles turn into ellipses. */
+figure:has(img[src*="/portraits/"]) > p > img:not([src*="/portraits/"]) {
   display: block;
-  width: 6.5rem;
-  height: 6.5rem;
+  width: auto;
+  height: auto;
+  max-height: var(--fig-h);
+  max-width: 100%;
+}
+
+/* the portraits: square-cropped to a circle, one size everywhere */
+figure:has(img[src*="/portraits/"]) > p > img[src*="/portraits/"] {
+  width: var(--fig-h);
+  height: var(--fig-h);
+  max-width: var(--fig-h);
+  max-height: var(--fig-h);
   object-fit: cover;
   object-position: 50% 20%;
   border-radius: 50%;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
-figure:has(img[src*="/portraits/"]) {
+/* company wordmarks.  ANTHROPIC is all caps while OpenAI has ascenders
+   and a descender, so equal box heights look unequal -- the two heights
+   below match the capital letters instead. */
+figure img[src*="/logos/"] {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+figure img[src*="/logos/anthropic"] { height: 1.8rem; }
+figure img[src*="/logos/openai"]    { height: 2.3rem; }
+
+figure:has(img[src*="/portraits/"]) > figcaption,
+figure:has(img[src*="/logos/"]) > figcaption {
+  flex: 1 0 100%;
   text-align: center;
 }
 
-@media (max-width: 480px) {
-  figure img[src*="/portraits/"] { width: 4.6rem; height: 4.6rem; }
-}
+@media (max-width: 760px) { :root { --fig-h: 10rem; } }
+@media (max-width: 480px) { :root { --fig-h: 7.5rem; } }

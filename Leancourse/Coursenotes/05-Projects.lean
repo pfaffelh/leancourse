@@ -11,14 +11,12 @@ htmlSplit := .never
 tag := "projects"
 %%%
 
-While the exercise sheets accompany the first half of the semester,
-the second half is devoted to *individual projects*: you pick a topic,
-formalize it in Lean, and present the result.  This chapter collects
-five suggestions.  Each comes with a description of what the project
-is about, a sketch of one possible implementation, and references.
-The suggestions are calibrated so that a first working version fits
-into a few hundred lines of Lean, and every one of them has natural
-stretch goals if you want to go further.
+The exercise sheets cover the first half of the semester. The second
+half is devoted to *individual projects*: pick a topic, formalize it in
+Lean, present the result. Five suggestions follow, each with a
+description, a sketch of one implementation and references. A first
+working version of any of them fits into a few hundred lines, and each
+has stretch goals beyond that.
 
 You are equally welcome to propose a topic of your own -- for
 example, formalizing an exercise from your first year of studies, or

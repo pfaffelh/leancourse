@@ -16,10 +16,9 @@ htmlSplit := .never
 tag := "measure-theory"
 %%%
 
-Measure theory in Mathlib is a substantial part of the library, covering
-sigma-algebras, measurable functions, measures, integration, and probability.
-It builds on the {ref "filters"}[filter] framework for convergence theorems. This section
-gives an overview of the main definitions and how to work with them.
+Measure theory in Mathlib covers sigma-algebras, measurable functions,
+measures, integration and probability, and uses the {ref "filters"}[filter] framework for
+the convergence theorems.
 
 # Notation and naming conventions
 %%%

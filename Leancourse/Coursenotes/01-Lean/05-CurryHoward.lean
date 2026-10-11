@@ -45,9 +45,9 @@ This idea is sometimes called the **BHK interpretation** (Brouwer-Heyting-Kolmog
 tag := "term"
 %%%
 
-Before we go through the connectives, we need to know *how* to write a proof, since every example below does.  Because a proof is just a term of the proposition's type, there are two ways to build it.  In *term mode* you write the term directly; in *tactic mode* (after the keyword `by`) you build it step by step with *tactics*.  With the cursor inside a tactic block, Lean shows the *proof state*: the hypotheses appear above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) and the goal to its right.  The `sorry` tactic closes any goal as a placeholder (with a warning), so you can leave holes while developing a proof.
+A proof is a term of the proposition's type, and there are two ways to build one. In *term mode* you write the term directly; in *tactic mode*, after the keyword `by`, you build it step by step with *tactics*.  With the cursor inside a tactic block, Lean shows the *proof state*: the hypotheses appear above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) and the goal to its right.  The `sorry` tactic closes any goal as a placeholder (with a warning), so you can leave holes while developing a proof.
 
-The two modes are two views of the same thing.  Two rules of thumb, which the connectives below make precise:
+The two modes are two views of the same thing. Two rules of thumb, made precise by the connectives below:
 
 * the tactic `exact` is the same as calling a function;
 * the tactic `intro` is like taking a variable that becomes the argument of a function.

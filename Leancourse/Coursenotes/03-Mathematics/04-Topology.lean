@@ -16,11 +16,10 @@ htmlSplit := .never
 tag := "topology"
 %%%
 
-Topology in Mathlib is built on top of the {ref "filters"}[filter] framework. Rather than
-defining continuity via epsilon-delta or open preimages directly, the primary
-definition uses {ref "filter-tendsto"}[`Filter.Tendsto`] applied to neighborhood filters. This section
-explains how topological spaces are set up in Mathlib, how continuity works,
-and how metric spaces fit in.
+Topology in Mathlib is built on the {ref "filters"}[filter] framework. The primary
+definition of continuity is {ref "filter-tendsto"}[`Filter.Tendsto`] on neighbourhood filters,
+not epsilon-delta and not open preimages. Topological spaces, continuity and
+metric spaces all follow from that choice.
 
 # Notation and naming conventions
 %%%

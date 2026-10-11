@@ -16,10 +16,9 @@ htmlSplit := .never
 tag := "filters"
 %%%
 
-Filters are one of the most distinctive design choices in Mathlib. They
-provide a unified framework for limits, neighborhoods, convergence, and
-"eventually" -- replacing the many different epsilon-delta definitions
-that appear in classical analysis.
+Filters give limits, neighbourhoods, convergence and "eventually" a
+single framework, in place of the several epsilon-delta definitions of
+classical analysis.
 
 The exposition below follows the pedagogical approach of Kevin Buzzard and
 Bhavik Mehta in their

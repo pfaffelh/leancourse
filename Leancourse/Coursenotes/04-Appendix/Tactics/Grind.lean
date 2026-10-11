@@ -14,7 +14,7 @@ set_option pp.rawOnError true
 tag := "grind"
 %%%
 
-*Summary:* `grind` is a powerful general-purpose automation tactic
+*Summary:* `grind` is a general-purpose automation tactic
 introduced into Lean 4 by the Lean FRO team.  It is designed to close
 goals that mix *equational*, *propositional*, and *arithmetic*
 reasoning -- the kind of "obvious" side goals that a human would

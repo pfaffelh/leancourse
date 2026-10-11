@@ -14,7 +14,7 @@ set_option pp.rawOnError true
 tag := "filter-upwards"
 %%%
 
-*Summary:* `filter_upwards` is the workhorse tactic for proving
+*Summary:* `filter_upwards` proves
 goals of the form `∀ᶠ x in F, P x`.  Given a list of `Eventually`
 hypotheses, it intersects them, peels off the `∀ᶠ` quantifier, and
 leaves you with a pointwise goal in which all of the supplied

@@ -34,7 +34,7 @@ involving products and squares.
 
 *Remarks:*
 
-* `nlinarith` is strictly more powerful than `linarith` but also
+* `nlinarith` is strictly stronger than `linarith` but also
   slower; prefer `linarith` when possible.
 * You can supply extra lemmas as hints:
   `nlinarith [sq_nonneg x, mul_self_nonneg y]`. Hints of the form

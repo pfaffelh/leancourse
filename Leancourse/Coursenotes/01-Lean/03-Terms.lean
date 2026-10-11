@@ -68,7 +68,7 @@ def p4 : Point := { p1 with y := 10 }
 -- p4.x = 1, p4.y = 10
 ```
 
-Since structures are immutable (as everything in functional programming), this creates a new `Point` rather than modifying `p1`. You may even draw from several records at once -- `{ p, q with … }` takes each remaining field from the first of `p`, `q` that supplies it. When a structure declares field defaults, a value may omit those fields:
+Structures are immutable, so this creates a new `Point` rather than modifying `p1`. You may even draw from several records at once -- `{ p, q with … }` takes each remaining field from the first of `p`, `q` that supplies it. When a structure declares field defaults, a value may omit those fields:
 
 ```lean
 def myConfig : MyConfig := { title := "My Window" }
@@ -205,10 +205,9 @@ name.  We use `fun` (short for "function") with the `↦` arrow
 #eval (fun x y : ℕ ↦ x * y) 3 4   -- outputs 12
 ```
 
-In mathematics one would write `x ↦ x^2`; in Lean we write
-`fun x ↦ x ^ 2`.  There is an even shorter form using the `·`
-placeholder (a centered dot, typed `\cdot`): a `·` stands for an
-anonymous argument, so `(· + 10)` is shorthand for `fun x ↦ x + 10`,
+Mathematics writes `x ↦ x^2`; Lean writes `fun x ↦ x ^ 2`. Shorter still
+is the `·` placeholder (a centered dot, typed `\cdot`), which stands for
+an anonymous argument: so `(· + 10)` is shorthand for `fun x ↦ x + 10`,
 and several `·` become successive arguments -- `(· + ·)` means
 `fun x y ↦ x + y`.
 
@@ -301,11 +300,10 @@ recursion *terminates*.  For *structural* recursion -- where each
 call is on a syntactic sub-part of the input, as in `factorial`,
 `length'`, and `fib` -- this is automatic.
 
-When the recursive call is *not* on a structural sub-part, you
-justify termination by giving a *measure* that strictly decreases:
-the `termination_by` clause names the measure, and `decreasing_by`
-discharges the proof that it goes down.  Euclid's algorithm is the
-classic example -- `euclidGcd m n` recurses on `n % m`, which is not
+When the recursive call is *not* on a structural sub-part, termination
+is justified by a *measure* that strictly decreases: `termination_by`
+names the measure, `decreasing_by` proves that it goes down. Euclid's
+algorithm -- `euclidGcd m n` recurses on `n % m`, which is not
 a subterm of `m`, but the first argument strictly decreases:
 
 ```lean

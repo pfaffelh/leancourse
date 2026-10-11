@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "navigating-mathlib"
 %%%
 
-Mathlib is the community-maintained mathematical library for Lean 4. It contains hundreds of thousands of lines of formalized mathematics, covering algebra, analysis, topology, measure theory, number theory, combinatorics, and more. Learning to navigate Mathlib effectively is essential for writing proofs that build on existing results rather than reinventing the wheel.
+Mathlib is the community-maintained mathematical library for Lean 4: hundreds of thousands of lines covering algebra, analysis, topology, measure theory, number theory and combinatorics. Navigating it is part of writing proofs that build on existing results rather than reinventing the wheel.
 
 # How Mathlib is organized
 %%%

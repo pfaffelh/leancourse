@@ -99,7 +99,7 @@ Due to the multitude of types in Lean, we have to be careful about equality. In 
 
 The distinction matters because *tactics differ in which equality they respect* -- some see through it, some do not. `rfl`, `exact`, and `apply` accept a term whenever it is merely *definitionally* equal to what is expected (they run the reductions for you), whereas `rw` matches *syntactically* and will not fire unless the subterm literally appears. Many otherwise-puzzling tactic failures come down to exactly this.
 
-There is a special kind of equality to be observed with sets and functions. For example, two functions are exactly the same if they return the same value for all values in the domain. This behavior is called *extensionality* in the theory of programming languages. (If extensionality applies, then, for example, two sorting algorithms are the same if they always produce the same result).
+Sets and functions carry their own notion of equality: two functions are the same when they return the same value on every argument. This is *extensionality*. (If extensionality applies, then, for example, two sorting algorithms are the same if they always produce the same result).
 
 
 # Exploring definitions with `#check`, `#print` and `inferInstance`
@@ -154,11 +154,11 @@ searching the library by content or name, see
 tag := "diagnostics"
 %%%
 
-These commands *inspect* your work without changing it: they report a
-theorem's logical dependencies, suggest where a definition should
-live, and run the library's quality checks.  Unlike the `#`-commands
-in the Lean basics chapter (`#check`, `#eval`, `#print`), these are
-mostly about *engineering* a clean, well-placed, axiom-honest
+These commands inspect your work without changing it: they report a
+theorem's logical dependencies, suggest where a definition should live,
+and run the library's quality checks. The `#`-commands of the Lean
+basics chapter (`#check`, `#eval`, `#print`) ask what something *is*;
+these are about *engineering* a clean, well-placed, axiom-honest
 development.
 
 ## `#print axioms` -- the axiom footprint

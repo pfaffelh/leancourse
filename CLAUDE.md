@@ -906,3 +906,36 @@ darunter aus dem Bild.
 Offen: Kapitel 0 ist noch nicht gegen die neuen Structure-Regeln
 geprueft. Dort gibt es keine nummerierten Saetze, aber die Roadmap in
 "How to use this course" und die Querverweise waeren Kandidaten.
+
+## 2026-10-12 -- Manuskript mit plain-math-prose durchgegangen
+
+Skill-Fassung vom 11.10., 21:58 UTC (neue Regel 11). Sie liegt in
+`.claude/skills/plain-math-prose/`.
+
+**Ergebnis: 46 629 -> 45 433 Woerter Prosa, 2,6 %.** Das ist weit von
+der Zielmarke des Skills (Haelfte) entfernt. Die Zusammensetzung
+erklaert einen Teil davon: von den rund 46 000 Woertern sind 13 300
+Listen (API-Namen, Lemma-Aufzaehlungen) und 9 400 Tabellen. Echter
+Fliesstext sind etwa 33 000. Die Haelfte davon zu streichen hiesse,
+mathematischen Inhalt zu streichen, was Regel 18 verbietet.
+
+**Systematisch durchsucht und behoben:**
+- Regel 11 (Behauptungen ueber den Eindruck des Lesers): 5 Fundstellen,
+  darunter "A formal check is narrower than it looks" in Kapitel 0 --
+  genau der Satz, den der Skill als Negativbeispiel fuehrt.
+- Regel 9/10 (Werbesprache, inszenierte Gegensaetze): 14 Fundstellen,
+  u.a. "payoff", "the price of this expressiveness", "not only
+  elegant", "a beautiful example", "powerful" (3x), "magic".
+- Regel 1 (vage Ankuendigungen): die Einstiege von OrdersAndLattices,
+  AlgebraicHierarchy, Topology, MeasureTheory, Filters, 01-Nat,
+  SetsAndTypes, Projects.
+- Regel 12 (Doppelungen): zwei echte Funde. In 06-Probability stand
+  die Monaden-Definition zweimal fast wortgleich, in 00-SetsAndTypes
+  die Definition von `Set α` als `α → Prop`.
+
+**Nicht gemacht:** ein Absatz-fuer-Absatz-Umbau des gesamten
+Fliesstexts. Dafuer waeren die grossen Kapitel einzeln durchzugehen;
+02-Types, 01-Nat, 00b-Universes, 04-Typeclasses und 06-Probability
+sind angefangen, der Rest nicht. Wer das fortsetzt: die Methode war,
+Absaetze ab 45 Woertern auszugeben und einzeln zu pruefen -- die
+Kuerzungen liegen dort, nicht in den Listen.

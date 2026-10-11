@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "dependent-types"
 %%%
 
-Dependent types are the feature that distinguishes Lean's type system from those of most mainstream programming languages. In a dependently typed language, **types can depend on values**. This single idea has far-reaching consequences: it allows us to express precise specifications, encode mathematical statements, and catch entire classes of errors at compile time.
+In Lean, **types can depend on values**. That one feature separates it from most mainstream programming languages, and it it allows us to express precise specifications, encode mathematical statements, and catch entire classes of errors at compile time.
 
 # What makes dependent types special
 %%%
@@ -122,7 +122,7 @@ Mathematically, `Σ` is like a disjoint union (indexed coproduct), while `∃` i
 tag := "vectors-indexed"
 %%%
 
-A classic example of dependent types is the type of vectors (lists of a fixed length). In Mathlib, one way to represent a vector of length `n` with entries in `α` is as a function `Fin n → α` (recall `Fin n`, the type with `n` elements, from the {ref "types"}[Types chapter]).
+Vectors are the standard example: a vector of length `n` with entries in `α` is a function `Fin n → α`, where `Fin n` is the type with `n` elements (see the {ref "types"}[Types chapter]).
 
 ```lean
 -- A vector of 3 natural numbers, represented as a function from Fin 3

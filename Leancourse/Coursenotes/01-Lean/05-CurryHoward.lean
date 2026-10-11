@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "curry-howard"
 %%%
 
-The Curry-Howard correspondence is one of the most profound ideas in the foundations of mathematics and computer science. It establishes a deep connection between logic and type theory: **propositions correspond to types**, and **proofs correspond to terms** (programs) of those types. In Lean 4, this correspondence is not merely a theoretical curiosity -- it is the very foundation on which the proof assistant is built.
+The Curry-Howard correspondence connects logic and type theory: **propositions correspond to types**, and **proofs correspond to terms** of those types. In Lean 4, this correspondence is not merely a theoretical curiosity -- it is the very foundation on which the proof assistant is built.
 
 # Historical context
 %%%
@@ -306,7 +306,7 @@ any `a : α`, and sits at the boundary between `Prop` and `Type`.
 tag := "tactic-to-term"
 %%%
 
-When you write a tactic proof in Lean, the tactic block constructs a term behind the scenes. Every tactic manipulates the proof state and ultimately produces a term of the goal type. You can use `show_term` (or look at the output of `#print`) to see what term a tactic proof generates.
+A tactic block constructs a term behind the scenes: each tactic manipulates the proof state, and the block produces a term of the goal type. `show_term`, or `#print`, shows which term.
 
 ```lean
 -- Use show_term to see what the tactic proof builds

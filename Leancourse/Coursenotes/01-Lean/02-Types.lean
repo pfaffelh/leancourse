@@ -19,7 +19,7 @@ Lean has the data types every programming language has -- `int`, `string`, `floa
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` will be called a universe) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
 
-These data types are more abstract: Lean understands `ℕ` (and `ℝ`) as genuinely infinite types, not limited by floating-point arithmetic. The `zero`/`succ` construction of `ℕ` was the subject of the {ref "nat"}[introduction]; the real numbers, by contrast, are built from an equivalence relation on Cauchy sequences, which is considerably more elaborate -- a {ref "quotient-types"}[quotient type], as we will see at the end of this chapter.
+These data types are abstract: Lean treats `ℕ` and `ℝ` as genuinely infinite, not as floating-point approximations. `ℕ` is the `zero`/`succ` construction of the {ref "nat"}[introduction]; `ℝ` is built from an equivalence relation on Cauchy sequences, a {ref "quotient-types"}[quotient type] (end of this chapter).
 
 In Lean every object is a term, and every term has a type. A type is itself a term, so it has a type as well.
 
@@ -83,7 +83,7 @@ The same holds for a `∀` (a *dependent* function type), whose universe is read
 #check (∀ α : Type 5, α → α)   -- Type 6
 ```
 
-This climbing is what it means for the `Type u` to be *predicative*: a *predicative* definition refers to things already available *below* it -- whatever a type quantifies over must be strictly smaller, so the type it forms can never land back inside its own domain. That is exactly why `∀ α : Type 5, α → α` is pushed up to `Type 6`, safely *above* everything it ranges over, and it is what keeps the whole hierarchy well-founded. (The terminology goes back to Poincaré and Russell, who imposed predicativity to outlaw the self-referential definitions behind the set-theoretic paradoxes.)
+The climbing is what *predicative* means: a predicative definition refers only to things already available below it, so whatever a type quantifies over is strictly smaller and the type it forms never lands back inside its own domain. That is why `∀ α : Type 5, α → α` is pushed up to `Type 6`, above everything it ranges over, and it keeps the hierarchy well-founded. (The term goes back to Poincaré and Russell, who imposed predicativity to outlaw the self-referential definitions behind the set-theoretic paradoxes.)
 
 The bump matters. Suppose `∀ α : Type, α → α` were allowed to have type `Type` rather than `Type 1` -- i.e. a `∀` over `Type` could land back inside `Type`. That is the first step toward a universe that contains itself, `Type : Type`, and *that* is fatal: from `Type : Type` one can encode Russell's paradox at the level of types -- *Girard's paradox* -- and derive an honest proof of `False`, so *every* proposition becomes provable and the system is worthless. Predicativity, by forcing the climb to `Type 1`, is exactly what rules this out. (The proof is not short, and Lean's kernel enforces the bump, so you cannot even state `∀ α : Type, α → α : Type` to try it; why the hierarchy matters is discussed in {ref "universe-hierarchy"}[the Mathematics part], and carrying the construction of the paradox out in Lean is {ref "project-girard"}[one of the course projects].)
 
@@ -96,7 +96,7 @@ There is exactly one universe that is allowed to break this rule -- `Prop` -- an
 tag := "prop-special"
 %%%
 
-`Prop` is the type of statements that can be `True` or `False`, so both the hypotheses and the goal live there. A hypothesis has the form `hP : P`: `P` holds, and `hP` is a proof of it. Below, the hypotheses are named `P Q R S` and their proofs `hP hQ hR hS`; the names are arbitrary. Furthermore, there are hypotheses of the form `P → Q`, which is the statement that `P` implies `Q`. (Note the similarity to function notation as in `f : ℝ → ℝ`.)
+`Prop` is the type of statements that can be `True` or `False`, so both the hypotheses and the goal live there. A hypothesis has the form `hP : P`: `P` holds, and `hP` is a proof of it. Below, the hypotheses are named `P Q R S` and their proofs `hP hQ hR hS`; the names are arbitrary. A hypothesis `P → Q` states that `P` implies `Q`, written like the function type `f : ℝ → ℝ`.
 
 We note three specifics which only apply to `Prop`:
 
@@ -186,7 +186,7 @@ The classical route mirrors `Classical.choose` in the same way: `Classical.em : 
 tag := "inductive"
 %%%
 
-Many everyday types in Lean -- `Nat`, `List`, `Option`, `Bool`, even `Empty` -- are *inductive* types. We have already dissected two of them, `Nat` and `Bool`, in the {ref "nat-intro"}[previous chapter]. This section is about the general mechanism -- how you *declare* such a type yourself, and which declarations Lean accepts.
+`Nat`, `List`, `Option`, `Bool` and `Empty` are all *inductive* types; `Nat` and `Bool` were dissected in the {ref "nat-intro"}[previous chapter]. What follows is how to declare such a type yourself, and which declarations Lean accepts.
 
 You declare an inductive type by giving a name, the type's universe, and a list of *constructors*, each saying how to build a new element out of existing pieces. Declaring the natural numbers by hand reproduces exactly the structure of `Nat`:
 
@@ -233,7 +233,7 @@ inductive MyOption (α : Type) where
 
 Inductive types are the main mechanism by which new data types enter Lean, and `Mathlib` uses them throughout. They also settle the universe question from the other side: the universe of an inductive type must be large enough to hold all of its constructor arguments.
 
-Not every `inductive` declaration is accepted, though. A constructor may mention the type being defined, but only *positively* -- never to the *left* of an arrow inside one of its arguments. This *strict positivity* condition keeps inductive types built from well-founded data and free of paradox. An *infinitely-branching* tree -- where a `node` carries one subtree for each natural number -- is fine, because in the `node` constructor `MyTree` occurs only to the *right* of `→`:
+Not every `inductive` declaration is accepted. A constructor may mention the type being defined, but only *positively*: never to the *left* of an arrow inside one of its arguments. This *strict positivity* condition keeps inductive types well-founded and free of paradox. An *infinitely-branching* tree -- where a `node` carries one subtree for each natural number -- is fine, because in the `node` constructor `MyTree` occurs only to the *right* of `→`:
 
 ```lean
 inductive MyTree where
@@ -247,7 +247,7 @@ example : MyTree := .node (fun n => .leaf n)
 
 The `leaf` case is what gets the type off the ground. Positivity constrains only *where* `MyTree` may occur, not whether the type has any elements: drop `leaf`, and the declaration is *still accepted*, but no closed `MyTree` can ever be built -- every `node` already demands a whole family `ℕ → MyTree` of subtrees, with nothing to start from, so the type is *empty* (like `Empty`; one can even prove `MyTree → False`). With `leaf` present you build upward -- `leaf 7`, then `node (fun n => leaf n)`, then trees over those. Note that `leaf` here *carries* a `ℕ`, so different leaves are genuinely different; a bare `leaf : MyTree` would give a single, featureless leaf, indistinguishable from every other.
 
-Because `node` takes a *function* `ℕ → MyTree`, every node has one child per natural number -- it branches *infinitely*. It is not that *every* `MyTree` is infinite: a leaf is finite (`leaf 7` is a complete tree), so only trees that actually use `node` are. This infinite branching is inseparable from a function-typed argument; for a finitely-branching tree you would instead write something like `node : MyTree → MyTree → MyTree`, but there `MyTree` occurs *directly*, not inside a function, so the right-of-`→` case would not arise.
+Because `node` takes a *function* `ℕ → MyTree`, every node has one child per natural number -- it branches *infinitely*. It is not that *every* `MyTree` is infinite: a leaf is finite (`leaf 7` is a complete tree), so only trees that actually use `node` are. The infinite branching comes from the function-typed argument. A finitely-branching tree would be `node : MyTree → MyTree → MyTree`, where `MyTree` occurs directly rather than inside a function, so the right-of-`→` case would not arise.
 
 But a constructor that stores a *function out of* the type is rejected:
 
@@ -282,7 +282,7 @@ structure Point where
   y : ℕ
 ```
 
-This declares a new type `Point` whose elements are records with two `ℕ` fields. (Both must be given in order to define a `Point`, which is the only way we can make such a Point, i.e. it only has a single constructor.) Like every declaration, it produces more than the type alone: a constructor `Point.mk` and one projection per field. We can inspect their types without building any value yet:
+This declares a type `Point` whose elements are records with two `ℕ` fields. There is a single constructor, so both fields must be supplied. The declaration also produces that constructor `Point.mk` and one projection per field, whose types can be inspected without building a value:
 
 ```lean
 #check (Point.mk : ℕ → ℕ → Point)
@@ -362,7 +362,7 @@ but the `structure` version gives us named fields, {ref "structure-values"}[dot 
 tag := "quotient-types"
 %%%
 
-Alongside universes, function types, and inductive types, Lean has one more basic way to *form* a type: the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates -- it is `α` "seen up to `r`". This is how the chapter's opening remark, that `ℝ` is Cauchy sequences up to an equivalence, becomes an actual construction; `ℤ`, `ℚ`, `Multiset α` (lists up to reordering), and `ZMod n` are quotients too.
+The fourth way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction. `ℤ`, `ℚ`, `Multiset α` (lists up to reordering) and `ZMod n` are quotients too.
 
 Its entire interface is four constants:
 
@@ -405,7 +405,7 @@ example (f g : CauSeq ℚ abs) :
     f ≈ g ↔ (f - g).LimZero := Iff.rfl
 ```
 
-Addition is the first use of `Quot.lift`. To add two reals you add *representative* sequences termwise -- but this is only well-defined because `+` respects the relation (if `f ≈ f'` and `g ≈ g'` then `f + g ≈ f' + g'`). Having checked that, `Quot.lift` hands you exactly the computation rule that `mk` is an additive homomorphism:
+Addition is the first use of `Quot.lift`. Two reals are added by adding *representative* sequences termwise, which is well-defined because `+` respects the relation: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`. With that checked, `Quot.lift` yields the computation rule that `mk` is an additive homomorphism:
 
 ```lean
 example (f g : CauSeq ℚ abs) :

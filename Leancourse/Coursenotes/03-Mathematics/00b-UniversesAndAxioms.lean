@@ -41,7 +41,7 @@ How the collapse would actually unfold -- building Girard's paradoxical universe
 tag := "prop-vs-type"
 %%%
 
-The universe `Prop` has a special property that distinguishes it from all `Type n`: **proof irrelevance** (introduced in {ref "prop-special"}[why `Prop` is special]). Recall that if `P : Prop` and `h1 h2 : P`, then `h1 = h2`: all proofs of the same proposition are considered equal. Here we revisit it from the foundational side.
+`Prop` differs from every `Type n` by **proof irrelevance** (see {ref "prop-special"}[why `Prop` is special]): if `P : Prop` and `h1 h2 : P`, then `h1 = h2`. What follows is the foundational side of that.
 
 This is a deliberate design choice. It means:
 - You cannot pattern-match on a proof to extract computational data.
@@ -61,13 +61,13 @@ The distinction between `Prop` and `Type` corresponds to the mathematical distin
 tag := "cic"
 %%%
 
-The universe hierarchy, `Prop` with its proof irrelevance, dependent functions and inductive types form a single formal system, and that system is what Lean's kernel implements{citep lean4_2021}[] -- the *Calculus of Inductive Constructions*, or CIC. This is worth stating plainly, because the CIC is the *entire* trusted core of Lean: every definition, theorem, and tactic ultimately elaborates down to terms that the kernel re-checks against these rules, and nothing outside them is trusted.
+The universe hierarchy, `Prop` with its proof irrelevance, dependent functions and inductive types form a single formal system, and that system is what Lean's kernel implements{citep lean4_2021}[] -- the *Calculus of Inductive Constructions*, or CIC. The CIC is the *entire* trusted core of Lean: every definition, theorem, and tactic ultimately elaborates down to terms that the kernel re-checks against these rules, and nothing outside them is trusted.
 
 The CIC is built from exactly three ideas:
 
 1. *Dependent functions* -- the "Constructions". This is the *Calculus of Constructions* of {citet coquandHuet1988}[]: a typed lambda calculus in which the *type* of the output may depend on the *value* of the input, giving the Π-types written `(x : α) → β x`. In one stroke this subsumes ordinary functions, polymorphic functions (which take types as arguments), and type-level functions.
 
-2. *Inductive types* -- the "Inductive", added by {citet coquandPaulin1990}[]. This is the rule that lets you introduce a genuinely new type by listing its constructors. Remarkably, *both* data and logic are built from this one mechanism: `Nat`, `List`, and `Prod` are inductive types, but so are the logical connectives `And`, `Or`, `False`, and even equality `Eq`.
+2. *Inductive types* -- the "Inductive", added by {citet coquandPaulin1990}[]. This is the rule that introduces a new type by listing its constructors. *Both* data and logic are built from it: `Nat`, `List`, and `Prod` are inductive types, but so are the logical connectives `And`, `Or`, `False`, and even equality `Eq`.
 
 ```lean
 -- Data: `Nat` is an inductive type with two constructors
@@ -96,7 +96,7 @@ inductive Traffic where
 
 On top of these three ingredients the kernel bakes in one thing that set theory has no notion of: *computation*. Terms reduce, so `(fun n => n + 1) 2` and `3` are not merely provably equal but *definitionally* equal, and the kernel checks this by evaluating. This is the same reduction that makes {keywordOf Lean.Parser.Command.eval}`#eval` and the `decide` tactic work, and it is what lets us speak of *computable* functions at all.
 
-What is striking about the CIC is how little it is. A type checker for it is only a few thousand lines of code, and that small program is the whole of what you must trust in order to believe a Lean proof. Everything in Mathlib -- the integers, the real numbers, manifolds, schemes -- is in the end a tower of inductive types and dependent functions resting on this kernel.
+The CIC is small. A type checker for it is a few thousand lines of code, and that program is the whole of what you must trust in order to believe a Lean proof. Everything in Mathlib -- the integers, the real numbers, manifolds, schemes -- is in the end a tower of inductive types and dependent functions resting on this kernel.
 
 # The axioms of Lean
 %%%
@@ -230,7 +230,7 @@ Both are nonempty -- `True` satisfies `U` and `False` satisfies `V` -- so `Class
 - If either disjunction takes its *right* branch, we have a proof of `p` outright -- the left side of `p ∨ ¬p`.
 - Otherwise `u = True` and `v = False`, so `u ≠ v`. But were `p` true, then `propext` would collapse `U` and `V` into the same predicate, forcing the chosen witnesses to coincide, `u = v` -- a contradiction. Hence `¬p`, the right side.
 
-Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data* -- the booleans `True` and `False` -- which is precisely the move a constructive system refuses to make. Mathlib packages the result as `Classical.em`; in practice you simply use it (often via `by_contra` or `by_cases`).
+Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data*, the booleans `True` and `False`, which is the move a constructive system refuses. Mathlib packages the result as `Classical.em`, used in practice through `by_contra` or `by_cases`.
 
 The step "assume `p`, derive a contradiction, conclude `¬p`" does not itself use excluded middle, so the argument is not circular. Proving `¬p` by assuming `p` and reaching a contradiction is *negation introduction* -- it is simply the definition of `¬p` as `p → False`, and it is constructively valid. The *classical* principle is the opposite direction: concluding a positive `p` from `¬¬p` (that is `by_contra`), which we never invoke here. Likewise, the case splits above *eliminate* disjunctions we already hold (from the choice specification); they do not conjure `p ∨ ¬p` out of nothing -- that disjunction is our *conclusion*, assembled constructively from the cases. The one and only non-constructive ingredient is `Classical.choice`, and using it is not the same as assuming the `p ∨ ¬p` we are proving.
 
@@ -239,7 +239,7 @@ The step "assume `p`, derive a contradiction, conclude `¬p`" does not itself us
 tag := "baked-in"
 %%%
 
-Saying Lean has "exactly three axioms" is precise about *declared* axioms -- the `axiom` constants, which are exactly what `#print axioms` reports. But the kernel's typing and definitional-equality rules quietly build in further logical principles that are *not* axioms and leave *no* trace in `#print axioms`. They come for free, and -- unlike the three axioms -- you cannot opt out of them.
+Saying Lean has "exactly three axioms" is precise about *declared* axioms -- the `axiom` constants, which are exactly what `#print axioms` reports. But the kernel's typing and definitional-equality rules quietly build in further logical principles that are *not* axioms and leave *no* trace in `#print axioms`. Unlike the three axioms, you cannot opt out of them.
 
 The clearest are *definitional*: they hold by `rfl`, yet cost nothing.
 
@@ -350,10 +350,9 @@ number := false
 tag := "decidable-classically"
 %%%
 
-Recall the {ref "decidable-typeclass"}[`Decidable` typeclass] from
-Part 1: a proposition is `Decidable` when an algorithm can compute
-whether it holds, which is what makes `if P then _ else _` and the
-`decide` tactic run *without any axioms*. Classical logic extends this
+A proposition is {ref "decidable-typeclass"}[`Decidable`] when an
+algorithm computes whether it holds, which is what makes
+`if P then _ else _` and the `decide` tactic run *without any axioms*. Classical logic extends this
 reach. When you `open Classical`, every `Prop` becomes
 `Decidable` -- but *non-constructively*, via `Classical.choice`, so the
 instance carries no algorithm. This is convenient in proofs (you may

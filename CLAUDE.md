@@ -828,3 +828,28 @@ Skript.
 Zulip-Avatare gehen nicht -- kommerzielle Plattform bzw. von den Leuten
 selbst hochgeladen, in beiden Faellen keine Lizenz fuer Dritte. Das
 bleibt bei den drei angefragten Personen.
+
+## 2026-10-11 (5) -- Kapitel 0 sprachlich durchgegangen
+
+Mit dem Skill `plain-math-prose`. Prosa von 5 260 auf 4 031 Woerter
+(-23 %); alle Zahlen, Namen und Jahreszahlen stehen noch drin,
+maschinell gegengeprueft -- weggefallen sind ausschliesslich
+Satzanfaenge wie "Finally", "However", "Furthermore", "Concretely".
+
+Was systematisch raus ist:
+- Ankuendigungen und Rueckblicke ("This first part is about...",
+  "Begin with where things stand", "Concretely:").
+- Handels- und Werbesprache. Der Mathlib-Absatz hatte woertlich das
+  "The price is... The gain is..."-Muster, das der Skill als Beispiel
+  fuehrt; ebenso "the best argument we could have asked for", "what
+  that check buys", "This is where Lean's reputation begins".
+- Ein Beispiel, das zweimal spaeter nochmal kommt: die Kugelpackung
+  stand in der Autoformalisierungs-Definition *und* im 2026-Abschnitt
+  *und* bei den Meilensteinen. In der Definition jetzt gestrichen.
+
+Die Zielmarke des Skills (Haelfte) ist hier nicht erreichbar: ein
+grosser Teil des Kapitels sind datierte Stichpunkte, die Tabelle, die
+Linklisten und der Lean-Block. Gekuerzt wurde, was Prosa war.
+
+Die Orga-Abschnitte (Goals, Installation) waren am staerksten
+aufgeblaeht und sind am deutlichsten geschrumpft.

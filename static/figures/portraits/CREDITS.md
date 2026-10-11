@@ -1,7 +1,12 @@
 # Portrait credits
 
 All images are from Wikimedia Commons and are reproduced
-unchanged under the licence given. The attribution below must be
+unchanged under the licence given. The three Oberwolfach photographs
+(viazovska, gowers, green) are reduced-resolution files released by the
+MFO itself; their terms ask for the form "Author's name, Archives of the
+Mathematisches Forschungsinstitut Oberwolfach", which is what the chapter
+uses. Full-resolution or unwatermarked MFO images may not be published
+without permission. The attribution below must be
 reproduced wherever the images are shown.
 
 - `hales.jpg` -- Slawekb, CC BY-SA 3.0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Halescropped.jpg>

@@ -15,6 +15,17 @@ and where the field stands.  The claims and figures are the same ones.
 
 #doc (Slides) "Why formalize?" =>
 
+```css
+img.portrait {
+  width: 92px; height: 92px; object-fit: cover; object-position: 50% 20%;
+  border-radius: 50%; margin: 0 0.3rem; vertical-align: middle;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+.names { font-size: 0.45em; color: #52514e; letter-spacing: 0.02em;
+         margin-top: 0.1em; }
+.reveal section img { margin: 0.4rem 0; }
+```
+
 # Why formalize?
 
 :::fitText
@@ -60,6 +71,14 @@ A computer checks the list.
 2005: Gonthier formalizes all of it in Coq -- case analysis included.
 :::
 
+{image "../static/figures/four_colour.png" (height := "32vh")}[A map of thirty-four regions coloured with four colours]
+
+{image "../static/figures/portraits/placeholder_gonthier.png" (class := "portrait")}[Georges Gonthier]
+
+:::class "names"
+Georges Gonthier
+:::
+
 :::notes
 Two decades of argument about whether this counted as a proof.
 Gonthier did not settle the argument; he made it unnecessary.
@@ -67,7 +86,13 @@ Gonthier did not settle the argument; he made it unnecessary.
 
 # 1998: stacking oranges
 
-{image "../static/figures/kepler_packing.png"}[A pyramid of equal spheres, the face-centred cubic packing]
+{image "../static/figures/kepler_packing.png" (height := "34vh")}[A pyramid of equal spheres, the face-centred cubic packing]
+
+{image "../static/figures/portraits/hales.jpg" (class := "portrait")}[Thomas Hales]
+
+:::class "names"
+Thomas Hales
+:::
 
 :::notes
 Kepler, 1611. Hales announces a proof in 1998.
@@ -109,6 +134,14 @@ Liquid Tensor Experiment, led by Commelin. Finished July 2022.
 Not combinatorics with a thousand cases -- condensed mathematics.
 :::
 
+{image "../static/figures/cantor_profinite.png" (height := "22vh")}[Seven stages of the middle-thirds construction]
+
+{image "../static/figures/portraits/scholze.jpg" (class := "portrait")}[Peter Scholze] {image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
+
+:::class "names"
+Peter Scholze, Johan Commelin
+:::
+
 :::notes
 Buzzard's ICM plenary in 2022 is a fair marker for the moment this
 stopped being a curiosity.
@@ -136,9 +169,139 @@ stopped being a curiosity.
 The idea is 150 years old. The tool is 20.
 :::
 
+{image "../static/figures/portraits/demoura.jpg" (class := "portrait")}[Leonardo de Moura]
+
+:::class "names"
+Leonardo de Moura, who started Lean in 2013
+:::
+
 :::notes
 Lean itself: de Moura, Microsoft Research, 2013. Lean 4 in 2021.
 Lean FRO, about twenty people. Buzzard campaigning since 2018.
+:::
+
+# In between
+
+:::fitText
+Each one showed that something new was possible.
+:::
+
+:::notes
+Five projects between Flyspeck and 2026. The course material is built
+out of the libraries they left behind -- that is why they are named.
+:::
+
+# Perfectoid spaces, 2019
+
+{image "../static/figures/padic_tree.png" (height := "30vh")}[The 3-adic integers as a ternary tree]
+
+:::fragment highlightBlue
+They formalized a *definition*, not a theorem.
+:::
+
+{image "../static/figures/portraits/buzzard.jpg" (class := "portrait")}[Kevin Buzzard] {image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin] {image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot]
+
+:::class "names"
+Kevin Buzzard, Johan Commelin, Patrick Massot
+:::
+
+:::notes
+Scholze's perfectoid spaces, 2012. Whether an object of that complexity
+could even be *stated* in a proof assistant was open. Stating is a
+different problem from proving.
+
+This is where Lean's reputation among mathematicians begins.
+:::
+
+# Sphere eversion, 2022
+
+{image "../static/figures/turning_number.png" (height := "26vh")}[Four closed plane curves with their turning numbers]
+
+:::fragment fadeUp
+In the plane the turning number blocks it: $`+1` cannot become $`-1`.
+:::
+
+:::fragment highlightBlue
+In three dimensions the obstruction is gone.
+:::
+
+{image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot] {image "../static/figures/portraits/placeholder_vandoorn.png" (class := "portrait")}[Floris van Doorn] {image "../static/figures/portraits/placeholder_nash.png" (class := "portrait")}[Oliver Nash]
+
+:::class "names"
+Patrick Massot, Floris van Doorn, Oliver Nash
+:::
+
+:::notes
+Gromov's h-principle. Differential topology, not algebra -- so the
+project had to build a differential-geometry API first and prove
+anything only afterwards.
+
+That is the ordinary shape of formalization work, and the reason
+Mathlib matters more than any single theorem in it.
+:::
+
+# Freiman-Ruzsa, 2023
+
+{image "../static/figures/sumset.png" (height := "22vh")}[A set of small doubling beside its sumset]
+
+:::fragment fadeUp
+Formalized in about three weeks -- *before* the paper was refereed.
+:::
+
+{image "../static/figures/portraits/gowers.jpg" (class := "portrait")}[Timothy Gowers] {image "../static/figures/portraits/green.jpg" (class := "portrait")}[Ben Green] {image "../static/figures/portraits/tao.jpg" (class := "portrait")}[Terence Tao] {image "../static/figures/portraits/placeholder_manners.png" (class := "portrait")}[Freddie Manners]
+
+:::class "names"
+Timothy Gowers, Ben Green, Terence Tao, Freddie Manners
+:::
+
+:::notes
+The method is what carried. A *blueprint* cuts a formalization into
+independent pieces with stated interfaces, so volunteers can work in
+parallel without talking to each other.
+
+Formalization stopped being a job for one team over years. This is the
+missing step between "LTE, two years" and "Fermat, eleven days".
+:::
+
+# Equational Theories, 2024-25
+
+:::fitText
+22 028 942 implications between 4 694 laws.
+:::
+
+{image "../static/figures/portraits/tao.jpg" (class := "portrait")}[Terence Tao]
+
+:::class "names"
+Terence Tao
+:::
+
+:::notes
+All implications between equational laws on magmas, settled, with new
+constructions found on the way.
+
+Not a hard theorem -- an impossible amount of bookkeeping. A kind of
+result that does not exist without a machine.
+:::
+
+# Sphere packing, dim. 8 and 24
+
+{image "../static/figures/e8_roots.png" (height := "34vh")}[The 240 roots of E8 in the Coxeter plane]
+
+{image "../static/figures/portraits/viazovska.jpg" (class := "portrait")}[Maryna Viazovska]
+
+:::class "names"
+Maryna Viazovska
+:::
+
+:::notes
+Viazovska 2016, Fields Medal 2022. The packing is the E8 lattice; these
+are its 240 shortest vectors.
+
+Human formalization project from 2024, finished by an autoformalizer in
+February 2026 -- dimension 8 in five days.
+
+This closes the thread that opened with Kepler. Four hundred years, one
+dimension at a time.
 :::
 
 # 2026

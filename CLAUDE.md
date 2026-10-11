@@ -701,3 +701,33 @@ also in sich geschlossen.
 Hinfällig: der frühere Hardware-Punkt unter *Some notes on Lean and
 Mathlib* (8 GB, Gitpod, Web-Editor) ist entfernt -- er widersprach dem
 Hardware-Abschnitt vom 10.10.
+
+### 2026-10-11 (2) -- Foliensatz zu Kapitel 0, Verlinkung
+
+`Slides/Introduction.lean` hat jetzt 20 Folien, darunter eine je
+Meilenstein-Projekt mit der zugehörigen Grafik und den Portraits.
+
+**VersoSlides-Eigenheiten, die Zeit gekostet haben:**
+
+- Bildsyntax ist `{image "pfad" (height := "26vh") (class := "x")}[alt]`,
+  nicht `![alt](pfad)`. Letzteres baut durch, erzeugt aber kein Bild.
+- Pfade werden relativ zur **Quelldatei** aufgelöst, aus `Slides/` also
+  `../static/figures/...`. VersoSlides kopiert die Dateien dann nach
+  `<deck>/images/`, die Decks sind damit in sich geschlossen.
+- Eigenes CSS geht über einen ````css`-Codeblock im Dokument; er landet
+  als `<style>` im Header. Für eine Klasse um Blöcke: `:::class "names"`.
+- `:::names` o.ä. gibt es nicht -- die Direktiven sind attr, class,
+  fitText, fragment, frame, hstack, idDirective, notes, stack, stretch,
+  table, vstack.
+
+**Layout muss man ansehen, nicht ausrechnen.** Die Browser-Erweiterung
+war nicht verbunden; `google-chrome --headless --screenshot` auf
+`file://.../index.html#/10` tut es genauso. Dabei fiel auf, dass die
+PFR-Folie unten überlief (zweizeilige Überschrift + Bild + vier
+Portraits) -- Überschrift gekürzt, Bild auf 22vh, Portraits auf 92px.
+
+Ein verstecktes `:::fragment` belegt seinen Platz schon vor dem Klick.
+Die Lücke in der Folienmitte ist also kein Fehler.
+
+Beide Decks sind in `Leancourse.lean` unter *How to use this course*
+verlinkt; die Filter-Folien zusätzlich aus dem Filter-Kapitel.

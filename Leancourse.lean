@@ -74,7 +74,7 @@ If you have trouble installing the course material on your own computer, please 
 * Exploring advanced mathematics in Lean: We survey how Mathlib organizes order theory, the algebraic hierarchy, filters (which provide a unified framework for limits), topology, measure theory, and discrete probability. These topics are not always well covered in standard textbooks from the perspective of formalization.
 * Proof engineering: We learn to use powerful automation tactics, navigate Mathlib effectively, and avoid common pitfalls when working with a large formal library.
 
-*Why formalize?* Three episodes make the case better than an argument would. (A [slide deck](slides/introduction/) covers this section and the two that follow it, for the first lecture.)
+*Why formalize?* Three episodes make the case better than an argument would.
 
 In 1976 Kenneth Appel and Wolfgang Haken proved the four colour theorem. Their argument reduced the problem to a long list of configurations and then checked that list by computer. No human has ever read that part, and for two decades the community argued about whether it counted as a proof at all.
 
@@ -257,6 +257,13 @@ For this course the practical consequence is simple: we use Lean because *Mathli
 * *Appendix*: common pitfalls when working with Lean and Mathlib, the diagnostic commands (`#print axioms`, `#find_home`, `#lint`), an alphabetical keyword reference, and an *alphabetical glossary of tactics* (an even longer list lives [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)).
 * *Projects*: five suggested topics for the individual formalization projects in the second half of the course, each with a description, a sketch of a possible implementation, and references.
 * *Bibliography*: the works cited throughout, with links.
+
+*Slides.* Some chapters have an accompanying deck, used in the lecture and readable on its own. The decks carry the same figures and claims as the text, and the speaker notes say what the text says in prose, so either can be used without the other.
+
+* [Why formalize?](slides/introduction/) -- the first lecture: the three episodes above, the landmark formalizations with their figures, what changed in 2026, and where the field stands.
+* [Filters in Mathlib](slides/filters/) -- accompanies the chapter on filters.
+
+Press `s` in a deck for the speaker notes, `o` for an overview of all slides, and `?` for the remaining keys.
 
 The heart of the course are the exercises (see the _Exercises_ folder within `Leancourse`). Unlike in other courses, you will get immediate feedback on any single exercise -- via error messages from the elaborator and a live *proof-state* panel that shows what remains to be proved at every cursor position. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.
 

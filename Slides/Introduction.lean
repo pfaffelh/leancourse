@@ -204,7 +204,7 @@ model to point at.
 
 # Where people are going
 
-{image "../static/figures/itp_github_repos_quarterly.png"}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
+{image "../static/figures/itp_github_repos_per_million.png"}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
 
 :::notes
 Until about 2023 the three were comparable, and Coq was the larger.

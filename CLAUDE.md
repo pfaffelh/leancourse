@@ -642,3 +642,62 @@ week content plan, the five paper tests (11.11., 02.12., 16.12.,
 27.01., 10.02.; pass 3 of 5), the AI policy, and the project
 arrangement. Weighting: nine weeks of craft before the break, five
 weeks of mathematics after it.
+
+### 2026-10-11 -- Kapitel 0 ausgebaut, erster Foliensatz, drei Grafiken
+
+`Leancourse.lean` (das Wurzeldokument, faktisch Kapitel 0) hat drei
+neue Abschnitte vor *Other theorem provers*:
+
+- *Why formalize?* -- Vierfarbensatz 1976/2005, Kepler/Hales 1998 mit
+  Flyspeck 2014, Liquid Tensor Experiment 2020--22.
+- *A short prehistory.* -- Frege, Russell, Principia, Automath,
+  Landau 1977; Lean ab 2013.
+- *What changed in 2026.* -- vier datierte Punkte: FLT (Anthropic,
+  04.09.), Navier-Stokes mit Kraftterm (OpenAI, 08.09.), der Katalog
+  vom 06.10. (719 Manuskripte, 372 Familien, ~42 % mit Lean-Beweis)
+  und die drei Rücknahmen vom 07.10. Daran der Abschnitt darüber, was
+  ein Lean-Beweis zertifiziert und was nicht.
+- *Where the field stands.* -- die beiden Grafiken.
+
+*Other theorem provers* ist von zwei Aufzählungspunkten auf einen
+Abschnitt mit Tabelle gewachsen: formale Grundlage (CIC-Variante /
+pCuIC / HOL), abhängige Typen, und wie die Bibliotheken organisiert
+sind (Mathlib als Monorepo, Rocq als Paketlandschaft, Isabelle mit
+dem AFP).
+
+**Zahlen im Text sind gemessen, nicht geschätzt.** Mathlib-Kennzahlen
+aus dem gepinnten Checkout (Stand 15.09.2026); die OpenAI-Zahlen aus
+`github.com/openai/math` (README und `history.md`, Stand 11.10.2026).
+Die ~42 % und die Manuskriptzahl ändern sich -- im Text steht deshalb
+"at the time of writing".
+
+**Grafiken** in `static/figures/`, erzeugt mit den Skripten aus
+`~/bwSyncShare/Vorträge/20260720_CRC/`:
+
+- `itp_github_repos_quarterly` -- `github_language_quarterly_plot.py
+  --langs Lean Coq Isabelle --no-title`
+- `arxiv_lean_formalized_weekly` -- `arxiv_fulltext_counts.py`, Kopie
+  im Scratchpad mit angepasstem Untertitel (das Original verweist auf
+  `KRITERIUM_formalisiert.md`, für Studierende undurchsichtig)
+- `kepler_packing` -- neu gezeichnet (`kepler.py`, Hausfarben), weil
+  kein lizenzfreies Bild vorlag
+
+**Foliensatz** `Slides/Introduction.lean`, 15 Folien, folgt dem
+Kapitel Abschnitt für Abschnitt, damit beides nebeneinander benutzbar
+ist. Die Sprechernotizen tragen die Einordnung, die im Skript als
+Fließtext steht.
+
+`SlidesMain.lean` nimmt jetzt ein **Basisverzeichnis** und schreibt
+jedes Deck in einen Unterordner mit seinem Namen; `deploy.yml` ruft
+entsprechend `lake exe slides _out/html-multi/slides` auf. Ein
+weiteres Deck braucht damit keine Workflow-Änderung mehr.
+
+**Bildpfade in Folien** werden relativ zur *Quelldatei* aufgelöst, also
+`../static/figures/...` aus `Slides/`. Syntax ist `{image "..."}[alt]`,
+nicht `![alt](...)` -- letzteres baut durch, erzeugt aber kein Bild.
+VersoSlides kopiert die Dateien nach `<deck>/images/`, die Decks sind
+also in sich geschlossen.
+
+Hinfällig: der frühere Hardware-Punkt unter *Some notes on Lean and
+Mathlib* (8 GB, Gitpod, Web-Editor) ist entfernt -- er widersprach dem
+Hardware-Abschnitt vom 10.10.

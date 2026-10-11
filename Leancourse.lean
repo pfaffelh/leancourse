@@ -74,12 +74,83 @@ If you have trouble installing the course material on your own computer, please 
 * Exploring advanced mathematics in Lean: We survey how Mathlib organizes order theory, the algebraic hierarchy, filters (which provide a unified framework for limits), topology, measure theory, and discrete probability. These topics are not always well covered in standard textbooks from the perspective of formalization.
 * Proof engineering: We learn to use powerful automation tactics, navigate Mathlib effectively, and avoid common pitfalls when working with a large formal library.
 
-*Other material and theorem provers.* Lean is not the only theorem prover, and, of course, this course is not the only course trying to teach Lean to you. Other Theorem provers (which all will be neglected here) are:
+*Why formalize?* Three episodes make the case better than an argument would. (A [slide deck](slides/introduction/) covers this section and the two that follow it, for the first lecture.)
 
-* [Rocq](https://rocq-prover.org/) (formerly COQ)
-* [Isabelle/HOL ](https://isabelle.in.tum.de/)
+In 1976 Kenneth Appel and Wolfgang Haken proved the four colour theorem. Their argument reduced the problem to a long list of configurations and then checked that list by computer. No human has ever read that part, and for two decades the community argued about whether it counted as a proof at all. In 2005 Georges Gonthier ended the argument from the other side: he formalized the whole thing, case analysis included, in Coq. The distinction those two events separate is the one this course rests on -- *a proof found by computer is not the same thing as a proof checked by computer.*
 
-Other courses, which you might want to have a look at are:
+In 1998 Thomas Hales announced a proof of the Kepler conjecture: no packing of equal spheres in space is denser than the way a greengrocer stacks oranges.
+
+:::figure "The packing Kepler conjectured to be optimal in 1611" (tag := "kepler")
+![A pyramid of equal spheres, the face-centred cubic packing, with density pi over root 18](/static/figures/kepler_packing.png)
+:::
+
+A panel of twelve referees worked on it for four years and then reported that they were ninety-nine percent certain of its correctness, and that they could not do better than that. The *Annals of Mathematics* published it with the caveat attached. Hales responded by starting the Flyspeck project, which delivered a complete formal proof in HOL Light and Isabelle in 2014. The lesson here is not about computers: peer review, the mechanism mathematics relies on, had met a proof it could not certify, and more effort was not going to change that.
+
+In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog. He had a theorem in condensed mathematics whose proof he was not sure of -- a Fields medallist, publicly unsure of his own argument, asking for a machine to check it. The *Liquid Tensor Experiment*, led by Johan Commelin, finished in July 2022. Buzzard's plenary lecture at the ICM in 2022 is a fair marker for the moment formalization stopped being a curiosity.
+
+*A short prehistory.* The idea is much older than the tools. Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated; Bertrand Russell's letter of 1902 showed that the system was inconsistent. Whitehead and Russell spent *Principia Mathematica* rebuilding, and their proof that `1 + 1 = 2` arrives in the second volume with the authors' note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it. De Bruijn's *Automath* (1967) was the first system to check proofs mechanically, and in 1977 van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it -- the first complete mathematics book verified by machine.
+
+Lean itself is recent. Leonardo de Moura started it at Microsoft Research in 2013. Lean 4, a redesign rather than a version bump, arrived in 2021, and development now sits with the Lean FRO, a non-profit of roughly twenty people. Kevin Buzzard has been making the case for Lean among mathematicians since 2018.
+
+*What changed in 2026.* Until recently, formalizing a serious theorem took a team and several years. That is no longer the constraint, and the change happened quickly enough that it is worth writing down with dates.
+
+* *4 September 2026.* Anthropic announced the first complete computer-checked proof of Fermat's Last Theorem, produced by Claude over eleven days: roughly 13 million lines of Lean and some 29 500 intermediate theorems, following a simplified version of Wiles's 1995 proof and building on *Mathlib*. Kevin Buzzard, who has led the community formalization effort since 2024 on a five-year grant, reviewed it and confirmed that it *proves Fermat's Last Theorem with no assumptions other than the axioms of mathematics*. Note the shape of that confirmation: it is a claim a machine can check, and you will meet the command that checks it -- `#print axioms` -- in this course.
+* *8 September 2026.* OpenAI announced a proof, with a Lean formalization, that a smooth three-dimensional fluid obeying the Navier-Stokes equations *under a smooth external force* can develop a singularity in finite time. This is not the Millennium Prize problem, which concerns the unforced equation, and the prize is unclaimed. The announcement was followed by a public argument among mathematicians about credit, and about what it does to the subject when open problems are treated as benchmarks.
+* *6 October 2026.* OpenAI published a catalogue of results from an unreleased internal model -- at the time of writing 719 manuscripts grouped into 372 families, of which about 42 % of the top-line results carry a Lean formalization. Each result took, on average, about three hours of the model's thinking time; roughly 4 000 problems were posed in all.
+* *7 October 2026.* One day later, three of those manuscripts were withdrawn: a sign error invalidated an argument in one, and two further papers depended on it. Fourteen more were revised. None of the withdrawn papers had a Lean proof.
+
+Those last two dates are the best argument for this course we could have asked for. Machines now produce mathematics faster than mathematicians can referee it, and the only check that keeps up is a formal one.
+
+But be precise about what that check buys. A Lean proof certifies that *a particular formal statement* follows from the axioms. Whether that formal statement is the theorem the paper claims is a different question, and a human one. OpenAI's own repository is careful here: it ships machine-checkable comparison setups and documents, per paper, which of them verify a main theorem and which only verify a supporting result. Reading a formal statement and judging whether it says what you think it says is a skill. It is, in large part, the skill this course teaches.
+
+*Where the field stands.* Two pictures, both from public data.
+
+:::figure "New public GitHub repositories per quarter, by primary language" (tag := "itp-repos")
+![Line chart: new GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle from 2018 to 2026; Lean rises from near zero to about 5900 per quarter while the others stay near a few hundred](/static/figures/itp_github_repos_quarterly.png)
+:::
+
+Until about 2023 the three systems were comparable in size, and Coq was the larger one. The curve that leaves the picture is recent, and it is not evidence that Lean is better -- Isabelle's automation is still ahead in places, and Rocq has decades of verified-software work behind it. It is evidence about where people are going.
+
+:::figure "arXiv papers per week whose results are checked in Lean" (tag := "arxiv-lean")
+![Bar chart: weekly count of arXiv papers with Lean-checked results during 2026, rising from about three per week in January to around forty per week in September](/static/figures/arxiv_lean_formalized_weekly.png)
+:::
+
+In January 2026 a handful of papers a week arrived with a machine-checked result; by September it was around forty. This is the development that makes a course like this one worth your time: within a few years, being able to read and write a formal proof will be an ordinary part of the mathematician's equipment, in the way that being able to use a computer algebra system already is.
+
+*Other theorem provers.* Lean is not the only one, and the two it is usually compared with differ from it in ways worth knowing, because the differences are about foundations rather than taste.
+
+:::table (align := left) +header
+* + System
+  + Foundation
+  + Dependent types
+  + Library
+* + Lean 4
+  + a variant of the Calculus of Inductive Constructions
+  + yes
+  + *Mathlib*, one repository
+* + [Rocq](https://rocq-prover.org/) (until 2025 *Coq*)
+  + the predicative Calculus of Cumulative Inductive Constructions
+  + yes
+  + many separate packages
+* + [Isabelle/HOL](https://isabelle.in.tum.de/)
+  + simply typed higher-order logic
+  + no
+  + the *Archive of Formal Proofs*
+:::
+
+*Lean and Rocq* are close relatives. Both rest on a dependent type theory in which a proof is a *term* and checking a proof is type-checking; both have an impredicative, proof-irrelevant universe `Prop` of propositions sitting under a predicative hierarchy of data types. Lean differs in four points that you will meet again later in these notes: proof irrelevance holds *definitionally*, quotient types are primitive rather than built from setoids, there is no universe cumulativity, and classical reasoning enters through an axiom (`Classical.choice`) rather than being absent by default. Rocq's roots are in program verification -- the CompCert C compiler and the Feit-Thompson theorem are both Rocq developments -- and it can extract verified programs to OCaml or Haskell.
+
+*Isabelle/HOL* is a different animal. Its logic is simple type theory: types are built from base types and arrows, there is no dependency of types on terms, and so one cannot write `Vec α n` for *lists of length `n`*. In exchange, the logic is weak enough to automate well, and Isabelle's automation remains the best in the field: *Sledgehammer* hands a goal to several external automatic provers at once and reconstructs whatever they find as a proof Isabelle itself can check. A good deal of what Lean's `grind` does, Isabelle has done for twenty years. Isabelle is also a *framework*: HOL is one object logic among several, built on the intuitionistic meta-logic Isabelle/Pure.
+
+*How the libraries are organized* differs just as much, and this matters more day to day than the foundations do.
+
+* *Mathlib* is a single repository holding essentially all of the mathematics, compiled as one unit, with every change reviewed by maintainers and continuous integration keeping the whole library building against the current Lean. The price is that there is no stable release to depend on: *Mathlib* tracks Lean, and your own development must track *Mathlib*. The gain is that everything composes. A theorem about topological groups can be applied to the reals without anyone having arranged for it, because there is only one hierarchy of structures and the reals sit inside it. That hierarchy, built out of `class` and `instance`, is what the chapters on typeclasses and the algebraic hierarchy are about.
+* *Rocq* has no such centre. Its standard library is deliberately small, and the mathematics lives in independent packages -- *MathComp*, grown out of the Feit-Thompson formalization, *Coquelicot* and *MathComp-Analysis* for analysis, and many more -- distributed through `opam`, with the *Rocq Platform* bundling a combination that has been tested together. Packages evolve at their own pace, which is comfortable if you depend on one of them and painful if you need two that disagree.
+* *Isabelle* sits in between. The *Archive of Formal Proofs* is a refereed archive of self-contained entries, each released in lockstep with Isabelle itself, which may depend on one another but are never merged into a single library. It reads like a journal of formalizations, and it is cited like one.
+
+For this course the practical consequence is simple: we use Lean because *Mathlib* exists, and *Mathlib* is the reason the exercises can start with `import Mathlib` and have the real numbers, measure theory and topology already there.
+
+*Other courses.* This is not the only course trying to teach Lean to you. Others worth a look:
 
 * [_Natural Number Game_](https://adam.math.hhu.de/#/g/leanprover-community/nng4): In case you are reading this text in advance and have some spare time, it is highly recommended to start this (online) game, making you prove first things on `ℕ` using Lean. It is a classical way to start your first contact with Lean.
 * [_Formalising Mathematics_](https://b-mehta.github.io/formalising-mathematics-notes/) by Bhavik Mehta, based on notes by Kevin Buzzard: these notes have inspired at least the format of the present course.
@@ -87,9 +158,10 @@ Other courses, which you might want to have a look at are:
 
 *Some notes on Lean and Mathlib.*
 
-* Hardware requirements: running Lean locally is comfortable with roughly 8 GB of RAM or more. If your machine is smaller, you can still follow the course: use a cloud-based setup such as Gitpod or the Lean web editor linked from the [Lean community page](https://leanprover-community.github.io/). With that in mind, here is what you will need to follow along.
 * Lean is not only an interactive theorem prover, but also a programming language. If you want to know/learn more about this aspect, please consult [Functional programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
-* While `Lean` is a programming language, `Mathlib` is a library in the Lean language. It collects various (more or less deep) mathematical results. In this course, we do not make any distinction between `Lean` and `Mathlib`, since we will have `import Mathlib` at the start of any file we will need results from there. In this way, we have access to a large part of mathematics in order to solve exercises.
+* While `Lean` is a programming language, [*Mathlib*](https://github.com/leanprover-community/mathlib4) is a library written in it. It collects various (more or less deep) mathematical results. In this course, we do not make any distinction between `Lean` and `Mathlib`, since we will have `import Mathlib` at the start of any file we will need results from there. In this way, we have access to a large part of mathematics in order to solve exercises.
+* How big is that? Measured on the version pinned for this course (15 September 2026): 8 529 files, 2.33 million lines, about 189 000 theorems and lemmas, about 64 000 definitions, instances and structures, written by 1 031 contributors in 34 768 commits. The number that matters most is a different one: in the thirty days before that date, *Mathlib* received 820 commits, which is 27 per day. The others say that it is big; this one says that it is alive.
+* You can look at the whole thing at once. The [interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) draws *Mathlib* as a graph of its modules and lets you zoom in on any of them; the same site serves the [API documentation](https://leanprover-community.github.io/mathlib4_docs/) for every declaration in the library. Both are worth half an hour early on, before you need them.
 
 *How the course is organized.* Unlike a textbook, this course interleaves tactics and theory rather than separating them. Concretely:
 

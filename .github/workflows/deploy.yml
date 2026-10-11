@@ -42,9 +42,11 @@ jobs:
       # The slide decks are a separate Verso genre (VersoSlides) and are
       # not part of the manual's own output, so they are generated into
       # the artifact directory afterwards.  `slides` is not a default
-      # target, so this also builds it.
+      # target, so this also builds it.  The argument is the base
+      # directory; each deck lands in a subdirectory named after it, so
+      # adding a deck needs no change here.
       - name: Generate the slide decks
-        run: lake exe slides _out/html-multi/slides/filters
+        run: lake exe slides _out/html-multi/slides
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

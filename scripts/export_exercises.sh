@@ -154,9 +154,9 @@ will never overwrite your own solutions.
 
 ## Troubleshooting
 
-* Lean needs a fair amount of RAM; if your machine struggles, use
-  the course compute server or GitHub Codespaces (see the course
-  notes for instructions).
+* Lean needs a fair amount of RAM. If your machine struggles, talk
+  to the teachers -- a course server with 128 GB of RAM is
+  available.
 * If `lake exe cache get` fails, make sure you are inside the
   repository directory and try again; a partial download resumes.
 EOF

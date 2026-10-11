@@ -19,6 +19,29 @@ authors := ["Peter Pfaffelhuber"]
 
 These are the notes for a course on formal proving with the interactive theorem prover Lean4 (in the following we just write Lean) in the winter semester of 2026/27 at the University of Freiburg. To be able to work through the course in a meaningful way, the following technical preparations are to be made:
 
+*Hardware.* Check first that your machine can carry this. Lean memory-maps all of *Mathlib* while it works, and every exercise sheet begins with `import Mathlib`. A two-line sheet therefore costs as much as the hardest one in the course.
+
+:::table (align := left) +header
+* + Resource
+  + Minimum
+  + Comfortable
+* + RAM
+  + 16 GB
+  + 32 GB
+* + Free disk space
+  + 20 GB
+  + 20 GB
+* + Disk
+  + SSD
+  + NVMe SSD
+:::
+
+Measured against the version of *Mathlib* used here: compiling a single sheet peaks at about 6.6 GB of resident memory, and the language server behind *vscode* sits at roughly 9 GB with one file open. Most of that is memory-mapped library data, which the system can drop and read back from disk, so less memory does not break anything -- it only makes everything slower. With 8 GB you can still work, but only with a single file open and little else running, and on a mechanical hard disk it is hopeless.
+
+*If your machine is below the minimum, talk to the teachers at the start of the course.* A server with 128 GB of RAM is available for this course and we can give you an account on it. Please do not try to get through the semester on a machine that fights you.
+
+Finally, please run the `git clone` and `lake exe cache get` below at home, before the first lab session. `lake exe cache get` downloads several gigabytes, and twenty people doing that at once on the same network is slow for all of them.
+
 * Installation of [vscode](https://code.visualstudio.com/).
 * Open `vscode`, hit the _extensions_ icon (fifth from the top) on the left, and install the _Lean 4 language extension_.
 * If you haven't done already, install `git`. For this, the best way is to open `vscode`, hit the _git_ icon (third from the top on the left), and follow the instructions.
@@ -40,11 +63,7 @@ After having typed `code .` within the `leancourse_exercises` folder, navigate t
 * The directory `Exercises` contains the material for the course. We recommend that you first copy this directory to `MyExercises` and work there: `MyExercises` is ignored by git, so an update of the repository will never overwrite your local files.
 * To update the course materials, enter `git pull` from within the `leancourse_exercises` directory.
 
-In case you cannot install the course material locally, do the following: Visit [this page](https://github.com/pfaffelh/leancourse_exercises) and click on the green Code-button. Navigate to Codespaces and open the course notes there. You get a window which looks a lot like _vscode_, so please follow the instructions from above. You will have to _Restart Lean_ and _Restart File_ and wait several minutes until all is set. (If you see a red vertical bar, something is wrong. If you see an orange vertical bar, you will have to wait longer.) You will probably need a github account in order to open the coursenotes in Codespaces.
-
-:::paragraph
-For the very first exercise sheets you do not even need a local installation: you can run Lean 4 directly in your browser. Two web editors that give you Lean 4 together with _Mathlib_ are [live.lean-lang.org](https://live.lean-lang.org/) (the official Lean 4 playground) and the instance at [lean.math.hhu.de](https://lean.math.hhu.de/) hosted by HHU Düsseldorf. Paste an exercise in, make sure the file starts with `import Mathlib`, and wait a moment for Lean to start up. This is the quickest way to get going; for the full course -- many files, faster feedback, and saving your own work -- a local setup or Codespaces is preferable.
-:::
+If you have trouble installing the course material on your own computer, please talk to the teachers. Do not spend your evenings fighting your laptop -- see the note on hardware above.
 
 *Goals.* The course is designed for mathematics students and has several goals:
 

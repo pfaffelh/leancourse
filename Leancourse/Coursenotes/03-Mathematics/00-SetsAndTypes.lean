@@ -16,13 +16,12 @@ htmlSplit := .never
 tag := "sets-and-types"
 %%%
 
-A mathematician thinks in *sets*; Lean thinks in *types*. This chapter
-pins down how the two relate -- how a set is represented, how its
-operations unfold to familiar logical connectives, how set equality
-works, and how sets, subtypes, and types differ. The other staple that
-every later chapter takes for granted -- *propositions* and their
-*proofs* -- was covered in {ref "curry-howard"}[the Curry-Howard
-chapter] of the {ref "lean"}[Lean part]; from here on we use it freely.
+A mathematician thinks in *sets*; Lean thinks in *types*. A set turns
+out to be a predicate on a type, its operations the logical
+connectives, and its equality an axiom -- the four sections below.
+*Propositions* and their *proofs*, used freely from here on, were
+covered in {ref "curry-howard"}[the Curry-Howard chapter] of the
+{ref "lean"}[Lean part].
 
 # Sets versus types
 %%%
@@ -35,11 +34,10 @@ a member of many sets, and there is no fixed notion of "the type of
 `x`". Type theory inverts this: the primitive is the *type*, and every
 term `a : α` has *exactly one* type, fixed once and for all.
 
-So what is a *set* in Lean? It is **not** a new type. A `Set α` is a
-*predicate* on the already-existing type `α` -- in fact `Set α` is
-*definitionally* `α → Prop` -- that carves out some of `α`'s terms. An
-element of `s : Set α` therefore still has type `α`; the set only
-records *which* terms of `α` lie in it, and `a ∈ s` is just `s a`.
+A set in Lean is **not** a new type. A `Set α` is a predicate on the
+already-existing type `α`, carving out some of its terms. An element of
+`s : Set α` therefore still has type `α`; the set records only *which*
+terms of `α` lie in it.
 
 Three notions are worth keeping firmly apart:
 
@@ -109,10 +107,9 @@ its input sequence.
 tag := "foundations-sets"
 %%%
 
-In Mathlib a set over a type `α` has type `Set α`, and `Set α` is
-*definitionally* the function type `α → Prop`.  A set is thus nothing
-more than a predicate: the term `a : α` belongs to `s : Set α` exactly
-when `s a` holds, and `a ∈ s` is notation for precisely that.
+`Set α` is *definitionally* the function type `α → Prop`. The term
+`a : α` belongs to `s : Set α` exactly when `s a` holds, and `a ∈ s` is
+notation for that.
 
 ```lean
 -- `Set α` is definitionally `α → Prop`
@@ -221,10 +218,10 @@ These are exactly the set/indexed suprema and infima of the {ref "complete-latti
 tag := "foundations-set-eq"
 %%%
 
-Two sets are equal exactly when they have the same members -- the *set
-extensionality* principle `Set.ext`. That this holds at all, and is not
-merely a definition, is a real foundational fact: since a set is a
-function into `Prop`, it rests on the extensionality axioms taken up in
+Two sets are equal exactly when they have the same members: the *set
+extensionality* principle `Set.ext`. This is not a definition but a
+consequence of the axioms -- a set is a function into `Prop`, so it
+rests on the extensionality axioms taken up in
 the next chapter. Here we simply use it.
 
 ```lean
@@ -245,9 +242,9 @@ example : { n : ℕ | n % 2 = 0 } = { n | 2 ∣ n } := by
 tag := "foundations-sets-subtypes"
 %%%
 
-A set is not a type -- but sometimes you need one, for instance to
-speak of a function defined only on `s`, or to sum over its elements. A
-set can be *promoted* to a type by coercion: `↥s` denotes the subtype
+A set is not a type, and sometimes you need one: to speak of a function
+defined only on `s`, or to sum over its elements. A set is *promoted*
+to a type by coercion: `↥s` denotes the subtype
 `{ x // x ∈ s }` of its members, a genuinely new type whose terms pair
 an element of `α` with a proof of membership.
 

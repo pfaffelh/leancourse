@@ -16,20 +16,18 @@ htmlSplit := .never
 tag := "probability-pmf"
 %%%
 
-This chapter has two parts.  The first is a general introduction to
-*monads* -- a design pattern from functional programming that
-provides a uniform way to sequence computations with additional
-structure (failure, multiple results, state, I/O, probability).  The
-second part specialises the discussion to Mathlib's `PMF α`, the
-type of discrete probability distributions on `α`, which forms a
-monad in exactly this sense.
+First, *monads*: a design pattern from functional programming that
+sequences computations carrying additional structure -- failure,
+multiple results, state, I/O, probability. Second, Mathlib's `PMF α`,
+the type of discrete probability distributions on `α`, which is a monad
+in exactly that sense.
 
 # Monads: the general pattern
 %%%
 tag := "monads"
 %%%
 
-Monads are a design pattern from functional programming that provide a uniform way to sequence computations with additional structure -- such as computations that may fail, that carry state, or that perform input/output. The name "monad" comes from category theory, but in programming they are a practical tool rather than an abstract concept.
+The name "monad" comes from category theory; the connection is made precise at the end of this part.
 
 ## The problem: chaining computations that may fail
 %%%
@@ -141,7 +139,7 @@ Before we discuss monads, we need the simpler concept of a *functor*. In Lean, `
 
 * `map : (α → β) → f α → f β` -- applies a function to the value(s) inside the container, without changing the structure.
 
-The infix notation for `map` is `<$>`, so `g <$> x` means `Functor.map g x`. Every monad is automatically a functor (since `map` can be defined in terms of `bind` and `pure`), but the functor interface is useful on its own when you only need to transform values without chaining computations.
+The infix notation for `map` is `<$>`, so `g <$> x` means `Functor.map g x`. Every monad is automatically a functor (since `map` can be defined in terms of `bind` and `pure`), and the functor interface suffices when you only transform values without chaining computations.
 
 Here is what `map` does for each of our examples:
 
@@ -234,7 +232,7 @@ number := false
 tag := "io-monad"
 %%%
 
-Functional programming insists on pure functions, but real programs need to interact with the outside world: reading files, printing to the screen, communicating over a network. The `IO` monad solves this: an `IO α` computation is a description of an action that, when executed, may perform side effects and produce a value of type `α`.
+Functional programming insists on pure functions, while real programs read files, print to the screen and talk over a network. An `IO α` computation describes an action that, when executed, may perform side effects and produce a value of type `α`.
 
 ```lean
 def greet (name : String) : IO Unit := do
@@ -637,9 +635,8 @@ A handy identity relates `bind` and `map`:
 {docstring PMF.bind_map}
 
 Notice how no measurability hypothesis appears: `PMF.map f p` makes
-sense for *every* function `f : α → β`.  This is in stark contrast
-to `Measure.map`, which requires `Measurable f` (and produces the
-zero measure otherwise).  Measurability only re-enters if we want
+sense for *every* function `f : α → β`.  `Measure.map`, by contrast, requires `Measurable f` and produces the
+zero measure otherwise.  Measurability only re-enters if we want
 to compare `p.map f` with the pushforward measure `p.toMeasure.map f`,
 as in `PMF.toMeasure_map_apply` -- but nothing on the `PMF` side
 requires it.

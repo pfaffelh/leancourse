@@ -19,6 +19,7 @@ def staticCss := {{
     <link rel="stylesheet" href="/static/fonts/source-serif/source-serif-text.css" />
     <link rel="stylesheet" href="/static/fonts/source-code-pro/source-code-pro.css" />
     <link rel="stylesheet" href="/static/katex/katex.min.css" />
+    <link rel="stylesheet" href="/static/figures.css" />
   }}
 
 open Verso.Output.Html in

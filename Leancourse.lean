@@ -76,29 +76,84 @@ If you have trouble installing the course material on your own computer, please 
 
 *Why formalize?* Three episodes make the case better than an argument would. (A [slide deck](slides/introduction/) covers this section and the two that follow it, for the first lecture.)
 
-In 1976 Kenneth Appel and Wolfgang Haken proved the four colour theorem. Their argument reduced the problem to a long list of configurations and then checked that list by computer. No human has ever read that part, and for two decades the community argued about whether it counted as a proof at all. In 2005 Georges Gonthier ended the argument from the other side: he formalized the whole thing, case analysis included, in Coq. The distinction those two events separate is the one this course rests on -- *a proof found by computer is not the same thing as a proof checked by computer.*
+In 1976 Kenneth Appel and Wolfgang Haken proved the four colour theorem. Their argument reduced the problem to a long list of configurations and then checked that list by computer. No human has ever read that part, and for two decades the community argued about whether it counted as a proof at all.
+
+:::figure "Four colours suffice for any map in the plane" (tag := "four-colour")
+![A map of thirty-four regions, coloured with four colours so that no two neighbours share one](/static/figures/four_colour.png)
+:::
+
+In 2005 Georges Gonthier ended the argument from the other side: he formalized the whole thing, case analysis included, in Coq. The distinction those two events separate is the one this course rests on -- *a proof found by computer is not the same thing as a proof checked by computer.*
 
 In 1998 Thomas Hales announced a proof of the Kepler conjecture: no packing of equal spheres in space is denser than the way a greengrocer stacks oranges.
 
-:::figure "The packing Kepler conjectured to be optimal in 1611" (tag := "kepler")
+:::figure "The packing Kepler conjectured to be optimal in 1611, and Thomas Hales, who proved it" (tag := "kepler")
 ![A pyramid of equal spheres, the face-centred cubic packing, with density pi over root 18](/static/figures/kepler_packing.png)
+
+![Thomas Hales](/static/figures/portraits/hales.jpg)
 :::
 
 A panel of twelve referees worked on it for four years and then reported that they were ninety-nine percent certain of its correctness, and that they could not do better than that. The *Annals of Mathematics* published it with the caveat attached. Hales responded by starting the Flyspeck project, which delivered a complete formal proof in HOL Light and Isabelle in 2014. The lesson here is not about computers: peer review, the mechanism mathematics relies on, had met a proof it could not certify, and more effort was not going to change that.
 
-In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog. He had a theorem in condensed mathematics whose proof he was not sure of -- a Fields medallist, publicly unsure of his own argument, asking for a machine to check it. The *Liquid Tensor Experiment*, led by Johan Commelin, finished in July 2022. Buzzard's plenary lecture at the ICM in 2022 is a fair marker for the moment formalization stopped being a curiosity.
+In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog. He had a theorem in condensed mathematics whose proof he was not sure of -- a Fields medallist, publicly unsure of his own argument, asking for a machine to check it. The *Liquid Tensor Experiment*, led by Johan Commelin, finished in July 2022. The theorem belongs to *condensed mathematics*, which rebuilds topology on profinite sets rather than on open covers.
+
+:::figure "A profinite set: the Cantor set, built by removing middle thirds. Peter Scholze, who posed the challenge" (tag := "profinite")
+![Seven stages of the middle-thirds construction, each row twice as many and three times as short as the one above](/static/figures/cantor_profinite.png)
+
+![Peter Scholze](/static/figures/portraits/scholze.jpg)
+:::
+ Buzzard's plenary lecture at the ICM in 2022 is a fair marker for the moment formalization stopped being a curiosity.
 
 *A short prehistory.* The idea is much older than the tools. Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated; Bertrand Russell's letter of 1902 showed that the system was inconsistent. Whitehead and Russell spent *Principia Mathematica* rebuilding, and their proof that `1 + 1 = 2` arrives in the second volume with the authors' note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it. De Bruijn's *Automath* (1967) was the first system to check proofs mechanically, and in 1977 van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it -- the first complete mathematics book verified by machine.
+
+:::figure "Leonardo de Moura, who started Lean in 2013" (tag := "demoura")
+![Leonardo de Moura](/static/figures/portraits/demoura.jpg)
+:::
 
 Lean itself is recent. Leonardo de Moura started it at Microsoft Research in 2013. Lean 4, a redesign rather than a version bump, arrived in 2021, and development now sits with the Lean FRO, a non-profit of roughly twenty people. Kevin Buzzard has been making the case for Lean among mathematicians since 2018.
 
 *Landmark formalizations.* Between Flyspeck and 2026 lies a line of projects that each showed that something new was possible. They are worth knowing by name, because the course material is built out of the libraries they left behind.
 
-* *Perfectoid spaces*, 2019, by Buzzard, Commelin and Massot. They did not prove a theorem; they formalized a *definition* from the research frontier, Scholze's perfectoid spaces of 2012. Whether an object of that complexity could even be stated in a proof assistant was genuinely open, and stating something is a different problem from proving it. This is where Lean's reputation among mathematicians begins.
-* *Sphere eversion*, 2022, by Massot, van Doorn and Nash: Gromov's h-principle, and with it the fact that a sphere can be turned inside out. Differential topology rather than algebra or combinatorics, which meant first building a usable differential-geometry API and only then proving anything with it. That is the ordinary shape of formalization work, and it is why *Mathlib* matters more than any single theorem in it.
-* *The polynomial Freiman-Ruzsa conjecture*, 2023, by Gowers, Green, Manners and Tao, formalized under Tao's direction in about three weeks -- before the paper had been refereed. The method is what carried: a *blueprint* cuts a formalization into independent pieces with stated interfaces, so that volunteers can work in parallel without talking to each other. Formalization stopped being a job for one team over years.
-* *The Equational Theories Project*, 2024 to 2025, led by Tao: all 22 028 942 implications between 4 694 equational laws on magmas settled, and new constructions discovered on the way. Not a hard theorem but an impossible amount of bookkeeping -- a kind of result that does not exist without a machine.
-* *Sphere packing in dimensions 8 and 24*. Viazovska proved the dimension-8 case in 2016 and received the Fields Medal for it; a human formalization project started in 2024 and was completed with an autoformalizer in February 2026, the eight-dimensional proof in five days. The thread that opens with Kepler above closes here, four hundred years later and one dimension at a time.
+*Perfectoid spaces*, 2019, by Buzzard, Commelin and Massot. They did not prove a theorem; they formalized a *definition* from the research frontier, Scholze's perfectoid spaces of 2012. Whether an object of that complexity could even be stated in a proof assistant was genuinely open, and stating something is a different problem from proving it. This is where Lean's reputation among mathematicians begins. Perfectoid spaces are built over $`p`-adic fields, and the $`p`-adic integers are the first thing to understand about them:
+
+:::figure "The 3-adic integers as an inverse limit. Kevin Buzzard, one of the three authors" (tag := "padic")
+![A rooted ternary tree of depth four; the rows are labelled Z/3^0 up to Z/3^4, and each branch of the infinite tree is a 3-adic integer](/static/figures/padic_tree.png)
+
+![Kevin Buzzard](/static/figures/portraits/buzzard.jpg)
+:::
+
+*Sphere eversion*, 2022, by Massot, van Doorn and Nash: Gromov's h-principle, and with it the fact that a sphere can be turned inside out without tearing or creasing. For closed curves in the plane no such thing is possible, and the reason is an invariant:
+
+:::figure "Turning numbers of closed curves in the plane" (tag := "turning-number")
+![Four closed plane curves with their turning numbers: a circle with 1, a figure eight with 0, a limacon with 2, and a three-looped curve with 3](/static/figures/turning_number.png)
+:::
+
+A regular homotopy cannot change the turning number, and everting a circle would have to send $`+1` to $`-1`. In three dimensions the corresponding obstruction vanishes, which is why the sphere behaves differently from the circle. Formalizing this meant differential topology rather than algebra or combinatorics, so the project had to build a usable differential-geometry API first and only then prove anything with it. That is the ordinary shape of formalization work, and it is why *Mathlib* matters more than any single theorem in it.
+
+*The polynomial Freiman-Ruzsa conjecture*, 2023, by Gowers, Green, Manners and Tao, formalized under Tao's direction in about three weeks -- before the paper had been refereed. It says that a set whose sumset is barely larger than itself must be structured:
+
+:::figure "A set of small doubling and its sumset. Three of the four authors: Timothy Gowers, Ben Green, Terence Tao" (tag := "sumset")
+![A set A of ten lattice points beside the set A+A of twenty-nine points, with the doubling constant 2.90](/static/figures/sumset.png)
+
+![Timothy Gowers](/static/figures/portraits/gowers.jpg)
+
+![Ben Green](/static/figures/portraits/green.jpg)
+
+![Terence Tao](/static/figures/portraits/tao.jpg)
+:::
+
+The method is what carried, though. A *blueprint* cuts a formalization into independent pieces with stated interfaces, so that volunteers can work in parallel without talking to each other. Formalization stopped being a job for one team over years.
+
+*The Equational Theories Project*, 2024 to 2025, led by Tao: all 22 028 942 implications between 4 694 equational laws on magmas settled, and new constructions discovered on the way. Not a hard theorem but an impossible amount of bookkeeping -- a kind of result that does not exist without a machine.
+
+*Sphere packing in dimensions 8 and 24*. Viazovska proved the dimension-8 case in 2016 and received the Fields Medal for it. The packing in question is the $`E_8` lattice, and its 240 shortest vectors carry the symmetry that makes the proof work:
+
+:::figure "The 240 roots of the E8 lattice, projected onto the Coxeter plane. Maryna Viazovska, who proved the dimension-8 case" (tag := "e8")
+![Two hundred and forty points arranged in eight concentric rings of thirty, joined by many short chords](/static/figures/e8_roots.png)
+
+![Maryna Viazovska](/static/figures/portraits/viazovska.jpg)
+:::
+
+A human formalization project started in 2024 and was completed with an autoformalizer in February 2026, the eight-dimensional proof in five days. The thread that opens with Kepler above closes here, four hundred years later and one dimension at a time.
 
 *What changed in 2026.* Until recently, formalizing a serious theorem took a team and several years. That is no longer the constraint, and the change happened quickly enough that it is worth writing down with dates.
 
@@ -190,6 +245,19 @@ For this course the practical consequence is simple: we use Lean because *Mathli
 The heart of the course are the exercises (see the _Exercises_ folder within `Leancourse`). Unlike in other courses, you will get immediate feedback on any single exercise -- via error messages from the elaborator and a live *proof-state* panel that shows what remains to be proved at every cursor position. If you want to start right away, please start immediately with the first exercise sheet. More explanations will be given within the exercise sheets.
 
 While the exercises will cover the first half of the semester, individual assignments will happen in the latter part of this course. (These will mostly be self-assigned, so e.g. you will formalize an exercise from your first year of studies, or you are interested in a specific part of `Mathlib`, or... The {ref "projects"}[Projects chapter] collects five worked-out suggestions.)
+
+*Picture credits.* The mathematical figures were generated by the scripts in `scripts/figures/` and may be reused freely. The photographs come from Wikimedia Commons and are reproduced unchanged under their own licences:
+
+* Thomas Hales -- Slawekb, CC BY-SA 3.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Halescropped.jpg)
+* Peter Scholze -- George Bergman, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Peter_Scholze_2014_cropped.jpg)
+* Kevin Buzzard -- Paulabuzzard, CC BY-SA 3.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kevin_buzzard_in_2007.jpg)
+* Leonardo de Moura -- David Monniaux, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Leo_de_Moura_P1210629.jpg)
+* Maryna Viazovska -- Petra Lein, MFO, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Maryna_Vazovska_MFO_2013_crop.jpg)
+* Timothy Gowers -- Gert-Martin Greuel, MFO, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:William_Timothy_Gowers_Oslo_2012.jpg)
+* Ben Green -- Renate Schmid, MFO, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ben_Green.jpg)
+* Terence Tao -- Institute for Pure and Applied Mathematics, CC BY 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Terence_Tao_at_IPAM%27s_Fireside_Chat_2026_%2850m16s%29_%28cropped%29.jpg)
+
+Several people who appear in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the Feit-Thompson theorem, Johan Commelin, who led the Liquid Tensor Experiment, and Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion. The pictures above are therefore a fair sample of who is *famous*, not of who did this work.
 
 {include 0 «Leancourse».Coursenotes.«01-Lean»}
 

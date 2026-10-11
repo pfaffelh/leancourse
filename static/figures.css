@@ -1,0 +1,29 @@
+/* Portraits placed inside a :::figure, after the mathematical image.
+   Verso puts each image in its own <p>, so making those paragraphs
+   inline-block lays consecutive portraits out in a row that wraps.
+   The images are reproduced unchanged; object-fit only crops the view,
+   it does not alter the file.  Credits are in the chapter text. */
+
+figure p:has(> img[src*="/portraits/"]) {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0.7rem 0.3rem 0 0.3rem;
+}
+
+figure img[src*="/portraits/"] {
+  display: block;
+  width: 6.5rem;
+  height: 6.5rem;
+  object-fit: cover;
+  object-position: 50% 20%;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
+figure:has(img[src*="/portraits/"]) {
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  figure img[src*="/portraits/"] { width: 4.6rem; height: 4.6rem; }
+}

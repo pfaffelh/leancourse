@@ -188,8 +188,8 @@ the initial definition cleaner but introduces many awkward edge cases
 later, so Mathlib keeps the "empty filter" `⊥` as a legitimate object.
 
 If `F : Filter α` and `S : Set α`, the notation `S ∈ F` is sugar for
-`S ∈ F.sets`.  Think of it as morally meaning `F ⊆ S` -- but of course
-that expression does not type-check, because `F` is a filter, not a set.
+`S ∈ F.sets`.  Read it as `F ⊆ S`. That expression does not type-check, because `F` is
+a filter and not a set.
 
 The axioms are restated in the `Filter` namespace under friendlier
 names, rendered here directly from Mathlib:
@@ -295,7 +295,7 @@ example (α : Type*) (s : Set α) :
 ```
 
 This filter is a generalized subset of `α` representing "almost every
-element".  On `ℕ` it in fact *coincides* with `atTop` (the lemma
+element".  On `ℕ` it *coincides* with `atTop` (the lemma
 `Nat.cofinite_eq_atTop`): a set omits only finitely many naturals
 exactly when it contains every sufficiently large one.  On other types
 the two differ, and comparing filters like these is a good way to train

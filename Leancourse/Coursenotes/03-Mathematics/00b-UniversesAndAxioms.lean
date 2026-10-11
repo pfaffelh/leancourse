@@ -24,7 +24,7 @@ Lean's type theory rests on a carefully designed system of universes, a small nu
 tag := "universe-hierarchy"
 %%%
 
-Part 1 introduced the {ref "type-universes"}[universe hierarchy] as a working tool: `Prop = Sort 0`, `Type = Type 0 = Sort 1`, `Type u = Sort (u+1)`, the single rule `Sort u : Sort (u + 1)`, and universe-polymorphism via `Type*`. Here we record *why* the absence of `Type : Type` is not optional. Were `Type : Type` to hold, one could reproduce Russell's paradox at the level of types -- *Girard's paradox* -- and thereby prove `False`. The stratification
+The {ref "type-universes"}[universe hierarchy] was given in Part 1: `Prop = Sort 0`, `Type = Type 0 = Sort 1`, `Type u = Sort (u+1)`, the rule `Sort u : Sort (u + 1)`, and universe-polymorphism via `Type*`. We now show why the absence of `Type : Type` is not optional. Were `Type : Type` to hold, one could reproduce Russell's paradox at the level of types -- *Girard's paradox* -- and thereby prove `False`. The stratification
 
 ```lean
 #check (Type 0 : Type 1)    -- Type : Type 1
@@ -61,7 +61,7 @@ The distinction between `Prop` and `Type` corresponds to the mathematical distin
 tag := "cic"
 %%%
 
-We have now met the ingredients of Lean's foundation one at a time: the universe hierarchy, `Prop` with its proof irrelevance, dependent functions, and inductive types. Assembled into a single formal system, they are exactly what Lean's kernel implements{citep lean4_2021}[] -- the *Calculus of Inductive Constructions*, or CIC. This is worth stating plainly, because the CIC is the *entire* trusted core of Lean: every definition, theorem, and tactic ultimately elaborates down to terms that the kernel re-checks against these rules, and nothing outside them is trusted.
+The universe hierarchy, `Prop` with its proof irrelevance, dependent functions and inductive types form a single formal system, and that system is what Lean's kernel implements{citep lean4_2021}[] -- the *Calculus of Inductive Constructions*, or CIC. This is worth stating plainly, because the CIC is the *entire* trusted core of Lean: every definition, theorem, and tactic ultimately elaborates down to terms that the kernel re-checks against these rules, and nothing outside them is trusted.
 
 The CIC is built from exactly three ideas:
 
@@ -232,7 +232,7 @@ Both are nonempty -- `True` satisfies `U` and `False` satisfies `V` -- so `Class
 
 Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data* -- the booleans `True` and `False` -- which is precisely the move a constructive system refuses to make. Mathlib packages the result as `Classical.em`; in practice you simply use it (often via `by_contra` or `by_cases`).
 
-You might object that the step "assume `p`, derive a contradiction, conclude `¬p`" already *uses* excluded middle, which would make the argument circular. It does not. Proving `¬p` by assuming `p` and reaching a contradiction is *negation introduction* -- it is simply the definition of `¬p` as `p → False`, and it is constructively valid. The *classical* principle is the opposite direction: concluding a positive `p` from `¬¬p` (that is `by_contra`), which we never invoke here. Likewise, the case splits above *eliminate* disjunctions we already hold (from the choice specification); they do not conjure `p ∨ ¬p` out of nothing -- that disjunction is our *conclusion*, assembled constructively from the cases. The one and only non-constructive ingredient is `Classical.choice`, and using it is not the same as assuming the `p ∨ ¬p` we are proving.
+The step "assume `p`, derive a contradiction, conclude `¬p`" does not itself use excluded middle, so the argument is not circular. Proving `¬p` by assuming `p` and reaching a contradiction is *negation introduction* -- it is simply the definition of `¬p` as `p → False`, and it is constructively valid. The *classical* principle is the opposite direction: concluding a positive `p` from `¬¬p` (that is `by_contra`), which we never invoke here. Likewise, the case splits above *eliminate* disjunctions we already hold (from the choice specification); they do not conjure `p ∨ ¬p` out of nothing -- that disjunction is our *conclusion*, assembled constructively from the cases. The one and only non-constructive ingredient is `Classical.choice`, and using it is not the same as assuming the `p ∨ ¬p` we are proving.
 
 # Declared axioms vs. what the kernel bakes in
 %%%
@@ -354,7 +354,7 @@ Recall the {ref "decidable-typeclass"}[`Decidable` typeclass] from
 Part 1: a proposition is `Decidable` when an algorithm can compute
 whether it holds, which is what makes `if P then _ else _` and the
 `decide` tactic run *without any axioms*. Classical logic extends this
-reach at a price. When you `open Classical`, every `Prop` becomes
+reach. When you `open Classical`, every `Prop` becomes
 `Decidable` -- but *non-constructively*, via `Classical.choice`, so the
 instance carries no algorithm. This is convenient in proofs (you may
 `by_cases` on any proposition), but code that relies on it is no longer

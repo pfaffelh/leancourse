@@ -73,9 +73,9 @@ Being a proposition, a `Prop` class inherits {ref "prop-special"}[proof irreleva
 example (h₁ h₂ : Fact (2 = 2)) : h₁ = h₂ := rfl
 ```
 
-So typeclasses simply inherit the *proof* / *data* split we drew for terms in general: an instance is data or a proof exactly according to whether its class lives in `Type` or `Prop`.
+Typeclasses inherit the *proof* / *data* split drawn for terms in general: an instance is data or a proof exactly according to whether its class lives in `Type` or `Prop`.
 
-It is worth being precise about the *role* such a term plays. You genuinely *do* construct it -- that is exactly what `instance … where …` does, and its fields are ordinary values you can project and run. But you then use it as a *property of the type*: declared once, synthesized automatically wherever `[C α]` is required, and essentially never named or passed by hand. For a data class it stays genuine data (carried at runtime); for a `Prop` class it degenerates to *just the fact that it holds* -- a proof, erased. So "an instance is only a property, not a term" is right about the *usage* but not the *substance*: the term is really there; you simply delegate its construction and handling to instance resolution.
+An instance is a term you construct: that is what `instance … where …` does, and its fields are values you can project and run. You then use it as a *property of the type* -- declared once, synthesized wherever `[C α]` is required, rarely named or passed by hand. For a data class it stays data, carried at runtime; for a `Prop` class it is a proof and is erased. So "an instance is only a property, not a term" describes the usage, not the substance: the term is there, and its construction is delegated to instance resolution.
 
 The parallel is exact at the term level, too. Just as `class` is a `structure` marked for instance search, `instance` is a `def` marked for instance search: `instance foo : C := …` is sugar for `@[instance] def foo : C := …`. (A plain `def` of a class type is a perfectly good term -- only invisible to the search.)
 

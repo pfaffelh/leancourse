@@ -116,7 +116,7 @@ Both had to say first what a procedure is, and each built a model of computation
 
 The lambda calculus is a notation for functions, and nothing else. The term $`\lambda x.\, x + 1` denotes the function sending $`x` to $`x + 1`, the term $`f\, a` denotes $`f` applied to $`a`, and the only rule of computation is substitution:
 $$`(\lambda x.\, x + 1)\, 3 \;\rightsquigarrow\; 3 + 1.`
-Numbers, pairs and recursion are not built in; they are written as lambda terms. That is what makes the calculus a model of computation and not just a notation. Turing proved in an appendix to his paper that his machines and Church's terms compute the same functions.
+Numbers, pairs and recursion are not built in; they are written as lambda terms. That is what makes the calculus a model of computation and not just a notation. Turing proved in an appendix to [his paper](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf) that his machines and Church's terms compute the same functions.
 
 Lean is this notation with types on top. The Lean spelling of $`\lambda x.\, x+1` is `fun x => x + 1`, and the kernel computes by substituting:
 
@@ -151,11 +151,11 @@ Nicolaas Govert de Bruijn started *[Automath](https://en.wikipedia.org/wiki/Auto
 Four lines come out of the following twenty years, and the systems of today are on them.
 
 * *Mizar*, Andrzej Trybulec, 1973. A formal language meant to be read like mathematical prose, over set theory. Its library has been growing for fifty years.
-* *LCF*, Robin Milner, Stanford 1972 and Edinburgh 1975. The idea there is architectural: `thm` is an abstract data type, and the only functions that produce a value of that type are the inference rules. Anything may then be built on top without being trusted. The language ML was invented to write it.
+* *[LCF](http://i.stanford.edu/pub/cstr/reports/cs/tr/72/288/CS-TR-72-288.pdf)*, Robin Milner, Stanford 1972 and Edinburgh 1975. The idea there is architectural: `thm` is an abstract data type, and the only functions that produce a value of that type are the inference rules. Anything may then be built on top without being trusted. The language ML was invented to write it.
 * *HOL*, Mike Gordon, from the mid-1980s: LCF with simple higher-order logic in place of the original logic, used first for hardware verification. *Isabelle* follows in 1986 (Lawrence Paulson), *Isabelle/HOL* in 1991 (Tobias Nipkow).
 * *Coq*, from 1989, on the Calculus of Constructions and from the mid-1990s on the Calculus of Inductive Constructions. That is the foundation Lean also uses, and the system was renamed *Rocq* in 2025.
 
-The two architectures answer the same question differently. In the LCF line nothing is kept but the theorem, and one trusts the kernel because no other code can make one. In the Automath line the system writes down a proof term, which a small, separate checker reads afterwards; a system meeting that condition is said to satisfy the *de Bruijn criterion*. Lean is in the second line: a Lean proof is a term, and the kernel rechecks it no matter which tactic produced it.
+The two architectures answer the same question differently. In the LCF line nothing is kept but the theorem, and one trusts the kernel because no other code can make one. In the Automath line the system writes down a proof term, which a small, separate checker reads afterwards; a system meeting that condition is said to satisfy the *[de Bruijn criterion](https://www.cs.ru.nl/~freek/comparison/comparison.pdf)*. Lean is in the second line: a Lean proof is a term, and the kernel rechecks it no matter which tactic produced it.
 
 ## 1976: what a computer proof is worth
 %%%
@@ -458,6 +458,29 @@ After `code .` in the `leancourse_exercises` folder, open `Exercises/01-Logic/01
 * To update, run `git pull` in `leancourse_exercises`.
 
 If the installation gives you trouble, talk to the teachers rather than spending evenings on it.
+
+# Sources
+%%%
+number := false
+tag := "sources"
+%%%
+
+The history follows three surveys, all freely available:
+
+* John Harrison, Josef Urban and Freek Wiedijk, [*History of Interactive Theorem Proving*](https://www.cl.cam.ac.uk/~jrh13/papers/joerg.html), in *Handbook of the History of Logic* 9, Elsevier 2014, 135-214. The standard account, written by three people who built the systems.
+* Herman Geuvers, [*Proof assistants: history, ideas and future*](https://www.ias.ac.in/article/fulltext/sadh/034/01/0003-0025), *Sadhana* 34 (2009), 3-25. Organized by idea rather than by year.
+* Lawrence Paulson, [*50 years of proof assistants*](https://lawrencecpaulson.github.io//2025/12/05/History_of_Proof_Assistants.html), 2025. The LCF line from the inside.
+
+Where a date or a formulation above comes from one text in particular:
+
+* Alan Turing, [*On Computable Numbers, with an Application to the Entscheidungsproblem*](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf), *Proceedings of the London Mathematical Society* (2) 42 (1936-37), 230-265.
+* N. G. de Bruijn, [*Automath, a language for mathematics*](https://pure.tue.nl/ws/portalfiles/portal/2039924/256169.pdf), TH-Report 68-WSK-05, Eindhoven 1968.
+* Robin Milner, [*Logic for Computable Functions*](http://i.stanford.edu/pub/cstr/reports/cs/tr/72/288/CS-TR-72-288.pdf), Stanford AIM-169, 1972.
+* Lawrence Paulson, Tobias Nipkow and Makarius Wenzel, [*From LCF to Isabelle/HOL*](https://arxiv.org/abs/1907.02836), 2019.
+* Freek Wiedijk, [*The Seventeen Provers of the World*](https://www.cs.ru.nl/~freek/comparison/comparison.pdf), Springer LNAI 3600, 2006.
+* Fairouz Kamareddine, Joe Wells, Christoph Zengler and Henk Barendregt, [*Characteristics of de Bruijn's early proof checker Automath*](https://arxiv.org/abs/2203.01173), *Fundamenta Informaticae* 185 (2022), 313-336.
+
+Four sources are on paper or behind a paywall and are only paraphrased here: Hilbert and Ackermann's *Grundzüge der theoretischen Logik* (1928), Church's two papers of 1936, Russell's letter of 1902 in van Heijenoort's *From Frege to Gödel*, and Curry and Feys' *Combinatory Logic* (1958). `sources/history-of-itp.md` in the repository lists all of them.
 
 # Picture credits
 %%%

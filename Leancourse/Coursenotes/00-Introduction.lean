@@ -144,6 +144,11 @@ tag := "lte-episode"
 
 In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog: a theorem in condensed mathematics whose proof he was not sure of. A Fields medallist, publicly unsure of his own argument, asking a machine to check it. The *[Liquid Tensor Experiment](https://leanprover-community.github.io/liquid/)*, led by Johan Commelin, finished in July 2022. *[Condensed mathematics](https://en.wikipedia.org/wiki/Condensed_mathematics)* rebuilds topology on profinite sets rather than on open covers. The request came from a working mathematician at the centre of his subject, not from logicians or computer scientists. That is what had changed.
 
+:::figure "Peter Scholze, who posed the challenge, and Johan Commelin, who led the project" (tag := "lte-people")
+![Peter Scholze](/static/figures/portraits/scholze.jpg)
+![Johan Commelin (no photograph available)](/static/figures/portraits/placeholder_commelin.png)
+:::
+
 Buzzard's plenary lecture at the ICM in 2022 marks the point where formalization stopped being a curiosity.
 
 ## The tool is much younger than the idea
@@ -174,6 +179,12 @@ tag := "perfectoid-landmark"
 
 By Buzzard, Commelin and Massot ([project page](https://leanprover-community.github.io/lean-perfectoid-spaces/)). They formalized a *definition* rather than a theorem: Scholze's [perfectoid spaces](https://en.wikipedia.org/wiki/Perfectoid_space) of 2012. Whether an object of that complexity could be stated at all in a proof assistant was open, and stating is a different problem from proving. Lean's reputation among mathematicians dates from this project.
 
+:::figure "Kevin Buzzard, Johan Commelin and Patrick Massot" (tag := "perfectoid-people")
+![Kevin Buzzard](/static/figures/portraits/buzzard.jpg)
+![Johan Commelin (no photograph available)](/static/figures/portraits/placeholder_commelin.png)
+![Patrick Massot (no photograph available)](/static/figures/portraits/placeholder_massot.png)
+:::
+
 ## Sphere eversion, 2022
 %%%
 number := false
@@ -182,6 +193,12 @@ tag := "eversion-landmark"
 
 By Massot, van Doorn and Nash ([project page](https://leanprover-community.github.io/sphere-eversion/)): Gromov's [h-principle](https://en.wikipedia.org/wiki/Homotopy_principle), and with it the fact that a [sphere can be turned inside out](https://en.wikipedia.org/wiki/Sphere_eversion) without tearing or creasing. For closed curves in the plane no such thing is possible: a regular homotopy cannot change the turning number, and everting a circle would send $`+1` to $`-1`. In three dimensions that obstruction vanishes. Formalizing this meant differential topology rather than algebra, so the project built a usable differential-geometry API first and proved the theorem afterwards. That order is the ordinary shape of formalization work, and it is why *Mathlib* matters more than any single theorem in it.
 
+:::figure "Patrick Massot, Floris van Doorn and Oliver Nash" (tag := "eversion-people")
+![Patrick Massot (no photograph available)](/static/figures/portraits/placeholder_massot.png)
+![Floris van Doorn (no photograph available)](/static/figures/portraits/placeholder_vandoorn.png)
+![Oliver Nash (no photograph available)](/static/figures/portraits/placeholder_nash.png)
+:::
+
 ## The polynomial Freiman-Ruzsa conjecture, 2023
 %%%
 number := false
@@ -189,6 +206,13 @@ tag := "pfr-landmark"
 %%%
 
 By Gowers, Green, Manners and Tao ([project page](https://teorth.github.io/pfr/)), formalized under Tao's direction in about three weeks -- before the paper had been refereed. It says that a set whose sumset is barely larger than itself must be structured.
+
+:::figure "Timothy Gowers, Ben Green, Terence Tao and Freddie Manners" (tag := "pfr-people")
+![Timothy Gowers](/static/figures/portraits/gowers.jpg)
+![Ben Green](/static/figures/portraits/green.jpg)
+![Terence Tao](/static/figures/portraits/tao.jpg)
+![Freddie Manners (no photograph available)](/static/figures/portraits/placeholder_manners.png)
+:::
 
 The method carried further than the theorem. A *blueprint* cuts a formalization into independent pieces with stated interfaces, so volunteers can work in parallel without talking to each other. Formalization stopped being a job for one team over years.
 
@@ -392,4 +416,4 @@ The two product marks in this chapter -- Claude and ChatGPT -- are also from Wik
 
 The icon in the browser tab is the `L` of the Lean wordmark, redrawn as a single stroke on a square in the Freiburg identity blue (`#34499a`). The source is `static/favicon.svg`.
 
-Several people named in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the [Feit-Thompson theorem](https://en.wikipedia.org/wiki/Feit%E2%80%93Thompson_theorem), Johan Commelin, who led the Liquid Tensor Experiment, Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. Where they are shown at all they appear as grey silhouettes with their initials. The photographs are therefore a fair sample of who is *famous*, not of who did this work, and the silhouettes are left visible rather than quietly omitted for that reason.
+Several people named in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the [Feit-Thompson theorem](https://en.wikipedia.org/wiki/Feit%E2%80%93Thompson_theorem), Johan Commelin, who led the Liquid Tensor Experiment, Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. They appear above as grey silhouettes with their initials. The photographs are therefore a fair sample of who is *famous*, not of who did this work, and the silhouettes are left visible rather than quietly omitted for that reason.

@@ -21,16 +21,19 @@ img.portrait {
   border-radius: 50%; margin: 0 0.35rem; vertical-align: middle;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
-.names { font-size: 0.45em; color: #52514e; letter-spacing: 0.02em;
-         margin-top: 0.1em; }
+/* These two have to outrank `.reveal section p` below, which is why
+   they are written out this long. */
+.reveal section p.names, .reveal section .names p {
+  font-size: 0.45em; color: #52514e; letter-spacing: 0.02em;
+  margin: 0.1em 0; }
 /* caption under a chart, saying what is plotted */
-.caption { font-size: 0.4em; color: #52514e; margin-top: 0.2em;
-           line-height: 1.35; }
+.reveal section p.caption, .reveal section .caption p {
+  font-size: 0.42em; color: #52514e; margin: 0.2em 0 0;
+  line-height: 1.35; }
 .reveal section img { margin: 0.4rem 0; }
 /* reveal's default body size overflows a slide with four or five
    lines under a picture; this is the single knob for that */
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
-.reveal section p.names, .reveal section p.caption { margin: 0.1em 0; }
 /* picture and faces share one horizontal band, directly under the
    heading, so the slide does not grow downwards */
 .reveal .r-hstack { align-items: center; justify-content: center;
@@ -40,6 +43,10 @@ img.portrait {
 .reveal .r-hstack .r-vstack { gap: 0; }
 .reveal .r-vstack > * { margin: 0; }
 .reveal section img.logo { height: 9vh; width: auto; margin: 0 1.2rem; }
+/* the six goals, copied from the notes: six items only fit at this size */
+.reveal section .goals li { font-size: 0.56em; line-height: 1.3;
+                            margin: 0.35em 0; text-align: left; }
+.reveal section .goals ul { width: 92%; margin: 0.2em auto; }
 /* a comparison table has to leave room for the lines under it */
 .reveal section table { font-size: 0.62em; margin: 0.2em auto 0.4em; }
 .reveal section table th,
@@ -97,10 +104,6 @@ This course is about the first direction. They write the proofs.
 *6 Oct* -- 719 manuscripts, 42 % with a Lean proof.
 :::
 
-:::fragment highlightBlue
-*7 Oct* -- three withdrawn. None of them had a Lean proof.
-:::
-
 :::notes
 FLT: Anthropic, Claude, building on Mathlib, following a simplified
 Wiles. Buzzard confirmed it assumes nothing but the axioms.
@@ -111,10 +114,13 @@ The prize is unclaimed. Say this plainly.
 February first, and it is the cleanest case: the statement was
 settled mathematics, only the formalizing was left.
 
-The last two dates belong together. Machines now produce mathematics
-faster than mathematicians can referee it, and the only check that
-keeps up is a formal one. Do not oversell it -- the next slide takes
-it back a step.
+One day after that catalogue, three of its manuscripts were withdrawn
+over a sign error, and fourteen more were revised. None of the
+withdrawn ones had a Lean proof. Say it; do not put it on the slide.
+
+Machines now produce mathematics faster than mathematicians can
+referee it, and the only check that keeps up is a formal one. Do not
+oversell it -- the next slide takes it back a step.
 :::
 
 # But be precise
@@ -137,7 +143,7 @@ theorem and which only a supporting result.
 
 # Where people are going
 
-{image "../static/figures/itp_github_repos_per_million.png"}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
+{image "../static/figures/itp_github_repos_per_million.png" (height := "40vh")}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
 
 :::class "caption"
 New GitHub repositories per quarter for the three large proof
@@ -159,7 +165,7 @@ Evidence about where people are going.
 
 # Papers checked in Lean
 
-{image "../static/figures/arxiv_lean_formalized_share.png"}[Share of arXiv mathematics papers with a Lean-checked result during 2026, per 100 submissions]
+{image "../static/figures/arxiv_lean_formalized_share.png" (height := "40vh")}[Share of arXiv mathematics papers with a Lean-checked result during 2026, per 100 submissions]
 
 :::class "caption"
 Papers on the mathematics arXiv whose results are checked in Lean,
@@ -167,13 +173,12 @@ per 100 submissions, by week of submission in 2026.
 :::
 
 :::fragment highlightBlue
-Rising all year, and still under two in a hundred.
+The denominator doubled too: about 1 000 submissions a week in January, about 2 400 in September.
 :::
 
 :::notes
-A share, not a count: the mathematics arXiv took about a thousand
-submissions a week in January and about twice that at the end of
-September, so a rising count would partly be that growth.
+A share, not a count: a rising count would partly be that growth in
+submissions, which is itself worth a sentence.
 
 Within a few years, reading and writing a formal proof will be
 ordinary equipment. This is the answer to "why spend a semester on
@@ -296,7 +301,7 @@ you had to trust. Coq is the opposite arrangement -- a kernel of a few
 thousand lines, and everything else checked against it.
 :::
 
-# 1998: the referees gave up
+# The Kepler conjecture
 
 ::::::hstack
 {image "../static/figures/kepler_packing.png" (height := "22vh")}[A pyramid of equal spheres, the face-centred cubic packing]
@@ -340,32 +345,11 @@ Vladimir Voevodsky
 *1989* -- Voevodsky and Kapranov identify $`\infty`-groupoids with homotopy types.
 
 :::fragment fadeUp
-*Oct 1998* -- Simpson argues that it cannot be true. The theorem goes unused, and unrefuted.
+*Oct 1998* -- Simpson argues that it cannot be true, but cannot say *which step*.
 :::
 
 :::fragment fadeUp
-*2002* -- the Fields Medal, in between.
-:::
-
-:::fragment highlightBlue
-*Autumn 2013* -- Voevodsky accepts that Simpson was right.
-:::
-
-:::notes
-Note the dates: the paper is from 1989, but the episode only ends in
-2013, which is why it sits here and not before Kepler.
-
-Fifteen years, and not an obscure corner: both authors were well
-known. Everyone makes mistakes. What matters here is how long it took
-to resolve, and why.
-:::
-
-# Why it took fifteen years
-
-Simpson had a counterexample -- but could not say *which step* was wrong.
-
-:::fragment fadeUp
-So it was unclear who had erred. Nobody challenged them.
+*Autumn 2013* -- Voevodsky accepts it. Fifteen years unused, and unrefuted.
 :::
 
 :::fragment highlightBlue
@@ -373,7 +357,15 @@ Mathematics runs on *a complex system of mutual trust based on reputations*.
 :::
 
 :::notes
-Voevodsky's own words, from his 2014 IAS lecture.
+Note the dates: the paper is from 1989, but the episode only ends in
+2013, which is why it sits here and not before Kepler.
+
+Fifteen years, and not an obscure corner: both authors were well
+known, and Voevodsky received the Fields Medal in between, in 2002. Everyone makes mistakes. What matters here is how long it took
+to resolve, and why: nobody could point at the faulty step, so it was
+unclear who had erred, and nobody challenged them.
+
+The quoted line is Voevodsky's own, from his 2014 IAS lecture.
 
 Second story, same lesson: a mistake in a lemma of his own from 1992
 stayed in print until someone checking his lectures step by step found
@@ -668,31 +660,26 @@ Point at a node, follow an edge, show how analysis sits on order sits
 on algebra.
 :::
 
-# What the course is for
+# Goals
 
-:::fragment fadeUp
-*Interactive theorem proving.* A small kernel checks every step; the editor shows what is left.
-:::
+The course is for mathematics students.
 
-:::fragment fadeUp
-*Mathematics.* Easy at first -- explaining a proof to a machine means understanding it. Deeper later.
-:::
-
-:::fragment fadeUp
-*Functional programming.* Inductive types, structures, typeclasses, monads.
-:::
-
-:::fragment highlightBlue
-The exercises carry the course. The second half is your own project.
+:::class "goals"
+* *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write. This is not the older use of computers in mathematics, which was to work through many cases.
+* *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands -- *tactics* -- fit together. The second half goes deeper into the mathematics.
+* *Functional programming.* Inductive types, structures, typeclasses and monads, needed both to use Lean and to read *Mathlib*. These are spread across the Lean and Mathematics parts rather than collected in one chapter.
+* *Type theory.* Lean rests on dependent type theory: the Curry-Howard correspondence, dependent types, the universe hierarchy, and Lean's axioms.
+* *Mathematics in Mathlib.* How the library organizes order theory, the algebraic hierarchy, filters (a single framework for limits), topology, measure theory and discrete probability. Textbooks rarely treat these from the point of view of formalization.
+* *Proof engineering.* Automation tactics, searching *Mathlib*, and the common pitfalls of a large formal library.
 :::
 
 :::notes
-This is not the older use of computers in mathematics, which was to
-work through many cases. Here the machine checks the reasoning.
+Word for word the goals from the notes, so nobody has to reconcile two
+versions. Read the first three out, point at the last three.
 
-The sheets cover the first half of the semester. In the second half
-they work on a project, mostly self-chosen -- an exercise from the
-first year, or a corner of Mathlib they want to know.
+The exercises carry the course. The sheets cover the first half of the
+semester; in the second half they work on a project, mostly
+self-chosen.
 :::
 
 # Where to start

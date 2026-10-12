@@ -1049,3 +1049,28 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
   beide public domain). Die Lizenzpruefung im Skript laesst jetzt
   ausser CC auch "public domain" zu -- nur fuer diese beiden.
 
+## 2026-10-12 (4) -- Portraits zurueck, Folien nachgezogen
+
+- **Missverstaendnis korrigiert:** "die Bilder weg" bei LTE, Perfectoid,
+  Sphere Eversion und Freiman-Ruzsa meinte die *Mathe-Grafiken*, nicht
+  die Personen. Die vier Portrait-Gruppen stehen wieder im Skript, ohne
+  die Grafik davor, als eigene `:::figure` mit allen Portraits in einem
+  Absatz (= eine Bildzeile, bei vieren bricht sie um).
+- Folien: 24 -> 23. "7 Oct" von der 2026-Folie runter (steht in den
+  Sprechernotizen), Kepler-Folie heisst "The Kepler conjecture",
+  Voevodsky-Folien zusammengezogen, Ziele-Folie woertlich aus dem
+  Skript (sechs Punkte, `.goals li { font-size: 0.56em }`, sonst passt
+  es nicht), arXiv-Folie nennt jetzt die Verdopplung der Einreichungen
+  statt den Anteil zu wiederholen.
+- **CSS-Spezifitaet, zum zweiten Mal:** `.reveal section p` (0,1,2)
+  schlaegt `.names` und `.caption` (0,1,0), die Bildunterschrift kam
+  dadurch in Fliesstextgroesse. Beide Regeln sind jetzt als
+  `.reveal section p.names` / `.reveal section .names p` geschrieben.
+  Die Diagramme brauchen ausserdem ein explizites `(height := "40vh")`,
+  sonst bleibt unter der Unterschrift kein Platz.
+- **Ueberlauf-Test** statt Augenmass: `scratchpad/overflow.sh` setzt in
+  einer Kopie der Seite jede `<section>` kurz auf `display:block`,
+  misst die Hoehe und vergleicht sie mit den 700 px des Decks. Reveal
+  blendet nicht benachbarte Folien aus, deshalb der Umweg -- ohne ihn
+  meldet `scrollHeight` fuer fast alle Folien 0.
+

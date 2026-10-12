@@ -23,6 +23,13 @@ def staticCss := {{
   }}
 
 open Verso.Output.Html in
+def staticIcons := {{
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/static/favicon-180.png" />
+  }}
+
+open Verso.Output.Html in
 def staticJs := {{
     <script src="/static/katex/katex.min.js"></script>
     <script src="/static/math.js"></script>
@@ -63,7 +70,7 @@ def main :=
 where
   config := {
     extraFiles := [("static", "static")],
-    extraHead := #[staticCss, staticJs],
+    extraHead := #[staticCss, staticJs, staticIcons],
     emitTeX := false,
     emitHtmlSingle := .immediately,
     emitHtmlMulti := .immediately,

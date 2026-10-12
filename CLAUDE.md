@@ -939,3 +939,40 @@ Fliesstexts. Dafuer waeren die grossen Kapitel einzeln durchzugehen;
 sind angefangen, der Rest nicht. Wer das fortsetzt: die Methode war,
 Absaetze ab 45 Woertern auszugeben und einzeln zu pruefen -- die
 Kuerzungen liegen dort, nicht in den Listen.
+
+## 2026-10-12 -- Favicon, Kapitel "6. Slides", Zurueck-Button auf den Folien
+
+- **Favicon.** Die Seite hatte keins. `static/favicon.svg` ist das `L`
+  der Lean-Wortmarke, neu gezeichnet: ein Strich (`stroke-width 7` auf
+  `viewBox 0 0 64 64`) auf einem Quadrat im Freiburger Identity-Blau
+  `#34499a` (aus `--wp--preset--color--identity-blue-100` der
+  Uni-Website; das Lean-Blau `#0073a3` war die erste Fassung).  Das
+  Original `static/lean_logo.svg` ist als Favicon unbrauchbar: die
+  Striche der Wortmarke sind bei 16 px unsichtbar.  Daneben
+  `favicon-32.png` (Fallback) und `favicon-180.png`
+  (`apple-touch-icon`), beide mit `inkscape --export-width` erzeugt.
+  Eingehaengt ueber `staticIcons` in `Main.lean`, das in `extraHead`
+  kommt; Verso schreibt `/static/...` pro Seite auf den `<base>` um.
+- **"6. Slides".** Die Decks standen vorher als Absatz in *Practical
+  matters*.  Jetzt eigener Top-Level-Teil
+  `Leancourse/Coursenotes/06-Slides.lean`, eingebunden nach der
+  Bibliographie, also Nummer 6.  Wichtig: `file := "Lecture-slides"` im
+  `%%%`-Block, sonst hiesse das Verzeichnis `Slides` und kollidierte
+  auf case-insensitiven Dateisystemen mit dem Deck-Verzeichnis
+  `slides/`.  In *Practical matters* steht jetzt "six parts" und ein
+  Stichpunkt *Slides*.
+- **Zurueck-Button.** `VersoSlides.Config` hat `extraHead : Array Html`.
+  `SlidesMain.lean` haengt dort ein `<style>` und ein `<script>` ein;
+  das Script setzt beim `DOMContentLoaded` ein `<a class="course-back">`
+  an `body` -- also ausserhalb von `.reveal`, damit reveal.js es weder
+  mitskaliert noch pro Folie bewegt.  Ziel ist relativ:
+  `../../Lecture-slides/` (Deck liegt unter `<site>/slides/<deck>/`).
+  Opacity 0.45, bei Hover 1, `@media print { display: none }`.
+- **Lean-Falle.** In `SlidesMain.lean` braucht es `open
+  Verso.Output.Html in` fuer die `{{ ... }}`-Syntax, aber der Typ muss
+  dann voll qualifiziert geschrieben werden (`Array
+  Verso.Output.Html`): mit geoeffnetem Namespace loest ein blosses
+  `Html` auf etwas anderes auf, und der Fehler lautet dann "has type
+  Verso.Output.Html but is expected to have type Html".  Umgekehrt
+  bringt `open Verso Output in` zwar den Typ, aber nicht die
+  `{{ }}`-Syntax.

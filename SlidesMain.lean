@@ -4,11 +4,74 @@ import Slides.Filters
 
 open VersoSlides
 
+/--
+Styling for the back-link that every deck carries in its upper right
+corner.  The link sits on `body`, outside `.reveal`, so `reveal.js`
+neither scales it with the slide nor moves it between slides; it is
+faint until hovered and is dropped from the PDF export.
+-/
+def backLinkCss : String := "
+.course-back {
+  position: fixed;
+  top: 0.8rem;
+  right: 1.1rem;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.25em 0.7em;
+  border: 1px solid #34499a;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #34499a;
+  font-family: inherit;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  text-decoration: none;
+  opacity: 0.45;
+  transition: opacity 0.15s ease;
+}
+.course-back:hover, .course-back:focus {
+  opacity: 1;
+}
+@media print {
+  .course-back { display: none; }
+}
+"
+
+/--
+Adds the back-link to the page.  The target is relative: a deck is
+written to `<site>/slides/<deck>/`, so two levels up is the site root
+and `Lecture-slides` is the chapter listing the decks.  Building the
+decks on their own (`lake exe slides`) puts them outside the manual,
+and the link then has nothing to point at.
+-/
+def backLinkJs : String := "
+document.addEventListener('DOMContentLoaded', function () {
+  var a = document.createElement('a');
+  a.className = 'course-back';
+  a.href = '../../Lecture-slides/';
+  a.title = 'Back to the course notes';
+  a.textContent = '\\u2190 Course notes';
+  document.body.appendChild(a);
+});
+"
+
+open Verso.Output.Html in
+/-- Tab icon and back-link, added to the `head` of every deck. -/
+def deckHead : Array Verso.Output.Html := #[
+  {{ <link rel="icon" type="image/svg+xml" href="../../static/favicon.svg" /> }},
+  {{ <link rel="icon" type="image/png" sizes="32x32" href="../../static/favicon-32.png" /> }},
+  {{ <style>{{Verso.Output.Html.text false backLinkCss}}</style> }},
+  {{ <script>{{Verso.Output.Html.text false backLinkJs}}</script> }}
+]
+
 def deckConfig (dir : String) : Config := {
   outputDir := dir
   theme := "white"
   slideNumber := true
-  transition := "slide" }
+  transition := "slide"
+  extraHead := deckHead }
 
 /--
 Generates the slide decks.  The argument is the *base* directory; each

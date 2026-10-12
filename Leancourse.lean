@@ -8,6 +8,7 @@ import «Leancourse».Coursenotes.«01-Lean»
 import «Leancourse».Coursenotes.«03-Mathematics»
 import «Leancourse».Coursenotes.«04-Appendix»
 import «Leancourse».Coursenotes.«05-Projects»
+import «Leancourse».Coursenotes.«06-Slides»
 import «Leancourse».Coursenotes.«99-Bibliography»
 
 open Verso.Genre Manual
@@ -257,20 +258,14 @@ We use Lean because *Mathlib* exists: the exercises start with `import Mathlib` 
 * Tactics are documented alphabetically in a glossary in the *Appendix*. You will usually meet a tactic in a working example before reading its entry; a table at the start of *Proofs in Lean* lists the ones needed first.
 * Read in order, but on a first pass you can skip the tactics chapter and consult it when you hit a `sorry`.
 
-*How to use this course.* The notes have five parts.
+*How to use this course.* The notes have six parts.
 
 * *Lean and its type theory*: first the language, writing proofs, the functional-programming side (pure functions, pattern matching, recursion, higher-order functions) and navigating *Mathlib*; then the theory -- Curry-Howard, dependent types, universes, Lean's three axioms and what the kernel adds to them, the `structure` / `class` machinery, well-foundedness and the avoidance of paradoxes.
 * *Mathematics*: propositions, proofs and sets, then how *Mathlib* organizes order theory, the algebraic hierarchy, filters, topology, measure theory and monadic discrete probability (`PMF`). Pointers into the API, not full formalizations.
 * *Appendix*: common pitfalls, the diagnostic commands (`#print axioms`, `#find_home`, `#lint`), a keyword reference and the glossary of tactics (a longer list is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)).
 * *Projects*: five topics for the individual formalization projects in the second half, each with a description, a sketch of an implementation and references.
 * *Bibliography*: the works cited throughout, with links.
-
-*Slides.* Some chapters have a deck, used in the lecture and readable on its own. The figures and claims are those of the text, so either can be used without the other.
-
-* [Why formalize?](slides/introduction/) -- the first lecture: what formalizing means, where things stand in 2026, the four episodes and the landmark formalizations.
-* [Filters in Mathlib](slides/filters/) -- accompanies the chapter on filters.
-
-Press `s` in a deck for the speaker notes, `o` for an overview of all slides, and `?` for the remaining keys.
+* *Slides*: the decks used in the lecture, readable on their own.
 
 The exercises carry the course (the _Exercises_ folder within `Leancourse`). Feedback is immediate: error messages from the elaborator, and a *proof-state* panel showing what remains to be proved at every cursor position. Start with the first sheet; the sheets explain as they go.
 
@@ -338,6 +333,8 @@ If the installation gives you trouble, talk to the teachers rather than spending
 
 The two product marks in this chapter -- Claude and ChatGPT -- are also from Wikimedia Commons, under CC0 and in the public domain respectively. They remain trademarks of their owners and are used here only to say which system produced which proof.
 
+The icon in the browser tab is the `L` of the Lean wordmark, redrawn as a single stroke on a square in the Freiburg identity blue (`#34499a`). The source is `static/favicon.svg`.
+
 Several people who appear in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the [Feit-Thompson theorem](https://en.wikipedia.org/wiki/Feit%E2%80%93Thompson_theorem), Johan Commelin, who led the Liquid Tensor Experiment, Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. They appear above as grey silhouettes with their initials. The photographs are therefore a fair sample of who is *famous*, not of who did this work, and the silhouettes are left visible rather than quietly omitted for that reason.
 
 {include 0 «Leancourse».Coursenotes.«01-Lean»}
@@ -349,3 +346,5 @@ Several people who appear in this chapter have no freely licensed photograph, an
 {include 0 «Leancourse».Coursenotes.«05-Projects»}
 
 {include 0 «Leancourse».Coursenotes.«99-Bibliography»}
+
+{include 0 «Leancourse».Coursenotes.«06-Slides»}

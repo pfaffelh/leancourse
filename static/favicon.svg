@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Favicon of the course site: the "L" of the Lean wordmark, redrawn
+     with a stroke heavy enough to survive 16x16.  The square carries
+     the Freiburg identity blue (#34499a, "identity-blue-100" of the
+     university's corporate design), so the mark stays legible on light
+     and on dark browser tab bars. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="12" fill="#34499a"/>
+  <path d="M 18 13 V 48 H 49" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="square"/>
+</svg>

@@ -1014,3 +1014,38 @@ Kuerzungen liegen dort, nicht in den Listen.
   Woche im Januar auf ~2 450 Ende September.  Der Anteil steigt von
   ~0,3 auf ~1,5 bis 2 pro 100.
 
+## 2026-10-12 (3) -- Foliensatz Introduction ueberarbeitet
+
+26 -> 24 Folien. Weg: "Two things it is not" (die Autoformalize-Zeile
+steht jetzt auf "What formalizing means"), "One day apart" (die Pointe
+steht im letzten Punkt der 2026-Folie) und "In between". Neu: "What the
+course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
+
+- **Vertikaler Ueberlauf** war auf mehreren Folien die letzte Zeile.
+  Zwei Ursachen und zwei Hebel: `.reveal section p { font-size: 0.8em }`
+  als einziger globaler Knopf, und kuerzere Zeilen, damit keine Zeile
+  zweizeilig umbricht. `%%%state := "dense"%%%` funktioniert dafuer
+  **nicht** -- reveal haengt `data-state` an das Deck, nicht an die
+  `<section>`, ein `section.dense`-Selektor greift also nie.
+- **Screenshot-Kontrolle:** `#/N` zeigt nur den ersten Fragment-Zustand.
+  Um den echten Platzbedarf zu sehen, braucht die Kopie der Seite
+  `.reveal .fragment { opacity:1; visibility:visible; transform:none }`
+  -- ohne `transform:none` ueberlappen `fadeUp`-Fragmente und man sieht
+  einen Fehler, den es nicht gibt. Skript dafuer im Scratchpad.
+- **Bildunterschrift direkt unter dem Portrait:** Direktiven lassen sich
+  schachteln, wenn die aeussere mehr Doppelpunkte hat. Also
+  `::::::hstack` > `::::vstack` > `:::class "names"`. Dazu
+  `.reveal .r-hstack .r-vstack { gap: 0 }`.
+- **Listen in Fragmenten vermeiden.** Mehrere `:::fragment`-Bloecke mit
+  je einem `- item` verschachteln sich beim Rendern unterschiedlich
+  tief. Stattdessen normale Absaetze mit `*1879* -- ...`.
+- **Inhaltlich beantwortet:** Automath ist von N. G. de Bruijn (1967)
+  und steht auf getyptem Lambda-Kalkuel, nicht auf Mengenlehre; das
+  Vierfarben-Programm von 1976 war ein gewoehnliches Programm, kein
+  Beweisassistent, Gonthier hat es 2005 in Coq neu gemacht; Flyspeck
+  lief in HOL Light und Isabelle; Sphere Packing lief in Lean auf
+  Mathlib.
+- **Portraits von Frege und Russell** ergaenzt (`fetch_portraits.py`,
+  beide public domain). Die Lizenzpruefung im Skript laesst jetzt
+  ausser CC auch "public domain" zu -- nur fuer diese beiden.
+

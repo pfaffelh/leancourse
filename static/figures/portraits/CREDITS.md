@@ -1,7 +1,8 @@
 # Portrait credits
 
 All images are from Wikimedia Commons and are reproduced unchanged under
-the licence given. Four of them (viazovska, gowers, green, voevodsky) are
+the licence given. The two historical portraits (frege, russell) are in
+the public domain. Four of them (viazovska, gowers, green, voevodsky) are
 reduced-resolution files released by the MFO itself; their terms ask for
 the form "Author's name, Archives of the Mathematisches Forschungsinstitut
 Oberwolfach", which is what the chapter uses. Full-resolution or
@@ -17,6 +18,8 @@ attribution below must be reproduced wherever the images are shown.
 - `green.jpg` -- Renate Schmid, Copyright is with MFO, CC BY-SA 2.0 de, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Ben_Green.jpg>
 - `tao.jpg` -- Institute for Pure &amp; Applied Mathematics, CC BY 4.0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Terence_Tao_at_IPAM%27s_Fireside_Chat_2026_(50m16s)_(cropped).jpg>
 - `voevodsky.jpg` -- Schmid, Renate, CC BY-SA 2.0 de, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:VladimirVoevodsky.jpg>
+- `frege.jpg` -- Unknown author Unknown author, Public domain, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Young_frege.jpg>
+- `russell.jpg` -- Unknown author Unknown author, Public domain, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Bertrand_Russell_in_1907.jpg>
 
 ## Placeholders
 

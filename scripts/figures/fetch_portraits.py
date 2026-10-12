@@ -3,7 +3,8 @@
 
 Every file is reproduced unchanged under its own licence; the credits
 written to CREDITS.md must be reproduced wherever the images are shown.
-Only files hosted on Commons under a CC licence are taken.
+Only files hosted on Commons under a CC licence, or in the public
+domain, are taken.
 """
 import json, re, time, urllib.parse, urllib.request
 from pathlib import Path
@@ -20,6 +21,8 @@ WANT = {                       # slug -> Commons file
     "green":     "File:Ben Green.jpg",
     "tao":       "File:Terence Tao at IPAM's Fireside Chat 2026 (50m16s) (cropped).jpg",
     "voevodsky": "File:VladimirVoevodsky.jpg",
+    "frege":     "File:Young frege.jpg",
+    "russell":   "File:Bertrand Russell in 1907.jpg",
 }
 
 def api(params, tries=5):
@@ -44,7 +47,9 @@ for slug, title in WANT.items():
     assert p and "imageinfo" in p, f"not found: {title}"
     ii = p["imageinfo"][0]; md = ii["extmetadata"]
     lic = md.get("LicenseShortName", {}).get("value", "?")
-    assert lic.lower().startswith("cc"), f"{slug}: unexpected licence {lic}"
+    # CC for the living, public domain for Frege and Russell -- nothing else
+    assert lic.lower().startswith(("cc", "public domain")), \
+        f"{slug}: unexpected licence {lic}"
     author = " ".join(re.sub("<[^>]+>", " ", md.get("Artist", {}).get("value", "?")).split())
     data = urllib.request.urlopen(urllib.request.Request(ii["thumburl"], headers=UA), timeout=60).read()
     (OUT / f"{slug}.jpg").write_bytes(data)
@@ -55,7 +60,8 @@ for slug, title in WANT.items():
 PREAMBLE = """# Portrait credits
 
 All images are from Wikimedia Commons and are reproduced unchanged under
-the licence given. Four of them (viazovska, gowers, green, voevodsky) are
+the licence given. The two historical portraits (frege, russell) are in
+the public domain. Four of them (viazovska, gowers, green, voevodsky) are
 reduced-resolution files released by the MFO itself; their terms ask for
 the form "Author's name, Archives of the Mathematisches Forschungsinstitut
 Oberwolfach", which is what the chapter uses. Full-resolution or

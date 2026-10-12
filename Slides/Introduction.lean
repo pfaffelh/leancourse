@@ -7,29 +7,39 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the first lecture (week 1, Monday).  It follows the opening
-chapter of the course notes section by section, so the two can be shown
-together: what formalizing means, where things stand in 2026, how it got
-there, and the landmark projects.  Same claims, same figures.
+Deck for the first lecture (week 1, Monday).  It follows the
+Introduction of the course notes section by section, so the two can be
+shown together: what formalizing means, where things stand in 2026, how
+it got there, the landmark projects, and what the course asks of you.
 -/
 
 #doc (Slides) "Why formalize?" =>
 
 ```css
 img.portrait {
-  width: 17vh; height: 17vh; object-fit: cover; object-position: 50% 20%;
+  width: 16vh; height: 16vh; object-fit: cover; object-position: 50% 20%;
   border-radius: 50%; margin: 0 0.35rem; vertical-align: middle;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 .names { font-size: 0.45em; color: #52514e; letter-spacing: 0.02em;
          margin-top: 0.1em; }
+/* caption under a chart, saying what is plotted */
+.caption { font-size: 0.4em; color: #52514e; margin-top: 0.2em;
+           line-height: 1.35; }
 .reveal section img { margin: 0.4rem 0; }
+/* reveal's default body size overflows a slide with four or five
+   lines under a picture; this is the single knob for that */
+.reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
+.reveal section p.names, .reveal section p.caption { margin: 0.1em 0; }
 /* picture and faces share one horizontal band, directly under the
    heading, so the slide does not grow downwards */
 .reveal .r-hstack { align-items: center; justify-content: center;
                     gap: 1.6rem; margin-bottom: 0.3rem; }
 .reveal .r-hstack > * { margin: 0; }
-.reveal section img.logo { height: 11vh; width: auto; margin: 0 1.2rem; }
+/* a portrait keeps its name directly underneath, inside the band */
+.reveal .r-hstack .r-vstack { gap: 0; }
+.reveal .r-vstack > * { margin: 0; }
+.reveal section img.logo { height: 9vh; width: auto; margin: 0 1.2rem; }
 /* a comparison table has to leave room for the lines under it */
 .reveal section table { font-size: 0.62em; margin: 0.2em auto 0.4em; }
 .reveal section table th,
@@ -38,12 +48,11 @@ img.portrait {
 
 # Why formalize?
 
-:::fitText
-A proof *found* by computer is not a proof *checked* by computer.
-:::
+Interactive theorem proving with Lean -- first lecture.
 
 :::notes
-The whole lecture in one line. Come back to it at the end.
+Title slide. The question in the heading is the one the next twenty
+minutes answer.
 :::
 
 # What formalizing means
@@ -51,39 +60,17 @@ The whole lecture in one line. Come back to it at the end.
 Write the proof in a language precise enough for a machine to check every step.
 
 :::fragment fadeUp
-The machine does not *find* the proof. It reads yours and checks it.
-:::
-
-:::fragment highlightBlue
-Anything you leave out is refused.
-:::
-
-:::notes
-That is the definition. The rest of the lecture is why it matters.
-:::
-
-# Two things it is not
-
-:::fragment fadeUp
-*Finding* a proof is not *checking* one. 1976: a computer checked the case list, nothing checked the argument around it.
-:::
-
-:::fragment fadeUp
 *Autoformalizing* runs the other way -- informal mathematics in, formal text out.
 :::
 
-:::fragment highlightBlue
-Both end in the same place: a text the kernel accepts.
-:::
-
 :::notes
-Sphere packing in dimension 8 is both at once. A human formalization
-project started in 2024; a machine finished it in five days in
-February 2026.
+That is the definition. The machine does not *find* the proof; it reads
+yours and checks it, and anything left out is refused.
 
-The program that writes a proof may be unreliable in any way it likes.
-The program that checks it is small and fixed. That asymmetry is why
-any of this works, and it comes back later as the de Bruijn criterion.
+Both directions end in the same place: a text the kernel accepts. The
+program that writes a proof may be unreliable in any way it likes; the
+program that checks it is small and fixed. That asymmetry is why any of
+this works, and it comes back later as the de Bruijn criterion.
 
 This course is about the first direction. They write the proofs.
 :::
@@ -95,23 +82,23 @@ This course is about the first direction. They write the proofs.
 :::
 
 :::fragment fadeUp
-*Feb* -- sphere packing in dimension 8, finished by a machine in five days.
+*Feb* -- sphere packing, dimension 8: a machine finishes it in five days.
 :::
 
 :::fragment fadeUp
-*4 Sep* -- Fermat's Last Theorem, computer-checked. 11 days, 13 million lines of Lean.
+*4 Sep* -- Fermat's Last Theorem, checked. 11 days, 13 M lines of Lean.
 :::
 
 :::fragment fadeUp
-*8 Sep* -- Navier-Stokes with a smooth force: finite-time singularity, formalized.
+*8 Sep* -- Navier-Stokes with a force: a singularity in finite time.
 :::
 
 :::fragment fadeUp
-*6 Oct* -- 719 manuscripts, 372 families, about 42 % with a Lean proof.
+*6 Oct* -- 719 manuscripts, 42 % with a Lean proof.
 :::
 
-:::fragment fadeUp
-*7 Oct* -- three of them withdrawn. A sign error.
+:::fragment highlightBlue
+*7 Oct* -- three withdrawn. None of them had a Lean proof.
 :::
 
 :::notes
@@ -122,23 +109,12 @@ Navier-Stokes: the *forced* equation. Not the Millennium problem.
 The prize is unclaimed. Say this plainly.
 
 February first, and it is the cleanest case: the statement was
-settled mathematics, only the formalizing was left. Everything after
-it is harder to judge.
+settled mathematics, only the formalizing was left.
 
-The last two dates belong together -- next slide.
-:::
-
-# One day apart
-
-:::fitText
-None of the withdrawn papers had a Lean proof.
-:::
-
-:::notes
-Machines now produce mathematics faster than mathematicians can
-referee it. The only check that keeps up is a formal one.
-
-Do not oversell it. The next slide takes it back a step.
+The last two dates belong together. Machines now produce mathematics
+faster than mathematicians can referee it, and the only check that
+keeps up is a formal one. Do not oversell it -- the next slide takes
+it back a step.
 :::
 
 # But be precise
@@ -163,7 +139,17 @@ theorem and which only a supporting result.
 
 {image "../static/figures/itp_github_repos_per_million.png"}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
 
+:::class "caption"
+New GitHub repositories per quarter for the three large proof
+assistants, counted per million new repositories overall.
+:::
+
 :::notes
+Per million, because GitHub itself grew steeply in 2026. One
+distortion is left in: the Justin Sun Prize pays only against a
+machine-verified proof, and about a fifth of September's new Lean
+repositories carry a prize identifier.
+
 Until about 2023 the three were comparable, and Coq was the larger.
 
 Not evidence that Lean is better. Isabelle's automation is still
@@ -174,6 +160,11 @@ Evidence about where people are going.
 # Papers checked in Lean
 
 {image "../static/figures/arxiv_lean_formalized_share.png"}[Share of arXiv mathematics papers with a Lean-checked result during 2026, per 100 submissions]
+
+:::class "caption"
+Papers on the mathematics arXiv whose results are checked in Lean,
+per 100 submissions, by week of submission in 2026.
+:::
 
 :::fragment highlightBlue
 Rising all year, and still under two in a hundred.
@@ -191,36 +182,55 @@ this".
 
 # The idea is old
 
-{image "../static/figures/portraits/demoura.jpg" (class := "portrait")}[Leonardo de Moura]
+::::::hstack
+::::vstack
+{image "../static/figures/portraits/frege.jpg" (class := "portrait")}[Gottlob Frege]
 
 :::class "names"
-Leonardo de Moura, who started Lean in 2013
+Gottlob Frege
+:::
+::::
+
+::::vstack
+{image "../static/figures/portraits/russell.jpg" (class := "portrait")}[Bertrand Russell]
+
+:::class "names"
+Bertrand Russell
+:::
+::::
+::::::
+
+:::fragment fadeUp
+*1879* -- Frege makes proofs into objects you can calculate with.
 :::
 
 :::fragment fadeUp
-- 1879 Frege -- proofs become objects
+*1902* -- Russell's letter: the system is inconsistent.
 :::
 
 :::fragment fadeUp
-- 1902 Russell's letter -- the system is inconsistent
-:::
-
-:::fragment fadeUp
-- *Principia*: `1 + 1 = 2`, with the note *"the above proposition is occasionally useful"*
-:::
-
-:::fragment fadeUp
-- 1967 Automath, 1977 Landau's *Grundlagen* by machine
+*1967* -- de Bruijn's *Automath*, the first checker. Typed lambda calculus, not set theory.
 :::
 
 :::fragment highlightBlue
 The idea is 150 years old. The tool is 20.
 :::
 
-
 :::notes
-A century and a half of the idea, and almost nothing to show for it
-until there were machines to run it on.
+Frege's *Begriffsschrift*, 1879. Russell's letter, 1902. Whitehead and
+Russell then spent *Principia Mathematica* rebuilding, and their proof
+that `1 + 1 = 2` arrives in the second volume with the note that "the
+above proposition is occasionally useful".
+
+Automath: Nicolaas Govert de Bruijn, Eindhoven, 1967, the first system
+to check proofs mechanically. Its foundation is a typed lambda
+calculus with dependent types -- the ancestor of Lean's type theory,
+not set theory. In 1977 van Benthem Jutting pushed Landau's
+*Grundlagen der Analysis* through it, the first mathematics book
+verified end to end.
+
+Done by hand, formalization is unbearable, and for most of a century
+little came of it.
 
 Lean itself: de Moura, Microsoft Research, 2013. Lean 4 in 2021.
 Lean FRO, about twenty people. Buzzard arguing for it since 2018.
@@ -229,19 +239,19 @@ Lean FRO, about twenty people. Buzzard arguing for it since 2018.
 # How it got here
 
 :::fragment fadeUp
-- 1976 -- the four colour theorem
+*1976* -- the four colour theorem.
 :::
 
 :::fragment fadeUp
-- 1998 -- the Kepler conjecture
+*1998* -- the Kepler conjecture.
 :::
 
 :::fragment fadeUp
-- 2013 -- Voevodsky concedes
+*2013* -- Voevodsky concedes.
 :::
 
 :::fragment fadeUp
-- 2020 -- the Liquid Tensor Experiment
+*2020* -- the Liquid Tensor Experiment.
 :::
 
 :::notes
@@ -255,99 +265,99 @@ author can trust himself, and who is asking for this now.
 
 # 1976: four colours
 
-:::hstack
-{image "../static/figures/four_colour.png" (height := "26vh")}[A map of thirty-four regions coloured with four colours]
+::::::hstack
+{image "../static/figures/four_colour.png" (height := "22vh")}[A map of thirty-four regions coloured with four colours]
 
+::::vstack
 {image "../static/figures/portraits/placeholder_gonthier.png" (class := "portrait")}[Georges Gonthier]
-:::
 
 :::class "names"
 Georges Gonthier
 :::
+::::
+::::::
 
-Appel and Haken reduce the problem to a long list of configurations.
-
-A computer checks the list.
+Appel and Haken reduce the problem to a list of configurations, and an ordinary program checks it -- no proof assistant.
 
 :::fragment fadeUp
 *No human has ever read that part.*
 :::
 
 :::fragment highlightBlue
-2005: Gonthier formalizes all of it in Coq -- case analysis included.
+2005: Gonthier redoes all of it in *Coq*, case analysis included.
 :::
-
 
 :::notes
 Two decades of argument about whether this counted as a proof.
 Gonthier did not settle it; he made it unnecessary.
+
+The 1976 program was Fortran and assembler on an IBM 370: a program
+you had to trust. Coq is the opposite arrangement -- a kernel of a few
+thousand lines, and everything else checked against it.
 :::
 
-# 1998: stacking oranges
+# 1998: the referees gave up
 
-:::hstack
-{image "../static/figures/kepler_packing.png" (height := "27vh")}[A pyramid of equal spheres, the face-centred cubic packing]
+::::::hstack
+{image "../static/figures/kepler_packing.png" (height := "22vh")}[A pyramid of equal spheres, the face-centred cubic packing]
 
+::::vstack
 {image "../static/figures/portraits/hales.jpg" (class := "portrait")}[Thomas Hales]
-:::
 
 :::class "names"
 Thomas Hales
 :::
+::::
+::::::
 
-:::notes
-Kepler, 1611. Hales announces a proof in 1998.
-:::
-
-# The referees gave up
-
-Twelve referees. Four years.
+Hales announces a proof of Kepler's conjecture of 1611. Twelve referees, four years.
 
 :::fragment fadeUp
-Verdict: *ninety-nine percent certain* -- and no better was possible.
-:::
-
-:::fragment fadeUp
-The *Annals* published it with the caveat attached.
+Verdict: *ninety-nine percent certain* -- and no better was possible. The *Annals* published it with the caveat attached.
 :::
 
 :::fragment highlightBlue
-Hales started Flyspeck. Complete formal proof, 2014.
+Hales started Flyspeck. Complete formal proof in HOL Light and Isabelle, 2014.
 :::
 
 :::notes
 Not about computers. Peer review met a proof it could not certify,
 and more effort would not have helped.
+
+Sixteen years from announcement to a proof anyone could check.
 :::
 
 # 2013: the author concedes
 
+::::vstack
 {image "../static/figures/portraits/voevodsky.jpg" (class := "portrait")}[Vladimir Voevodsky]
 
 :::class "names"
 Vladimir Voevodsky
 :::
+::::
 
 *1989* -- Voevodsky and Kapranov identify $`\infty`-groupoids with homotopy types.
 
 :::fragment fadeUp
-*Oct 1998* -- Simpson posts an argument that it cannot be true.
+*Oct 1998* -- Simpson argues that it cannot be true. The theorem goes unused, and unrefuted.
+:::
+
+:::fragment fadeUp
+*2002* -- the Fields Medal, in between.
 :::
 
 :::fragment highlightBlue
 *Autumn 2013* -- Voevodsky accepts that Simpson was right.
 :::
 
-
 :::notes
 Note the dates: the paper is from 1989, but the episode only ends in
 2013, which is why it sits here and not before Kepler.
 
 Fifteen years, and not an obscure corner: both authors were well
-known, and Voevodsky received the Fields Medal in between, in 2002.
-
-Everyone makes mistakes. What matters here is how long it took to
-resolve, and why.
+known. Everyone makes mistakes. What matters here is how long it took
+to resolve, and why.
 :::
 
 # Why it took fifteen years
@@ -380,167 +390,223 @@ Mathlib uses. We take the diagnosis, not the cure. He died in 2017.
 
 # 2020: a Fields medallist is unsure
 
-:::hstack
-{image "../static/figures/cantor_profinite.png" (height := "21vh")}[Seven stages of the middle-thirds construction]
-
-{image "../static/figures/portraits/scholze.jpg" (class := "portrait")}[Peter Scholze] {image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
-:::
+::::::hstack
+::::vstack
+{image "../static/figures/portraits/scholze.jpg" (class := "portrait")}[Peter Scholze]
 
 :::class "names"
-Peter Scholze, Johan Commelin
+Peter Scholze
 :::
+::::
 
-Scholze posts a challenge on Buzzard's blog.
+::::vstack
+{image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
 
-He is not certain of his own theorem.
+:::class "names"
+Johan Commelin
+:::
+::::
+::::::
+
+Scholze posts a challenge on Buzzard's blog: a theorem in condensed mathematics he is not certain of.
 
 :::fragment fadeUp
 Liquid Tensor Experiment, led by Commelin. Finished July 2022.
 :::
 
-:::fragment fadeUp
-Not combinatorics with a thousand cases -- condensed mathematics.
+:::fragment highlightBlue
+The request came from a working mathematician, not from logicians. That is what had changed.
 :::
-
 
 :::notes
 Buzzard's ICM plenary in 2022 is a fair marker for the moment this
 stopped being a curiosity.
-:::
 
-# In between
-
-:::fitText
-Each one showed that something new was possible.
-:::
-
-:::notes
-Five projects between Flyspeck and 2026. The course material is built
-out of the libraries they left behind.
+Not combinatorics with a thousand cases, either -- condensed
+mathematics, at the research frontier.
 :::
 
 # Perfectoid spaces, 2019
 
-:::hstack
-{image "../static/figures/padic_tree.png" (height := "21vh")}[The 3-adic integers as a ternary tree]
-
-{image "../static/figures/portraits/buzzard.jpg" (class := "portrait")}[Kevin Buzzard] {image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin] {image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot]
-:::
+::::::hstack
+::::vstack
+{image "../static/figures/portraits/buzzard.jpg" (class := "portrait")}[Kevin Buzzard]
 
 :::class "names"
-Kevin Buzzard, Johan Commelin, Patrick Massot
+Kevin Buzzard
 :::
+::::
+
+::::vstack
+{image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
+
+:::class "names"
+Johan Commelin
+:::
+::::
+
+::::vstack
+{image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot]
+
+:::class "names"
+Patrick Massot
+:::
+::::
+::::::
+
+*The problem:* could an object as complicated as Scholze's perfectoid space be *stated* at all in a proof assistant?
 
 :::fragment highlightBlue
-They formalized a *definition*, not a theorem.
+They formalized a *definition*, not a theorem. Stating is a different problem from proving.
 :::
 
-
 :::notes
-Scholze's perfectoid spaces, 2012. Whether an object of that complexity
-could be *stated* at all in a proof assistant was open, and stating is
-a different problem from proving.
+Scholze's perfectoid spaces, 2012.
 
 Lean's reputation among mathematicians dates from this project.
 :::
 
 # Sphere eversion, 2022
 
-:::hstack
-{image "../static/figures/turning_number.png" (height := "21vh")}[Four closed plane curves with their turning numbers]
-
-{image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot] {image "../static/figures/portraits/placeholder_vandoorn.png" (class := "portrait")}[Floris van Doorn] {image "../static/figures/portraits/placeholder_nash.png" (class := "portrait")}[Oliver Nash]
-:::
+::::::hstack
+::::vstack
+{image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot]
 
 :::class "names"
-Patrick Massot, Floris van Doorn, Oliver Nash
+Patrick Massot
 :::
+::::
 
-:::fragment fadeUp
-In the plane the turning number blocks it: $`+1` cannot become $`-1`.
+::::vstack
+{image "../static/figures/portraits/placeholder_vandoorn.png" (class := "portrait")}[Floris van Doorn]
+
+:::class "names"
+Floris van Doorn
 :::
+::::
+
+::::vstack
+{image "../static/figures/portraits/placeholder_nash.png" (class := "portrait")}[Oliver Nash]
+
+:::class "names"
+Oliver Nash
+:::
+::::
+::::::
+
+*The problem:* Mathlib had no differential geometry, and Gromov's h-principle needs it.
 
 :::fragment highlightBlue
-In three dimensions the obstruction is gone.
+So they built the API first and proved the theorem afterwards. That order is the ordinary shape of the work.
 :::
 
-
 :::notes
-Gromov's h-principle. Differential topology, not algebra, so the
-project built a differential-geometry API first and proved the theorem
-afterwards. That order is the ordinary shape of formalization work,
-and the reason Mathlib matters more than any single theorem in it.
+A sphere can be turned inside out without tearing or creasing. In the
+plane the turning number blocks the analogue: $`+1` cannot become
+$`-1`. In three dimensions that obstruction is gone.
+
+This is why Mathlib matters more than any single theorem in it.
 :::
 
 # Freiman-Ruzsa, 2023
 
-:::hstack
-{image "../static/figures/sumset.png" (height := "21vh")}[A set of small doubling beside its sumset]
-
-{image "../static/figures/portraits/gowers.jpg" (class := "portrait")}[Timothy Gowers] {image "../static/figures/portraits/green.jpg" (class := "portrait")}[Ben Green] {image "../static/figures/portraits/tao.jpg" (class := "portrait")}[Terence Tao] {image "../static/figures/portraits/placeholder_manners.png" (class := "portrait")}[Freddie Manners]
-:::
+::::::hstack
+::::vstack
+{image "../static/figures/portraits/gowers.jpg" (class := "portrait")}[Timothy Gowers]
 
 :::class "names"
-Timothy Gowers, Ben Green, Terence Tao, Freddie Manners
+Timothy Gowers
 :::
+::::
 
-:::fragment fadeUp
-Formalized in about three weeks -- *before* the paper was refereed.
+::::vstack
+{image "../static/figures/portraits/green.jpg" (class := "portrait")}[Ben Green]
+
+:::class "names"
+Ben Green
 :::
+::::
 
-
-:::notes
-The method carried further than the theorem. A *blueprint* cuts a
-formalization into independent pieces with stated interfaces, so
-volunteers can work in parallel without talking to each other.
-
-Formalization stopped being a job for one team over years: the step
-between "LTE, two years" and "Fermat, eleven days".
-:::
-
-# Equational Theories, 2024-25
-
+::::vstack
 {image "../static/figures/portraits/tao.jpg" (class := "portrait")}[Terence Tao]
 
 :::class "names"
 Terence Tao
 :::
+::::
 
-:::fitText
-22 028 942 implications between 4 694 laws.
+::::vstack
+{image "../static/figures/portraits/placeholder_manners.png" (class := "portrait")}[Freddie Manners]
+
+:::class "names"
+Freddie Manners
+:::
+::::
+::::::
+
+*The problem:* a formalization took one team years, so it always came long after the paper.
+
+:::fragment highlightBlue
+A *blueprint* cuts the work into pieces with stated interfaces. Strangers in parallel, three weeks, before refereeing.
 :::
 
+:::notes
+A set whose sumset is barely larger than itself must be structured.
+
+The method carried further than the theorem: this is the step between
+"LTE, two years" and "Fermat, eleven days".
+:::
+
+# Equational Theories, 2024-25
+
+*The problem:* 22 028 942 implications between 4 694 laws on magmas. Not deep -- but beyond any human team.
+
+```lean -panel -stretch
+abbrev Equation3 (a : Type) [Mul a] :=
+  ∀ x : a, x = x * x
+
+abbrev Equation4 (a : Type) [Mul a] :=
+  ∀ x y : a, x = x * y
+
+-- Equation 4 implies Equation 3: take y := x.
+example (a : Type) [Mul a] (h : Equation4 a) :
+    Equation3 a :=
+  fun x => h x x
+```
 
 :::notes
-All implications between equational laws on magmas, settled, with new
-constructions found on the way.
+Led by Terence Tao. All implications settled, with new constructions
+found on the way.
 
-The difficulty is not depth but bookkeeping, on a scale that needs a
-machine.
+That is one entry of twenty-two million. Proving an implication can be
+a single substitution; refuting one means building a magma, and the
+machine checks that too, by `decide`.
 :::
 
 # Sphere packing, dim. 8 and 24
 
-:::hstack
-{image "../static/figures/e8_roots.png" (height := "30vh")}[The 240 roots of E8 in the Coxeter plane]
-
+::::vstack
 {image "../static/figures/portraits/viazovska.jpg" (class := "portrait")}[Maryna Viazovska]
-:::
 
 :::class "names"
 Maryna Viazovska
 :::
+::::
+
+*The problem:* the mathematics was finished in 2016, and formalizing it still took a human project two years.
+
+:::fragment highlightBlue
+In Lean, on *Mathlib*. An autoformalizer closed dimension 8 in five days, February 2026.
+:::
 
 :::notes
-Viazovska 2016, Fields Medal 2022. The packing is the E8 lattice; these
-are its 240 shortest vectors.
+Viazovska 2016, Fields Medal 2022. The packing is the E8 lattice.
 
-Human formalization project from 2024, finished by an autoformalizer in
-February 2026 -- dimension 8 in five days. This is the February entry
-from the 2026 slide; it belongs to both stories.
+Same system as everything else in this lecture: Lean, building on
+Mathlib. The human project started in 2024.
 
 This closes the thread that opened with Kepler, four hundred years
-earlier.
+earlier -- and it is the February entry from the 2026 slide.
 :::
 
 # Three systems
@@ -602,6 +668,33 @@ Point at a node, follow an edge, show how analysis sits on order sits
 on algebra.
 :::
 
+# What the course is for
+
+:::fragment fadeUp
+*Interactive theorem proving.* A small kernel checks every step; the editor shows what is left.
+:::
+
+:::fragment fadeUp
+*Mathematics.* Easy at first -- explaining a proof to a machine means understanding it. Deeper later.
+:::
+
+:::fragment fadeUp
+*Functional programming.* Inductive types, structures, typeclasses, monads.
+:::
+
+:::fragment highlightBlue
+The exercises carry the course. The second half is your own project.
+:::
+
+:::notes
+This is not the older use of computers in mathematics, which was to
+work through many cases. Here the machine checks the reasoning.
+
+The sheets cover the first half of the semester. In the second half
+they work on a project, mostly self-chosen -- an exercise from the
+first year, or a corner of Mathlib they want to know.
+:::
+
 # Where to start
 
 :::fragment fadeUp
@@ -623,6 +716,41 @@ they do one thing before Wednesday, that is it.
 The other two are references for the semester, not homework.
 :::
 
+# What your machine needs
+
+Every sheet begins with `import Mathlib`, so a two-line sheet needs as much memory as the hardest one.
+
+:::table +colHeaders +rowSeps
+*
+  * Resource
+  * Minimum
+  * Comfortable
+*
+  * RAM
+  * 16 GB
+  * 32 GB
+*
+  * Free disk
+  * 20 GB
+  * 20 GB
+*
+  * Disk
+  * SSD
+  * NVMe SSD
+:::
+
+:::fragment highlightBlue
+Below the minimum? Talk to us -- there is a server with 128 GB.
+:::
+
+:::notes
+Compiling one sheet peaks at about 6.6 GB resident; the language
+server sits at roughly 9 GB with one file open. Most of that is
+memory-mapped library data the system can drop and read back, so less
+memory slows everything down rather than breaking it. On a mechanical
+hard disk you cannot work at all.
+:::
+
 # Wednesday
 
 :::fitText
@@ -630,11 +758,7 @@ Bring a laptop. With administrator rights.
 :::
 
 :::fragment fadeUp
-Follow the instructions to [install Lean and Mathlib](https://leanprover-community.github.io/get_started.html) beforehand.
-:::
-
-:::fragment fadeUp
-The full list is in the [course notes](https://pfaffelh.github.io/leancourse/), at the end of the first chapter.
+Follow the [installation instructions](https://pfaffelh.github.io/leancourse/Introduction/#practical) in the course notes beforehand.
 :::
 
 :::fragment highlightBlue
@@ -650,4 +774,3 @@ Say the last point twice. `lake exe cache get` downloads the compiled
 Mathlib; without it every machine in the room compiles Mathlib from
 source at once, which takes hours and kills the session.
 :::
-

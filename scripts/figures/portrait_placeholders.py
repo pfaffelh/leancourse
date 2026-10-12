@@ -14,7 +14,8 @@ from matplotlib.patches import Circle, Wedge
 
 SAND, MUTED, PAPER = "#c3c2b7", "#8a8980", "#f3f2ee"
 PEOPLE = {"gonthier": "GG", "commelin": "JC", "massot": "PM",
-          "vandoorn": "FvD", "nash": "ON", "manners": "FM"}
+          "vandoorn": "FvD", "nash": "ON", "manners": "FM",
+           "church": "AC"}
 OUT = Path(__file__).resolve().parents[2] / "static" / "figures" / "portraits"
 
 

@@ -18,7 +18,6 @@ def staticCss := {{
     <link rel="stylesheet" href="/static/print.css" />
     <link rel="stylesheet" href="/static/fonts/source-serif/source-serif-text.css" />
     <link rel="stylesheet" href="/static/fonts/source-code-pro/source-code-pro.css" />
-    <link rel="stylesheet" href="/static/katex/katex.min.css" />
     <link rel="stylesheet" href="/static/figures.css" />
   }}
 
@@ -31,8 +30,6 @@ def staticIcons := {{
 
 open Verso.Output.Html in
 def staticJs := {{
-    <script src="/static/katex/katex.min.js"></script>
-    <script src="/static/math.js"></script>
     <script src="/static/print.js"></script>
   }}
 

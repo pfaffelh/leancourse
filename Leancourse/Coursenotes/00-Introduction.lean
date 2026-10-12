@@ -88,7 +88,74 @@ number := false
 tag := "prehistory"
 %%%
 
-Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated; Bertrand Russell's letter of 1902 showed that the system was inconsistent. Whitehead and Russell spent *Principia Mathematica* rebuilding; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it. De Bruijn's *[Automath](https://en.wikipedia.org/wiki/Automath)* (1967) was the first system to check proofs mechanically, and in 1977 van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it -- the first complete mathematics book verified by machine.
+Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated; Bertrand Russell's letter of 1902 showed that the system was inconsistent. Whitehead and Russell spent *Principia Mathematica* rebuilding; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
+
+David Hilbert turned the idea into a programme in the 1920s. Write mathematics in a fixed formal language, fix the rules of inference, and a proof becomes a finite string of symbols. Whether it follows the rules is then a question about symbols, answerable without knowing what they mean. Hilbert asked for two things on top of that: a proof that the system is consistent, using finitary means only, and a procedure deciding every mathematical question.
+
+:::figure "David Hilbert and Kurt Gödel" (tag := "hilbert-godel")
+![David Hilbert](/static/figures/portraits/hilbert.jpg)
+![Kurt Gödel](/static/figures/portraits/godel.jpg)
+:::
+
+Kurt Gödel's incompleteness theorems of 1931 removed the first. No consistent system that contains arithmetic and whose axioms a machine can list proves every true statement about the natural numbers, and none proves its own consistency. The formalization itself survived, and it is what proof assistants rest on. Gödel's proof takes it literally: he encodes formulas and proofs as natural numbers and computes with them, the first use of proofs as data.
+
+## 1936: what a machine cannot do
+%%%
+number := false
+tag := "entscheidungsproblem"
+%%%
+
+Hilbert and Wilhelm Ackermann asked in 1928, in *Grundzüge der theoretischen Logik*, for a procedure that decides for an arbitrary formula of first-order logic whether it is provable. This is the *Entscheidungsproblem*. Alonzo Church and Alan Turing answered it in 1936, independently and negatively: there is no such procedure.
+
+:::figure "Alonzo Church and Alan Turing" (tag := "church-turing")
+![Alonzo Church (no freely licensed photograph available)](/static/figures/portraits/placeholder_church.png)
+![Alan Turing](/static/figures/portraits/turing.jpg)
+:::
+
+Both had to say first what a procedure is, and each built a model of computation to do it. Turing's is the machine that carries his name: a tape, a finite control, one symbol at a time. Church's is the *lambda calculus*, and it is the one this course uses every day.
+
+The lambda calculus is a notation for functions, and nothing else. The term $`\lambda x.\, x + 1` denotes the function sending $`x` to $`x + 1`, the term $`f\, a` denotes $`f` applied to $`a`, and the only rule of computation is substitution:
+$$`(\lambda x.\, x + 1)\, 3 \;\rightsquigarrow\; 3 + 1.`
+Numbers, pairs and recursion are not built in; they are written as lambda terms. That is what makes the calculus a model of computation and not just a notation. Turing proved in an appendix to his paper that his machines and Church's terms compute the same functions.
+
+Lean is this notation with types on top. The Lean spelling of $`\lambda x.\, x+1` is `fun x => x + 1`, and the kernel computes by substituting:
+
+```lean
+#check fun x : Nat => x + 1
+
+example : (fun x : Nat => x + 1) 3 = 3 + 1 := rfl
+```
+
+The step from a calculus of functions to a calculus of proofs is the *Curry-Howard correspondence*: a proposition is a type, a proof is a term of that type, and checking a proof is type-checking a program. Haskell Curry saw the pattern for implication in the 1930s; de Bruijn, William Howard and Hans Läuchli extended it to the quantifiers in the 1960s. It is the reason `theorem` and `def` are the same construct in Lean.
+
+Three questions about proofs have three different answers, and a proof assistant is built on the difference.
+
+1. *Does this text prove that statement?* Decidable, and cheap. This is what Lean's kernel does, and the whole trust of the system rests on it.
+2. *Find a proof of this statement.* Semi-decidable. Proofs can be enumerated one after another, so a search ends when a proof exists. When none exists it runs forever, which is why `exact?` and `grind` come with a time limit.
+3. *Decide whether this statement is provable.* Undecidable, by Church and Turing. No procedure answers yes or no, in finite time, for every formula.
+
+So the human writes the proof and the machine checks it. That division of labour is a theorem of 1936, not a property of today's software.
+
+## The first proof assistants
+%%%
+number := false
+tag := "first-assistants"
+%%%
+
+Nicolaas Govert de Bruijn started *[Automath](https://en.wikipedia.org/wiki/Automath)* at Eindhoven in 1967 and published it in 1968, the first language in which a machine checked proofs. Its foundation is a typed lambda calculus with dependent types -- types that may mention terms, as `Vec α n` mentions `n` -- and it was the first system to use the Curry-Howard correspondence in practice; de Bruijn found the correspondence himself, not knowing Howard's work. In 1977 L. S. van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it, the first mathematics book verified end to end.
+
+:::figure "Nicolaas Govert de Bruijn, who built Automath" (tag := "debruijn")
+![Nicolaas Govert de Bruijn](/static/figures/portraits/debruijn.jpg)
+:::
+
+Four lines come out of the following twenty years, and the systems of today are on them.
+
+* *Mizar*, Andrzej Trybulec, 1973. A formal language meant to be read like mathematical prose, over set theory. Its library has been growing for fifty years.
+* *LCF*, Robin Milner, Stanford 1972 and Edinburgh 1975. The idea there is architectural: `thm` is an abstract data type, and the only functions that produce a value of that type are the inference rules. Anything may then be built on top without being trusted. The language ML was invented to write it.
+* *HOL*, Mike Gordon, from the mid-1980s: LCF with simple higher-order logic in place of the original logic, used first for hardware verification. *Isabelle* follows in 1986 (Lawrence Paulson), *Isabelle/HOL* in 1991 (Tobias Nipkow).
+* *Coq*, from 1989, on the Calculus of Constructions and from the mid-1990s on the Calculus of Inductive Constructions. That is the foundation Lean also uses, and the system was renamed *Rocq* in 2025.
+
+The two architectures answer the same question differently. In the LCF line nothing is kept but the theorem, and one trusts the kernel because no other code can make one. In the Automath line the system writes down a proof term, which a small, separate checker reads afterwards; a system meeting that condition is said to satisfy the *de Bruijn criterion*. Lean is in the second line: a Lean proof is a term, and the kernel rechecks it no matter which tactic produced it.
 
 ## 1976: what a computer proof is worth
 %%%
@@ -398,7 +465,7 @@ number := false
 tag := "credits"
 %%%
 
-The mathematical figures were generated by the scripts in `scripts/` and may be reused freely. The photographs, here and in the {ref "slides"}[slide decks], come from Wikimedia Commons and are reproduced unchanged under their own licences:
+The mathematical figures were generated by the scripts in `scripts/` and may be reused freely. The photographs, here and in the {ref "slides"}[slide decks], come from Wikimedia Commons and are reproduced under their own licences, unchanged except where noted:
 
 * Thomas Hales -- Slawekb, CC BY-SA 3.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Halescropped.jpg)
 * Peter Scholze -- George Bergman, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Peter_Scholze_2014_cropped.jpg)
@@ -411,9 +478,13 @@ The mathematical figures were generated by the scripts in `scripts/` and may be 
 * Terence Tao -- Institute for Pure and Applied Mathematics, CC BY 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Terence_Tao_at_IPAM%27s_Fireside_Chat_2026_%2850m16s%29_%28cropped%29.jpg)
 * Gottlob Frege, around 1879 -- photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Young_frege.jpg)
 * Bertrand Russell in 1907 -- photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Bertrand_Russell_in_1907.jpg)
+* David Hilbert -- photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hilbert.jpg)
+* Kurt Gödel -- photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kurt_g%C3%B6del.jpg)
+* Alan Turing in 1951 -- Elliott and Fry, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Alan_Turing_%281951%29_%28crop%29.jpg)
+* Nicolaas Govert de Bruijn -- Konrad Jacobs, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, cropped to head and shoulders, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Nicolaas_de_Bruijn.jpg)
 
 The two product marks in this chapter -- Claude and ChatGPT -- are also from Wikimedia Commons, under CC0 and in the public domain respectively. They remain trademarks of their owners and are used here only to say which system produced which proof.
 
 The icon in the browser tab is the `L` of the Lean wordmark, redrawn as a single stroke on a square in the Freiburg identity blue (`#34499a`). The source is `static/favicon.svg`.
 
-Several people named in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the [Feit-Thompson theorem](https://en.wikipedia.org/wiki/Feit%E2%80%93Thompson_theorem), Johan Commelin, who led the Liquid Tensor Experiment, Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. They appear above as grey silhouettes with their initials. The photographs are therefore a fair sample of who is *famous*, not of who did this work, and the silhouettes are left visible rather than quietly omitted for that reason.
+Several people named in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the [Feit-Thompson theorem](https://en.wikipedia.org/wiki/Feit%E2%80%93Thompson_theorem), Johan Commelin, who led the Liquid Tensor Experiment, Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. Alonzo Church is in the same position, for the opposite reason: the photographs of him are recent enough to be under copyright. They appear above as grey silhouettes with their initials. The photographs are therefore a fair sample of who is *famous*, not of who did this work, and the silhouettes are left visible rather than quietly omitted for that reason.

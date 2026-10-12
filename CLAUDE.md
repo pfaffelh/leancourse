@@ -1074,3 +1074,43 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
   blendet nicht benachbarte Folien aus, deshalb der Umweg -- ohne ihn
   meldet `scrollHeight` fuer fast alle Folien 0.
 
+
+## 2026-10-12 (5) -- Hilbert, Church, Turing, Lambda-Kalkuel
+
+- **Luecke im Kapitel 0 geschlossen.** Zwischen Russell (1902) und
+  Automath (1967) stand nichts. Jetzt drei Abschnitte unter "How it got
+  here": `prehistory` (Frege, Russell, Hilbertprogramm, Goedel 1931),
+  `entscheidungsproblem` (Hilbert/Ackermann 1928, Church und Turing
+  1936, Lambda-Kalkuel, Curry-Howard) und `first-assistants` (Automath,
+  Mizar, LCF, HOL, Isabelle, Coq; LCF-Architektur gegen de-Bruijn-
+  Kriterium).
+- **Der didaktische Kern** ist die Dreiteilung: einen Beweis *pruefen*
+  ist entscheidbar (Kernel), einen *finden* semi-entscheidbar
+  (`exact?`, `grind`, daher das Zeitlimit), *Beweisbarkeit entscheiden*
+  unentscheidbar (1936). Das ist die Antwort auf "warum macht es der
+  Rechner nicht einfach selbst" und die Begruendung dafuer, dass Blatt
+  `01-g` `grind` eine finishing tactic nennt.
+- **Folien 23 -> 28**: "The idea is old" aufgeteilt in The idea is old /
+  Hilbert's programme / 1936: Church and Turing / The lambda calculus /
+  Checking is not finding / 1967: the first checker.
+- **Mathe im Folien-Header geht nicht**: `# The $`\lambda`-calculus`
+  bricht mit "Failed to convert ... inline_math". Ein literales `λ` im
+  Header wird von reveals `text-transform: uppercase` zu `Λ` -- deshalb
+  heisst die Folie ausgeschrieben "The lambda calculus".
+- **KaTeX wurde doppelt geladen.** `Main.lean` brachte ueber `staticCss`
+  /`staticJs` eine eigene Kopie von `katex.min.js` und `math.js` mit,
+  Verso laedt unter `-verso-data/katex/` dieselben Dateien. Beide
+  Listener rufen `katex.render(m.textContent, m, ...)` auf derselben
+  Stelle auf, der zweite liest den schon gerenderten Text -- jede Formel
+  stand zwei- bis dreimal da. Im Manuskript war vorher nirgends Mathe
+  gesetzt, deshalb ist es nie aufgefallen. Die drei Tags in `Main.lean`
+  sind raus; `static/katex/` (3 MB) und `static/math.js` sind damit
+  unbenutzt und koennen weg.
+- **Neue Portraits** (`fetch_portraits.py`): Hilbert, Goedel, Turing
+  (alle public domain), de Bruijn (MFO, CC BY-SA 2.0 de, auf Kopf und
+  Schultern beschnitten -- `CROP` im Skript, in CREDITS.md vermerkt).
+  Von Alonzo Church gibt es kein freies Foto, er bekommt eine
+  Silhouette wie Gonthier und die anderen.
+- **URLs mit Klammern** zerlegen Versos Markdown-Links: der Commons-
+  Pfad `File:Alan_Turing_(1951)_(crop).jpg` muss `%28`/`%29` schreiben,
+  sonst `error: '_'`.

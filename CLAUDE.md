@@ -976,3 +976,41 @@ Kuerzungen liegen dort, nicht in den Listen.
   Verso.Output.Html but is expected to have type Html".  Umgekehrt
   bringt `open Verso Output in` zwar den Typ, aber nicht die
   `{{ }}`-Syntax.
+
+## 2026-10-12 (2) -- Kapitel 0 bekommt Struktur, Bilder ausgeduennt
+
+- **Kapitel 0 ist jetzt ein eigener Teil**,
+  `Leancourse/Coursenotes/00-Introduction.lean`, mit zehn
+  `#`-Abschnitten und darunter `##`-Unterabschnitten.  Der Grund ist
+  eine Verso-Eigenheit: ob Unterteile eigene HTML-Seiten werden,
+  entscheidet der **Elternteil** (`VersoManual.lean:943`,
+  `if depth > 0 ∧ part.htmlSplit != .never`).  `#`-Ueberschriften direkt
+  im Wurzeldokument werden deshalb zwangslaeufig eigene Seiten -- ein
+  `htmlSplit := .never` an der Ueberschrift selbst hilft nicht.  Als
+  eigener Teil mit `htmlSplit := .never` bleibt alles auf einer Seite.
+- **`number := false`** am Teil haelt ihn aus der Nummerierung heraus:
+  Introduction ohne Nummer, danach weiter mit 1. bis 6., also bleibt
+  "6. Slides" wie gewuenscht.  Die Wurzelseite ist jetzt eine
+  Titelseite mit Inhaltsverzeichnis.
+- **Verso-Falle:** `*x*` ist in Verso **fett**, nicht kursiv, und
+  erzeugt `<strong>`.  `**x**` erzeugt dasselbe und bringt nur die
+  Warnung "Unnecessary '*'".  Fette Absatz-Header waeren von der
+  normalen Hervorhebung also nicht zu unterscheiden gewesen -- daher
+  echte `##`-Ueberschriften.
+- **Bildzeilen.** `static/figures.css` ist umgebaut: die `figure` ist
+  jetzt eine Spalte, und jeder `<p>` darin eine zentrierte Zeile.  Weil
+  Verso Bilder in aufeinanderfolgenden Quellzeilen in **einen** Absatz
+  setzt und bei Leerzeile dazwischen in getrennte, steuert die Quelle
+  die Zeilenaufteilung: Portraits beginnen eine neue Zeile, ausser wo
+  alles in eine passt (four colour, Kepler, die beiden Logos).
+- **Weg sind** die Bilder zu LTE, Perfectoid Spaces, Sphere Eversion
+  und Freiman-Ruzsa, und der doppelte Sphere-Packing-Eintrag unten (er
+  steht oben im 2026-Abschnitt).  Die PNGs bleiben im Repo, die Folien
+  benutzen sie weiter.
+- **arXiv-Grafik als Anteil.** `scripts/make_arxiv_figure.py` mit
+  `scripts/data/arxiv_math_weekly.csv` (Auszug aus dem Volltext-Scan in
+  `~/bwSyncShare/Vortraege/20260720_CRC`).  Anteil statt Zahl, weil der
+  Nenner mitgewachsen ist: arXiv-math ging von ~1 000 Einreichungen pro
+  Woche im Januar auf ~2 450 Ende September.  Der Anteil steigt von
+  ~0,3 auf ~1,5 bis 2 pro 100.
+

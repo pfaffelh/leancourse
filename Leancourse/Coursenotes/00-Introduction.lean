@@ -1,0 +1,393 @@
+import VersoManual
+import Manual.Meta
+import Mathlib
+
+open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
+
+#doc (Manual) "Introduction" =>
+%%%
+htmlSplit := .never
+number := false
+tag := "introduction"
+%%%
+
+What formalizing means, why anyone does it, how the field got here, and
+how this course is run.
+
+# What formalizing means
+%%%
+number := false
+tag := "what-formalizing"
+%%%
+
+To formalize a proof is to write it in a language precise enough that a computer can check every step. The machine does not look for the proof. It reads the one you give it and confirms that each step follows from the axioms and from what came before. Anything left out is refused.
+
+*Finding a proof is not checking one.* In 1976 a computer checked a long list of cases in the four colour theorem. The argument around that list was ordinary mathematics on paper, and nothing checked it.
+
+*Autoformalizing goes the other way.* Formalizing starts from a proof and ends in a formal text. Autoformalizing starts from informal mathematics -- a statement, a paper -- and has a machine produce that text. Both end at the same place, a text the kernel accepts. The program that writes a proof may be unreliable in any way it likes; the program that checks it is small and fixed.
+
+This course is about the first direction. You will write the proofs.
+
+# Why formalize?
+%%%
+number := false
+tag := "why-formalize"
+%%%
+
+Until recently, formalizing a serious theorem took a team and several years. That is no longer so, and the change is recent enough to date precisely.
+
+* *February 2026.* The [sphere packing](https://en.wikipedia.org/wiki/Sphere_packing) theorem in dimension 8 was finished by an autoformalizer in five days. A human project had been working on it since 2024. It is the first of these results and the clearest: the mathematics was settled, so only the formalizing was left. [Maryna Viazovska](https://en.wikipedia.org/wiki/Maryna_Viazovska) proved the dimension-8 case in 2016 and received the Fields Medal for it, which closes a thread that opens with Kepler four hundred years earlier.
+* *4 September 2026.* Anthropic announced the first complete computer-checked proof of [Fermat's Last Theorem](https://en.wikipedia.org/wiki/Fermat%27s_Last_Theorem), produced by Claude over eleven days: roughly 13 million lines of Lean and some 29 500 intermediate theorems, following a simplified version of Wiles's 1995 proof and building on *Mathlib*. Kevin Buzzard, who has led the community formalization effort since 2024 on a five-year grant, reviewed it and confirmed that it *proves Fermat's Last Theorem with no assumptions other than the axioms of mathematics*. That confirmation is itself machine-checkable, by `#print axioms` (Appendix).
+* *8 September 2026.* OpenAI announced a proof, with a Lean formalization, that a smooth three-dimensional fluid obeying the [Navier-Stokes equations](https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_existence_and_smoothness) *under a smooth external force* can develop a singularity in finite time. This is not the Millennium Prize problem, which concerns the unforced equation, and the prize is unclaimed. It was followed by a public argument about credit, and about treating open problems as benchmarks.
+* *6 October 2026.* OpenAI published a catalogue of results from an unreleased internal model -- at the time of writing 719 manuscripts grouped into 372 families, of which about 42 % of the top-line results carry a Lean formalization. Each result took, on average, about three hours of the model's thinking time; roughly 4 000 problems were posed in all.
+* *7 October 2026.* One day later, three of those manuscripts were withdrawn: a sign error invalidated an argument in one, and two further papers depended on it. Fourteen more were revised. None of the withdrawn papers had a Lean proof.
+
+:::figure "The two systems behind the September 2026 announcements. Both delivered Lean files with their proofs" (tag := "ai-labs")
+![Claude](/static/figures/logos/claude.png)
+![ChatGPT](/static/figures/logos/chatgpt.png)
+:::
+
+Those last two dates belong together. Machines now produce mathematics faster than mathematicians can referee it, and the only check that keeps up is a formal one.
+
+A Lean proof shows that the formal statement follows from the axioms. It does not show that the statement says what the paper claims; that is a separate, human question. OpenAI's repository documents, per paper, which checks cover a main theorem and which only a supporting result. Reading a formal statement and judging what it says is most of what this course teaches.
+
+# Where the field stands
+%%%
+number := false
+tag := "field-stands"
+%%%
+
+Two pictures from public data. They compare Lean with [Rocq](https://rocq-prover.org/) (*Coq* until 2025) and [Isabelle/HOL](https://isabelle.in.tum.de/), the two other large proof assistants; how they differ is a question of foundations, taken up under {ref "other-provers"}[Other theorem provers].
+
+:::figure "New GitHub repositories per quarter, per million new repositories overall" (tag := "itp-repos")
+![Line chart: new GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle from 2018 to 2026, each per million new repositories overall; Lean rises from under ten to about two hundred while the others stay near ten](/static/figures/itp_github_repos_per_million.png)
+:::
+
+Counting per million corrects for GitHub's own growth, which was steep in 2026. One distortion is left in: the Justin Sun Prize, announced in September 2026, pays for solved problems only against a machine-verified proof, and about a fifth of that month's new Lean repositories carry a prize identifier.
+
+Until about 2023 the three were comparable, with Coq the largest. The rise is recent, and it is not evidence that Lean is better: Isabelle's automation is still ahead in places, and Rocq has decades of verified-software work behind it. It is evidence about where people are going.
+
+:::figure "Papers on the mathematics arXiv whose results are checked in Lean, per 100 submissions" (tag := "arxiv-lean")
+![Bar chart: weekly share of arXiv mathematics papers with a Lean-checked result during 2026, rising from about 0.3 per 100 in January to between 1.5 and 2 per 100 in September](/static/figures/arxiv_lean_formalized_share.png)
+:::
+
+The share rises through 2026 and is still under two in a hundred. It is a share rather than a count because the denominator moved too: the mathematics arXiv received about a thousand submissions a week in January and about twice that at the end of September. Within a few years, reading and writing a formal proof will be ordinary equipment.
+
+# How it got here
+%%%
+number := false
+tag := "how-it-got-here"
+%%%
+
+The idea is a century and a half old. The four episodes that made it urgent all fall in the last fifty years, and each added a different reason to want a machine to check mathematics.
+
+## Before there were machines
+%%%
+number := false
+tag := "prehistory"
+%%%
+
+Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated; Bertrand Russell's letter of 1902 showed that the system was inconsistent. Whitehead and Russell spent *Principia Mathematica* rebuilding; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it. De Bruijn's *[Automath](https://en.wikipedia.org/wiki/Automath)* (1967) was the first system to check proofs mechanically, and in 1977 van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it -- the first complete mathematics book verified by machine.
+
+## 1976: what a computer proof is worth
+%%%
+number := false
+tag := "four-colour-episode"
+%%%
+
+Kenneth Appel and Wolfgang Haken proved the [four colour theorem](https://en.wikipedia.org/wiki/Four_color_theorem). Their argument reduced the problem to a long list of configurations and then checked that list by computer. No human has ever read that part, and for two decades the community argued about whether it counted as a proof at all.
+
+:::figure "Four colours suffice for any map in the plane. Georges Gonthier, who formalized the proof" (tag := "four-colour")
+![A map of thirty-four regions, coloured with four colours so that no two neighbours share one](/static/figures/four_colour.png)
+![Georges Gonthier (no photograph available)](/static/figures/portraits/placeholder_gonthier.png)
+:::
+
+In 2005 Georges Gonthier formalized the whole thing in Coq, case analysis included. The two events separate the distinction this course rests on: *a proof found by computer is not a proof checked by computer.*
+
+## 1998: where peer review stops
+%%%
+number := false
+tag := "kepler-episode"
+%%%
+
+Thomas Hales announced a proof of the [Kepler conjecture](https://en.wikipedia.org/wiki/Kepler_conjecture): no packing of equal spheres in space is denser than the way a greengrocer stacks oranges.
+
+:::figure "The packing Kepler conjectured to be optimal in 1611, and Thomas Hales, who proved it" (tag := "kepler")
+![A pyramid of equal spheres, the face-centred cubic packing, with density pi over root 18](/static/figures/kepler_packing.png)
+![Thomas Hales](/static/figures/portraits/hales.jpg)
+:::
+
+Twelve referees worked on it for four years and reported that they were ninety-nine percent certain, and could do no better. The *Annals of Mathematics* published it with that caveat. Hales started the [Flyspeck project](https://en.wikipedia.org/wiki/Flyspeck), which delivered a complete formal proof in HOL Light and Isabelle in 2014. This episode is not about computers: peer review had met a proof it could not certify, and more effort would not have helped.
+
+## 2013: whether the author can trust himself
+%%%
+number := false
+tag := "voevodsky-episode"
+%%%
+
+In 1989 Vladimir Voevodsky and Mikhail Kapranov published a theorem identifying [higher groupoids](https://en.wikipedia.org/wiki/Infinity-groupoid) with homotopy types. In October 1998 Carlos Simpson posted an argument implying that it could not be true. Voevodsky went on believing his own theorem until the autumn of 2013.
+
+:::figure "Vladimir Voevodsky at Oberwolfach in 2011, during a workshop on the homotopy interpretation of type theory" (tag := "voevodsky")
+![Vladimir Voevodsky](/static/figures/portraits/voevodsky.jpg)
+:::
+
+His account is about people, not machines. Simpson had a counterexample but could not say which step was wrong, so it stayed unclear who had erred. Mathematics runs, in Voevodsky's words, on *a complex system of mutual trust based on reputations*, and both authors had one. The doubt made the theorem unused without settling it, for fifteen years. A second mistake, in a lemma of his own from 1992, stood in print until a listener checking his lectures found it in 1999; several seminars had read the paper by then. A hard technical argument by a trusted author, he concluded, is *hardly ever checked in detail*.
+
+Voevodsky received the Fields Medal in 2002. He then looked for a proof assistant he could use, found none that suited his mathematics, and built the foundations for one: [univalent foundations](https://en.wikipedia.org/wiki/Univalent_foundations), a special year at the Institute for Advanced Study in 2012-13, and the book two dozen people wrote there in under six months. He formalized in Coq, and his foundations are not the ones *Mathlib* rests on: Lean 2 carried a mode for them, Lean 3 dropped it. This course takes the diagnosis, not the cure. His [own account](https://www.ias.edu/ideas/2014/voevodsky-origins) is short. He died in 2017.
+
+## 2020: who is asking for it now
+%%%
+number := false
+tag := "lte-episode"
+%%%
+
+In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog: a theorem in condensed mathematics whose proof he was not sure of. A Fields medallist, publicly unsure of his own argument, asking a machine to check it. The *[Liquid Tensor Experiment](https://leanprover-community.github.io/liquid/)*, led by Johan Commelin, finished in July 2022. *[Condensed mathematics](https://en.wikipedia.org/wiki/Condensed_mathematics)* rebuilds topology on profinite sets rather than on open covers. The request came from a working mathematician at the centre of his subject, not from logicians or computer scientists. That is what had changed.
+
+Buzzard's plenary lecture at the ICM in 2022 marks the point where formalization stopped being a curiosity.
+
+## The tool is much younger than the idea
+%%%
+number := false
+tag := "lean-itself"
+%%%
+
+:::figure "Leonardo de Moura, who started Lean in 2013" (tag := "demoura")
+![Leonardo de Moura](/static/figures/portraits/demoura.jpg)
+:::
+
+Leonardo de Moura started Lean at Microsoft Research in 2013. Lean 4, a redesign rather than a new version, arrived in 2021. Development now sits with the Lean FRO, a non-profit of roughly twenty people. Kevin Buzzard has argued for Lean among mathematicians since 2018.
+
+# Landmark formalizations
+%%%
+number := false
+tag := "landmarks"
+%%%
+
+Between Flyspeck and 2026, each of these projects showed that something new was possible. The course material is built out of the libraries they left behind.
+
+## Perfectoid spaces, 2019
+%%%
+number := false
+tag := "perfectoid-landmark"
+%%%
+
+By Buzzard, Commelin and Massot ([project page](https://leanprover-community.github.io/lean-perfectoid-spaces/)). They formalized a *definition* rather than a theorem: Scholze's [perfectoid spaces](https://en.wikipedia.org/wiki/Perfectoid_space) of 2012. Whether an object of that complexity could be stated at all in a proof assistant was open, and stating is a different problem from proving. Lean's reputation among mathematicians dates from this project.
+
+## Sphere eversion, 2022
+%%%
+number := false
+tag := "eversion-landmark"
+%%%
+
+By Massot, van Doorn and Nash ([project page](https://leanprover-community.github.io/sphere-eversion/)): Gromov's [h-principle](https://en.wikipedia.org/wiki/Homotopy_principle), and with it the fact that a [sphere can be turned inside out](https://en.wikipedia.org/wiki/Sphere_eversion) without tearing or creasing. For closed curves in the plane no such thing is possible: a regular homotopy cannot change the turning number, and everting a circle would send $`+1` to $`-1`. In three dimensions that obstruction vanishes. Formalizing this meant differential topology rather than algebra, so the project built a usable differential-geometry API first and proved the theorem afterwards. That order is the ordinary shape of formalization work, and it is why *Mathlib* matters more than any single theorem in it.
+
+## The polynomial Freiman-Ruzsa conjecture, 2023
+%%%
+number := false
+tag := "pfr-landmark"
+%%%
+
+By Gowers, Green, Manners and Tao ([project page](https://teorth.github.io/pfr/)), formalized under Tao's direction in about three weeks -- before the paper had been refereed. It says that a set whose sumset is barely larger than itself must be structured.
+
+The method carried further than the theorem. A *blueprint* cuts a formalization into independent pieces with stated interfaces, so volunteers can work in parallel without talking to each other. Formalization stopped being a job for one team over years.
+
+## The Equational Theories Project, 2024 to 2025
+%%%
+number := false
+tag := "equational-landmark"
+%%%
+
+Led by Tao ([project page](https://teorth.github.io/equational_theories/)): all 22 028 942 implications between 4 694 equational laws on magmas settled, with new constructions found on the way. The difficulty is not depth but bookkeeping, on a scale that needs a machine.
+
+The laws are numbered. Equation 3 is $`x = x \diamond x`, Equation 4 is $`x = x \diamond y`. Proving an implication can be a single substitution; refuting one means building a magma.
+
+```lean
+abbrev Equation3 (a : Type) [Mul a] :=
+  ∀ x : a, x = x * x
+
+abbrev Equation4 (a : Type) [Mul a] :=
+  ∀ x y : a, x = x * y
+
+-- Equation 4 implies Equation 3: take y := x.
+example (a : Type) [Mul a] (h : Equation4 a) :
+    Equation3 a :=
+  fun x => h x x
+
+-- The converse fails: `and` on `Bool` is a
+-- counterexample, and the machine checks it.
+local instance : Mul Bool := ⟨(· && ·)⟩
+
+example : Equation3 Bool := by decide
+example : ¬ Equation4 Bool := by decide
+```
+
+That is one entry. The project settled 22 028 942 of them.
+
+# Other theorem provers
+%%%
+number := false
+tag := "other-provers"
+%%%
+
+The two systems Lean is usually compared with differ from it in their foundations, not in style.
+
+:::table (align := left) +header
+* + System
+  + Foundation
+  + Dependent types
+  + Library
+* + Lean 4
+  + a variant of the Calculus of Inductive Constructions
+  + yes
+  + *Mathlib*, one repository
+* + [Rocq](https://rocq-prover.org/) (until 2025 *Coq*)
+  + the predicative Calculus of Cumulative Inductive Constructions
+  + yes
+  + many separate packages
+* + [Isabelle/HOL](https://isabelle.in.tum.de/)
+  + simply typed higher-order logic
+  + no
+  + the *Archive of Formal Proofs*
+:::
+
+*Lean and Rocq* are close relatives. Both rest on a dependent type theory in which a proof is a *term* and checking a proof is type-checking; both have an impredicative, proof-irrelevant universe `Prop` of propositions sitting under a predicative hierarchy of data types. Lean differs in four points that return later in these notes: proof irrelevance holds *definitionally*, quotient types are primitive rather than built from setoids, there is no universe cumulativity, and classical reasoning enters through an axiom (`Classical.choice`). Rocq's roots are in program verification -- the CompCert C compiler and the Feit-Thompson theorem are Rocq developments -- and it extracts verified programs to OCaml or Haskell.
+
+*Isabelle/HOL* uses simple type theory: types are built from base types and arrows, types do not depend on terms, and one cannot write `Vec α n` for *lists of length `n`*. That logic is weak enough to automate well, and Isabelle's automation is the strongest of the three. *Sledgehammer* hands a goal to several external provers at once and reconstructs what they find as a proof Isabelle can check; much of what Lean's `grind` does, Isabelle has done for twenty years. Isabelle is also a framework: HOL is one object logic among several over the intuitionistic meta-logic Isabelle/Pure. Its largest development is *seL4*, an operating-system microkernel verified down to its C implementation.
+
+*How the libraries are organized* matters more day to day than the foundations.
+
+* *Mathlib* is one repository, compiled as a unit. Maintainers review every change, and CI keeps it building against the current Lean. There are no stable releases: *Mathlib* follows Lean, and your project follows *Mathlib*. Results combine without extra work, because all structures live in one hierarchy, built from `class` and `instance` (see the chapters on typeclasses and the algebraic hierarchy).
+* *Rocq* has no such centre. Its standard library is small, and the mathematics lives in independent packages -- *MathComp*, out of the Feit-Thompson formalization, *Coquelicot* and *MathComp-Analysis* for analysis, and others -- distributed through `opam`, with the *Rocq Platform* bundling a tested combination. Packages evolve at their own pace, which is comfortable with one dependency and awkward with two that disagree.
+* *Isabelle* sits in between. The *Archive of Formal Proofs* holds refereed, self-contained entries, released in lockstep with Isabelle. Entries may depend on one another but are never merged into one library; the archive is cited like a journal.
+
+We use Lean because *Mathlib* exists: the exercises start with `import Mathlib` and have the real numbers, measure theory and topology already there.
+
+# Other courses
+%%%
+number := false
+tag := "other-courses"
+%%%
+
+* [_Natural Number Game_](https://adam.math.hhu.de/#/g/leanprover-community/nng4): proofs about `ℕ` in the browser, nothing to install. The usual first contact with Lean, and a good use of an evening before the course starts.
+* [_Formalising Mathematics_](https://b-mehta.github.io/formalising-mathematics-notes/) by Bhavik Mehta, after notes by Kevin Buzzard: the format of the present course follows these.
+* [_Mathematics in Lean_](https://leanprover-community.github.io/mathematics_in_lean/) by Jeremy Avigad and Patrick Massot: the closest thing to an official course, organized by area of mathematics.
+
+# Lean and Mathlib
+%%%
+number := false
+tag := "lean-and-mathlib"
+%%%
+
+* Lean is also a programming language; see [Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
+* [*Mathlib*](https://github.com/leanprover-community/mathlib4) is a library written in Lean, collecting mathematical results. Every file in this course starts with `import Mathlib`, so we make no distinction between the two.
+* Measured on the version pinned for this course (15 September 2026): 8 529 files, 2.33 million lines, about 189 000 theorems and lemmas, about 64 000 definitions, instances and structures, by 1 031 contributors in 34 768 commits. In the thirty days before that date it received 820 commits, 27 per day. The library changes while you use it.
+* The [interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) draws *Mathlib* as a graph of its modules; the same site serves the [API documentation](https://leanprover-community.github.io/mathlib4_docs/) for every declaration. Both are worth half an hour before you need them.
+
+# Practical matters
+%%%
+number := false
+tag := "practical"
+%%%
+
+The rest of this chapter is about running the course.
+
+*Goals.* The course is for mathematics students.
+
+* *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write. This is not the older use of computers in mathematics, which was to work through many cases.
+* *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands -- *tactics* -- fit together. The second half goes deeper into the mathematics.
+* *Functional programming.* Inductive types, structures, typeclasses and monads, needed both to use Lean and to read *Mathlib*. These are spread across the Lean and Mathematics parts rather than collected in one chapter.
+* *Type theory.* Lean rests on dependent type theory: the Curry-Howard correspondence, dependent types, the universe hierarchy, and Lean's axioms.
+* *Mathematics in Mathlib.* How the library organizes order theory, the algebraic hierarchy, filters (a single framework for limits), topology, measure theory and discrete probability. Textbooks rarely treat these from the point of view of formalization.
+* *Proof engineering.* Automation tactics, searching *Mathlib*, and the common pitfalls of a large formal library.
+
+*How the course is organized.* Tactics and theory are interleaved rather than separated.
+
+* The first part, *Lean and its type theory*, introduces writing proofs and the dependent type theory underneath at the same time.
+* Tactics are documented alphabetically in a glossary in the *Appendix*. You will usually meet a tactic in a working example before reading its entry; a table at the start of *Proofs in Lean* lists the ones needed first.
+* Read in order, but on a first pass you can skip the tactics chapter and consult it when you hit a `sorry`.
+
+*How to use this course.* The notes have six parts.
+
+* *Lean and its type theory*: first the language, writing proofs, the functional-programming side (pure functions, pattern matching, recursion, higher-order functions) and navigating *Mathlib*; then the theory -- Curry-Howard, dependent types, universes, Lean's three axioms and what the kernel adds to them, the `structure` / `class` machinery, well-foundedness and the avoidance of paradoxes.
+* *Mathematics*: propositions, proofs and sets, then how *Mathlib* organizes order theory, the algebraic hierarchy, filters, topology, measure theory and monadic discrete probability (`PMF`). Pointers into the API, not full formalizations.
+* *Appendix*: common pitfalls, the diagnostic commands (`#print axioms`, `#find_home`, `#lint`), a keyword reference and the glossary of tactics (a longer list is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)).
+* *Projects*: five topics for the individual formalization projects in the second half, each with a description, a sketch of an implementation and references.
+* *Bibliography*: the works cited throughout, with links.
+* *Slides*: the decks used in the lecture, readable on their own.
+
+The exercises carry the course (the _Exercises_ folder within `Leancourse`). Feedback is immediate: error messages from the elaborator, and a *proof-state* panel showing what remains to be proved at every cursor position. Start with the first sheet; the sheets explain as they go.
+
+The sheets cover the first half of the semester. In the second half you work on an individual project, mostly self-chosen -- an exercise from your first year, or a part of `Mathlib` you want to know; the {ref "projects"}[Projects chapter] has five worked-out suggestions.
+
+Before the first exercise session, get Lean running on your own machine.
+
+*Hardware.* Lean memory-maps all of *Mathlib* while it works, and every exercise sheet begins with `import Mathlib`. A two-line sheet therefore needs as much memory as the hardest one in the course.
+
+:::table (align := left) +header
+* + Resource
+  + Minimum
+  + Comfortable
+* + RAM
+  + 16 GB
+  + 32 GB
+* + Free disk space
+  + 20 GB
+  + 20 GB
+* + Disk
+  + SSD
+  + NVMe SSD
+:::
+
+Measured on the version of *Mathlib* used here: compiling one sheet peaks at about 6.6 GB of resident memory, and the language server behind *vscode* sits at roughly 9 GB with one file open. Most of that is memory-mapped library data, which the system can drop and read back from disk, so less memory does not break anything, it only slows everything down. With 8 GB you can work with a single file open and little else running. On a mechanical hard disk you cannot.
+
+*If your machine is below the minimum, talk to the teachers at the start of the course.* A server with 128 GB of RAM is available and we can give you an account on it.
+
+Run the `git clone` and `lake exe cache get` below at home, before the first lab session: `lake exe cache get` downloads several gigabytes, and twenty people doing that at once on one network is slow for all of them.
+
+* Installation of [vscode](https://code.visualstudio.com/).
+* Open `vscode`, hit the _extensions_ icon (fifth from the top) on the left, and install the _Lean 4 language extension_.
+* Install `git`, if you do not have it: open `vscode`, hit the _git_ icon (third from the top on the left), and follow the instructions.
+* The exercises repository. Go to where you want the course materials and run
+```
+git clone https://github.com/pfaffelh/leancourse_exercises
+cd leancourse_exercises
+lake exe cache get
+code .
+```
+_vscode_ opens with the course materials. (These notes are generated from a second repository, [pfaffelh/leancourse](https://github.com/pfaffelh/leancourse), which you do not need to clone.)
+
+:::paragraph
+Another description of the installation is [here](https://leanprover-community.github.io/get_started.html#regular-install).
+:::
+
+
+After `code .` in the `leancourse_exercises` folder, open `Exercises/01-Logic/01-a-Propositions.lean`. It works once the orange and red bars disappear and moving the cursor on the left changes the infoview on the right.
+* Copy the `Exercises` directory to `MyExercises` and work there. `MyExercises` is ignored by git, so an update never overwrites your files.
+* To update, run `git pull` in `leancourse_exercises`.
+
+If the installation gives you trouble, talk to the teachers rather than spending evenings on it.
+
+# Picture credits
+%%%
+number := false
+tag := "credits"
+%%%
+
+The mathematical figures were generated by the scripts in `scripts/` and may be reused freely. The photographs, here and in the {ref "slides"}[slide decks], come from Wikimedia Commons and are reproduced unchanged under their own licences:
+
+* Thomas Hales -- Slawekb, CC BY-SA 3.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Halescropped.jpg)
+* Peter Scholze -- George Bergman, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Peter_Scholze_2014_cropped.jpg)
+* Kevin Buzzard -- George Bergman, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kevin_Buzzard_1996_(headshot).jpg)
+* Leonardo de Moura -- David Monniaux, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Leo_de_Moura_P1210629.jpg)
+* Maryna Viazovska -- Petra Lein, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Maryna_Vazovska_MFO_2013_crop.jpg)
+* Timothy Gowers -- Gert-Martin Greuel, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:William_Timothy_Gowers_Oslo_2012.jpg)
+* Ben Green -- Renate Schmid, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ben_Green.jpg)
+* Vladimir Voevodsky -- Renate Schmid, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:VladimirVoevodsky.jpg)
+* Terence Tao -- Institute for Pure and Applied Mathematics, CC BY 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Terence_Tao_at_IPAM%27s_Fireside_Chat_2026_%2850m16s%29_%28cropped%29.jpg)
+
+The two product marks in this chapter -- Claude and ChatGPT -- are also from Wikimedia Commons, under CC0 and in the public domain respectively. They remain trademarks of their owners and are used here only to say which system produced which proof.
+
+The icon in the browser tab is the `L` of the Lean wordmark, redrawn as a single stroke on a square in the Freiburg identity blue (`#34499a`). The source is `static/favicon.svg`.
+
+Several people named in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the [Feit-Thompson theorem](https://en.wikipedia.org/wiki/Feit%E2%80%93Thompson_theorem), Johan Commelin, who led the Liquid Tensor Experiment, Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. Where they are shown at all they appear as grey silhouettes with their initials. The photographs are therefore a fair sample of who is *famous*, not of who did this work, and the silhouettes are left visible rather than quietly omitted for that reason.

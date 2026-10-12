@@ -173,13 +173,17 @@ Evidence about where people are going.
 
 # Papers checked in Lean
 
-{image "../static/figures/arxiv_lean_formalized_weekly.png"}[Weekly count of arXiv papers with Lean-checked results during 2026]
+{image "../static/figures/arxiv_lean_formalized_share.png"}[Share of arXiv mathematics papers with a Lean-checked result during 2026, per 100 submissions]
 
 :::fragment highlightBlue
-January: a handful a week. September: around forty.
+Rising all year, and still under two in a hundred.
 :::
 
 :::notes
+A share, not a count: the mathematics arXiv took about a thousand
+submissions a week in January and about twice that at the end of
+September, so a rising count would partly be that growth.
+
 Within a few years, reading and writing a formal proof will be
 ordinary equipment. This is the answer to "why spend a semester on
 this".

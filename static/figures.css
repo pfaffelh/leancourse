@@ -1,14 +1,17 @@
 /* Figures that pair a mathematical picture with portraits of the people.
 
-   Verso emits one <p> per image inside the <figure>, then the
-   <figcaption>.  The figure is a centred flex row, so picture and
-   portraits stand side by side at the same height whenever they fit;
-   otherwise the row wraps and the portraits keep their size.
+   Verso emits one <p> per *paragraph* of image markup inside the
+   <figure>, then the <figcaption>.  Images written on consecutive
+   source lines therefore land in one <p>, images separated by a blank
+   line in separate ones.
+
+   That is the layout control: the figure is a column of rows, and each
+   <p> is one centred row.  Portraits start a row of their own unless
+   the author put them in the same paragraph as the picture, which is
+   done only where everything fits on one line.
 
    Every portrait is the same size, everywhere, and that size is the
-   height cap of the mathematical pictures.  12.5rem is the largest value
-   at which three portraits still share one row in this text column;
-   the one figure that carries four of them wraps instead.
+   height cap of the mathematical pictures.
 
    The image files are reproduced unchanged; object-fit only crops the
    view.  Credits are in the chapter text. */
@@ -18,23 +21,26 @@
 figure:has(img[src*="/portraits/"]),
 figure:has(img[src*="/logos/"]) {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.9rem 1.2rem;
+  gap: 0.9rem;
 }
 
+/* one paragraph of images = one centred row */
 figure:has(img[src*="/portraits/"]) > p,
 figure:has(img[src*="/logos/"]) > p {
   margin: 0;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  min-width: 0;
+  justify-content: center;
+  gap: 0.9rem 1.2rem;
+  max-width: 100%;
 }
 
 /* a portrait never shrinks -- a squeezed circle turns into an ellipse,
    so the row wraps instead */
-figure > p:has(> img[src*="/portraits/"]) { flex: 0 0 auto; }
+figure > p > img[src*="/portraits/"] { flex: 0 0 auto; }
 
 /* the mathematical picture: aspect ratio preserved, height capped.
    The :not() keeps this rule off the portraits -- without it this
@@ -70,7 +76,7 @@ figure img[src*="/logos/"] {
 
 figure:has(img[src*="/portraits/"]) > figcaption,
 figure:has(img[src*="/logos/"]) > figcaption {
-  flex: 1 0 100%;
+  align-self: stretch;
   text-align: center;
 }
 

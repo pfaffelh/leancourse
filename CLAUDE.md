@@ -1114,3 +1114,25 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
 - **URLs mit Klammern** zerlegen Versos Markdown-Links: der Commons-
   Pfad `File:Alan_Turing_(1951)_(crop).jpg` muss `%28`/`%29` schreiben,
   sonst `error: '_'`.
+
+## 2026-10-13 -- Hintergrund ans Ende
+
+- **Kapitel 0 umgestellt.** `# How it got here` enthaelt jetzt nur noch
+  die Geschichte der Beweisassistenten: Automath 1967, die vier Linien
+  (Mizar, LCF, HOL, Coq), die vier Episoden 1976/1998/2013/2020, Lean.
+  Frege, Russell, Hilbert, Goedel, das Entscheidungsproblem, der
+  Lambda-Kalkuel und Curry-Howard stehen in einem neuen Abschnitt
+  `# Where the ideas come from` (`tag := "background"`), direkt vor
+  `# Practical matters`. Begruendung des Nutzers: das ist logischer und
+  historischer Hintergrund, nicht Grundlage der Werkzeuge, und
+  Hintergrund gehoert nach hinten.
+- **Zwei Verweise** halten die Teile zusammen: der Opener von "How it
+  got here" zeigt mit `{ref "background"}` nach hinten, und der
+  Automath-Absatz verlinkt Curry-Howard dorthin. Kein eigenes Kapitel,
+  weil Kapitel 1 "Lean and its type theory" den Stoff ohnehin lehrt
+  (`01-Lean/05-CurryHoward.lean`).
+- **Folien in derselben Reihenfolge**: die fuenf Hintergrundfolien (The
+  idea is old / Hilbert / 1936 / The lambda calculus / Checking is not
+  finding) stehen jetzt zwischen "Mathlib" und "Goals". Die Notizen der
+  ersten sagen, dass der Block uebersprungen werden kann, wenn die
+  Stunde weg ist. 28 Folien, keine ueber 700 px.

@@ -185,210 +185,6 @@ ordinary equipment. This is the answer to "why spend a semester on
 this".
 :::
 
-# The idea is old
-
-::::::hstack
-::::vstack
-{image "../static/figures/portraits/frege.jpg" (class := "portrait")}[Gottlob Frege]
-
-:::class "names"
-Gottlob Frege
-:::
-::::
-
-::::vstack
-{image "../static/figures/portraits/russell.jpg" (class := "portrait")}[Bertrand Russell]
-
-:::class "names"
-Bertrand Russell
-:::
-::::
-::::::
-
-:::fragment fadeUp
-*1879* -- Frege makes proofs into objects you can calculate with.
-:::
-
-:::fragment fadeUp
-*1902* -- Russell's letter: the system is inconsistent.
-:::
-
-:::fragment fadeUp
-*1910-13* -- *Principia Mathematica* rebuilds. `1 + 1 = 2` arrives in volume two.
-:::
-
-:::notes
-Frege's *Begriffsschrift*, 1879: the first system in which a proof is
-itself an object you can manipulate.
-
-Russell's letter of 1902 breaks it. Whitehead and Russell then spend
-*Principia Mathematica* rebuilding, and the proof that `1 + 1 = 2`
-comes with the note that "the above proposition is occasionally
-useful".
-
-Done by hand, formalization is unbearable. For most of a century
-little came of it.
-:::
-
-# Hilbert's programme, 1920s
-
-::::::hstack
-::::vstack
-{image "../static/figures/portraits/hilbert.jpg" (class := "portrait")}[David Hilbert]
-
-:::class "names"
-David Hilbert
-:::
-::::
-
-::::vstack
-{image "../static/figures/portraits/godel.jpg" (class := "portrait")}[Kurt Gödel]
-
-:::class "names"
-Kurt Gödel
-:::
-::::
-::::::
-
-:::fragment fadeUp
-Fix the language, fix the rules. A proof becomes a finite string, and checking it is a question about symbols.
-:::
-
-:::fragment fadeUp
-Hilbert wants two more things: a consistency proof by finitary means, and a procedure deciding every question.
-:::
-
-:::fragment fadeUp
-*1931* -- Gödel: the consistency proof cannot exist.
-:::
-
-:::notes
-Hilbert's programme, through the 1920s. The formalization half is
-exactly what a proof assistant does: a proof is a finite object, and
-whether it follows the rules can be decided without knowing what the
-symbols mean.
-
-Gödel 1931. No consistent system containing arithmetic, with axioms a
-machine can list, proves every true statement about the naturals, and
-none proves its own consistency.
-
-The programme fails, the formalization stays. And Gödel's proof is
-itself the first serious piece of formalization: he encodes formulas
-and proofs as numbers and computes with them. Proofs as data.
-:::
-
-# 1936: Church and Turing
-
-::::::hstack
-::::vstack
-{image "../static/figures/portraits/placeholder_church.png" (class := "portrait")}[Alonzo Church]
-
-:::class "names"
-Alonzo Church
-:::
-::::
-
-::::vstack
-{image "../static/figures/portraits/turing.jpg" (class := "portrait")}[Alan Turing]
-
-:::class "names"
-Alan Turing
-:::
-::::
-::::::
-
-:::fragment fadeUp
-*1928* -- Hilbert and Ackermann: is there a procedure deciding whether a formula is provable? The *Entscheidungsproblem*.
-:::
-
-:::fragment fadeUp
-*1936* -- Church and Turing, independently: there is none.
-:::
-
-:::fragment fadeUp
-First they had to say what a procedure is. Turing built his machine. Church built the $`\lambda`-calculus.
-:::
-
-:::notes
-Hilbert and Ackermann, *Grundzüge der theoretischen Logik*, 1928.
-
-Church's paper was submitted in April 1936, Turing's a few months
-later. Neither knew of the other at the start.
-
-There is no photograph of Church that is free to use -- the silhouette
-is deliberate, like the others in these slides.
-:::
-
-# The lambda calculus
-
-:::fragment fadeUp
-A notation for functions, and nothing else.
-:::
-
-:::fragment fadeUp
-$`\lambda x.\, x + 1` is the function adding one. The only rule is substitution: $`(\lambda x.\, x + 1)\, 3` becomes $`3 + 1`.
-:::
-
-:::fragment fadeUp
-Numbers, pairs and recursion are not built in. They are written as $`\lambda`-terms, and that is enough for everything Turing's machines compute.
-:::
-
-:::fragment fadeUp
-Lean is this notation with types on top:
-:::
-
-```lean -panel -stretch
-example : (fun x : Nat => x + 1) 3 = 3 + 1 := rfl
-```
-
-:::notes
-This is ninety years old and you will type it all semester. `fun x =>`
-is `λx.`, and Lean accepts `λ` too.
-
-The kernel computes by substituting, which is the rule above and
-nothing more.
-
-Curry-Howard, the step from functions to proofs: a proposition is a
-type, a proof is a term of that type, and checking a proof is
-type-checking a program. Curry saw it for implication in the 1930s; de
-Bruijn, Howard and Läuchli extended it to the quantifiers in the
-1960s. It is why `theorem` and `def` are the same thing in Lean.
-:::
-
-# Checking is not finding
-
-::::table +colHeaders +rowSeps
-*
-  * Question
-  * Answer
-*
-  * Does this text prove the statement?
-  * decidable, and cheap
-*
-  * Find a proof of the statement.
-  * semi-decidable: ends if one exists
-*
-  * Decide whether a proof exists.
-  * undecidable (1936)
-::::
-
-:::fragment highlightBlue
-You prove. The machine checks. That split is a theorem, not a gap in today's software.
-:::
-
-:::notes
-Row one is the kernel, and the whole trust of the system sits there.
-
-Row two is the automation: `exact?`, `apply?`, `grind`. Proofs can be
-enumerated, so a search terminates when there is something to find. If
-there is nothing, it runs forever -- hence the time limit on every one
-of these tactics.
-
-Row three is the Entscheidungsproblem itself.
-
-This is the answer to "why doesn't the computer just do it".
-:::
-
 # 1967: the first checker
 
 ::::vstack
@@ -430,6 +226,8 @@ term, which a small separate checker reads afterwards -- the de Bruijn
 criterion. Lean is in that line. A Lean proof is a term, and the
 kernel rechecks it whatever tactic produced it.
 
+Where the 150 years come from is the last block of slides.
+
 Lean itself: de Moura, Microsoft Research, 2013. Lean 4 in 2021. Lean
 FRO, about twenty people. Buzzard arguing for it since 2018.
 :::
@@ -453,8 +251,8 @@ FRO, about twenty people. Buzzard arguing for it since 2018.
 :::
 
 :::notes
-That was the long run-up. The four episodes that made it urgent are
-all from the last fifty years.
+Automath and its successors are the tools. The four episodes that
+made them urgent are all from the last fifty years.
 
 Not chronology for its own sake: each episode adds a different reason.
 What a computer proof is worth, where peer review stops, whether the
@@ -851,6 +649,214 @@ library, not a pile of packages. That is why we use Lean and not Rocq.
 
 Point at a node, follow an edge, show how analysis sits on order sits
 on algebra.
+:::
+
+# The idea is old
+
+::::::hstack
+::::vstack
+{image "../static/figures/portraits/frege.jpg" (class := "portrait")}[Gottlob Frege]
+
+:::class "names"
+Gottlob Frege
+:::
+::::
+
+::::vstack
+{image "../static/figures/portraits/russell.jpg" (class := "portrait")}[Bertrand Russell]
+
+:::class "names"
+Bertrand Russell
+:::
+::::
+::::::
+
+:::fragment fadeUp
+*1879* -- Frege makes proofs into objects you can calculate with.
+:::
+
+:::fragment fadeUp
+*1902* -- Russell's letter: the system is inconsistent.
+:::
+
+:::fragment fadeUp
+*1910-13* -- *Principia Mathematica* rebuilds. `1 + 1 = 2` arrives in volume two.
+:::
+
+:::notes
+Background from here on. Where the `fun` in `fun x => x + 1` comes
+from, and why the machine checks instead of searching. Skip it if the
+hour is gone.
+
+Frege's *Begriffsschrift*, 1879: the first system in which a proof is
+itself an object you can manipulate.
+
+Russell's letter of 1902 breaks it. Whitehead and Russell then spend
+*Principia Mathematica* rebuilding, and the proof that `1 + 1 = 2`
+comes with the note that "the above proposition is occasionally
+useful".
+
+Done by hand, formalization is unbearable. For most of a century
+little came of it.
+:::
+
+# Hilbert's programme, 1920s
+
+::::::hstack
+::::vstack
+{image "../static/figures/portraits/hilbert.jpg" (class := "portrait")}[David Hilbert]
+
+:::class "names"
+David Hilbert
+:::
+::::
+
+::::vstack
+{image "../static/figures/portraits/godel.jpg" (class := "portrait")}[Kurt Gödel]
+
+:::class "names"
+Kurt Gödel
+:::
+::::
+::::::
+
+:::fragment fadeUp
+Fix the language, fix the rules. A proof becomes a finite string, and checking it is a question about symbols.
+:::
+
+:::fragment fadeUp
+Hilbert wants two more things: a consistency proof by finitary means, and a procedure deciding every question.
+:::
+
+:::fragment fadeUp
+*1931* -- Gödel: the consistency proof cannot exist.
+:::
+
+:::notes
+Hilbert's programme, through the 1920s. The formalization half is
+exactly what a proof assistant does: a proof is a finite object, and
+whether it follows the rules can be decided without knowing what the
+symbols mean.
+
+Gödel 1931. No consistent system containing arithmetic, with axioms a
+machine can list, proves every true statement about the naturals, and
+none proves its own consistency.
+
+The programme fails, the formalization stays. And Gödel's proof is
+itself the first serious piece of formalization: he encodes formulas
+and proofs as numbers and computes with them. Proofs as data.
+:::
+
+# 1936: Church and Turing
+
+::::::hstack
+::::vstack
+{image "../static/figures/portraits/placeholder_church.png" (class := "portrait")}[Alonzo Church]
+
+:::class "names"
+Alonzo Church
+:::
+::::
+
+::::vstack
+{image "../static/figures/portraits/turing.jpg" (class := "portrait")}[Alan Turing]
+
+:::class "names"
+Alan Turing
+:::
+::::
+::::::
+
+:::fragment fadeUp
+*1928* -- Hilbert and Ackermann: is there a procedure deciding whether a formula is provable? The *Entscheidungsproblem*.
+:::
+
+:::fragment fadeUp
+*1936* -- Church and Turing, independently: there is none.
+:::
+
+:::fragment fadeUp
+First they had to say what a procedure is. Turing built his machine. Church built the $`\lambda`-calculus.
+:::
+
+:::notes
+Hilbert and Ackermann, *Grundzüge der theoretischen Logik*, 1928.
+
+Church's paper was submitted in April 1936, Turing's a few months
+later. Neither knew of the other at the start.
+
+There is no photograph of Church that is free to use -- the silhouette
+is deliberate, like the others in these slides.
+:::
+
+# The lambda calculus
+
+:::fragment fadeUp
+A notation for functions, and nothing else.
+:::
+
+:::fragment fadeUp
+$`\lambda x.\, x + 1` is the function adding one. The only rule is substitution: $`(\lambda x.\, x + 1)\, 3` becomes $`3 + 1`.
+:::
+
+:::fragment fadeUp
+Numbers, pairs and recursion are not built in. They are written as $`\lambda`-terms, and that is enough for everything Turing's machines compute.
+:::
+
+:::fragment fadeUp
+Lean is this notation with types on top:
+:::
+
+```lean -panel -stretch
+example : (fun x : Nat => x + 1) 3 = 3 + 1 := rfl
+```
+
+:::notes
+This is ninety years old and you will type it all semester. `fun x =>`
+is `λx.`, and Lean accepts `λ` too.
+
+The kernel computes by substituting, which is the rule above and
+nothing more.
+
+Curry-Howard, the step from functions to proofs: a proposition is a
+type, a proof is a term of that type, and checking a proof is
+type-checking a program. Curry saw it for implication in the 1930s; de
+Bruijn, Howard and Läuchli extended it to the quantifiers in the
+1960s. It is why `theorem` and `def` are the same thing in Lean.
+:::
+
+# Checking is not finding
+
+::::table +colHeaders +rowSeps
+*
+  * Question
+  * Answer
+*
+  * Does this text prove the statement?
+  * decidable, and cheap
+*
+  * Find a proof of the statement.
+  * semi-decidable: ends if one exists
+*
+  * Decide whether a proof exists.
+  * undecidable (1936)
+::::
+
+:::fragment highlightBlue
+You prove. The machine checks. That split is a theorem, not a gap in today's software.
+:::
+
+:::notes
+Row one is the kernel, and the whole trust of the system sits there.
+
+Row two is the automation: `exact?`, `apply?`, `grind`. Proofs can be
+enumerated, so a search terminates when there is something to find. If
+there is nothing, it runs forever -- hence the time limit on every one
+of these tactics.
+
+Row three is the Entscheidungsproblem itself.
+
+This is the answer to "why doesn't the computer just do it".
 :::
 
 # Goals

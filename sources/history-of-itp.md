@@ -19,6 +19,7 @@ folder (not committed -- see [README.md](README.md)).
     paulson-nipkow-wenzel-2019-lcf-to-isabelle.pdf
     turing-1936-computable-numbers.pdf
     wiedijk-2006-seventeen-provers.pdf
+    waseda-sils-turing-foundations-slides.pdf
 
 ## Start here
 
@@ -43,6 +44,26 @@ folder (not committed -- see [README.md](README.md)).
 
 ## The formalization programme
 
+* **"Alan Turing and the Foundations of Computer Science".** Lecture
+  slides, course MI314, History of Mathematics, SILS, Waseda
+  University; 38 pages, no author named on the file.
+  `local copy only` -- teaching slides, not a citable source, and not
+  cited in the notes.
+  The first half is the model for the shape of *Where the ideas come
+  from*: the four metamathematical properties (independent,
+  consistent, complete, decidable), 1900 and the *ignorabimus*, the
+  1929 completeness theorem before the 1931 incompleteness theorems,
+  and the diagonal argument as the thread from Cantor through Gödel to
+  Turing. The second half (Shannon, Boolean circuits, wartime
+  machines) is about computers and is not used.
+  **One error in it, not copied:** slide 10 is headed "Hilbert's
+  Problem 10 (the Entscheidungsproblem)". Hilbert's tenth problem of
+  1900 is the solvability of Diophantine equations, settled by
+  Matiyasevich in 1970. The Entscheidungsproblem is a different
+  question, posed in Hilbert-Ackermann 1928.
+* **Giuseppe Peano, *Arithmetices principia, nova methodo exposita*.**
+  Bocca, Turin 1889. Public domain. Used for: zero, successor and
+  induction, the shape Lean's `Nat` still has.
 * **Gottlob Frege, *Begriffsschrift*.** Nebert, Halle 1879. Public
   domain. Used for: proofs as objects one can calculate with.
 * **Bertrand Russell, letter to Frege, 16 June 1902.** Printed in Jean
@@ -63,6 +84,17 @@ folder (not committed -- see [README.md](README.md)).
 * **Kurt Gödel, "Über formal unentscheidbare Sätze der Principia
   Mathematica und verwandter Systeme I".** *Monatshefte für Mathematik
   und Physik* 38 (1931), 173-198. `free` via GDZ / Springer.
+* **Kurt Gödel, "Über die Vollständigkeit des Logikkalküls".**
+  Dissertation, Vienna 1929; published as "Die Vollständigkeit der
+  Axiome des logischen Funktionenkalküls", *Monatshefte für Mathematik
+  und Physik* 37 (1930), 349-360. `library`
+  The completeness theorem, which is what makes proof search
+  semi-decidable. Not downloaded; the notes only state it.
+* **David Hilbert, "Axiomatisches Denken".** Lecture, Zurich,
+  11 September 1917; *Mathematische Annalen* 78 (1918), 405-415.
+  `library`
+  Also the 1900 Paris address, for "denn in der Mathematik gibt es
+  kein Ignorabimus".
 
 ## 1936
 

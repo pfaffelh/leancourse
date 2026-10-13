@@ -1136,3 +1136,30 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
   finding) stehen jetzt zwischen "Mathlib" und "Goals". Die Notizen der
   ersten sagen, dass der Block uebersprungen werden kann, wenn die
   Stunde weg ist. 28 Folien, keine ueber 700 px.
+
+## 2026-10-13 (2) -- Hintergrundabschnitt nach den Waseda-Folien
+
+- **Vorlage**: `sources/waseda-sils-turing-foundations-slides.pdf`
+  ("Alan Turing and the Foundations of Computer Science", MI314,
+  Waseda SILS). Nur die erste Haelfte ist brauchbar; die zweite geht
+  ueber Shannon und Rechner. Nicht zitiert, nur Vorlage fuer den
+  Aufbau. **Fehler darin, nicht uebernommen**: die Folien setzen das
+  Entscheidungsproblem mit Hilberts 10. Problem gleich. Das 10.
+  Problem ist die Loesbarkeit diophantischer Gleichungen
+  (Matiyasevich 1970); das Entscheidungsproblem steht in
+  Hilbert-Ackermann 1928.
+- **Neu im Abschnitt `background`**: Peano 1889 mit Verweis auf
+  `{ref "nat"}`, Russells Paradoxon als Formel, Zermelo 1908, Hilbert
+  1917 *Axiomatisches Denken* und das *ignorabimus* von 1900, die drei
+  Eigenschaften konsistent / vollstaendig / entscheidbar als Liste,
+  Goedels **Vollstaendigkeitssatz 1929** vor den
+  Unvollstaendigkeitssaetzen 1931, das Diagonalargument als Faden
+  Cantor -> Goedel -> Turing, Turings Maschine mit Band, Kopf und
+  Tabelle, Turings Promotion bei Church, und die Church-Turing-These
+  als Behauptung ueber das Wort, nicht als Satz.
+- **Der Vollstaendigkeitssatz traegt Punkt 2 der Dreiteilung**: Beweise
+  aufzaehlen findet einen Beweis genau dann, wenn es einen gibt, weil
+  1929 jede gueltige Formel ableitbar ist. Das stand vorher nicht da.
+- **Folien 28 -> 29**: "Hilbert's programme, 1920s" ist aufgeteilt in
+  "Hilbert's programme" (die drei Fragen) und "Goedel, 1929 and 1931".
+  "The idea is old" hat Peano dazubekommen. Keine Folie ueber 700 px.

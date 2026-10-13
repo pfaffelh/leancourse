@@ -676,7 +676,11 @@ Bertrand Russell
 :::
 
 :::fragment fadeUp
-*1902* -- Russell's letter: the system is inconsistent.
+*1889* -- Peano: zero, successor, induction. Still the shape of Lean's `Nat`.
+:::
+
+:::fragment fadeUp
+*1902* -- Russell's letter: the set of all sets that are not members of themselves.
 :::
 
 :::fragment fadeUp
@@ -700,9 +704,8 @@ Done by hand, formalization is unbearable. For most of a century
 little came of it.
 :::
 
-# Hilbert's programme, 1920s
+# Hilbert's programme
 
-::::::hstack
 ::::vstack
 {image "../static/figures/portraits/hilbert.jpg" (class := "portrait")}[David Hilbert]
 
@@ -711,6 +714,42 @@ David Hilbert
 :::
 ::::
 
+:::fragment fadeUp
+Fix the language, fix the rules. A proof becomes a finite string, and checking it is a question about symbols.
+:::
+
+:::fragment fadeUp
+*Consistent?* -- no contradiction follows from the axioms.
+:::
+
+:::fragment fadeUp
+*Complete?* -- for every statement, it or its negation follows.
+:::
+
+:::fragment fadeUp
+*Decidable?* -- a procedure settles which of the two.
+:::
+
+:::fragment highlightBlue
+Hilbert wants all three.
+:::
+
+:::notes
+Hilbert pushes this from a lecture of 1917, *Axiomatisches Denken*, on
+through the 1920s. The conviction is older: Paris 1900, "denn in der
+Mathematik gibt es kein Ignorabimus" -- no question we are condemned
+never to settle.
+
+The formalization half is exactly what a proof assistant does. A proof
+is a finite object, and whether it follows the rules can be decided
+without knowing what the symbols mean.
+
+The consistency proof was to use finitary means only -- no appeal to
+the infinite objects whose consistency was in question.
+:::
+
+# Gödel, 1929 and 1931
+
 ::::vstack
 {image "../static/figures/portraits/godel.jpg" (class := "portrait")}[Kurt Gödel]
 
@@ -718,33 +757,34 @@ David Hilbert
 Kurt Gödel
 :::
 ::::
-::::::
 
 :::fragment fadeUp
-Fix the language, fix the rules. A proof becomes a finite string, and checking it is a question about symbols.
+*1929* -- first-order logic is complete. What holds in every model is derivable.
 :::
 
 :::fragment fadeUp
-Hilbert wants two more things: a consistency proof by finitary means, and a procedure deciding every question.
+*1931* -- arithmetic is not. No such system proves every truth about the naturals, nor its own consistency.
 :::
 
 :::fragment fadeUp
-*1931* -- Gödel: the consistency proof cannot exist.
+Cantor's diagonal argument, moved from the reals to proofs.
 :::
 
 :::notes
-Hilbert's programme, through the 1920s. The formalization half is
-exactly what a proof assistant does: a proof is a finite object, and
-whether it follows the rules can be decided without knowing what the
-symbols mean.
+Two theorems, opposite directions, by the same person.
 
-Gödel 1931. No consistent system containing arithmetic, with axioms a
-machine can list, proves every true statement about the naturals, and
-none proves its own consistency.
+1929, his thesis: first-order logic is complete. Logic itself is not
+the obstacle. This is what makes proof search terminate when a proof
+exists -- row two on the table in a moment.
 
-The programme fails, the formalization stays. And Gödel's proof is
-itself the first serious piece of formalization: he encodes formulas
-and proofs as numbers and computes with them. Proofs as data.
+1931: the incompleteness theorems. Any consistent system containing
+arithmetic, with axioms a machine can list, misses true statements
+about the naturals, and cannot prove its own consistency. The
+programme fails; the formalization stays.
+
+Gödel's proof is itself the first serious piece of formalization: he
+encodes formulas and proofs as numbers and computes with them. Proofs
+as data.
 :::
 
 # 1936: Church and Turing
@@ -776,14 +816,23 @@ Alan Turing
 :::
 
 :::fragment fadeUp
-First they had to say what a procedure is. Turing built his machine. Church built the $`\lambda`-calculus.
+First they had to say what a procedure is. Turing: a tape, a head, a finite table of instructions. Church: the $`\lambda`-calculus.
 :::
 
 :::notes
 Hilbert and Ackermann, *Grundzüge der theoretischen Logik*, 1928.
 
 Church's paper was submitted in April 1936, Turing's a few months
-later. Neither knew of the other at the start.
+later. Neither knew of the other at the start. Turing went to
+Princeton the year after and took his doctorate under Church.
+
+Turing's machine is not a design. Nothing in the paper says how one
+would be built; it exists to be reasoned about.
+
+The two models compute the same functions -- that is a theorem, in an
+appendix to Turing's paper. That either of them is what "computable"
+means is not a theorem. That is the Church-Turing thesis, a claim
+about the word.
 
 There is no photograph of Church that is free to use -- the silhouette
 is deliberate, like the others in these slides.

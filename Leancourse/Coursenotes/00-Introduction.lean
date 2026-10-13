@@ -335,16 +335,26 @@ number := false
 tag := "prehistory"
 %%%
 
-Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated; Bertrand Russell's letter of 1902 showed that the system was inconsistent. Whitehead and Russell spent *Principia Mathematica* rebuilding; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
+Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated. Giuseppe Peano axiomatized arithmetic in 1889, with a zero, a successor and induction; that is still the shape of {ref "nat"}[Lean's `Nat`]. Bertrand Russell's letter of 1902 showed that Frege's system was inconsistent. The set $`R = \{x : x \notin x\}` is a member of itself exactly if it is not.
 
-David Hilbert turned the idea into a programme in the 1920s. Write mathematics in a fixed formal language, fix the rules of inference, and a proof becomes a finite string of symbols. Whether it follows the rules is then a question about symbols, answerable without knowing what they mean. Hilbert asked for two things on top of that: a proof that the system is consistent, using finitary means only, and a procedure deciding every mathematical question.
+Ernst Zermelo axiomatized set theory in 1908. Whitehead and Russell spent *Principia Mathematica* rebuilding the rest; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
+
+David Hilbert turned the idea into a programme, pressing for it from a lecture of 1917, *Axiomatisches Denken*, onwards. The conviction behind it is older. At the Paris congress of 1900 he had said that in mathematics there is *no ignorabimus*: no question we are condemned never to settle.
+
+Write mathematics in a fixed formal language, fix the rules of inference, and a proof becomes a finite string of symbols. Whether it follows the rules is then a question about symbols, answerable without knowing what they mean. Three questions about a set of axioms can then be asked precisely, and Hilbert wanted all three answered yes.
+
+* *Consistent.* No contradiction follows from the axioms. Hilbert wanted this proved by finitary means.
+* *Complete.* For every statement, either it or its negation follows.
+* *Decidable.* A procedure settles, for every statement, which of the two it is.
 
 :::figure "David Hilbert and Kurt Gödel" (tag := "hilbert-godel")
 ![David Hilbert](/static/figures/portraits/hilbert.jpg)
 ![Kurt Gödel](/static/figures/portraits/godel.jpg)
 :::
 
-Kurt Gödel's incompleteness theorems of 1931 removed the first. No consistent system that contains arithmetic and whose axioms a machine can list proves every true statement about the natural numbers, and none proves its own consistency. The formalization itself survived, and it is what proof assistants rest on. Gödel's proof takes it literally: he encodes formulas and proofs as natural numbers and computes with them, the first use of proofs as data.
+Kurt Gödel settled the first two, in opposite directions. His thesis of 1929 proved first-order logic *complete*: a formula that holds in every model is derivable from the axioms. Logic itself is therefore not the obstacle, and this is why searching for a proof can be made to terminate whenever one exists.
+
+The incompleteness theorems of 1931 end the programme. No consistent system that contains arithmetic and whose axioms a machine can list proves every true statement about the natural numbers, and none proves its own consistency. The formalization itself survived, and it is what proof assistants rest on. Gödel's proof takes it literally: he encodes formulas and proofs as natural numbers and computes with them, the first use of proofs as data. The argument is Cantor's diagonal argument, carried over from the reals to proofs. Turing used it again five years later.
 
 ## 1936: what a machine cannot do
 %%%
@@ -352,18 +362,18 @@ number := false
 tag := "entscheidungsproblem"
 %%%
 
-Hilbert and Wilhelm Ackermann asked in 1928, in *Grundzüge der theoretischen Logik*, for a procedure that decides for an arbitrary formula of first-order logic whether it is provable. This is the *Entscheidungsproblem*. Alonzo Church and Alan Turing answered it in 1936, independently and negatively: there is no such procedure.
+The third question was left. Hilbert and Wilhelm Ackermann put it in print in 1928, in *Grundzüge der theoretischen Logik*: is there a procedure that decides, for an arbitrary formula of first-order logic, whether it is provable? This is the *Entscheidungsproblem*. Alonzo Church and Alan Turing answered it in 1936, independently and negatively. There is no such procedure.
 
 :::figure "Alonzo Church and Alan Turing" (tag := "church-turing")
 ![Alonzo Church (no freely licensed photograph available)](/static/figures/portraits/placeholder_church.png)
 ![Alan Turing](/static/figures/portraits/turing.jpg)
 :::
 
-Both had to say first what a procedure is, and each built a model of computation to do it. Turing's is the machine that carries his name: a tape, a finite control, one symbol at a time. Church's is the *lambda calculus*, and it is the one this course uses every day.
+Both had to say first what a procedure is, and each built a model of computation to do it. Turing's is the machine that carries his name: a tape divided into cells, a head that reads one cell, writes and moves one step, and a finite table of instructions. The paper does not say how such a machine would be built; it is there to be reasoned about, not constructed. Church's model is the *lambda calculus*, and it is the one this course uses every day.
 
 The lambda calculus is a notation for functions, and nothing else. The term $`\lambda x.\, x + 1` denotes the function sending $`x` to $`x + 1`, the term $`f\, a` denotes $`f` applied to $`a`, and the only rule of computation is substitution:
 $$`(\lambda x.\, x + 1)\, 3 \;\rightsquigarrow\; 3 + 1.`
-Numbers, pairs and recursion are not built in; they are written as lambda terms. That is what makes the calculus a model of computation and not just a notation. Turing proved in an appendix to [his paper](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf) that his machines and Church's terms compute the same functions.
+Numbers, pairs and recursion are not built in; they are written as lambda terms. That is what makes the calculus a model of computation and not just a notation. Turing proved in an appendix to [his paper](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf) that his machines and Church's terms compute the same functions. He went to Princeton the following year and took his doctorate under Church. That the two models agree is a theorem. That either of them is what *computable* means is not; that is the *Church-Turing thesis*, a claim about the word.
 
 Lean is this notation with types on top. The Lean spelling of $`\lambda x.\, x+1` is `fun x => x + 1`, and the kernel computes by substituting:
 
@@ -378,7 +388,7 @@ The step from a calculus of functions to a calculus of proofs is the *Curry-Howa
 Three questions about proofs have three different answers, and a proof assistant is built on the difference.
 
 1. *Does this text prove that statement?* Decidable, and cheap. This is what Lean's kernel does, and the whole trust of the system rests on it.
-2. *Find a proof of this statement.* Semi-decidable. Proofs can be enumerated one after another, so a search ends when a proof exists. When none exists it runs forever, which is why `exact?` and `grind` come with a time limit.
+2. *Find a proof of this statement.* Semi-decidable. Proofs can be enumerated one after another, and by Gödel's completeness theorem every valid statement has one, so a search ends when a proof exists. When none exists it runs forever, which is why `exact?` and `grind` come with a time limit.
 3. *Decide whether this statement is provable.* Undecidable, by Church and Turing. No procedure answers yes or no, in finite time, for every formula.
 
 So the human writes the proof and the machine checks it. That division of labour is a theorem of 1936, not a property of today's software.

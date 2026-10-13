@@ -142,7 +142,7 @@ folder (not committed -- see [README.md](README.md)).
 
 ## Type theory
 
-For *Where types come from* in {ref types-history}, Chapter 1. None of
+For *Where types come from* in `01-Lean/02-Types.lean`. None of
 these is downloaded; the section only states the dates.
 
 * **Bertrand Russell, "Mathematical Logic as Based on the Theory of

@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(lake exe *)"
+      "Bash(lake exe *)",
+      "Bash(timeout 1500 lake build Leancourse)",
+      "Bash(timeout 1500 lake exe leancourse --output /tmp/claude-1000/-home-pfaffelh-Code-lean-leancourse/14bd997e-7f42-4241-9deb-40900b438811/scratchpad/_out/)"
     ]
   }
 }

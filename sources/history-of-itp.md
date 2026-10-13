@@ -140,6 +140,37 @@ folder (not committed -- see [README.md](README.md)).
   Written 1969, printed in *To H. B. Curry*, Academic Press 1980,
   pp. 479-490. `free` in circulation.
 
+## Type theory
+
+For *Where types come from* in {ref types-history}, Chapter 1. None of
+these is downloaded; the section only states the dates.
+
+* **Bertrand Russell, "Mathematical Logic as Based on the Theory of
+  Types".** *American Journal of Mathematics* 30 (1908), 222-262.
+  `free` (JSTOR / public domain). Where types are invented, as a
+  repair of the paradox of 1902. Sketched already in Appendix B of
+  *The Principles of Mathematics*, 1903.
+* **Frank Ramsey, "The Foundations of Mathematics".** *Proc. LMS* 25
+  (1926), 338-384, and Leon Chwistek, *The Theory of Constructive
+  Types*, 1921-1923. The simple theory of types, without Russell's
+  ramification.
+* **Alonzo Church, "A Formulation of the Simple Theory of Types".**
+  *Journal of Symbolic Logic* 5 (1940), 56-68. `library`
+  The simply typed lambda calculus; the foundation Isabelle/HOL still
+  uses. Prompted by S. C. Kleene and J. B. Rosser, "The Inconsistency
+  of Certain Formal Logics", *Annals of Mathematics* 36 (1935),
+  630-636, which broke Church's untyped system of 1932.
+* **Per Martin-Löf, *Intuitionistic Type Theory*.** Bibliopolis 1984,
+  after preprints from 1971. `free` (several scans circulate).
+  Dependent types. The 1971 version had `Type : Type` and was
+  inconsistent by Girard's paradox; the universe hierarchy is the
+  repair.
+* **Thierry Coquand, Gérard Huet, "The Calculus of Constructions".**
+  *Information and Computation* 76 (1988), 95-120; presented 1985.
+  `free` via INRIA. With Thierry Coquand and Christine Paulin-Mohring,
+  "Inductively defined types", COLOG-88, LNCS 417 (1990), 50-66, this
+  is what Lean's type theory is a variant of.
+
 ## The systems
 
 * **Robin Milner, "Logic for Computable Functions: description of a

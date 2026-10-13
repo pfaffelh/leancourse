@@ -1197,3 +1197,23 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
 - **Stand**: Introduction 29 von 29 Folien mit Notizen, Filters 4 von 9
   (ohne Notizen: Learning goal, The three axioms, In Lean, Three
   filters to know, In one line).
+
+## 2026-10-13 (5) -- Herkunft der Typtheorie in Kapitel 1
+
+- **Neuer Abschnitt `# Where types come from`** (`tag :=
+  "types-history"`) in `01-Lean/02-Types.lean`, direkt vor
+  `# The universe hierarchy`. Russell 1908 als Reparatur seines
+  Paradoxons von 1902, Chwistek/Ramsey, Church 1940 (nachdem
+  Kleene/Rosser 1935 den ungetypten Kalkuel von 1932 zerlegt hatten),
+  abhaengige Typen bei de Bruijn ab 1967 und Martin-Loef ab 1971,
+  Coquand/Huet 1985 und Paulin-Mohring 1990.
+- **Die Pointe**: dreimal derselbe Zug -- ein System laesst
+  Selbstanwendung zu, ein Widerspruch folgt, Typen verbieten sie. Der
+  Abschnitt laeuft genau auf `Type 0 : Type 1 : ...` zu, also auf den
+  Abschnitt, der danach kommt.
+- **Verweise**: `{ref "background"}` zurueck ins Kapitel 0 und
+  `{ref "cic"}` nach vorn in `03-Mathematics/00b-UniversesAndAxioms`.
+  Die Curry-Howard-Geschichte steht weiter in `05-CurryHoward.lean`
+  unter `curry-howard-history`; die beiden ueberschneiden sich nicht.
+- Quellen in `sources/history-of-itp.md` unter `## Type theory`, keine
+  davon heruntergeladen.

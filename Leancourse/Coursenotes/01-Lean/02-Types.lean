@@ -23,6 +23,19 @@ These data types are abstract: Lean treats `ℕ` and `ℝ` as genuinely infinite
 
 In Lean every object is a term, and every term has a type. A type is itself a term, so it has a type as well.
 
+# Where types come from
+%%%
+tag := "types-history"
+%%%
+
+Types were invented to stop a contradiction. Bertrand Russell's letter of 1902 broke Gottlob Frege's system with the set $`R = \{x : x \notin x\}`, which is a member of itself exactly if it is not ({ref "background"}[Introduction]). Russell's repair, published in 1908, was to stratify. Every object gets a type, a type may be applied only to objects of lower type, and `x ∈ x` is then not a false statement but no statement at all. *Principia Mathematica* is written in that theory. Leon Chwistek and Frank Ramsey simplified it in the 1920s to what is now called the simple theory of types.
+
+Alonzo Church made it a calculus in 1940. His own lambda calculus of 1932 was inconsistent as a logic, as Stephen Kleene and J. Barkley Rosser showed in 1935, and the repair was again types: terms carry types, types are built from base types and `→`, and a term applied to itself is not well-formed. That system is the simply typed lambda calculus. *Isabelle/HOL* still rests on it.
+
+Two independent lines added *dependent* types, in which a type may mention a term. Nicolaas Govert de Bruijn built them into Automath from 1967. Per Martin-Löf developed intuitionistic type theory from 1971; his first version was again inconsistent, by an argument of Jean-Yves Girard, and the repair is the universe hierarchy of the next section. Thierry Coquand and Gérard Huet added impredicative quantification in the Calculus of Constructions in 1985, and Christine Paulin-Mohring added inductive types in 1990. Lean's type theory is a variant of the result, the {ref "cic"}[Calculus of Inductive Constructions].
+
+The same move occurs three times. A system lets an object be applied to itself, a contradiction follows, and types forbid it. In Lean the ban is visible as `Type 0 : Type 1 : Type 2 : ...`, which is why there is no type of all types.
+
 # The universe hierarchy
 %%%
 tag := "type-universes"

@@ -1182,3 +1182,18 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
   (`mizar.uwb.edu.pl`, `mizar.org` leitet dorthin um), HOL
   (`hol-theorem-prover.org`), Isabelle, Coq/Rocq. Alle vier mit
   HTTP 200 geprueft.
+
+## 2026-10-13 (4) -- Sprechernotizen zum Durchlesen
+
+- **`scripts/slides_notes.py`** zieht die `:::notes` aus einem gebauten
+  Deck und gibt sie als Markdown aus, Folie fuer Folie mit Nummer und
+  Titel. Liest das erzeugte HTML, nicht die Lean-Quelle, also steht da
+  genau das, was reveal unter `S` zeigt.
+
+      lake exe slides _out/html-multi/slides
+      python3 scripts/slides_notes.py introduction > _out/notes-introduction.md
+
+  Ohne Argument nimmt es alle Decks.
+- **Stand**: Introduction 29 von 29 Folien mit Notizen, Filters 4 von 9
+  (ohne Notizen: Learning goal, The three axioms, In Lean, Three
+  filters to know, In one line).

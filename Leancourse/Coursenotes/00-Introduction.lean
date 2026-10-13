@@ -96,14 +96,14 @@ Nicolaas Govert de Bruijn started *[Automath](https://en.wikipedia.org/wiki/Auto
 
 Four lines come out of the following twenty years, and the systems of today are on them.
 
-* *Mizar*, Andrzej Trybulec, 1973. A formal language meant to be read like mathematical prose, over set theory. Its library has been growing for fifty years.
+* *[Mizar](https://mizar.uwb.edu.pl/)*, Andrzej Trybulec, 1973. A formal language meant to be read like mathematical prose, over set theory. Its library has been growing for fifty years.
 * *[LCF](http://i.stanford.edu/pub/cstr/reports/cs/tr/72/288/CS-TR-72-288.pdf)*, Robin Milner, Stanford 1972 and Edinburgh 1975. The idea there is architectural: `thm` is an abstract data type, and the only functions that produce a value of that type are the inference rules. Anything may then be built on top without being trusted. The language ML was invented to write it.
-* *HOL*, Mike Gordon, from the mid-1980s: LCF with simple higher-order logic in place of the original logic, used first for hardware verification. *Isabelle* follows in 1986 (Lawrence Paulson), *Isabelle/HOL* in 1991 (Tobias Nipkow).
-* *Coq*, from 1989, on the Calculus of Constructions and from the mid-1990s on the Calculus of Inductive Constructions. That is the foundation Lean also uses, and the system was renamed *Rocq* in 2025.
+* *[HOL](https://hol-theorem-prover.org/)*, Mike Gordon, from the mid-1980s: LCF with simple higher-order logic in place of the original logic, used first for hardware verification. *[Isabelle](https://isabelle.in.tum.de/)* follows in 1986 (Lawrence Paulson), *Isabelle/HOL* in 1991 (Tobias Nipkow).
+* *[Coq](https://rocq-prover.org/)*, from 1989, on the Calculus of Constructions and from the mid-1990s on the Calculus of Inductive Constructions. That is the foundation Lean also uses, and the system was renamed *Rocq* in 2025.
 
 The two architectures answer the same question differently. In the LCF line nothing is kept but the theorem, and one trusts the kernel because no other code can make one. In the Automath line the system writes down a proof term, which a small, separate checker reads afterwards; a system meeting that condition is said to satisfy the *[de Bruijn criterion](https://www.cs.ru.nl/~freek/comparison/comparison.pdf)*. Lean is in the second line: a Lean proof is a term, and the kernel rechecks it no matter which tactic produced it.
 
-## 1976: what a computer proof is worth
+## 1976: the four colour theorem
 %%%
 number := false
 tag := "four-colour-episode"
@@ -118,7 +118,7 @@ Kenneth Appel and Wolfgang Haken proved the [four colour theorem](https://en.wik
 
 In 2005 Georges Gonthier formalized the whole thing in Coq, case analysis included. The two events separate the distinction this course rests on: *a proof found by computer is not a proof checked by computer.*
 
-## 1998: where peer review stops
+## 1998: the Kepler conjecture
 %%%
 number := false
 tag := "kepler-episode"
@@ -133,7 +133,7 @@ Thomas Hales announced a proof of the [Kepler conjecture](https://en.wikipedia.o
 
 Twelve referees worked on it for four years and reported that they were ninety-nine percent certain, and could do no better. The *Annals of Mathematics* published it with that caveat. Hales started the [Flyspeck project](https://en.wikipedia.org/wiki/Flyspeck), which delivered a complete formal proof in HOL Light and Isabelle in 2014. This episode is not about computers: peer review had met a proof it could not certify, and more effort would not have helped.
 
-## 2013: whether the author can trust himself
+## 2013: Voevodsky
 %%%
 number := false
 tag := "voevodsky-episode"
@@ -149,7 +149,7 @@ His account is about people, not machines. Simpson had a counterexample but coul
 
 Voevodsky received the Fields Medal in 2002. He then looked for a proof assistant he could use, found none that suited his mathematics, and built the foundations for one: [univalent foundations](https://en.wikipedia.org/wiki/Univalent_foundations), a special year at the Institute for Advanced Study in 2012-13, and the book two dozen people wrote there in under six months. He formalized in Coq, and his foundations are not the ones *Mathlib* rests on: Lean 2 carried a mode for them, Lean 3 dropped it. This course takes the diagnosis, not the cure. His [own account](https://www.ias.edu/ideas/2014/voevodsky-origins) is short. He died in 2017.
 
-## 2020: who is asking for it now
+## 2020: the Liquid Tensor Experiment
 %%%
 number := false
 tag := "lte-episode"
@@ -164,7 +164,7 @@ In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog: a theo
 
 Buzzard's plenary lecture at the ICM in 2022 marks the point where formalization stopped being a curiosity.
 
-## The tool is much younger than the idea
+## Lean, from 2013
 %%%
 number := false
 tag := "lean-itself"
@@ -329,7 +329,7 @@ tag := "background"
 
 Lean's notation for functions is a calculus of 1936, and the division of labour between you and the machine is a theorem of the same year. This section says where both come from. None of it is needed to write a proof.
 
-## Before there were machines
+## From Frege to Gödel
 %%%
 number := false
 tag := "prehistory"
@@ -356,7 +356,7 @@ Kurt Gödel settled the first two, in opposite directions. His thesis of 1929 pr
 
 The incompleteness theorems of 1931 end the programme. No consistent system that contains arithmetic and whose axioms a machine can list proves every true statement about the natural numbers, and none proves its own consistency. The formalization itself survived, and it is what proof assistants rest on. Gödel's proof takes it literally: he encodes formulas and proofs as natural numbers and computes with them, the first use of proofs as data. The argument is Cantor's diagonal argument, carried over from the reals to proofs. Turing used it again five years later.
 
-## 1936: what a machine cannot do
+## 1936: the Entscheidungsproblem
 %%%
 number := false
 tag := "entscheidungsproblem"

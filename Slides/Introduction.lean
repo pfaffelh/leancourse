@@ -185,7 +185,7 @@ ordinary equipment. This is the answer to "why spend a semester on
 this".
 :::
 
-# 1967: the first checker
+# 1967: Automath
 
 ::::vstack
 {image "../static/figures/portraits/debruijn.jpg" (class := "portrait")}[Nicolaas Govert de Bruijn]
@@ -259,7 +259,7 @@ What a computer proof is worth, where peer review stops, whether the
 author can trust himself, and who is asking for this now.
 :::
 
-# 1976: four colours
+# 1976: the four colour theorem
 
 ::::::hstack
 {image "../static/figures/four_colour.png" (height := "22vh")}[A map of thirty-four regions coloured with four colours]
@@ -292,7 +292,7 @@ you had to trust. Coq is the opposite arrangement -- a kernel of a few
 thousand lines, and everything else checked against it.
 :::
 
-# The Kepler conjecture
+# 1998: the Kepler conjecture
 
 ::::::hstack
 {image "../static/figures/kepler_packing.png" (height := "22vh")}[A pyramid of equal spheres, the face-centred cubic packing]
@@ -323,7 +323,7 @@ and more effort would not have helped.
 Sixteen years from announcement to a proof anyone could check.
 :::
 
-# 2013: the author concedes
+# 2013: Voevodsky
 
 ::::vstack
 {image "../static/figures/portraits/voevodsky.jpg" (class := "portrait")}[Vladimir Voevodsky]
@@ -371,7 +371,7 @@ year 2012-13, the HoTT book. In Coq, not Lean, and not the foundations
 Mathlib uses. We take the diagnosis, not the cure. He died in 2017.
 :::
 
-# 2020: a Fields medallist is unsure
+# 2020: the Liquid Tensor Experiment
 
 ::::::hstack
 ::::vstack
@@ -651,7 +651,7 @@ Point at a node, follow an edge, show how analysis sits on order sits
 on algebra.
 :::
 
-# The idea is old
+# Frege, Peano, Russell
 
 ::::::hstack
 ::::vstack
@@ -787,7 +787,7 @@ encodes formulas and proofs as numbers and computes with them. Proofs
 as data.
 :::
 
-# 1936: Church and Turing
+# 1936: the Entscheidungsproblem
 
 ::::::hstack
 ::::vstack

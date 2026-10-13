@@ -1163,3 +1163,22 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
 - **Folien 28 -> 29**: "Hilbert's programme, 1920s" ist aufgeteilt in
   "Hilbert's programme" (die drei Fragen) und "Goedel, 1929 and 1931".
   "The idea is old" hat Peano dazubekommen. Keine Folie ueber 700 px.
+
+## 2026-10-13 (3) -- Ueberschriften nach Stichworten, Links auf die Systeme
+
+- **Ueberschriften heissen jetzt nach dem Stichwort**, unter dem man die
+  Sache nachschlaegt, nicht nach der Pointe: `1976: the four colour
+  theorem`, `1998: the Kepler conjecture`, `2013: Voevodsky`,
+  `2020: the Liquid Tensor Experiment`, `Lean, from 2013`,
+  `From Frege to Goedel`, `1936: the Entscheidungsproblem`. Die Pointe
+  steht ohnehin im jeweils letzten Satz des Abschnitts. **Die `tag`s
+  sind unveraendert** (`four-colour-episode`, `kepler-episode`, ...),
+  damit keine Links brechen.
+- **Dieselben Titel auf den Folien**, dazu `1967: Automath` und
+  `Frege, Peano, Russell`. "1936: the Entscheidungsproblem" bricht in
+  zwei Zeilen (540 px statt 468) -- passt, sieht geprueft gut aus.
+  "Checking is not finding" bleibt, dafuer gibt es kein Stichwort.
+- **Links auf die Systeme** in "The first proof assistants": Mizar
+  (`mizar.uwb.edu.pl`, `mizar.org` leitet dorthin um), HOL
+  (`hol-theorem-prover.org`), Isabelle, Coq/Rocq. Alle vier mit
+  HTTP 200 geprueft.

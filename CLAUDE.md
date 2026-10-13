@@ -1217,3 +1217,36 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
   unter `curry-howard-history`; die beiden ueberschneiden sich nicht.
 - Quellen in `sources/history-of-itp.md` unter `## Type theory`, keine
   davon heruntergeladen.
+
+## 2026-10-13 (6) -- LCF-Link repariert, Pressemitteilungen verlinkt
+
+- **Der LCF-Link war kaputt, weil `i.stanford.edu` ueberhaupt kein
+  HTTPS spricht** (`curl -I https://...` bricht mit Exit 7 ab). Ueber
+  `http://` liefert der Host die richtige PDF, aber auf einer
+  HTTPS-Seite stuft der Browser das hoch und es scheitert. Ersetzt
+  durch die Wayback-Kopie
+  `web.archive.org/web/20240703134244/http://i.stanford.edu/...` --
+  geprueft: 2 872 429 Bytes, identisch mit
+  `sources/milner-1972-lcf-stanford-aim-169.pdf`. **Achtung bei
+  Wayback**: der juengste Schnappschuss (20250217) ist bei genau 1 MiB
+  abgeschnitten, der von 2024 ist vollstaendig. Die CDX-API
+  (`web.archive.org/cdx/search/cdx?...&fl=timestamp,statuscode,length`)
+  zeigt die Laengen. Zwei Stellen betroffen: die Systemliste und der
+  `Sources`-Abschnitt.
+- **Im ganzen Repo gibt es jetzt keinen `http://`-Link mehr**
+  (`grep -rnoE '\]\(http://[^)]*\)' --include=*.lean`).
+- **Die 2026-Meldungen sind verlinkt**: Sphere Packing auf
+  `math.inc/sphere-packing` (der Autoformalisierer heisst *Gauss*) und
+  `github.com/math-inc/Sphere-Packing-Lean`, FLT auf
+  `anthropic.com/news/formalizing-fermats-last-theorem`, Navier-Stokes
+  auf `openai.com/index/navier-stokes-solution/`, der Katalog auf
+  `openai.com/index/sharing-ai-progress-in-mathematics/` und
+  `github.com/openai/math`.
+- **`openai.com` antwortet curl und WebFetch mit 403** (Bot-Schutz),
+  im Browser laeuft es. Beide Seiten ueber die Wayback-API
+  gegengeprueft, beide existieren. Gleicher Fall wie der
+  IAS-Voevodsky-Link.
+- Den Rueckzug vom 7. Oktober habe ich **nicht** auf einen Commit
+  verlinkt: der einzige Kandidat
+  (`openai/math@3014888`, 2026-10-08) heisst nur "Update manuscripts
+  and Lean formalizations" und laesst sich nicht sicher zuordnen.

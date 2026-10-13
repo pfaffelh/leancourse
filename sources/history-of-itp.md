@@ -175,7 +175,9 @@ these is downloaded; the section only states the dates.
 
 * **Robin Milner, "Logic for Computable Functions: description of a
   machine implementation".** Stanford AI Memo AIM-169, 1972.
-  `free`, <http://i.stanford.edu/pub/cstr/reports/cs/tr/72/288/CS-TR-72-288.pdf>
+  `free`, but only over plain HTTP; the host has no HTTPS at all, so the
+  notes link the Wayback copy
+  <https://web.archive.org/web/20240703134244/http://i.stanford.edu/pub/cstr/reports/cs/tr/72/288/CS-TR-72-288.pdf>
   `milner-1972-lcf-stanford-aim-169.pdf`
 * **M. Gordon, R. Milner, C. Wadsworth, *Edinburgh LCF*.** LNCS 78,
   Springer 1979. `library`

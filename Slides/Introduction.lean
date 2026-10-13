@@ -112,7 +112,9 @@ Navier-Stokes: the *forced* equation. Not the Millennium problem.
 The prize is unclaimed. Say this plainly.
 
 February first, and it is the cleanest case: the statement was
-settled mathematics, only the formalizing was left.
+settled mathematics, only the formalizing was left. The autoformalizer
+is Gauss, from Math Inc.; the human project it joined had been running
+since 2024.
 
 One day after that catalogue, three of its manuscripts were withdrawn
 over a sign error, and fourteen more were revised. None of the

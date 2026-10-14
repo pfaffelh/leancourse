@@ -1478,3 +1478,11 @@ Zwei Fehler, beide vom Nutzer gefunden, beide in der Liste
 - **Folie `Checking is not finding`** war inhaltlich schon richtig
   (die Notizen berufen sich nicht auf Vollstaendigkeit). Ergaenzt nur
   um den Absatz, dass Zeile zwei und drei dieselbe Menge sind.
+- **Nachtrag: alle Kapitel-0-Tabellen stehen jetzt auch im Deck.**
+  Drei waren schon da (1908 -> `Two repairs`, Systemvergleich ->
+  `Three systems`, Hardware -> `What your machine needs`), zwei
+  fehlten: die Goedel-Tabelle ersetzt auf `Gödel, 1929 and 1931` die
+  beiden Jahres-Fragmente (das Cantor-Fragment bleibt), und
+  `Checking is not finding` hat statt Frage/Antwort jetzt dieselbe
+  Darstellung wie das Kapitel, um eine Spalte *verdict* erweitert.
+  Hoechste Folie unveraendert `2013: Voevodsky` mit 557 px.

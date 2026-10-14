@@ -382,12 +382,19 @@ Kurt Gödel
 :::
 ::::
 
-:::fragment fadeUp
-*1929* -- first-order logic is complete. What holds in every model is derivable.
-:::
-
-:::fragment fadeUp
-*1931* -- arithmetic is not. No such system proves every truth about the naturals, nor its own consistency.
+:::table +colHeaders +rowSeps
+*
+  * Gödel
+  * about
+  * result
+*
+  * 1929
+  * first-order logic
+  * complete: valid in every model is derivable
+*
+  * 1931
+  * any theory containing arithmetic
+  * incomplete: some truth about ℕ is neither proved nor refuted
 :::
 
 :::fragment fadeUp
@@ -515,17 +522,20 @@ Bruijn, Howard and Läuchli extended it to the quantifiers in the
 
 ::::table +colHeaders +rowSeps
 *
-  * Question
-  * Answer
+  * Is there a procedure that
+  * confirms it when true
+  * refutes it when false
+  * verdict
 *
-  * Does this text prove the statement?
-  * decidable, and cheap
+  * *this text proves the statement*
+  * yes, always stops
+  * yes, always stops
+  * decidable
 *
-  * Find a proof of the statement.
-  * semi-decidable: ends if one exists
-*
-  * Decide whether a proof exists.
-  * undecidable (1936)
+  * *the statement has some proof*
+  * yes, whenever a proof exists
+  * no such procedure
+  * semi-decidable only
 ::::
 
 :::fragment highlightBlue

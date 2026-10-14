@@ -1486,3 +1486,29 @@ Zwei Fehler, beide vom Nutzer gefunden, beide in der Liste
   `Checking is not finding` hat statt Frage/Antwort jetzt dieselbe
   Darstellung wie das Kapitel, um eine Spalte *verdict* erweitert.
   Hoechste Folie unveraendert `2013: Voevodsky` mit 557 px.
+
+## 2026-10-14 (7) -- die Luecke 1936-1967 gefuellt: ATP gegen ITP
+
+Nutzerfrage: "Ist zwischen 1936 und 1967 nicht passiert? Warum hat
+de Bruijn daran gearbeitet?" -- doch, und zwar das *andere* Fach.
+
+- **Absatz am Kopf von `## The proof assistants`** (ohne eigene
+  Ueberschrift, bewusst klein gehalten): Davis 1954 auf der JOHNNIAC,
+  Logic Theory Machine 1956 (kuerzerer Beweis fuer Principia *2.85),
+  Wang 1959, Robinson 1965 (Resolution und Unifikation). Fuer
+  Mathematik skaliert nichts davon.
+- **Automath ist der Rueckzug**, nicht die Fortsetzung: von Frage 2
+  auf Frage 1, der Mensch beweist und die Maschine prueft. Daher der
+  Name des Fachs -- *interactive* theorem proving -- und der Titel
+  dieser Vorlesung. Ein Satz dazu im Automath-Abschnitt, derselbe
+  Gedanke in den Sprechernotizen der Automath-Folie.
+- **Und ATP ist zurueck**, ein Satz hinter der Fragen-Tabelle:
+  `omega`, `grind`, `bv_decide` suchen (bei `bv_decide` ein externer
+  SAT-Solver), aber das Ergebnis geht als Pruefauftrag an den Kern.
+  Dasselbe Prinzip wie beim Autoformalisierer weiter oben im Kapitel:
+  unzuverlaessig erzeugen, klein und fest pruefen. Drei Generationen
+  von Erzeugern, eine Bauform.
+- **Nicht verwechseln** (kam in der Diskussion auf): Autoformalisierung
+  erzeugt die *Aussage* aus Prosa, ATP den *Beweis* aus der Aussage.
+  Fuer das Erste gibt es gar kein Entscheidbarkeitspraedikat, weil auf
+  der Eingabeseite kein formales Objekt steht.

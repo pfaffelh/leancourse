@@ -589,6 +589,14 @@ Everything before this slide is mathematics. From here on there are machines.
 :::
 
 :::notes
+Say what he turned away from. Since 1954 the attempt had been to make
+the machine *find* proofs: Davis on the JOHNNIAC, the Logic Theory
+Machine of 1956, Wang 1959, Robinson's resolution in 1965. It works
+for logic calculi and not for mathematics. De Bruijn retreats to the
+cheap question -- the human proves, the machine checks. That is the
+split between *automated* and *interactive* theorem proving, and the
+title of this course sits on one side of it.
+
 De Bruijn starts Automath at Eindhoven in 1967 and publishes in 1968.
 He arrives at the Curry-Howard correspondence himself, not knowing
 Howard's work, and is the first to use it in a running system. Van

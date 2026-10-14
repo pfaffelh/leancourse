@@ -209,7 +209,7 @@ Three questions about proofs have three different answers, and a proof assistant
   + no such procedure
 :::
 
-The second row is questions 2 and 3 at once. Finding and deciding are one problem seen from two sides: *semi-decidable* names the left entry, *undecidable* the right one, and the two words do not conflict. The gap is one-sided, and it is what you see when `grind` hangs. It cannot tell you that there is nothing to find, only that it has not found anything yet.
+The second row is questions 2 and 3 at once. Finding and deciding are one problem seen from two sides: *semi-decidable* names the left entry, *undecidable* the right one, and the two words do not conflict. The gap is one-sided, and it is what you see when `grind` hangs. It cannot tell you that there is nothing to find, only that it has not found anything yet. The second row is also where the automated line of the 1950s comes back: `omega`, `grind` and `bv_decide` search, and in the last case an external SAT solver does, but the result is handed to the kernel as something to check. The search may be unreliable in any way it likes; the check is small and fixed.
 
 So the human writes the proof and the machine checks it. That division of labour is a theorem of 1936, not a property of today's software.
 
@@ -219,13 +219,15 @@ number := false
 tag := "the-assistants"
 %%%
 
+The machines came first, and they were pointed the other way. From 1954 the attempt was to make a computer *find* proofs: Martin Davis ran Presburger arithmetic on the JOHNNIAC, Allen Newell, Herbert Simon and Cliff Shaw's *Logic Theory Machine* of 1956 reproved theorems from *Principia Mathematica* and found a shorter proof of one of them, Hao Wang's program of 1959 did all of the *Principia*'s propositional logic in minutes, and John Alan Robinson gave resolution and unification their modern form in 1965. For mathematics as mathematicians write it, none of it scaled. That line is *automated* theorem proving, and everything below is the other one.
+
 ### 1967: Automath
 %%%
 number := false
 tag := "first-assistants"
 %%%
 
-Nicolaas Govert de Bruijn started *[Automath](https://en.wikipedia.org/wiki/Automath)* at Eindhoven in 1967 and published it in 1968, the first language in which a machine checked proofs. Its foundation is a typed lambda calculus with dependent types, that is, types that may mention terms, as `Vec α n` mentions `n`. It was the first system in which a proof is a term and checking it is type-checking, the {ref "entscheidungsproblem"}[Curry-Howard correspondence]; de Bruijn found that correspondence himself, not knowing Howard's work. In 1977 L. S. van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it, the first mathematics book verified end to end.
+Nicolaas Govert de Bruijn started *[Automath](https://en.wikipedia.org/wiki/Automath)* at Eindhoven in 1967 and published it in 1968, the first language in which a machine checked proofs. The move is a retreat from the second question to the first: the human writes the proof, the machine only checks it, and checking is decidable and cheap. The field that follows is named after what the human keeps doing, *interactive* theorem proving, and so is this course. Its foundation is a typed lambda calculus with dependent types, that is, types that may mention terms, as `Vec α n` mentions `n`. It was the first system in which a proof is a term and checking it is type-checking, the {ref "entscheidungsproblem"}[Curry-Howard correspondence]; de Bruijn found that correspondence himself, not knowing Howard's work. In 1977 L. S. van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it, the first mathematics book verified end to end.
 
 :::figure "Nicolaas Govert de Bruijn, who built Automath" (tag := "debruijn")
 ![Nicolaas Govert de Bruijn](/static/figures/portraits/debruijn.jpg)

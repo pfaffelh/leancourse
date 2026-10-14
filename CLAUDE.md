@@ -1291,3 +1291,24 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
   eine Roadmap ueber den ganzen Bogen statt nur ueber die vier
   Episoden; `Mathlib` hat Zahlen und die Initiative dazubekommen.
   Keine Folie ueber 700 px, alle 31 haben Notizen.
+
+## 2026-10-14 (2) -- arXiv-Grafik auf den Stand vom 14.10.2026
+
+- **Nur die arXiv-Grafik hat neue Daten.** Quelle ist
+  `~/bwSyncShare/Vortraege/20260720_CRC/arxiv_fulltext_disclosure_weekly.csv`
+  (Stand 14.10.2026, 06:23); `scripts/data/arxiv_math_weekly.csv` ist
+  der Auszug daraus (`week_start`, `n` -> `papers`, `lean_formalized`,
+  `complete`). Geaendert: die Woche 28.09. ist nachgewachsen (2 466 ->
+  2 522 Papers, 36 -> 38), die Woche 05.10. ist jetzt vollstaendig
+  (2 546 / 60), die Woche 12.10. ist angelaufen und wird vom Skript
+  wegen `complete = 0` uebersprungen.
+- **Neuer Hoechstwert 2,36 pro 100** (05.10.), vorher 2,03 (07.09.).
+  Damit stimmte "still under two in a hundred" im Kapitel, im
+  Alt-Text, im Fragment der Folie und im Docstring von
+  `make_arxiv_figure.py` nicht mehr -- alle vier nachgezogen.
+- **`github_language_monthly.csv` ist unveraendert** (byte-identisch
+  mit der Quelle vom 01.10.). Die Grafik waere auch bei neuen Daten
+  gleich geblieben: sie zeichnet nur volle Quartale, und Q3 2026 ist
+  schon drin. `itp_github_repos_per_million.*` deshalb *nicht* neu
+  erzeugt -- ein Lauf haette nur den Stempel "retrieved" auf heute
+  gesetzt und damit ein falsches Datum behauptet.

@@ -3,9 +3,9 @@
 
 Plotted per 100 papers rather than as a weekly count, because the
 denominator moved: arXiv math went from about a thousand submissions a
-week in January 2026 to about twenty-four hundred at the end of
-September.  A rising count would partly be that growth; the share shows
-the level, which is still under two in a hundred.
+week in January 2026 to about twenty-five hundred in early October.  A
+rising count would partly be that growth; the share shows the level,
+which reached 2.4 per 100 in the first week of October.
 
 Data: scripts/data/arxiv_math_weekly.csv -- a full-text scan of every
 arXiv math submission of the period for uses of Lean and Mathlib,

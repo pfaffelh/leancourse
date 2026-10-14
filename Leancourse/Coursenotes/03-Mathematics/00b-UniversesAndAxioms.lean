@@ -319,6 +319,100 @@ First, `#print axioms` sees *only* the declared axioms.  The baked-in principles
 
 Second, proof irrelevance for `Prop` is effectively *uniqueness of identity proofs* (axiom K): all proofs of `a = b` are equal.  This is a deliberate design choice -- but it is precisely what makes Lean *incompatible* with the univalence axiom of {ref "other-type-theories"}[Homotopy Type Theory], where distinct equality proofs must be allowed to differ.
 
+# Why the kernel has no loops
+%%%
+tag := "termination"
+%%%
+
+Consistency means that `False` is not inhabited. A single term of type `False` anywhere in the environment ends it, because `False.elim` turns it into a proof of anything. It does not matter whether that term computes: nobody runs a proof.
+
+General recursion would hand one over at once.
+
+```lean +error
+def badLoop : False := badLoop
+```
+
+Nothing about this is locally wrong, which is the point. Checking `def c : T := e` asks whether `e` has type `T`, and while the body is being checked the name is already in the environment with the declared type. Every step is valid; the circle is visible only from outside. A type checker will not notice it, so it has to be excluded by a separate rule.
+
+This is also what separates a logic from a programming language. In Haskell `undefined : a` inhabits every type, and nobody minds, because Haskell is not a logic. Under the {ref "curry-howard"}[Curry-Howard correspondence] "every type is inhabited" reads "every proposition is provable".
+
+## Recursors instead of recursion
+%%%
+number := false
+tag := "recursors-not-recursion"
+%%%
+
+Lean does not solve this by testing whether a definition terminates -- that question is undecidable. The kernel has no recursion at all. It has *recursors*, one per inductive type, each a constant with a fixed type and a fixed reduction rule that always strips a constructor:
+
+```lean
+#check @Nat.rec
+```
+
+No loop can be built from that. What you write is compiled down to it. The equation compiler turns
+
+```lean
+def stepTwice : Nat → Nat
+  | 0 => 0
+  | n+1 => stepTwice n + 2
+```
+
+into an application of `Nat.brecOn`, a packaging of `Nat.rec`:
+
+```lean
+#print stepTwice
+```
+
+Where structural recursion does not fit, the compiler falls back on well-founded recursion, which goes through `WellFounded.fix` and requires a *proof* that some measure decreases. Termination is therefore not checked and approved; it is compiled away, and where necessary proved. When neither route works you get `fail to show termination`, which is what the first block above reports.
+
+## The second door: strict positivity
+%%%
+number := false
+tag := "strict-positivity"
+%%%
+
+Recursion is not the only way in. An inductive type whose constructor takes an argument in which the type being defined occurs to the left of an arrow is enough to produce a contradiction, with no recursive definition anywhere:
+
+```lean +error
+inductive Bad where
+  | mk : (Bad → False) → Bad
+```
+
+The rejection comes from the kernel itself, not from the elaborator: `(kernel) arg #1 of 'Bad.mk' has a non positive occurrence of the datatypes being declared`.
+
+Why that one constructor is enough: matching on `Bad` yields a projection `unmk : Bad → (Bad → False)`, and with it self-application becomes typeable. Put `delta b := unmk b b`, of type `Bad → False`. Then `mk delta : Bad`, and applying the one to the other gives `False`. No recursive definition appears anywhere; the eliminator that every inductive type carries is the whole of it. Lean proves this about itself, and the statement is that no such type can exist:
+
+```lean
+theorem no_negative_occurrence (Bad : Type)
+    (mk : (Bad → False) → Bad)
+    (unmk : Bad → (Bad → False)) : False :=
+  let delta : Bad → False := fun b => unmk b b
+  delta (mk delta)
+```
+
+The term is $`(\lambda x.\, x\,x)(\lambda x.\, x\,x)` in disguise. A negative occurrence makes `Bad` a fixed point of $`X \mapsto (X \to \bot)`, so `Bad` and `Bad → False` become interchangeable — which is Russell's paradox with application in place of $`\in` ({ref "types-history"}[Where types come from]). Strict positivity belongs on the list of {ref "baked-in-more"}[things the kernel bakes in].
+
+## Non-termination is allowed, just not in proofs
+%%%
+number := false
+tag := "partial-def"
+%%%
+
+Lean is also a programming language, and programs may loop. `partial def` permits it:
+
+```lean
+partial def spin (_ : Unit) : Nat := spin ()
+```
+
+A `partial` definition is opaque to the logic. It has no defining equation there, so no proof can unfold it. And it carries one more requirement, which is where the whole matter becomes visible:
+
+```lean +error
+partial def spinFalse (_ : Unit) : False := spinFalse ()
+```
+
+`could not prove that the type ∀ (x : Unit), False is nonempty`. A `partial` definition is only accepted when its result type is *already known to be inhabited*, so it can never be the first inhabitant of anything.
+
+That is the rule underneath all three. Loops are not forbidden. What is forbidden is producing an inhabitant of a type that is not already known to have one.
+
 # Constructive vs classical logic
 %%%
 tag := "constructive-classical"

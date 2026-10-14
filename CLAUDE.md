@@ -1520,3 +1520,46 @@ de Bruijn daran gearbeitet?" -- doch, und zwar das *andere* Fach.
   Damit ist sichtbar, was vorher im Text behauptet wurde. Folie und
   Kapitel tragen dieselbe Tabelle; Folienhoehen unveraendert, Maximum
   weiterhin `2013: Voevodsky` mit 557 px.
+
+## 2026-10-14 (8) -- Terminierung und Positivitaet, neuer Abschnitt
+
+Nutzerfrage: "Ueber die erste Tuer steht noch nichts im Manuskript,
+oder?" -- stimmte, und es war sogar **zweimal angekuendigt**
+(`01-Lean.lean:33` und die Gliederung in der Einleitung versprechen
+beide "well-foundedness and the avoidance of paradoxes" fuer den
+Mathematik-Teil). Jetzt eingeloest.
+
+Neuer Abschnitt `# Why the kernel has no loops` in
+`03-Mathematics/00b-UniversesAndAxioms.lean`, direkt vor
+`# Constructive vs classical logic`, mit vier Tags: `termination`,
+`recursors-not-recursion`, `strict-positivity`, `partial-def`.
+
+- **Warum der Zirkel durchrutschen wuerde:** beim Pruefen von
+  `def c : T := e` ist der Name schon in der Umgebung. Jeder Schritt
+  ist lokal korrekt, der Zirkel nur global sichtbar. Vergleich mit
+  Haskell (`undefined : a` bewohnt jeden Typ; unter Curry-Howard
+  heisst das "jede Aussage ist beweisbar").
+- **Der Kern hat gar keine Rekursion**, nur Rekursoren. `#check
+  @Nat.rec`, und `#print stepTwice` zeigt, dass der
+  Gleichungs-Compiler zu `Nat.brecOn` uebersetzt. Terminierung wird
+  nicht geprueft, sondern wegkompiliert; sonst wohlfundierte
+  Rekursion ueber `WellFounded.fix` mit Beweispflicht.
+- **Zweite Tuer, strikte Positivitaet.** Der Nutzer fragte zu Recht
+  nach, *warum* das reicht -- der Abschnitt behauptete es nur. Jetzt
+  mit Ableitung: aus dem Mustervergleich kommt
+  `unmk : Bad → (Bad → False)`, damit ist Selbstanwendung typisierbar,
+  `delta b := unmk b b`, `delta (mk delta) : False`. **Keine Rekursion
+  noetig.** Als gepruefter Satz im Text, *ohne* Axiome:
+  `theorem no_negative_occurrence (Bad : Type) (mk : ...) (unmk : ...)
+  : False`. Bewusst so und nicht mit `axiom Bad`, sonst stuende ein
+  `False` in der Umgebung des ganzen Manuskripts.
+- **`partial def`** ist erlaubt, aber fuer die Logik undurchsichtig
+  und verlangt einen bewohnten Zieltyp:
+  `partial def spinFalse (_ : Unit) : False` scheitert mit
+  "could not prove that the type ∀ (x : Unit), False is nonempty".
+  Daran haengt die Pointe des Abschnitts: verboten sind nicht
+  Schleifen, verboten ist der *erste* Bewohner eines Typs.
+- **Namenskollision:** `twice` gibt es schon in `01-Lean/01-Nat`;
+  der Import schlaegt dann mit "environment already contains" fehl.
+  Jetzt `stepTwice`. Warnungszahl fuer die Datei vor und nach der
+  Aenderung gleich (8), der Abschnitt bringt also keine neuen.

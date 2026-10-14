@@ -142,9 +142,25 @@ Write mathematics in a fixed formal language, fix the rules of inference, and a 
 ![Kurt Gödel](/static/figures/portraits/godel.jpg)
 :::
 
-Kurt Gödel settled the first two, in opposite directions. His thesis of 1929 proved first-order logic *complete*: a formula that holds in every model is derivable from the axioms. Logic itself is therefore not the obstacle, and this is why searching for a proof can be made to terminate whenever one exists.
+Kurt Gödel settled the first two, in opposite directions. His thesis of 1929 proved first-order logic *complete*: a formula that holds in every model is derivable from the axioms. *First-order* is the restriction that quantifiers range over the elements of a domain, never over its subsets, relations or functions. $`\forall x\, \exists y\, (x \cdot y = e)` is first-order; *every bounded set of reals has a supremum* is not, because it quantifies over sets of reals. Logic itself is therefore not the obstacle, and this is why searching for a proof can be made to terminate whenever one exists.
 
 The incompleteness theorems of 1931 end the programme. No consistent system that contains arithmetic and whose axioms a machine can list proves every true statement about the natural numbers, and none proves its own consistency. The formalization itself survived, and it is what proof assistants rest on. Gödel's proof takes it literally: he encodes formulas and proofs as natural numbers and computes with them, the first use of proofs as data. The argument is Cantor's diagonal argument, carried over from the reals to proofs. Turing used it again five years later.
+
+The word *complete* does two jobs here. A *logic* is complete when every formula that holds in all models is derivable; a *theory* is complete when it decides every statement, which is the sense of Hilbert's list above. The two theorems are about the two different things.
+
+:::table (align := left) +header
+* + Gödel
+  + about
+  + result
+* + 1929
+  + first-order logic
+  + complete: valid in every model implies derivable
+* + 1931
+  + any theory that contains arithmetic
+  + incomplete: some statement about $`\mathbb{N}` is neither proved nor refuted
+:::
+
+They do not conflict. The sentence Gödel builds in 1931 is true of the natural numbers but false in other models of the same axioms. It therefore does not hold in every model, and the theorem of 1929 promises nothing for it.
 
 ### 1936: the Entscheidungsproblem
 %%%

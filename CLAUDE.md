@@ -1419,3 +1419,34 @@ Steht jetzt in `02-Types.lean`, Abschnitt *Why `Prop` is special*.
   `Set ℝ → ℚ → Prop`, und `fun (S : Set ℝ) => {q : ℚ | ∃ x ∈ S, (q : ℝ) < x}`
   ist `Set ℝ → Set ℚ`. Genau die Stelle, an der imprädikatives `Prop`
   die Arbeit des Reduzibilitaetsaxioms tut.
+
+## 2026-10-14 (5) -- first-order logic erklaert, die beiden Goedel-Saetze getrennt
+
+Nutzerfrage: "First order logic is complete. Was ist first order logic
+genau?" -- der Begriff stand im Kapitel unerklaert, und das doppelte
+"complete" zwei Absaetze auseinander ist eine Stolperfalle.
+
+- **Kapitel 0, `### 1917 to 1931`:** Halbsatz dazu, was *first-order*
+  heisst -- Quantifikation ueber die *Elemente* eines Bereichs, nie
+  ueber Teilmengen, Relationen, Funktionen. Beispielpaar im Text:
+  `∀x ∃y (x · y = e)` ist erststufig, "jede beschraenkte Menge
+  reeller Zahlen hat ein Supremum" nicht.
+- **Die Wortklaerung, die eigentlich fehlte:** *complete* bezeichnet
+  zwei Dinge. Eine **Logik** ist vollstaendig, wenn alles
+  Allgemeingueltige ableitbar ist (1929). Eine **Theorie** ist
+  vollstaendig, wenn sie jede Aussage entscheidet -- das ist Hilberts
+  zweite Frage, und das toetet 1931. Dazu eine `:::table`
+  (Goedel / about / result), wie vom Nutzer gewuenscht.
+- **Warum kein Widerspruch:** der Satz von 1931 ist in ℕ wahr, in
+  anderen Modellen derselben Axiome falsch, also nicht
+  allgemeingueltig -- 1929 verspricht fuer ihn nichts.
+- **Kapitel 1, in der Konsistenz-Passage:** fuer eine *erststufige*
+  Theorie sind konsistent-sein und ein Modell haben dasselbe (das ist
+  gerade 1929). Leans Logik ist nicht erststufig -- Quantifikation
+  ueber Typen und ueber Propositionen -- also gibt es diese
+  Aequivalenz nicht, und das Modell muss von Hand gebaut werden.
+  Damit steht da jetzt auch, *warum* es ueberhaupt ein Modell braucht.
+- **Folie `Gödel, 1929 and 1931`:** nur die Sprechernotizen ergaenzt
+  (was first-order heisst, die zwei Bedeutungen von complete, dass
+  Lean nicht erststufig ist). Kein neues Element auf der Folie -- sie
+  hat schon Portrait plus drei Fragmente.

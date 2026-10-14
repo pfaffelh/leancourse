@@ -401,6 +401,19 @@ Two theorems, opposite directions, by the same person.
 the obstacle. This is what makes proof search terminate when a proof
 exists -- row two on the table in a moment.
 
+*First-order* means the quantifiers range over the elements of a
+domain, never over its subsets. "For all x, y in the group" is
+first-order; "every bounded set of reals has a supremum" is not.
+Lean is not first-order -- it quantifies over types and over
+propositions -- so this theorem does not apply to Lean.
+
+Watch the word *complete*, which does two jobs. A *logic* is complete
+when everything valid is derivable; a *theory* is complete when it
+decides every statement. 1929 is the first, Hilbert's second question
+and 1931 are the second. No conflict: the sentence of 1931 is true of
+the naturals but false in other models of the axioms, so it is not
+valid, and 1929 says nothing about it.
+
 1931: the incompleteness theorems. Any consistent system containing
 arithmetic, with axioms a machine can list, misses true statements
 about the naturals, and cannot prove its own consistency. The

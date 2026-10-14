@@ -28,7 +28,7 @@ In Lean every object is a term, and every term has a type. A type is itself a te
 tag := "types-history"
 %%%
 
-Types were invented to stop a contradiction. Bertrand Russell's letter of 1902 broke Gottlob Frege's system with the set $`R = \{x : x \notin x\}`, which is a member of itself exactly if it is not ({ref "background"}[Introduction]). Russell's repair, published in 1908, was to stratify. Every object gets a type, a type may be applied only to objects of lower type, and `x ∈ x` is then not a false statement but no statement at all. *Principia Mathematica* is written in that theory. Leon Chwistek and Frank Ramsey simplified it in the 1920s to what is now called the simple theory of types.
+Types were invented to stop a contradiction. Bertrand Russell's letter of 1902 broke Gottlob Frege's system with the set $`R = \{x : x \notin x\}`, which is a member of itself exactly if it is not ({ref "prehistory"}[Introduction]). Russell's repair, published in 1908, was to stratify. Every object gets a type, a type may be applied only to objects of lower type, and `x ∈ x` is then not a false statement but no statement at all. *Principia Mathematica* is written in that theory. Leon Chwistek and Frank Ramsey simplified it in the 1920s to what is now called the simple theory of types.
 
 Alonzo Church made it a calculus in 1940. His own lambda calculus of 1932 was inconsistent as a logic, as Stephen Kleene and J. Barkley Rosser showed in 1935, and the repair was again types: terms carry types, types are built from base types and `→`, and a term applied to itself is not well-formed. That system is the simply typed lambda calculus. *Isabelle/HOL* still rests on it.
 

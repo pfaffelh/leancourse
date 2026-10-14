@@ -1,9 +1,10 @@
 # The history in Chapter 0
 
-What the three history sections of
+What *How we got here* in
 [`Leancourse/Coursenotes/00-Introduction.lean`](../Leancourse/Coursenotes/00-Introduction.lean)
-rest on: *Before there were machines*, *1936: what a machine cannot do*
-and *The first proof assistants*.
+rests on. That section runs chronologically: *The mathematics*
+(1879-1936) and then *The proof assistants* (1967 onwards), ending at
+Lean.
 
 `free` means a PDF is one click away. `library` means it is behind a
 paywall or only on paper. A filename in `code` is a copy lying in this

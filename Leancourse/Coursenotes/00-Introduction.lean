@@ -12,8 +12,8 @@ number := false
 tag := "introduction"
 %%%
 
-What formalizing means, why anyone does it, how the field got here, and
-how this course is run.
+What formalizing means, why anyone does it, how the field got here,
+where Lean stands today, and how this course is run.
 
 # What formalizing means
 %%%
@@ -74,25 +74,113 @@ Until about 2023 the three were comparable, with Coq the largest. The rise is re
 
 The share rises through 2026 and is still under two in a hundred. It is a share rather than a count because the denominator moved too: the mathematics arXiv received about a thousand submissions a week in January and about twice that at the end of September. Within a few years, reading and writing a formal proof will be ordinary equipment.
 
-# How it got here
+# How we got here
 %%%
 number := false
-tag := "how-it-got-here"
+tag := "how-we-got-here"
 %%%
 
-A machine first checked a proof in 1967. The four episodes that made it urgent all fall in the last fifty years, and each added a different reason to want a machine to check mathematics. The logic behind all of it is older, and is at the {ref "background"}[end of this chapter].
+In order. First the mathematics, which took from 1879 to 1936 to turn a proof into a finite object a machine can inspect. Then the machines that inspect it, from 1967 on. Lean is at the end of that line, not at its beginning.
 
-## The first proof assistants
+## The mathematics
+%%%
+number := false
+tag := "the-mathematics"
+%%%
+
+### 1879 to 1913: Frege, Peano, Russell
+%%%
+number := false
+tag := "prehistory"
+%%%
+
+Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated. Giuseppe Peano axiomatized arithmetic in 1889, with a zero, a successor and induction; that is still the shape of {ref "nat"}[Lean's `Nat`]. Bertrand Russell's letter of 1902 showed that Frege's system was inconsistent. The set $`R = \{x : x \notin x\}` is a member of itself exactly if it is not.
+
+Ernst Zermelo axiomatized set theory in 1908. Whitehead and Russell spent *Principia Mathematica* rebuilding the rest; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
+
+### 1917 to 1931: Hilbert's programme, and Gödel
+%%%
+number := false
+tag := "hilbert-programme"
+%%%
+
+David Hilbert turned the idea into a programme, pressing for it from a lecture of 1917, *Axiomatisches Denken*, onwards. The conviction behind it is older. At the Paris congress of 1900 he had said that in mathematics there is *no ignorabimus*: no question we are condemned never to settle.
+
+Write mathematics in a fixed formal language, fix the rules of inference, and a proof becomes a finite string of symbols. Whether it follows the rules is then a question about symbols, answerable without knowing what they mean. Three questions about a set of axioms can then be asked precisely, and Hilbert wanted all three answered yes.
+
+* *Consistent.* No contradiction follows from the axioms. Hilbert wanted this proved by finitary means.
+* *Complete.* For every statement, either it or its negation follows.
+* *Decidable.* A procedure settles, for every statement, which of the two it is.
+
+:::figure "David Hilbert and Kurt Gödel" (tag := "hilbert-godel")
+![David Hilbert](/static/figures/portraits/hilbert.jpg)
+![Kurt Gödel](/static/figures/portraits/godel.jpg)
+:::
+
+Kurt Gödel settled the first two, in opposite directions. His thesis of 1929 proved first-order logic *complete*: a formula that holds in every model is derivable from the axioms. Logic itself is therefore not the obstacle, and this is why searching for a proof can be made to terminate whenever one exists.
+
+The incompleteness theorems of 1931 end the programme. No consistent system that contains arithmetic and whose axioms a machine can list proves every true statement about the natural numbers, and none proves its own consistency. The formalization itself survived, and it is what proof assistants rest on. Gödel's proof takes it literally: he encodes formulas and proofs as natural numbers and computes with them, the first use of proofs as data. The argument is Cantor's diagonal argument, carried over from the reals to proofs. Turing used it again five years later.
+
+### 1936: the Entscheidungsproblem
+%%%
+number := false
+tag := "entscheidungsproblem"
+%%%
+
+The third question was left. Hilbert and Wilhelm Ackermann put it in print in 1928, in *Grundzüge der theoretischen Logik*: is there a procedure that decides, for an arbitrary formula of first-order logic, whether it is provable? This is the *Entscheidungsproblem*. Alonzo Church and Alan Turing answered it in 1936, independently and negatively. There is no such procedure.
+
+:::figure "Alonzo Church and Alan Turing" (tag := "church-turing")
+![Alonzo Church (no freely licensed photograph available)](/static/figures/portraits/placeholder_church.png)
+![Alan Turing](/static/figures/portraits/turing.jpg)
+:::
+
+Both had to say first what a procedure is, and each built a model of computation to do it. Turing's is the machine that carries his name: a tape divided into cells, a head that reads one cell, writes and moves one step, and a finite table of instructions. The paper does not say how such a machine would be built; it is there to be reasoned about, not constructed. Church's model is the *lambda calculus*, and it is the one this course uses every day.
+
+The lambda calculus is a notation for functions, and nothing else. The term $`\lambda x.\, x + 1` denotes the function sending $`x` to $`x + 1`, the term $`f\, a` denotes $`f` applied to $`a`, and the only rule of computation is substitution:
+$$`(\lambda x.\, x + 1)\, 3 \;\rightsquigarrow\; 3 + 1.`
+Numbers, pairs and recursion are not built in; they are written as lambda terms. That is what makes the calculus a model of computation and not just a notation. Turing proved in an appendix to [his paper](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf) that his machines and Church's terms compute the same functions. He went to Princeton the following year and took his doctorate under Church. That the two models agree is a theorem. That either of them is what *computable* means is not; that is the *Church-Turing thesis*, a claim about the word.
+
+Lean is this notation with types on top. The Lean spelling of $`\lambda x.\, x+1` is `fun x => x + 1`, and the kernel computes by substituting:
+
+```lean
+#check fun x : Nat => x + 1
+
+example : (fun x : Nat => x + 1) 3 = 3 + 1 := rfl
+```
+
+The step from a calculus of functions to a calculus of proofs is the *Curry-Howard correspondence*: a proposition is a type, a proof is a term of that type, and checking a proof is type-checking a program. Haskell Curry saw the pattern for implication in the 1930s; de Bruijn, William Howard and Hans Läuchli extended it to the quantifiers in the 1960s. It is the reason `theorem` and `def` are the same construct in Lean.
+
+Three questions about proofs have three different answers, and a proof assistant is built on the difference.
+
+1. *Does this text prove that statement?* Decidable, and cheap. This is what Lean's kernel does, and the whole trust of the system rests on it.
+2. *Find a proof of this statement.* Semi-decidable. Proofs can be enumerated one after another, and by Gödel's completeness theorem every valid statement has one, so a search ends when a proof exists. When none exists it runs forever, which is why `exact?` and `grind` come with a time limit.
+3. *Decide whether this statement is provable.* Undecidable, by Church and Turing. No procedure answers yes or no, in finite time, for every formula.
+
+So the human writes the proof and the machine checks it. That division of labour is a theorem of 1936, not a property of today's software.
+
+## The proof assistants
+%%%
+number := false
+tag := "the-assistants"
+%%%
+
+### 1967: Automath
 %%%
 number := false
 tag := "first-assistants"
 %%%
 
-Nicolaas Govert de Bruijn started *[Automath](https://en.wikipedia.org/wiki/Automath)* at Eindhoven in 1967 and published it in 1968, the first language in which a machine checked proofs. Its foundation is a typed lambda calculus with dependent types, that is, types that may mention terms, as `Vec α n` mentions `n`. It was the first system in which a proof is a term and checking it is type-checking, the {ref "background"}[Curry-Howard correspondence]; de Bruijn found that correspondence himself, not knowing Howard's work. In 1977 L. S. van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it, the first mathematics book verified end to end.
+Nicolaas Govert de Bruijn started *[Automath](https://en.wikipedia.org/wiki/Automath)* at Eindhoven in 1967 and published it in 1968, the first language in which a machine checked proofs. Its foundation is a typed lambda calculus with dependent types, that is, types that may mention terms, as `Vec α n` mentions `n`. It was the first system in which a proof is a term and checking it is type-checking, the {ref "entscheidungsproblem"}[Curry-Howard correspondence]; de Bruijn found that correspondence himself, not knowing Howard's work. In 1977 L. S. van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it, the first mathematics book verified end to end.
 
 :::figure "Nicolaas Govert de Bruijn, who built Automath" (tag := "debruijn")
 ![Nicolaas Govert de Bruijn](/static/figures/portraits/debruijn.jpg)
 :::
+
+### 1972 to 1991: Mizar, LCF, HOL, Isabelle, Coq
+%%%
+number := false
+tag := "lcf-line"
+%%%
 
 Four lines come out of the following twenty years, and the systems of today are on them.
 
@@ -103,7 +191,7 @@ Four lines come out of the following twenty years, and the systems of today are 
 
 The two architectures answer the same question differently. In the LCF line nothing is kept but the theorem, and one trusts the kernel because no other code can make one. In the Automath line the system writes down a proof term, which a small, separate checker reads afterwards; a system meeting that condition is said to satisfy the *[de Bruijn criterion](https://www.cs.ru.nl/~freek/comparison/comparison.pdf)*. Lean is in the second line: a Lean proof is a term, and the kernel rechecks it no matter which tactic produced it.
 
-## 1976: the four colour theorem
+### 1976: the four colour theorem
 %%%
 number := false
 tag := "four-colour-episode"
@@ -118,7 +206,7 @@ Kenneth Appel and Wolfgang Haken proved the [four colour theorem](https://en.wik
 
 In 2005 Georges Gonthier formalized the whole thing in Coq, case analysis included. The two events separate the distinction this course rests on: *a proof found by computer is not a proof checked by computer.*
 
-## 1998: the Kepler conjecture
+### 1998: the Kepler conjecture
 %%%
 number := false
 tag := "kepler-episode"
@@ -133,7 +221,7 @@ Thomas Hales announced a proof of the [Kepler conjecture](https://en.wikipedia.o
 
 Twelve referees worked on it for four years and reported that they were ninety-nine percent certain, and could do no better. The *Annals of Mathematics* published it with that caveat. Hales started the [Flyspeck project](https://en.wikipedia.org/wiki/Flyspeck), which delivered a complete formal proof in HOL Light and Isabelle in 2014. This episode is not about computers: peer review had met a proof it could not certify, and more effort would not have helped.
 
-## 2013: Voevodsky
+### 2013: Voevodsky
 %%%
 number := false
 tag := "voevodsky-episode"
@@ -149,7 +237,7 @@ His account is about people, not machines. Simpson had a counterexample but coul
 
 Voevodsky received the Fields Medal in 2002. He then looked for a proof assistant he could use, found none that suited his mathematics, and built the foundations for one: [univalent foundations](https://en.wikipedia.org/wiki/Univalent_foundations), a special year at the Institute for Advanced Study in 2012-13, and the book two dozen people wrote there in under six months. He formalized in Coq, and his foundations are not the ones *Mathlib* rests on: Lean 2 carried a mode for them, Lean 3 dropped it. This course takes the diagnosis, not the cure. His [own account](https://www.ias.edu/ideas/2014/voevodsky-origins) is short. He died in 2017.
 
-## 2020: the Liquid Tensor Experiment
+### 2020: the Liquid Tensor Experiment
 %%%
 number := false
 tag := "lte-episode"
@@ -164,17 +252,37 @@ In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog: a theo
 
 Buzzard's plenary lecture at the ICM in 2022 marks the point where formalization stopped being a curiosity.
 
-## Lean, from 2013
+## 2013: Lean
 %%%
 number := false
-tag := "lean-itself"
+tag := "lean-origin"
 %%%
 
 :::figure "Leonardo de Moura, who started Lean in 2013" (tag := "demoura")
 ![Leonardo de Moura](/static/figures/portraits/demoura.jpg)
 :::
 
-Leonardo de Moura started Lean at Microsoft Research in 2013. Lean 4, a redesign rather than a new version, arrived in 2021. Development now sits with the Lean FRO, a non-profit of roughly twenty people. Kevin Buzzard has argued for Lean among mathematicians since 2018.
+Leonardo de Moura started Lean at Microsoft Research in 2013. Lean 4, a redesign rather than a new version, arrived in 2021, and is written in Lean itself. Its foundation is the Calculus of Inductive Constructions, which puts it in the Automath line: a proof is a term, and the kernel rechecks it whatever tactic produced it. Kevin Buzzard has argued for Lean among mathematicians since 2018. Where development sits now is the next section.
+
+# Current state of Lean
+%%%
+number := false
+tag := "lean-today"
+%%%
+
+*Releases.* Lean 4 appears once a month, with a release candidate about four weeks ahead: `v4.33.0` on 10 August 2026, `v4.34.0` on 14 September, `v4.35.0` on 12 October. Nothing updates by itself. A file `lean-toolchain` in the root of a project names one exact version, `elan` fetches that version, and `lake` builds against it. This course is pinned to `leanprover/lean4:v4.34.0`, so the notes and your machine agree all semester.
+
+*Who builds Lean.* The [Lean FRO](https://lean-lang.org/fro/), a non-profit founded in July 2023 under Convergent Research, with twenty-one people at the time of writing. Leonardo de Moura is chief architect, Sebastian Ullrich head of engineering. It runs on donations: the Simons Foundation International, the Alfred P. Sloan Foundation, the Richard Merkin Foundation, Amazon, and five million dollars from Alex Gerko of XTX Markets in July 2025. Lean has no vendor behind it, and it is no longer a spare-time project either.
+
+*Mathlib.* [*Mathlib*](https://github.com/leanprover-community/mathlib4) is one repository holding essentially all of the mathematics, compiled as a unit. Maintainers review every change, and CI keeps the whole library building against the current Lean. There are no stable releases: *Mathlib* follows Lean, and your project follows *Mathlib*. Every file in this course starts with `import Mathlib`, so we make no distinction between the two. Compiling it from source takes hours, which is why `lake exe cache get` downloads what the CI already built.
+
+Measured on the version pinned for this course (15 September 2026): 8 529 files, 2.33 million lines, about 189 000 theorems and lemmas, about 64 000 definitions, instances and structures, by 1 031 contributors in 34 768 commits. In the thirty days before that date it received 820 commits, 27 per day. The library changes while you use it.
+
+*Who maintains Mathlib.* For fifteen years, nobody was paid to. The [Mathlib Initiative](https://mathlib-initiative.org/), a programme of Renaissance Philanthropy begun in September 2025, now employs maintainers; it received the other five million dollars of Gerko's gift. Its stated targets are review within a week for nine out of ten pull requests, keeping the downstream ecosystem building, and documentation. Johan Commelin, who led the {ref "lte-episode"}[Liquid Tensor Experiment], works there.
+
+*Reading the library.* The [interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) draws *Mathlib* as a graph of its modules: which file may use which, and therefore in what order the library is built. The same site serves the [API documentation](https://leanprover-community.github.io/mathlib4_docs/) for every declaration. Both are worth half an hour before you need them.
+
+*Lean is also a programming language.* `lake`, the compiler's own front end and much of Lean itself are written in Lean; see [Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
 
 # Landmark formalizations
 %%%
@@ -309,89 +417,6 @@ tag := "other-courses"
 * [_Natural Number Game_](https://adam.math.hhu.de/#/g/leanprover-community/nng4): proofs about `ℕ` in the browser, nothing to install. The usual first contact with Lean, and a good use of an evening before the course starts.
 * [_Formalising Mathematics_](https://b-mehta.github.io/formalising-mathematics-notes/) by Bhavik Mehta, after notes by Kevin Buzzard: the format of the present course follows these.
 * [_Mathematics in Lean_](https://leanprover-community.github.io/mathematics_in_lean/) by Jeremy Avigad and Patrick Massot: the closest thing to an official course, organized by area of mathematics.
-
-# Lean and Mathlib
-%%%
-number := false
-tag := "lean-and-mathlib"
-%%%
-
-* Lean is also a programming language; see [Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
-* [*Mathlib*](https://github.com/leanprover-community/mathlib4) is a library written in Lean, collecting mathematical results. Every file in this course starts with `import Mathlib`, so we make no distinction between the two.
-* Measured on the version pinned for this course (15 September 2026): 8 529 files, 2.33 million lines, about 189 000 theorems and lemmas, about 64 000 definitions, instances and structures, by 1 031 contributors in 34 768 commits. In the thirty days before that date it received 820 commits, 27 per day. The library changes while you use it.
-* The [interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) draws *Mathlib* as a graph of its modules; the same site serves the [API documentation](https://leanprover-community.github.io/mathlib4_docs/) for every declaration. Both are worth half an hour before you need them.
-
-# Where the ideas come from
-%%%
-number := false
-tag := "background"
-%%%
-
-Lean's notation for functions is a calculus of 1936, and the division of labour between you and the machine is a theorem of the same year. This section says where both come from. None of it is needed to write a proof.
-
-## From Frege to Gödel
-%%%
-number := false
-tag := "prehistory"
-%%%
-
-Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated. Giuseppe Peano axiomatized arithmetic in 1889, with a zero, a successor and induction; that is still the shape of {ref "nat"}[Lean's `Nat`]. Bertrand Russell's letter of 1902 showed that Frege's system was inconsistent. The set $`R = \{x : x \notin x\}` is a member of itself exactly if it is not.
-
-Ernst Zermelo axiomatized set theory in 1908. Whitehead and Russell spent *Principia Mathematica* rebuilding the rest; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
-
-David Hilbert turned the idea into a programme, pressing for it from a lecture of 1917, *Axiomatisches Denken*, onwards. The conviction behind it is older. At the Paris congress of 1900 he had said that in mathematics there is *no ignorabimus*: no question we are condemned never to settle.
-
-Write mathematics in a fixed formal language, fix the rules of inference, and a proof becomes a finite string of symbols. Whether it follows the rules is then a question about symbols, answerable without knowing what they mean. Three questions about a set of axioms can then be asked precisely, and Hilbert wanted all three answered yes.
-
-* *Consistent.* No contradiction follows from the axioms. Hilbert wanted this proved by finitary means.
-* *Complete.* For every statement, either it or its negation follows.
-* *Decidable.* A procedure settles, for every statement, which of the two it is.
-
-:::figure "David Hilbert and Kurt Gödel" (tag := "hilbert-godel")
-![David Hilbert](/static/figures/portraits/hilbert.jpg)
-![Kurt Gödel](/static/figures/portraits/godel.jpg)
-:::
-
-Kurt Gödel settled the first two, in opposite directions. His thesis of 1929 proved first-order logic *complete*: a formula that holds in every model is derivable from the axioms. Logic itself is therefore not the obstacle, and this is why searching for a proof can be made to terminate whenever one exists.
-
-The incompleteness theorems of 1931 end the programme. No consistent system that contains arithmetic and whose axioms a machine can list proves every true statement about the natural numbers, and none proves its own consistency. The formalization itself survived, and it is what proof assistants rest on. Gödel's proof takes it literally: he encodes formulas and proofs as natural numbers and computes with them, the first use of proofs as data. The argument is Cantor's diagonal argument, carried over from the reals to proofs. Turing used it again five years later.
-
-## 1936: the Entscheidungsproblem
-%%%
-number := false
-tag := "entscheidungsproblem"
-%%%
-
-The third question was left. Hilbert and Wilhelm Ackermann put it in print in 1928, in *Grundzüge der theoretischen Logik*: is there a procedure that decides, for an arbitrary formula of first-order logic, whether it is provable? This is the *Entscheidungsproblem*. Alonzo Church and Alan Turing answered it in 1936, independently and negatively. There is no such procedure.
-
-:::figure "Alonzo Church and Alan Turing" (tag := "church-turing")
-![Alonzo Church (no freely licensed photograph available)](/static/figures/portraits/placeholder_church.png)
-![Alan Turing](/static/figures/portraits/turing.jpg)
-:::
-
-Both had to say first what a procedure is, and each built a model of computation to do it. Turing's is the machine that carries his name: a tape divided into cells, a head that reads one cell, writes and moves one step, and a finite table of instructions. The paper does not say how such a machine would be built; it is there to be reasoned about, not constructed. Church's model is the *lambda calculus*, and it is the one this course uses every day.
-
-The lambda calculus is a notation for functions, and nothing else. The term $`\lambda x.\, x + 1` denotes the function sending $`x` to $`x + 1`, the term $`f\, a` denotes $`f` applied to $`a`, and the only rule of computation is substitution:
-$$`(\lambda x.\, x + 1)\, 3 \;\rightsquigarrow\; 3 + 1.`
-Numbers, pairs and recursion are not built in; they are written as lambda terms. That is what makes the calculus a model of computation and not just a notation. Turing proved in an appendix to [his paper](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf) that his machines and Church's terms compute the same functions. He went to Princeton the following year and took his doctorate under Church. That the two models agree is a theorem. That either of them is what *computable* means is not; that is the *Church-Turing thesis*, a claim about the word.
-
-Lean is this notation with types on top. The Lean spelling of $`\lambda x.\, x+1` is `fun x => x + 1`, and the kernel computes by substituting:
-
-```lean
-#check fun x : Nat => x + 1
-
-example : (fun x : Nat => x + 1) 3 = 3 + 1 := rfl
-```
-
-The step from a calculus of functions to a calculus of proofs is the *Curry-Howard correspondence*: a proposition is a type, a proof is a term of that type, and checking a proof is type-checking a program. Haskell Curry saw the pattern for implication in the 1930s; de Bruijn, William Howard and Hans Läuchli extended it to the quantifiers in the 1960s. It is the reason `theorem` and `def` are the same construct in Lean.
-
-Three questions about proofs have three different answers, and a proof assistant is built on the difference.
-
-1. *Does this text prove that statement?* Decidable, and cheap. This is what Lean's kernel does, and the whole trust of the system rests on it.
-2. *Find a proof of this statement.* Semi-decidable. Proofs can be enumerated one after another, and by Gödel's completeness theorem every valid statement has one, so a search ends when a proof exists. When none exists it runs forever, which is why `exact?` and `grind` come with a time limit.
-3. *Decide whether this statement is provable.* Undecidable, by Church and Turing. No procedure answers yes or no, in finite time, for every formula.
-
-So the human writes the proof and the machine checks it. That division of labour is a theorem of 1936, not a property of today's software.
 
 # Practical matters
 %%%

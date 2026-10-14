@@ -1250,3 +1250,44 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
   verlinkt: der einzige Kandidat
   (`openai/math@3014888`, 2026-10-08) heisst nur "Update manuscripts
   and Lean formalizations" und laesst sich nicht sicher zuordnen.
+
+## 2026-10-14 -- Kapitel 0 chronologisch umgebaut
+
+- **Neue Gliederung**: What formalizing means / Why formalize? / Where
+  the field stands / **How we got here** / **Current state of Lean** /
+  Landmark formalizations / Other theorem provers / Other courses /
+  Practical matters / Sources / Picture credits. Die Abschnitte
+  `Where the ideas come from` und `Lean and Mathlib` sind
+  aufgegangen und gibt es nicht mehr.
+- **`# How we got here` laeuft jetzt strikt chronologisch** und hat
+  erstmals **drei Ebenen** (`###` funktioniert in Verso, vorher nie
+  benutzt):
+  `## The mathematics` -> `### 1879 to 1913: Frege, Peano, Russell`,
+  `### 1917 to 1931: Hilbert's programme, and Goedel`,
+  `### 1936: the Entscheidungsproblem`;
+  `## The proof assistants` -> `### 1967: Automath`,
+  `### 1972 to 1991: Mizar, LCF, HOL, Isabelle, Coq`,
+  `### 1976`, `### 1998`, `### 2013: Voevodsky`, `### 2020`;
+  dann `## 2013: Lean`. Damit kehrt sich die Entscheidung vom
+  13.10. ("Hintergrund zuletzt") wieder um -- auf Wunsch des Nutzers.
+- **Tags**: `how-it-got-here` -> `how-we-got-here`, `background` faellt
+  weg (die drei Verweise darauf zeigen jetzt auf `prehistory` bzw.
+  `entscheidungsproblem`), neu `the-mathematics`, `hilbert-programme`,
+  `the-assistants`, `lcf-line`, `lean-origin`, `lean-today`. Die alten
+  Episoden-Tags sind unveraendert.
+- **`# Current state of Lean`** ist neu: Release-Zyklus (monatlich,
+  `v4.35.0` am 12.10.2026) und warum nichts von allein aktualisiert
+  (`lean-toolchain` + `elan` + `lake`, Kurs auf `v4.34.0` gepinnt);
+  Lean FRO (Non-Profit seit Juli 2023 unter Convergent Research,
+  21 Leute laut Teamseite, de Moura/Ullrich, Geldgeber);
+  Mathlib mit den Zahlen vom 15.09.2026; **Mathlib Initiative**
+  (`mathlib-initiative.org`, Programm von Renaissance Philanthropy
+  seit September 2025, die zweiten 5 Mio. von Alex Gerko, Ziel u.a.
+  Review in einer Woche fuer 90 % der PRs, Commelin arbeitet dort);
+  Import-Map und API-Doku.
+- **Folien 29 -> 31**, gleiche Reihenfolge wie das Kapitel. Neu:
+  `2013: Lean` (de-Moura-Portrait, vorher nur in den Notizen von
+  Automath versteckt) und `Lean today`. `How we got here` ist jetzt
+  eine Roadmap ueber den ganzen Bogen statt nur ueber die vier
+  Episoden; `Mathlib` hat Zahlen und die Initiative dazubekommen.
+  Keine Folie ueber 700 px, alle 31 haben Notizen.

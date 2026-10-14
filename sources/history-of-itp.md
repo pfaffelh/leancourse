@@ -151,6 +151,25 @@ these is downloaded; the section only states the dates.
   `free` (JSTOR / public domain). Where types are invented, as a
   repair of the paradox of 1902. Sketched already in Appendix B of
   *The Principles of Mathematics*, 1903.
+* **Ernst Zermelo, "Untersuchungen über die Grundlagen der
+  Mengenlehre I".** *Mathematische Annalen* 65 (1908), 261-281.
+  `free` (public domain, GDZ / Internet Archive). The other answer of
+  1908: unrestricted comprehension is replaced by separation, so the
+  paradoxical set is never formed. The language is untouched -- that
+  `x ∈ x` is false for every set is the axiom of foundation, added by
+  von Neumann in 1925 and by Zermelo in 1930, and foundation is not
+  the repair of the paradox. The notes say this in the Introduction
+  and again at the start of *Where types come from*.
+* **Rob Nederpelt, Herman Geuvers, *Type Theory and Formal Proof: An
+  Introduction*.** Cambridge University Press 2014. `paywall`
+  (copy outside the repository). Section 13.8 is the source for the
+  two-answers framing: "To overcome paradoxes and regain consistency,
+  E.F.F. Zermelo chose another way: he axiomatised set theory in
+  1908", and set theory "describes which sets exist". The same section
+  gives the authors' reason for formalizing with types rather than in
+  ZF: in ZF `∈` relates two entities of the same level, while ordinary
+  practice reads it as an object in a collection, and everything has
+  to be coded as a set.
 * **Frank Ramsey, "The Foundations of Mathematics".** *Proc. LMS* 25
   (1926), 338-384, and Leon Chwistek, *The Theory of Constructive
   Types*, 1921-1923. The simple theory of types, without Russell's

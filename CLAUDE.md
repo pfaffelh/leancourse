@@ -1312,3 +1312,59 @@ course is for" (Ziele) und "What your machine needs" (Hardware-Tabelle).
   schon drin. `itp_github_repos_per_million.*` deshalb *nicht* neu
   erzeugt -- ein Lauf haette nur den Stempel "retrieved" auf heute
   gesetzt und damit ein falsches Datum behauptet.
+
+## 2026-10-14 (3) -- Zermelo gegen Russell, die beiden Antworten von 1908
+
+Frage des Nutzers: nach Russells Paradoxie gab es doch zwei Loesungen,
+`x ∈ x` verbieten (Zermelo) oder Typtheorie. Die Aufteilung stimmt,
+die Zuordnung war vertauscht -- **Zermelo verbietet keinen Ausdruck.**
+
+- **Zermelo 1908** schraenkt ein, *was existiert*: Aussonderung statt
+  unbeschraenkter Komprehension, also nur `{x ∈ A : φ(x)}` aus einem
+  schon vorhandenen `A`. $R$ wird nie gebildet, und Russells Argument
+  wird zum Satz (es gibt keine Allmenge). Die Sprache bleibt
+  unangetastet: `x ∈ x` ist eine wohlgeformte Formel. Dass sie fuer
+  keine Menge gilt, ist das **Fundierungsaxiom** (von Neumann 1925,
+  Zermelo 1930) -- spaeter, und *nicht* die Reparatur der Paradoxie.
+- **Russell 1908** schraenkt ein, *was sagbar ist*. `x ∈ x` ist keine
+  falsche Aussage, sondern gar keine. Wohlgeformtheit ist damit eine
+  Frage an die Syntax und entscheidbar -- genau das, was ein
+  Typchecker tut.
+- Beide enden in einer Stufung, aber: die **kumulative Hierarchie**
+  $V_\alpha$ ist ein *Satz* darueber, welche Mengen es gibt, die
+  **Universenhierarchie** `Type 0 : Type 1 : ...` eine *Regel* der
+  Grammatik.
+- **Quelle** ist das Buch, auf das der Nutzer verwiesen hat:
+  Nederpelt/Geuvers, *Type Theory and Formal Proof*, CUP 2014,
+  Abschnitt 13.8, S. 298 ("Zermelo chose another way", das System
+  "describes which sets exist"). Liegt unter
+  `~/bwSyncShare/Papers/`, ist bezahlpflichtig, kommt nicht ins Repo.
+  Eintraege dafuer und fuer Zermelo 1908 in `sources/history-of-itp.md`.
+
+**Wo es steht.** Kapitel 0, `### 1879 to 1913`: drei Absaetze plus
+eine `:::table` (restricts / `x ∈ x` is / the stratification is), die
+der Nutzer ausdruecklich wollte. Kapitel 1, `# Where types come from`:
+ein eigener Absatz mit Fundierung, kumulativer Hierarchie und dem
+Entscheidbarkeitsargument, dazu ein Absatz, *warum* die Mathematik
+Zermelo gefolgt ist (Reduzibilitaetsaxiom, Wiederholung auf jeder
+Stufe, Wohlordnungssatz) und warum sich das umdreht, sobald eine
+Maschine prueft (Mizar hat soft types ueber TG-Mengenlehre).
+
+**Folien 31 -> 32.** Neu `Two repairs, 1908` direkt nach
+`Frege, Peano, Russell`, mit derselben Tabelle (275 px). Die Tabelle
+auf der Personen-Folie haette die auf 700 px getrieben, deshalb eine
+eigene; `Frege, Peano, Russell` ist damit wieder bei 515 px. Hoechste
+Folie im Deck ist `2013: Voevodsky` mit 557 px.
+
+**Nebenbefund:** `static/katex/` und `static/math.js` sind **nicht**
+unbenutzt. Verso gibt Inline-Mathe als `<code class="math inline">`
+aus, `math.js` laesst KaTeX im Browser darueber laufen. Das Angebot
+aus einer frueheren Sitzung, beides zu loeschen, war falsch.
+
+**Messskript** fuer Folienhoehen (war bisher nur im Scratchpad):
+Kopie der `index.html` mit angehaengtem Script, das alle Fragmente
+sichtbar schaltet (`opacity/visibility/transform`), jede `section` auf
+`display:block; position:static` setzt und die Hoehen in ein
+`<pre id="RESULT">` schreibt; dann
+`google-chrome --headless --virtual-time-budget=12000 --dump-dom`
+und den `<pre>` herausfiltern.

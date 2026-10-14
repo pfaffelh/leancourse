@@ -270,8 +270,62 @@ Russell's letter of 1902 breaks it. Whitehead and Russell then spend
 comes with the note that "the above proposition is occasionally
 useful".
 
+Both repairs are from 1908, and the difference between them is why
+this course is about types. Zermelo replaces unrestricted
+comprehension by separation, so the paradoxical set is never formed;
+`x in x` stays a well-formed formula, and that it is false for every
+set is the axiom of foundation, added later and not the repair.
+Russell stratifies the grammar, so `x in x` is not a false statement
+but no statement at all. Well-formedness is then decidable, which is
+exactly what a type checker decides. Mathematics went with Zermelo,
+proof assistants with Russell.
+
 Done by hand, formalization is unbearable. For most of a century
 little came of it.
+:::
+
+# Two repairs, 1908
+
+:::table +colHeaders +rowSeps
+*
+  * 1908
+  * restricts
+  * `x ∈ x` is
+  * the stratification is
+*
+  * Zermelo
+  * which sets *exist*
+  * well-formed, and false
+  * the cumulative hierarchy, a *theorem*
+*
+  * Russell
+  * what may be *said*
+  * no statement at all
+  * the type hierarchy, a *rule*
+:::
+
+:::fragment highlightBlue
+Mathematics went with Zermelo, proof assistants with Russell.
+:::
+
+:::notes
+The whole reason this course is about types.
+
+Zermelo replaces unrestricted comprehension by separation, so the
+paradoxical set is never formed. The language is untouched: `x in x`
+stays a well-formed formula, and that it is false for every set is
+the axiom of foundation, added by von Neumann in 1925 and Zermelo in
+1930 -- later, and not the repair.
+
+Russell stratifies the grammar. `x in x` is not a false statement but
+no statement at all, so well-formedness is a question about syntax
+and is decidable. That is what a type checker decides, and it is why
+Lean has `Type 0 : Type 1 : ...` and no type of all types.
+
+Both hierarchies exist; the difference is who enforces them. In set
+theory the cumulative hierarchy is a theorem about which sets there
+are, and you may write the bad expression and then prove it denotes
+nothing. In type theory you do not get that far.
 :::
 
 # Hilbert's programme

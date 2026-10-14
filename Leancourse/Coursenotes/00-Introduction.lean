@@ -80,7 +80,7 @@ number := false
 tag := "how-we-got-here"
 %%%
 
-In order. First the mathematics, which took from 1879 to 1936 to turn a proof into a finite object a machine can inspect. Then the machines that inspect it, from 1967 on. Lean is at the end of that line, not at its beginning.
+It took mathematics from 1879 to 1936 to turn a proof into a finite object a machine can inspect. Then the machines that inspect it, from 1967 on. Lean is at the end of that line.
 
 ## The mathematics
 %%%
@@ -96,7 +96,28 @@ tag := "prehistory"
 
 Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated. Giuseppe Peano axiomatized arithmetic in 1889, with a zero, a successor and induction; that is still the shape of {ref "nat"}[Lean's `Nat`]. Bertrand Russell's letter of 1902 showed that Frege's system was inconsistent. The set $`R = \{x : x \notin x\}` is a member of itself exactly if it is not.
 
-Ernst Zermelo axiomatized set theory in 1908. Whitehead and Russell spent *Principia Mathematica* rebuilding the rest; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
+Two answers appeared in 1908, and both are still in use. They differ in what they restrict.
+
+:::table (align := left) +header
+* + 1908
+  + restricts
+  + `x ∈ x` is
+  + the stratification is
+* + Ernst Zermelo
+  + which sets *exist*
+  + well-formed, and false
+  + the cumulative hierarchy $`V_0 \subseteq V_1 \subseteq \dots`, a theorem about the sets
+* + Bertrand Russell
+  + what can be *said*
+  + no statement at all
+  + the type hierarchy `Type 0 : Type 1 : ...`, a rule of the grammar
+:::
+
+Zermelo replaced unrestricted comprehension, which forms $`\{x : \varphi(x)\}` for any property, by separation, which forms only $`\{x \in A : \varphi(x)\}` out of a set $`A` already given. Then $`R` is never formed, and Russell's argument turns into a theorem instead of a contradiction: there is no set of all sets. That `x ∈ x` holds for no set is a later and separate axiom, foundation.
+
+Russell stratified the language itself, so that `x ∈ x` is not false but ungrammatical. Well-formedness is then a question about syntax, settled before any question of truth arises, and a machine can decide it. Mathematics went with Zermelo, proof assistants with Russell ({ref "types-history"}[Where types come from]).
+
+Whitehead and Russell spent *Principia Mathematica* rebuilding the rest; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
 
 ### 1917 to 1931: Hilbert's programme, and Gödel
 %%%
@@ -523,7 +544,9 @@ Where a date or a formulation above comes from one text in particular:
 * Freek Wiedijk, [*The Seventeen Provers of the World*](https://www.cs.ru.nl/~freek/comparison/comparison.pdf), Springer LNAI 3600, 2006.
 * Fairouz Kamareddine, Joe Wells, Christoph Zengler and Henk Barendregt, [*Characteristics of de Bruijn's early proof checker Automath*](https://arxiv.org/abs/2203.01173), *Fundamenta Informaticae* 185 (2022), 313-336.
 
-Four sources are on paper or behind a paywall and are only paraphrased here: Hilbert and Ackermann's *Grundzüge der theoretischen Logik* (1928), Church's two papers of 1936, Russell's letter of 1902 in van Heijenoort's *From Frege to Gödel*, and Curry and Feys' *Combinatory Logic* (1958). `sources/history-of-itp.md` in the repository lists all of them.
+* Rob Nederpelt and Herman Geuvers, *Type Theory and Formal Proof: An Introduction*, Cambridge University Press 2014. Section 13.8 sets Zermelo's answer of 1908 against Russell's. Behind a paywall.
+
+Four further sources are on paper or behind a paywall and are only paraphrased here: Hilbert and Ackermann's *Grundzüge der theoretischen Logik* (1928), Church's two papers of 1936, Russell's letter of 1902 in van Heijenoort's *From Frege to Gödel*, and Curry and Feys' *Combinatory Logic* (1958). `sources/history-of-itp.md` in the repository lists all of them.
 
 # Picture credits
 %%%

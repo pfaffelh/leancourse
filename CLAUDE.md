@@ -1563,3 +1563,43 @@ Neuer Abschnitt `# Why the kernel has no loops` in
   der Import schlaegt dann mit "environment already contains" fehl.
   Jetzt `stepTwice`. Warnungszahl fuer die Datei vor und nach der
   Aenderung gleich (8), der Abschnitt bringt also keine neuen.
+
+## 2026-10-14 (9) -- Systeme: was jedes besser machte, und ob Lean bleibt
+
+Zwei Nutzerbeobachtungen: das Kapitel lese sich, als werde alle paar
+Jahre ein ITP durch einen neuen abgeloest, und es bleibe offen, ob
+Lean dasselbe passiert. Dazu die Frage, ob man sagen kann, was jedes
+System besser machte als seine Vorgaenger.
+
+- **Die Ablöse-Lesart ist falsch, und das steht jetzt da.** Von den
+  sieben genannten Systemen laufen fuenf; nur *Automath* und *LCF*
+  haben aufgehoert, und beide haben ihre Architektur vererbt. Grund:
+  eine Bibliothek laesst sich nicht umziehen -- *seL4* bleibt in
+  Isabelle, der Vierfarbensatz in Rocq.
+  **Korrektur unterwegs:** ich hatte erst geschrieben, nur Automath
+  habe aufgehoert. LCF laeuft auch nicht mehr.
+- **Neue Grafik** `static/figures/itp_lineage.{png,pdf}`, Skript
+  `scripts/figures/itp_lineage.py`. Zeitstrahl 1967-2026, ein Balken
+  je System, Name darueber, *was es hinzufuegte* darunter, Farbe =
+  Tradition (de-Bruijn-Linie blau, LCF-Linie gruen, Mizar orange,
+  dieselben Farben wie in der GitHub-Grafik). Gestoppte Systeme mit
+  38 % Deckkraft und Vermerk *stopped*.
+  **Layout-Falle:** erster Versuch hatte den Text *im* Balken -- bei
+  kurzen Balken (Automath, LCF, Lean) laeuft er heraus und kollidiert
+  mit dem Vermerk. Jetzt Name ueber, Text unter dem Balken, und
+  Zeilenabstand `pitch = 1.5`, sonst stoesst die Unterzeile einer
+  Zeile an den Namen der naechsten. Legende oben rechts, wo durch die
+  kurzen fruehen Balken Platz frei ist.
+- **Die Tabelle, die ich zuerst gebaut hatte, ist wieder weg** -- sie
+  hat die Links zu Mizar, LCF, HOL, Isabelle und Coq geschluckt, die
+  der Nutzer frueher ausdruecklich wollte. Jetzt: Grafik *und* die
+  alte Aufzaehlung mit den Links.
+- **`# Current state of Lean`** endet jetzt mit *Will this last?* --
+  dagegen: Rocq hatte bis etwa 2023 die groesste Bibliothek und wurde
+  in fuenf Jahren ueberholt ({ref "itp-repos"}), Groesse entscheidet
+  also nichts. Dafuer: in sechzig Jahren wurde kein Beweisassistent
+  ersetzt, nur ergaenzt. Was wirklich bricht, ist die eigene
+  Nachfolge: Lean 1 bis 4, und der Mathlib-Port 3 -> 4 hat die
+  Community ueber ein Jahr gekostet. Schluss: abhaengige Typen, der
+  Unterschied Taktik/Term, Hierarchien und das Lesen formaler
+  Aussagen sind nicht Lean-spezifisch.

@@ -246,14 +246,21 @@ number := false
 tag := "lcf-line"
 %%%
 
-Four lines come out of the following twenty years, and the systems of today are on them.
+Four lines come out of the following twenty years, and the systems of today are on them. Each answers something its predecessors could not do.
+
+:::figure "The proof assistants, and what each one added. Colour is the tradition: the de Bruijn line writes the proof down as a term, the LCF line keeps only the theorem, Mizar is declarative over set theory." (tag := "itp-lineage")
+![Timeline from 1967 to 2026, one bar per system. Automath 1967 and LCF 1972 stop; Mizar 1973, Isabelle 1986, HOL 1988, Coq/Rocq 1989 and Lean 2013 all run to the present day](/static/figures/itp_lineage.png)
+:::
 
 * *[Mizar](https://mizar.uwb.edu.pl/)*, Andrzej Trybulec, 1973. A formal language meant to be read like mathematical prose, over set theory. Its library has been growing for fifty years.
 * *[LCF](https://web.archive.org/web/20240703134244/http://i.stanford.edu/pub/cstr/reports/cs/tr/72/288/CS-TR-72-288.pdf)*, Robin Milner, Stanford 1972 and Edinburgh 1975. The idea there is architectural: `thm` is an abstract data type, and the only functions that produce a value of that type are the inference rules. Anything may then be built on top without being trusted. The language ML was invented to write it.
 * *[HOL](https://hol-theorem-prover.org/)*, Mike Gordon, from the mid-1980s: LCF with simple higher-order logic in place of the original logic, used first for hardware verification. *[Isabelle](https://isabelle.in.tum.de/)* follows in 1986 (Lawrence Paulson), *Isabelle/HOL* in 1991 (Tobias Nipkow).
 * *[Coq](https://rocq-prover.org/)*, from 1989, on the Calculus of Constructions and from the mid-1990s on the Calculus of Inductive Constructions. That is the foundation Lean also uses, and the system was renamed *Rocq* in 2025.
 
+
 The two architectures answer the same question differently. In the LCF line nothing is kept but the theorem, and one trusts the kernel because no other code can make one. In the Automath line the system writes down a proof term, which a small, separate checker reads afterwards; a system meeting that condition is said to satisfy the *[de Bruijn criterion](https://www.cs.ru.nl/~freek/comparison/comparison.pdf)*. Lean is in the second line: a Lean proof is a term, and the kernel rechecks it no matter which tactic produced it.
+
+Almost nothing here died. *Mizar* has run for fifty years, and *Isabelle*, *Rocq* and the *HOL* family are maintained today; only *Automath* and *LCF* stopped, and each left its architecture to its successors. The field accumulates rather than replaces, and the reason is that a library cannot be moved: *seL4* stays in *Isabelle*, the {ref "four-colour-episode"}[four colour theorem] stays in *Rocq*, and nobody will do either again.
 
 ### 1976: the four colour theorem
 %%%
@@ -347,6 +354,8 @@ Measured on the version pinned for this course (15 September 2026): 8 529 files,
 *Reading the library.* The [interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) draws *Mathlib* as a graph of its modules: which file may use which, and therefore in what order the library is built. The same site serves the [API documentation](https://leanprover-community.github.io/mathlib4_docs/) for every declaration. Both are worth half an hour before you need them.
 
 *Lean is also a programming language.* `lake`, the compiler's own front end and much of Lean itself are written in Lean; see [Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
+
+*Will this last?* Unknown, and the record reads both ways. Against: *Rocq* had the largest library and the most momentum until about 2023 and was overtaken in five years ({ref "itp-repos"}[the first figure]), so size settles nothing. For: in sixty years no proof assistant has been replaced by another, only joined. What does get replaced is a system by its own successor — Lean 1 to Lean 4 each broke the one before, and moving *Mathlib* from Lean 3 to Lean 4 occupied the community for more than a year. Either way most of this course survives it. Dependent types, the difference between a tactic and a term, how a hierarchy of structures is organized, and reading a formal statement are not Lean-specific.
 
 # Landmark formalizations
 %%%

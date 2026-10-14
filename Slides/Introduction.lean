@@ -527,15 +527,20 @@ Bruijn, Howard and Läuchli extended it to the quantifiers in the
   * refutes it when false
   * verdict
 *
-  * *this text proves the statement*
+  * *this text* proves it
   * yes, always stops
   * yes, always stops
   * decidable
 *
-  * *the statement has some proof*
-  * yes, whenever a proof exists
+  * *some text* proves it -- find one
+  * yes, whenever one exists
+  * not asked
+  * semi-decidable
+*
+  * *some text* proves it -- either way
+  * yes, whenever one exists
   * no such procedure
-  * semi-decidable only
+  * undecidable
 ::::
 
 :::fragment highlightBlue

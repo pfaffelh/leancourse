@@ -1512,3 +1512,11 @@ de Bruijn daran gearbeitet?" -- doch, und zwar das *andere* Fach.
   erzeugt die *Aussage* aus Prosa, ATP den *Beweis* aus der Aussage.
   Fuer das Erste gibt es gar kein Entscheidbarkeitspraedikat, weil auf
   der Eingabeseite kein formales Objekt steht.
+- **Nachtrag zur Fragen-Tabelle:** die zweizeilige Fassung legte 2 und
+  3 zusammen und sah dadurch aus, als fehle Frage 2. Jetzt drei
+  Zeilen, passend zur Aufzaehlung darueber. Zeilen 2 und 3 haben
+  *dieselbe* Frage und dieselbe mittlere Spalte und unterscheiden
+  sich nur in "refutes it when false" (not asked / no such procedure).
+  Damit ist sichtbar, was vorher im Text behauptet wurde. Folie und
+  Kapitel tragen dieselbe Tabelle; Folienhoehen unveraendert, Maximum
+  weiterhin `2013: Voevodsky` mit 557 px.

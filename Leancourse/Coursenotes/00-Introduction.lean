@@ -201,15 +201,22 @@ Three questions about proofs have three different answers, and a proof assistant
 * + Is there a procedure that
   + confirms it when true
   + refutes it when false
-* + *this text proves the statement*
+  + verdict
+* + 1. *this text* proves the statement
   + yes, and it always stops
   + yes, and it always stops
-* + *the statement has some proof*
-  + yes, it stops whenever a proof exists
+  + decidable
+* + 2. *some text* proves it — find one
+  + yes, whenever a proof exists
+  + not asked
+  + semi-decidable
+* + 3. *some text* proves it — answer either way
+  + yes, whenever a proof exists
   + no such procedure
+  + undecidable
 :::
 
-The second row is questions 2 and 3 at once. Finding and deciding are one problem seen from two sides: *semi-decidable* names the left entry, *undecidable* the right one, and the two words do not conflict. The gap is one-sided, and it is what you see when `grind` hangs. It cannot tell you that there is nothing to find, only that it has not found anything yet. The second row is also where the automated line of the 1950s comes back: `omega`, `grind` and `bv_decide` search, and in the last case an external SAT solver does, but the result is handed to the kernel as something to check. The search may be unreliable in any way it likes; the check is small and fixed.
+Rows 2 and 3 ask the same question and differ only in what is demanded, which is the whole of the third column. *Semi-decidable* says the second column is filled; *undecidable* says the third is not. The two words do not conflict. The gap is one-sided, and it is what you see when `grind` hangs. It cannot tell you that there is nothing to find, only that it has not found anything yet. The second row is also where the automated line of the 1950s comes back: `omega`, `grind` and `bv_decide` search, and in the last case an external SAT solver does, but the result is handed to the kernel as something to check. The search may be unreliable in any way it likes; the check is small and fixed.
 
 So the human writes the proof and the machine checks it. That division of labour is a theorem of 1936, not a property of today's software.
 

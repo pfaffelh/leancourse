@@ -1368,3 +1368,54 @@ sichtbar schaltet (`opacity/visibility/transform`), jede `section` auf
 `<pre id="RESULT">` schreibt; dann
 `google-chrome --headless --virtual-time-budget=12000 --dump-dom`
 und den `<pre>` herausfiltern.
+
+## 2026-10-14 (4) -- imprädikatives `Prop`, und warum es konsistent ist
+
+Nutzer: "`Prop` ist imprädikativ, `∀ p : Prop, p → p` ist selbst ein
+`Prop` -- und dass es trotzdem konsistent ist, finde ich erstaunlich."
+Steht jetzt in `02-Types.lean`, Abschnitt *Why `Prop` is special*.
+
+- **Codeblock erweitert** um die beiden scharfen Faelle, in Lean
+  geprueft: `#check (∀ p : Prop, p → p)` und `#check (∀ p : Prop, p)`
+  geben beide `Prop`, waehrend `(α : Type 5) → α → α : Type 6`. Die
+  bisherigen Beispiele quantifizierten nur ueber `Type`, nicht ueber
+  `Prop` selbst -- der Zirkel war also gar nicht zu sehen.
+- **Historische Klammer:** genau das verbietet Russells vicious circle
+  principle, genau dafuer brauchte er das **Reduzibilitaetsaxiom**
+  (jede Definition ist umfangsgleich mit einer praedikativen). Lean
+  braucht es nicht, weil es den Zirkel fuer `Prop` zugibt.
+- **Warum konsistent:** Imprädikativität in der Syntax ist nicht
+  Zirkularitaet in der Bedeutung. `Prop` laesst sich als vorab
+  gegebene Menge von Wahrheitswerten modellieren, ein `∀` darueber ist
+  ein Infimum ihrer Elemente, also wieder eines. Die Definition waehlt
+  aus, sie vergroessert nichts.
+- **Beleg statt Behauptung:** Mario Carneiro, *The Type Theory of
+  Lean*, MSc CMU 2019 -- das mengentheoretische Modell, Konsistenz
+  relativ zu ZFC + `n` unerreichbare Kardinalzahlen fuer jedes endliche
+  `n`, und laut Abstract ist diese Annahme optimal, weil Lean selbst
+  Modelle von ZFC mit `n` Unerreichbaren liefert. Link geprueft,
+  Eintrag in `sources/history-of-itp.md`.
+- **Korrigiert:** der alte Schlusssatz "`Prop` is allowed this
+  self-reference because proof irrelevance keeps it harmless" war
+  falsch begruendet. Rocq hat imprädikatives `Prop` *ohne*
+  definitionale Proof-Irrelevanz. Der echte Preis steht eine Zeile
+  weiter unten im selben Abschnitt: die **eingeschraenkte Elimination**.
+  Imprädikativität *und* beliebiges Auslesen von Daten aus Beweisen
+  zusammen waeren widerspruechlich.
+- `Type : Type` bleibt tabu (Girard), daher `Type u : Type (u+1)`.
+- **Kapitel 0 dazu** (`### 1879 to 1913`): Russells Verbot ist *weiter*
+  als die Paradoxie -- es trifft jede Definition, die ueber eine
+  Gesamtheit quantifiziert, die das Definierte enthaelt. Beispiel im
+  Text: das Supremum einer beschraenkten Menge reeller Zahlen wird
+  durch Quantifikation ueber reelle Zahlen definiert und ist unter dem
+  Verbot keine reelle Zahl mehr. Deshalb das Reduzibilitaetsaxiom.
+  Von dort Verweis auf `{ref "prop-special"}`.
+- **Und wie Lean es loest** (Aufgriff in *Why `Prop` is special*):
+  nicht eine Regel fuer alles, sondern zwei. Das Supremum ist
+  unproblematisch, weil der definierende Schnitt ein Praedikat auf ℚ
+  ist, dessen Rumpf ueber ganz ℝ quantifiziert und trotzdem `Prop`
+  bleibt. In Lean geprueft und als Codeblock drin:
+  `fun (S : Set ℝ) (q : ℚ) => (∃ x ∈ S, (q : ℝ) < x)` ist
+  `Set ℝ → ℚ → Prop`, und `fun (S : Set ℝ) => {q : ℚ | ∃ x ∈ S, (q : ℝ) < x}`
+  ist `Set ℝ → Set ℚ`. Genau die Stelle, an der imprädikatives `Prop`
+  die Arbeit des Reduzibilitaetsaxioms tut.

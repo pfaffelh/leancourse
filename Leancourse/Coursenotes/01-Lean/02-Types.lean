@@ -136,9 +136,27 @@ See also {ref "prop-vs-type"}[Prop vs Type].
 -- Prop-valued body: stays `Prop`, however big the domain.
 #check (∀ α : Type, α = α)     -- Prop
 #check (∀ α : Type 5, α = α)   -- Prop
+-- and the domain may be `Prop` itself.
+#check (∀ p : Prop, p → p)     -- Prop
+#check (∀ p : Prop, p)         -- Prop
 ```
 
-Compare this with the `Type`-valued `∀ α : Type 5, α → α`, which had to climb to `Type 6`. The two statements are syntactically parallel and differ only in their body, yet land in wildly different places -- `Prop` versus `Type 6`. A `∀` into `Prop` stays small; a `∀` into `Type u` must climb. This is exactly what *impredicative* means: a proposition may be defined by quantifying over a totality *to which it itself belongs*. `∀ P : Prop, P` is again a `Prop`, so it ranges over a collection that already contains it -- the definition, so to speak, feeds on itself. `Prop` is allowed this self-reference because proof irrelevance keeps it harmless.
+Compare this with the `Type`-valued `∀ α : Type 5, α → α`, which had to climb to `Type 6`. The two statements are syntactically parallel and differ only in their body, yet land in wildly different places -- `Prop` versus `Type 6`. A `∀` into `Prop` stays small; a `∀` into `Type u` must climb. The last two lines are the sharp case. `∀ p : Prop, p → p` is itself a `Prop`, so it quantifies over a totality *to which it belongs*, and `∀ p : Prop, p` does the same. That is what *impredicative* means: the definition, so to speak, feeds on itself.
+
+It is also exactly what Russell forbade. His vicious circle principle rules out defining an object by quantifying over a collection that contains it, and the ban costs ordinary analysis: the supremum of a set of reals is defined by quantifying over reals. Russell bought it back with a further axiom, reducibility, which says that every such definition is coextensional with a predicative one ({ref "types-history"}[Where types come from]).
+
+Lean needs no such axiom, because it does not apply one rule to everything. The circle is granted in `Prop` and refused for data: a proposition may be defined by quantifying over all propositions, a type may not be defined by quantifying over all types. Russell's supremum is then unproblematic. The cut that defines it is a predicate on $`ℚ` whose body quantifies over all of $`ℝ`, and because that body is a `Prop` it does not climb; what the quantification defines is an ordinary `Set ℚ`, at the same level as any other.
+
+```lean
+-- The defining property ranges over all reals ...
+#check fun (S : Set ℝ) (q : ℚ) => (∃ x ∈ S, (q : ℝ) < x)  -- ... Prop
+-- ... so the cut it carves out is an ordinary set of rationals.
+#check fun (S : Set ℝ) => {q : ℚ | ∃ x ∈ S, (q : ℝ) < x}    -- Set ℚ
+```
+
+That this is consistent is not obvious, and it is not a convention. Impredicativity in the syntax need not be circularity in the meaning: `Prop` can be modelled as a fixed collection of truth values, given in advance, and a `∀` over it is then a meet of members of that collection, hence a member again. The definition picks something out; it does not enlarge the totality. For Lean's actual theory this is a theorem. Mario Carneiro built the set-theoretic model and proved Lean consistent relative to ZFC with $`n` inaccessible cardinals for each finite $`n` ([*The Type Theory of Lean*](https://github.com/digama0/lean-type-theory), 2019); the assumption is optimal, since Lean itself proves that models of ZFC with $`n` inaccessibles exist.
+
+One level up the same move is fatal: `Type : Type` is inconsistent by Girard's paradox, which is why `Type u : Type (u+1)` and why `∀ α : Type 5, α → α` has to climb. And impredicativity is not free in `Prop` either. It is paid for by the restriction in the next item: if a proof could be taken apart to yield data *and* propositions could be formed impredicatively, the paradox would return.
 
 *Restricted (subsingleton) elimination.* A type's constructors *introduce* its values -- they are the ways we build them (`Or.inl`, `isTrue`, `Nat.succ`, and so on). *Eliminating* a value is the opposite: we *use* it, by looking at which constructor produced it. This is what a `match` does -- the {ref "pattern-matching"}[pattern-matching] construct `match h with | … => …`, taken up properly in the chapter on terms -- and it is ultimately the job of the type's {ref "inductive"}[recursor] (see the {ref "nat-intro"}[introduction]). For a *proposition* `P : Prop`, then, eliminating a proof means running `P`'s own recursor -- `Or.rec`, `And.rec`, and the like (the error below names `Or.casesOn`, the `match`-friendly form of `Or.rec`) -- and the restriction we are about to meet is a restriction on exactly that recursor. To *eliminate into a type `T`* means that this case analysis returns a result of type `T`; eliminating into `T`, defining a function into `T` by the recursor, and letting that recursor compute are three names for one act. A proof carries no observable content, so Lean does not let us *read data off a proof* in this way: otherwise the result could depend on *which* proof we started from, and proof irrelevance says there is no such difference to observe. So eliminating a proposition may, in general, only produce further propositions, never data. For example, deciding as a {ref "bool"}[`Bool`] which side of a disjunction holds is rejected:
 

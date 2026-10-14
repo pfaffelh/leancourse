@@ -185,6 +185,16 @@ these is downloaded; the section only states the dates.
   Dependent types. The 1971 version had `Type : Type` and was
   inconsistent by Girard's paradox; the universe hierarchy is the
   repair.
+* **Mario Carneiro, *The Type Theory of Lean*.** MSc thesis, Carnegie
+  Mellon University, 2019. `free`
+  <https://github.com/digama0/lean-type-theory>. The set-theoretic
+  model of Lean's kernel theory, and with it the consistency proof,
+  relative to ZFC with `n` inaccessible cardinals for each finite `n`.
+  The abstract names the three features the notes treat in *Why `Prop`
+  is special*: an impredicative universe of propositions, proof
+  irrelevance, subsingleton elimination. Written for Lean 3; the core
+  theory is unchanged in Lean 4. Cited in `01-Lean/02-Types.lean` as
+  the answer to "why is impredicative `Prop` consistent".
 * **Thierry Coquand, Gérard Huet, "The Calculus of Constructions".**
   *Information and Computation* 76 (1988), 95-120; presented 1985.
   `free` via INRIA. With Thierry Coquand and Christine Paulin-Mohring,

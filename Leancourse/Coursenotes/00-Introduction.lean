@@ -115,7 +115,11 @@ Two answers appeared in 1908, and both are still in use. They differ in what the
 
 Zermelo replaced unrestricted comprehension, which forms $`\{x : \varphi(x)\}` for any property, by separation, which forms only $`\{x \in A : \varphi(x)\}` out of a set $`A` already given. Then $`R` is never formed, and Russell's argument turns into a theorem instead of a contradiction: there is no set of all sets. That `x ∈ x` holds for no set is a later and separate axiom, foundation.
 
-Russell stratified the language itself, so that `x ∈ x` is not false but ungrammatical. Well-formedness is then a question about syntax, settled before any question of truth arises, and a machine can decide it. Mathematics went with Zermelo, proof assistants with Russell ({ref "types-history"}[Where types come from]).
+Russell stratified the language itself, so that `x ∈ x` is not false but ungrammatical. Well-formedness is then a question about syntax, settled before any question of truth arises, and a machine can decide it.
+
+His ban was wider than the paradox. It forbids *every* definition that quantifies over a totality containing the object being defined, and ordinary mathematics is full of those. The supremum of a bounded set of reals is defined by quantifying over reals, so under the ban it is not itself a real number, and analysis stops. Russell recovered it by adding an axiom, reducibility, which grants that every forbidden definition agrees with a permitted one — an axiom that returns most of what the ban had taken. Lean draws the line in a different place, and in two: see {ref "prop-special"}[Why `Prop` is special].
+
+Mathematics went with Zermelo, proof assistants with Russell ({ref "types-history"}[Where types come from]).
 
 Whitehead and Russell spent *Principia Mathematica* rebuilding the rest; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
 
@@ -125,7 +129,7 @@ number := false
 tag := "hilbert-programme"
 %%%
 
-David Hilbert turned the idea into a programme, pressing for it from a lecture of 1917, *Axiomatisches Denken*, onwards. The conviction behind it is older. At the Paris congress of 1900 he had said that in mathematics there is *no ignorabimus*: no question we are condemned never to settle.
+David Hilbert turned formalization into a programme, pressing for it from a lecture of 1917, *Axiomatisches Denken*, onwards. The conviction behind it is older. At the Paris congress of 1900 he had said that in mathematics there is *no ignorabimus*: no question we are condemned never to settle.
 
 Write mathematics in a fixed formal language, fix the rules of inference, and a proof becomes a finite string of symbols. Whether it follows the rules is then a question about symbols, answerable without knowing what they mean. Three questions about a set of axioms can then be asked precisely, and Hilbert wanted all three answered yes.
 

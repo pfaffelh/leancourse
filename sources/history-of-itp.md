@@ -201,6 +201,18 @@ these is downloaded; the section only states the dates.
   "Inductively defined types", COLOG-88, LNCS 417 (1990), 50-66, this
   is what Lean's type theory is a variant of.
 
+* **Carlos Simpson, "Homotopy types of strict 3-groupoids".**
+  arXiv math/9810059, 1998. `free` The counterexample to
+  Kapranov-Voevodsky: an Eckmann-Hilton argument makes Whitehead
+  products vanish in a strict n-groupoid, but the 3-type of the
+  2-sphere has a non-trivial one. Simpson could *not* point at the
+  faulty step in their proof -- that is why the episode took fifteen
+  years, and it is the point the Introduction makes.
+* **Dimitri Ara, "On homotopy types modelized by strict
+  ∞-groupoids".** arXiv 1206.2945, 2012. `free` How it ended: the
+  simply connected homotopy types that strict ∞-groupoids model are
+  exactly the products of Eilenberg-MacLane spaces.
+
 ## The systems
 
 * **Robin Milner, "Logic for Computable Functions: description of a

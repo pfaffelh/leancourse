@@ -291,7 +291,7 @@ number := false
 tag := "voevodsky-episode"
 %%%
 
-In 1989 Vladimir Voevodsky and Mikhail Kapranov published a theorem identifying [higher groupoids](https://en.wikipedia.org/wiki/Infinity-groupoid) with homotopy types. In October 1998 Carlos Simpson posted an argument implying that it could not be true. Voevodsky went on believing his own theorem until the autumn of 2013.
+In 1989 Vladimir Voevodsky and Mikhail Kapranov published a theorem identifying [higher groupoids](https://en.wikipedia.org/wiki/Infinity-groupoid) with homotopy types. In October 1998 Carlos Simpson posted an argument implying that it could not be true. Voevodsky went on believing his own theorem until the autumn of 2013, when he accepted Simpson's argument and found the error in his own. The theorem is false. The rigid, strictly associative kind of higher groupoid it uses cannot produce the two-sphere, and Dimitri Ara showed in 2012 that among simply connected spaces it produces exactly the products of Eilenberg-MacLane spaces — a thin slice of what had been claimed.
 
 :::figure "Vladimir Voevodsky at Oberwolfach in 2011, during a workshop on the homotopy interpretation of type theory" (tag := "voevodsky")
 ![Vladimir Voevodsky](/static/figures/portraits/voevodsky.jpg)
@@ -299,7 +299,7 @@ In 1989 Vladimir Voevodsky and Mikhail Kapranov published a theorem identifying 
 
 His account is about people, not machines. Simpson had a counterexample but could not say which step was wrong, so it stayed unclear who had erred. Mathematics runs, in Voevodsky's words, on *a complex system of mutual trust based on reputations*, and both authors had one. The doubt made the theorem unused without settling it, for fifteen years. A second mistake, in a lemma of his own from 1992, stood in print until a listener checking his lectures found it in 1999; several seminars had read the paper by then. A hard technical argument by a trusted author, he concluded, is *hardly ever checked in detail*.
 
-Voevodsky received the Fields Medal in 2002. He then looked for a proof assistant he could use, found none that suited his mathematics, and built the foundations for one: [univalent foundations](https://en.wikipedia.org/wiki/Univalent_foundations), a special year at the Institute for Advanced Study in 2012-13, and the book two dozen people wrote there in under six months. He formalized in Coq, and his foundations are not the ones *Mathlib* rests on: Lean 2 carried a mode for them, Lean 3 dropped it. This course takes the diagnosis, not the cure. His [own account](https://www.ias.edu/ideas/2014/voevodsky-origins) is short. He died in 2017.
+Voevodsky received the Fields Medal in 2002, and spent the rest of his career on foundations designed so that a machine could check such arguments — not the ones *Mathlib* rests on, and not this course's subject ({ref "other-type-theories"}[other type theories]). This course takes the diagnosis, not the cure. His [own account](https://www.ias.edu/ideas/2014/voevodsky-origins) is short. He died in 2017.
 
 ### 2020: the Liquid Tensor Experiment
 %%%

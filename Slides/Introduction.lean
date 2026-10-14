@@ -699,7 +699,7 @@ Vladimir Voevodsky
 :::
 
 :::fragment fadeUp
-*Autumn 2013* -- Voevodsky accepts it. Fifteen years unused, and unrefuted.
+*Autumn 2013* -- Voevodsky accepts it and finds his own error. Fifteen years in limbo.
 :::
 
 :::fragment highlightBlue
@@ -715,6 +715,11 @@ known, and Voevodsky received the Fields Medal in between, in 2002. Everyone mak
 to resolve, and why: nobody could point at the faulty step, so it was
 unclear who had erred, and nobody challenged them.
 
+How it ended: the theorem is false. Their strict, rigidly
+associative higher groupoids cannot produce the two-sphere, and Ara
+showed in 2012 that among simply connected spaces they produce only
+products of Eilenberg-MacLane spaces.
+
 The quoted line is Voevodsky's own, from his 2014 IAS lecture.
 
 Second story, same lesson: a mistake in a lemma of his own from 1992
@@ -724,10 +729,10 @@ it in 1999. Several seminars had read the paper by then.
 His conclusion: a hard technical argument by a trusted author is
 *hardly ever checked in detail*.
 
-He then looked for a proof assistant, found none he could use, and
-built the foundations for one: univalent foundations, the IAS special
-year 2012-13, the HoTT book. In Coq, not Lean, and not the foundations
-Mathlib uses. We take the diagnosis, not the cure. He died in 2017.
+He spent the rest of his career on foundations built so that a
+machine could check such arguments -- not the ones Mathlib uses, and
+not our subject. We take the diagnosis, not the cure. He died in
+2017.
 :::
 
 # 2020: the Liquid Tensor Experiment

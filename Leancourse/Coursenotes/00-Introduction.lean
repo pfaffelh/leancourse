@@ -80,7 +80,7 @@ number := false
 tag := "how-we-got-here"
 %%%
 
-It took mathematics from 1879 to 1936 to turn a proof into a finite object a machine can inspect. Then the machines that inspect it, from 1967 on. Lean is at the end of that line.
+It took mathematics from 1879 to 1936 to turn a proof into a finite object a machine can inspect. Then the machines that inspect it, from 1967 to Lean. Then, from 1976, what has been done with them.
 
 ## The mathematics
 %%%
@@ -262,6 +262,65 @@ The two architectures answer the same question differently. In the LCF line noth
 
 Almost nothing here died. *Mizar* has run for fifty years, and *Isabelle*, *Rocq* and the *HOL* family are maintained today; only *Automath* and *LCF* stopped, and each left its architecture to its successors. The field accumulates rather than replaces, and the reason is that a library cannot be moved: *seL4* stays in *Isabelle*, the {ref "four-colour-episode"}[four colour theorem] stays in *Rocq*, and nobody will do either again.
 
+### 2013: Lean
+%%%
+number := false
+tag := "lean-origin"
+%%%
+
+:::figure "Leonardo de Moura, who started Lean in 2013" (tag := "demoura")
+![Leonardo de Moura](/static/figures/portraits/demoura.jpg)
+:::
+
+Leonardo de Moura started Lean at Microsoft Research in 2013. Lean 4, a redesign rather than a new version, arrived in 2021, and is written in Lean itself. Its foundation is the Calculus of Inductive Constructions, which puts it in the Automath line: a proof is a term, and the kernel rechecks it whatever tactic produced it. Kevin Buzzard has argued for Lean among mathematicians since 2018. Where development sits now is {ref "lean-today"}[Current state of Lean], after the record.
+
+### The three systems today
+%%%
+number := false
+tag := "other-provers"
+%%%
+
+The two systems Lean is usually compared with differ from it in their foundations, not in style.
+
+:::table (align := left) +header
+* + System
+  + Foundation
+  + Dependent types
+  + Library
+* + Lean 4
+  + a variant of the Calculus of Inductive Constructions
+  + yes
+  + *Mathlib*, one repository
+* + [Rocq](https://rocq-prover.org/) (until 2025 *Coq*)
+  + the predicative Calculus of Cumulative Inductive Constructions
+  + yes
+  + many separate packages
+* + [Isabelle/HOL](https://isabelle.in.tum.de/)
+  + simply typed higher-order logic
+  + no
+  + the *Archive of Formal Proofs*
+:::
+
+*Lean and Rocq* are close relatives. Both rest on a dependent type theory in which a proof is a *term* and checking a proof is type-checking; both have an impredicative, proof-irrelevant universe `Prop` of propositions sitting under a predicative hierarchy of data types. Lean differs in four points that return later in these notes: proof irrelevance holds *definitionally*, quotient types are primitive rather than built from setoids, there is no universe cumulativity, and classical reasoning enters through an axiom (`Classical.choice`). Rocq's roots are in program verification -- the CompCert C compiler and the Feit-Thompson theorem are Rocq developments -- and it extracts verified programs to OCaml or Haskell.
+
+*Isabelle/HOL* uses simple type theory: types are built from base types and arrows, types do not depend on terms, and one cannot write `Vec α n` for *lists of length `n`*. That logic is weak enough to automate well, and Isabelle's automation is the strongest of the three. *Sledgehammer* hands a goal to several external provers at once and reconstructs what they find as a proof Isabelle can check; much of what Lean's `grind` does, Isabelle has done for twenty years. Isabelle is also a framework: HOL is one object logic among several over the intuitionistic meta-logic Isabelle/Pure. Its largest development is *seL4*, an operating-system microkernel verified down to its C implementation.
+
+*How the libraries are organized* matters more day to day than the foundations.
+
+* *Mathlib* is one repository, compiled as a unit. Maintainers review every change, and CI keeps it building against the current Lean. There are no stable releases: *Mathlib* follows Lean, and your project follows *Mathlib*. Results combine without extra work, because all structures live in one hierarchy, built from `class` and `instance` (see the chapters on typeclasses and the algebraic hierarchy).
+* *Rocq* has no such centre. Its standard library is small, and the mathematics lives in independent packages -- *MathComp*, out of the Feit-Thompson formalization, *Coquelicot* and *MathComp-Analysis* for analysis, and others -- distributed through `opam`, with the *Rocq Platform* bundling a tested combination. Packages evolve at their own pace, which is comfortable with one dependency and awkward with two that disagree.
+* *Isabelle* sits in between. The *Archive of Formal Proofs* holds refereed, self-contained entries, released in lockstep with Isabelle. Entries may depend on one another but are never merged into one library; the archive is cited like a journal.
+
+We use Lean because *Mathlib* exists: the exercises start with `import Mathlib` and have the real numbers, measure theory and topology already there.
+
+## What came of it
+%%%
+number := false
+tag := "landmarks"
+%%%
+
+Eight projects, in order. The first two are about proofs too large to read; the next two about proofs nobody had checked; the last four about what a library makes possible. The course material is built out of what they left behind.
+
 ### 1976: the four colour theorem
 %%%
 number := false
@@ -308,6 +367,20 @@ His account is about people, not machines. Simpson had a counterexample but coul
 
 Voevodsky received the Fields Medal in 2002, and spent the rest of his career on foundations designed so that a machine could check such arguments — not the ones *Mathlib* rests on, and not this course's subject ({ref "other-type-theories"}[other type theories]). This course takes the diagnosis, not the cure. His [own account](https://www.ias.edu/ideas/2014/voevodsky-origins) is short. He died in 2017.
 
+### 2019: perfectoid spaces
+%%%
+number := false
+tag := "perfectoid-landmark"
+%%%
+
+By Buzzard, Commelin and Massot ([project page](https://leanprover-community.github.io/lean-perfectoid-spaces/)). They formalized a *definition* rather than a theorem: Scholze's [perfectoid spaces](https://en.wikipedia.org/wiki/Perfectoid_space) of 2012. Whether an object of that complexity could be stated at all in a proof assistant was open, and stating is a different problem from proving. Lean's reputation among mathematicians dates from this project.
+
+:::figure "Kevin Buzzard, Johan Commelin and Patrick Massot" (tag := "perfectoid-people")
+![Kevin Buzzard](/static/figures/portraits/buzzard.jpg)
+![Johan Commelin (no photograph available)](/static/figures/portraits/placeholder_commelin.png)
+![Patrick Massot (no photograph available)](/static/figures/portraits/placeholder_massot.png)
+:::
+
 ### 2020: the Liquid Tensor Experiment
 %%%
 number := false
@@ -323,63 +396,7 @@ In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog: a theo
 
 Buzzard's plenary lecture at the ICM in 2022 marks the point where formalization stopped being a curiosity.
 
-## 2013: Lean
-%%%
-number := false
-tag := "lean-origin"
-%%%
-
-:::figure "Leonardo de Moura, who started Lean in 2013" (tag := "demoura")
-![Leonardo de Moura](/static/figures/portraits/demoura.jpg)
-:::
-
-Leonardo de Moura started Lean at Microsoft Research in 2013. Lean 4, a redesign rather than a new version, arrived in 2021, and is written in Lean itself. Its foundation is the Calculus of Inductive Constructions, which puts it in the Automath line: a proof is a term, and the kernel rechecks it whatever tactic produced it. Kevin Buzzard has argued for Lean among mathematicians since 2018. Where development sits now is the next section.
-
-# Current state of Lean
-%%%
-number := false
-tag := "lean-today"
-%%%
-
-*Releases.* Lean 4 appears once a month, with a release candidate about four weeks ahead: `v4.33.0` on 10 August 2026, `v4.34.0` on 14 September, `v4.35.0` on 12 October. Nothing updates by itself. A file `lean-toolchain` in the root of a project names one exact version, `elan` fetches that version, and `lake` builds against it. This course is pinned to `leanprover/lean4:v4.34.0`, so the notes and your machine agree all semester.
-
-*Who builds Lean.* The [Lean FRO](https://lean-lang.org/fro/), a non-profit founded in July 2023 under Convergent Research, with twenty-one people at the time of writing. Leonardo de Moura is chief architect, Sebastian Ullrich head of engineering. It runs on donations: the Simons Foundation International, the Alfred P. Sloan Foundation, the Richard Merkin Foundation, Amazon, and five million dollars from Alex Gerko of XTX Markets in July 2025. Lean has no vendor behind it, and it is no longer a spare-time project either.
-
-*Mathlib.* [*Mathlib*](https://github.com/leanprover-community/mathlib4) is one repository holding essentially all of the mathematics, compiled as a unit. Maintainers review every change, and CI keeps the whole library building against the current Lean. There are no stable releases: *Mathlib* follows Lean, and your project follows *Mathlib*. Every file in this course starts with `import Mathlib`, so we make no distinction between the two. Compiling it from source takes hours, which is why `lake exe cache get` downloads what the CI already built.
-
-Measured on the version pinned for this course (15 September 2026): 8 529 files, 2.33 million lines, about 189 000 theorems and lemmas, about 64 000 definitions, instances and structures, by 1 031 contributors in 34 768 commits. In the thirty days before that date it received 820 commits, 27 per day. The library changes while you use it.
-
-*Who maintains Mathlib.* For fifteen years, nobody was paid to. The [Mathlib Initiative](https://mathlib-initiative.org/), a programme of Renaissance Philanthropy begun in September 2025, now employs maintainers; it received the other five million dollars of Gerko's gift. Its stated targets are review within a week for nine out of ten pull requests, keeping the downstream ecosystem building, and documentation. Johan Commelin, who led the {ref "lte-episode"}[Liquid Tensor Experiment], works there.
-
-*Reading the library.* The [interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) draws *Mathlib* as a graph of its modules: which file may use which, and therefore in what order the library is built. The same site serves the [API documentation](https://leanprover-community.github.io/mathlib4_docs/) for every declaration. Both are worth half an hour before you need them.
-
-*Lean is also a programming language.* `lake`, the compiler's own front end and much of Lean itself are written in Lean; see [Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
-
-*Will this last?* Unknown, and the record reads both ways. Against: *Rocq* had the largest library and the most momentum until about 2023 and was overtaken in five years ({ref "itp-repos"}[the first figure]), so size settles nothing. For: in sixty years no proof assistant has been replaced by another, only joined. What does get replaced is a system by its own successor — Lean 1 to Lean 4 each broke the one before, and moving *Mathlib* from Lean 3 to Lean 4 occupied the community for more than a year. Either way most of this course survives it. Dependent types, the difference between a tactic and a term, how a hierarchy of structures is organized, and reading a formal statement are not Lean-specific.
-
-# Landmark formalizations
-%%%
-number := false
-tag := "landmarks"
-%%%
-
-Between Flyspeck and 2026, each of these projects showed that something new was possible. The course material is built out of the libraries they left behind.
-
-## Perfectoid spaces, 2019
-%%%
-number := false
-tag := "perfectoid-landmark"
-%%%
-
-By Buzzard, Commelin and Massot ([project page](https://leanprover-community.github.io/lean-perfectoid-spaces/)). They formalized a *definition* rather than a theorem: Scholze's [perfectoid spaces](https://en.wikipedia.org/wiki/Perfectoid_space) of 2012. Whether an object of that complexity could be stated at all in a proof assistant was open, and stating is a different problem from proving. Lean's reputation among mathematicians dates from this project.
-
-:::figure "Kevin Buzzard, Johan Commelin and Patrick Massot" (tag := "perfectoid-people")
-![Kevin Buzzard](/static/figures/portraits/buzzard.jpg)
-![Johan Commelin (no photograph available)](/static/figures/portraits/placeholder_commelin.png)
-![Patrick Massot (no photograph available)](/static/figures/portraits/placeholder_massot.png)
-:::
-
-## Sphere eversion, 2022
+### 2022: sphere eversion
 %%%
 number := false
 tag := "eversion-landmark"
@@ -393,7 +410,7 @@ By Massot, van Doorn and Nash ([project page](https://leanprover-community.githu
 ![Oliver Nash (no photograph available)](/static/figures/portraits/placeholder_nash.png)
 :::
 
-## The polynomial Freiman-Ruzsa conjecture, 2023
+### 2023: the polynomial Freiman-Ruzsa conjecture
 %%%
 number := false
 tag := "pfr-landmark"
@@ -410,7 +427,7 @@ By Gowers, Green, Manners and Tao ([project page](https://teorth.github.io/pfr/)
 
 The method carried further than the theorem. A *blueprint* cuts a formalization into independent pieces with stated interfaces, so volunteers can work in parallel without talking to each other. Formalization stopped being a job for one team over years.
 
-## The Equational Theories Project, 2024 to 2025
+### 2024 to 2025: the Equational Theories Project
 %%%
 number := false
 tag := "equational-landmark"
@@ -442,54 +459,27 @@ example : ¬ Equation4 Bool := by decide
 
 That is one entry. The project settled 22 028 942 of them.
 
-# Other theorem provers
+# Current state of Lean
 %%%
 number := false
-tag := "other-provers"
+tag := "lean-today"
 %%%
 
-The two systems Lean is usually compared with differ from it in their foundations, not in style.
+*Releases.* Lean 4 appears once a month, with a release candidate about four weeks ahead: `v4.33.0` on 10 August 2026, `v4.34.0` on 14 September, `v4.35.0` on 12 October. Nothing updates by itself. A file `lean-toolchain` in the root of a project names one exact version, `elan` fetches that version, and `lake` builds against it. This course is pinned to `leanprover/lean4:v4.34.0`, so the notes and your machine agree all semester.
 
-:::table (align := left) +header
-* + System
-  + Foundation
-  + Dependent types
-  + Library
-* + Lean 4
-  + a variant of the Calculus of Inductive Constructions
-  + yes
-  + *Mathlib*, one repository
-* + [Rocq](https://rocq-prover.org/) (until 2025 *Coq*)
-  + the predicative Calculus of Cumulative Inductive Constructions
-  + yes
-  + many separate packages
-* + [Isabelle/HOL](https://isabelle.in.tum.de/)
-  + simply typed higher-order logic
-  + no
-  + the *Archive of Formal Proofs*
-:::
+*Who builds Lean.* The [Lean FRO](https://lean-lang.org/fro/), a non-profit founded in July 2023 under Convergent Research, with twenty-one people at the time of writing. Leonardo de Moura is chief architect, Sebastian Ullrich head of engineering. It runs on donations: the Simons Foundation International, the Alfred P. Sloan Foundation, the Richard Merkin Foundation, Amazon, and five million dollars from Alex Gerko of XTX Markets in July 2025. Lean has no vendor behind it, and it is no longer a spare-time project either.
 
-*Lean and Rocq* are close relatives. Both rest on a dependent type theory in which a proof is a *term* and checking a proof is type-checking; both have an impredicative, proof-irrelevant universe `Prop` of propositions sitting under a predicative hierarchy of data types. Lean differs in four points that return later in these notes: proof irrelevance holds *definitionally*, quotient types are primitive rather than built from setoids, there is no universe cumulativity, and classical reasoning enters through an axiom (`Classical.choice`). Rocq's roots are in program verification -- the CompCert C compiler and the Feit-Thompson theorem are Rocq developments -- and it extracts verified programs to OCaml or Haskell.
+*Mathlib.* [*Mathlib*](https://github.com/leanprover-community/mathlib4) is one repository holding essentially all of the mathematics, compiled as a unit. Maintainers review every change, and CI keeps the whole library building against the current Lean. There are no stable releases: *Mathlib* follows Lean, and your project follows *Mathlib*. Every file in this course starts with `import Mathlib`, so we make no distinction between the two. Compiling it from source takes hours, which is why `lake exe cache get` downloads what the CI already built.
 
-*Isabelle/HOL* uses simple type theory: types are built from base types and arrows, types do not depend on terms, and one cannot write `Vec α n` for *lists of length `n`*. That logic is weak enough to automate well, and Isabelle's automation is the strongest of the three. *Sledgehammer* hands a goal to several external provers at once and reconstructs what they find as a proof Isabelle can check; much of what Lean's `grind` does, Isabelle has done for twenty years. Isabelle is also a framework: HOL is one object logic among several over the intuitionistic meta-logic Isabelle/Pure. Its largest development is *seL4*, an operating-system microkernel verified down to its C implementation.
+Measured on the version pinned for this course (15 September 2026): 8 529 files, 2.33 million lines, about 189 000 theorems and lemmas, about 64 000 definitions, instances and structures, by 1 031 contributors in 34 768 commits. In the thirty days before that date it received 820 commits, 27 per day. The library changes while you use it.
 
-*How the libraries are organized* matters more day to day than the foundations.
+*Who maintains Mathlib.* For fifteen years, nobody was paid to. The [Mathlib Initiative](https://mathlib-initiative.org/), a programme of Renaissance Philanthropy begun in September 2025, now employs maintainers; it received the other five million dollars of Gerko's gift. Its stated targets are review within a week for nine out of ten pull requests, keeping the downstream ecosystem building, and documentation. Johan Commelin, who led the {ref "lte-episode"}[Liquid Tensor Experiment], works there.
 
-* *Mathlib* is one repository, compiled as a unit. Maintainers review every change, and CI keeps it building against the current Lean. There are no stable releases: *Mathlib* follows Lean, and your project follows *Mathlib*. Results combine without extra work, because all structures live in one hierarchy, built from `class` and `instance` (see the chapters on typeclasses and the algebraic hierarchy).
-* *Rocq* has no such centre. Its standard library is small, and the mathematics lives in independent packages -- *MathComp*, out of the Feit-Thompson formalization, *Coquelicot* and *MathComp-Analysis* for analysis, and others -- distributed through `opam`, with the *Rocq Platform* bundling a tested combination. Packages evolve at their own pace, which is comfortable with one dependency and awkward with two that disagree.
-* *Isabelle* sits in between. The *Archive of Formal Proofs* holds refereed, self-contained entries, released in lockstep with Isabelle. Entries may depend on one another but are never merged into one library; the archive is cited like a journal.
+*Reading the library.* The [interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) draws *Mathlib* as a graph of its modules: which file may use which, and therefore in what order the library is built. The same site serves the [API documentation](https://leanprover-community.github.io/mathlib4_docs/) for every declaration. Both are worth half an hour before you need them.
 
-We use Lean because *Mathlib* exists: the exercises start with `import Mathlib` and have the real numbers, measure theory and topology already there.
+*Lean is also a programming language.* `lake`, the compiler's own front end and much of Lean itself are written in Lean; see [Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
 
-# Other courses
-%%%
-number := false
-tag := "other-courses"
-%%%
-
-* [_Natural Number Game_](https://adam.math.hhu.de/#/g/leanprover-community/nng4): proofs about `ℕ` in the browser, nothing to install. The usual first contact with Lean, and a good use of an evening before the course starts.
-* [_Formalising Mathematics_](https://b-mehta.github.io/formalising-mathematics-notes/) by Bhavik Mehta, after notes by Kevin Buzzard: the format of the present course follows these.
-* [_Mathematics in Lean_](https://leanprover-community.github.io/mathematics_in_lean/) by Jeremy Avigad and Patrick Massot: the closest thing to an official course, organized by area of mathematics.
+*Will this last?* Unknown, and the record reads both ways. Against: *Rocq* had the largest library and the most momentum until about 2023 and was overtaken in five years ({ref "itp-repos"}[the first figure]), so size settles nothing. For: in sixty years no proof assistant has been replaced by another, only joined. What does get replaced is a system by its own successor — Lean 1 to Lean 4 each broke the one before, and moving *Mathlib* from Lean 3 to Lean 4 occupied the community for more than a year. Either way most of this course survives it. Dependent types, the difference between a tactic and a term, how a hierarchy of structures is organized, and reading a formal statement are not Lean-specific.
 
 # Practical matters
 %%%
@@ -574,6 +564,16 @@ After `code .` in the `leancourse_exercises` folder, open `Exercises/01-Logic/01
 * To update, run `git pull` in `leancourse_exercises`.
 
 If the installation gives you trouble, talk to the teachers rather than spending evenings on it.
+
+# Other courses
+%%%
+number := false
+tag := "other-courses"
+%%%
+
+* [_Natural Number Game_](https://adam.math.hhu.de/#/g/leanprover-community/nng4): proofs about `ℕ` in the browser, nothing to install. The usual first contact with Lean, and a good use of an evening before the course starts.
+* [_Formalising Mathematics_](https://b-mehta.github.io/formalising-mathematics-notes/) by Bhavik Mehta, after notes by Kevin Buzzard: the format of the present course follows these.
+* [_Mathematics in Lean_](https://leanprover-community.github.io/mathematics_in_lean/) by Jeremy Avigad and Patrick Massot: the closest thing to an official course, organized by area of mathematics.
 
 # Sources
 %%%

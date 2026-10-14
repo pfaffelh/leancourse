@@ -618,6 +618,108 @@ kernel rechecks it whatever tactic produced it.
 
 :::
 
+# The systems
+
+{image "../static/figures/itp_lineage.png" (height := "62vh")}[Timeline of the proof assistants from 1967 to today, one bar each, coloured by tradition]
+
+:::fragment highlightBlue
+Five of the seven still run. A library cannot be moved.
+:::
+
+:::notes
+The point of the picture: this is not a succession. Only Automath
+and LCF stopped, and both handed their architecture on. Everything
+from Mizar in 1973 onwards is still maintained.
+
+Colour is the tradition, not the system. Blue is the de Bruijn line
+-- the proof is written down as a term and rechecked afterwards:
+Automath, Coq/Rocq, Lean. Green is the LCF line -- no proof object
+at all, soundness comes from `thm` being an abstract type: LCF, HOL,
+Isabelle. Orange is Mizar, declarative proofs over set theory.
+
+Read the lower labels as the answer to "why build another one".
+Each system does something its predecessors could not.
+
+Why nothing dies: seL4 stays in Isabelle, the four colour theorem
+stays in Rocq. Nobody will redo those. The library is the system.
+
+Lean's own entry is worth a remark: "tactics in the language, one
+library" is not a type-theoretic feature at all. It is an
+organisational decision, and it is the one that mattered.
+:::
+
+# 2013: Lean
+
+::::vstack
+{image "../static/figures/portraits/demoura.jpg" (class := "portrait")}[Leonardo de Moura]
+
+:::class "names"
+Leonardo de Moura
+:::
+::::
+
+:::fragment fadeUp
+*2013* -- Leonardo de Moura starts Lean at Microsoft Research.
+:::
+
+:::fragment fadeUp
+*2021* -- Lean 4, a redesign rather than a new version.
+:::
+
+:::fragment fadeUp
+Foundation: the Calculus of Inductive Constructions, the Automath line. A proof is a term, and the kernel rechecks it.
+:::
+
+:::notes
+Lean 1 to 3 were research prototypes; Lean 4 is the one that stuck,
+and it is written in itself.
+
+Kevin Buzzard has argued for Lean among mathematicians since 2018.
+That is roughly when Mathlib started to look like a library of real
+mathematics rather than a collection of exercises.
+
+De Moura is still chief architect, now at the Lean FRO -- next slide.
+:::
+
+# Three systems
+
+:::table +colHeaders +rowSeps
+*
+  * System
+  * Logic
+  * Library
+*
+  * *Lean 4*
+  * dependent types
+  * one: *Mathlib*
+*
+  * *Rocq* (Coq until 2025)
+  * dependent types
+  * many packages
+*
+  * *Isabelle/HOL*
+  * simple type theory
+  * the *AFP*
+:::
+
+:::fragment fadeUp
+Only Isabelle has no dependent types. Its automation is the strongest of the three.
+:::
+
+:::fragment highlightBlue
+We use Lean because *Mathlib* exists.
+:::
+
+:::notes
+A proof is a term (Lean, Rocq, Agda), a derivation in a calculus
+(Isabelle, HOL Light), or a text in set theory (Mizar, Metamath).
+Three answers to one question.
+
+All of them share the de Bruijn criterion: a tiny kernel you have to
+trust, and arbitrarily unreliable automation above it. That is why
+`grind` is allowed to be as clever as it likes.
+:::
+
 # 1976: the four colour theorem
 
 ::::::hstack
@@ -735,149 +837,6 @@ not our subject. We take the diagnosis, not the cure. He died in
 2017.
 :::
 
-# 2020: the Liquid Tensor Experiment
-
-::::::hstack
-::::vstack
-{image "../static/figures/portraits/scholze.jpg" (class := "portrait")}[Peter Scholze]
-
-:::class "names"
-Peter Scholze
-:::
-::::
-
-::::vstack
-{image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
-
-:::class "names"
-Johan Commelin
-:::
-::::
-::::::
-
-Scholze posts a challenge on Buzzard's blog: a theorem in condensed mathematics he is not certain of.
-
-:::fragment fadeUp
-Liquid Tensor Experiment, led by Commelin. Finished July 2022.
-:::
-
-:::fragment highlightBlue
-The request came from a working mathematician, not from logicians. That is what had changed.
-:::
-
-:::notes
-Buzzard's ICM plenary in 2022 is a fair marker for the moment this
-stopped being a curiosity.
-
-Not combinatorics with a thousand cases, either -- condensed
-mathematics, at the research frontier.
-:::
-
-# 2013: Lean
-
-::::vstack
-{image "../static/figures/portraits/demoura.jpg" (class := "portrait")}[Leonardo de Moura]
-
-:::class "names"
-Leonardo de Moura
-:::
-::::
-
-:::fragment fadeUp
-*2013* -- Leonardo de Moura starts Lean at Microsoft Research.
-:::
-
-:::fragment fadeUp
-*2021* -- Lean 4, a redesign rather than a new version.
-:::
-
-:::fragment fadeUp
-Foundation: the Calculus of Inductive Constructions, the Automath line. A proof is a term, and the kernel rechecks it.
-:::
-
-:::notes
-Lean 1 to 3 were research prototypes; Lean 4 is the one that stuck,
-and it is written in itself.
-
-Kevin Buzzard has argued for Lean among mathematicians since 2018.
-That is roughly when Mathlib started to look like a library of real
-mathematics rather than a collection of exercises.
-
-De Moura is still chief architect, now at the Lean FRO -- next slide.
-:::
-
-# Lean today
-
-:::fragment fadeUp
-A new Lean every month. `v4.34.0` on 14 September 2026, `v4.35.0` on 12 October.
-:::
-
-:::fragment fadeUp
-Nothing updates by itself. `lean-toolchain` names one version, `elan` fetches it, `lake` builds against it.
-:::
-
-:::fragment highlightBlue
-This course is pinned to `v4.34.0` all semester.
-:::
-
-:::fragment fadeUp
-[*Lean FRO*](https://lean-lang.org/fro/) -- a non-profit since July 2023, twenty-one people, living on donations.
-:::
-
-:::notes
-Monthly releases, with a release candidate about four weeks ahead.
-Patch releases in between.
-
-The pin is why the notes and their machines agree. Tell them not to
-run `elan update` and wonder why the exercises stop compiling.
-
-Lean FRO: founded July 2023 under Convergent Research. De Moura chief
-architect, Sebastian Ullrich head of engineering. Funders: Simons
-Foundation International, Sloan, Richard Merkin, Amazon, and five
-million dollars from Alex Gerko in July 2025. No vendor, and no longer
-a spare-time project.
-:::
-
-# Mathlib
-
-One library, one repository, one version. Everything in this course imports it.
-
-:::fragment fadeUp
-2.33 million lines, about 189 000 theorems, 1 031 contributors. 27 commits a day.
-:::
-
-:::fragment fadeUp
-No stable releases. *Mathlib* follows Lean, your project follows *Mathlib*.
-:::
-
-:::fragment fadeUp
-[*The Mathlib Initiative*](https://mathlib-initiative.org/) -- since September 2025, maintainers are paid to maintain it.
-:::
-
-:::fragment highlightBlue
-[The interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) -- the whole of *Mathlib* as a graph of its modules.
-:::
-
-:::notes
-Measured on the pinned version of 15 September 2026: 8 529 files,
-2.33 M lines, ~189 000 theorems, ~64 000 definitions, 1 031
-contributors, 34 768 commits. 820 commits in the preceding thirty
-days. The library changes while they use it.
-
-`lake exe cache get` fetches what CI already compiled. Building from
-source takes hours. Say this before the lab session.
-
-Mathlib Initiative: a programme of Renaissance Philanthropy, the other
-five million of Gerko's gift. Targets: review within a week for nine
-of ten pull requests, keep the downstream ecosystem building,
-documentation. Johan Commelin, who led the Liquid Tensor Experiment,
-works there.
-
-Open the import map live: one connected library, not a pile of
-packages. Point at a node, follow an edge, show how analysis sits on
-order sits on algebra.
-:::
-
 # Perfectoid spaces, 2019
 
 ::::::hstack
@@ -916,6 +875,44 @@ They formalized a *definition*, not a theorem. Stating is a different problem fr
 Scholze's perfectoid spaces, 2012.
 
 Lean's reputation among mathematicians dates from this project.
+:::
+
+# 2020: the Liquid Tensor Experiment
+
+::::::hstack
+::::vstack
+{image "../static/figures/portraits/scholze.jpg" (class := "portrait")}[Peter Scholze]
+
+:::class "names"
+Peter Scholze
+:::
+::::
+
+::::vstack
+{image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
+
+:::class "names"
+Johan Commelin
+:::
+::::
+::::::
+
+Scholze posts a challenge on Buzzard's blog: a theorem in condensed mathematics he is not certain of.
+
+:::fragment fadeUp
+Liquid Tensor Experiment, led by Commelin. Finished July 2022.
+:::
+
+:::fragment highlightBlue
+The request came from a working mathematician, not from logicians. That is what had changed.
+:::
+
+:::notes
+Buzzard's ICM plenary in 2022 is a fair marker for the moment this
+stopped being a curiosity.
+
+Not combinatorics with a thousand cases, either -- condensed
+mathematics, at the research frontier.
 :::
 
 # Sphere eversion, 2022
@@ -1061,43 +1058,76 @@ This closes the thread that opened with Kepler, four hundred years
 earlier -- and it is the February entry from the 2026 slide.
 :::
 
-# Three systems
+# Lean today
 
-:::table +colHeaders +rowSeps
-*
-  * System
-  * Logic
-  * Library
-*
-  * *Lean 4*
-  * dependent types
-  * one: *Mathlib*
-*
-  * *Rocq* (Coq until 2025)
-  * dependent types
-  * many packages
-*
-  * *Isabelle/HOL*
-  * simple type theory
-  * the *AFP*
+:::fragment fadeUp
+A new Lean every month. `v4.34.0` on 14 September 2026, `v4.35.0` on 12 October.
 :::
 
 :::fragment fadeUp
-Only Isabelle has no dependent types. Its automation is the strongest of the three.
+Nothing updates by itself. `lean-toolchain` names one version, `elan` fetches it, `lake` builds against it.
 :::
 
 :::fragment highlightBlue
-We use Lean because *Mathlib* exists.
+This course is pinned to `v4.34.0` all semester.
+:::
+
+:::fragment fadeUp
+[*Lean FRO*](https://lean-lang.org/fro/) -- a non-profit since July 2023, twenty-one people, living on donations.
 :::
 
 :::notes
-A proof is a term (Lean, Rocq, Agda), a derivation in a calculus
-(Isabelle, HOL Light), or a text in set theory (Mizar, Metamath).
-Three answers to one question.
+Monthly releases, with a release candidate about four weeks ahead.
+Patch releases in between.
 
-All of them share the de Bruijn criterion: a tiny kernel you have to
-trust, and arbitrarily unreliable automation above it. That is why
-`grind` is allowed to be as clever as it likes.
+The pin is why the notes and their machines agree. Tell them not to
+run `elan update` and wonder why the exercises stop compiling.
+
+Lean FRO: founded July 2023 under Convergent Research. De Moura chief
+architect, Sebastian Ullrich head of engineering. Funders: Simons
+Foundation International, Sloan, Richard Merkin, Amazon, and five
+million dollars from Alex Gerko in July 2025. No vendor, and no longer
+a spare-time project.
+:::
+
+# Mathlib
+
+One library, one repository, one version. Everything in this course imports it.
+
+:::fragment fadeUp
+2.33 million lines, about 189 000 theorems, 1 031 contributors. 27 commits a day.
+:::
+
+:::fragment fadeUp
+No stable releases. *Mathlib* follows Lean, your project follows *Mathlib*.
+:::
+
+:::fragment fadeUp
+[*The Mathlib Initiative*](https://mathlib-initiative.org/) -- since September 2025, maintainers are paid to maintain it.
+:::
+
+:::fragment highlightBlue
+[The interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) -- the whole of *Mathlib* as a graph of its modules.
+:::
+
+:::notes
+Measured on the pinned version of 15 September 2026: 8 529 files,
+2.33 M lines, ~189 000 theorems, ~64 000 definitions, 1 031
+contributors, 34 768 commits. 820 commits in the preceding thirty
+days. The library changes while they use it.
+
+`lake exe cache get` fetches what CI already compiled. Building from
+source takes hours. Say this before the lab session.
+
+Mathlib Initiative: a programme of Renaissance Philanthropy, the other
+five million of Gerko's gift. Targets: review within a week for nine
+of ten pull requests, keep the downstream ecosystem building,
+documentation. Johan Commelin, who led the Liquid Tensor Experiment,
+works there.
+
+Open the import map live: one connected library, not a pile of
+packages. Point at a node, follow an edge, show how analysis sits on
+order sits on algebra.
 :::
 
 # Goals

@@ -1603,3 +1603,54 @@ System besser machte als seine Vorgaenger.
   Community ueber ein Jahr gekostet. Schluss: abhaengige Typen, der
   Unterschied Taktik/Term, Hierarchien und das Lesen formaler
   Aussagen sind nicht Lean-spezifisch.
+
+## 2026-10-14 (10) -- Kapitel 0 umgebaut: Systeme, dann Chronik, dann Lean heute
+
+Nutzervorgabe: alle ITPs zusammen nach oben, ab Automath, inklusive
+Lean und der Bibliotheksinformation; danach die ganze Chronik von
+Vierfarben bis Equational Theories; danach Current state of Lean,
+Practical matters, Other courses.
+
+**Neue Gliederung** von `# How we got here`:
+
+    ## The mathematics      (unveraendert)
+    ## The proof assistants
+         1967: Automath
+         1972 to 1991: Mizar, LCF, HOL, Isabelle, Coq
+         2013: Lean                  <- war ## nach den Episoden
+         The three systems today     <- war `# Other theorem provers`
+    ## What came of it      (tag bleibt `landmarks`)
+         1976 Vierfarben / 1998 Kepler / 2013 Voevodsky /
+         2019 Perfectoid / 2020 LTE / 2022 Sphere eversion /
+         2023 Freiman-Ruzsa / 2024-25 Equational Theories
+
+Danach `# Current state of Lean`, `# Practical matters`,
+`# Other courses` (die letzten beiden getauscht).
+
+- **Das war der eigentliche Fehler der alten Fassung:** es gab *zwei*
+  Listen von Erfolgen -- vier Episoden unter den Systemen und vier
+  Landmarks weiter unten. Jetzt eine chronologische Reihe von acht.
+  Die Landmark-Ueberschriften sind auf das Schema der Episoden
+  umgestellt (Datum zuerst, dann Stichwort).
+- **Alle Tags beibehalten**, auch `landmarks` und `other-provers`,
+  obwohl die Abschnitte Ebene und Namen wechseln -- sonst brechen
+  Verweise. Geprueft: 31 Anker genau einmal, alle 13 `{ref ...}`
+  aufloesbar.
+  **Pruef-Falle:** Kapitel-Tags (`introduction`, `projects`,
+  `slides`) stehen nur in `html-single` als `id=`; in `html-multi`
+  heissen sie `--verso-manual-toc-...`. Der Anker-Check muss gegen
+  `_out/html-single/index.html` laufen, sonst meldet er falsche
+  Treffer. Skript im Scratchpad.
+- **Zwei neue Scharniersaetze:** der Lean-Abschnitt endet auf
+  "Where development sits now is Current state of Lean, after the
+  record", und `## What came of it` beginnt mit der Einordnung der
+  acht ("the first two are about proofs too large to read; the next
+  two about proofs nobody had checked; the last four about what a
+  library makes possible").
+
+**Deck 32 -> 33**, gleiche Reihenfolge wie das Kapitel. Neu `The
+systems` mit der Linien-Grafik (`height := "62vh"`; 46vh war zu
+klein, das Bild ist 10x5.6 und damit breitenbegrenzt). `Sphere
+packing, dim. 8 and 24` steht im Deck weiterhin am Ende der Chronik,
+obwohl das Kapitel es nur oben bei 2026 fuehrt. Hoechste Folie
+unveraendert `2013: Voevodsky` mit 557 px, alle 33 mit Notizen.

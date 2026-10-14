@@ -194,8 +194,22 @@ The step from a calculus of functions to a calculus of proofs is the *Curry-Howa
 Three questions about proofs have three different answers, and a proof assistant is built on the difference.
 
 1. *Does this text prove that statement?* Decidable, and cheap. This is what Lean's kernel does, and the whole trust of the system rests on it.
-2. *Find a proof of this statement.* Semi-decidable. Proofs can be enumerated one after another, and by Gödel's completeness theorem every valid statement has one, so a search ends when a proof exists. When none exists it runs forever, which is why `exact?` and `grind` come with a time limit.
-3. *Decide whether this statement is provable.* Undecidable, by Church and Turing. No procedure answers yes or no, in finite time, for every formula.
+2. *Find a proof of this statement.* Semi-decidable, and question 1 is the whole reason: proof texts are finite objects, so one can enumerate them and check each. The search ends when a proof exists and runs forever when none does, which is why `exact?` and `grind` come with a time limit. Gödel's completeness theorem is not what makes this work, and here it would not be available. It says that *derivable* and *true in every model* coincide for {ref "hilbert-programme"}[first-order logic]; Lean's logic is higher-order, and by the theorem of 1931 it leaves true statements about $`\mathbb{N}` unproved. The search looks for proofs, not for truths.
+3. *Decide whether this statement is provable* — always, and with yes or no. Undecidable, by Church and Turing.
+
+:::table (align := left) +header
+* + Is there a procedure that
+  + confirms it when true
+  + refutes it when false
+* + *this text proves the statement*
+  + yes, and it always stops
+  + yes, and it always stops
+* + *the statement has some proof*
+  + yes, it stops whenever a proof exists
+  + no such procedure
+:::
+
+The second row is questions 2 and 3 at once. Finding and deciding are one problem seen from two sides: *semi-decidable* names the left entry, *undecidable* the right one, and the two words do not conflict. The gap is one-sided, and it is what you see when `grind` hangs. It cannot tell you that there is nothing to find, only that it has not found anything yet.
 
 So the human writes the proof and the machine checks it. That division of labour is a theorem of 1936, not a property of today's software.
 

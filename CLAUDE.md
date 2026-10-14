@@ -1450,3 +1450,31 @@ genau?" -- der Begriff stand im Kapitel unerklaert, und das doppelte
   (was first-order heisst, die zwei Bedeutungen von complete, dass
   Lean nicht erststufig ist). Kein neues Element auf der Folie -- sie
   hat schon Portrait plus drei Fragmente.
+
+## 2026-10-14 (6) -- die drei Fragen richtiggestellt
+
+Zwei Fehler, beide vom Nutzer gefunden, beide in der Liste
+*Three questions about proofs* in Kapitel 0.
+
+- **"by Gödel's completeness theorem every valid statement has one"**
+  war doppelt schief. Erstens haengt der Satz an *erststufiger* Logik,
+  und Lean ist hoeherstufig. Zweitens wird er fuer die Aussage gar
+  nicht gebraucht: Semi-Entscheidbarkeit der *Beweisbarkeit* folgt
+  schon aus Frage 1 -- Beweistexte sind endlich, also aufzaehlbar, und
+  Pruefen ist entscheidbar. Vollstaendigkeit leistet etwas anderes,
+  naemlich den Schritt von *ableitbar* zu *in jedem Modell wahr*, und
+  genau der faellt in Lean weg. Steht jetzt so da, mit Verweis auf
+  `{ref "hilbert-programme"}` und auf 1931.
+- **Fragen 2 und 3 sahen aus wie ein Widerspruch.** "Find a proof:
+  semi-decidable" gegen "Decide whether provable: undecidable" -- es
+  ist dieselbe Menge. Semi-entscheidbar heisst, die Ja-Faelle werden
+  alle gefunden; unentscheidbar heisst, die Nein-Faelle nicht. Die
+  Luecke ist einseitig.
+- **Darstellung:** dafuer jetzt eine zweizeilige `:::table` (Is there
+  a procedure that / confirms it when true / refutes it when false).
+  Zeile 2 ist Frage 2 und 3 zugleich, und die beiden Woerter sind die
+  beiden Spalten. Das macht sichtbar, was vorher behauptet werden
+  musste. Kapitel 0 hat damit fuenf Tabellen.
+- **Folie `Checking is not finding`** war inhaltlich schon richtig
+  (die Notizen berufen sich nicht auf Vollstaendigkeit). Ergaenzt nur
+  um den Absatz, dass Zeile zwei und drei dieselbe Menge sind.

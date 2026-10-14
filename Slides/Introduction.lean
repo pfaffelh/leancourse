@@ -542,6 +542,13 @@ of these tactics.
 
 Row three is the Entscheidungsproblem itself.
 
+Rows two and three look contradictory and are not. They are the same
+set of statements. Semi-decidable: every yes is eventually found.
+Undecidable: the noes are not -- nothing reliably reports that a
+statement has no proof. The gap is one-sided, and it is exactly what
+you see when `grind` hangs. It cannot say there is nothing there,
+only that it has not found anything yet.
+
 This is the answer to "why doesn't the computer just do it".
 :::
 

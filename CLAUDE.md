@@ -1686,3 +1686,52 @@ weil das Repository eine Lizenz hat.
   Fundstellen (`00-Introduction.lean:380,394`,
   `Slides/Introduction.lean:852,892`) zeigen weiter den Platzhalter.
   Status in `static/figures/portraits/CREDITS.md` unter `## Permissions`.
+
+## 2026-10-15 (2) -- Commelin und Massot eingebaut, zwei tote Verweise repariert
+
+Beide haben zugestimmt, die Platzhalter sind weg.
+
+- `static/figures/portraits/commelin.jpg` -- 600x600, von
+  <https://mathlib-initiative.org/team/>, Studio-Headshot, keine EXIF,
+  unveraendert uebernommen.
+- `static/figures/portraits/massot.jpg` -- 400x340, von seiner Homepage
+  <https://www.imo.universite-paris-saclay.fr/~patrick.massot/en/>. EXIF
+  entfernt (stand Pentax K-70, GIMP, Aufnahmedatum drin; kein GPS).
+  Querformat, aber `img.portrait` schneidet mit `object-fit: cover` auf
+  einen Kreis von 16vh, deshalb unkritisch -- im Screenshot sitzt das
+  Gesicht mittig.
+- Acht Fundstellen umgestellt (4 im Kapitel, 4 im Deck),
+  `placeholder_commelin.png` und `placeholder_massot.png` geloescht und
+  die beiden Namen aus `PEOPLE` in
+  `scripts/figures/portrait_placeholders.py` genommen, sonst erzeugt der
+  naechste Lauf sie wieder. Es bleiben fuenf Platzhalter: Gonthier,
+  van Doorn, Nash, Manners, Church.
+- **Oliver Nash fehlt noch.** Sein Foto liegt auf derselben
+  Mathlib-Initiative-Seite (`static/team/oliver.jpg`) -- nicht nehmen,
+  bevor er antwortet. Vermerk steht in `CREDITS.md`.
+- Im Schlussabsatz der Picture credits sind Commelin und Massot aus der
+  Silhouetten-Liste raus. Der Satz heisst jetzt "The set is therefore
+  still weighted toward who is *famous* rather than who did this work"
+  (vorher "a fair sample of who is famous") und endet auf "Where a
+  photograph exists but carries no licence, the remedy is to write and
+  ask."
+
+**Zwei tote Verweise aus `3c6c6c9`/`8f053af` gefunden und repariert**, die
+beim Rendern als `No destination found` auftauchten:
+
+- `{ref "itp-repos"}` -- **Figure-Tags sind in Verso keine Linkziele.**
+  `{ref ...}` sucht nur in `Verso.Genre.Manual.section`. Das `id=` steht
+  zwar im HTML, deshalb hat der grep-basierte Anker-Check von gestern das
+  nicht gesehen. Jetzt `{ref "field-stands"}[the first figure]`, also auf
+  den Abschnitt statt auf die Abbildung. Betraf den einzigen Verweis auf
+  eine Abbildung im ganzen Manuskript.
+- `{ref "other-provers"}[Other theorem provers]` -- der Abschnitt heisst
+  seit dem Umbau `The three systems today`, der Linktext war
+  stehengeblieben. Angepasst.
+
+**Lehre:** der Anker-Check muss die Render-Ausgabe von
+`lake exe leancourse` auf `No destination found` pruefen, nicht nur
+`id=`-Vorkommen zaehlen.
+
+Gemessen: 33 Folien, keine ueber 700 px (hoechste `2013: Voevodsky`),
+alle mit Notizen.

@@ -13,9 +13,10 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Wedge
 
 SAND, MUTED, PAPER = "#c3c2b7", "#8a8980", "#f3f2ee"
-PEOPLE = {"gonthier": "GG", "commelin": "JC", "massot": "PM",
-          "vandoorn": "FvD", "nash": "ON", "manners": "FM",
-           "church": "AC"}
+# Commelin and Massot gave permission on 2026-10-15; their real photographs
+# are in place, so they are no longer generated here.
+PEOPLE = {"gonthier": "GG", "vandoorn": "FvD", "nash": "ON",
+          "manners": "FM", "church": "AC"}
 OUT = Path(__file__).resolve().parents[2] / "static" / "figures" / "portraits"
 
 

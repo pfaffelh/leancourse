@@ -58,7 +58,7 @@ number := false
 tag := "field-stands"
 %%%
 
-Two pictures from public data. They compare Lean with [Rocq](https://rocq-prover.org/) (*Coq* until 2025) and [Isabelle/HOL](https://isabelle.in.tum.de/), the two other large proof assistants; how they differ is a question of foundations, taken up under {ref "other-provers"}[Other theorem provers].
+Two pictures from public data. They compare Lean with [Rocq](https://rocq-prover.org/) (*Coq* until 2025) and [Isabelle/HOL](https://isabelle.in.tum.de/), the two other large proof assistants; how they differ is a question of foundations, taken up under {ref "other-provers"}[The three systems today].
 
 :::figure "New GitHub repositories per quarter, per million new repositories overall" (tag := "itp-repos")
 ![Line chart: new GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle from 2018 to 2026, each per million new repositories overall; Lean rises from under ten to about two hundred while the others stay near ten](/static/figures/itp_github_repos_per_million.png)
@@ -377,8 +377,8 @@ By Buzzard, Commelin and Massot ([project page](https://leanprover-community.git
 
 :::figure "Kevin Buzzard, Johan Commelin and Patrick Massot" (tag := "perfectoid-people")
 ![Kevin Buzzard](/static/figures/portraits/buzzard.jpg)
-![Johan Commelin (no photograph available)](/static/figures/portraits/placeholder_commelin.png)
-![Patrick Massot (no photograph available)](/static/figures/portraits/placeholder_massot.png)
+![Johan Commelin](/static/figures/portraits/commelin.jpg)
+![Patrick Massot](/static/figures/portraits/massot.jpg)
 :::
 
 ### 2020: the Liquid Tensor Experiment
@@ -391,7 +391,7 @@ In December 2020 Peter Scholze posed a challenge on Kevin Buzzard's blog: a theo
 
 :::figure "Peter Scholze, who posed the challenge, and Johan Commelin, who led the project" (tag := "lte-people")
 ![Peter Scholze](/static/figures/portraits/scholze.jpg)
-![Johan Commelin (no photograph available)](/static/figures/portraits/placeholder_commelin.png)
+![Johan Commelin](/static/figures/portraits/commelin.jpg)
 :::
 
 Buzzard's plenary lecture at the ICM in 2022 marks the point where formalization stopped being a curiosity.
@@ -405,7 +405,7 @@ tag := "eversion-landmark"
 By Massot, van Doorn and Nash ([project page](https://leanprover-community.github.io/sphere-eversion/)): Gromov's [h-principle](https://en.wikipedia.org/wiki/Homotopy_principle), and with it the fact that a [sphere can be turned inside out](https://en.wikipedia.org/wiki/Sphere_eversion) without tearing or creasing. For closed curves in the plane no such thing is possible: a regular homotopy cannot change the turning number, and everting a circle would send $`+1` to $`-1`. In three dimensions that obstruction vanishes. Formalizing this meant differential topology rather than algebra, so the project built a usable differential-geometry API first and proved the theorem afterwards. That order is the ordinary shape of formalization work, and it is why *Mathlib* matters more than any single theorem in it.
 
 :::figure "Patrick Massot, Floris van Doorn and Oliver Nash" (tag := "eversion-people")
-![Patrick Massot (no photograph available)](/static/figures/portraits/placeholder_massot.png)
+![Patrick Massot](/static/figures/portraits/massot.jpg)
 ![Floris van Doorn (no photograph available)](/static/figures/portraits/placeholder_vandoorn.png)
 ![Oliver Nash (no photograph available)](/static/figures/portraits/placeholder_nash.png)
 :::
@@ -479,7 +479,7 @@ Measured on the version pinned for this course (15 September 2026): 8 529 files,
 
 *Lean is also a programming language.* `lake`, the compiler's own front end and much of Lean itself are written in Lean; see [Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/).
 
-*Will this last?* Unknown, and the record reads both ways. Against: *Rocq* had the largest library and the most momentum until about 2023 and was overtaken in five years ({ref "itp-repos"}[the first figure]), so size settles nothing. For: in sixty years no proof assistant has been replaced by another, only joined. What does get replaced is a system by its own successor — Lean 1 to Lean 4 each broke the one before, and moving *Mathlib* from Lean 3 to Lean 4 occupied the community for more than a year. Either way most of this course survives it. Dependent types, the difference between a tactic and a term, how a hierarchy of structures is organized, and reading a formal statement are not Lean-specific.
+*Will this last?* Unknown, and the record reads both ways. Against: *Rocq* had the largest library and the most momentum until about 2023 and was overtaken in five years ({ref "field-stands"}[the first figure]), so size settles nothing. For: in sixty years no proof assistant has been replaced by another, only joined. What does get replaced is a system by its own successor — Lean 1 to Lean 4 each broke the one before, and moving *Mathlib* from Lean 3 to Lean 4 occupied the community for more than a year. Either way most of this course survives it. Dependent types, the difference between a tactic and a term, how a hierarchy of structures is organized, and reading a formal statement are not Lean-specific.
 
 # Practical matters
 %%%
@@ -606,7 +606,7 @@ number := false
 tag := "credits"
 %%%
 
-The mathematical figures were generated by the scripts in `scripts/` and may be reused freely. The photographs, here and in the {ref "slides"}[slide decks], come from Wikimedia Commons and are reproduced under their own licences, unchanged except where noted:
+The mathematical figures were generated by the scripts in `scripts/` and may be reused freely. Most photographs, here and in the {ref "slides"}[slide decks], come from Wikimedia Commons and are reproduced under their own licences, unchanged except where noted. The last two are used with the permission of the person shown:
 
 * Thomas Hales -- Slawekb, CC BY-SA 3.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Halescropped.jpg)
 * Peter Scholze -- George Bergman, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Peter_Scholze_2014_cropped.jpg)
@@ -623,9 +623,11 @@ The mathematical figures were generated by the scripts in `scripts/` and may be 
 * Kurt Gödel -- photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kurt_g%C3%B6del.jpg)
 * Alan Turing in 1951 -- Elliott and Fry, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Alan_Turing_%281951%29_%28crop%29.jpg)
 * Nicolaas Govert de Bruijn -- Konrad Jacobs, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, cropped to head and shoulders, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Nicolaas_de_Bruijn.jpg)
+* Johan Commelin -- used by permission, from the [Mathlib Initiative team page](https://mathlib-initiative.org/team/)
+* Patrick Massot -- used by permission, from [his homepage](https://www.imo.universite-paris-saclay.fr/~patrick.massot/en/)
 
 The two product marks in this chapter -- Claude and ChatGPT -- are also from Wikimedia Commons, under CC0 and in the public domain respectively. They remain trademarks of their owners and are used here only to say which system produced which proof.
 
 The icon in the browser tab is the `L` of the Lean wordmark, redrawn as a single stroke on a square in the Freiburg identity blue (`#34499a`). The source is `static/favicon.svg`.
 
-Several people named in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the [Feit-Thompson theorem](https://en.wikipedia.org/wiki/Feit%E2%80%93Thompson_theorem), Johan Commelin, who led the Liquid Tensor Experiment, Patrick Massot, Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. Alonzo Church is in the same position, for the opposite reason: the photographs of him are recent enough to be under copyright. They appear above as grey silhouettes with their initials. The photographs are therefore a fair sample of who is *famous*, not of who did this work, and the silhouettes are left visible rather than quietly omitted for that reason.
+Several people named in this chapter have no freely licensed photograph, and the pattern is not an accident: Georges Gonthier, who formalized both the four colour theorem and the [Feit-Thompson theorem](https://en.wikipedia.org/wiki/Feit%E2%80%93Thompson_theorem), Floris van Doorn and Oliver Nash, who formalized sphere eversion, and Freddie Manners, one of the four authors of the polynomial Freiman-Ruzsa theorem. Alonzo Church is in the same position, for the opposite reason: the photographs of him are recent enough to be under copyright. They appear above as grey silhouettes with their initials. The set is therefore still weighted toward who is *famous* rather than who did this work, and the silhouettes are left visible rather than quietly omitted for that reason. Where a photograph exists but carries no licence, the remedy is to write and ask. Johan Commelin and Patrick Massot were asked, and agreed.

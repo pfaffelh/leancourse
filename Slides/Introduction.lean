@@ -849,7 +849,7 @@ Kevin Buzzard
 ::::
 
 ::::vstack
-{image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
+{image "../static/figures/portraits/commelin.jpg" (class := "portrait")}[Johan Commelin]
 
 :::class "names"
 Johan Commelin
@@ -857,7 +857,7 @@ Johan Commelin
 ::::
 
 ::::vstack
-{image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot]
+{image "../static/figures/portraits/massot.jpg" (class := "portrait")}[Patrick Massot]
 
 :::class "names"
 Patrick Massot
@@ -889,7 +889,7 @@ Peter Scholze
 ::::
 
 ::::vstack
-{image "../static/figures/portraits/placeholder_commelin.png" (class := "portrait")}[Johan Commelin]
+{image "../static/figures/portraits/commelin.jpg" (class := "portrait")}[Johan Commelin]
 
 :::class "names"
 Johan Commelin
@@ -919,7 +919,7 @@ mathematics, at the research frontier.
 
 ::::::hstack
 ::::vstack
-{image "../static/figures/portraits/placeholder_massot.png" (class := "portrait")}[Patrick Massot]
+{image "../static/figures/portraits/massot.jpg" (class := "portrait")}[Patrick Massot]
 
 :::class "names"
 Patrick Massot

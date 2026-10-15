@@ -38,6 +38,22 @@ They are silhouettes with initials, not invented likenesses. To replace one,
 drop the real photograph in as `<surname>.jpg`, point the chapter at it and
 add the credit line above; nothing else changes.
 
+## Permissions
+
 Photographs of Commelin and Nash exist on the Mathlib Initiative team page
-and of Massot on his own homepage, but all are under default copyright --
-permission has been requested.
+and of Massot on his own homepage, but all are under default copyright.
+Permission to use one in this course was requested from all three by e-mail
+on 2026-10-15.
+
+- Johan Commelin -- **granted**, 2026-10-15. The photograph itself has not
+  reached the repository yet, so the chapter and the Introduction deck still
+  show `placeholder_commelin.png`.
+- Patrick Massot -- requested 2026-10-15, no answer yet.
+- Oliver Nash -- requested 2026-10-15, no answer yet.
+
+Asking was necessary even though the Lean community website is MIT licensed.
+A repository licence can carry the photographer's copyright at most; the
+depicted person's own right in their likeness is a separate right that the
+photographer cannot license away, and consent to appear in a maintainer list
+is not consent to appear in teaching material. The portraits on that site are
+also only 100x100 pixels, below every photograph used here.

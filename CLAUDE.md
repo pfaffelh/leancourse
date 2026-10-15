@@ -1654,3 +1654,35 @@ klein, das Bild ist 10x5.6 und damit breitenbegrenzt). `Sphere
 packing, dim. 8 and 24` steht im Deck weiterhin am Ende der Chronik,
 obwohl das Kapitel es nur oben bei 2026 fuehrt. Hoechste Folie
 unveraendert `2013: Voevodsky` mit 557 px, alle 33 mit Notizen.
+
+## 2026-10-15 -- Bildrechte: MIT reicht nicht, Commelin hat zugestimmt
+
+Frage war, ob die Portraits auf
+`leanprover-community.github.io/lean3/teams/maintainers.html` frei sind,
+weil das Repository eine Lizenz hat.
+
+- Das Repo `leanprover-community/leanprover-community.github.io` steht
+  unter **MIT**. Ueber GitHubs inbound=outbound greift das auch fuer
+  Beitraege. Zwei Luecken: MIT spricht von "Software and associated
+  documentation files" -- ein Portraitfoto ist weder das eine noch das
+  andere; und lizenzieren kann nur, wer die Rechte hat. Commit-Historie:
+  `img/ocfnash.png` hat Oliver Nash selbst eingestellt (2021-11-01),
+  `img/patrick.png` **und** `img/Johan.jpg` hat Patrick Massot in einem
+  Sammel-Commit hochgeladen (2020-05-02). Fuer Commelins Bild ist also
+  nicht einmal der Fotograf bekannt.
+- **Entscheidend ist aber das Recht am eigenen Bild** (§ 22 KunstUrhG,
+  dazu DSGVO). Das gehoert der abgebildeten Person, nicht dem Fotografen,
+  und keine Urheberrechtslizenz kann es mitlizenzieren. Eine Einwilligung
+  ist ausserdem kontextgebunden: Maintainer-Liste ist nicht Vorlesung.
+  § 23 KunstUrhG greift nicht (keine Personen der Zeitgeschichte),
+  § 60a UrhG auch nicht (verlangt abgegrenzten Teilnehmerkreis, das
+  Repository ist oeffentlich). Bei Wikimedia Commons traegt die Kette,
+  weil dort die Einwilligung Teil der Upload-Bedingungen ist.
+- Praktisch erledigt es sich ohnehin: die drei Bilder sind **100x100**.
+  Kleinstes hier verwendetes Foto ist `godel.jpg` mit 212x270, die
+  Platzhalter sind 390x390.
+- **Stand:** Mails an Massot, Commelin und Nash sind raus. Commelin hat
+  zugestimmt. Das Foto liegt noch nicht im Repository, die vier
+  Fundstellen (`00-Introduction.lean:380,394`,
+  `Slides/Introduction.lean:852,892`) zeigen weiter den Platzhalter.
+  Status in `static/figures/portraits/CREDITS.md` unter `## Permissions`.

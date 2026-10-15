@@ -1760,3 +1760,35 @@ faellt auf. Er wurde nie gefragt. Drei von drei Anfragen waren
 erfolgreich, eine vierte waere naheliegend.
 
 Gemessen: 33 Folien, keine ueber 700 px, alle mit Notizen.
+
+## 2026-10-15 (4) -- neues Buzzard-Foto, Auflage: fester Credit
+
+Aus `~/Downloads/840x560.webp`, WebP nach JPEG konvertiert (Qualitaet 92),
+840x560, keine EXIF. Ersetzt das bisherige `buzzard.jpg`, den
+Wikimedia-Kopfschuss von George Bergman aus **1996** -- frei, aber
+dreissig Jahre alt.
+
+**Die Bedingung ist ein wortgenauer Credit:**
+`Thomas Angus, Imperial College London`.
+Das Urheberrecht liegt beim Imperial College, nicht beim Fotografen und
+nicht bei Buzzard. Anders als bei Commelin, Massot und Nash ist das keine
+Einwilligung der abgebildeten Person, sondern die Erlaubnis des
+Rechteinhabers unter Auflage. **Der Credit darf nicht umformuliert oder
+weggelassen werden** -- Vermerk steht fett in `CREDITS.md`.
+
+- Im Kapitel ist Buzzard aus der Commons-Liste in die Permission-Gruppe
+  gewandert, Einleitungssatz von "The last three are used with the
+  permission of the person shown" auf "The last four are used by
+  permission, each with the credit its owner asks for".
+- Der Kopfsatz von `CREDITS.md` behauptete noch "All images are from
+  Wikimedia Commons" -- stimmte seit heute Vormittag nicht mehr,
+  korrigiert.
+- Querformat, aber `object-fit: cover` schneidet auf den Kreis; Gesicht
+  sitzt leicht links der Mitte, im Screenshot unauffaellig.
+
+**Noch offen:** der Credit steht nur im Kapitel. Der Satz dort sagt zwar
+"here and in the {ref "slides"}[slide decks]", aber wer nur das Deck
+oeffnet, sieht ihn nicht. Kein Deck hat eine Credits-Folie. Falls die
+Decks je einzeln weitergegeben werden, muss das nachgezogen werden.
+
+Gemessen: 33 Folien, keine ueber 700 px, alle mit Notizen.

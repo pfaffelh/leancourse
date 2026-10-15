@@ -1,7 +1,8 @@
 # Portrait credits
 
-All images are from Wikimedia Commons and are reproduced unchanged under
-the licence given. The historical portraits (frege, russell, hilbert, godel, turing) are
+The images in the first list are from Wikimedia Commons and are reproduced
+unchanged under the licence given; four further ones, listed after it, are
+used by permission. The historical portraits (frege, russell, hilbert, godel, turing) are
 in the public domain. Five of them (viazovska, gowers, green, voevodsky,
 debruijn) are
 reduced-resolution files released by the MFO itself; their terms ask for
@@ -13,7 +14,6 @@ attribution below must be reproduced wherever the images are shown.
 
 - `hales.jpg` -- Slawekb, CC BY-SA 3.0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Halescropped.jpg>
 - `scholze.jpg` -- George Bergman, CC BY-SA 4.0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Peter_Scholze_2014_cropped.jpg>
-- `buzzard.jpg` -- George Bergman, CC BY-SA 4.0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Kevin_Buzzard_1996_(headshot).jpg>
 - `demoura.jpg` -- David.Monniaux, CC BY-SA 4.0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Leo_de_Moura_P1210629.jpg>
 - `viazovska.jpg` -- Original photo by Petra Lein, CC BY-SA 2.0 de, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Maryna_Vazovska_MFO_2013_crop.jpg>
 - `gowers.jpg` -- Gert-Martin Greuel, CC BY-SA 2.0 de, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:William_Timothy_Gowers_Oslo_2012.jpg>
@@ -27,12 +27,18 @@ attribution below must be reproduced wherever the images are shown.
 - `turing.jpg` -- Elliott &amp; Fry, Public domain, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Alan_Turing_(1951)_(crop).jpg>
 - `debruijn.jpg` -- Konrad Jacobs, Erlangen, Copyright is MFO, CC BY-SA 2.0 de, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Nicolaas_de_Bruijn.jpg>
 
-These three are not from Commons. They are used with the written permission
-of the person shown, given by e-mail on 2026-10-15, for this course only:
+These four are not from Commons. They are used by permission, each with the
+credit its owner requires. The first three were granted by the person shown,
+by e-mail on 2026-10-15, for this course only:
 
 - `commelin.jpg` -- Johan Commelin, by permission, source <https://mathlib-initiative.org/team/>, metadata unchanged, 600x600
 - `massot.jpg` -- Patrick Massot, by permission, source <https://www.imo.universite-paris-saclay.fr/~patrick.massot/en/>, EXIF stripped, 400x340
 - `nash.jpg` -- Oliver Nash, by permission, source <https://mathlib-initiative.org/team/>, unchanged (EXIF holds only resolution and orientation), 600x600
+- `buzzard.jpg` -- **"Thomas Angus, Imperial College London"**. The
+  copyright is Imperial College's, not the photographer's and not
+  Buzzard's. Use is allowed on condition that this exact credit is given.
+  Supplied by the course author 2026-10-15, converted from WebP to JPEG
+  (quality 92), 840x560. **Do not drop or reword the credit.**
 
 ## Placeholders
 
@@ -57,6 +63,11 @@ on 2026-10-15.
 
 All three who were asked said yes. Floris van Doorn has not been asked and
 is still a silhouette.
+
+The Buzzard photograph replaced the 1996 Wikimedia headshot by George
+Bergman (CC BY-SA 4.0,
+<https://commons.wikimedia.org/wiki/File:Kevin_Buzzard_1996_(headshot).jpg>),
+which was free but thirty years old.
 
 Asking was necessary even though the Lean community website is MIT licensed.
 A repository licence can carry the photographer's copyright at most; the

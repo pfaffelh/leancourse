@@ -927,7 +927,7 @@ Patrick Massot
 ::::
 
 ::::vstack
-{image "../static/figures/portraits/placeholder_vandoorn.png" (class := "portrait")}[Floris van Doorn]
+{image "../static/figures/portraits/vandoorn.jpg" (class := "portrait")}[Floris van Doorn]
 
 :::class "names"
 Floris van Doorn

@@ -1792,3 +1792,38 @@ oeffnet, sieht ihn nicht. Kein Deck hat eine Credits-Folie. Falls die
 Decks je einzeln weitergegeben werden, muss das nachgezogen werden.
 
 Gemessen: 33 Folien, keine ueber 700 px, alle mit Notizen.
+
+## 2026-10-15 (5) -- Buzzard nachgeschnitten, van Doorn eingebaut
+
+- **Buzzard neu beschnitten.** Das Gesicht sass links der Kreismitte.
+  `object-position` ist eine globale Regel fuer alle Portraits, also
+  nicht pro Bild einstellbar -- deshalb stattdessen die Quelle
+  beschnitten: aus dem Original-WebP das Quadrat `left=70` statt der
+  zentrierten `left=140`, Ergebnis 560x560. Neu aus dem WebP gerechnet,
+  nicht aus dem schon konvertierten JPEG, damit es bei einer
+  Verlustgeneration bleibt. Credit-Auflage unveraendert:
+  `Thomas Angus, Imperial College London`.
+- **`vandoorn.jpg`** -- aus `~/Downloads/Floris.jpg` (1666x2500, Canon
+  EOS 7D, Lightroom, 2019). Quadrat `side=1500 left=0 top=150`, skaliert
+  auf 600x600 wie Commelin und Nash, EXIF dabei weggefallen. Engerer
+  Schnitt (1400/200) war oben zu knapp am Haar.
+  **Fotograf ungeklaert:** im EXIF-Feld `Artist` stand
+  `@dick van- doorn`, vermutlich ein Familienmitglied. Falls ein
+  Fotografen-Credit gewuenscht ist, muss er erfragt und in `CREDITS.md`
+  ergaenzt werden. Vermerk steht dort.
+- Letzter Platzhalter-Abgang: es bleiben **drei** -- Gonthier, Manners,
+  Church. Schlussabsatz der Picture credits umgeschrieben, weil die
+  alte Pointe ("the set is weighted toward who is famous") nach vier
+  Zusagen nicht mehr trug. Jetzt: "Which photographs are freely licensed
+  tracks who is *famous*, not who did this work. Where one was missing,
+  the remedy was to write and ask."
+
+**Alchetron ist keine Quelle.** Geprueft fuer Gonthier
+(<https://alchetron.com/Georges-Gonthier>): der CC-BY-SA-Hinweis dort
+lautet woertlich "Georges Gonthier Wikipedia (Text) CC BY-SA" -- er
+bezieht sich auf den von Wikipedia uebernommenen **Text**, nicht auf die
+Bilder. Zu den beiden Fotos gibt es keinen Fotografen, keine Quelle,
+keine eigene Lizenz. Commons hat kein Foto von ihm, der
+Wikipedia-Artikel enthaelt nur Icons. Also nicht verwendbar.
+
+Gemessen: 33 Folien, keine ueber 700 px, alle mit Notizen.

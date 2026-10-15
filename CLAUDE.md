@@ -1735,3 +1735,28 @@ beim Rendern als `No destination found` auftauchten:
 
 Gemessen: 33 Folien, keine ueber 700 px (hoechste `2013: Voevodsky`),
 alle mit Notizen.
+
+## 2026-10-15 (3) -- Nash eingebaut, alle drei Anfragen beantwortet
+
+- `static/figures/portraits/nash.jpg` -- 600x600, von
+  <https://mathlib-initiative.org/static/team/oliver.jpg>, unveraendert
+  uebernommen. EXIF enthaelt nur Aufloesung und Orientierung, nichts
+  Personenbezogenes, kein GPS -- deshalb nicht neu kodiert, anders als
+  bei Massot. Vor dem Herunterladen im Seitenquelltext geprueft, dass
+  `oliver.jpg` wirklich zu Oliver Nash gehoert und nicht zu einem
+  anderen Oliver.
+- Zwei Fundstellen (`00-Introduction.lean:410`,
+  `Slides/Introduction.lean:938`), `placeholder_nash.png` geloescht,
+  `nash` aus `PEOPLE` genommen. Es bleiben vier Platzhalter: Gonthier,
+  van Doorn, Manners, Church.
+- Satz im Kapitel angepasst: van Doorn steht jetzt als
+  "who formalized sphere eversion with Massot and Nash" in der
+  Silhouetten-Liste, und der Schluss heisst "Johan Commelin, Patrick
+  Massot and Oliver Nash were asked, and all three agreed."
+
+**Offen: Floris van Doorn.** Auf der Folie `Sphere eversion, 2022`
+stehen jetzt zwei echte Gesichter und eine Silhouette dazwischen, das
+faellt auf. Er wurde nie gefragt. Drei von drei Anfragen waren
+erfolgreich, eine vierte waere naheliegend.
+
+Gemessen: 33 Folien, keine ueber 700 px, alle mit Notizen.

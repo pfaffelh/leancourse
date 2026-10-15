@@ -935,7 +935,7 @@ Floris van Doorn
 ::::
 
 ::::vstack
-{image "../static/figures/portraits/placeholder_nash.png" (class := "portrait")}[Oliver Nash]
+{image "../static/figures/portraits/nash.jpg" (class := "portrait")}[Oliver Nash]
 
 :::class "names"
 Oliver Nash

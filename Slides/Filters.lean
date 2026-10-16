@@ -8,6 +8,12 @@ set_option pp.rawOnError true
 
 #doc (Slides) "Filters in Mathlib" =>
 
+```css
+/* the punch line of a slide: appears last, in colour */
+.reveal section p.key, .reveal section .key p { color: #1b91ff; }
+.reveal section p.key-green, .reveal section .key-green p { color: #17ff2e; }
+```
+
 # Filters
 
 :::fitText
@@ -42,9 +48,11 @@ Three $`\varepsilon`-$`\delta` definitions:
 - $`f(x) \to l` as $`x \to x_0`
 - $`f(x) \to \infty` as $`x \to \infty`
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 One shape: *for good enough inputs, the output lies in a given set.*
 :::
+::::
 
 :::notes
 Do not read the quantifiers out loud -- the students know them.
@@ -119,9 +127,11 @@ example (f : α → β) (F : Filter α) (G : Filter β) :
   Tendsto f F G
 ```
 
-:::fragment highlightGreen
+::::fragment fadeUp
+:::class "key-green"
 $`a_n \to l` is `Tendsto a atTop (nhds l)`.
 :::
+::::
 
 :::notes
 The same definition gives sequence limits, function limits and limits

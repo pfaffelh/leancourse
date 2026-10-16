@@ -42,6 +42,8 @@ img.portrait {
 /* a portrait keeps its name directly underneath, inside the band */
 .reveal .r-hstack .r-vstack { gap: 0; }
 .reveal .r-vstack > * { margin: 0; }
+/* the punch line of a slide: appears last, in blue */
+.reveal section p.key, .reveal section .key p { color: #1b91ff; }
 .reveal section img.logo { height: 9vh; width: auto; margin: 0 1.2rem; }
 /* the seven goals, copied from the notes: they only fit at this size */
 .reveal section .goals li { font-size: 0.56em; line-height: 1.3;
@@ -133,10 +135,12 @@ A Lean proof certifies that *a formal statement* follows from the axioms.
 Whether that statement is the theorem in the paper is a *human* question.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 Reading a formal statement and judging what it says is most of what
 this course teaches.
 :::
+::::
 
 :::notes
 OpenAI's repository documents, per paper, which checks cover a main
@@ -174,9 +178,11 @@ Papers on the mathematics arXiv whose results are checked in Lean,
 per 100 submissions, by week of submission in 2026.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 The denominator doubled too: about 1 000 submissions a week in January, about 2 500 in October.
 :::
+::::
 
 :::notes
 A share, not a count: a rising count would partly be that growth in
@@ -204,9 +210,11 @@ this".
 *1976-2025* -- what was done with them.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 The idea is 150 years old; the tool is 13.
 :::
+::::
 
 :::notes
 The order is chronological. First the mathematics, which needed from
@@ -292,9 +300,11 @@ little came of it.
   * the type hierarchy, a *rule*
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 Mathematics went with Zermelo, proof assistants with Russell.
 :::
+::::
 
 :::notes
 The whole reason this course is about types.
@@ -342,9 +352,11 @@ Fix the language, fix the rules. A proof becomes a finite string, and checking i
 *Decidable?* -- a procedure settles which of the two.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 Hilbert wants all three.
 :::
+::::
 
 :::notes
 Hilbert pushes this from a lecture of 1917, *Axiomatisches Denken*, on
@@ -487,13 +499,13 @@ $`\lambda x.\, x + 1` is the function adding one. The rule is substitution, *β-
 Numbers, pairs and recursion are not built in. They are written as $`\lambda`-terms, and that is enough for everything Turing's machines compute.
 :::
 
-:::fragment fadeUp
+::::fragment fadeUp
 Lean is this calculus with types on top:
-:::
 
 ```lean -panel -stretch
 example : (fun x : Nat => x + 1) 3 = 3 + 1 := rfl
 ```
+::::
 
 :::notes
 This is ninety years old and you will type it all semester. `fun x =>`
@@ -534,9 +546,11 @@ Bruijn, Howard and Läuchli extended it to the quantifiers in the
   * undecidable
 ::::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 You prove. The machine checks. That split is a theorem, not a gap in today's software.
 :::
+::::
 
 :::notes
 Row one is the kernel, and the whole trust of the system sits there.
@@ -576,9 +590,11 @@ Nicolaas Govert de Bruijn
 *1977* -- Landau's *Grundlagen der Analysis* through it, end to end.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 Everything before this slide is mathematics. From here on there are machines.
 :::
+::::
 
 :::notes
 Say what he turned away from. Since 1954 the attempt had been to make
@@ -599,11 +615,13 @@ first mathematics book verified end to end.
 
 # The systems
 
-{image "../static/figures/itp_lineage.png" (height := "62vh")}[Timeline of the proof assistants from 1967 to today, one bar each, coloured by tradition]
+{image "../static/figures/itp_lineage.png" (height := "48vh")}[Timeline of the proof assistants from 1967 to today, one bar each, coloured by tradition]
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 Five of the seven still run. A library cannot be moved.
 :::
+::::
 
 :::notes
 The point of the picture: this is not a succession. Only Automath
@@ -694,9 +712,11 @@ De Moura is still chief architect, now at the Lean FRO.
 Only Isabelle has no dependent types. Its automation is the strongest of the three.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 We use Lean because *Mathlib* exists.
 :::
+::::
 
 :::notes
 Lean and Rocq: both CIC, both an impredicative `Prop` under a
@@ -710,7 +730,7 @@ packages, or a refereed archive.
 # 1976: the four colour theorem
 
 ::::::hstack
-{image "../static/figures/four_colour.png" (height := "30vh")}[A map of thirty-four regions coloured with four colours]
+{image "../static/figures/four_colour.png" (height := "20vh")}[A map of thirty-four regions coloured with four colours]
 ::::::
 
 Appel and Haken reduce the problem to a list of configurations, and an ordinary program checks it -- no proof assistant.
@@ -719,9 +739,11 @@ Appel and Haken reduce the problem to a list of configurations, and an ordinary 
 *No human has ever read that part.*
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 2005: Gonthier redoes all of it in *Coq*, case analysis included.
 :::
+::::
 
 :::notes
 Two decades of argument about whether this counted as a proof.
@@ -752,9 +774,11 @@ Hales announces a proof of Kepler's conjecture of 1611. Twelve referees, four ye
 Verdict: *ninety-nine percent certain* -- and no better was possible. The *Annals* published it with the caveat attached.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 Hales started Flyspeck. Complete formal proof in HOL Light and Isabelle, 2014.
 :::
+::::
 
 :::notes
 Not about computers. Peer review met a proof it could not certify,
@@ -783,9 +807,11 @@ Vladimir Voevodsky
 *Autumn 2013* -- Voevodsky accepts it and finds his own error. Fifteen years in limbo.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 Mathematics runs on *a complex system of mutual trust based on reputations*.
 :::
+::::
 
 :::notes
 Note the dates: the paper is from 1989, but the episode only ends in
@@ -846,9 +872,11 @@ Patrick Massot
 
 *The problem:* could an object as complicated as Scholze's perfectoid space be *stated* at all in a proof assistant?
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 They formalized a *definition*, not a theorem. Stating is a different problem from proving.
 :::
+::::
 
 :::notes
 Scholze's perfectoid spaces, 2012.
@@ -882,9 +910,11 @@ Scholze posts a challenge on Buzzard's blog: a theorem in condensed mathematics 
 Liquid Tensor Experiment, led by Commelin. Finished July 2022.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 The request came from a working mathematician, not from logicians. That is what had changed.
 :::
+::::
 
 :::notes
 Buzzard's ICM plenary in 2022 is a fair marker for the moment this
@@ -924,9 +954,11 @@ Oliver Nash
 
 *The problem:* Mathlib had no differential geometry, and Gromov's h-principle needs it.
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 So they built the API first and proved the theorem afterwards. That order is the ordinary shape of the work.
 :::
+::::
 
 :::notes
 A sphere can be turned inside out without tearing or creasing. In the
@@ -966,9 +998,11 @@ Terence Tao
 
 *The problem:* a formalization took one team years, so it always came long after the paper.
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 A *blueprint* cuts the work into pieces with stated interfaces. Strangers in parallel, three weeks, before refereeing.
 :::
+::::
 
 :::notes
 A set whose sumset is barely larger than itself must be structured.
@@ -1013,9 +1047,11 @@ A new Lean every month. `v4.34.0` on 14 September 2026, `v4.35.0` on 12 October.
 Nothing updates by itself. `lean-toolchain` names one version, `elan` fetches it, `lake` builds against it.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 This course is pinned to `v4.34.0` all semester.
 :::
+::::
 
 :::fragment fadeUp
 [*Lean FRO*](https://lean-lang.org/fro/) -- a non-profit since July 2023, nineteen people, living on donations.
@@ -1051,9 +1087,11 @@ No stable releases. *Mathlib* follows Lean, your project follows *Mathlib*.
 [*The Mathlib Initiative*](https://mathlib-initiative.org/) -- since September 2025, maintainers are paid to maintain it.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 [The interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) -- the whole of *Mathlib* as a graph of its modules.
 :::
+::::
 
 :::notes
 Measured on the pinned version of 15 September 2026: 8 529 files,
@@ -1120,9 +1158,11 @@ Every sheet begins with `import Mathlib`, so a two-line sheet needs as much memo
   * NVMe SSD
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 Below the minimum? Talk to us -- there is a server with 128 GB.
 :::
+::::
 
 :::notes
 Compiling one sheet peaks at about 6.6 GB resident; the language
@@ -1142,9 +1182,11 @@ Bring a laptop. With administrator rights.
 Follow the [installation instructions](https://pfaffelh.github.io/leancourse/Introduction/#practical) in the course notes beforehand.
 :::
 
-:::fragment highlightBlue
+::::fragment fadeUp
+:::class "key"
 Then run `lake exe cache get` *before* you come.
 :::
+::::
 
 :::notes
 Installation session. VS Code, the Lean extension, git clone,

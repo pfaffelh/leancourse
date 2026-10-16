@@ -14,7 +14,7 @@ attribution below must be reproduced wherever the images are shown.
 
 - `hales.jpg` -- Slawekb, CC BY-SA 3.0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Halescropped.jpg>
 - `scholze.jpg` -- George Bergman, CC BY-SA 4.0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Peter_Scholze_2014_cropped.jpg>
-- `demoura.jpg` -- Leonardo de Moura, CC0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Leonardo_de_Moura.jpg>
+- `demoura.jpg` -- David.Monniaux, CC BY-SA 4.0, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Leo_de_Moura_P1210629.jpg>
 - `viazovska.jpg` -- Original photo by Petra Lein, CC BY-SA 2.0 de, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Maryna_Vazovska_MFO_2013_crop.jpg>
 - `gowers.jpg` -- Gert-Martin Greuel, CC BY-SA 2.0 de, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:William_Timothy_Gowers_Oslo_2012.jpg>
 - `green.jpg` -- Renate Schmid, Copyright is with MFO, CC BY-SA 2.0 de, via Wikimedia Commons, <https://commons.wikimedia.org/wiki/File:Ben_Green.jpg>

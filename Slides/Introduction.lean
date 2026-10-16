@@ -43,7 +43,7 @@ img.portrait {
 .reveal .r-hstack .r-vstack { gap: 0; }
 .reveal .r-vstack > * { margin: 0; }
 .reveal section img.logo { height: 9vh; width: auto; margin: 0 1.2rem; }
-/* the six goals, copied from the notes: six items only fit at this size */
+/* the seven goals, copied from the notes: they only fit at this size */
 .reveal section .goals li { font-size: 0.56em; line-height: 1.3;
                             margin: 0.35em 0; text-align: left; }
 .reveal section .goals ul { width: 92%; margin: 0.2em auto; }
@@ -197,15 +197,15 @@ this".
 :::
 
 :::fragment fadeUp
-*1967-1991* -- the first checkers: Automath, Mizar, LCF, HOL, Isabelle, Coq.
+*1967-2013* -- the machines: from Automath to Lean.
 :::
 
 :::fragment fadeUp
-*1976, 1998, 2013, 2020* -- four episodes that made it urgent.
+*1976-2025* -- what was done with them.
 :::
 
 :::fragment highlightBlue
-*2013* -- Lean. The idea is 150 years old; the tool is 13.
+The idea is 150 years old; the tool is 13.
 :::
 
 :::notes
@@ -213,10 +213,9 @@ The order is chronological. First the mathematics, which needed from
 Frege to Turing to turn a proof into a finite object a machine can
 inspect. Then the machines.
 
-Not chronology for its own sake: each of the four episodes adds a
-different reason. What a computer proof is worth, where peer review
-stops, whether the author can trust himself, and who is asking for
-this now.
+Not chronology for its own sake: each episode adds a different
+reason. What a computer proof is worth, where peer review stops,
+whether an author can trust himself, who is asking for this now.
 
 If the hour is short, the mathematics block is the part to cut.
 :::
@@ -259,8 +258,7 @@ Bertrand Russell
 
 :::notes
 The mathematics block. Where the `fun` in `fun x => x + 1` comes
-from, and why the machine checks instead of searching. No machines in
-it yet -- those start six slides on, with Automath.
+from, and why the machine checks instead of searching.
 
 Frege's *Begriffsschrift*, 1879: the first system in which a proof is
 itself an object you can manipulate.
@@ -269,16 +267,6 @@ Russell's letter of 1902 breaks it. Whitehead and Russell then spend
 *Principia Mathematica* rebuilding, and the proof that `1 + 1 = 2`
 comes with the note that "the above proposition is occasionally
 useful".
-
-Both repairs are from 1908, and the difference between them is why
-this course is about types. Zermelo replaces unrestricted
-comprehension by separation, so the paradoxical set is never formed;
-`x in x` stays a well-formed formula, and that it is false for every
-set is the axiom of foundation, added later and not the repair.
-Russell stratifies the grammar, so `x in x` is not a false statement
-but no statement at all. Well-formedness is then decidable, which is
-exactly what a type checker decides. Mathematics went with Zermelo,
-proof assistants with Russell.
 
 Done by hand, formalization is unbearable. For most of a century
 little came of it.
@@ -404,9 +392,11 @@ Cantor's diagonal argument, moved from the reals to proofs.
 :::notes
 Two theorems, opposite directions, by the same person.
 
-1929, his thesis: first-order logic is complete. Logic itself is not
-the obstacle. This is what makes proof search terminate when a proof
-exists -- row two on the table in a moment.
+A *model* of a set of axioms is a structure in which all of them
+hold: the integers under addition are a model of the group axioms.
+
+1929, his thesis: first-order logic is complete. What holds in every
+model is derivable. Logic itself is not the obstacle.
 
 *First-order* means the quantifiers range over the elements of a
 domain, never over its subsets. "For all x, y in the group" is
@@ -417,9 +407,10 @@ propositions -- so this theorem does not apply to Lean.
 Watch the word *complete*, which does two jobs. A *logic* is complete
 when everything valid is derivable; a *theory* is complete when it
 decides every statement. 1929 is the first, Hilbert's second question
-and 1931 are the second. No conflict: the sentence of 1931 is true of
-the naturals but false in other models of the axioms, so it is not
-valid, and 1929 says nothing about it.
+and 1931 are the second. No conflict: the axioms of arithmetic also have
+nonstandard models, with elements beyond 0, 1, 2, .... Gödel's
+sentence, "no number codes a proof of me", is true in ℕ and false in
+some such model. So it is not valid, and 1929 says nothing about it.
 
 1931: the incompleteness theorems. Any consistent system containing
 arithmetic, with axioms a machine can list, misses true statements
@@ -473,23 +464,23 @@ Princeton the year after and took his doctorate under Church.
 Turing's machine is not a design. Nothing in the paper says how one
 would be built; it exists to be reasoned about.
 
-The two models compute the same functions -- that is a theorem, in an
-appendix to Turing's paper. That either of them is what "computable"
-means is not a theorem. That is the Church-Turing thesis, a claim
-about the word.
+The two definitions compute the same functions -- that is a theorem,
+in an appendix to Turing's paper. That either captures what we
+informally call "computable" cannot be a theorem, since the informal
+notion has no definition. That claim is the Church-Turing thesis.
 
-There is no photograph of Church that is free to use -- the silhouette
-is deliberate, like the others in these slides.
+There is no photograph of Church that is free to use; hence the
+silhouette.
 :::
 
 # The lambda calculus
 
 :::fragment fadeUp
-A notation for functions, and nothing else.
+A *calculus*: a formal language with rules for calculating. Here: terms for functions, and one rule.
 :::
 
 :::fragment fadeUp
-$`\lambda x.\, x + 1` is the function adding one. The only rule is substitution: $`(\lambda x.\, x + 1)\, 3` becomes $`3 + 1`.
+$`\lambda x.\, x + 1` is the function adding one. The rule is substitution, *β-reduction*: $`(\lambda x.\, x + 1)\, 3` becomes $`3 + 1`.
 :::
 
 :::fragment fadeUp
@@ -497,7 +488,7 @@ Numbers, pairs and recursion are not built in. They are written as $`\lambda`-te
 :::
 
 :::fragment fadeUp
-Lean is this notation with types on top:
+Lean is this calculus with types on top:
 :::
 
 ```lean -panel -stretch
@@ -508,8 +499,8 @@ example : (fun x : Nat => x + 1) 3 = 3 + 1 := rfl
 This is ninety years old and you will type it all semester. `fun x =>`
 is `λx.`, and Lean accepts `λ` too.
 
-The kernel computes by substituting, which is the rule above and
-nothing more.
+The kernel computes by substituting. β is one of the reduction rules
+of the next chapter.
 
 Curry-Howard, the step from functions to proofs: a proposition is a
 type, a proof is a term of that type, and checking a proof is
@@ -585,20 +576,16 @@ Nicolaas Govert de Bruijn
 *1977* -- Landau's *Grundlagen der Analysis* through it, end to end.
 :::
 
-:::fragment fadeUp
-Then *Mizar* 1973, *LCF* 1975, *HOL*, *Isabelle* 1986, *Coq* 1989.
-:::
-
 :::fragment highlightBlue
 Everything before this slide is mathematics. From here on there are machines.
 :::
 
 :::notes
 Say what he turned away from. Since 1954 the attempt had been to make
-the machine *find* proofs: Davis on the JOHNNIAC, the Logic Theory
-Machine of 1956, Wang 1959, Robinson's resolution in 1965. It works
-for logic calculi and not for mathematics. De Bruijn retreats to the
-cheap question -- the human proves, the machine checks. That is the
+the machine *find* proofs. By 1959 a program did all the propositional
+logic of *Principia* in minutes; for mathematics it did not scale. De
+Bruijn retreats to the cheap question -- the human proves, the
+machine checks. That is the
 split between *automated* and *interactive* theorem proving, and the
 title of this course sits on one side of it.
 
@@ -607,14 +594,6 @@ He arrives at the Curry-Howard correspondence himself, not knowing
 Howard's work, and is the first to use it in a running system. Van
 Benthem Jutting's 1977 thesis pushes Landau's book through it: the
 first mathematics book verified end to end.
-
-Two architectures come out of the next twenty years. LCF, Milner 1972
-and 1975: `thm` is an abstract data type and only the inference rules
-can produce one, so nothing above the kernel needs trusting; ML was
-invented to write it. Automath's line instead writes down a proof
-term, which a small separate checker reads afterwards -- the de Bruijn
-criterion. Lean is in that line. A Lean proof is a term, and the
-kernel rechecks it whatever tactic produced it.
 
 :::
 
@@ -638,7 +617,16 @@ at all, soundness comes from `thm` being an abstract type: LCF, HOL,
 Isabelle. Orange is Mizar, declarative proofs over set theory.
 
 Read the lower labels as the answer to "why build another one".
-Each system does something its predecessors could not.
+Automath: no help from the machine, unreadable. Mizar: readable, over
+set theory. LCF: automation without trusting it. HOL: a logic for
+mathematics, simple type theory. Coq: dependent types plus tactics,
+then inductive types (CIC), the foundation of Lean.
+
+A proof assistant is a large program with bugs. Which part must be
+correct? LCF: `thm` is an abstract type and only the inference rules
+produce one, so only they must be correct. Automath: a proof term is
+written down and a small checker rereads it, so only the checker must
+be correct -- the de Bruijn criterion. Lean is in that line.
 
 Why nothing dies: seL4 stays in Isabelle, the four colour theorem
 stays in Rocq. Nobody will redo those. The library is the system.
@@ -667,7 +655,7 @@ Leonardo de Moura
 :::
 
 :::fragment fadeUp
-Foundation: the Calculus of Inductive Constructions, the Automath line. A proof is a term, and the kernel rechecks it.
+Foundation: the Calculus of Inductive Constructions, the Automath line.
 :::
 
 :::notes
@@ -678,7 +666,7 @@ Kevin Buzzard has argued for Lean among mathematicians since 2018.
 That is roughly when Mathlib started to look like a library of real
 mathematics rather than a collection of exercises.
 
-De Moura is still chief architect, now at the Lean FRO -- next slide.
+De Moura is still chief architect, now at the Lean FRO.
 :::
 
 # Three systems
@@ -711,27 +699,18 @@ We use Lean because *Mathlib* exists.
 :::
 
 :::notes
-A proof is a term (Lean, Rocq, Agda), a derivation in a calculus
-(Isabelle, HOL Light), or a text in set theory (Mizar, Metamath).
-Three answers to one question.
+Lean and Rocq: both CIC, both an impredicative `Prop` under a
+predicative hierarchy. Isabelle: simple type theory, weak enough to
+automate well; Sledgehammer.
 
-All of them share the de Bruijn criterion: a tiny kernel you have to
-trust, and arbitrarily unreliable automation above it. That is why
-`grind` is allowed to be as clever as it likes.
+What matters more day to day is the library: one repository, many
+packages, or a refereed archive.
 :::
 
 # 1976: the four colour theorem
 
 ::::::hstack
-{image "../static/figures/four_colour.png" (height := "22vh")}[A map of thirty-four regions coloured with four colours]
-
-::::vstack
-{image "../static/figures/portraits/placeholder_gonthier.png" (class := "portrait")}[Georges Gonthier]
-
-:::class "names"
-Georges Gonthier
-:::
-::::
+{image "../static/figures/four_colour.png" (height := "30vh")}[A map of thirty-four regions coloured with four colours]
 ::::::
 
 Appel and Haken reduce the problem to a list of configurations, and an ordinary program checks it -- no proof assistant.
@@ -983,14 +962,6 @@ Ben Green
 Terence Tao
 :::
 ::::
-
-::::vstack
-{image "../static/figures/portraits/placeholder_manners.png" (class := "portrait")}[Freddie Manners]
-
-:::class "names"
-Freddie Manners
-:::
-::::
 ::::::
 
 *The problem:* a formalization took one team years, so it always came long after the paper.
@@ -1032,32 +1003,6 @@ a single substitution; refuting one means building a magma, and the
 machine checks that too, by `decide`.
 :::
 
-# Sphere packing, dim. 8 and 24
-
-::::vstack
-{image "../static/figures/portraits/viazovska.jpg" (class := "portrait")}[Maryna Viazovska]
-
-:::class "names"
-Maryna Viazovska
-:::
-::::
-
-*The problem:* the mathematics was finished in 2016, and formalizing it still took a human project two years.
-
-:::fragment highlightBlue
-In Lean, on *Mathlib*. An autoformalizer closed dimension 8 in five days, February 2026.
-:::
-
-:::notes
-Viazovska 2016, Fields Medal 2022. The packing is the E8 lattice.
-
-Same system as everything else in this lecture: Lean, building on
-Mathlib. The human project started in 2024.
-
-This closes the thread that opened with Kepler, four hundred years
-earlier -- and it is the February entry from the 2026 slide.
-:::
-
 # Lean today
 
 :::fragment fadeUp
@@ -1073,7 +1018,7 @@ This course is pinned to `v4.34.0` all semester.
 :::
 
 :::fragment fadeUp
-[*Lean FRO*](https://lean-lang.org/fro/) -- a non-profit since July 2023, twenty-one people, living on donations.
+[*Lean FRO*](https://lean-lang.org/fro/) -- a non-profit since July 2023, nineteen people, living on donations.
 :::
 
 :::notes
@@ -1135,9 +1080,10 @@ order sits on algebra.
 The course is for mathematics students.
 
 :::class "goals"
+* *Reading formal statements.* Judging whether a formal statement says what the informal one claims.
 * *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write. This is not the older use of computers in mathematics, which was to work through many cases.
 * *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands -- *tactics* -- fit together. The second half goes deeper into the mathematics.
-* *Functional programming.* Inductive types, structures, typeclasses and monads, needed both to use Lean and to read *Mathlib*. These are spread across the Lean and Mathematics parts rather than collected in one chapter.
+* *Functional programming.* Inductive types, structures, typeclasses and monads, needed both to use Lean and to read *Mathlib*.
 * *Type theory.* Lean rests on dependent type theory: the Curry-Howard correspondence, dependent types, the universe hierarchy, and Lean's axioms.
 * *Mathematics in Mathlib.* How the library organizes order theory, the algebraic hierarchy, filters (a single framework for limits), topology, measure theory and discrete probability. Textbooks rarely treat these from the point of view of formalization.
 * *Proof engineering.* Automation tactics, searching *Mathlib*, and the common pitfalls of a large formal library.
@@ -1145,32 +1091,10 @@ The course is for mathematics students.
 
 :::notes
 Word for word the goals from the notes, so nobody has to reconcile two
-versions. Read the first three out, point at the last three.
+versions. Read the first three out, point at the rest.
 
-The exercises carry the course. The sheets cover the first half of the
-semester; in the second half they work on a project, mostly
-self-chosen.
-:::
-
-# Where to start
-
-:::fragment fadeUp
-[Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/nng4) -- in the browser, nothing to install. Start here.
-:::
-
-:::fragment fadeUp
-[Formalising Mathematics](https://b-mehta.github.io/formalising-mathematics-notes/) -- Bhavik Mehta, after Kevin Buzzard.
-:::
-
-:::fragment fadeUp
-[Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/) -- Avigad and Massot. The closest thing to an official course.
-:::
-
-:::notes
-The Natural Number Game runs in a browser and takes an evening. If
-they do one thing before Wednesday, that is it.
-
-The other two are references for the semester, not homework.
+The exercises carry the course. In addition to the sheets, everyone
+works on a project, mostly self-chosen.
 :::
 
 # What your machine needs
@@ -1230,4 +1154,25 @@ Wednesday is for the ones it did not work for.
 Say the last point twice. `lake exe cache get` downloads the compiled
 Mathlib; without it every machine in the room compiles Mathlib from
 source at once, which takes hours and kills the session.
+:::
+
+# Where to start
+
+:::fragment fadeUp
+[Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/nng4) -- in the browser, nothing to install. Start here.
+:::
+
+:::fragment fadeUp
+[Formalising Mathematics](https://b-mehta.github.io/formalising-mathematics-notes/) -- Bhavik Mehta, after Kevin Buzzard.
+:::
+
+:::fragment fadeUp
+[Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/) -- Avigad and Massot. The closest thing to an official course.
+:::
+
+:::notes
+The Natural Number Game runs in a browser and takes an evening. If
+they do one thing before Wednesday, that is it.
+
+The other two are references for the semester, not homework.
 :::

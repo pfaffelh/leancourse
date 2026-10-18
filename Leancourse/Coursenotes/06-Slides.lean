@@ -18,6 +18,11 @@ used without the other.
 * [Filters in Mathlib](slides/filters/) — accompanies the
   {ref "filters"}[chapter on filters].
 
+The lectures are recorded and published on
+[*Formally proven*](https://www.youtube.com/channel/UCdCtAPNg3baUKSOT5YY28BA), the course's YouTube channel. Each
+recording carries chapter marks that follow the slides, so a single
+topic can be found without watching the whole hour.
+
 Press `s` in a deck for the speaker notes, `o` for an overview of all
 slides, and `?` for the remaining keys.  Every slide carries a link in
 its upper right corner that leads back to this page.

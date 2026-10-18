@@ -540,6 +540,8 @@ The rest of this chapter is about running the course.
 * *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
 * *Proof engineering.* Automation tactics, {ref "navigating-mathlib"}[searching *Mathlib*], and the {ref "common-pitfalls"}[common pitfalls] of a large formal library.
 
+*Recordings.* The lectures are recorded and appear on [*Formally proven*](https://www.youtube.com/channel/UCdCtAPNg3baUKSOT5YY28BA), with chapter marks following the slides ({ref "slides"}[the decks]).
+
 *How the course is organized.* The notes have six parts.
 
 * *Lean and its type theory*: the natural numbers and reduction, types, terms, typeclasses, propositions as types, dependent types and notation.

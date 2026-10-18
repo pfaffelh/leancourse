@@ -29,7 +29,11 @@ attribution below must be reproduced wherever the images are shown.
 
 These five are not from Commons. They are used by permission, each with the
 credit its owner requires. Four were granted by the person shown, by e-mail
-on 2026-10-15, for this course only:
+on 2026-10-15. The permission covers the course **including material
+published online**, lecture recordings among them -- confirmed by the course
+author on 2026-10-18, who holds the correspondence. An earlier note here
+read "for this course only", which was narrower than what was actually
+agreed.
 
 - `commelin.jpg` -- Johan Commelin, by permission, source <https://mathlib-initiative.org/team/>, metadata unchanged, 600x600
 - `massot.jpg` -- Patrick Massot, by permission, source <https://www.imo.universite-paris-saclay.fr/~patrick.massot/en/>, EXIF stripped, 400x340
@@ -69,7 +73,9 @@ on 2026-10-15.
 - Oliver Nash -- **granted**, 2026-10-15. In use as `nash.jpg`.
 - Floris van Doorn -- **granted**, 2026-10-15. In use as `vandoorn.jpg`.
 
-All four who were asked said yes.
+All four who were asked said yes, and the permission is not limited to
+the written notes: recordings of the lectures published online are
+covered. No further request is needed before putting a recording up.
 
 The Buzzard photograph replaced the 1996 Wikimedia headshot by George
 Bergman (CC BY-SA 4.0,

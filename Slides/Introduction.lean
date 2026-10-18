@@ -1158,15 +1158,27 @@ source at once, which takes hours and kills the session.
 
 # Where to start
 
-[Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/nng4) — in the browser, nothing to install. Start here.
+[The Incredible Proof Machine in Lean](https://pfaffelh.github.io/ipm) — proofs as pictures, nine worlds from conjunction to induction. Ours. Start here.
+
+[Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/nng4) — the same idea for the tactics, on $`ℕ`.
 
 [Formalising Mathematics](https://b-mehta.github.io/formalising-mathematics-notes/) — Bhavik Mehta, after Kevin Buzzard.
 
 [Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/) — Avigad and Massot. The closest thing to an official course.
 
 :::notes
-The Natural Number Game runs in a browser and takes an evening. If
-they do one thing before Wednesday, that is it.
+Both games run in a browser, keep their progress there, and need
+nothing installed. If they do one thing before Wednesday, make it one
+of these.
 
-The other two are references for the semester, not homework.
+Our own one teaches the *shape* of a proof -- natural deduction drawn
+as a diagram, conjunction through quantifiers and induction, with a
+tactic trainer at the end. English and German. It is after Joachim
+Breitner's Incredible Proof Machine; Breitner also wrote Con-Leche,
+from the bugs section, so his name turns up twice in this lecture.
+
+The Natural Number Game teaches the tactics instead, proving things
+about `ℕ`. An evening each.
+
+The last two are references for the semester, not homework.
 :::

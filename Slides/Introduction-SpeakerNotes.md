@@ -944,16 +944,32 @@ The question comes every year. Nothing here needs hardware.
 ## 32. Where to start
 
 
-- **Natural Number Game** — in the browser, nothing to install, one
-  evening. **If they do one thing before Wednesday, this is it.**
+- **Two games, both in the browser, nothing to install, progress kept
+  locally. If they do one thing before Wednesday, make it one of these.**
+- **The Incredible Proof Machine in Lean** — ours,
+  <https://pfaffelh.github.io/ipm>. It teaches the *shape* of a proof
+  before any Lean syntax: natural deduction drawn as a diagram, dragged
+  together by hand. Nine worlds — conjunction, implication, disjunction,
+  falsity and negation, classical logic, equivalence and truth,
+  quantifiers, two puzzles, induction — and a tactic trainer at the end.
+  English and German.
+  - Say that it is yours and that it is built for this course. It is the
+    one place in the first week where they produce a proof themselves.
+  - **[Hintergrund]** It follows Joachim Breitner's *Incredible Proof
+    Machine*. Breitner also wrote **Con-Leche**, the verified checker
+    from the soundness-bug section — his name turns up twice in this
+    lecture, once for a game and once for a consistency proof. Worth a
+    sentence if the bugs slide went well.
+- **Natural Number Game** — the same idea for the *tactics*, proving
+  things about `ℕ`. An evening.
+  - **[Hintergrund]** It came out of Buzzard's Xena Project; the platform
+    it runs on was built in Düsseldorf. It makes students reprove
+    `1 + 1 = 2` from the axioms — *Principia* (slide 8) in an evening, in
+    a browser.
+  - The two games divide the work: ours is the logic, this one is Lean.
 - *Formalising Mathematics* (Bhavik Mehta, after Buzzard) and
   *Mathematics in Lean* (Avigad and Massot) are references for the
   semester, not homework.
-- **[Hintergrund]** The Natural Number Game came out of Buzzard's Xena
-  Project; the game platform it now runs on was built in Düsseldorf. It
-  teaches Peano arithmetic by making students reprove `1 + 1 = 2` from
-  the axioms. Point that out: it is *Principia* (slide 8), in an evening,
-  in a browser.
 
 ---
 

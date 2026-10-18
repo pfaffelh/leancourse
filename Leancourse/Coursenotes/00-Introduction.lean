@@ -608,7 +608,8 @@ number := false
 tag := "other-courses"
 %%%
 
-* [_Natural Number Game_](https://adam.math.hhu.de/#/g/leanprover-community/nng4): proofs about `ℕ` in the browser, nothing to install. The usual first contact with Lean, and a good use of an evening before the course starts.
+* [_The Incredible Proof Machine in Lean_](https://pfaffelh.github.io/ipm): proofs as pictures, in the browser, in English or German. Nine worlds, from conjunction through the quantifiers to induction, and a tactic trainer. It teaches the shape of a proof before any Lean syntax, and it belongs to this course. After Joachim Breitner's Incredible Proof Machine.
+* [_Natural Number Game_](https://adam.math.hhu.de/#/g/leanprover-community/nng4): proofs about `ℕ` in the browser, nothing to install. The usual first contact with Lean's tactics, and a good use of an evening before the course starts.
 * [_Formalising Mathematics_](https://b-mehta.github.io/formalising-mathematics-notes/) by Bhavik Mehta, after notes by Kevin Buzzard: the format of the present course follows these.
 * [_Mathematics in Lean_](https://leanprover-community.github.io/mathematics_in_lean/) by Jeremy Avigad and Patrick Massot: the closest thing to an official course, organized by area of mathematics.
 

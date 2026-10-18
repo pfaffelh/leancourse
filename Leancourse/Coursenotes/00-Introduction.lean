@@ -423,7 +423,7 @@ tag := "pfr-landmark"
 
 By Gowers, Green, Manners and Tao ([project page](https://teorth.github.io/pfr/)), formalized under Tao's direction in about three weeks — before the paper had been refereed. It says that a set whose sumset is barely larger than itself must be structured.
 
-:::figure "Timothy Gowers, Ben Green and Terence Tao" (tag := "pfr-people")
+:::figure "Three of the four authors: Timothy Gowers, Ben Green and Terence Tao. Freddie Manners has no freely licensed photograph" (tag := "pfr-people")
 ![Timothy Gowers](/static/figures/portraits/gowers.jpg)
 ![Ben Green](/static/figures/portraits/green.jpg)
 ![Terence Tao](/static/figures/portraits/tao.jpg)

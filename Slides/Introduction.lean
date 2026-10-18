@@ -978,6 +978,10 @@ Terence Tao
 ::::
 ::::::
 
+:::class "caption"
+Gowers, Green, Manners and Tao. There is no freely licensed photograph of Freddie Manners.
+:::
+
 *The problem:* a formalization took one team years, so it always came long after the paper.
 
 :::class "key"
@@ -986,6 +990,16 @@ A *blueprint* cuts the work into pieces with stated interfaces. Strangers in par
 
 :::notes
 A set whose sumset is barely larger than itself must be structured.
+Four authors; three faces, because Manners has no free photograph.
+
+Gowers is not just a name on the list. He used Freiman's theorem --
+in Ruzsa's 1994 form -- in his proof of Szemeredi's theorem, and its
+poor bounds went straight into his own. That is what turned the
+question of *polynomial* bounds into the central one, and it is the
+"polynomial" in the name. Twenty-five years later he is one of the
+four who answer it. The version proved is the one over $`\mathbb{F}_2`, known as
+Marton's conjecture, which is why the paper is called "On a
+conjecture of Marton".
 
 The method carried further than the theorem: this is the step between
 "LTE, two years" and "Fermat, eleven days".

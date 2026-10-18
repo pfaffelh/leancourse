@@ -17,7 +17,7 @@ tag := "wlog"
 
 *Summary:* `wlog h : P with H` formalizes *"without loss of generality, assume `P`"*. It produces two goals:
 
-* a *reduction* goal, where you are handed `H` -- the full statement, generalized over the relevant variables -- and must prove the goal *in general*, typically by applying `H` to a swapped/symmetric instance to cover the case `¬P`;
+* a *reduction* goal, where you are handed `H` — the full statement, generalized over the relevant variables — and must prove the goal *in general*, typically by applying `H` to a swapped/symmetric instance to cover the case `¬P`;
 * the *main* goal, where you may now assume `h : P`.
 
 *Example:* commutativity of `+`, reduced to the case `a ≤ b`:

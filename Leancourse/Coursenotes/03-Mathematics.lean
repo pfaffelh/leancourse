@@ -18,14 +18,14 @@ htmlSplit := .never
 tag := "advanced-mathematics"
 %%%
 
-This part opens with the foundations -- the everyday vocabulary
+This part opens with the foundations — the everyday vocabulary
 (propositions, proofs, and sets), the universes and axioms on which
 Lean's mathematics rests, and well-foundedness and the avoidance of
-paradoxes -- and then surveys parts of Mathlib that go beyond
+paradoxes — and then surveys parts of Mathlib that go beyond
 first-year mathematics: order theory and lattices, the algebraic
 hierarchy, filters as a unifying language for limits, topology and
 measure theory, and discrete probability.  The aim is not to redo the
-mathematics from scratch but to show how Mathlib organizes it -- which
+mathematics from scratch but to show how Mathlib organizes it — which
 typeclasses to use, where to find the lemmas, and what the design
 trade-offs were.
 

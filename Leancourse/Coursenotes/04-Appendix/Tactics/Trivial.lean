@@ -37,7 +37,7 @@ others.  It is a gentle hammer for goals that "should be obvious".
 * Unlike `triv`, `trivial` also closes goals that are true by
   decidability (like `2 + 2 = 4`).
 * When `trivial` does not close a goal, it prints no specific
-  reason -- if you want a more informative automated tactic, try
+  reason — if you want a more informative automated tactic, try
   `exact?` or `simp`.
 
 

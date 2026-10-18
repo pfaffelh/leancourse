@@ -18,9 +18,9 @@ description, a sketch of one implementation and references. A first
 working version of any of them fits into a few hundred lines, and each
 has stretch goals beyond that.
 
-You are equally welcome to propose a topic of your own -- for
+You are equally welcome to propose a topic of your own — for
 example, formalizing an exercise from your first year of studies, or
-exploring a corner of Mathlib that interests you -- as long as you
+exploring a corner of Mathlib that interests you — as long as you
 discuss the scope with us first.
 
 # Project 1: Girard's paradox, or why `Type : Type` is fatal
@@ -31,7 +31,7 @@ tag := "project-girard"
 *What it is.*  Russell's paradox shows that a "set of all sets that
 do not contain themselves" is contradictory.  *Girard's paradox* is
 its type-theoretic incarnation: in a type theory where the universe
-contains itself -- where `Type : Type` holds -- one can construct a
+contains itself — where `Type : Type` holds — one can construct a
 closed term of type `False`, so the whole system collapses.  This is
 precisely why Lean stratifies its universes
 ({ref "universe-hierarchy"}[the universe hierarchy]): `Type u` lives
@@ -64,12 +64,12 @@ depth:
   `U` and `τ` type-check; `σ` does not, and `#check_failure` lets you
   document the failure inside a compiling file.  Convince yourself
   (and your readers) that the level mismatch persists at *every*
-  universe level -- predicativity makes the self-instantiation
+  universe level — predicativity makes the self-instantiation
   untypeable, full stop.
 
 * Smuggle the paradox in as a *hypothesis*.  What `Type : Type` would
   buy you is an injection of `Set (Set U)` into `U`.  Assume it and
-  derive `False` -- with no extra axioms -- by composing with the
+  derive `False` — with no extra axioms — by composing with the
   singleton map `Set U → Set (Set U)` and applying Cantor's theorem,
   which Mathlib provides as `Function.cantor_injective`.  Check with
   `#print axioms` that your proof only uses Lean's standard axioms.
@@ -79,12 +79,12 @@ depth:
   `τ : Set U → U` satisfying `σ (τ X) = (fun x => τ (σ x)) '' X`.
   Prove that *every* such universe is contradictory.  The proof is a
   Burali-Forti-style argument via the accessibility predicate `Acc`
-  and can be carried out *without any axioms at all* -- `#print
+  and can be carried out *without any axioms at all* — `#print
   axioms` reports none, making the refutation fully constructive.
 
 * Stretch goals: formalize Hurkens' famous simplification of the
-  paradox, and explain -- in prose and with `#check_failure`
-  experiments -- why Lean's *impredicative* `Prop` does not fall to
+  paradox, and explain — in prose and with `#check_failure`
+  experiments — why Lean's *impredicative* `Prop` does not fall to
   the same argument.
 
 *References.*  The paradox is from the thesis of
@@ -102,23 +102,23 @@ tag := "project-csb"
 *What it is.*  The Cantor-Schröder-Bernstein theorem states that if
 there are injections `f : α → β` and `g : β → α`, then there is a
 bijection between `α` and `β`.  It is the "antisymmetry of
-cardinality" and a genuinely non-obvious theorem -- the bijection has
+cardinality" and a genuinely non-obvious theorem — the bijection has
 to be assembled from pieces of `f` and the inverse of `g`.  The
 slickest proof runs through the Knaster-Tarski fixed-point theorem
 from the {ref "fixed-points"}[chapter on orders and lattices].
 
 *Implementation idea.*  Consider the map on subsets of `α` sending
 `A` to the complement of `g '' (f '' A)ᶜ` (image of the complement of
-the image).  Show it is monotone, so Knaster-Tarski -- in Mathlib:
-`OrderHom.lfp` -- produces a fixed point `A`.  On `A` define the
+the image).  Show it is monotone, so Knaster-Tarski — in Mathlib:
+`OrderHom.lfp` — produces a fixed point `A`.  On `A` define the
 bijection by `f`; outside `A`, the fixed-point equation shows every
 element lies in the image of `g`, so it has a unique `g`-preimage.
 Prove that the resulting function is bijective.  Mathlib's own proof
 (`Function.Embedding.schroederBernstein`) follows exactly this route,
-so you can compare notes when you are done -- but try it yourself
+so you can compare notes when you are done — but try it yourself
 first.  Stretch goals: derive the statement in its embedding form
 `α ↪ β → β ↪ α → Nonempty (α ≃ β)`, and investigate which axioms
-your proof uses (`#print axioms` -- where does choice sneak in?).
+your proof uses (`#print axioms` — where does choice sneak in?).
 
 *References.*  {citet buzzardMehta}[] discuss the theorem as a
 showcase formalization; the Mathlib source and
@@ -131,8 +131,8 @@ tag := "project-limits"
 
 *What it is.*  In the {ref "filters"}[filters chapter] we saw that
 Mathlib phrases convergence via `Filter.Tendsto`.  This project
-builds the classical theory first -- the epsilon-N definition from
-Analysis 1 -- and then proves that the two formulations agree.  It is
+builds the classical theory first — the epsilon-N definition from
+Analysis 1 — and then proves that the two formulations agree.  It is
 the ideal project if you want to formalize material you know very
 well and see the filter language pay off.
 
@@ -143,7 +143,7 @@ is below epsilon).  Then build the toolbox: limits are unique; a
 constant sequence converges; limits respect sums, scalar multiples,
 and products; the squeeze theorem.  Expect to practice `intro`,
 `obtain`, `specialize`, and the art of choosing the right `N` (a
-`max` of two thresholds) -- plus `linarith` and `abs` lemmas.
+`max` of two thresholds) — plus `linarith` and `abs` lemmas.
 Finally, prove the bridge:
 `TendsTo a t ↔ Filter.Tendsto a Filter.atTop (nhds t)`, using
 Mathlib's `Metric.tendsto_atTop` as the stepping stone, and reprove
@@ -164,7 +164,7 @@ tag := "project-integers"
 
 *What it is.*  In Lean, `ℤ` could be *defined* as the quotient of
 `ℕ × ℕ` by the relation identifying `(a, b)` and `(c, d)` whenever
-`a + d = b + c` -- the pair `(a, b)` standing for the difference of
+`a + d = b + c` — the pair `(a, b)` standing for the difference of
 `a` and `b`.  This project carries that construction out: it is the
 canonical way to experience {ref "quotient-types"}[quotient types]
 and the axiom {ref "axiom-quot"}[`Quot.sound`] doing real work.
@@ -174,13 +174,13 @@ an equivalence, and set `MyInt := Quotient` of the corresponding
 setoid.  Lift `0`, `1`, addition, negation, and multiplication with
 `Quotient.map` and `Quotient.lift`, proving each time that the
 operation respects the relation (multiplication is the interesting
-case).  Then assemble a `CommRing MyInt` instance -- `ring` is not
+case).  Then assemble a `CommRing MyInt` instance — `ring` is not
 available inside your own ring, so the laws are proved by `omega` or
 `nlinarith` on representatives.  Add the linear order and the
 embedding of `ℕ`.  Stretch goals: construct `ℚ` as a quotient of
 `ℤ × ℕ` the same way, or build a ring isomorphism between `MyInt`
 and Mathlib's `ℤ` (which, for efficiency, is *not* defined as a
-quotient -- find out how it is defined instead).
+quotient — find out how it is defined instead).
 
 *References.*  {citet theoremProvingInLean4}[] explains the quotient
 machinery in detail; {citet mathlibDocs}[] documents
@@ -196,7 +196,7 @@ you pick a door; the host opens another door, revealing a goat; you
 may stay or switch.  Famously, switching wins with probability 2/3.
 This project models the game in the
 {ref "probability-pmf"}[probability monad `PMF`] and *proves* that
-number -- a complete formalization of a statement most people refuse
+number — a complete formalization of a statement most people refuse
 to believe when they first hear it.
 
 *Implementation idea.*  Work over `Fin 3`.  The car position is
@@ -205,7 +205,7 @@ door `0` (argue by symmetry in prose, or model the pick uniformly as
 a stretch goal).  The host's choice is the subtle part: if the car is
 behind door `0` the host opens one of the two goat doors uniformly,
 otherwise his hand is forced.  Chain these with `PMF.bind` and
-`PMF.pure` -- or `do`-notation -- into a distribution over outcomes,
+`PMF.pure` — or `do`-notation — into a distribution over outcomes,
 and define the two strategies as functions from the observed
 information to the final door.  The theorem is that the switch
 strategy wins with probability 2/3 and staying wins with 1/3.  The
@@ -213,7 +213,7 @@ computation unfolds via `PMF.bind_apply` and `PMF.pure_apply` into a
 finite sum over `Fin 3` (`Fin.sum_univ_three` helps); note that PMF
 probabilities live in `ENNReal`, so keep the extended-real
 simp lemmas nearby.  Stretch goals: `n` doors of which the host
-opens `k`, or a host with a known bias -- does switching still help?
+opens `k`, or a host with a known bias — does switching still help?
 
 *References.*  {citet mathlibDocs}[] documents the `PMF` API; the
 {ref "probability-pmf"}[probability chapter] of these notes develops

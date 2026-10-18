@@ -39,7 +39,7 @@ hypotheses appear specialized at the point `x`.
 * The `with` clause names the bound point and the specialized
   hypotheses; if you omit it, fresh names are chosen automatically.
 * Use `filter_upwards` whenever you want to combine several
-  "eventually" facts and finish pointwise -- a very common pattern
+  "eventually" facts and finish pointwise — a very common pattern
   in analysis and measure theory (where `∀ᶠ x ∂μ` is "almost
   everywhere").
 * It works for *any* filter, including `atTop`, `nhds x`, `cofinite`,

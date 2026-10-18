@@ -226,7 +226,7 @@ tag := "principal-filter"
 %%%
 
 The simplest filter is the *principal filter*, with notation `𝓟 s`.
-It is the filter whose sets are exactly the supersets of `s` -- i.e.
+It is the filter whose sets are exactly the supersets of `s` — i.e.
 the generalized subset corresponding to the ordinary subset `s`.
 
 {docstring Filter.principal}

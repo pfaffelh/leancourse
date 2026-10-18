@@ -104,7 +104,7 @@ Mathlib uses `notation3` (and its underlying machinery `syntax` +
 `∑ k ∈ range n, f k` and `∀ᶠ x in F, p x`.  These let you bind a
 variable inside the expression that follows the comma.  Writing such
 notation from scratch involves a fair amount of macro plumbing and
-is beyond the scope of this section -- the standard reference is the
+is beyond the scope of this section — the standard reference is the
 [Lean 4 documentation on macros](https://leanprover.github.io/theorem_proving_in_lean4/macros.html).
 For ordinary day-to-day notation, plain `notation`, `infixl`,
 `infixr`, `prefix`, and `postfix` are almost always enough.

@@ -15,7 +15,7 @@ tag := "simp-rw"
 %%%
 
 *Summary:* `simp_rw [h₁, h₂, ...]` rewrites with each lemma in turn,
-but -- unlike `rw` -- can rewrite *under binders* (`∀`, `∃`, `fun`,
+but — unlike `rw` — can rewrite *under binders* (`∀`, `∃`, `fun`,
 `∑`, ...).  Unlike `simp`, it does not apply any extra simp lemmas;
 it rewrites with exactly the lemmas you supply.
 

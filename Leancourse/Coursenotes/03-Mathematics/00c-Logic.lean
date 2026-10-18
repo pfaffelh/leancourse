@@ -16,7 +16,7 @@ tag := "logic-wf"
 A recurring worry in the foundations of mathematics is *vicious
 circularity*: infinite descending chains that make recursion
 meaningless, or self-referential sets like Russell's `{x | x ∉ x}`.
-Lean rules these out, but -- importantly -- by *two different
+Lean rules these out, but — importantly — by *two different
 mechanisms* that are worth keeping apart.  This short chapter looks at
 both.
 
@@ -27,7 +27,7 @@ tag := "wf-acc"
 
 The first mechanism lives *inside* a type and governs recursion.  A
 relation `r : α → α → Prop` is *well-founded* when there are no
-infinite descending chains `… r a₂ r a₁ r a₀` -- following
+infinite descending chains `… r a₂ r a₁ r a₀` — following
 `r`-predecessors downward, you always hit bottom after finitely many
 steps.
 
@@ -59,13 +59,13 @@ A relation is well-founded when every element is accessible:
 #check @WellFounded.fix
 ```
 
-`Acc` is an *inductive* type -- the
+`Acc` is an *inductive* type — the
 *least* fixed point, so it is finitely generated.  The constructor
 for `Acc r x` demands accessibility of *every* predecessor, so the
 only way to build the proof is for every downward branch to bottom
 out after finitely many steps: a proof of `Acc r x` is a *finite*
 tree.  An infinite descending chain would force an infinitely deep
-proof, which no inductive type admits -- so, where every element is
+proof, which no inductive type admits — so, where every element is
 accessible, no such chain exists.  (Were `Acc` instead *coinductive*,
 the *greatest* fixed point, infinite proofs would be allowed and
 every element would count as accessible; the definition would be
@@ -83,7 +83,7 @@ well-founded:
 - *greater-than* `>` on `ℕ`: the chain `0 < 1 < 2 < …` is an infinite
   `>`-descending chain.
 
-For none of these can Lean offer well-founded recursion -- there is no
+For none of these can Lean offer well-founded recursion — there is no
 terminating direction to recurse in.  The contrast between `<` and `>`
 on `ℕ` is the lesson: less-than bottoms out at `0`, greater-than runs
 off to infinity.
@@ -91,7 +91,7 @@ off to infinity.
 Concretely, this abstract picture is realized in Lean in two ways.
 Each `inductive` type comes with an auto-generated *recursor*
 (`Nat.rec`, `List.rec`, ...) that *is* its structural induction and
-recursion principle -- well-foundedness for that type, guaranteed by
+recursion principle — well-foundedness for that type, guaranteed by
 the kernel.  And for a *uniform* supply of well-founded relations,
 every inductive type carries a `SizeOf` instance, which `sizeOfWFRel`
 turns into a `WellFoundedRelation` whose well-foundedness is pulled
@@ -112,7 +112,7 @@ The relation `<` on `Nat` is well-founded:
 
 One proves `Acc (· < ·) n` by induction on `n`:
 
-- `0` is accessible *vacuously* -- there is no `m < 0`.
+- `0` is accessible *vacuously* — there is no `m < 0`.
 - `n + 1` is accessible because every `m < n + 1` (that is, `m ≤ n`)
   is accessible by the induction hypothesis.
 
@@ -124,8 +124,8 @@ well-founded recursion, and the well-foundedness of `<` is just a
 restatement of it.
 
 In practice you almost never prove well-foundedness yourself.  Mathlib
-already supplies it -- the `Nat.lt_wfRel.wf` above is one of many
-`WellFoundedRelation` instances -- and when you write a recursive
+already supplies it — the `Nat.lt_wfRel.wf` above is one of many
+`WellFoundedRelation` instances — and when you write a recursive
 definition with `termination_by` (see the *Function definitions*
 chapter in Part 1), Lean finds the well-founded relation automatically
 and asks you only, via `decreasing_by`, to show that your *measure*
@@ -149,7 +149,7 @@ membership relation: `∈` is *typed*.  The instance behind it,
 ```
 
 says that `x ∈ s` requires `x : α` and `s : Set α`.  For `s ∈ s` the
-same `s` would need type `α` *and* type `Set α` at once -- that is,
+same `s` would need type `α` *and* type `Set α` at once — that is,
 `α = Set α`, i.e. `α = (α → Prop)` (recall that a
 {ref "foundations-sets"}[set is just a predicate]).  No such type
 exists (there is no
@@ -179,7 +179,7 @@ is no surjection `α → Set α`: the type of subsets
 `α → Prop` can never be the *same* type, which is exactly what rules
 out `α = Set α`.  The proof is a *diagonal argument*: given any
 candidate surjection `f : α → Set α`, the "diagonal" subset
-`{x | x ∉ f x}` is hit by no `f x` at all -- if `f a` were equal to
+`{x | x ∉ f x}` is hit by no `f x` at all — if `f a` were equal to
 it, then `a ∈ f a` and `a ∉ f a` would coincide.  That diagonal subset
 is *precisely* Russell's `{x | x ∉ x}`: Cantor's theorem and Russell's
 paradox are the same construction, with Cantor drawing the consistent
@@ -187,8 +187,8 @@ conclusion (no such surjection exists) exactly where naive set theory
 runs into a contradiction.
 
 The very same typing discipline, one level up, forbids `Type : Type`:
-were `Type` to contain itself, Girard's paradox -- a type-theoretic
-Russell -- would make every proposition provable, and the
+were `Type` to contain itself, Girard's paradox — a type-theoretic
+Russell — would make every proposition provable, and the
 {ref "universe-hierarchy"}[universe hierarchy] is exactly what rules it
 out. Building Girard's term in Lean and tracing where predicativity
 stops it is {ref "project-girard"}[one of the course projects].
@@ -198,16 +198,16 @@ stops it is {ref "project-girard"}[one of the course projects].
 tag := "wf-summary"
 %%%
 
-It is worth holding the two mechanisms apart -- they forbid
+It is worth holding the two mechanisms apart — they forbid
 circularity at different places:
 
 :::table +header
 * + Phenomenon ruled out
   + Mechanism
 * + Infinite descent; non-terminating recursion
-  + `Acc` / `WellFounded` -- an inductive predicate *within* a type
+  + `Acc` / `WellFounded` — an inductive predicate *within* a type
 * + `s ∈ s`, `{x | x ∉ x}`, `Type : Type`
-  + Typing and the universe hierarchy -- the *structure* of the system
+  + Typing and the universe hierarchy — the *structure* of the system
 :::
 
 Both express the intuition "no self-swallowing circles", but the first

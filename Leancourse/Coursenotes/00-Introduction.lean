@@ -1,9 +1,11 @@
 import VersoManual
 import Manual.Meta
+import Leancourse.Coursenotes.References
 import Mathlib
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
+open Leancourse.Refs
 
 #doc (Manual) "Introduction" =>
 %%%
@@ -25,7 +27,7 @@ To formalize a proof is to write it in a language precise enough that a computer
 
 There is a second direction. While formalizing starts from a proof and ends in a formal text, autoformalizing starts from informal mathematics and has a machine produce the formal proof.
 
-Both end at a text (the formal proof) the computer accepts. Most importantly, the program that checks the proof (often called the kernel) is small and fixed.
+Both end at a text (the formal proof) the computer accepts. Most importantly, the program that checks the proof (often called the kernel) is small and fixed. Small and fixed is not the same as infallible ({ref "soundness-bugs"}[2026]).
 
 This course is about the first direction. You will write the formal proofs.
 
@@ -37,10 +39,12 @@ tag := "why-formalize"
 
 Until recently, every formal proof of a serious theorem was written by people. That is no longer so:
 
+* *September 2025.* Math Inc.'s autoformalizer *Gauss* produced a formal proof of the [prime number theorem](https://en.wikipedia.org/wiki/Prime_number_theorem). People had to step in whenever it got stuck, so Hales calls it a quasi-autoformalization{citep hales2026}[].
 * *February 2026.* The [sphere packing](https://en.wikipedia.org/wiki/Sphere_packing) theorem in dimension 8 was finished in five days by *Gauss*, an [autoformalizer from Math Inc.](https://math.inc/sphere-packing) The [human project](https://github.com/math-inc/Sphere-Packing-Lean) it joined had been working on the proof since 2024. Unlike the later entries, this was no new mathematics: the proof was known, and only the formalizing was left. [Maryna Viazovska](https://en.wikipedia.org/wiki/Maryna_Viazovska) proved the dimension-8 case in 2016 and received the Fields Medal for it, which closes a thread that opens with Kepler four hundred years earlier.
+* *March 2026.* A week after dimension 8, Math Inc. announced an autoformalization of sphere packing in dimension 24, following Viazovska and her collaborators: about 500 000 lines, pruned afterwards to about 200 000. In May a group at Meta autoformalized large parts of 26 mathematics textbooks, in a project called *ATLAS*. None of this is confined to Lean — in January, Josef Urban posted 130 000 lines of formal topology from Munkres, produced in two weeks in a set-theoretic assistant.
 * *4 September 2026.* Anthropic [announced](https://www.anthropic.com/news/formalizing-fermats-last-theorem) the first complete computer-checked proof of [Fermat's Last Theorem](https://en.wikipedia.org/wiki/Fermat%27s_Last_Theorem), produced by Claude over eleven days: roughly 13 million lines of Lean and some 29 500 intermediate theorems, following a simplified version of Wiles's 1995 proof and building on *Mathlib*.
 * *8 September 2026.* OpenAI [announced](https://openai.com/index/navier-stokes-solution/) a proof, with a Lean formalization, that a smooth three-dimensional fluid obeying the [Navier-Stokes equations](https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_existence_and_smoothness) *under a smooth external force* can develop a singularity in finite time. (This is not the Millennium Prize problem.) It was followed by a public argument about credit, and about treating open problems as benchmarks.
-* *6 October 2026.* OpenAI [published](https://openai.com/index/sharing-ai-progress-in-mathematics/) a catalogue of results from an unreleased internal model -- at the time of writing 719 manuscripts grouped into 372 families, of which about 42 % of the top-line results carry a Lean formalization. Each result took, on average, about three hours of the model's thinking time; roughly 4 000 problems were posed in all. (One day later, three of those manuscripts were withdrawn due to errors.)
+* *6 October 2026.* OpenAI [published](https://openai.com/index/sharing-ai-progress-in-mathematics/) a catalogue of results from an unreleased internal model — at the time of writing 719 manuscripts grouped into 372 families, of which about 42 % of the top-line results carry a Lean formalization. Each result took, on average, about three hours of the model's thinking time; roughly 4 000 problems were posed in all. (One day later, three of those manuscripts were withdrawn due to errors.)
 
 :::figure "The two systems behind the September 2026 announcements. Both delivered Lean files with their proofs" (tag := "ai-labs")
 ![Claude](/static/figures/logos/claude.png)
@@ -87,13 +91,15 @@ number := false
 tag := "the-mathematics"
 %%%
 
-### 1879 to 1913: Frege, Peano, Russell
+### 1879 to 1913: Frege and Russell
 %%%
 number := false
 tag := "prehistory"
 %%%
 
-Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated. Giuseppe Peano axiomatized arithmetic in 1889, with a zero, a successor and induction; that is still the shape of {ref "nat"}[Lean's `Nat`]. Bertrand Russell's letter of 1902 showed that Frege's system was inconsistent. The set $`R = \{x : x \notin x\}` is a member of itself exactly if it is not.
+Gottlob Frege's *Begriffsschrift* of 1879 gave the first system in which proofs themselves were objects to be manipulated. That work is pure logic, and it survives. Frege then derived arithmetic from it in the *Grundgesetze der Arithmetik* (1893, 1903), using one further axiom: concepts with the same instances have the same extension. Bertrand Russell's letter of 1902 showed that this axiom is inconsistent. The set $`R = \{x : x \notin x\}` is a member of itself exactly if it is not. The letter reached Frege while the second volume was in press.
+
+Russell's set is *impredicative*: it is defined by quantifying over a collection that contains it. The condition ranges over all sets, and $`R` would be one of them. Both repairs below attack that, and the word returns in {ref "prop-special"}[Why `Prop` is special].
 
 Two answers appeared in 1908, and both are still in use. They differ in what they restrict.
 
@@ -303,14 +309,14 @@ The two systems Lean is usually compared with differ from it in their foundation
   + the *Archive of Formal Proofs*
 :::
 
-*Lean and Rocq* are close relatives. Both rest on a dependent type theory in which a proof is a *term* and checking a proof is type-checking; both have an {ref "prop-special"}[impredicative], proof-irrelevant universe `Prop` of propositions sitting under a {ref "universe-determined"}[predicative] hierarchy of data types. Lean differs in four points that return later in these notes: proof irrelevance holds *definitionally*, quotient types are primitive rather than built from setoids, there is no universe cumulativity, and classical reasoning enters through an axiom (`Classical.choice`). Rocq's roots are in program verification -- the CompCert C compiler and the Feit-Thompson theorem are Rocq developments -- and it extracts verified programs to OCaml or Haskell.
+*Lean and Rocq* are close relatives. Both rest on a dependent type theory in which a proof is a *term* and checking a proof is type-checking; both have an {ref "prop-special"}[impredicative], proof-irrelevant universe `Prop` of propositions sitting under a {ref "universe-determined"}[predicative] hierarchy of data types. Lean differs in four points that return later in these notes: proof irrelevance holds *definitionally*, quotient types are primitive rather than built from setoids, there is no universe cumulativity, and classical reasoning enters through an axiom (`Classical.choice`). Rocq's roots are in program verification — the CompCert C compiler and the Feit-Thompson theorem are Rocq developments — and it extracts verified programs to OCaml or Haskell.
 
 *Isabelle/HOL* uses simple type theory: types are built from base types and arrows, and there are no dependent types. That logic is weak enough to automate well, and Isabelle's automation is the strongest of the three. *Sledgehammer* hands a goal to several external provers at once and reconstructs what they find as a proof Isabelle can check; much of what Lean's `grind` does, Isabelle has done for twenty years. Isabelle is also a framework: HOL is one object logic among several over the intuitionistic meta-logic Isabelle/Pure. Its largest development is *seL4*, an operating-system microkernel verified down to its C implementation.
 
 *How the libraries are organized* matters more day to day than the foundations.
 
 * *Mathlib* is one repository, compiled as a unit. Maintainers review every change, and CI keeps it building against the current Lean. There are no stable releases: *Mathlib* follows Lean, and your project follows *Mathlib*. Results combine without extra work, because all structures live in one hierarchy, built from `class` and `instance` (see the chapters on {ref "typeclasses"}[typeclasses] and the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy]).
-* *Rocq* has no such centre. Its standard library is small, and the mathematics lives in independent packages -- *MathComp*, out of the Feit-Thompson formalization, *Coquelicot* and *MathComp-Analysis* for analysis, and others -- distributed through `opam`, with the *Rocq Platform* bundling a tested combination. Packages evolve at their own pace, which is comfortable with one dependency and awkward with two that disagree.
+* *Rocq* has no such centre. Its standard library is small, and the mathematics lives in independent packages — *MathComp*, out of the Feit-Thompson formalization, *Coquelicot* and *MathComp-Analysis* for analysis, and others — distributed through `opam`, with the *Rocq Platform* bundling a tested combination. Packages evolve at their own pace, which is comfortable with one dependency and awkward with two that disagree.
 * *Isabelle* sits in between. The *Archive of Formal Proofs* holds refereed, self-contained entries, released in lockstep with Isabelle. Entries may depend on one another but are never merged into one library; the archive is cited like a journal.
 
 We use Lean because *Mathlib* exists: the exercises start with `import Mathlib` and have the real numbers, measure theory and topology already there.
@@ -348,7 +354,7 @@ Thomas Hales announced a proof of the [Kepler conjecture](https://en.wikipedia.o
 ![Thomas Hales](/static/figures/portraits/hales.jpg)
 :::
 
-Twelve referees worked on it for four years and reported that they were ninety-nine percent certain, and could do no better. The *Annals of Mathematics* published it with that caveat. Hales started the [Flyspeck project](https://en.wikipedia.org/wiki/Flyspeck), which delivered a complete formal proof in HOL Light and Isabelle in 2014. This episode is not about computers: peer review had met a proof it could not certify, and more effort would not have helped.
+Twelve referees worked on it for four years and reported that they were ninety-nine percent certain, and could do no better. The *Annals of Mathematics* published it with that caveat. Hales started the [Flyspeck project](https://en.wikipedia.org/wiki/Flyspeck), which delivered a complete formal proof in HOL Light and Isabelle in 2014: about twenty human work-years and some 500 000 lines of proof script{citep hales2026}[]. This episode is not about computers: peer review had met a proof it could not certify, and more effort would not have helped.
 
 ### 2013: Voevodsky
 %%%
@@ -415,7 +421,7 @@ number := false
 tag := "pfr-landmark"
 %%%
 
-By Gowers, Green, Manners and Tao ([project page](https://teorth.github.io/pfr/)), formalized under Tao's direction in about three weeks -- before the paper had been refereed. It says that a set whose sumset is barely larger than itself must be structured.
+By Gowers, Green, Manners and Tao ([project page](https://teorth.github.io/pfr/)), formalized under Tao's direction in about three weeks — before the paper had been refereed. It says that a set whose sumset is barely larger than itself must be structured.
 
 :::figure "Timothy Gowers, Ben Green and Terence Tao" (tag := "pfr-people")
 ![Timothy Gowers](/static/figures/portraits/gowers.jpg)
@@ -457,6 +463,43 @@ example : ¬ Equation4 Bool := by decide
 
 The tactic {ref "decide"}[`decide`] checks both statements by trying every element of `Bool`. That is one entry. The project settled 22 028 942 of them.
 
+### 2026: the summer of soundness bugs
+%%%
+number := false
+tag := "soundness-bugs"
+%%%
+
+In July and August 2026, several bugs were found in the Lean kernel itself, each of
+which allowed a proof of `False`. From `False`, everything follows. All were repaired
+within days, and *Mathlib* was rechecked with the repaired kernel.
+
+:::example "Bugs in Lean"
+
+The three that were found and closed:
+
+* [#14484](https://github.com/leanprover/lean4/issues/14484), 22 July: a missing check,
+  reachable by an adversarial metaprogram.
+* [#14576](https://github.com/leanprover/lean4/issues/14576), 28 July: the kernel accepted
+  projections of the wrong structure. The resulting proof of `False` used no axioms at all.
+* [#14875](https://github.com/leanprover/lean4/issues/14875), 21 August: the recursor of a
+  class inductive could leak a private import.
+
+What they produced was concrete. One gave an illicit disproof of the Collatz conjecture,
+another a short illicit proof of the Kepler conjecture — which is how Thomas Hales
+({ref "kepler-episode"}[1998]) learned of it.
+
+Two things follow. First, `#print axioms` does not cover this. It reports which axioms a
+proof uses, and the proof of `False` from #14576 used none. Second, the remedy is
+redundancy rather than trust: about 25 independent Lean kernels exist, so a proof can be
+rechecked by a program sharing no code with the one that accepted it. Joachim Breitner's
+[*Con-Leche*](https://github.com/leanprover/con-leche) goes further: an external checker,
+written in Lean, with a proof in Lean that it never accepts a proof of `False`. That is a
+statement about the checker, not about Lean's type theory, whose consistency it assumes
+({ref "prop-special"}[the chapter on types]).
+
+This account follows {citet hales2026}[].
+:::
+
 # Current state of Lean
 %%%
 number := false
@@ -491,7 +534,7 @@ The rest of this chapter is about running the course.
 
 * *Reading formal statements.* Judging whether a formal statement says what the informal one claims ({ref "why-formalize"}[see above]).
 * *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write ({ref "term"}[the proof state]). This is not the older use of computers in mathematics, which was to work through many cases ({ref "four-colour-episode"}[the four colour theorem]).
-* *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands -- {ref "tactics"}[*tactics*] -- fit together. The second half goes deeper into the mathematics.
+* *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — {ref "tactics"}[*tactics*] — fit together. The second half goes deeper into the mathematics.
 * *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "monads"}[monads], needed both to use Lean and to read *Mathlib*.
 * *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "dependent-types"}[dependent types], the {ref "universe-hierarchy"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
 * *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
@@ -510,7 +553,7 @@ Tactics and theory are interleaved. You usually meet a tactic in a working examp
 
 The exercises carry the course (the `Exercises` folder of the exercises repository, see below). Feedback is immediate: error messages from the elaborator, and the *proof state* in the infoview, which shows what remains to be proved at every cursor position. Start with the first sheet; the sheets explain as they go.
 
-In addition to the sheets, you work on an individual project, mostly self-chosen -- an exercise from your first year, or a part of *Mathlib* you want to know; the {ref "projects"}[Projects chapter] has five worked-out suggestions.
+In addition to the sheets, you work on an individual project, mostly self-chosen — an exercise from your first year, or a part of *Mathlib* you want to know; the {ref "projects"}[Projects chapter] has five worked-out suggestions.
 
 Before the first lab session, get Lean running on your own machine.
 
@@ -592,25 +635,25 @@ number := false
 tag := "credits"
 %%%
 
-* Mathematical figures -- generated by the scripts in `scripts/`, free to reuse
-* Thomas Hales -- Slawekb, CC BY-SA 3.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Halescropped.jpg)
-* Peter Scholze -- George Bergman, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Peter_Scholze_2014_cropped.jpg)
-* Leonardo de Moura -- David Monniaux, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Leo_de_Moura_P1210629.jpg)
-* Timothy Gowers -- Gert-Martin Greuel, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:William_Timothy_Gowers_Oslo_2012.jpg)
-* Ben Green -- Renate Schmid, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ben_Green.jpg)
-* Vladimir Voevodsky -- Renate Schmid, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:VladimirVoevodsky.jpg)
-* Terence Tao -- Institute for Pure and Applied Mathematics, CC BY 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Terence_Tao_at_IPAM%27s_Fireside_Chat_2026_%2850m16s%29_%28cropped%29.jpg)
-* Gottlob Frege, around 1879 -- photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Young_frege.jpg)
-* Bertrand Russell in 1907 -- photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Bertrand_Russell_in_1907.jpg)
-* David Hilbert -- photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hilbert.jpg)
-* Kurt Gödel -- photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kurt_g%C3%B6del.jpg)
-* Alan Turing in 1951 -- Elliott and Fry, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Alan_Turing_%281951%29_%28crop%29.jpg)
-* Nicolaas Govert de Bruijn -- Konrad Jacobs, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, cropped to head and shoulders, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Nicolaas_de_Bruijn.jpg)
-* Johan Commelin -- used by permission, from the [Mathlib Initiative team page](https://mathlib-initiative.org/team/)
-* Patrick Massot -- used by permission, from [his homepage](https://www.imo.universite-paris-saclay.fr/~patrick.massot/en/)
-* Oliver Nash -- used by permission, from the [Mathlib Initiative team page](https://mathlib-initiative.org/team/)
-* Kevin Buzzard -- Thomas Angus, Imperial College London, used by permission
-* Floris van Doorn -- used by permission
-* Claude and ChatGPT logos -- CC0 and public domain, via Wikimedia Commons; trademarks of their owners
-* Browser-tab icon -- the `L` of the Lean wordmark, redrawn (`static/favicon.svg`)
-* Alonzo Church -- no freely licensed photograph; grey placeholder
+* Mathematical figures — generated by the scripts in `scripts/`, free to reuse
+* Thomas Hales — Slawekb, CC BY-SA 3.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Halescropped.jpg)
+* Peter Scholze — George Bergman, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Peter_Scholze_2014_cropped.jpg)
+* Leonardo de Moura — David Monniaux, CC BY-SA 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Leo_de_Moura_P1210629.jpg)
+* Timothy Gowers — Gert-Martin Greuel, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:William_Timothy_Gowers_Oslo_2012.jpg)
+* Ben Green — Renate Schmid, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ben_Green.jpg)
+* Vladimir Voevodsky — Renate Schmid, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:VladimirVoevodsky.jpg)
+* Terence Tao — Institute for Pure and Applied Mathematics, CC BY 4.0, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Terence_Tao_at_IPAM%27s_Fireside_Chat_2026_%2850m16s%29_%28cropped%29.jpg)
+* Gottlob Frege, around 1879 — photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Young_frege.jpg)
+* Bertrand Russell in 1907 — photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Bertrand_Russell_in_1907.jpg)
+* David Hilbert — photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hilbert.jpg)
+* Kurt Gödel — photographer unknown, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kurt_g%C3%B6del.jpg)
+* Alan Turing in 1951 — Elliott and Fry, public domain, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Alan_Turing_%281951%29_%28crop%29.jpg)
+* Nicolaas Govert de Bruijn — Konrad Jacobs, Archives of the Mathematisches Forschungsinstitut Oberwolfach, CC BY-SA 2.0 de, cropped to head and shoulders, [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Nicolaas_de_Bruijn.jpg)
+* Johan Commelin — used by permission, from the [Mathlib Initiative team page](https://mathlib-initiative.org/team/)
+* Patrick Massot — used by permission, from [his homepage](https://www.imo.universite-paris-saclay.fr/~patrick.massot/en/)
+* Oliver Nash — used by permission, from the [Mathlib Initiative team page](https://mathlib-initiative.org/team/)
+* Kevin Buzzard — Thomas Angus, Imperial College London, used by permission
+* Floris van Doorn — used by permission
+* Claude and ChatGPT logos — CC0 and public domain, via Wikimedia Commons; trademarks of their owners
+* Browser-tab icon — the `L` of the Lean wordmark, redrawn (`static/favicon.svg`)
+* Alonzo Church — no freely licensed photograph; grey placeholder

@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "curry-howard"
 %%%
 
-The Curry-Howard correspondence connects logic and type theory: **propositions correspond to types**, and **proofs correspond to terms** of those types. In Lean 4, this correspondence is not merely a theoretical curiosity -- it is the very foundation on which the proof assistant is built.
+The Curry-Howard correspondence connects logic and type theory: **propositions correspond to types**, and **proofs correspond to terms** of those types. In Lean 4, this correspondence is not merely a theoretical curiosity — it is the very foundation on which the proof assistant is built.
 
 # Historical context
 %%%
@@ -36,7 +36,7 @@ Lean's type theory is a descendant of Martin-Löf's work, enriched with features
 tag := "props-as-types"
 %%%
 
-In Lean, every proposition `P : Prop` is a type. A proof of `P` is a term `h : P` -- that is, an inhabitant of the type `P`. If a type is inhabited, the corresponding proposition is true; if it is empty, the proposition is false.
+In Lean, every proposition `P : Prop` is a type. A proof of `P` is a term `h : P` — that is, an inhabitant of the type `P`. If a type is inhabited, the corresponding proposition is true; if it is empty, the proposition is false.
 
 This idea is sometimes called the **BHK interpretation** (Brouwer-Heyting-Kolmogorov), which gives a constructive meaning to the logical connectives. Let us see how each connective maps to a type-theoretic construction.
 
@@ -81,14 +81,14 @@ example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
   exact hst hx
 ```
 
-The practical workflow -- and *which* tactics to reach for -- is taken up in the {ref "proof"}[last section of this chapter]; here we use `by`, `intro`, and `exact` just enough to exhibit the correspondence.
+The practical workflow — and *which* tactics to reach for — is taken up in the {ref "proof"}[last section of this chapter]; here we use `by`, `intro`, and `exact` just enough to exhibit the correspondence.
 
 # True and False: the unit and empty types
 %%%
 tag := "false-true-types"
 %%%
 
-The correspondence is clearest at the two extremes. A proposition that is *always* provable should be a type that is *always* inhabited; a proposition that can *never* be proved should be a type with *no* inhabitants at all. Lean's `True` and `False` are exactly these two types -- both ordinary inductive types, {ref "true-false"}[introduced in the chapter on the natural numbers] (`True` with a single constructor, `False` with none). Here we only look at them through the Curry-Howard lens.
+The correspondence is clearest at the two extremes. A proposition that is *always* provable should be a type that is *always* inhabited; a proposition that can *never* be proved should be a type with *no* inhabitants at all. Lean's `True` and `False` are exactly these two types — both ordinary inductive types, {ref "true-false"}[introduced in the chapter on the natural numbers] (`True` with a single constructor, `False` with none). Here we only look at them through the Curry-Howard lens.
 
 `True` has the canonical proof `True.intro`, so it is inhabited and proving it is trivial:
 
@@ -96,7 +96,7 @@ The correspondence is clearest at the two extremes. A proposition that is *alway
 example : True := True.intro
 ```
 
-`False` has *no* constructor, so no proof of it can ever be built; and its recursor, having no cases, hands us *any* goal from a proof of `False` -- the principle *ex falso quodlibet* (packaged as `False.elim`):
+`False` has *no* constructor, so no proof of it can ever be built; and its recursor, having no cases, hands us *any* goal from a proof of `False` — the principle *ex falso quodlibet* (packaged as `False.elim`):
 
 ```lean
 example (C : Prop) : False → C :=
@@ -112,7 +112,7 @@ The most fundamental instance of the correspondence: **implication corresponds t
 
 If `P` and `Q` are propositions, then `P → Q` is the type of functions from `P` to `Q`. A proof of `P → Q` is a function that, given a proof of `P`, produces a proof of `Q`.
 
-Here is the same theorem proved in two ways -- by tactic and by term:
+Here is the same theorem proved in two ways — by tactic and by term:
 
 ```lean
 -- Tactic proof
@@ -161,7 +161,7 @@ example (P Q : Prop) (h : P ∧ Q) : Q :=
   h.2
 ```
 
-Note that `And.intro` is the constructor, and `And.left` / `And.right` (equivalently `.1` / `.2`) are the projections -- exactly like a product type.
+Note that `And.intro` is the constructor, and `And.left` / `And.right` (equivalently `.1` / `.2`) are the projections — exactly like a product type.
 
 # Disjunction = sum type
 %%%
@@ -298,7 +298,7 @@ the foundation for many "exists, therefore choose one" arguments,
 and the reason `noncomputable` appears so often.
 
 A related construction is `Squash α`, the explicit propositional
-truncation of `α` -- it has a single constructor `Squash.mk a` for
+truncation of `α` — it has a single constructor `Squash.mk a` for
 any `a : α`, and sits at the boundary between `Prop` and `Type`.
 
 # How tactic proofs build terms behind the scenes
@@ -381,7 +381,7 @@ tag := "proof"
 
 The correspondence is *how you prove things* in Lean: to prove a
 statement you construct a term of its type.  Most
-statements you meet are far beyond a one-liner -- Goldbach's
+statements you meet are far beyond a one-liner — Goldbach's
 conjecture, for instance, is a perfectly well-formed term of type
 `Prop`:
 
@@ -391,7 +391,7 @@ theorem goldbach : ∀ (n : ℕ) (h₁ : n > 2) (h₂ : Even n),
   sorry
 ```
 
-A term of this type -- something that would replace the `sorry` -- *is*
+A term of this type — something that would replace the `sorry` — *is*
 a proof of the conjecture.  Constructing a term of type `ℕ` is easy
 (`0 : ℕ` will do); constructing this one would require actually
 proving Goldbach.
@@ -406,7 +406,7 @@ The core tactics you meet first are `intro`, `exact`, `apply`, `rw`,
 `have`, `obtain`, `refine`, and `use`, together with the
 library-search helpers `apply?` and `simp?`.  Rather than tabulate
 them here, we introduce each one *hands-on in the exercises*, right
-where you first need it -- so you can experiment immediately.  The
+where you first need it — so you can experiment immediately.  The
 complete alphabetical reference, with many more tactics, lives in the
 {ref "tactics"}[Tactics] appendix, and searching Mathlib for the
 right lemma is covered in {ref "navigating-mathlib"}[Navigating

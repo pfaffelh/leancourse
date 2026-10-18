@@ -18,7 +18,7 @@ tag := "sets-and-types"
 
 A mathematician thinks in *sets*; Lean thinks in *types*. A set turns
 out to be a predicate on a type, its operations the logical
-connectives, and its equality an axiom -- the four sections below.
+connectives, and its equality an axiom — the four sections below.
 *Propositions* and their *proofs*, used freely from here on, were
 covered in {ref "curry-howard"}[the Curry-Howard chapter] of the
 {ref "lean"}[Lean part].
@@ -41,17 +41,17 @@ terms of `α` lie in it.
 
 Three notions are worth keeping firmly apart:
 
-- a *type* `α` -- the ambient collection of terms;
-- a *set* `s : Set α` -- a predicate selecting terms of `α`, whose
+- a *type* `α` — the ambient collection of terms;
+- a *set* `s : Set α` — a predicate selecting terms of `α`, whose
   elements *keep* their type `α`;
-- a *subtype* `{ x : α // p x }` (see {ref "subtypes"}[Subtypes]) -- a
+- a *subtype* `{ x : α // p x }` (see {ref "subtypes"}[Subtypes]) — a
   genuinely *new* type, whose terms are pairs of a value and a proof
   that it satisfies `p`.
 
 So there *is* a difference between a set and a type, and it is the one
 a mathematician must internalize. The rest of this chapter makes it
 precise: sets as predicates and their operations, when two sets are
-equal, and finally how to cross the gap -- turning a set back into a
+equal, and finally how to cross the gap — turning a set back into a
 type.
 
 # Notation and naming conventions
@@ -133,7 +133,7 @@ example : 3 ∉ Evens := by
 ```
 
 Because a set *is* a predicate, two predicates that hold of exactly
-the same elements describe the *same* set -- set equality is
+the same elements describe the *same* set — set equality is
 *extensional*. We make this precise just below.
 
 # Subset, union, intersection, complement
@@ -163,7 +163,7 @@ example (s : Set ℕ)   : Set ℕ := sᶜ      -- complement
 tag := "foundations-indexed-ops"
 %%%
 
-The binary `∪` and `∩` extend to *arbitrary* families. Given `s : ι → Set α` -- a set `s i` for each index `i : ι` -- the *indexed union* `⋃ i, s i` and *indexed intersection* `⋂ i, s i` collect members across the whole family.
+The binary `∪` and `∩` extend to *arbitrary* families. Given `s : ι → Set α` — a set `s i` for each index `i : ι` — the *indexed union* `⋃ i, s i` and *indexed intersection* `⋂ i, s i` collect members across the whole family.
 
 {docstring Set.iUnion}
 
@@ -185,7 +185,7 @@ example : (⋃ n : ℕ, {n}) = Set.univ := by
   ext a; simp
 ```
 
-A common variant restricts the index to a *set* `a : Set ι` rather than the whole index type -- written `⋃ i ∈ a, s i` and `⋂ i ∈ a, s i`. This is just the indexed operation ranging over the members of `a`, and membership carries the bound along:
+A common variant restricts the index to a *set* `a : Set ι` rather than the whole index type — written `⋃ i ∈ a, s i` and `⋂ i ∈ a, s i`. This is just the indexed operation ranging over the members of `a`, and membership carries the bound along:
 
 ```lean
 -- union over `i` ranging in a set `a`
@@ -211,7 +211,7 @@ example (S : Set (Set ℕ)) (a : ℕ) :
     (a ∈ ⋃₀ S) ↔ ∃ t ∈ S, a ∈ t := Set.mem_sUnion
 ```
 
-These are exactly the set/indexed suprema and infima of the {ref "complete-lattices"}[complete lattice of sets]: `⋃ i, s i` *is* `iSup s`, and `⋃₀ S` *is* `sSup S`. They are also what {ref "measurable-space"}[σ-algebras] are closed under -- a *countable* union or intersection is just the indexed one over `ι = ℕ`.
+These are exactly the set/indexed suprema and infima of the {ref "complete-lattices"}[complete lattice of sets]: `⋃ i, s i` *is* `iSup s`, and `⋃₀ S` *is* `sSup S`. They are also what {ref "measurable-space"}[σ-algebras] are closed under — a *countable* union or intersection is just the indexed one over `ι = ℕ`.
 
 # Set equality
 %%%
@@ -220,7 +220,7 @@ tag := "foundations-set-eq"
 
 Two sets are equal exactly when they have the same members: the *set
 extensionality* principle `Set.ext`. This is not a definition but a
-consequence of the axioms -- a set is a function into `Prop`, so it
+consequence of the axioms — a set is a function into `Prop`, so it
 rests on the extensionality axioms taken up in
 the next chapter. Here we simply use it.
 

@@ -15,7 +15,7 @@ set_option pp.rawOnError true
 tag := "choose"
 %%%
 
-*Summary:* `choose f hf using h` turns a hypothesis `h : ∀ x, ∃ y, P x y` into a *function* `f` together with `hf : ∀ x, P x (f x)`. It is the tactic form of *choosing a witness for every input at once* -- indispensable when you need to build a sequence or function from a family of existence statements (a constant move in analysis). It handles several `∀`/`∃` layers and extra conclusions in one call.
+*Summary:* `choose f hf using h` turns a hypothesis `h : ∀ x, ∃ y, P x y` into a *function* `f` together with `hf : ∀ x, P x (f x)`. It is the tactic form of *choosing a witness for every input at once* — indispensable when you need to build a sequence or function from a family of existence statements (a constant move in analysis). It handles several `∀`/`∃` layers and extra conclusions in one call.
 
 *Example:*
 

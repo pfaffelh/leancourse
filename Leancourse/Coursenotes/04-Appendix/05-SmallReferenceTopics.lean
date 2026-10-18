@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "small-reference-topics"
 %%%
 
-A handful of short, self-contained reference topics -- consult them as needed rather than reading straight through.
+A handful of short, self-contained reference topics — consult them as needed rather than reading straight through.
 
 # Different parentheses in `Lean`
 %%%
@@ -38,7 +38,7 @@ Beyond grouping, `Lean` uses four kinds of *binder* brackets in a declaration's 
   + Lean, by *unification* (from the other arguments), eagerly
 * + `⦃x : α⦄` (or `{{x : α}}`)
   + strict implicit
-  + Lean, by unification -- but only once a following *explicit* argument is supplied
+  + Lean, by unification — but only once a following *explicit* argument is supplied
 * + `[C α]`
   + instance-implicit
   + Lean, by *typeclass search* ({ref "typeclasses"}[the typeclass mechanism])
@@ -68,14 +68,14 @@ number := false
 tag := "strict-implicit"
 %%%
 
-Both `{}` and `⦃⦄` are *implicit* -- Lean fills them in -- but they differ in *when*. A regular implicit `{x}` is solved *eagerly*, the moment the function is mentioned. A strict implicit `⦃x⦄` (also written `{{x}}`) is solved *only when a following explicit argument is actually supplied*; until then the binder stays put.
+Both `{}` and `⦃⦄` are *implicit* — Lean fills them in — but they differ in *when*. A regular implicit `{x}` is solved *eagerly*, the moment the function is mentioned. A strict implicit `⦃x⦄` (also written `{{x}}`) is solved *only when a following explicit argument is actually supplied*; until then the binder stays put.
 
 ```lean
 def idImp    {α : Type} (x : α) : α := x
 def idStrict {{α : Type}} (x : α) : α := x
 ```
 
-In ordinary use the difference is invisible (`idImp 5` and `idStrict 5` both give `5`). It matters when a function is used *without* its explicit argument -- exactly the situation for `⊆`. Mathlib defines `s ⊆ t` as `∀ ⦃a⦄, a ∈ s → a ∈ t` with a *strict* implicit `a`, so that from `h : s ⊆ t` you may apply `h` directly to a membership proof:
+In ordinary use the difference is invisible (`idImp 5` and `idStrict 5` both give `5`). It matters when a function is used *without* its explicit argument — exactly the situation for `⊆`. Mathlib defines `s ⊆ t` as `∀ ⦃a⦄, a ∈ s → a ∈ t` with a *strict* implicit `a`, so that from `h : s ⊆ t` you may apply `h` directly to a membership proof:
 
 ```lean
 example (s t : Set ℕ) (h : s ⊆ t) (a : ℕ) (ha : a ∈ s) : a ∈ t := h ha
@@ -93,11 +93,11 @@ Due to the multitude of types in Lean, we have to be careful about equality. In 
 
 * Syntactic equality: If two terms are letter-for-letter equal, then they are syntactically equal. However, there are a few more situations in which two terms are syntactically equal. Namely, if one term is just an abbreviation for the other (for example, `x = y` is an abbreviation for ` Eq x y`, where `Eq` is a function which takes two terms of the same type, and assigns `True` if they are the same and `False` otherwise), then these both terms are syntactically equal. Also equal are terms in which globally quantified variables have different letters. For example, `∀ x, ∃ y, f x y` and `∀ y, ∃ x, f y x` are syntactically equal.
 
-* Definitional equality: Some terms are equal *by computation* -- Lean reduces both to a common form. For example, for `x : ℕ`, `x + 0` reduces to `x`, whereas `0 + x` does not (an asymmetry that comes from how `Nat` addition is defined). This notion, the *reduction rules* that generate it, and the cases where `rfl` gets *stuck*, are developed in full in {ref "reduction-rules"}[the reduction-rules section] of the chapter on the natural numbers.
+* Definitional equality: Some terms are equal *by computation* — Lean reduces both to a common form. For example, for `x : ℕ`, `x + 0` reduces to `x`, whereas `0 + x` does not (an asymmetry that comes from how `Nat` addition is defined). This notion, the *reduction rules* that generate it, and the cases where `rfl` gets *stuck*, are developed in full in {ref "reduction-rules"}[the reduction-rules section] of the chapter on the natural numbers.
 
 * Propositional equality: If there is a proof of `x = y`, then `x` and `y` are said to be *propositionally equal*; likewise `P` and `Q` are propositionally equal when you can prove `P ↔ Q`. This is the equality you state and rewrite with in everyday mathematics.
 
-The distinction matters because *tactics differ in which equality they respect* -- some see through it, some do not. `rfl`, `exact`, and `apply` accept a term whenever it is merely *definitionally* equal to what is expected (they run the reductions for you), whereas `rw` matches *syntactically* and will not fire unless the subterm literally appears. Many otherwise-puzzling tactic failures come down to exactly this.
+The distinction matters because *tactics differ in which equality they respect* — some see through it, some do not. `rfl`, `exact`, and `apply` accept a term whenever it is merely *definitionally* equal to what is expected (they run the reductions for you), whereas `rw` matches *syntactically* and will not fire unless the subterm literally appears. Many otherwise-puzzling tactic failures come down to exactly this.
 
 Sets and functions carry their own notion of equality: two functions are the same when they return the same value on every argument. This is *extensionality*. (If extensionality applies, then, for example, two sorting algorithms are the same if they always produce the same result).
 
@@ -109,7 +109,7 @@ tag := "checkprint"
 
 Lean provides a handful of *commands* that are invaluable for exploring
 a library like Mathlib.  They all start with `#` and only print
-information -- they do not contribute to a proof.
+information — they do not contribute to a proof.
 
 - `#check e` prints the type of the term or expression `e`.  This is
   the fastest way to learn what a lemma says, or what type a definition
@@ -131,7 +131,7 @@ information -- they do not contribute to a proof.
 ```
 
 The term `inferInstance` asks Lean to *synthesize* an instance of a
-stated type -- a quick way to ask "does this type have that
+stated type — a quick way to ask "does this type have that
 structure?".  If no such instance exists the command fails with a
 readable error.  See {ref "instance-resolution"}[the Typeclass chapter]
 for the details and an example.
@@ -161,7 +161,7 @@ basics chapter (`#check`, `#eval`, `#print`) ask what something *is*;
 these are about *engineering* a clean, well-placed, axiom-honest
 development.
 
-## `#print axioms` -- the axiom footprint
+## `#print axioms` — the axiom footprint
 %%%
 number := false
 tag := "diag-print-axioms"
@@ -196,7 +196,7 @@ stating:
   an axiom in its own right), using it leaves no separate token: a
   proof
   that uses `Classical.em` and one that uses `Classical.choice`
-  directly are indistinguishable -- both simply show
+  directly are indistinguishable — both simply show
   `Classical.choice`.
 - If a proof contains a `sorry` (even indirectly, through a lemma it
   calls), the marker `sorryAx` appears.  This makes `#print axioms` a
@@ -204,7 +204,7 @@ stating:
 
 There is no `#used_axioms` command; `#print axioms` is the tool.
 
-## `#find_home` -- where should this live?
+## `#find_home` — where should this live?
 %%%
 number := false
 tag := "diag-find-home"
@@ -213,7 +213,7 @@ tag := "diag-find-home"
 `#find_home name` (from the `ImportGraph` library) suggests the files
 *highest* in the import hierarchy where a declaration could live,
 based on which files its own dependencies come from.  It is the tool
-for *upstreaming* a lemma to the right place -- e.g. when contributing
+for *upstreaming* a lemma to the right place — e.g. when contributing
 to Mathlib.  `#find_home!` additionally refuses to suggest the
 current file.
 
@@ -232,7 +232,7 @@ dependencies are spread across incomparable files).  A related
 command, `#min_imports`, computes the minimal set of imports a
 declaration needs and additionally accounts for notation and tactics.
 
-## `#lint` -- the environment linters
+## `#lint` — the environment linters
 %%%
 number := false
 tag := "diag-lint"
@@ -268,7 +268,7 @@ tag := "keyword-reference"
 
 This appendix collects Lean's keywords in one place, grouped by role,
 with a one-line meaning and a minimal example for each.  It is meant
-as a lookup table, not a tutorial -- the relevant chapters explain the
+as a lookup table, not a tutorial — the relevant chapters explain the
 constructs in context.
 
 Two things are *not* keywords and are listed elsewhere:

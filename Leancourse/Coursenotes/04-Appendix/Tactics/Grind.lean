@@ -17,7 +17,7 @@ tag := "grind"
 *Summary:* `grind` is a general-purpose automation tactic
 introduced into Lean 4 by the Lean FRO team.  It is designed to close
 goals that mix *equational*, *propositional*, and *arithmetic*
-reasoning -- the kind of "obvious" side goals that a human would
+reasoning — the kind of "obvious" side goals that a human would
 consider routine but that no single specialized tactic handles.  Its
 design is inspired by SMT solvers (think of the engines inside Z3):
 it does not search for a proof term by trial and error the way
@@ -26,18 +26,18 @@ they either close the goal or get stuck.
 
 Under the hood `grind` combines several engines:
 
-* *Congruence closure* -- it maintains equivalence classes of terms
+* *Congruence closure* — it maintains equivalence classes of terms
   and knows that equal inputs give equal outputs, so from `a = b` it
   derives `f a = f b` automatically.
-* *Constraint propagation and case splitting* -- it propagates the
+* *Constraint propagation and case splitting* — it propagates the
   consequences of hypotheses and splits on disjunctions,
   `if`-conditions, and the constructors of inductive types.
 * *A linear arithmetic procedure* over `Nat`, `Int`, and ordered
   fields, similar in spirit to `omega`/`linarith`.
-* *E-matching* -- it instantiates quantified lemmas by matching their
+* *E-matching* — it instantiates quantified lemmas by matching their
   left-hand sides against terms present in the goal, using
   *patterns*.  This is how you teach `grind` new facts.
-* *Constructor reasoning* -- injectivity and no-confusion, so
+* *Constructor reasoning* — injectivity and no-confusion, so
   `some a = some b` yields `a = b`, and `some a = none` is a
   contradiction.
 
@@ -73,7 +73,7 @@ example (a b : Int) (h1 : a ≤ b) (h2 : b ≤ a) :
 
 * *When to reach for it.* `grind` is for goals that interleave a
   handful of hypotheses, some case analysis, equalities, and a bit of
-  arithmetic -- exactly the situations where you would otherwise
+  arithmetic — exactly the situations where you would otherwise
   write a tedious chain of `rcases`, `simp`, and `omega`.  It is a
   *finishing* tactic: point it at a goal you believe is true "for
   obvious reasons".

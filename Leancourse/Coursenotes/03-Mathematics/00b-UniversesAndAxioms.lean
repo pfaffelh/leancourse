@@ -24,16 +24,16 @@ Lean's type theory rests on a carefully designed system of universes, a small nu
 tag := "universe-hierarchy"
 %%%
 
-The {ref "type-universes"}[universe hierarchy] was given in Part 1: `Prop = Sort 0`, `Type = Type 0 = Sort 1`, `Type u = Sort (u+1)`, the rule `Sort u : Sort (u + 1)`, and universe-polymorphism via `Type*`. We now show why the absence of `Type : Type` is not optional. Were `Type : Type` to hold, one could reproduce Russell's paradox at the level of types -- *Girard's paradox* -- and thereby prove `False`. The stratification
+The {ref "type-universes"}[universe hierarchy] was given in Part 1: `Prop = Sort 0`, `Type = Type 0 = Sort 1`, `Type u = Sort (u+1)`, the rule `Sort u : Sort (u + 1)`, and universe-polymorphism via `Type*`. We now show why the absence of `Type : Type` is not optional. Were `Type : Type` to hold, one could reproduce Russell's paradox at the level of types — *Girard's paradox* — and thereby prove `False`. The stratification
 
 ```lean
 #check (Type 0 : Type 1)    -- Type : Type 1
 #check (Type 1 : Type 2)    -- Type 1 : Type 2
 ```
 
-is exactly what blocks this, and it is what keeps the whole system consistent. Everything else in this chapter -- the axioms, proof irrelevance, the CIC -- rests on top of it.
+is exactly what blocks this, and it is what keeps the whole system consistent. Everything else in this chapter — the axioms, proof irrelevance, the CIC — rests on top of it.
 
-How the collapse would actually unfold -- building Girard's paradoxical universe in Lean, watching exactly where the type-checker stops it, and deriving `False` from the hypothesis that the stratification were absent -- is not treated here: it is the subject of {ref "project-girard"}[Project 1 in the Projects chapter].
+How the collapse would actually unfold — building Girard's paradoxical universe in Lean, watching exactly where the type-checker stops it, and deriving `False` from the hypothesis that the stratification were absent — is not treated here: it is the subject of {ref "project-girard"}[Project 1 in the Projects chapter].
 
 
 # Prop vs Type: proof irrelevance
@@ -50,8 +50,8 @@ This is a deliberate design choice. It means:
 
 That any two proofs of the same `P : Prop` are *equal* is itself
 provable by `rfl` and costs no axiom; this, and the reason an
-existential therefore lives in `Prop` -- so that recovering its witness
-needs {ref "axiom-choice"}[choice] -- are taken up in
+existential therefore lives in `Prop` — so that recovering its witness
+needs {ref "axiom-choice"}[choice] — are taken up in
 {ref "baked-in"}[Declared axioms vs. what the kernel bakes in] below.
 
 The distinction between `Prop` and `Type` corresponds to the mathematical distinction between "asserting that something exists" (Prop) and "constructing a specific example" (Type).
@@ -61,13 +61,13 @@ The distinction between `Prop` and `Type` corresponds to the mathematical distin
 tag := "cic"
 %%%
 
-The universe hierarchy, `Prop` with its proof irrelevance, dependent functions and inductive types form a single formal system, and that system is what Lean's kernel implements{citep lean4_2021}[] -- the *Calculus of Inductive Constructions*, or CIC. The CIC is the *entire* trusted core of Lean: every definition, theorem, and tactic ultimately elaborates down to terms that the kernel re-checks against these rules, and nothing outside them is trusted.
+The universe hierarchy, `Prop` with its proof irrelevance, dependent functions and inductive types form a single formal system, and that system is what Lean's kernel implements{citep lean4_2021}[] — the *Calculus of Inductive Constructions*, or CIC. The CIC is the *entire* trusted core of Lean: every definition, theorem, and tactic ultimately elaborates down to terms that the kernel re-checks against these rules, and nothing outside them is trusted.
 
 The CIC is built from exactly three ideas:
 
-1. *Dependent functions* -- the "Constructions". This is the *Calculus of Constructions* of {citet coquandHuet1988}[]: a typed lambda calculus in which the *type* of the output may depend on the *value* of the input, giving the Π-types written `(x : α) → β x`. In one stroke this subsumes ordinary functions, polymorphic functions (which take types as arguments), and type-level functions.
+1. *Dependent functions* — the "Constructions". This is the *Calculus of Constructions* of {citet coquandHuet1988}[]: a typed lambda calculus in which the *type* of the output may depend on the *value* of the input, giving the Π-types written `(x : α) → β x`. In one stroke this subsumes ordinary functions, polymorphic functions (which take types as arguments), and type-level functions.
 
-2. *Inductive types* -- the "Inductive", added by {citet coquandPaulin1990}[]. This is the rule that introduces a new type by listing its constructors. *Both* data and logic are built from it: `Nat`, `List`, and `Prod` are inductive types, but so are the logical connectives `And`, `Or`, `False`, and even equality `Eq`.
+2. *Inductive types* — the "Inductive", added by {citet coquandPaulin1990}[]. This is the rule that introduces a new type by listing its constructors. *Both* data and logic are built from it: `Nat`, `List`, and `Prod` are inductive types, but so are the logical connectives `And`, `Or`, `False`, and even equality `Eq`.
 
 ```lean
 -- Data: `Nat` is an inductive type with two constructors
@@ -85,7 +85,7 @@ The CIC is built from exactly three ideas:
 #check @Nat.rec
 ```
 
-Defining your own inductive type uses exactly the same mechanism the standard library does -- there is no special magic reserved for the built-in types:
+Defining your own inductive type uses exactly the same mechanism the standard library does — there is no special magic reserved for the built-in types:
 
 ```lean
 inductive Traffic where
@@ -96,7 +96,7 @@ inductive Traffic where
 
 On top of these three ingredients the kernel bakes in one thing that set theory has no notion of: *computation*. Terms reduce, so `(fun n => n + 1) 2` and `3` are not merely provably equal but *definitionally* equal, and the kernel checks this by evaluating. This is the same reduction that makes {keywordOf Lean.Parser.Command.eval}`#eval` and the `decide` tactic work, and it is what lets us speak of *computable* functions at all.
 
-The CIC is small. A type checker for it is a few thousand lines of code, and that program is the whole of what you must trust in order to believe a Lean proof. Everything in Mathlib -- the integers, the real numbers, manifolds, schemes -- is in the end a tower of inductive types and dependent functions resting on this kernel.
+The CIC is small. A type checker for it is a few thousand lines of code, and that program is the whole of what you must trust in order to believe a Lean proof. Everything in Mathlib — the integers, the real numbers, manifolds, schemes — is in the end a tower of inductive types and dependent functions resting on this kernel.
 
 # The axioms of Lean
 %%%
@@ -114,7 +114,7 @@ The CIC by itself is *minimal and constructive*: a handful of principles that wo
 -- 'Classical.choice' depends on axioms: [Classical.choice]
 ```
 
-Each of the three depends only on itself -- the signature of a genuine axiom. Everything else that *looks* axiomatic -- function extensionality, the law of excluded middle, the set-theoretic axiom of choice -- is in fact a *theorem* derived from these three, as we verify below. We take the three axioms first.
+Each of the three depends only on itself — the signature of a genuine axiom. Everything else that *looks* axiomatic — function extensionality, the law of excluded middle, the set-theoretic axiom of choice — is in fact a *theorem* derived from these three, as we verify below. We take the three axioms first.
 
 ## Propositional extensionality (`propext`)
 %%%
@@ -183,7 +183,7 @@ number := false
 tag := "axiom-funext"
 %%%
 
-Two functions are equal if they agree on every input -- which, together with `propext`, is what makes {ref "foundations-set-eq"}[set equality] extensional (two sets with the same members are equal because they are equal *functions* into `Prop`). In practice one *uses* it through the `funext` lemma and tactic:
+Two functions are equal if they agree on every input — which, together with `propext`, is what makes {ref "foundations-set-eq"}[set equality] extensional (two sets with the same members are equal because they are equal *functions* into `Prop`). In practice one *uses* it through the `funext` lemma and tactic:
 
 ```lean
 -- funext: if f x = g x for all x, then f = g
@@ -225,21 +225,21 @@ The argument is worth seeing, because it pinpoints exactly where non-constructiv
 - `U x := (x = True) ∨ p`
 - `V x := (x = False) ∨ p`
 
-Both are nonempty -- `True` satisfies `U` and `False` satisfies `V` -- so `Classical.choice` hands us concrete witnesses `u v : Prop` together with proofs of `u = True ∨ p` and `v = False ∨ p`. Now case-split on those two disjunctions:
+Both are nonempty — `True` satisfies `U` and `False` satisfies `V` — so `Classical.choice` hands us concrete witnesses `u v : Prop` together with proofs of `u = True ∨ p` and `v = False ∨ p`. Now case-split on those two disjunctions:
 
-- If either disjunction takes its *right* branch, we have a proof of `p` outright -- the left side of `p ∨ ¬p`.
-- Otherwise `u = True` and `v = False`, so `u ≠ v`. But were `p` true, then `propext` would collapse `U` and `V` into the same predicate, forcing the chosen witnesses to coincide, `u = v` -- a contradiction. Hence `¬p`, the right side.
+- If either disjunction takes its *right* branch, we have a proof of `p` outright — the left side of `p ∨ ¬p`.
+- Otherwise `u = True` and `v = False`, so `u ≠ v`. But were `p` true, then `propext` would collapse `U` and `V` into the same predicate, forcing the chosen witnesses to coincide, `u = v` — a contradiction. Hence `¬p`, the right side.
 
 Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data*, the booleans `True` and `False`, which is the move a constructive system refuses. Mathlib packages the result as `Classical.em`, used in practice through `by_contra` or `by_cases`.
 
-The step "assume `p`, derive a contradiction, conclude `¬p`" does not itself use excluded middle, so the argument is not circular. Proving `¬p` by assuming `p` and reaching a contradiction is *negation introduction* -- it is simply the definition of `¬p` as `p → False`, and it is constructively valid. The *classical* principle is the opposite direction: concluding a positive `p` from `¬¬p` (that is `by_contra`), which we never invoke here. Likewise, the case splits above *eliminate* disjunctions we already hold (from the choice specification); they do not conjure `p ∨ ¬p` out of nothing -- that disjunction is our *conclusion*, assembled constructively from the cases. The one and only non-constructive ingredient is `Classical.choice`, and using it is not the same as assuming the `p ∨ ¬p` we are proving.
+The step "assume `p`, derive a contradiction, conclude `¬p`" does not itself use excluded middle, so the argument is not circular. Proving `¬p` by assuming `p` and reaching a contradiction is *negation introduction* — it is simply the definition of `¬p` as `p → False`, and it is constructively valid. The *classical* principle is the opposite direction: concluding a positive `p` from `¬¬p` (that is `by_contra`), which we never invoke here. Likewise, the case splits above *eliminate* disjunctions we already hold (from the choice specification); they do not conjure `p ∨ ¬p` out of nothing — that disjunction is our *conclusion*, assembled constructively from the cases. The one and only non-constructive ingredient is `Classical.choice`, and using it is not the same as assuming the `p ∨ ¬p` we are proving.
 
 # Declared axioms vs. what the kernel bakes in
 %%%
 tag := "baked-in"
 %%%
 
-Saying Lean has "exactly three axioms" is precise about *declared* axioms -- the `axiom` constants, which are exactly what `#print axioms` reports. But the kernel's typing and definitional-equality rules quietly build in further logical principles that are *not* axioms and leave *no* trace in `#print axioms`. Unlike the three axioms, you cannot opt out of them.
+Saying Lean has "exactly three axioms" is precise about *declared* axioms — the `axiom` constants, which are exactly what `#print axioms` reports. But the kernel's typing and definitional-equality rules quietly build in further logical principles that are *not* axioms and leave *no* trace in `#print axioms`. Unlike the three axioms, you cannot opt out of them.
 
 The clearest are *definitional*: they hold by `rfl`, yet cost nothing.
 
@@ -281,11 +281,11 @@ tag := "baked-in-more"
 The list does not stop there:
 
 - *Computation* (beta, iota, delta, zeta reduction): the kernel *evaluates* terms, so `2 + 2 = 4` holds by `rfl` (these {ref "reduction-rules"}[reduction rules] are detailed in the appendix).
-- *Native literal arithmetic*: the kernel computes `Nat`, `Int`, and `String` literals with bignum-backed operations rather than unary `succ` -- a baked-in optimization you rely on every time you `decide` or `#eval`.
+- *Native literal arithmetic*: the kernel computes `Nat`, `Int`, and `String` literals with bignum-backed operations rather than unary `succ` — a baked-in optimization you rely on every time you `decide` or `#eval`.
 - *Impredicative `Prop`*: `∀ (α : Type), p α` is again a `Prop`, no matter how large `α` is.
 - *Inductive types and their recursors*: every `inductive` declaration generates an eliminator together with its built-in computation (iota) rule (see {ref "cic"}[the CIC section]).
 - *The universe hierarchy* ({ref "universe-hierarchy"}[the first section]): in particular, never `Type : Type`.
-- *Subsingleton (large) elimination*: you may eliminate a `Prop` into `Type` only when it is a *subsingleton* -- `False`, `Eq`, `And`, `Acc` qualify, but `Or` and `Exists` do not, because they would let you extract genuine data (which side, which witness) from a mere proof.
+- *Subsingleton (large) elimination*: you may eliminate a `Prop` into `Type` only when it is a *subsingleton* — `False`, `Eq`, `And`, `Acc` qualify, but `Or` and `Exists` do not, because they would let you extract genuine data (which side, which witness) from a mere proof.
 
 That last rule is exactly why an existential lives in `Prop` and you need {ref "axiom-choice"}[choice] to get its witness:
 
@@ -315,9 +315,9 @@ tag := "baked-in-meaning"
 
 Two consequences are worth drawing.
 
-First, `#print axioms` sees *only* the declared axioms.  The baked-in principles are invisible to it and cannot be switched off, so the *trusted base* of a Lean proof is not "three axioms" but the whole kernel -- the CIC together with proof irrelevance, eta, the quotient reduction, native computation, and the universe rules.  Believing a Lean theorem means believing all of that.
+First, `#print axioms` sees *only* the declared axioms.  The baked-in principles are invisible to it and cannot be switched off, so the *trusted base* of a Lean proof is not "three axioms" but the whole kernel — the CIC together with proof irrelevance, eta, the quotient reduction, native computation, and the universe rules.  Believing a Lean theorem means believing all of that.
 
-Second, proof irrelevance for `Prop` is effectively *uniqueness of identity proofs* (axiom K): all proofs of `a = b` are equal.  This is a deliberate design choice -- but it is precisely what makes Lean *incompatible* with the univalence axiom of {ref "other-type-theories"}[Homotopy Type Theory], where distinct equality proofs must be allowed to differ.
+Second, proof irrelevance for `Prop` is effectively *uniqueness of identity proofs* (axiom K): all proofs of `a = b` are equal.  This is a deliberate design choice — but it is precisely what makes Lean *incompatible* with the univalence axiom of {ref "other-type-theories"}[Homotopy Type Theory], where distinct equality proofs must be allowed to differ.
 
 # Why the kernel has no loops
 %%%
@@ -342,7 +342,7 @@ number := false
 tag := "recursors-not-recursion"
 %%%
 
-Lean does not solve this by testing whether a definition terminates -- that question is undecidable. The kernel has no recursion at all. It has *recursors*, one per inductive type, each a constant with a fixed type and a fixed reduction rule that always strips a constructor:
+Lean does not solve this by testing whether a definition terminates — that question is undecidable. The kernel has no recursion at all. It has *recursors*, one per inductive type, each a constant with a fixed type and a fixed reduction rule that always strips a constructor:
 
 ```lean
 #check @Nat.rec
@@ -436,7 +436,7 @@ example (P : Prop) : ¬¬P → P := by
   exact hnnP hnP
 ```
 
-Without excluded middle, double negation elimination `¬¬P → P` is not provable -- one of the key differences between constructive and classical logic.
+Without excluded middle, double negation elimination `¬¬P → P` is not provable — one of the key differences between constructive and classical logic.
 
 ## Decidability, classically
 %%%
@@ -448,7 +448,7 @@ A proposition is {ref "decidable-typeclass"}[`Decidable`] when an
 algorithm computes whether it holds, which is what makes
 `if P then _ else _` and the `decide` tactic run *without any axioms*. Classical logic extends this
 reach. When you `open Classical`, every `Prop` becomes
-`Decidable` -- but *non-constructively*, via `Classical.choice`, so the
+`Decidable` — but *non-constructively*, via `Classical.choice`, so the
 instance carries no algorithm. This is convenient in proofs (you may
 `by_cases` on any proposition), but code that relies on it is no longer
 executable. Decidability is thus the exact dividing line between the
@@ -511,7 +511,7 @@ Most mathematicians are (at least implicitly) trained in ZFC set theory. Here ar
 
 A key practical difference: in ZFC, you can ask nonsensical questions like "is 3 ∈ π?" and get an answer. In Lean, comparing objects of different types is a type error, which catches many mistakes early.
 
-Both foundations are equiconsistent for most of mathematics. Nearly everything that can be formalized in ZFC can also be formalized in Lean's type theory (and vice versa).
+Nearly everything that can be formalized in ZFC can also be formalized in Lean's type theory, and the other way round. {citet werner1997}[] makes one half of this precise: ZFC embeds into the CIC, and a dialect of the CIC embeds back into ZFC with a hierarchy of inaccessible cardinals. It is not a statement about Lean. The type theory Lean actually implements has no complete public relative-consistency proof{citep hales2026}[]; see {ref "prop-special"}[the chapter on types].
 
 # Brief mention of other type theories
 %%%

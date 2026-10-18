@@ -15,8 +15,8 @@ htmlSplit := .never
 tag := "file-structure"
 %%%
 
-A Lean file is a sequence of *commands* -- `def`, `theorem`,
-`structure`, `#check`, and so on -- processed top to bottom.  It opens
+A Lean file is a sequence of *commands* — `def`, `theorem`,
+`structure`, `#check`, and so on — processed top to bottom.  It opens
 with its `import`s, which pull in other files, and then a handful of
 keywords organize the rest and control *where* the names they
 introduce are visible: `namespace`, `open`, `section`, `variable`, and
@@ -30,15 +30,15 @@ tag := "imports"
 
 Every Lean file begins with its *imports*.  Writing `import Foo.Bar`
 makes the contents of the module `Foo/Bar.lean` available in the
-current file, and imports are *transitive* -- importing a module also
+current file, and imports are *transitive* — importing a module also
 brings in everything that module itself imports.  All `import` lines
 must come *first*, before any other command; an `import` after the
 first `def` or `#check` is a syntax error.
 
 The module name mirrors the file path: `import Mathlib.Order.Basic`
 refers to `Mathlib/Order/Basic.lean`.  Importing the umbrella module
-`Mathlib` pulls in the entire library at once -- convenient for
-exploration, though slower to load -- whereas a targeted import brings
+`Mathlib` pulls in the entire library at once — convenient for
+exploration, though slower to load — whereas a targeted import brings
 in only what you need:
 
 ```
@@ -142,14 +142,14 @@ By default a `def` is visible in every file that imports it (using its
 qualified name, or unqualified after `open`).  Three modifiers narrow
 that reach:
 
-- `private def f ...` -- visible only within the current file.
-- `local notation ...` / `local instance ...` -- visible only until the
+- `private def f ...` — visible only within the current file.
+- `local notation ...` / `local instance ...` — visible only until the
   end of the current `section` or file.
-- `scoped notation ...` / `scoped instance ...` -- visible only when the
+- `scoped notation ...` / `scoped instance ...` — visible only when the
   enclosing namespace is `open`ed (with `open` or `open scoped`).
 
-The `scoped` modifier is how Mathlib ships heavy notation -- `∑`, `∏`,
-the `ℝ≥0` shorthand -- without polluting global scope: you get the
+The `scoped` modifier is how Mathlib ships heavy notation — `∑`, `∏`,
+the `ℝ≥0` shorthand — without polluting global scope: you get the
 notation exactly when you ask for it by opening the relevant namespace.
 
 ```
@@ -163,4 +163,4 @@ open scoped BigOps
 ```
 
 Together, these keywords let a Lean file stay organized and keep each
-name visible exactly where it is wanted -- no more and no less.
+name visible exactly where it is wanted — no more and no less.

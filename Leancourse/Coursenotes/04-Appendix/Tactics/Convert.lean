@@ -15,7 +15,7 @@ set_option pp.rawOnError true
 tag := "convert"
 %%%
 
-*Summary:* `convert e` closes the goal with `e` *up to congruence*: it matches the goal against the type of `e` and leaves the *mismatched subterms* as new equality goals. Reach for it when you have a proof of something that is *almost* the goal -- the two differ only in a few places. `convert e using n` limits how deep the matching descends: stopping after `n` layers gives fewer but larger leftover goals.
+*Summary:* `convert e` closes the goal with `e` *up to congruence*: it matches the goal against the type of `e` and leaves the *mismatched subterms* as new equality goals. Reach for it when you have a proof of something that is *almost* the goal — the two differ only in a few places. `convert e using n` limits how deep the matching descends: stopping after `n` layers gives fewer but larger leftover goals.
 
 *Example:*
 

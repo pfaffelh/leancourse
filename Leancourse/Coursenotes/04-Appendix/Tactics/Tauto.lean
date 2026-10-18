@@ -81,7 +81,7 @@ The truth tables for `¬P`, `P ∧ Q` and `P ∨ Q` are as follows; if more term
 
 *Notes*
 
-Reasoning by truth table assumes that every proposition is either true or false. So `tauto` uses the law of the excluded middle, and the second example above -- Peirce's law -- is proved by it.
+Reasoning by truth table assumes that every proposition is either true or false. So `tauto` uses the law of the excluded middle, and the second example above — Peirce's law — is proved by it.
 
 The constructive counterpart is {ref "itauto"}[`itauto`], which never uses that law. Comparing the two is how you find out whether a statement really needs classical logic.
 

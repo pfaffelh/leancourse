@@ -17,7 +17,7 @@ tag := "probability-pmf"
 %%%
 
 First, *monads*: a design pattern from functional programming that
-sequences computations carrying additional structure -- failure,
+sequences computations carrying additional structure — failure,
 multiple results, state, I/O, probability. Second, Mathlib's `PMF α`,
 the type of discrete probability distributions on `α`, which is a monad
 in exactly that sense.
@@ -137,7 +137,7 @@ tag := "functor-typeclass"
 
 Before we discuss monads, we need the simpler concept of a *functor*. In Lean, `Functor` is a typeclass for type constructors `f : Type → Type` that support a `map` operation:
 
-* `map : (α → β) → f α → f β` -- applies a function to the value(s) inside the container, without changing the structure.
+* `map : (α → β) → f α → f β` — applies a function to the value(s) inside the container, without changing the structure.
 
 The infix notation for `map` is `<$>`, so `g <$> x` means `Functor.map g x`. Every monad is automatically a functor (since `map` can be defined in terms of `bind` and `pure`), and the functor interface suffices when you only transform values without chaining computations.
 
@@ -190,8 +190,8 @@ tag := "monad-typeclass"
 
 In Lean, `Monad` is a typeclass. Any type constructor `m : Type → Type` can be a monad if it provides two operations:
 
-* `pure : α → m α` -- wraps a plain value into the monadic context.
-* `bind : m α → (α → m β) → m β` -- chains computations.
+* `pure : α → m α` — wraps a plain value into the monadic context.
+* `bind : m α → (α → m β) → m β` — chains computations.
 
 These must satisfy the monad laws (associativity and identity), which ensure that `do`-notation behaves sensibly. Every `Monad` is also a `Functor`, with `map f x = x >>= (pure ∘ f)`.
 
@@ -240,7 +240,7 @@ def greet (name : String) : IO Unit := do
   IO.println "Welcome to Lean."
 ```
 
-Inside `do`-notation, we can sequence IO actions. The key insight is that `greet` itself is a pure function -- it returns a *description* of actions, not the actions themselves. The actions are only performed when the program runs.
+Inside `do`-notation, we can sequence IO actions. The key insight is that `greet` itself is a pure function — it returns a *description* of actions, not the actions themselves. The actions are only performed when the program runs.
 
 A complete program in Lean is a value of type `IO Unit`:
 
@@ -252,8 +252,8 @@ def myMain : IO Unit := do
 
 The monad instance for `IO` is given by:
 
-* `pure (a : α) : IO α` -- returns `a` without performing any side effect.
-* `bind (x : IO α) (f : α → IO β) : IO β` -- first executes the action `x`, obtaining a value `a : α`, then executes `f a`.
+* `pure (a : α) : IO α` — returns `a` without performing any side effect.
+* `bind (x : IO α) (f : α → IO β) : IO β` — first executes the action `x`, obtaining a value `a : α`, then executes `f a`.
 
 Internally, `IO α` is defined as `EStateM IO.Error IO.RealWorld α`, a state monad over a token representing the real world. However, these implementation details are hidden: you cannot pattern-match on an `IO` value.
 
@@ -284,8 +284,8 @@ The `.run` function executes the stateful computation with an initial state. The
 
 The type `StateM σ α` is defined as `σ → (α × σ)`, i.e. a function that takes an initial state and returns a result together with an updated state. The monad instance is:
 
-* `pure (a : α) : StateM σ α := fun s => (a, s)` -- returns `a` and leaves the state unchanged.
-* `bind (x : StateM σ α) (f : α → StateM σ β) : StateM σ β := fun s => let (a, s') := x s; f a s'` -- runs `x` with state `s`, obtaining result `a` and new state `s'`, then runs `f a` with state `s'`.
+* `pure (a : α) : StateM σ α := fun s => (a, s)` — returns `a` and leaves the state unchanged.
+* `bind (x : StateM σ α) (f : α → StateM σ β) : StateM σ β := fun s => let (a, s') := x s; f a s'` — runs `x` with state `s`, obtaining result `a` and new state `s'`, then runs `f a` with state `s'`.
 
 The operations `get : StateM σ σ := fun s => (s, s)` and `set (s' : σ) : StateM σ Unit := fun _ => ((), s')` allow reading and writing the state.
 
@@ -354,8 +354,8 @@ end SetMonad
 
 The monad instance for `Set` is given by:
 
-* `pure (a : α) : Set α := {a}` -- the singleton set.
-* `bind (s : Set α) (f : α → Set β) : Set β := ⋃ a ∈ s, f a` -- the union of all images under `f`.
+* `pure (a : α) : Set α := {a}` — the singleton set.
+* `bind (s : Set α) (f : α → Set β) : Set β := ⋃ a ∈ s, f a` — the union of all images under `f`.
 
 This is exactly the mathematical counterpart of the `List` monad: where `List.bind` concatenates lists, `Set.bind` takes unions of sets.
 
@@ -374,8 +374,8 @@ Recall that a {ref "filters"}[filter] `F : Filter α` is a collection of sets th
 
 The `Pure` instance for `Filter` is registered so that `pure a` is the principal filter of `{a}`:
 
-* `pure (a : α) : Filter α := 𝓟 {a}` -- the collection of all sets containing `a`. In particular, `s ∈ pure a ↔ a ∈ s`.
-* `Filter.bind (F : Filter α) (m : α → Filter β) : Filter β := Filter.join (Filter.map m F)` -- informally, this takes the "union" of the filters `m a` as `a` ranges over `F`.
+* `pure (a : α) : Filter α := 𝓟 {a}` — the collection of all sets containing `a`. In particular, `s ∈ pure a ↔ a ∈ s`.
+* `Filter.bind (F : Filter α) (m : α → Filter β) : Filter β := Filter.join (Filter.map m F)` — informally, this takes the "union" of the filters `m a` as `a` ranges over `F`.
 
 However, Mathlib does *not* register a `Monad Filter` instance. The reason is that this `bind` is incompatible with the `Applicative Filter` instance (which is based on `Filter.seq`), so the monad laws would not hold with respect to the existing applicative structure. One can still use `pure` and `Filter.bind` directly, but `do`-notation is not available for filters.
 
@@ -403,8 +403,8 @@ Note that we need `open scoped Classical` because the `Monad Finset` instance re
 
 The monad instance for `Finset` is given by:
 
-* `pure (a : α) : Finset α := {a}` -- the singleton finite set.
-* `bind (s : Finset α) (f : α → Finset β) : Finset β := s.sup f` -- which equals `s.biUnion f`, the finite union of all images under `f`.
+* `pure (a : α) : Finset α := {a}` — the singleton finite set.
+* `bind (s : Finset α) (f : α → Finset β) : Finset β := s.sup f` — which equals `s.biUnion f`, the finite union of all images under `f`.
 
 This is the finite analogue of the `Set` monad.
 
@@ -417,9 +417,9 @@ tag := "monads-category-theory"
 The name "monad" comes from category theory. In that setting, a monad on a category `C` is an endofunctor `T : C → C` together with natural transformations `η : Id → T` (the unit, corresponding to `pure`) and `μ : T ∘ T → T` (the multiplication, related to `bind`/`join`), satisfying certain coherence conditions.
 
 The programming notion of monad is exactly this, specialized to the category of types and functions. The monad laws in programming:
-* `pure a >>= f = f a` -- left identity
-* `m >>= pure = m` -- right identity
-* `(m >>= f) >>= g = m >>= (fun x => f x >>= g)` -- associativity
+* `pure a >>= f = f a` — left identity
+* `m >>= pure = m` — right identity
+* `(m >>= f) >>= g = m >>= (fun x => f x >>= g)` — associativity
 
 correspond precisely to the coherence conditions for monads in category theory. So if you study category theory later, you will find that you already understand monads from a programming perspective.
 
@@ -431,13 +431,13 @@ tag := "monads-summary"
 
 Monads provide a unified pattern for sequencing computations:
 
-* `Option` -- computations that may fail silently
-* `Except ε` -- computations that may fail with an error of type `ε`
-* `List` -- computations with multiple results
-* `Set` -- nondeterministic choice over (possibly infinite) sets
-* `Finset` -- nondeterministic choice over finite sets
-* `StateM σ` -- computations with mutable state of type `σ`
-* `IO` -- computations with real-world side effects
+* `Option` — computations that may fail silently
+* `Except ε` — computations that may fail with an error of type `ε`
+* `List` — computations with multiple results
+* `Set` — nondeterministic choice over (possibly infinite) sets
+* `Finset` — nondeterministic choice over finite sets
+* `StateM σ` — computations with mutable state of type `σ`
+* `IO` — computations with real-world side effects
 
 Filters have `pure` and `bind` operations but do not form a `Monad` instance due to incompatibility with the applicative structure.
 
@@ -521,7 +521,7 @@ tag := "pmf-definition"
 {docstring PMF}
 
 So a `PMF α` is a function `p : α → ℝ≥0∞` together with a proof
-`HasSum p 1`. (xxx: unconditional summation `tsum`/`HasSum` -- the crux of `PMF` -- is not defined.)  In particular:
+`HasSum p 1`. (xxx: unconditional summation `tsum`/`HasSum` — the crux of `PMF` — is not defined.)  In particular:
 
 - `p a : ℝ≥0∞` is the probability mass at `a`;
 - `∑' a, p a = 1` (total mass is one);
@@ -638,7 +638,7 @@ Notice how no measurability hypothesis appears: `PMF.map f p` makes
 sense for *every* function `f : α → β`.  `Measure.map`, by contrast, requires `Measurable f` and produces the
 zero measure otherwise.  Measurability only re-enters if we want
 to compare `p.map f` with the pushforward measure `p.toMeasure.map f`,
-as in `PMF.toMeasure_map_apply` -- but nothing on the `PMF` side
+as in `PMF.toMeasure_map_apply` — but nothing on the `PMF` side
 requires it.
 
 ## `join`: flattening distributions of distributions
@@ -708,11 +708,11 @@ tag := "pmf-concrete"
 
 Mathlib provides several familiar named distributions as `PMF`s:
 
-- `PMF.bernoulli p hp : PMF Bool` -- the Bernoulli distribution with
+- `PMF.bernoulli p hp : PMF Bool` — the Bernoulli distribution with
   probability `p` of `true`, requiring `p ≤ 1`.
-- `PMF.binomial p hp n : PMF (Fin (n + 1))` -- the Binomial
+- `PMF.binomial p hp n : PMF (Fin (n + 1))` — the Binomial
   distribution `B(n, p)`.
-- `PMF.uniformOfFinset s hs : PMF α` -- the uniform distribution on
+- `PMF.uniformOfFinset s hs : PMF α` — the uniform distribution on
   a nonempty finite set.
 
 ```lean
@@ -762,7 +762,7 @@ sigma-algebras.  You only need to reach for measurability when:
 3. You want to compare `PMF.map f` with the measure-theoretic
    pushforward `Measure.map f`.
 
-For most manipulations of discrete distributions -- composing
-samplers, pushing them along functions, computing marginals --
+For most manipulations of discrete distributions — composing
+samplers, pushing them along functions, computing marginals —
 working directly with `PMF` and its monad laws is cleaner and
 measurability-free.

@@ -14,13 +14,13 @@ set_option pp.rawOnError true
 tag := "conv"
 %%%
 
-*Summary:* `rw` and `simp` rewrite the *first* matching subterm (and every copy of it), which is sometimes the wrong place -- and neither can reach *under a binder* such as `∀`, `∃`, or `∑`. The `conv` tactic enters *conversion mode*: you first *navigate* to the exact subterm you mean, and only then rewrite it. Once focused, `rw`, `simp`, and `change` act *only* on the focused subterm.
+*Summary:* `rw` and `simp` rewrite the *first* matching subterm (and every copy of it), which is sometimes the wrong place — and neither can reach *under a binder* such as `∀`, `∃`, or `∑`. The `conv` tactic enters *conversion mode*: you first *navigate* to the exact subterm you mean, and only then rewrite it. Once focused, `rw`, `simp`, and `change` act *only* on the focused subterm.
 
 Navigation inside `conv => …`:
 
-* `lhs` / `rhs` -- move into the left / right operand of an `=`, `↔`, or binary operation.
-* `enter [i, j, …]` -- descend into argument `i`, then `j`, … of the focused term.
-* `ext x` -- go *under* a binder, introducing `x`; this is what lets you rewrite beneath `∀`/`λ`/`∑`.
+* `lhs` / `rhs` — move into the left / right operand of an `=`, `↔`, or binary operation.
+* `enter [i, j, …]` — descend into argument `i`, then `j`, … of the focused term.
+* `ext x` — go *under* a binder, introducing `x`; this is what lets you rewrite beneath `∀`/`λ`/`∑`.
 * `conv at h => …` operates inside a hypothesis `h` instead of the goal.
 * the shorthands `conv_lhs => …` and `conv_rhs => …` start already focused on one side of the goal.
 

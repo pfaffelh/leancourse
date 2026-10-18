@@ -17,7 +17,7 @@ htmlSplit := .never
 tag := "terms"
 %%%
 
-The previous chapter showed how *types* are formed. This chapter is about the other side: how to *define terms* -- named inhabitants of those types.
+The previous chapter showed how *types* are formed. This chapter is about the other side: how to *define terms* — named inhabitants of those types.
 
 # Naming terms with `def`
 %%%
@@ -41,7 +41,7 @@ def p3 : Point where
   y := 0
 ```
 
-All four invoke the single constructor of `Point`: the record form `{ x := …, y := … }`, the *anonymous constructor* `⟨...⟩` (typed `\<` and `\>`), the explicit `Point.mk`, and the *block* `where` form -- one `field := value` line per field, with no braces or commas. The `where` form is just the record form spread over several lines; it is the same syntax we will use to supply {ref "typeclasses"}[typeclass instances] (`instance : Add Vec2 where …`), and it has nothing to do with the `|`-branches of pattern matching (fields are `field := value`, not `| pattern => …`).
+All four invoke the single constructor of `Point`: the record form `{ x := …, y := … }`, the *anonymous constructor* `⟨...⟩` (typed `\<` and `\>`), the explicit `Point.mk`, and the *block* `where` form — one `field := value` line per field, with no braces or commas. The `where` form is just the record form spread over several lines; it is the same syntax we will use to supply {ref "typeclasses"}[typeclass instances] (`instance : Add Vec2 where …`), and it has nothing to do with the `|`-branches of pattern matching (fields are `field := value`, not `| pattern => …`).
 
 Here the target type is fixed by the `: Point` on the left of `:=`, so Lean knows which constructor `{ … }` and `⟨…⟩` mean. When the type is *not* clear from the context, you can annotate the record itself:
 
@@ -54,7 +54,7 @@ Here the target type is fixed by the `: Point` on the left of `:=`, so Lean know
 tag := "structure-values"
 %%%
 
-We read fields back with dot notation. Here the `#eval` command evaluates a (computable) term and prints the resulting value -- the same reduction that `rfl` performs, only with the answer displayed:
+We read fields back with dot notation. Here the `#eval` command evaluates a (computable) term and prints the resulting value — the same reduction that `rfl` performs, only with the answer displayed:
 
 ```lean
 #eval p1.x          -- outputs 1
@@ -68,7 +68,7 @@ def p4 : Point := { p1 with y := 10 }
 -- p4.x = 1, p4.y = 10
 ```
 
-Structures are immutable, so this creates a new `Point` rather than modifying `p1`. You may even draw from several records at once -- `{ p, q with … }` takes each remaining field from the first of `p`, `q` that supplies it. When a structure declares field defaults, a value may omit those fields:
+Structures are immutable, so this creates a new `Point` rather than modifying `p1`. You may even draw from several records at once — `{ p, q with … }` takes each remaining field from the first of `p`, `q` that supplies it. When a structure declares field defaults, a value may omit those fields:
 
 ```lean
 def myConfig : MyConfig := { title := "My Window" }
@@ -93,7 +93,7 @@ def Point.normSq (p : Point) : ℕ :=
 #eval p2.normSq    -- outputs 25
 ```
 
-`p2.normSq` (the squared distance from the origin) works because Lean sees that `p2 : Point` and looks for `Point.normSq`. The Gaussian-integer type gives a fuller example -- data and its operations together:
+`p2.normSq` (the squared distance from the origin) works because Lean sees that `p2 : Point` and looks for `Point.normSq`. The Gaussian-integer type gives a fuller example — data and its operations together:
 
 ```lean
 def MyComplex.add (a b : MyComplex) : MyComplex :=
@@ -116,7 +116,7 @@ def i : MyComplex := { re := 0, im := 1 }
 tag := "pure-functions"
 %%%
 
-A *function* is again just a term -- one whose type is a function
+A *function* is again just a term — one whose type is a function
 type.  We define one with `def`, now writing its *arguments* before
 the `:=`, and evaluate it with `#eval`.  The shape is
 
@@ -134,7 +134,7 @@ def double (n : ℕ) : ℕ := 2 * n
 #eval double 0    -- outputs 0
 ```
 
-Application is written `f x` (no parentheses -- `f x` is Lean's way
+Application is written `f x` (no parentheses — `f x` is Lean's way
 of writing `f(x)`).  A *pure function* returns the same result for
 the same arguments, exactly as in mathematics.
 
@@ -156,7 +156,7 @@ The type of `add` is `ℕ → ℕ → ℕ`, which reads as `ℕ → (ℕ → ℕ
 tag := "polymorphic-functions"
 %%%
 
-Functions can take *types* as arguments, not just values -- this is how
+Functions can take *types* as arguments, not just values — this is how
 you write a single definition that works for every type.  The identity
 function is the basic example:
 
@@ -174,8 +174,8 @@ def myId' {α : Type} (a : α) : α := a
 #check myId' 42         -- ℕ, inferred
 ```
 
-A definition that should also work at *any universe level* -- recall
-the {ref "type-universes"}[universe hierarchy] -- uses a universe
+A definition that should also work at *any universe level* — recall
+the {ref "type-universes"}[universe hierarchy] — uses a universe
 variable.  You may introduce one with the `universe` command, or, most
 commonly, write `Type*`, which inserts a fresh universe variable for
 you:
@@ -208,7 +208,7 @@ name.  We use `fun` (short for "function") with the `↦` arrow
 Mathematics writes `x ↦ x^2`; Lean writes `fun x ↦ x ^ 2`. Shorter still
 is the `·` placeholder (a centered dot, typed `\cdot`), which stands for
 an anonymous argument: so `(· + 10)` is shorthand for `fun x ↦ x + 10`,
-and several `·` become successive arguments -- `(· + ·)` means
+and several `·` become successive arguments — `(· + ·)` means
 `fun x y ↦ x + y`.
 
 # Pattern matching
@@ -247,7 +247,7 @@ def MyNat.double : MyNat → MyNat
   | .succ n => .succ (.succ (MyNat.double n))
 ```
 
-The leading dot in `.zero` and `.succ` is *anonymous constructor notation*: because Lean already knows the result must be a `MyNat`, we may write `.zero` in place of the full `MyNat.zero`. Writing plain `zero` would fail -- there is no `zero` in scope, only `MyNat.zero`.
+The leading dot in `.zero` and `.succ` is *anonymous constructor notation*: because Lean already knows the result must be a `MyNat`, we may write `.zero` in place of the full `MyNat.zero`. Writing plain `zero` would fail — there is no `zero` in scope, only `MyNat.zero`.
 
 Pattern matching works for any inductive type:
 
@@ -296,14 +296,14 @@ def fib : ℕ → ℕ
 ```
 
 Lean only accepts a recursive definition once it is convinced the
-recursion *terminates*.  For *structural* recursion -- where each
+recursion *terminates*.  For *structural* recursion — where each
 call is on a syntactic sub-part of the input, as in `factorial`,
-`length'`, and `fib` -- this is automatic.
+`length'`, and `fib` — this is automatic.
 
 When the recursive call is *not* on a structural sub-part, termination
 is justified by a *measure* that strictly decreases: `termination_by`
 names the measure, `decreasing_by` proves that it goes down. Euclid's
-algorithm -- `euclidGcd m n` recurses on `n % m`, which is not
+algorithm — `euclidGcd m n` recurses on `n % m`, which is not
 a subterm of `m`, but the first argument strictly decreases:
 
 ```lean
@@ -334,6 +334,6 @@ decreasing_by omega
 ```
 
 Under the hood this compiles to *well-founded recursion*
-(`WellFounded.fix`); that theory -- what makes a relation
-well-founded, and why `<` on `Nat` qualifies -- is developed in the
+(`WellFounded.fix`); that theory — what makes a relation
+well-founded, and why `<` on `Nat` qualifies — is developed in the
 *Mathematics* part.

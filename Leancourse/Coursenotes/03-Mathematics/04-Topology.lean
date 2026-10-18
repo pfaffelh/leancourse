@@ -171,9 +171,9 @@ tag := "closure-interior"
 For a set `s` in a topological space, three derived sets are
 fundamental:
 
-- `closure s` -- the smallest closed set containing `s`;
-- `interior s` -- the largest open set contained in `s`;
-- `frontier s` -- the boundary, defined as `closure s \ interior s`.
+- `closure s` — the smallest closed set containing `s`;
+- `interior s` — the largest open set contained in `s`;
+- `frontier s` — the boundary, defined as `closure s \ interior s`.
 
 {docstring closure}
 
@@ -288,7 +288,7 @@ tag := "connected-spaces"
 
 A topological space is *connected* if it cannot be written as the union of
 two nonempty disjoint open sets. A set `s` is connected if, viewed as a
-subspace, it is connected. (xxx: the distinction *connected* vs *preconnected* -- used in the notation table and summary -- is not explained.)
+subspace, it is connected. (xxx: the distinction *connected* vs *preconnected* — used in the notation table and summary — is not explained.)
 
 ```lean
 -- ℝ is connected

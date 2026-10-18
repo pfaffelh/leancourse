@@ -34,7 +34,7 @@ tag := "suffices"
 
 `suffices` is {ref "have"}[`have`] read backwards. `have h : P := ...` proves `P` first and then uses it; `suffices h : P` uses `P` first and proves it afterwards.
 
-Which one to pick is a question of how the proof reads. Use `have` when the intermediate fact is a step forward from what you know. Use `suffices` when it is a reduction of what you want -- "it is enough to show ..." is exactly how such a step is phrased on paper.
+Which one to pick is a question of how the proof reads. Use `have` when the intermediate fact is a step forward from what you know. Use `suffices` when it is a reduction of what you want — "it is enough to show ..." is exactly how such a step is phrased on paper.
 
 The short form `suffices h : P by tac` closes the first goal with `tac` immediately and leaves only `⊢ P`.
 

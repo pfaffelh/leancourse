@@ -22,7 +22,7 @@ In Lean, **types can depend on values**. That one feature separates it from most
 tag := "what-dependent-types"
 %%%
 
-In a simply typed language (like Haskell without extensions, or basic OCaml), the type of a function's output cannot depend on the *value* of its input -- only on the *type* of its input. For example, you can write `f : ℕ → ℕ`, but you cannot write a type that says "a list whose length equals the input `n`."
+In a simply typed language (like Haskell without extensions, or basic OCaml), the type of a function's output cannot depend on the *value* of its input — only on the *type* of its input. For example, you can write `f : ℕ → ℕ`, but you cannot write a type that says "a list whose length equals the input `n`."
 
 In a dependently typed language, you *can* do this. The type of the output may mention the input value. For example:
 
@@ -98,8 +98,8 @@ tag := "sigma-vs-exists"
 
 This is a subtle but important distinction in Lean:
 
-- `Σ (x : α), β x` lives in `Type` -- you can extract the witness and use it computationally.
-- `∃ (x : α), P x` lives in `Prop` -- the witness is "erased" and cannot be used in computations (only in proofs).
+- `Σ (x : α), β x` lives in `Type` — you can extract the witness and use it computationally.
+- `∃ (x : α), P x` lives in `Prop` — the witness is "erased" and cannot be used in computations (only in proofs).
 
 This reflects the principle of {ref "prop-special"}[proof irrelevance]: in `Prop`, the specific proof does not matter, only whether the proposition is true or false. In `Type`, the data matters.
 
@@ -151,7 +151,7 @@ def myMatrix : Fin 2 → Fin 3 → ℕ :=
 #eval myMatrix 1 2  -- 6
 ```
 
-In Mathlib, matrix multiplication is only defined when the dimensions match. If `A` is an `m × n` matrix and `B` is an `n × p` matrix, then `A * B` is an `m × p` matrix. The dependent types enforce that the inner dimensions agree -- a dimension mismatch is a *type error*, caught at compile time.
+In Mathlib, matrix multiplication is only defined when the dimensions match. If `A` is an `m × n` matrix and `B` is an `n × p` matrix, then `A * B` is an `m × p` matrix. The dependent types enforce that the inner dimensions agree — a dimension mismatch is a *type error*, caught at compile time.
 
 # Type families
 %%%
@@ -204,7 +204,7 @@ def ten : BigNat := ⟨10, by norm_num⟩
 
 This is how many mathematical objects are defined in Mathlib. For example, the type of prime numbers could be defined as `{n : ℕ // Nat.Prime n}`.
 
-A subtype is closely related to, but distinct from, a *set* `s : Set α`: a set selects elements of `α` (which keep their type `α`), whereas the subtype `{x : α // P x}` is a *new* type. The relationship -- including the coercion `↥s` from a set to its subtype of members -- is spelled out in {ref "sets-and-types"}[the chapter on sets and types].
+A subtype is closely related to, but distinct from, a *set* `s : Set α`: a set selects elements of `α` (which keep their type `α`), whereas the subtype `{x : α // P x}` is a *new* type. The relationship — including the coercion `↥s` from a set to its subtype of members — is spelled out in {ref "sets-and-types"}[the chapter on sets and types].
 
 # Why dependent types matter
 %%%

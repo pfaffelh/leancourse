@@ -28,17 +28,11 @@ The one idea of the lecture. Come back to it.
 
 By the end you can
 
-:::fragment fadeUp
 - say why Mathlib defines limits through filters,
-:::
 
-:::fragment fadeUp
 - write down the three filter axioms,
-:::
 
-:::fragment fadeUp
 - read `Tendsto` as a single definition.
-:::
 
 # The problem
 
@@ -48,14 +42,12 @@ Three $`\varepsilon`-$`\delta` definitions:
 - $`f(x) \to l` as $`x \to x_0`
 - $`f(x) \to \infty` as $`x \to \infty`
 
-::::fragment fadeUp
 :::class "key"
 One shape: *for good enough inputs, the output lies in a given set.*
 :::
-::::
 
 :::notes
-Do not read the quantifiers out loud -- the students know them.
+Do not read the quantifiers out loud — the students know them.
 The point is only that the three look alike.
 :::
 
@@ -64,13 +56,11 @@ The point is only that the three look alike.
 A generalized subset $`F` of $`\alpha` is pinned down by the *actual*
 sets that contain it.
 
-:::fragment fadeUp
 Newton wanted $`dx` to be a number infinitesimally close to $`0`.
 A filter is how we get that back.
-:::
 
 :::notes
-Stress that we never say what F *is* -- only which sets contain it.
+Stress that we never say what F *is* — only which sets contain it.
 That move is the whole trick.
 :::
 
@@ -102,9 +92,7 @@ structure MyFilter (α : Type) where
     x ∈ sets → y ∈ sets → x ∩ y ∈ sets
 ```
 
-:::fragment fadeUp
 `S ∈ F` morally means `F ⊆ S`.
-:::
 
 # Three filters to know
 
@@ -127,11 +115,9 @@ example (f : α → β) (F : Filter α) (G : Filter β) :
   Tendsto f F G
 ```
 
-::::fragment fadeUp
 :::class "key-green"
 $`a_n \to l` is `Tendsto a atTop (nhds l)`.
 :::
-::::
 
 :::notes
 The same definition gives sequence limits, function limits and limits

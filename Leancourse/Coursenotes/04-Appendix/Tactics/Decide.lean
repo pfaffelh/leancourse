@@ -14,7 +14,7 @@ set_option pp.rawOnError true
 tag := "decide"
 %%%
 
-*Summary:* `decide` closes a goal whose statement is *decidable* --
+*Summary:* `decide` closes a goal whose statement is *decidable* —
 i.e. the typeclass `Decidable P` finds a proof or refutation of `P`
 by computation.  Typical candidates are concrete arithmetic
 equalities and inequalities, membership in a finite set, divisibility,
@@ -40,18 +40,18 @@ and propositional logic on concrete inputs.
   on the given inputs.  For large inputs it can be slow (or time
   out); for general arithmetic, prefer `omega` or `norm_num`.
 * For propositions that depend on a variable (e.g. `∀ n, P n`),
-  `decide` will not work -- it needs concrete inputs.
+  `decide` will not work — it needs concrete inputs.
 * `decide` reduces the `Decidable` instance in the *kernel*, so whether
   it succeeds depends on *how that instance is implemented*, not just on
   the proposition being decidable. Mathlib's `Decidable (IsSquare n)`,
   for instance, uses `Nat.sqrt`, which the kernel does not reduce, so
-  `decide` gets stuck on `IsSquare 2` -- even though it is perfectly
+  `decide` gets stuck on `IsSquare 2` — even though it is perfectly
   decidable. Giving the same proposition a kernel-reducible instance (a
   bounded search) makes `decide` work again (see below). The underlying
   class is the {ref "decidable-typeclass"}[`Decidable` typeclass].
 * `native_decide` uses the *compiled* evaluator instead of kernel
   reduction, so it closes goals like `¬ IsSquare 2` that `decide`
-  cannot -- at the cost of trusting the compiler (it enlarges the
+  cannot — at the cost of trusting the compiler (it enlarges the
   trusted base).
 
 
@@ -87,14 +87,14 @@ example :   IsSquare (9 : ℕ) := by decide
 :::
 ::::
 
-`e < π` is the opposite situation: a *true* statement whose only `Decidable` instance is the classical order on `ℝ` -- it depends on `Classical.choice`, so no instance can rescue it, and `<` on `ℝ` is not computably decidable at all.
+`e < π` is the opposite situation: a *true* statement whose only `Decidable` instance is the classical order on `ℝ` — it depends on `Classical.choice`, so no instance can rescue it, and `<` on `ℝ` is not computably decidable at all.
 
 ```lean +error
 -- stuck for good: the instance is `Classical.choice`-based
 example : Real.exp 1 < Real.pi := by decide
 ```
 
-Here `decide` is simply the wrong tool: such a statement is *proved*, not decided -- for instance by squeezing it between rationals.
+Here `decide` is simply the wrong tool: such a statement is *proved*, not decided — for instance by squeezing it between rationals.
 
 ::::keepEnv
 :::example " "

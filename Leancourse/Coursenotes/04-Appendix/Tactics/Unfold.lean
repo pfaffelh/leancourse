@@ -34,5 +34,5 @@ example (n : ℕ) : myDbl n = n + n := by
 
 *Notes*
 
-* If the two sides are already {ref "defeq"}[definitionally equal] after unfolding, {ref "rfl"}[`rfl`] alone often suffices -- `unfold` just makes the step explicit.
+* If the two sides are already {ref "defeq"}[definitionally equal] after unfolding, {ref "rfl"}[`rfl`] alone often suffices — `unfold` just makes the step explicit.
 * `simp only [myDbl]` unfolds via the same equation lemmas and is frequently more robust; `show` or {ref "change"}[`change`] can also replace the goal with an unfolded, definitionally-equal form.

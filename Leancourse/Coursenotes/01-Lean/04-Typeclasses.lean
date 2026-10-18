@@ -40,19 +40,19 @@ class MyAdd (α : Type) where
   myAdd : α → α → α
 ```
 
-This says: for any type `α`, an instance of `MyAdd α` provides a function `myAdd : α → α → α`. The `class` keyword is *almost* the same as `structure` -- in fact, every `class` is internally a `structure`. The difference is operational:
+This says: for any type `α`, an instance of `MyAdd α` provides a function `myAdd : α → α → α`. The `class` keyword is *almost* the same as `structure` — in fact, every `class` is internally a `structure`. The difference is operational:
 
 - A `structure` is constructed and passed *explicitly*: you write `⟨...⟩` or call its named projections.
 - A `class` is also a structure, but Lean's *instance resolution* will synthesize one for you whenever a function expects an `[Add α]` argument. You never write the instance argument by hand.
 
-Use `structure` when the value is data the user manipulates: a `Point`, a `Person`, a `RingHom`. Use `class` when it is a *canonical* piece of structure attached to a type -- a `Group` on `ℤ`, an `Add` on `ℕ` -- that Lean should find on its own.
+Use `structure` when the value is data the user manipulates: a `Point`, a `Person`, a `RingHom`. Use `class` when it is a *canonical* piece of structure attached to a type — a `Group` on `ℤ`, an `Add` on `ℕ` — that Lean should find on its own.
 
 # Data classes and Prop classes
 %%%
 tag := "class-universe"
 %%%
 
-Because a `class` is a `structure`, the applied class `C α` is an ordinary *type*, and an *instance* is simply a *term* of that type. Its universe follows the same rule as any {ref "structures"}[structure] -- the largest universe among its fields -- and this splits typeclasses into two kinds.
+Because a `class` is a `structure`, the applied class `C α` is an ordinary *type*, and an *instance* is simply a *term* of that type. Its universe follows the same rule as any {ref "structures"}[structure] — the largest universe among its fields — and this splits typeclasses into two kinds.
 
 *Data classes* bundle operations, so they carry `Type`-valued fields and live in `Type`. Their instances are *data*: a record of operations and proofs, carried at runtime and projected like any structure.
 
@@ -61,13 +61,13 @@ Because a `class` is a `structure`, the applied class `C α` is an ordinary *typ
 #check (inferInstance : Monoid ℕ)    -- a term of it -- data
 ```
 
-*Prop classes* have only propositional fields, so they live in `Prop`, and their instances are *proofs*. Mathlib's `Fact` is the standard example -- it merely packages a proof of `p` as a searchable instance.
+*Prop classes* have only propositional fields, so they live in `Prop`, and their instances are *proofs*. Mathlib's `Fact` is the standard example — it merely packages a proof of `p` as a searchable instance.
 
 ```lean
 #check @Fact                          -- Prop → Prop
 ```
 
-Being a proposition, a `Prop` class inherits {ref "prop-special"}[proof irrelevance]: any two instances are definitionally equal. That is a feature -- such an instance can never *conflict* with another, and it is erased at runtime.
+Being a proposition, a `Prop` class inherits {ref "prop-special"}[proof irrelevance]: any two instances are definitionally equal. That is a feature — such an instance can never *conflict* with another, and it is erased at runtime.
 
 ```lean
 example (h₁ h₂ : Fact (2 = 2)) : h₁ = h₂ := rfl
@@ -75,7 +75,7 @@ example (h₁ h₂ : Fact (2 = 2)) : h₁ = h₂ := rfl
 
 Typeclasses inherit the *proof* / *data* split drawn for terms in general: an instance is data or a proof exactly according to whether its class lives in `Type` or `Prop`.
 
-An instance is a term you construct: that is what `instance … where …` does, and its fields are values you can project and run. You then use it as a *property of the type* -- declared once, synthesized wherever `[C α]` is required, rarely named or passed by hand. For a data class it stays data, carried at runtime; for a `Prop` class it is a proof and is erased. So "an instance is only a property, not a term" describes the usage, not the substance: the term is there, and its construction is delegated to instance resolution.
+An instance is a term you construct: that is what `instance … where …` does, and its fields are values you can project and run. You then use it as a *property of the type* — declared once, synthesized wherever `[C α]` is required, rarely named or passed by hand. For a data class it stays data, carried at runtime; for a `Prop` class it is a proof and is erased. So "an instance is only a property, not a term" describes the usage, not the substance: the term is there, and its construction is delegated to instance resolution.
 
 The parallel holds at the term level: `class` is a `structure` marked for instance search, and `instance` is a `def` marked for instance search, with `instance foo : C := …` sugar for `@[instance] def foo : C := …`. A plain `def` of a class type is a perfectly good term, only invisible to the search.
 
@@ -195,7 +195,7 @@ def tripleIt [inst : Add α] (x : α) : α := inst.add x (inst.add x x)
 
 But usually the unnamed form `[Add α]` is preferred, since Lean resolves it behind the scenes.
 
-So `[...]` is the *typeclass bracket*: it marks an instance argument, filled by instance search -- as opposed to `(...)`, which you supply yourself, and `{...}`, which Lean infers by unification. The four kinds of binder brackets `()`, `{}`, `⦃⦄`, and `[]` are contrasted side by side in {ref "parenthesis"}[the appendix on parentheses].
+So `[...]` is the *typeclass bracket*: it marks an instance argument, filled by instance search — as opposed to `(...)`, which you supply yourself, and `{...}`, which Lean infers by unification. The four kinds of binder brackets `()`, `{}`, `⦃⦄`, and `[]` are contrasted side by side in {ref "parenthesis"}[the appendix on parentheses].
 
 # Inspecting typeclass arguments with `@`
 %%%
@@ -223,16 +223,16 @@ tag := "algebraic-hierarchy"
 
 Mathlib uses typeclasses to build an extensive hierarchy of algebraic structures. Here are some key ones, ordered roughly from weakest to strongest:
 
-* `Add α` -- a type with an addition operation
-* `Mul α` -- a type with a multiplication operation
-* `AddMonoid α` -- a type with addition, an additive identity `0`, and associativity
-* `Monoid α` -- a type with multiplication, a multiplicative identity `1`, and associativity
-* `Group α` -- a monoid with inverses
-* `AddCommGroup α` -- a commutative group under addition
-* `Ring α` -- an additive commutative group with a multiplication that distributes over addition
-* `CommRing α` -- a ring with commutative multiplication
-* `Field α` -- a commutative ring where every nonzero element has an inverse
-* `LinearOrder α` -- a type with a total order
+* `Add α` — a type with an addition operation
+* `Mul α` — a type with a multiplication operation
+* `AddMonoid α` — a type with addition, an additive identity `0`, and associativity
+* `Monoid α` — a type with multiplication, a multiplicative identity `1`, and associativity
+* `Group α` — a monoid with inverses
+* `AddCommGroup α` — a commutative group under addition
+* `Ring α` — an additive commutative group with a multiplication that distributes over addition
+* `CommRing α` — a ring with commutative multiplication
+* `Field α` — a commutative ring where every nonzero element has an inverse
+* `LinearOrder α` — a type with a total order
 
 Each of these is defined as a `class` that extends simpler classes. For example (simplified):
 
@@ -301,7 +301,7 @@ This process is deterministic and happens at {ref "elaborator"}[elaboration time
 
 You can trigger instance resolution yourself with the term
 `inferInstance`, which asks Lean to synthesize an instance of a stated
-type -- a handy way to ask "does this type have that structure?":
+type — a handy way to ask "does this type have that structure?":
 
 ```lean
 -- "Does ℕ have an AddCommMonoid instance?" -- yes.
@@ -317,7 +317,7 @@ behind the scenes.
 tag := "outparam"
 %%%
 
-By default, instance search treats *all* of a class's arguments as search keys: it must know them to look up an instance. Occasionally one argument is *determined by* the instance rather than given in advance. Marking it `outParam` tells Lean: do not wait for this argument -- find the instance from the others, and *read this one off* the result.
+By default, instance search treats *all* of a class's arguments as search keys: it must know them to look up an instance. Occasionally one argument is *determined by* the instance rather than given in advance. Marking it `outParam` tells Lean: do not wait for this argument — find the instance from the others, and *read this one off* the result.
 
 The standard example is heterogeneous multiplication `a * b`, whose result type need not match the arguments:
 
@@ -326,7 +326,7 @@ The standard example is heterogeneous multiplication `a * b`, whose result type 
 -- HMul : Type → Type → outParam Type → Type
 ```
 
-Because the result `γ` is an `outParam`, Lean resolves `HMul α β ?γ` from `α` and `β` alone and *learns* `γ` from the chosen instance. The same device lets `a ∈ s` infer the element type from the collection -- `Membership`'s element type is an `outParam` too. This is why you often see it in Mathlib signatures, and why the `CoeSort … → outParam Sort` from the previous section is written that way.
+Because the result `γ` is an `outParam`, Lean resolves `HMul α β ?γ` from `α` and `β` alone and *learns* `γ` from the chosen instance. The same device lets `a ∈ s` infer the element type from the collection — `Membership`'s element type is an `outParam` too. This is why you often see it in Mathlib signatures, and why the `CoeSort … → outParam Sort` from the previous section is written that way.
 
 # The `Decidable` typeclass
 %%%
@@ -335,7 +335,7 @@ tag := "decidable-typeclass"
 
 `Decidable` sits at the border between *programs* and *proofs*. A
 proposition `P` is `Decidable` when an algorithm determines whether `P`
-holds -- so the class carries genuine computational content, and lives
+holds — so the class carries genuine computational content, and lives
 in `Type`, not `Prop`:
 
 ```lean
@@ -350,7 +350,7 @@ in `Type`, not `Prop`:
 
 Two everyday features rest on this instance search:
 
-* An `if P then _ else _` requires a `Decidable P` instance -- that is
+* An `if P then _ else _` requires a `Decidable P` instance — that is
   how the program knows which branch to take. This is also why
   {ref "deriving"}[`deriving DecidableEq`] (above) is useful: it makes
   `a = b` decidable, so you may branch on equality of your own type.
@@ -409,7 +409,7 @@ There are three flavours, according to *what* the target is:
   + a bundled morphism `f` applied as `f x`
 :::
 
-`Coe` is the ordinary case -- one value becomes another:
+`Coe` is the ordinary case — one value becomes another:
 
 ```lean
 example (s : {n : ℕ // n > 0}) : ℕ := s   -- the subtype's `.val`
@@ -422,7 +422,7 @@ example (b : Bool) : Prop := b
 example (s : Set ℕ) : Type := s   -- the subtype ↥s of its members
 ```
 
-`CoeFun` lets a *bundled* object be applied like a plain function -- so an algebra homomorphism can be written `f x` even though `f` is really a structure carrying that function together with its properties:
+`CoeFun` lets a *bundled* object be applied like a plain function — so an algebra homomorphism can be written `f x` even though `f` is really a structure carrying that function together with its properties:
 
 ```lean
 example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
@@ -469,8 +469,8 @@ tag := "managing-instances"
 A few further knobs control *which* instance is found. You rarely need them at first, but they show up when reading Mathlib:
 
 * *Priorities.* `instance (priority := 1000) : …` makes an instance tried earlier (the default priority is `1000`). Since Lean takes the first solution it finds, priorities resolve overlaps.
-* *`local` and `scoped` instances.* A `local instance` is active only until the end of the current section, namespace, or file; a `scoped instance` is active only inside its namespace or once you `open` it. Mathlib uses `scoped` heavily -- `open scoped Classical`, for instance, switches on classical decidability exactly where you want it.
-* *Default instances.* `@[default_instance]` supplies a fallback when synthesis would otherwise be ambiguous -- it is how a bare numeral like `2` defaults to `ℕ` when nothing else pins down its type.
+* *`local` and `scoped` instances.* A `local instance` is active only until the end of the current section, namespace, or file; a `scoped instance` is active only inside its namespace or once you `open` it. Mathlib uses `scoped` heavily — `open scoped Classical`, for instance, switches on classical decidability exactly where you want it.
+* *Default instances.* `@[default_instance]` supplies a fallback when synthesis would otherwise be ambiguous — it is how a bare numeral like `2` defaults to `ℕ` when nothing else pins down its type.
 
 # Practical tips
 %%%

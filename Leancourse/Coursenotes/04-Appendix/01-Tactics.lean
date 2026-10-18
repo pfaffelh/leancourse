@@ -92,14 +92,14 @@ hypotheses), {ref "rw"}[`rw`] (rewrite with an equation or `↔`),
 {ref "simp"}[`simp`] (simplify with known lemmas).
 
 *When you don't know what to use, ask.* The *search* tactics propose a
-step for you -- reach for them constantly: {ref "exact"}[`exact?`]
+step for you — reach for them constantly: {ref "exact"}[`exact?`]
 looks for a library term that closes the goal, {ref "apply-qm"}[`apply?`]
 for a lemma to `apply`, {ref "rw"}[`rw?`] for a rewrite that fits, and
 {ref "simp"}[`simp?`] reports which simp lemmas fired (so you can then
 switch to a robust `simp only [...]`).
 
 *Holes: `_` versus `?_`.* Where a proof term is expected, you may leave
-a hole. A plain `_` asks Lean to *infer* that part -- it turns into a
+a hole. A plain `_` asks Lean to *infer* that part — it turns into a
 goal only if inference fails. A `?_` *always* leaves a new goal for you
 to prove (and `?name` labels it `case name`). This is exactly the
 difference between {ref "exact"}[`exact`] and {ref "refine"}[`refine`]:

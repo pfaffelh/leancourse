@@ -15,7 +15,7 @@ set_option pp.rawOnError true
 tag := "let"
 %%%
 
-*Summary:* `let` and {ref "have"}[`have`] both introduce a local hypothesis, but they differ in what they *remember*. `let x := e` keeps the *value*: `x` is *definitionally equal* to `e`, so later steps may unfold `x` back to `e`. `have h : P := e` keeps only the *type* `P` and forgets the term `e`, which becomes opaque. For proofs this is exactly right -- by {ref "types"}[proof irrelevance] the particular term does not matter -- so use `have` for `Prop`s and `let` for *data* you will compute with.
+*Summary:* `let` and {ref "have"}[`have`] both introduce a local hypothesis, but they differ in what they *remember*. `let x := e` keeps the *value*: `x` is *definitionally equal* to `e`, so later steps may unfold `x` back to `e`. `have h : P := e` keeps only the *type* `P` and forgets the term `e`, which becomes opaque. For proofs this is exactly right — by {ref "types"}[proof irrelevance] the particular term does not matter — so use `have` for `Prop`s and `let` for *data* you will compute with.
 
 The `I`-suffixed variants `haveI` and `letI` do the same for *instances*: they add the given term to the local *instance cache*, so that typeclass resolution can find it. `haveI` adds it opaquely, `letI` transparently (keeping the definitional value). Reach for them when you must supply a typeclass instance by hand in the middle of a proof.
 

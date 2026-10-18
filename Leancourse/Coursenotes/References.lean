@@ -114,6 +114,14 @@ def mathlib2020 : InProceedings where
   booktitle := inlines!"CPP 2020: Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs"
   url := some "https://doi.org/10.1145/3372885.3373824"
 
+def werner1997 : InProceedings where
+  title := inlines!"Sets in Types, Types in Sets"
+  authors := #[inlines!"Benjamin Werner"]
+  year := 1997
+  booktitle := inlines!"Theoretical Aspects of Computer Software (TACS 1997)"
+  series := some inlines!"Lecture Notes in Computer Science 1281"
+  url := some "https://doi.org/10.1007/BFb0014566"
+
 /-! ### `@misc`-style entries (books, lecture notes, online) -/
 
 def hottBook : InProceedings := misc
@@ -151,5 +159,13 @@ def mathlibDocs : InProceedings := misc
   (year := 2025)
   (howpublished := inlines!"Online API documentation")
   (url := some "https://leanprover-community.github.io/mathlib4_docs/")
+
+def hales2026 : InProceedings := misc
+  (title := inlines!"What Mathematicians Should Know About the Lean Theorem Prover: Questions of Reliability and AI")
+  (authors := #[inlines!"Thomas Hales"])
+  (year := 2026)
+  (howpublished := inlines!"Guest post on Terence Tao's blog, 9 October 2026")
+  (url := some "https://terrytao.wordpress.com/2026/10/09/what-mathematicians-should-know-about-the-lean-theorem-proverquestions-of-reliability-and-ai/")
+
 
 end Leancourse.Refs

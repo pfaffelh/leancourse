@@ -15,7 +15,7 @@ tag := "left"
 
 *Summary:*
 
-If the goal is a disjunction `⊢ P ∨ Q`, then `left` reduces it to `⊢ P` -- it is exactly `apply Or.inl`, so it suffices to prove the left disjunct. Symmetrically, {ref "right"}[`right`] reduces `⊢ P ∨ Q` to `⊢ Q` (`apply Or.inr`). More generally, for any goal whose type is an inductive with two constructors, `left` picks the *first* constructor and `right` the *second*.
+If the goal is a disjunction `⊢ P ∨ Q`, then `left` reduces it to `⊢ P` — it is exactly `apply Or.inl`, so it suffices to prove the left disjunct. Symmetrically, {ref "right"}[`right`] reduces `⊢ P ∨ Q` to `⊢ Q` (`apply Or.inr`). More generally, for any goal whose type is an inductive with two constructors, `left` picks the *first* constructor and `right` the *second*.
 
 *Examples:*
 

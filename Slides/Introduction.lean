@@ -42,13 +42,23 @@ img.portrait {
 /* a portrait keeps its name directly underneath, inside the band */
 .reveal .r-hstack .r-vstack { gap: 0; }
 .reveal .r-vstack > * { margin: 0; }
-/* the punch line of a slide: appears last, in blue */
+/* the punch line of a slide, in blue. The deck has no fragments:
+   every slide is complete when it appears, one key press per slide. */
 .reveal section p.key, .reveal section .key p { color: #1b91ff; }
 .reveal section img.logo { height: 9vh; width: auto; margin: 0 1.2rem; }
 /* the seven goals, copied from the notes: they only fit at this size */
 .reveal section .goals li { font-size: 0.56em; line-height: 1.3;
                             margin: 0.35em 0; text-align: left; }
 .reveal section .goals ul { width: 92%; margin: 0.2em auto; }
+/* Picture heights in slide pixels, never in `vh`: reveal.js scales the
+   slide with a CSS transform, while `vh` is measured against the browser
+   window and escapes that scaling, so a `vh` height changes size relative
+   to the slide whenever the projector's aspect ratio does. */
+.reveal section img.chart { height: 280px; width: auto; }
+.reveal section img.chart-arxiv { height: 240px; }
+.reveal section img.lineage { height: 336px; width: auto; }
+.reveal section img.inlinepic { height: 140px; width: auto; }
+.reveal section img.kepler { height: 154px; }
 /* a comparison table has to leave room for the lines under it */
 .reveal section table { font-size: 0.62em; margin: 0.2em auto 0.4em; }
 .reveal section table th,
@@ -57,7 +67,7 @@ img.portrait {
 
 # Why formalize?
 
-Interactive theorem proving with Lean -- first lecture.
+Interactive theorem proving with Lean — first lecture.
 
 :::notes
 Title slide. The question in the heading is the one the next twenty
@@ -68,9 +78,7 @@ minutes answer.
 
 Write the proof in a language precise enough for a machine to check every step.
 
-:::fragment fadeUp
-*Autoformalizing* runs the other way -- informal mathematics in, formal text out.
-:::
+*Autoformalizing* runs the other way — informal mathematics in, formal text out.
 
 :::notes
 That is the definition. The machine does not *find* the proof; it reads
@@ -90,21 +98,13 @@ This course is about the first direction. They write the proofs.
 {image "../static/figures/logos/claude.png" (class := "logo")}[Claude] {image "../static/figures/logos/chatgpt.png" (class := "logo")}[ChatGPT]
 :::
 
-:::fragment fadeUp
-*Feb* -- sphere packing, dimension 8: a machine finishes it in five days.
-:::
+*Feb* — sphere packing, dimension 8: a machine finishes it in five days.
 
-:::fragment fadeUp
-*4 Sep* -- Fermat's Last Theorem, checked. 11 days, 13 M lines of Lean.
-:::
+*4 Sep* — Fermat's Last Theorem, checked. 11 days, 13 M lines of Lean.
 
-:::fragment fadeUp
-*8 Sep* -- Navier-Stokes with a force: a singularity in finite time.
-:::
+*8 Sep* — Navier-Stokes with a force: a singularity in finite time.
 
-:::fragment fadeUp
-*6 Oct* -- 719 manuscripts, 42 % with a Lean proof.
-:::
+*6 Oct* — 719 manuscripts, 42 % with a Lean proof.
 
 :::notes
 FLT: Anthropic, Claude, building on Mathlib, following a simplified
@@ -124,23 +124,19 @@ withdrawn ones had a Lean proof. Say it; do not put it on the slide.
 
 Machines now produce mathematics faster than mathematicians can
 referee it, and the only check that keeps up is a formal one. Do not
-oversell it -- the next slide takes it back a step.
+oversell it — the next slide takes it back a step.
 :::
 
 # But be precise
 
 A Lean proof certifies that *a formal statement* follows from the axioms.
 
-:::fragment fadeUp
 Whether that statement is the theorem in the paper is a *human* question.
-:::
 
-::::fragment fadeUp
 :::class "key"
 Reading a formal statement and judging what it says is most of what
 this course teaches.
 :::
-::::
 
 :::notes
 OpenAI's repository documents, per paper, which checks cover a main
@@ -149,7 +145,7 @@ theorem and which only a supporting result.
 
 # Where people are going
 
-{image "../static/figures/itp_github_repos_per_million.png" (height := "40vh")}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
+{image "../static/figures/itp_github_repos_per_million.png" (class := "chart")}[New GitHub repositories per quarter for Lean, Coq/Rocq and Isabelle, 2018 to 2026]
 
 :::class "caption"
 New GitHub repositories per quarter for the three large proof
@@ -171,18 +167,16 @@ Evidence about where people are going.
 
 # Papers checked in Lean
 
-{image "../static/figures/arxiv_lean_formalized_share.png" (height := "40vh")}[Share of arXiv mathematics papers with a Lean-checked result during 2026, per 100 submissions]
+{image "../static/figures/arxiv_lean_formalized_share.png" (class := "chart chart-arxiv")}[Share of arXiv mathematics papers with a Lean-checked result during 2026, per 100 submissions]
 
 :::class "caption"
 Papers on the mathematics arXiv whose results are checked in Lean,
 per 100 submissions, by week of submission in 2026.
 :::
 
-::::fragment fadeUp
 :::class "key"
 The denominator doubled too: about 1 000 submissions a week in January, about 2 500 in October.
 :::
-::::
 
 :::notes
 A share, not a count: a rising count would partly be that growth in
@@ -198,23 +192,15 @@ this".
 
 # How we got here
 
-:::fragment fadeUp
-*1879-1936* -- the mathematics. A proof becomes a finite string, and checking one becomes a decidable question.
-:::
+*1879-1936* — the mathematics. A proof becomes a finite string, and checking one becomes a decidable question.
 
-:::fragment fadeUp
-*1967-2013* -- the machines: from Automath to Lean.
-:::
+*1967-2013* — the machines: from Automath to Lean.
 
-:::fragment fadeUp
-*1976-2025* -- what was done with them.
-:::
+*1976-2025* — what was done with them.
 
-::::fragment fadeUp
 :::class "key"
 The idea is 150 years old; the tool is 13.
 :::
-::::
 
 :::notes
 The order is chronological. First the mathematics, which needed from
@@ -228,7 +214,7 @@ whether an author can trust himself, who is asking for this now.
 If the hour is short, the mathematics block is the part to cut.
 :::
 
-# Frege, Peano, Russell
+# Frege and Russell
 
 ::::::hstack
 ::::vstack
@@ -248,30 +234,28 @@ Bertrand Russell
 ::::
 ::::::
 
-:::fragment fadeUp
-*1879* -- Frege makes proofs into objects you can calculate with.
-:::
+*1879* — Frege makes proofs into objects you can calculate with.
 
-:::fragment fadeUp
-*1889* -- Peano: zero, successor, induction. Still the shape of Lean's `Nat`.
-:::
+*1902* — Russell's letter: the set of all sets that are not members of themselves.
 
-:::fragment fadeUp
-*1902* -- Russell's letter: the set of all sets that are not members of themselves.
-:::
-
-:::fragment fadeUp
-*1910-13* -- *Principia Mathematica* rebuilds. `1 + 1 = 2` arrives in volume two.
-:::
+*1910-13* — *Principia Mathematica* rebuilds. `1 + 1 = 2` arrives in volume two.
 
 :::notes
 The mathematics block. Where the `fun` in `fun x => x + 1` comes
 from, and why the machine checks instead of searching.
 
 Frege's *Begriffsschrift*, 1879: the first system in which a proof is
-itself an object you can manipulate.
+itself an object you can manipulate. His two-dimensional notation was
+never adopted; Peano's linear one was, and Russell took it from him.
+That logic is not what breaks.
 
-Russell's letter of 1902 breaks it. Whitehead and Russell then spend
+What Russell's letter of 1902 breaks is the later *Grundgesetze der
+Arithmetik*, where Frege derived arithmetic from that logic using one
+further axiom: concepts with the same instances have the same
+extension.
+
+Peano's axioms are deliberately not on this slide; they belong where
+`Nat` is introduced. Whitehead and Russell then spend
 *Principia Mathematica* rebuilding, and the proof that `1 + 1 = 2`
 comes with the note that "the above proposition is occasionally
 useful".
@@ -282,29 +266,31 @@ little came of it.
 
 # Two repairs, 1908
 
+*Impredicative:* an object is defined by quantifying over a collection that contains it. $`R = \{x : x \notin x\}` is such a definition — the condition ranges over all sets, and $`R` would be one of them.
+
 :::table +colHeaders +rowSeps
 *
   * 1908
-  * restricts
+  * forbids it by restricting
+  * so you may form
   * `x ∈ x` is
-  * the stratification is
 *
   * Zermelo
-  * which sets *exist*
+  * what *exists*
+  * $`\{x \in A : x \notin x\}`, never $`\{x : x \notin x\}`
   * well-formed, and false
-  * the cumulative hierarchy, a *theorem*
 *
   * Russell
   * what may be *said*
+  * neither: $`x \notin x` is not a formula
   * no statement at all
-  * the type hierarchy, a *rule*
 :::
 
-::::fragment fadeUp
+Zermelo's set is harmless: $`R = \{x \in A : x \notin x\}` gives $`R \notin R`, hence $`R \notin A`. No set contains all sets.
+
 :::class "key"
 Mathematics went with Zermelo, proof assistants with Russell.
 :::
-::::
 
 :::notes
 The whole reason this course is about types.
@@ -313,7 +299,7 @@ Zermelo replaces unrestricted comprehension by separation, so the
 paradoxical set is never formed. The language is untouched: `x in x`
 stays a well-formed formula, and that it is false for every set is
 the axiom of foundation, added by von Neumann in 1925 and Zermelo in
-1930 -- later, and not the repair.
+1930 — later, and not the repair.
 
 Russell stratifies the grammar. `x in x` is not a false statement but
 no statement at all, so well-formedness is a question about syntax
@@ -324,9 +310,18 @@ Both hierarchies exist; the difference is who enforces them. In set
 theory the cumulative hierarchy is a theorem about which sets there
 are, and you may write the bad expression and then prove it denotes
 nothing. In type theory you do not get that far.
+
+The word comes back. In Lean it is a property of a *sort*: `Prop` is
+impredicative because `∀ x : A, B x` is again a `Prop` for every
+domain `A`, however large — `A := Prop` included. `Type u` is
+predicative: the same shape climbs to the next universe. So Lean
+neither follows Zermelo nor Russell wholesale. It grants the circle
+for propositions and refuses it for data, which is why the supremum
+of a set of reals is unproblematic and `Type : Type` is not. That is
+the Types chapter; here just say that the third answer exists.
 :::
 
-# Hilbert's programme
+# Hilbert's programme, 1917
 
 ::::vstack
 {image "../static/figures/portraits/hilbert.jpg" (class := "portrait")}[David Hilbert]
@@ -336,39 +331,29 @@ David Hilbert
 :::
 ::::
 
-:::fragment fadeUp
 Fix the language, fix the rules. A proof becomes a finite string, and checking it is a question about symbols.
-:::
 
-:::fragment fadeUp
-*Consistent?* -- no contradiction follows from the axioms.
-:::
+*Consistent?* — no contradiction follows from the axioms.
 
-:::fragment fadeUp
-*Complete?* -- for every statement, it or its negation follows.
-:::
+*Complete?* — for every statement, it or its negation follows.
 
-:::fragment fadeUp
-*Decidable?* -- a procedure settles which of the two.
-:::
+*Decidable?* — a procedure settles which of the two.
 
-::::fragment fadeUp
 :::class "key"
 Hilbert wants all three.
 :::
-::::
 
 :::notes
 Hilbert pushes this from a lecture of 1917, *Axiomatisches Denken*, on
 through the 1920s. The conviction is older: Paris 1900, "denn in der
-Mathematik gibt es kein Ignorabimus" -- no question we are condemned
+Mathematik gibt es kein Ignorabimus" — no question we are condemned
 never to settle.
 
 The formalization half is exactly what a proof assistant does. A proof
 is a finite object, and whether it follows the rules can be decided
 without knowing what the symbols mean.
 
-The consistency proof was to use finitary means only -- no appeal to
+The consistency proof was to use finitary means only — no appeal to
 the infinite objects whose consistency was in question.
 :::
 
@@ -381,6 +366,8 @@ the infinite objects whose consistency was in question.
 Kurt Gödel
 :::
 ::::
+
+*First-order:* quantifiers range over the *elements* of one domain, never over its subsets — so "every bounded set of reals has a supremum" is not first-order.
 
 :::table +colHeaders +rowSeps
 *
@@ -397,8 +384,8 @@ Kurt Gödel
   * incomplete: some truth about ℕ is neither proved nor refuted
 :::
 
-:::fragment fadeUp
-Cantor's diagonal argument, moved from the reals to proofs.
+:::class "key"
+Lean quantifies over types and propositions. 1929 does not apply.
 :::
 
 :::notes
@@ -410,11 +397,20 @@ hold: the integers under addition are a model of the group axioms.
 1929, his thesis: first-order logic is complete. What holds in every
 model is derivable. Logic itself is not the obstacle.
 
-*First-order* means the quantifiers range over the elements of a
-domain, never over its subsets. "For all x, y in the group" is
-first-order; "every bounded set of reals has a supremum" is not.
-Lean is not first-order -- it quantifies over types and over
-propositions -- so this theorem does not apply to Lean.
+The definition is on the slide. The point of the second example is
+that "every bounded *set* of reals" quantifies over subsets of the
+domain, not over its elements — that is exactly the step out of
+first order. Completeness of the reals is therefore not a first-order
+statement, and the reals have nonstandard models.
+
+Why the restriction buys anything: for first-order logic the proofs
+can be enumerated, so a search that will succeed does succeed. That
+is the second row of the table two slides on, and the reason `exact?`
+and `grind` terminate when there is something to find.
+
+Lean is not first-order — it quantifies over types and over
+propositions — so the completeness theorem does not apply to it. Say
+that; it matters again when the Types chapter builds a model by hand.
 
 Watch the word *complete*, which does two jobs. A *logic* is complete
 when everything valid is derivable; a *theory* is complete when it
@@ -431,7 +427,8 @@ programme fails; the formalization stays.
 
 Gödel's proof is itself the first serious piece of formalization: he
 encodes formulas and proofs as numbers and computes with them. Proofs
-as data.
+as data. It is Cantor's diagonal argument, moved from the reals to
+proofs — say that if the room has seen diagonalization.
 :::
 
 # 1936: the Entscheidungsproblem
@@ -454,17 +451,11 @@ Alan Turing
 ::::
 ::::::
 
-:::fragment fadeUp
-*1928* -- Hilbert and Ackermann: is there a procedure deciding whether a formula is provable? The *Entscheidungsproblem*.
-:::
+*1928* — Hilbert and Ackermann: is there a procedure deciding whether a formula is provable? The *Entscheidungsproblem*.
 
-:::fragment fadeUp
-*1936* -- Church and Turing, independently: there is none.
-:::
+*1936* — Church and Turing, independently: there is none.
 
-:::fragment fadeUp
 First they had to say what a procedure is. Turing: a tape, a head, a finite table of instructions. Church: the $`\lambda`-calculus.
-:::
 
 :::notes
 Hilbert and Ackermann, *Grundzüge der theoretischen Logik*, 1928.
@@ -476,7 +467,7 @@ Princeton the year after and took his doctorate under Church.
 Turing's machine is not a design. Nothing in the paper says how one
 would be built; it exists to be reasoned about.
 
-The two definitions compute the same functions -- that is a theorem,
+The two definitions compute the same functions — that is a theorem,
 in an appendix to Turing's paper. That either captures what we
 informally call "computable" cannot be a theorem, since the informal
 notion has no definition. That claim is the Church-Turing thesis.
@@ -487,25 +478,17 @@ silhouette.
 
 # The lambda calculus
 
-:::fragment fadeUp
 A *calculus*: a formal language with rules for calculating. Here: terms for functions, and one rule.
-:::
 
-:::fragment fadeUp
 $`\lambda x.\, x + 1` is the function adding one. The rule is substitution, *β-reduction*: $`(\lambda x.\, x + 1)\, 3` becomes $`3 + 1`.
-:::
 
-:::fragment fadeUp
 Numbers, pairs and recursion are not built in. They are written as $`\lambda`-terms, and that is enough for everything Turing's machines compute.
-:::
 
-::::fragment fadeUp
 Lean is this calculus with types on top:
 
 ```lean -panel -stretch
 example : (fun x : Nat => x + 1) 3 = 3 + 1 := rfl
 ```
-::::
 
 :::notes
 This is ninety years old and you will type it all semester. `fun x =>`
@@ -535,36 +518,34 @@ Bruijn, Howard and Läuchli extended it to the quantifiers in the
   * yes, always stops
   * decidable
 *
-  * *some text* proves it -- find one
+  * *some text* proves it — find one
   * yes, whenever one exists
   * not asked
   * semi-decidable
 *
-  * *some text* proves it -- either way
+  * *some text* proves it — either way
   * yes, whenever one exists
   * no such procedure
   * undecidable
 ::::
 
-::::fragment fadeUp
 :::class "key"
 You prove. The machine checks. That split is a theorem, not a gap in today's software.
 :::
-::::
 
 :::notes
 Row one is the kernel, and the whole trust of the system sits there.
 
 Row two is the automation: `exact?`, `apply?`, `grind`. Proofs can be
 enumerated, so a search terminates when there is something to find. If
-there is nothing, it runs forever -- hence the time limit on every one
+there is nothing, it runs forever — hence the time limit on every one
 of these tactics.
 
 Row three is the Entscheidungsproblem itself.
 
 Rows two and three look contradictory and are not. They are the same
 set of statements. Semi-decidable: every yes is eventually found.
-Undecidable: the noes are not -- nothing reliably reports that a
+Undecidable: the noes are not — nothing reliably reports that a
 statement has no proof. The gap is one-sided, and it is exactly what
 you see when `grind` hangs. It cannot say there is nothing there,
 only that it has not found anything yet.
@@ -582,25 +563,19 @@ Nicolaas Govert de Bruijn
 :::
 ::::
 
-:::fragment fadeUp
-*Automath* -- a typed $`\lambda`-calculus with dependent types, not set theory. The first machine-checked proofs.
-:::
+*Automath* — a typed $`\lambda`-calculus with dependent types, not set theory. The first machine-checked proofs.
 
-:::fragment fadeUp
-*1977* -- Landau's *Grundlagen der Analysis* through it, end to end.
-:::
+*1977* — Landau's *Grundlagen der Analysis* through it, end to end.
 
-::::fragment fadeUp
 :::class "key"
 Everything before this slide is mathematics. From here on there are machines.
 :::
-::::
 
 :::notes
 Say what he turned away from. Since 1954 the attempt had been to make
 the machine *find* proofs. By 1959 a program did all the propositional
 logic of *Principia* in minutes; for mathematics it did not scale. De
-Bruijn retreats to the cheap question -- the human proves, the
+Bruijn retreats to the cheap question — the human proves, the
 machine checks. That is the
 split between *automated* and *interactive* theorem proving, and the
 title of this course sits on one side of it.
@@ -615,13 +590,11 @@ first mathematics book verified end to end.
 
 # The systems
 
-{image "../static/figures/itp_lineage.png" (height := "48vh")}[Timeline of the proof assistants from 1967 to today, one bar each, coloured by tradition]
+{image "../static/figures/itp_lineage.png" (class := "lineage")}[Timeline of the proof assistants from 1967 to today, one bar each, coloured by tradition]
 
-::::fragment fadeUp
 :::class "key"
 Five of the seven still run. A library cannot be moved.
 :::
-::::
 
 :::notes
 The point of the picture: this is not a succession. Only Automath
@@ -629,8 +602,8 @@ and LCF stopped, and both handed their architecture on. Everything
 from Mizar in 1973 onwards is still maintained.
 
 Colour is the tradition, not the system. Blue is the de Bruijn line
--- the proof is written down as a term and rechecked afterwards:
-Automath, Coq/Rocq, Lean. Green is the LCF line -- no proof object
+— the proof is written down as a term and rechecked afterwards:
+Automath, Coq/Rocq, Lean. Green is the LCF line — no proof object
 at all, soundness comes from `thm` being an abstract type: LCF, HOL,
 Isabelle. Orange is Mizar, declarative proofs over set theory.
 
@@ -644,7 +617,7 @@ A proof assistant is a large program with bugs. Which part must be
 correct? LCF: `thm` is an abstract type and only the inference rules
 produce one, so only they must be correct. Automath: a proof term is
 written down and a small checker rereads it, so only the checker must
-be correct -- the de Bruijn criterion. Lean is in that line.
+be correct — the de Bruijn criterion. Lean is in that line.
 
 Why nothing dies: seL4 stays in Isabelle, the four colour theorem
 stays in Rocq. Nobody will redo those. The library is the system.
@@ -664,17 +637,11 @@ Leonardo de Moura
 :::
 ::::
 
-:::fragment fadeUp
-*2013* -- Leonardo de Moura starts Lean at Microsoft Research.
-:::
+*2013* — Leonardo de Moura starts Lean at Microsoft Research.
 
-:::fragment fadeUp
-*2021* -- Lean 4, a redesign rather than a new version.
-:::
+*2021* — Lean 4, a redesign rather than a new version.
 
-:::fragment fadeUp
 Foundation: the Calculus of Inductive Constructions, the Automath line.
-:::
 
 :::notes
 Lean 1 to 3 were research prototypes; Lean 4 is the one that stuck,
@@ -708,15 +675,11 @@ De Moura is still chief architect, now at the Lean FRO.
   * the *AFP*
 :::
 
-:::fragment fadeUp
 Only Isabelle has no dependent types. Its automation is the strongest of the three.
-:::
 
-::::fragment fadeUp
 :::class "key"
 We use Lean because *Mathlib* exists.
 :::
-::::
 
 :::notes
 Lean and Rocq: both CIC, both an impredicative `Prop` under a
@@ -730,34 +693,30 @@ packages, or a refereed archive.
 # 1976: the four colour theorem
 
 ::::::hstack
-{image "../static/figures/four_colour.png" (height := "20vh")}[A map of thirty-four regions coloured with four colours]
+{image "../static/figures/four_colour.png" (class := "inlinepic")}[A map of thirty-four regions coloured with four colours]
 ::::::
 
-Appel and Haken reduce the problem to a list of configurations, and an ordinary program checks it -- no proof assistant.
+Appel and Haken reduce the problem to a list of configurations, and an ordinary program checks it — no proof assistant.
 
-:::fragment fadeUp
 *No human has ever read that part.*
-:::
 
-::::fragment fadeUp
 :::class "key"
 2005: Gonthier redoes all of it in *Coq*, case analysis included.
 :::
-::::
 
 :::notes
 Two decades of argument about whether this counted as a proof.
 Gonthier did not settle it; he made it unnecessary.
 
 The 1976 program was Fortran and assembler on an IBM 370: a program
-you had to trust. Coq is the opposite arrangement -- a kernel of a few
+you had to trust. Coq is the opposite arrangement — a kernel of a few
 thousand lines, and everything else checked against it.
 :::
 
 # 1998: the Kepler conjecture
 
 ::::::hstack
-{image "../static/figures/kepler_packing.png" (height := "22vh")}[A pyramid of equal spheres, the face-centred cubic packing]
+{image "../static/figures/kepler_packing.png" (class := "inlinepic kepler")}[A pyramid of equal spheres, the face-centred cubic packing]
 
 ::::vstack
 {image "../static/figures/portraits/hales.jpg" (class := "portrait")}[Thomas Hales]
@@ -770,15 +729,11 @@ Thomas Hales
 
 Hales announces a proof of Kepler's conjecture of 1611. Twelve referees, four years.
 
-:::fragment fadeUp
-Verdict: *ninety-nine percent certain* -- and no better was possible. The *Annals* published it with the caveat attached.
-:::
+Verdict: *ninety-nine percent certain* — and no better was possible. The *Annals* published it with the caveat attached.
 
-::::fragment fadeUp
 :::class "key"
 Hales started Flyspeck. Complete formal proof in HOL Light and Isabelle, 2014.
 :::
-::::
 
 :::notes
 Not about computers. Peer review met a proof it could not certify,
@@ -797,21 +752,15 @@ Vladimir Voevodsky
 :::
 ::::
 
-*1989* -- Voevodsky and Kapranov identify $`\infty`-groupoids with homotopy types.
+*1989* — Voevodsky and Kapranov identify $`\infty`-groupoids with homotopy types.
 
-:::fragment fadeUp
-*Oct 1998* -- Simpson argues that it cannot be true, but cannot say *which step*.
-:::
+*Oct 1998* — Simpson argues that it cannot be true, but cannot say *which step*.
 
-:::fragment fadeUp
-*Autumn 2013* -- Voevodsky accepts it and finds his own error. Fifteen years in limbo.
-:::
+*Autumn 2013* — Voevodsky accepts it and finds his own error. Fifteen years in limbo.
 
-::::fragment fadeUp
 :::class "key"
 Mathematics runs on *a complex system of mutual trust based on reputations*.
 :::
-::::
 
 :::notes
 Note the dates: the paper is from 1989, but the episode only ends in
@@ -837,7 +786,7 @@ His conclusion: a hard technical argument by a trusted author is
 *hardly ever checked in detail*.
 
 He spent the rest of his career on foundations built so that a
-machine could check such arguments -- not the ones Mathlib uses, and
+machine could check such arguments — not the ones Mathlib uses, and
 not our subject. We take the diagnosis, not the cure. He died in
 2017.
 :::
@@ -872,11 +821,9 @@ Patrick Massot
 
 *The problem:* could an object as complicated as Scholze's perfectoid space be *stated* at all in a proof assistant?
 
-::::fragment fadeUp
 :::class "key"
 They formalized a *definition*, not a theorem. Stating is a different problem from proving.
 :::
-::::
 
 :::notes
 Scholze's perfectoid spaces, 2012.
@@ -906,21 +853,17 @@ Johan Commelin
 
 Scholze posts a challenge on Buzzard's blog: a theorem in condensed mathematics he is not certain of.
 
-:::fragment fadeUp
 Liquid Tensor Experiment, led by Commelin. Finished July 2022.
-:::
 
-::::fragment fadeUp
 :::class "key"
 The request came from a working mathematician, not from logicians. That is what had changed.
 :::
-::::
 
 :::notes
 Buzzard's ICM plenary in 2022 is a fair marker for the moment this
 stopped being a curiosity.
 
-Not combinatorics with a thousand cases, either -- condensed
+Not combinatorics with a thousand cases, either — condensed
 mathematics, at the research frontier.
 :::
 
@@ -954,11 +897,9 @@ Oliver Nash
 
 *The problem:* Mathlib had no differential geometry, and Gromov's h-principle needs it.
 
-::::fragment fadeUp
 :::class "key"
 So they built the API first and proved the theorem afterwards. That order is the ordinary shape of the work.
 :::
-::::
 
 :::notes
 A sphere can be turned inside out without tearing or creasing. In the
@@ -998,11 +939,9 @@ Terence Tao
 
 *The problem:* a formalization took one team years, so it always came long after the paper.
 
-::::fragment fadeUp
 :::class "key"
 A *blueprint* cuts the work into pieces with stated interfaces. Strangers in parallel, three weeks, before refereeing.
 :::
-::::
 
 :::notes
 A set whose sumset is barely larger than itself must be structured.
@@ -1013,7 +952,7 @@ The method carried further than the theorem: this is the step between
 
 # Equational Theories, 2024-25
 
-*The problem:* 22 028 942 implications between 4 694 laws on magmas. Not deep -- but beyond any human team.
+*The problem:* 22 028 942 implications between 4 694 laws on magmas. Not deep — but beyond any human team.
 
 ```lean -panel -stretch
 abbrev Equation3 (a : Type) [Mul a] :=
@@ -1039,23 +978,15 @@ machine checks that too, by `decide`.
 
 # Lean today
 
-:::fragment fadeUp
 A new Lean every month. `v4.34.0` on 14 September 2026, `v4.35.0` on 12 October.
-:::
 
-:::fragment fadeUp
 Nothing updates by itself. `lean-toolchain` names one version, `elan` fetches it, `lake` builds against it.
-:::
 
-::::fragment fadeUp
 :::class "key"
 This course is pinned to `v4.34.0` all semester.
 :::
-::::
 
-:::fragment fadeUp
-[*Lean FRO*](https://lean-lang.org/fro/) -- a non-profit since July 2023, nineteen people, living on donations.
-:::
+[*Lean FRO*](https://lean-lang.org/fro/) — a non-profit since July 2023, nineteen people, living on donations.
 
 :::notes
 Monthly releases, with a release candidate about four weeks ahead.
@@ -1075,23 +1006,15 @@ a spare-time project.
 
 One library, one repository, one version. Everything in this course imports it.
 
-:::fragment fadeUp
 2.33 million lines, about 189 000 theorems, 1 031 contributors. 27 commits a day.
-:::
 
-:::fragment fadeUp
 No stable releases. *Mathlib* follows Lean, your project follows *Mathlib*.
-:::
 
-:::fragment fadeUp
-[*The Mathlib Initiative*](https://mathlib-initiative.org/) -- since September 2025, maintainers are paid to maintain it.
-:::
+[*The Mathlib Initiative*](https://mathlib-initiative.org/) — since September 2025, maintainers are paid to maintain it.
 
-::::fragment fadeUp
 :::class "key"
-[The interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) -- the whole of *Mathlib* as a graph of its modules.
+[The interactive import map](https://leanprover-community.github.io/mathlib4_docs/mathlib.html) — the whole of *Mathlib* as a graph of its modules.
 :::
-::::
 
 :::notes
 Measured on the pinned version of 15 September 2026: 8 529 files,
@@ -1120,7 +1043,7 @@ The course is for mathematics students.
 :::class "goals"
 * *Reading formal statements.* Judging whether a formal statement says what the informal one claims.
 * *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write. This is not the older use of computers in mathematics, which was to work through many cases.
-* *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands -- *tactics* -- fit together. The second half goes deeper into the mathematics.
+* *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — *tactics* — fit together. The second half goes deeper into the mathematics.
 * *Functional programming.* Inductive types, structures, typeclasses and monads, needed both to use Lean and to read *Mathlib*.
 * *Type theory.* Lean rests on dependent type theory: the Curry-Howard correspondence, dependent types, the universe hierarchy, and Lean's axioms.
 * *Mathematics in Mathlib.* How the library organizes order theory, the algebraic hierarchy, filters (a single framework for limits), topology, measure theory and discrete probability. Textbooks rarely treat these from the point of view of formalization.
@@ -1158,11 +1081,9 @@ Every sheet begins with `import Mathlib`, so a two-line sheet needs as much memo
   * NVMe SSD
 :::
 
-::::fragment fadeUp
 :::class "key"
-Below the minimum? Talk to us -- there is a server with 128 GB.
+Below the minimum? Talk to us — there is a server with 128 GB.
 :::
-::::
 
 :::notes
 Compiling one sheet peaks at about 6.6 GB resident; the language
@@ -1178,15 +1099,11 @@ hard disk you cannot work at all.
 Bring a laptop. With administrator rights.
 :::
 
-:::fragment fadeUp
 Follow the [installation instructions](https://pfaffelh.github.io/leancourse/Introduction/#practical) in the course notes beforehand.
-:::
 
-::::fragment fadeUp
 :::class "key"
 Then run `lake exe cache get` *before* you come.
 :::
-::::
 
 :::notes
 Installation session. VS Code, the Lean extension, git clone,
@@ -1200,17 +1117,11 @@ source at once, which takes hours and kills the session.
 
 # Where to start
 
-:::fragment fadeUp
-[Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/nng4) -- in the browser, nothing to install. Start here.
-:::
+[Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/nng4) — in the browser, nothing to install. Start here.
 
-:::fragment fadeUp
-[Formalising Mathematics](https://b-mehta.github.io/formalising-mathematics-notes/) -- Bhavik Mehta, after Kevin Buzzard.
-:::
+[Formalising Mathematics](https://b-mehta.github.io/formalising-mathematics-notes/) — Bhavik Mehta, after Kevin Buzzard.
 
-:::fragment fadeUp
-[Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/) -- Avigad and Massot. The closest thing to an official course.
-:::
+[Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/) — Avigad and Massot. The closest thing to an official course.
 
 :::notes
 The Natural Number Game runs in a browser and takes an evening. If

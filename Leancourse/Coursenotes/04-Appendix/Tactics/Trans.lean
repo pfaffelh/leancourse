@@ -15,7 +15,7 @@ set_option pp.rawOnError true
 tag := "trans"
 %%%
 
-*Summary:* `trans b` proves a *transitive* goal `a R c` -- for `=`, `≤`, `<`, `⊆`, `∣`, and any relation with a registered `Trans` instance -- by splitting it into the two goals `a R b` and `b R c` for a middle term `b` you supply. It is the transitivity counterpart of {ref "symm"}[`symm`].
+*Summary:* `trans b` proves a *transitive* goal `a R c` — for `=`, `≤`, `<`, `⊆`, `∣`, and any relation with a registered `Trans` instance — by splitting it into the two goals `a R b` and `b R c` for a middle term `b` you supply. It is the transitivity counterpart of {ref "symm"}[`symm`].
 
 *Example:*
 

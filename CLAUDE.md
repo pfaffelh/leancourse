@@ -1827,3 +1827,280 @@ keine eigene Lizenz. Commons hat kein Foto von ihm, der
 Wikipedia-Artikel enthaelt nur Icons. Also nicht verwendbar.
 
 Gemessen: 33 Folien, keine ueber 700 px, alle mit Notizen.
+
+## 2026-10-16 -- Hales-Gastbeitrag eingearbeitet
+
+Quelle: Thomas Hales, *What Mathematicians Should Know About the Lean
+Theorem Prover: Questions of Reliability and AI*, Gastbeitrag in Terence
+Taos Blog, 9.10.2026. **Nicht von Tao** -- Hales ist bei uns ohnehin
+schon ein Portrait (Kepler/Flyspeck), das Kapitel kann ihn also direkt
+zitieren. Als `hales2026` in `References.lean` eingetragen, zusammen mit
+`werner1997` (*Sets in Types, Types in Sets*, TACS 1997, LNCS 1281);
+beide in `99-Bibliography.lean` gelistet.
+
+- **Korrektur, keine Ergaenzung.** `01-Lean/02-Types.lean` behauptete,
+  Carneiro habe Lean relativ zu ZFC + *n* Unerreichbaren als konsistent
+  bewiesen, "the assumption is optimal". Hales: in der Thesis wurde ein
+  **Fehler gefunden**, *unique typing* und *Pi-Injektivitaet* sind
+  unbewiesen, und es gibt (Stand Oktober 2026) **keinen vollstaendigen
+  oeffentlichen Relativkonsistenzbeweis** fuer Leans Typtheorie. Neu
+  formuliert plus die beiden Teilresultate, die es gibt: Werner 1997 und
+  Breitners *Con-Leche*.
+- `03-Mathematics/00b-UniversesAndAxioms.lean`: "Both foundations are
+  equiconsistent for most of mathematics" ersetzt. Werner 1997 sagt
+  etwas ueber CIC, nicht ueber Lean -- der Unterschied steht jetzt da.
+- **Neuer Abschnitt `### 2026: the summer of soundness bugs`** am Ende
+  von *What came of it*, mit einer Klappbox `:::example "Bugs in Lean"`
+  (siehe oben, `:::example` ist die Projekt-Klappbox). Darin die drei
+  geschlossenen Issues, **gegen die GitHub-API geprueft**:
+  [#14484](https://github.com/leanprover/lean4/issues/14484) (22.07.),
+  [#14576](https://github.com/leanprover/lean4/issues/14576) (28.07.,
+  `False` **ohne jedes Axiom**),
+  [#14875](https://github.com/leanprover/lean4/issues/14875) (21.08.).
+  Die Liste ist bewusst offen angelegt -- neue Bugs kommen dort hinein.
+- **Zwei Stellen, die der Bug-Abschnitt relativiert**, beide mit
+  `{ref "soundness-bugs"}` verknuepft: "the program that checks it is
+  small and fixed" (Zeile ~30) und die FLT-Zeile "machine-checkable, by
+  `#print axioms`" -- `#print axioms` sieht Axiome, nicht den Kernel.
+- Ergaenzt: Flyspeck-Kosten (ca. 20 Personenjahre, 500 000 Zeilen) in
+  der Kepler-Episode; Autoformalisierungs-Meilensteine Sep 2025 (PNT,
+  Math Inc.), Maerz 2026 (Kugelpackung Dim. 24, 500k -> 200k Zeilen),
+  Mai 2026 (Meta *ATLAS*, 26 Lehrbuecher) und Januar 2026 (Urban, 130k
+  Zeilen Topologie, nicht in Lean) in *Why formalize?*.
+
+**Nicht uebernommen:** Thompsons *Reflections on Trusting Trust*, von
+Hales auf KI-gefundene Bugs angewandt -- der KI-Faden ist im Kapitel
+schon dicht. Unsere Mathlib-Zahlen sind genauer als seine und bleiben.
+
+`{citep ...}[]` rendert als `(Autor, Jahr)`, `{citet ...}[]` als
+`Autor (Jahr)`. In Klammern also **citep ohne eigene Klammern**, sonst
+steht dort `((Hales (2026)))`.
+
+## 2026-10-18 -- Con-Leche richtiggestellt
+
+Erste Fassung (16.10.) nannte Con-Leche "a Lean kernel written in Lean
+whose consistency is proved in Lean, relative to ZF with a hierarchy of
+inaccessible cardinals" und stellte es als Teilersatz fuer den fehlenden
+Relativkonsistenzbeweis hin. **Beides falsch.** Geprueft an der
+README von <https://github.com/leanprover/con-leche>:
+
+- Es ist **kein Kernel**, sondern ein **externer Checker**, der Leans
+  Export-Dateien noch einmal liest. Name = *café con leche* =
+  **CON**sistent **LE**an **CHE**cker. Rust-Portierung: `con-ron`.
+- Bewiesen wird: der Checker akzeptiert nie einen `False`-Beweis; jede
+  akzeptierte Umgebung hat ein Modell. Annahmen: ZF **ohne** Unendlichkeit
+  und Auswahl, dazu eine ω-Kette von Grothendieck-Universen, instanziiert
+  auf Mathlibs `ZFSet` unter ω vielen Unerreichbaren. `Nat`-Arithmetik
+  wird der Lean-Runtime geglaubt.
+- **Der entscheidende Punkt:** der Beweis laeuft **innerhalb von
+  Carneiros Rahmen** -- genau dem, dessen Luecke zwei Saetze vorher
+  beschrieben wird. Con-Leche zeigt, dass der Checker dem Modell treu
+  ist, nicht dass es das Modell gibt. Es schliesst die Luecke nicht, es
+  setzt sie voraus.
+- Implementiert und bewiesen von Claude (Fable und Opus) unter Aufsicht
+  von Joachim Breitner (Lean FRO). ~0,69x der Instruktionen des
+  offiziellen Kernels auf Mathlib, also schneller.
+
+Korrigiert in `01-Lean/02-Types.lean`, in der Bug-Box in
+`00-Introduction.lean` und in `Slides/Introduction-SpeakerNotes.md`.
+
+**Lehre:** Hales' Blogpost ist eine Sekundaerquelle. Seine
+Zusammenfassung ("a verified Lean kernel") ist knapp genug, um in die
+Irre zu fuehren. Bei technischen Aussagen aus dem Post die
+Primaerquelle nachschlagen, bevor sie ins Skript wandern.
+
+## Neu: `Slides/Introduction-SpeakerNotes.md` (18.10.2026)
+
+Ausfuehrliche Vortragsnotizen zum ersten Deck, auf Wunsch des Autors:
+33 Abschnitte, Ueberschriften **wortgleich mit den Folientiteln** und in
+Deck-Reihenfolge. Pruefung:
+
+```
+diff <(grep "^# " Slides/Introduction.lean | sed 's/^# //') \
+     <(grep "^## " Slides/Introduction-SpeakerNotes.md | sed 's/^## [0-9]*\. //')
+```
+
+Format: Stichworte, keine Prosa. Material, das **nicht** im Skript
+steht, ist mit `**[Hintergrund]**` markiert. Am Ende zwei Zusatzteile:
+Stichworte fuer die noch nicht existierende Bug-Folie (Einschub nach
+Folie 27), und zwei Stellen, an denen die Notizen das Skript ueberholen
+(Commelin **leitet** die Mathlib Initiative; seine Freiburger
+Postdoc-Zeit bei Kebekus fehlt im Skript ganz).
+
+Beim Aendern des Decks **beide Dateien nachziehen** -- der `diff` oben
+ist der Test.
+
+## 2026-10-18 (2) -- Decks ohne Fragmente: eine Taste, eine Folie
+
+Wunsch des Autors: "jede Folie gleich komplett aufgebaut, sonst muss ich
+zu oft clicken, und ich will mich aufs Sprechen konzentrieren."
+
+**Alle `:::fragment` entfernt**, in beiden Decks: 66 in
+`Slides/Introduction.lean`, 7 in `Slides/Filters.lean`. Im gerenderten
+HTML **0 Vorkommen von `class="...fragment..."`** -- das ist der Test,
+nicht die Quelle.
+
+**Warum nicht per CSS.** Naheliegend waere, die Fragmente per
+`.reveal .fragment { opacity: 1 !important }` sichtbar zu schalten.
+**Das loest das Problem nicht:** reveal.js zaehlt die Fragmente
+weiterhin als Navigationsschritte, die Pfeiltaste muesste also immer
+noch N-mal gedrueckt werden, nur ohne sichtbare Wirkung -- schlimmer als
+vorher. Die Markup muss wirklich raus.
+
+**Die Pointe bleibt blau.** Die Decks haben dafuer schon die Klasse
+`.key` (`#1b91ff`); die Fragmente lagen nur als Huelle darum. Beim
+Entfalten bleibt `:::class "key"` stehen, es braucht also keine neue
+Klasse. Selektoren sind wie bei `.caption`/`.names` doppelt geschrieben
+(`p.key` **und** `.key p`), weil `:::class` die Klasse je nach Kontext
+auf das Element oder einen Wrapper legt.
+
+**Hoehen unveraendert.** War zu erwarten -- reveal versteckt Fragmente
+mit `visibility:hidden`, das behaelt den Platz --, aber gemessen:
+33 Folien, keine ueber 700 px, hoechste weiterhin `2013: Voevodsky`
+mit 643 px. Messskript siehe 2026-10-14.
+
+Umbauskript liegt im Scratchpad (`defragment.py`). Falls je wieder
+Fragmente gewuenscht sind: das ist von Hand nachzuziehen, die 73
+entfalteten Bloecke kommen nicht per `sed` zurueck.
+
+`Slides/Introduction-SpeakerNotes.md` nachgezogen: Hinweis "one key
+press is one slide" im Kopf, die beiden Stellen, die "fragment" als
+Folienmechanik nannten, umformuliert.
+
+## 2026-10-18 (3) -- `vh` in Folien, Gedankenstriche, Frege
+
+### Bildhoehen nie in `vh`
+
+Folie 6 (*Papers checked in Lean*) schnitt beim Autor die unterste Zeile
+ab, auf meinem Testfenster aber nicht. **Ursache:** reveal.js skaliert
+die Folie mit einem CSS-`transform`; `vh` wird dagegen gegen das
+*Browserfenster* gemessen und von dieser Skalierung nicht erfasst. Eine
+`40vh` hohe Grafik ist deshalb relativ zur Folie unterschiedlich gross,
+je nach Seitenverhaeltnis des Beamers -- bei breitenbegrenzten Fenstern
+(4:3, 5:4) deutlich groesser. `px`, `rem` und `em` skalieren mit, `vh`
+und `vw` nicht.
+
+**Regel: Bildgroessen in Folien-Pixeln, nicht in `vh`.** Alle fuenf
+Bilder im Deck umgestellt, `(height := ...)` aus der Markup entfernt,
+Groessen im CSS-Block: `.chart` 280px, `.chart-arxiv` 240px,
+`.lineage` 336px, `.inlinepic` 140px, `.kepler` 154px. Geprueft bei
+1280x720, 1280x1024 und 1024x768: identisches Layout. **Kein `vh` mehr
+im Deck** -- das ist der Test (`grep 'vh"' Slides/*.lean`).
+
+### `--` durch `—` ersetzt
+
+Verso macht **keine** Smart-Dash-Ersetzung; `--` erschien woertlich als
+zwei Bindestriche. 467 Vorkommen in Prosa auf `—` umgestellt, in
+`Leancourse/Coursenotes/**` und `Slides/*.lean`.
+
+**Die Gefahr ist `--` als Lean-Kommentar.** Das Skript
+(`emdash.py`, im Scratchpad) ersetzt deshalb nur
+- **innerhalb der `#doc`-Region** (alles vor `#doc (Manual|Slides)`
+  bleibt unberuehrt -- das rettet `/--`-Docstrings in `References.lean`
+  und den Kommentar in `03-Terms.lean:5`), und
+- **ausserhalb von ```-Codebloecken**.
+
+Gegenprobe nach dem Lauf: `--` in Codebloecken **445, unveraendert**;
+in Prosa von 469 auf 2 (genau die beiden Lean-Zeilen oben). Im
+gerenderten Kapitel sind die verbliebenen `--` ausschliesslich Versos
+eigene CSS-Variablen (`--verso-*`).
+
+Nebenwirkung: `—` ist breiter als `--`, einzelne Folien wachsen leicht
+(*Voevodsky* 643 -> 666 px). Weiterhin keine ueber 700.
+
+### Frege: *Begriffsschrift* oder *Grundgesetze*?
+
+Nutzerfrage, und die Notizen waren tatsaechlich uneinheitlich. **Beides,
+aber fuer Verschiedenes:**
+
+- ***Begriffsschrift*, 1879** -- die Notation, das erste System, in dem
+  ein Beweis selbst ein manipulierbares Objekt ist. **Reine Logik, keine
+  Extensionen, von der Paradoxie nicht betroffen.**
+- ***Grundgesetze der Arithmetik*, Bd. I 1893, Bd. II 1903** -- die
+  Ableitung der Arithmetik aus dieser Logik, mit *einem* Zusatzaxiom
+  (Grundgesetz V: Begriffe mit denselben Instanzen haben dieselbe
+  Extension). **Das ist, was Russells Brief vom Juni 1902 zerstoert**,
+  waehrend Band II im Druck war.
+
+Falsch war die Deck-Notiz "Frege's *Begriffsschrift*, 1879 ... Russell's
+letter of 1902 breaks **it**". Vage waren `00-Introduction.lean:101`
+("Frege's system") und `02-Types.lean:33` ("Gottlob Frege's system").
+Alle drei nennen jetzt die *Grundgesetze* und das Zusatzaxiom; die
+Vortragsnotizen haben einen eigenen Unterpunkt "Say which book, the two
+get confused".
+
+### Peano von Folie 8 nach `01-Nat.lean`
+
+Nutzerfrage "Was sucht eigentlich Peano auf Folie 8?" -- berechtigt,
+gleich doppelt: der Titel nannte drei Namen, die Folie zeigte zwei
+Gesichter (ein `peano.jpg` gab es nie), und inhaltlich war seine Zeile
+die einzige, die nicht zum Bogen *Frege baut / Russell bricht /
+Principia baut neu* gehoerte. Gewaehlt wurde: **ganz streichen und dort
+bringen, wo `Nat` eingefuehrt wird.**
+
+- Folie: `# Frege, Peano, Russell` -> `# Frege and Russell`, die
+  1889er-Zeile entfernt. 511 px statt 616.
+- Kapitel: `### 1879 to 1913: Frege, Peano, Russell` ->
+  `### 1879 to 1913: Frege and Russell`, der Peano-Satz samt
+  `{ref "nat"}` aus dem Absatz raus. **Mitgezogen, weil das Deck laut
+  seinem eigenen Kopfkommentar dem Kapitel Abschnitt fuer Abschnitt
+  folgt** -- nur die Folie zu aendern haette beide auseinanderlaufen
+  lassen.
+- `01-Lean/01-Nat.lean`, Abschnitt `nat-intro`, direkt nach den beiden
+  Konstruktoren: Peano 1889, Dedekind 1888, und der Punkt, dass
+  Induktion kein dritter Konstruktor ist, sondern der Rekursor des
+  naechsten Absatzes. "What was a list of axioms in 1889 is a type
+  declaration here."
+- In den Vortragsnotizen steht jetzt ausdruecklich **"Peano's axioms are
+  deliberately not on this slide"** mit den Fakten fuer den Fall, dass
+  jemand fragt -- damit die Streichung nicht als Luecke wirkt.
+- Peanos lineare Notation bleibt als Nebensatz in der Frege-Notiz: dort
+  erklaert sie, warum Freges zweidimensionale Schrift unterging.
+
+**Beim Umbenennen einer Folie immer den Titel-Abgleich laufen lassen**
+(siehe 2026-10-18, Eintrag zu den Vortragsnotizen) -- die Ueberschriften
+in `Introduction-SpeakerNotes.md` muessen wortgleich bleiben. Nach
+dieser Aenderung wieder 33/33 identisch.
+
+Gemessen nach allen Aenderungen des Tages: 33 Folien, keine ueber
+700 px, hoechste `2013: Voevodsky` mit 666 px.
+
+### Folie 9 mathematisch statt abgekuerzt; Folie 10 mit Jahreszahl
+
+**Folie 9, vierte Spalte** war "the stratification is: the cumulative
+hierarchy, a *theorem*" gegen "the type hierarchy, a *rule*" -- vom Autor
+als unverstaendlich gemeldet, zu Recht: die Pointe ohne das Argument.
+**Das Kapitel hatte die mathematische Fassung die ganze Zeit** (Absatz
+nach der Tabelle in `00-Introduction.lean`), nur die Folie nicht. Jetzt
+nachgezogen:
+
+- Spalte 4 heisst *you may form*: Zermelo
+  $`\{x \in A : x \notin x\}`, **never** $`\{x : x \notin x\}`;
+  Russell "neither: $`x \notin x` is not a formula".
+- Darunter zwei Zeilen mit der Herleitung: $`R = \{x \in A : x \notin x\}`,
+  $`R \in R` gdw. $`R \in A` und $`R \notin R`, also $`R \notin R`, also
+  $`R \notin A`. **Der Widerspruch wird zum Satz: es gibt keine Menge
+  aller Mengen.** 552 px, passt.
+- Die Unterscheidung Hierarchie-als-Satz / Hierarchie-als-Regel steht
+  weiterhin in den Notizen, nur nicht mehr in der Tabelle.
+- **Kapitel-Tabelle bewusst unveraendert gelassen** -- dort ist die
+  vierte Spalte ausgeschrieben ($`V_0 \subseteq V_1 \subseteq \dots`)
+  und der Absatz darunter liefert dieselbe Rechnung. Die beiden Tabellen
+  unterscheiden sich jetzt in dieser einen Spalte, Medium gegen Medium.
+
+**Vortragsnotizen zu Folie 9** um einen eigenen Block erweitert
+(*"Russell overshot, and it cost him analysis"*): Vicious-Circle-Prinzip
+als die eigentliche, viel weitere Einschraenkung; das Supremum
+ausgeschrieben (Klausel (ii) quantifiziert ueber alle Reellen, `sup S`
+landet eine Ordnung hoeher, die Supremumseigenschaft faellt *innerhalb*
+jeder Ordnung, Analysis steht); Reduzibilitaetsaxiom als Rueckkauf ohne
+Begruendung; dazu Russells eigenes Eingestaendnis 1925, Weyls
+*Das Kontinuum* 1918 und Ramseys Trennung logischer und semantischer
+Antinomien. Abschluss ist Leans asymmetrische Loesung (imprädikativ in
+`Prop`, nicht fuer Daten).
+
+**Folie 10** heisst jetzt `Hilbert's programme, 1917` -- Jahreszahl wie
+im Kapitel (`### 1917 to 1931`) und nach dem Muster der Nachbarfolien
+(*Two repairs, 1908*, *Gödel, 1929 and 1931*). In den Notizen steht
+dazu, dass 1917 der Startschuss ist (*Axiomatisches Denken*) und die
+scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.

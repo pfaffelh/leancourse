@@ -410,6 +410,50 @@ draws the line, and it comes back in the *Types* chapter.
 - Lean is this notation with types on top. `fun x =>` is `λx.`, and Lean
   accepts `λ` too. **They will type this all semester.** Ninety years old.
 - The kernel computes by substituting. That is the rule above and nothing more.
+
+### How can a calculus be a "machine"?
+
+The question comes every year. Nothing here needs hardware.
+
+- **What a "machine" has to be** for the 1936 argument: a finite
+  description, a purely syntactic step rule, and no point at which
+  insight is required. Turing's tape and head satisfy that. So does one
+  rewriting rule.
+- **β is search-and-replace.** Find a `(λx. M) N`, copy `N` into every
+  place where `x` stands in `M`. A clerk can run it without knowing what
+  the symbols mean. That is the whole mechanism.
+- **The data are encoded as terms.** A number is the function that
+  applies something `n` times:
+  - `0 = λf. λx. x`, `1 = λf. λx. f x`, `2 = λf. λx. f (f x)`
+  - `succ = λn. λf. λx. f (n f x)`
+  - `add  = λm. λn. λf. λx. m f (n f x)`
+  - So computing `2 + 3` **is**: write `add 2 3`, β-reduce until no redex
+    is left, read off `5`. **The reduction is the computation; the normal
+    form is the output.** Nothing else happens.
+  - Booleans the same way: `true = λx. λy. x`, `false = λx. λy. y`, and
+    `if b then m else n` is just `b m n`. Pairs and lists likewise.
+- **Recursion is the part that matters**, because without unbounded loops
+  you stay inside primitive recursion and — more to the point — nothing
+  fails to terminate, so there is nothing undecidable to find.
+  - `Y = λf. (λx. f (x x)) (λx. f (x x))` reduces `Y g` to `g (Y g)`. The
+    term reproduces itself: a function calls itself without having a name.
+  - The same trick gives the endless loop `(λx. x x)(λx. x x)`, which
+    reduces to itself forever.
+- **Why it counts as a model of computation.** Not by decree. Three
+  formalisms that grew up apart define the same class of functions:
+  λ-definable (Church), general recursive (Gödel, Herbrand, Kleene) and
+  Turing-computable (Turing, in the appendix of his 1936 paper). That
+  convergence is the evidence for the Church-Turing thesis — which is a
+  claim about the word "computable", not a theorem.
+- **[Hintergrund]** Church's undecidability proof stays inside this
+  frame: he first shows it is undecidable whether two λ-terms have the
+  same normal form, and derives from that that no λ-definable function
+  decides provability in first-order logic.
+- **The line to use:** Turing asks what a clerk with paper can do; Church
+  asks what can be written as a function and substituted. Same answer.
+- **And it is the Church side the course lives on.** Lean's kernel has no
+  tape head; it reduces terms. The line on the slide,
+  `(fun x : Nat => x + 1) 3 = 3 + 1`, is exactly the rule above.
 - **Curry-Howard**, the step from functions to proofs: a proposition is a
   type, a proof is a term of that type, checking a proof is type-checking
   a program. Curry saw it for implication in the 1930s; de Bruijn, Howard

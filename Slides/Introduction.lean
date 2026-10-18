@@ -497,6 +497,30 @@ is `λx.`, and Lean accepts `λ` too.
 The kernel computes by substituting. β is one of the reduction rules
 of the next chapter.
 
+How a calculus can be a *machine*, if anyone asks. Nothing here needs
+hardware: what a machine needs is a finite description, a purely
+syntactic step rule, and no point at which insight is required. β is
+search-and-replace, and a clerk can run it without knowing what the
+symbols mean.
+
+Numbers are encoded as terms. A number is the function that applies
+something n times: `0 = λf.λx. x`, `2 = λf.λx. f (f x)`,
+`succ = λn.λf.λx. f (n f x)`, and `add = λm.λn.λf.λx. m f (n f x)`.
+Computing 2 + 3 *is*: write `add 2 3`, reduce until no redex is left,
+read off `5`. The reduction is the computation, the normal form is the
+output. Booleans likewise: `true = λx.λy.x`, `false = λx.λy.y`, and
+`if b then m else n` is just `b m n`.
+
+Recursion comes from the fixed-point combinator
+`Y = λf. (λx. f (x x)) (λx. f (x x))`: `Y g` reduces to `g (Y g)`, so a
+function calls itself without having a name. The same trick gives the
+endless loop `(λx. x x)(λx. x x)` -- and without non-termination there
+would be nothing undecidable to find.
+
+Why it counts as a model: λ-definable, general recursive and
+Turing-computable are the same class, three formalisms that grew up
+apart. That convergence is the evidence for the Church-Turing thesis.
+
 Curry-Howard, the step from functions to proofs: a proposition is a
 type, a proof is a term of that type, and checking a proof is
 type-checking a program. Curry saw it for implication in the 1930s; de

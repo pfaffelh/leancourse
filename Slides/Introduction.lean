@@ -532,26 +532,24 @@ Bruijn, Howard and Läuchli extended it to the quantifiers in the
 
 ::::table +colHeaders +rowSeps
 *
-  * Is there a procedure that
-  * confirms it when true
-  * refutes it when false
+  * Question about a statement $`\varphi`
+  * what the procedure must do
   * verdict
 *
-  * *this text* proves it
-  * yes, always stops
-  * yes, always stops
+  * Does *this text* prove $`\varphi`?
+  * always halt, with yes or no
   * decidable
 *
-  * *some text* proves it — find one
-  * yes, whenever one exists
-  * not asked
+  * Does *some* text prove $`\varphi`?
+  * halt with yes whenever one exists
   * semi-decidable
 *
-  * *some text* proves it — either way
-  * yes, whenever one exists
-  * no such procedure
-  * undecidable
+  * Does *some* text prove $`\varphi`?
+  * always halt, with yes or no
+  * **undecidable**
 ::::
+
+Rows 2 and 3 ask the *same* question. Only the demand differs — and that is where it breaks.
 
 :::class "key"
 You prove. The machine checks. That split is a theorem, not a gap in today's software.
@@ -567,12 +565,21 @@ of these tactics.
 
 Row three is the Entscheidungsproblem itself.
 
-Rows two and three look contradictory and are not. They are the same
-set of statements. Semi-decidable: every yes is eventually found.
-Undecidable: the noes are not — nothing reliably reports that a
-statement has no proof. The gap is one-sided, and it is exactly what
-you see when `grind` hangs. It cannot say there is nothing there,
-only that it has not found anything yet.
+Rows two and three look contradictory and are not. **Read the table
+down the second column, not across.** Row 3 has row 1's demand and
+row 2's question, and that one combination is impossible. Every yes
+is eventually found; the noes are not. Nothing reliably reports that
+a statement has no proof.
+
+The gap is one-sided, and it is exactly what you see when `grind`
+hangs. It cannot say there is nothing there, only that it has not
+found anything yet.
+
+Do not confuse row 3 with a different question: *is $`\varphi` either
+provable or refutable?* That is whether the theory decides $`\varphi`,
+and Gödel 1931 says arithmetic does not decide everything. Related,
+undecidable too, but not the Entscheidungsproblem, which is about
+provability alone.
 
 This is the answer to "why doesn't the computer just do it".
 :::

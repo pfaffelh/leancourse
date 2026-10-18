@@ -466,18 +466,27 @@ The question comes every year. Nothing here needs hardware.
 ## 14. Checking is not finding
 
 
-- Three rows, same statements, different question.
-- **Row 1 — "*this text* proves it": decidable.** Always stops, either way.
-  This is the kernel, and the entire trust of the system sits here.
+- **Read the table down the second column, not across.** Rows 2 and 3 ask
+  the *same* question; row 3 simply adds row 1's demand. That one
+  combination — the open question with the always-halt demand — is the
+  impossible one.
+- **Row 1 — "does *this text* prove φ?": decidable.** Always stops, either
+  way. This is the kernel, and the entire trust of the system sits here.
 - **Row 2 — "*some text* proves it, find one": semi-decidable.** Proofs can
   be enumerated, so a search terminates when there is something to find.
   If there is nothing, it runs forever. **Hence the time limit on every
   automation tactic:** `exact?`, `apply?`, `grind`, `omega`.
-- **Row 3 — "*some text* proves it, either way": undecidable.** The
-  Entscheidungsproblem itself.
+- **Row 3 — the same question, now answered either way: undecidable.**
+  The Entscheidungsproblem itself.
 - Rows 2 and 3 look contradictory and are not. Same set of statements.
   Semi-decidable: every yes is eventually found. Undecidable: the noes
   are not — nothing reliably reports that a statement has no proof.
+- **One confusion to head off**, because it is the natural misreading of
+  row 3: it is *not* "is φ either provable or refutable?". That is a
+  different question — whether the theory *decides* φ — and Gödel 1931
+  answers it with no for arithmetic. Also undecidable, also worth
+  knowing, but not what Hilbert and Ackermann asked. The
+  Entscheidungsproblem is about provability alone.
 - **The gap is one-sided, and it is exactly what they see when `grind`
   hangs.** It cannot say there is nothing there, only that it has not
   found anything yet. Students hit this in week two; name it now.

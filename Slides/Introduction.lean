@@ -787,7 +787,7 @@ Vladimir Voevodsky
 
 *Oct 1998* — Simpson argues that it cannot be true, but cannot say *which step*.
 
-*Autumn 2013* — Voevodsky accepts it and finds his own error. Fifteen years in limbo.
+*Autumn 2013* — Voevodsky accepts it and finds his own error.
 
 :::class "key"
 Mathematics runs on *a complex system of mutual trust based on reputations*.
@@ -795,7 +795,8 @@ Mathematics runs on *a complex system of mutual trust based on reputations*.
 
 :::notes
 Note the dates: the paper is from 1989, but the episode only ends in
-2013, which is why it sits here and not before Kepler.
+2013, which is why it sits here and not before Kepler. **Fifteen years
+in limbo** — say the number, it is no longer on the slide.
 
 Fifteen years, and not an obscure corner: both authors were well
 known, and Voevodsky received the Fields Medal in between, in 2002. Everyone makes mistakes. What matters here is how long it took
@@ -809,12 +810,21 @@ products of Eilenberg-MacLane spaces.
 
 The quoted line is Voevodsky's own, from his 2014 IAS lecture.
 
-Second story, same lesson: a mistake in a lemma of his own from 1992
-stayed in print until someone checking his lectures step by step found
-it in 1999. Several seminars had read the paper by then.
+Second story, same lesson: in 1999 he found an error in a paper of
+his own from seven years earlier. He salvaged the result, but by his
+account the experience frightened him.
 
 His conclusion: a hard technical argument by a trusted author is
 *hardly ever checked in detail*.
+
+**Mind the order, it is the point of the slide.** None of this was
+settled by a machine. Simpson argued by hand in 1998, Ara proved the
+theorem false by hand in 2012, and Voevodsky recognised his own error
+by hand in 2013. And his turn to formalization came *before* that
+resolution, not after it: the homotopy-lambda-calculus note is from
+2006, the Coq library from February 2010, the first public lectures
+2010 and 2011. **What drove him was the dispute staying open for
+fifteen years, not its ending.**
 
 He spent the rest of his career on foundations built so that a
 machine could check such arguments — not the ones Mathlib uses, and

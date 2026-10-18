@@ -689,13 +689,25 @@ The question comes every year. Nothing here needs hardware.
   higher groupoids cannot produce the 2-sphere; Ara showed in 2012 that
   among simply connected spaces they give only products of
   Eilenberg-MacLane spaces.
-- **Second story, same lesson:** an error in a lemma of his own from 1992
-  stayed in print until someone checking his lectures step by step found
-  it in 1999. Several seminars had read the paper by then.
+- **Second story, same lesson:** in 1999 he found an error in a paper of
+  his own from seven years earlier. He salvaged the result, but by his
+  own account the experience frightened him — that is the documented
+  trigger for everything that followed.
 - His conclusion: a hard technical argument by a trusted author is
   *hardly ever checked in detail*.
 - The quoted line — mathematics runs on "a complex system of mutual trust
   based on reputations" — is his own, from the 2014 IAS lecture.
+- **Mind the order — it is the point of the slide.** Nothing here was
+  settled by a machine. Simpson argued by hand in 1998, Ara proved the
+  theorem false by hand in 2012, Voevodsky recognised his own error by
+  hand in 2013.
+  - And his turn to formalization came **before** that resolution, not
+    after it: the "homotopy lambda calculus" note is from September 2006,
+    the Coq library from February 2010, the first public lectures 2010
+    (CMU) and 2011 (Oberwolfach). **What drove him was the dispute
+    staying open for fifteen years, not its ending.**
+  - Worth saying out loud: the man who built formal foundations settled
+    his own fifteen-year dispute without them.
 - He spent the rest of his career on foundations built so a machine could
   check such arguments. **Not** the ones Mathlib uses, and not our subject:
   we take the diagnosis, not the cure. He died in 2017, aged 51.

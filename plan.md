@@ -22,29 +22,31 @@ knapp kalkuliert, nicht großzügig.
 
 ## Format
 
-**Ab Woche 4: Montag Input, Mittwoch Labor.** Nicht beide Termine
+**Jede Woche: Montag Vorlesung, Mittwoch Labor.** Kein Termin
 halb-halb -- das zerfasert.
 
 Bei Formalisierung ist nicht Vortragszeit der Engpass, sondern
 Tastaturzeit. Im Labor arbeiten alle am Rechner, Dozent und Tutor
 gehen herum. Dort entsteht auch das Bild davon, wer was kann.
 
-### Wochen 1--3 laufen anders
+Die Aufteilung gilt ab Woche 1. Nur der Mittwoch der ersten Woche
+weicht ab: dort wird installiert.
 
-Am Anfang stimmt das Verhältnis nicht. „So funktioniert `intro`" ist
-nach zwanzig Minuten erzählt, aber der Mittwoch bräuchte das Doppelte,
-weil alle langsam tippen und die Hälfte noch Installationsprobleme hat.
+### Was das am Anfang kostet
 
-Die Antwort ist nicht, den Montag mit Theorie zu füllen, die niemand
-einordnen kann, sondern **in den Wochen 2 und 3 beide Termine als
-Labor zu fahren**: Montag 25 Minuten Input, dann 60 Minuten üben.
-Mittwoch wie gewohnt. Ab Woche 4 auf das normale Muster kippen.
+Das Verhältnis stimmt in den ersten Wochen nicht von selbst. „So
+funktioniert `intro`" ist nach zwanzig Minuten erzählt, und der
+Mittwoch bräuchte das Doppelte, weil alle langsam tippen.
 
-Woche 1 fällt auch dadurch heraus: dort ist am Montag noch nichts
-installiert und am Mittwoch wird installiert. Beide Termine sind
-Sonderfälle und unten einzeln beschrieben.
+Die Antwort ist nicht, die Termine zu mischen, sondern dem Montag
+einen eigenen Faden zu geben, der ohne Lean-Kenntnisse funktioniert:
+warum formalisieren, was ein Beweis ist, konstruktiv gegen klassisch.
+Ausgeführt unten unter *Der Theoriefaden der ersten Wochen*.
 
-Das 2×90-Format ist ein Gefäß, kein Gesetz.
+Die Rechnung geht trotzdem nicht ganz auf. Die Wochen 2 und 3 tragen
+je zwei Blätter und haben dafür nur ein Labor. Wenn es dort klemmt,
+ist das der Ort zum Nachsteuern -- nicht durch Mischen der Termine,
+sondern indem ein Blatt eine Woche später fällig wird.
 
 ### Woche 1, Mittwoch: Installationstermin
 
@@ -178,7 +180,9 @@ sind.
 **Woche 2--3 -- Konstruktive gegen klassische Logik.** Echte Theorie,
 braucht nur die Blätter 01-a bis 01-c als Vorwissen, und sie dient
 direkt dem Stoff: BHK-Interpretation, warum `¬¬P → P` kein Theorem
-ist, was ein Beweis von `P ∨ Q` eigentlich liefern muss.
+ist, was ein Beweis von `P ∨ Q` eigentlich liefern muss. Zwei volle
+Montage trägt das, wenn man die BHK-Interpretation wirklich durchgeht
+statt sie zu erwähnen.
 
 Der Clou: sie können es **selbst nachprüfen**. `itauto` gegen `tauto`
 ist genau dieses Experiment, und Blatt 01-g baut darauf auf. Theorie,

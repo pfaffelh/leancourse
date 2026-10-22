@@ -8,8 +8,8 @@ set_option pp.rawOnError true
 /-
 Deck for the chapter on the natural numbers and reduction rules
 (01-Lean/01-Nat). It follows the chapter section by section: `Nat`
-and its recursor, definitional equality and the reduction rules, the
-kernel, then `Bool`, `True` and `False`.
+and its recursor, definitional equality and the reduction rules,
+then `Bool`, `True` and `False`.
 -/
 
 namespace SlidesNat
@@ -183,27 +183,16 @@ example (n : Nat) : 0 + n = n := by
 `rw [ih]` alone fails: `0 + k` only appears after the ι step
 `0 + succ k ⟶ succ (0 + k)`, which `Nat.add_succ` performs.
 
-# Beyond the six rules
+# How far reduction goes
 
-- *Proof irrelevance*: any two proofs of the same `P : Prop` are
-  definitionally equal.
-- *Quotient computation*: `Quot.lift f h (Quot.mk r a) ⟶ f a`.
-- *η for structures*: `p = (p.1, p.2)` by `rfl`.
-- The kernel reduces to *weak head normal form*; reduction is
-  confluent and strongly normalizing, so defeq is decidable.
-
-# The kernel and the elaborator
-
-- *Kernel*: the small, trusted core that checks every term.
-- *Elaborator*: turns tactics, notation, `match`, coercions into one
-  explicit term.
-- Built into the kernel: `Prop`, `Type u`, inductive types,
-  proof irrelevance.
-- Several independent kernels, one (`Lean4Lean`) verified in Lean.
-
-:::class "key"
-To believe a Lean proof you need only believe the kernel.
-:::
+- How eagerly δ fires: `@[reducible]` freely, a plain `def` on
+  demand, `@[irreducible]` not at all.
+- Reduction stops at *weak head normal form* — just far enough to
+  expose the outermost constructor or binder.
+- Confluent and strongly normalizing, so definitional equality is
+  decidable and `rfl` terminates.
+- Proof irrelevance, quotient computation and η for structures come
+  with the chapter on types.
 
 # Bool
 
@@ -222,6 +211,15 @@ example (b : Bool) :
 
 For a variable `b`, `rfl` alone is stuck, as for `0 + n`.
 
+Instead of calling `Bool.rec`, define by *pattern matching*, one line
+per constructor. Lean translates it back into the recursor.
+
+```lean -panel -stretch
+def myNot : Bool → Bool
+  | false => true
+  | true  => false
+```
+
 # `True`
 
 `Prop` is no inductive type: it is a primitive of the kernel,
@@ -229,7 +227,12 @@ For a variable `b`, `rfl` alone is stuck, as for `0 + n`.
 
 ```lean -panel -stretch
 example : True := True.intro
+example : True := trivial
+example : True := by trivial
 ```
+
+`trivial` is a name for that constructor; the tactic of the same name
+tries it, plus `rfl` and `assumption`.
 
 ```
 True.rec : C → True → C
@@ -257,9 +260,8 @@ example (h : False) (P : Prop) : P := h.elim
 # `False` and consistency
 
 - One proof of `False` proves every proposition.
-- A system with `False` inhabited is *contradictory*.
-- *Consistent*, *sound*, rejecting `Type : Type` — all come back to
-  this.
+- A system with `False` inhabited is *contradictory*: it no longer
+  tells the provable from the false.
 
 :::class "key"
 `False` must stay empty.
@@ -271,5 +273,4 @@ example (h : False) (P : Prop) : P := h.elim
 - Six reduction rules α β η δ ι ζ generate definitional equality.
 - `rfl` checks it; a variable in recursive position gets stuck,
   then use `induction` or `cases`.
-- A small kernel checks what the elaborator produces.
 - `Bool`, `True`, `False`: two, one and no constructors.

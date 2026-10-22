@@ -51,7 +51,7 @@ The one thing that *does* have to hold: a witness must prove the same
 statement as the sheet. When an exercise statement changes, the witness
 has to follow, or the check is worthless. The failure mode to watch for
 is silent drift — in October 2026 the witness for the old `01-h`
-(now `03-01-Predicates`) exercises 2 and 3 had been rewritten to use
+(now `01-Lean/05-b-Predicates`) exercises 2 and 3 had been rewritten to use
 `imp_iff_or_not` and `not_imp_not` while the sheet still told
 students to start with `rw [l1]`, which rewrites the *outer*
 implication and leads somewhere else entirely. That mismatch
@@ -59,21 +59,44 @@ survived for months precisely because nothing compared the two.
 
 ## Coverage
 
-| Sheet | Witness |
-|-------|---------|
-| `01-Logic` (a–g) | all 7 |
-| `02-Numbers` (a–c) | all 3 |
-| `03-Functions_and_Sets` | `03-00-Quantifiers`, `03-01-Predicates` only |
-| `05-TypeTheory` | `05-00-Typeclasses`, `05-d-WellFoundedness` only |
-| `06-Mathematics` | `06-00-Limits` only |
-| `07-ProofEngineering` | `07-b-Conv` only |
-| `08-Puzzles` (a) | all 1 |
-| `04-FunctionalProgramming` | none |
+The tree mirrors `../Exercises/` file for file. As of October 2026:
 
-## A second check, for `01-Logic` only
+| Sheet | Chapter | Week | Witness |
+|-------|---------|------|---------|
+| `00-Logic/a-Propositions` … `g-Automation` | — | 1–5 | all 7 |
+| `01-Lean/01-a-NatRec` | 1.1 | 2 | yes |
+| `01-Lean/01-b-Bool` | 1.1 | 3 | yes |
+| `01-Lean/01-c-Naturals` | 1.1 | 4 | yes |
+| `01-Lean/04-a-Typeclasses` | 1.4 | 5 | yes |
+| `01-Lean/04-b-Coercions` | 1.4 | 5 | yes |
+| `01-Lean/05-a-Quantifiers` | 1.5 | 3 | yes |
+| `01-Lean/05-b-Predicates` | 1.5 | 6 | yes |
+| `01-Lean/05-c-CurryHoward` | 1.5 | 6 | yes |
+| `01-Lean/06-a-DependentTypes` | 1.6 | 7 | yes |
+| `01-Lean/07-a-Notation` | 1.7 | 7 | yes |
+| `02-Mathematics/01-a-Sets` | 2.1 | 8 | yes |
+| `02-Mathematics/01-b-ImagePreimage` | 2.1 | 8 | yes |
+| `02-Mathematics/01-c-Functions` | 2.1 | 8 | yes |
+| `02-Mathematics/03-a-WellFoundedness` | 2.3 | 9 | yes |
+| `02-Mathematics/04-a-Orders` | 2.4 | 11 | **missing** |
+| `02-Mathematics/05-a-Algebra` | 2.5 | 11 | **missing** |
+| `02-Mathematics/06-a-Limits` | 2.6 | 12 | yes |
+| `02-Mathematics/06-b-Filters` | 2.6 | 12 | **missing** |
+| `02-Mathematics/07-a-Topology` | 2.7 | 13 | **missing** |
+| `02-Mathematics/08-a-MeasureTheory` | 2.8 | 14 | **missing** |
+| `02-Mathematics/09-a-Monads` | 2.9 | 15 | **missing** |
+| `02-Mathematics/09-b-Probability` | 2.9 | 15 | **missing** |
+| `04-Appendix/a-ProofEngineering` | Appendix | 10 | **missing** |
+| `04-Appendix/b-Conv` | Appendix | 10 | yes |
+| `99-Extra/a-Puzzles` | — | 5 | yes |
 
-Sheets `01-c` and `01-d` claim every statement on them is provable
-*constructively*; `01-e` claims every statement on it is not. Both
+Everything handed out before the Christmas break has a witness. The
+eight missing ones are the Mathlib-heavy sheets of weeks 10 to 15.
+
+## A second check, for `00-Logic` only
+
+Sheets `c-Or` and `d-Negation` claim every statement on them is provable
+*constructively*; `e-Classical` claims every statement on it is not. Both
 claims are machine-checkable with `itauto`, which is `tauto`
 restricted to constructive reasoning: put the statements in a scratch
 file, prove each `by itauto`, and check that they all succeed

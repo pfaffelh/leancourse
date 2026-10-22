@@ -599,7 +599,7 @@ Another description of the installation is [here](https://leanprover-community.g
 :::
 
 
-After `code .` in the `leancourse_exercises` folder, open `Exercises/01-Logic/01-a-Propositions.lean`. It works once the orange and red bars disappear and moving the cursor on the left changes the infoview on the right.
+After `code .` in the `leancourse_exercises` folder, open `Exercises/00-Logic/a-Propositions.lean`. It works once the orange and red bars disappear and moving the cursor on the left changes the infoview on the right.
 Then copy the `Exercises` directory to `MyExercises` and work there. To get updates, run `git pull` in `leancourse_exercises`. `MyExercises` is ignored by git, so an update never overwrites your files.
 
 If the installation gives you trouble, talk to the teachers rather than spending evenings on it.

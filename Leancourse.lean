@@ -6,10 +6,10 @@ import Mathlib
 
 import «Leancourse».Coursenotes.«00-Introduction»
 import «Leancourse».Coursenotes.«01-Lean»
-import «Leancourse».Coursenotes.«03-Mathematics»
+import «Leancourse».Coursenotes.«02-Mathematics»
+import «Leancourse».Coursenotes.«03-Projects»
 import «Leancourse».Coursenotes.«04-Appendix»
-import «Leancourse».Coursenotes.«05-Projects»
-import «Leancourse».Coursenotes.«06-Slides»
+import «Leancourse».Coursenotes.«05-Slides»
 import «Leancourse».Coursenotes.«99-Bibliography»
 
 open Verso.Genre Manual
@@ -27,12 +27,12 @@ Notes for a course on formal proving with the interactive theorem prover Lean 4 
 
 {include 0 «Leancourse».Coursenotes.«01-Lean»}
 
-{include 0 «Leancourse».Coursenotes.«03-Mathematics»}
+{include 0 «Leancourse».Coursenotes.«02-Mathematics»}
+
+{include 0 «Leancourse».Coursenotes.«03-Projects»}
 
 {include 0 «Leancourse».Coursenotes.«04-Appendix»}
 
-{include 0 «Leancourse».Coursenotes.«05-Projects»}
+{include 0 «Leancourse».Coursenotes.«05-Slides»}
 
 {include 0 «Leancourse».Coursenotes.«99-Bibliography»}
-
-{include 0 «Leancourse».Coursenotes.«06-Slides»}

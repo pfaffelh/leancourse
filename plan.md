@@ -42,7 +42,8 @@ Die Antwort ist nicht, die Termine zu mischen, sondern den Montag ab
 Woche 2 durch das Skript laufen zu lassen, von Kapitel 1.1 an. Die
 Übung bleibt derweil bei der Logik und nimmt das Blatt zur Vorlesung
 zusätzlich mit. Zwei Wochen lang sind das drei Blätter; siehe
-*Wochenplan*.
+*Wochenplan*. `02-b` (`Bool`) liegt dabei eine Woche hinter seiner
+Vorlesung -- das Kapitel 1.1 ist an einem Montag durch.
 
 ### Woche 1, Mittwoch: Installationstermin
 
@@ -132,20 +133,20 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | W | Mo | Mi | Vorlesung | Kapitel | Blätter | |
 |---|---|---|---|---|---|---|
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | 01-a | |
-| 2 | 26.10. | 28.10. | `Nat`, `Nat.rec`, Reduktionsregeln | 1.1 | 01-b, 01-c, 02-a | |
-| 3 | 02.11. | 04.11. | `Bool`, `True`, `False` | 1.1 | 01-d, 01-e, 02-b | |
-| 4 | 09.11. | 11.11. | Typen, Strukturen, Quotienten | 1.2 | 01-f, 01-g | **Test 1** |
-| 5 | 16.11. | 18.11. | Terme und Pattern Matching | 1.3 | 02-c, 02-d | |
-| 6 | 23.11. | 25.11. | Typklassen und Notation | 1.4, 1.7 | 02-e, 03-00 | |
-| 7 | 30.11. | 02.12. | Mengen und Typen | 2.1 | 03-01, 03-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Universen und Axiome | 2.2 | 03-b, 03-c | |
-| 9 | 14.12. | 16.12. | Curry-Howard, abhängige Typen | 1.5, 1.6 | 05-a, 05-b | **Test 3** |
+| 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | 01-b, 01-c, 02-a | |
+| 3 | 02.11. | 04.11. | Typen, Strukturen, Quotienten | 1.2 | 01-d, 01-e, 02-b | |
+| 4 | 09.11. | 11.11. | Terme und Pattern Matching | 1.3 | 01-f, 01-g | **Test 1** |
+| 5 | 16.11. | 18.11. | Typklassen | 1.4 | 02-c, 02-d | |
+| 6 | 23.11. | 25.11. | Curry-Howard | 1.5 | 02-e, 03-00 | |
+| 7 | 30.11. | 02.12. | Abhängige Typen und Notation | 1.6, 1.7 | 03-01, 03-a | **Test 2** |
+| 8 | 07.12. | 09.12. | Mengen und Typen | 2.1 | 03-b, 03-c | |
+| 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 05-a, 05-b | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Appendix | 07-a, 07-b, 04-a | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
-| 11 | 11.01. | 13.01. | Ordnungen und Verbände | 2.4 | 06-a | |
-| 12 | 18.01. | 20.01. | Algebraische Hierarchie | 2.5 | 06-d | |
-| 13 | 25.01. | 27.01. | Filter | 2.6 | 06-b | **Test 4** |
-| 14 | 01.02. | 03.02. | Topologie; Maßtheorie | 2.7, 2.8 | 06-c, 06-e | |
+| 11 | 11.01. | 13.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 06-a | |
+| 12 | 18.01. | 20.01. | Filter | 2.6 | 06-d | |
+| 13 | 25.01. | 27.01. | Topologie | 2.7 | 06-b | **Test 4** |
+| 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 06-c, 06-e | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 04-b, 06-f | **Test 5** |
 
 29 der 32 Blätter. Nicht im Pflichtprogramm sind `05-c`, `05-d` und
@@ -156,9 +157,9 @@ reine Installation -- in dieser Woche sieht niemand eine geführte
 Minute Lean. Zwei Blätter wären dort Unfug.
 
 **Die Wochen 2 und 3 tragen drei.** Die Logik läuft weiter (`01-b`
-bis `01-e`), und das Blatt zur Vorlesung kommt dazu: `02-a` zu
-`Nat.rec`, `02-b` zu `Bool`. So haben Montag und Mittwoch in diesen
-beiden Wochen dasselbe Thema, obwohl die Logik noch nicht fertig ist.
+bis `01-e`), und die beiden Blätter zu Kapitel 1.1 kommen dazu: `02-a`
+zu `Nat.rec`, `02-b` zu `Bool`. So wird die Vorlesung der ersten
+Wochen gleich geübt, obwohl die Logik noch nicht fertig ist.
 
 Dafür verliert Woche 5 ihre vier Blätter -- die schlimmste Woche des
 alten Plans. Der Schnitt bleibt bei zwei Blättern pro Woche.
@@ -168,29 +169,35 @@ Blättern kaum gebraucht.
 
 ### Vorlesung und Skript
 
-Die Spalte *Kapitel* läuft durch das Skript, von 1.1 bis 2.9. Jeder
-Montag hat damit sein Kapitel und seinen Foliensatz, und kein Kapitel
-bleibt übrig -- außer 2.3, das ohnehin Projektmaterial ist.
+Die Spalte *Kapitel* läuft durch das Skript, von 1.1 bis 2.9, ohne
+Ausnahme. Jeder Montag hat sein Kapitel und seinen Foliensatz. Übrig
+bleibt nur 2.3, das ohnehin Projektmaterial ist.
 
-Zwei Stellen weichen von der Reihenfolge des Skripts ab, beide, damit
-die Vorlesung auf ihre Blätter trifft:
+**Ein Kapitel ist eine Vorlesung.** Die sieben vorhandenen Decks sind
+alle 16 bis 19 Folien lang, unabhängig davon, wie lang das Kapitel
+ist -- sie wurden von Anfang an auf 90 Minuten geschnitten. 15 Kapitel
+auf 13 Vorlesungen (Woche 1 ist die Einleitung, Woche 10 der Appendix)
+heißt also: zweimal müssen zwei Kapitel zusammen. Das sind 1.6 mit 1.7
+in Woche 7 und 2.4 mit 2.5 in Woche 11, jeweils die beiden kürzesten
+benachbarten.
 
-- **1.5 und 1.6** (Curry-Howard, abhängige Typen) stehen in Woche 9,
-  hinter 2.1 und 2.2, weil dort die Blätter `05-a` und `05-b` liegen.
-- **1.7 Notation** hängt an 1.4 in Woche 6. Beides ist Maschinerie des
-  Elaborators, und allein trägt 1.7 keinen Termin.
+Zur Gleichverteilung, gemessen in Zeilen Skript je Termin: Mittel 466,
+Spanne 263 (Woche 8, Mengen und Typen) bis 768 (Woche 15,
+Wahrscheinlichkeit). 2.9 ist das längste Kapitel des Skripts und steht
+zuletzt; dort ist am ehesten zu kürzen.
 
-Ab Woche 4 läuft die Vorlesung der Übung voraus, um ein bis drei
+Ab Woche 3 läuft die Vorlesung der Übung voraus, um ein bis drei
 Wochen. Das ist gewollt: die Theorie hat man im Hinterkopf, während
 die Finger an den Logikblättern weiterarbeiten. Die Blätter erklären
 sich selbst, und im Labor stehen zwei Leute daneben.
 
 **Was es kostet.** Die BHK-Interpretation steht in 1.5, konstruktiv
-gegen klassisch in 2.2 -- also in den Wochen 9 und 8. Die Blätter
-`01-d` und `01-e` laufen damit fünf Wochen vor ihrer Theorie. Woche 3
-federt das teilweise ab: dort ist `False` dran, und `¬P` ist
-`P → False`. Für den Rest reichen die Taktikeinträge im Appendix
-(`by_cases`, `push Not`, `itauto` gegen `tauto`).
+gegen klassisch in 2.2 -- also in den Wochen 6 und 9. Die Blätter
+`01-d` und `01-e` liegen in Woche 3 und laufen damit drei bis sechs
+Wochen vor ihrer Theorie. Woche 2 federt das teilweise ab: dort ist
+`False` dran, und `¬P` ist `P → False`. Für den Rest reichen die
+Taktikeinträge im Appendix (`by_cases`, `push Not`, `itauto` gegen
+`tauto`).
 
 ### Der Faden der ersten Wochen
 
@@ -199,16 +206,16 @@ aktuelle Lage; ausgearbeitet oben unter *Die erste Sitzung*. Null
 Vorwissen nötig, und es erklärt, wofür die nächsten Wochen Mühe gut
 sind.
 
-**Woche 2--3 -- `Nat`, dann `Bool`, `True`, `False`.** Kapitel 1.1 auf
-zwei Montage: erst `Nat` mit zwei Konstruktoren, `Nat.rec`,
-definitionelle Gleichheit und die Reduktionsregeln; dann `Bool` und
-die beiden Propositionen `True` und `False`. Das Kapitel steht seit
-Juli 2026 bewusst *vor* *Types* -- diese Entscheidung trägt genau
-hier, denn `Nat` ist der konkreteste mögliche Einstieg in die
-Typentheorie.
+**Woche 2 -- Kapitel 1.1, ganz.** `Nat` mit zwei Konstruktoren,
+`Nat.rec`, definitionelle Gleichheit, die Reduktionsregeln, und am
+Ende `Bool`, `True`, `False`. Der Foliensatz hat dafür 18 Folien, die
+letzten vier sind `Bool` und die beiden Propositionen. Das Kapitel
+steht seit Juli 2026 bewusst *vor* *Types* -- diese Entscheidung
+trägt genau hier, denn `Nat` ist der konkreteste mögliche Einstieg in
+die Typentheorie.
 
-**Woche 4 -- Typen.** Ab hier ist es eine gewöhnliche Vorlesung: das
-Skript der Reihe nach, ein Kapitel pro Woche.
+**Ab Woche 3 -- das Skript der Reihe nach.** Eine gewöhnliche
+Vorlesung, ein Kapitel pro Woche.
 
 **Die Gewichtung ist Absicht.** Neun Wochen Handwerk vor der Pause,
 fünf Wochen Mathematik danach. Die Mathlib-Kapitel sind der Ertrag des
@@ -225,7 +232,7 @@ Blätter `07-a` und `07-b` sind in sich geschlossen.
 
 **Drei Blätter laufen als Ferienaufgabe über die Pause:** `07-a`,
 `07-b` und dazu `04-a` (Rekursion, Pattern Matching, Funktionen höherer
-Ordnung). Pattern Matching war in Woche 5 dran, mit Kapitel 1.3; der
+Ordnung). Pattern Matching war in Woche 4 dran, mit Kapitel 1.3; der
 Rest von `04-a` steht für sich, genau wie die beiden anderen Blätter.
 Drei Wochen sind dafür reichlich, und das erste Labor nach der Pause
 (13.01., ohne Test) beginnt mit Fragen dazu.
@@ -238,7 +245,7 @@ treffen.
 
 Drei Blätter fallen heraus:
 
-- `05-c-Notation` -- kurz, und Kapitel 1.7 ist in Woche 6 vorgetragen;
+- `05-c-Notation` -- kurz, und Kapitel 1.7 ist in Woche 7 vorgetragen;
   taugt als Selbststudium.
 - `05-d-WellFoundedness` -- ohnehin Projektmaterial
   (Cantor-Schröder-Bernstein, ℤ als Quotient). Das zugehörige Kapitel

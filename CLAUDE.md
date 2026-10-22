@@ -2156,3 +2156,26 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
   `scripts/export_exercises.sh` rsynct mit `--delete` und weigert
   sich jetzt, wenn das Zielrepo nicht auf `preparation` steht.
   Freigeben mit `git checkout preparation -- Exercises/<Kapitel>`.
+
+## 2026-10-22 -- 02-Numbers neu nummeriert, Blatt zum Rekursor
+
+- Reihenfolge jetzt (wie in der Vorlesung: erst Nat, dann Bool):
+  `02-a-NatRec` (*neu*), `02-b-Bool`, `02-c-Naturals`,
+  `02-d-Induction`, `02-e-Limits` (vorher `02-00-Bool`,
+  `02-a-Naturals`, `02-b-Induction`, `02-c-Limits`). `git mv` in `Exercises/` und `Checks/`; `plan.md` und
+  `Checks/README.md` nachgezogen.
+- `02-a-NatRec` (13 Aufgaben, Zeuge in `Checks/`): Funktionen nur ueber
+  `Nat.rec`, Beweise nur mit `rfl`, `show`, `induction`, `rw [ih]`,
+  keine Mathlib-Lemmata. Deshalb steht es vor `02-c`, das Mathlib-Saetze
+  benutzt. `myDouble` und `myAdd` sind vorgegeben (das vorgerechnete
+  `myAdd_zero_left` braucht `myAdd`); `myPred`, `myMul`, `myFact`,
+  `myEven` definieren die Studierenden.
+- Das Export-Repo `leancourse_exercises` hat noch die alten Namen;
+  beim naechsten Export spiegelt `--delete` die Umbenennung.
+- `02-b-Bool` hat jetzt einen Teil "`True` and `False` as types"
+  (Aufgaben 17-22): `False.rec` per Hand, `exfalso`/`False.elim`/
+  `cases h` (null Ziele), `cases` auf `True`, `true = false` und
+  `0 = 1` per `cases`, `Empty.elim`.
+- Glossar `Tactics/Exfalso.lean`: falsche Bemerkung entfernt, `exfalso`
+  verlasse die konstruktive Mathematik (ex falso ist intuitionistisch
+  gueltig); `false` → `False`.

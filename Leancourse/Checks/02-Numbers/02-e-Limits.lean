@@ -1,6 +1,6 @@
 import Mathlib -- import all the tactics
 
-/- Solutions to 02-c-Limits. -/
+/- Solutions to 02-e-Limits. -/
 
 def TendsTo (x : ℕ → ℝ) (t : ℝ) : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n, N ≤ n → |x n - t| < ε

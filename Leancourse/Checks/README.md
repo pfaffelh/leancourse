@@ -64,7 +64,7 @@ survived for months precisely because nothing compared the two.
 | `01-Logic` (a–g) | all 7 |
 | `02-Numbers` (a–c) | all 3 |
 | `03-Functions_and_Sets` | `03-00-Quantifiers`, `03-01-Predicates` only |
-| `05-TypeTheory` | `05-d-WellFoundedness` only |
+| `05-TypeTheory` | `05-00-Typeclasses`, `05-d-WellFoundedness` only |
 | `06-Mathematics` | `06-00-Limits` only |
 | `07-ProofEngineering` | `07-b-Conv` only |
 | `08-Puzzles` (a) | all 1 |

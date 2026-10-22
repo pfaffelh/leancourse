@@ -136,7 +136,7 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | 01-b, 01-c, 02-a | |
 | 3 | 02.11. | 04.11. | Typen, Strukturen, Quotienten | 1.2 | 01-d, 01-e, 02-b | |
 | 4 | 09.11. | 11.11. | Terme und Pattern Matching | 1.3 | 01-f, 01-g | **Test 1** |
-| 5 | 16.11. | 18.11. | Typklassen | 1.4 | 02-c | |
+| 5 | 16.11. | 18.11. | Typklassen | 1.4 | 02-c, 05-00 | |
 | 6 | 23.11. | 25.11. | Curry-Howard | 1.5 | 03-00 | |
 | 7 | 30.11. | 02.12. | Abhängige Typen und Notation | 1.6, 1.7 | 03-01, 03-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen und Typen | 2.1 | 03-b, 03-c | |
@@ -149,7 +149,7 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 06-e | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 04-b, 06-f | **Test 5** |
 
-27 der 31 Blätter. Nicht im Pflichtprogramm sind `04-a`, `05-c`,
+28 der 32 Blätter. Nicht im Pflichtprogramm sind `04-a`, `05-c`,
 `05-d` und das Bonusblatt `08-a`; siehe unten.
 
 **Woche 1 trägt nur ein Blatt.** Montag ist reiner Kontext, Mittwoch
@@ -253,6 +253,12 @@ Zu den Kapiteln 1.2 und 1.3 gibt es kein eigenes Blatt. Pattern
 Matching und Rekursoren stehen in `02-a` und `02-b`, die Universen in
 `05-b`. Strukturen, Quotiententypen und eigene induktive Typen
 bekommen keine Übung -- sie werden gelesen, nicht geübt.
+
+Zu 1.4 gibt es seit Oktober 2026 `05-00-Typeclasses`: eine eigene
+Klasse und eigene Instanzen, Instanzen mit Instanzargumenten,
+`Inhabited` und `default`, `Decidable` von Hand, `deriving
+DecidableEq`, und am Schluss `by_cases`, wo kein Algorithmus mehr
+hilft. 17 Aufgaben, Zeuge in `Checks/`.
 
 Vier Blätter fallen heraus:
 

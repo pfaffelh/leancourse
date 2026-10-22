@@ -23,6 +23,8 @@ class Inhabited (α : Sort u) :=
 ```
 (where `Sort u` is shorthand for a type, which could also be `Prop`.) This means that if `Inhabited α` is true, then `α` has an element, which is called `default`. We will see below how we can use this.
 
+`class` and the square brackets are *typeclasses*; they are chapter 1.4 and sheet `1.4-a`, two weeks from here. For this sheet you need only one thing: `[Inhabited α]` guarantees that `α` has at least one element, and that element is written `default`.
+
 -/
 
 -- We start by introducing some terms:

@@ -1,12 +1,30 @@
 import Mathlib
 
-/-
-# 1.6-a -- Dependent types, universes and axioms
+/-!
+# 1.6-a -- Dependent types
 
 *Notes chapter 1.6, week 7.*
 
-These exercises explore dependent types (Sigma, Pi), universe levels,
-and the axioms of Lean's type theory.
+A type may depend on a value. `Σ (x : α), β x` pairs a value with
+data whose type depends on it, `(x : α) → β x` is the function
+version, and `{x : α // P x}` is the special case where the second
+component is a proof.
+
+Universes appear here too; they were introduced in chapter 1.2.
+The *axioms* that govern `Prop` -- `funext`, `propext`,
+`Classical.choice` -- are chapter 2.2 and have their own sheet,
+`2.2-a`, in week 9. One exercise below needs choice; it is marked.
+
+## Notation introduced here
+
+| notation            | means                                        |
+|---------------------|----------------------------------------------|
+| `Σ (x : α), β x`    | dependent pair, second component in `Type`   |
+| `(x : α) → β x`     | dependent function (Pi type)                 |
+| `{x : α // P x}`    | subtype: a value together with a proof       |
+| `p.1`, `p.2`        | the two components of a pair or subtype      |
+| `Subtype.ext`       | two subtype elements agree if their values do|
+| `universe u`        | declare a universe variable                  |
 -/
 
 /-
@@ -98,71 +116,34 @@ example : (⟨4, by norm_num⟩ : {n : ℕ // n % 2 = 0}) =
 /-
 ## Part 4: Universe levels
 
-Explore how universes work in Lean.
+Chapter 1.2 gave the hierarchy: `Prop = Sort 0`, `Type u = Sort (u+1)`,
+and `Sort u : Sort (u+1)`.  Here you read it off in the editor.
 -/
 
--- Exercise 11: What universe does each of these live in?
--- Use `#check` to find out, then fill in the correct type annotation.
+-- These three are given.  Check each with `#check` and convince
+-- yourself the annotation is the only one that type-checks.
 
--- What is the type of `ℕ`?
--- #check ℕ    -- uncomment and check
+-- #check ℕ
 example : Type 0 := ℕ
 
--- What is the type of `Type 0`?
--- #check Type 0  -- uncomment and check
+-- #check Type 0
 example : Type 1 := Type 0
 
--- What is the type of `Prop`?
--- #check Prop    -- uncomment and check
+-- #check Prop
 example : Type 0 := Prop
 
--- Exercise 12: Universe-polymorphic identity
+-- Exercise 11: Universe-polymorphic identity
 -- Define a universe-polymorphic identity function
 universe u
 def myPolyId (α : Type u) (a : α) : α :=
   sorry
 
--- Exercise 13: Verify your identity works at multiple levels
+-- Once Exercise 11 is solved, these two work at different levels:
 #check myPolyId ℕ 42
 #check myPolyId (Type 0) ℕ
 
 /-
-## Part 5: Axioms in practice
--/
-
--- Exercise 14: Function extensionality
--- Prove that these two functions are equal using `funext`
-example : (fun n : ℕ => n + 0) = (fun n : ℕ => n) := by
-  sorry
-
--- Exercise 15: Propositional extensionality
--- Prove that these two propositions are equal
--- Hint: use `propext` or `ext`
-example : (True ∧ True) = True := by
-  sorry
-
--- Exercise 16: Use excluded middle
--- Prove this classically (it is not provable constructively)
-example (P : Prop) : ¬¬P → P := by
-  sorry
-
--- Exercise 17: Use classical choice
--- Prove there exists a function ℕ → ℕ with a certain property
--- (this requires nonconstructive reasoning)
-open Classical in
-example (h : ∀ (n : ℕ), ∃ (m : ℕ), m > n) : ∃ (f : ℕ → ℕ), ∀ n, f n > n := by
-  sorry
-
--- Exercise 18: Decidable propositions
--- These can be proved by `decide` because they are decidable
-example : (10 : ℕ) ≠ 20 := by
-  sorry
-
-example : (3 : ℕ) ∣ 12 := by
-  sorry
-
-/-
-## Part 6: Subtype vs Exists (and a note on PSigma)
+## Part 5: Subtype vs Exists (and a note on PSigma)
 
 Understand the difference between *computational* and *propositional*
 existence.  Because `Σ` demands a `Type`-valued second component,
@@ -174,7 +155,7 @@ a `Prop`-valued second component; `Subtype` is the more common
 choice in Mathlib for this pattern.)
 -/
 
--- Exercise 19: Subtypes give you data.
+-- Exercise 12: Subtypes give you data.
 -- Construct a subtype element; you will be able to extract the
 -- witness with `.1`.
 def squareRootOf25 : {n : ℕ // n * n = 25} :=
@@ -183,40 +164,28 @@ def squareRootOf25 : {n : ℕ // n * n = 25} :=
 -- Now the witness is computable: squareRootOf25.1 evaluates to 5.
 -- #eval squareRootOf25.1  -- uncomment after solving
 
--- Exercise 20: Exists gives only a proof.
+-- Exercise 13: Exists gives only a proof.
 -- You can prove existence but cannot extract the witness without
--- classical choice.
+-- classical choice -- that direction is on sheet `2.2-a`.
 example : ∃ (n : ℕ), n * n = 25 :=
   sorry
 
--- Exercise 21: Converting Subtype to Exists.
--- This direction always works (forgetting data).
-def subtypeToExists {α : Type} {P : α → Prop}
+-- Exercise 14: Converting Subtype to Exists.
+-- This direction always works (forgetting data) and needs no axiom.
+theorem subtypeToExists {α : Type} {P : α → Prop}
     (s : {x : α // P x}) : ∃ (x : α), P x :=
   sorry
 
--- Exercise 22: Converting Exists to Subtype requires choice!
--- Classical.choice produces data from a bare existence proof.
-open Classical in
-noncomputable def existsToSubtype {α : Type} {P : α → Prop}
-    (h : ∃ (x : α), P x) : {x : α // P x} :=
-  sorry
-
 /-
-## Part 7: Challenge problems
+## Part 6: Challenge problems
 -/
 
--- Exercise 23: Proof irrelevance in action
--- Show that two different proofs of the same Prop are equal
-example : (Nat.le_refl 0 : 0 ≤ 0) = (le_refl 0 : 0 ≤ 0) := by
-  sorry
-
--- Exercise 24: Define a "safe head" function using subtypes
+-- Exercise 15: Define a "safe head" function using subtypes
 -- The input is guaranteed to be a nonempty list
 def safeHead {α : Type} (l : {l : List α // l ≠ []}) : α :=
   sorry
 
--- Exercise 25: Use the safe head function
+-- Exercise 16: Use the safe head function
 -- Hint: you need to provide a list together with a proof it is nonempty
 example : safeHead ⟨[1, 2, 3], by simp⟩ = 1 := by
   sorry

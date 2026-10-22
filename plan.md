@@ -140,7 +140,7 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | 6 | 23.11. | 25.11. | Curry-Howard | 1.5 | 1.5-b, 1.5-c | |
 | 7 | 30.11. | 02.12. | Abhängige Typen und Notation | 1.6, 1.7 | 1.6-a, 1.7-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen und Typen; Fundiertheit | 2.1, 2.3 | 2.1-a, 2.1-b, 2.1-c | |
-| 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.3-a | **Test 3** |
+| 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.2-a, 2.3-a | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Anhang | A-a, A-b | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
 | 11 | 11.01. | 13.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 2.4-a, 2.5-a | |
@@ -149,7 +149,7 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 2.8-a | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 2.9-a, 2.9-b | **Test 5** |
 
-31 der 33 Blätter sind Pflicht, dazu `X-a` als Extrablatt in Woche 5.
+32 Blätter sind Pflicht, dazu `X-a` als Extrablatt in Woche 5.
 Übrig bleibt nur das gestrichene `04-a-Basics`; siehe unten.
 
 **Woche 1 trägt nur ein Blatt.** Montag ist reiner Kontext, Mittwoch
@@ -322,15 +322,23 @@ Klasse und eigene Instanzen, Instanzen mit Instanzargumenten,
 DecidableEq`, und am Schluss `by_cases`, wo kein Algorithmus mehr
 hilft. 17 Aufgaben, Zeuge in `Checks/`.
 
-**`1.4-b-Coercions` fehlt noch und ist zu schreiben.** Kapitel 1.4
-erklärt `Coe`, `CoeSort`, `CoeFun`, die Kette `ℕ → ℤ → ℚ → ℝ` und
-`OfNat`; dazu gibt es bisher keine einzige Aufgabe. `norm_cast` und
-`push_cast` tauchen zum ersten Mal auf `A-a` in Woche 10 und auf
-`2.6-a` in Woche 12 auf, beide Male als Werkzeug und unerklärt. Das
-Blatt schließt die Lücke in Woche 5: das stille `↑`, Teiltyp nach
-Grundtyp, `Set α` als Typ, `push_cast` gegen ein blockiertes `ring`,
-`exact_mod_cast`, zuletzt `OfNat`. Die Theorie steht vollständig in
-1.4 und im Anhang unter *coercion headaches*.
+**`1.4-b-Coercions` gibt es seit Oktober 2026.** Kapitel 1.4 erklärt
+`Coe`, `CoeSort`, `CoeFun`, die Kette `ℕ → ℤ → ℚ → ℝ` und `OfNat`;
+dazu gab es bis dahin keine einzige Aufgabe, und `norm_cast` tauchte
+zum ersten Mal auf `A-a` in Woche 10 unerklärt auf. 16 Aufgaben: das
+stille `↑`, Teiltyp nach Grundtyp, `Bool` als `Prop` und `Set α` als
+Typ, ein gebundelter Morphismus als Funktion, `push_cast` gegen ein
+blockiertes `ring`, `exact_mod_cast`, die Subtraktionsfalle in `ℕ`,
+und zum Schluss eine eigene `OfNat`-Instanz.
+
+**`2.2-a-Axioms` ebenfalls neu.** Kapitel 2.2 war das einzige ohne
+Blatt. 12 Aufgaben zu `funext`, `propext`, `Classical.em`,
+`Classical.choice` und `#print axioms`, mit dem Kontrast zwischen
+einem Beweis, der von keinem Axiom abhängt, und einem, der
+`[propext, Classical.choice, Quot.sound]` meldet. Das Material kam
+vorher auf `1.6-a` vor -- in Woche 7, zwei Wochen vor seinem
+Kapitel. `1.6-a` ist entsprechend gekürzt und behandelt jetzt nur
+noch abhängige Typen: Sigma, Pi, Teiltypen, Universen.
 
 **`X-a-Puzzles` ist das Extrablatt am Ende der Logik**, ausgegeben in
 Woche 5. Drei Rätsel aus der Beweismaschine und von Smullyan, alle

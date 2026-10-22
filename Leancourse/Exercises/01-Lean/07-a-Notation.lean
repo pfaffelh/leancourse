@@ -32,14 +32,22 @@ real declaration.
 -- Template (fill in the right-hand side):
 --   notation "sq " x => ?_
 -- Then uncomment to check:
---   example : sq 5 = 25 := rfl
+--   example : (sq 5 : ℕ) = 25 := rfl
+-- The ascription is not decoration. Without it, `sq 5 = 25` parses
+-- as `sq (5 = 25)`: a `notation` with a trailing placeholder takes
+-- the longest term it can, so it swallows the equation. Giving the
+-- precedence, `notation:max "sq " x:max => x * x`, is the other way
+-- out.
 
 -- Exercise 3.
--- Introduce a binary notation `avg a b` meaning `(a + b) / 2` on ℕ.
+-- Introduce a binary notation `avg(a, b)` meaning `(a + b) / 2`.
+-- Note that every atom between the placeholders must be a real
+-- token -- a bare `" "` is rejected with *invalid atom*, which is
+-- why the comma and the brackets are there.
 -- Template:
---   notation "avg " a " " b => ?_
+--   notation "avg(" a ", " b ")" => ?_
 -- Then uncomment:
---   example : avg 4 6 = 5 := rfl
+--   example : (avg(4, 6) : ℕ) = 5 := rfl
 
 /- ## Part 2: Infix operators -/
 

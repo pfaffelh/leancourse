@@ -77,6 +77,7 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `02-Mathematics/01-a-Sets` | 2.1 | 8 | yes |
 | `02-Mathematics/01-b-ImagePreimage` | 2.1 | 8 | yes |
 | `02-Mathematics/01-c-Functions` | 2.1 | 8 | yes |
+| `02-Mathematics/02-a-Axioms` | 2.2 | 9 | yes |
 | `02-Mathematics/03-a-WellFoundedness` | 2.3 | 9 | yes |
 | `02-Mathematics/04-a-Orders` | 2.4 | 11 | **missing** |
 | `02-Mathematics/05-a-Algebra` | 2.5 | 11 | **missing** |
@@ -90,8 +91,24 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `04-Appendix/b-Conv` | Appendix | 10 | yes |
 | `99-Extra/a-Puzzles` | — | 5 | yes |
 
-Everything handed out before the Christmas break has a witness. The
-eight missing ones are the Mathlib-heavy sheets of weeks 10 to 15.
+Everything handed out before the Christmas break has a witness --
+weeks 1 to 9, 16 sheets. The eight missing ones are the Mathlib-heavy
+sheets of weeks 10 to 15: proof engineering, orders, algebra, filters,
+topology, measure theory, monads and probability.
+
+Writing the first batch turned up three faults that a type-check
+alone could never have caught, because the broken lines sat in
+comments or were simply false:
+
+* `1.7-a` exercise 3 gave the template `notation "avg " a " " b => ?_`.
+  A bare `" "` is not a valid atom, so no student could have followed
+  it. The template is now `notation "avg(" a ", " b ")"`.
+* `1.7-a` exercise 2 checked itself with `example : sq 5 = 25 := rfl`,
+  which parses as `sq (5 = 25)` and fails to elaborate. The check line
+  now carries the type ascription, with a note on precedence.
+* `2.1-b` exercise 2 asked for `g ⁻¹' s = s` for an *arbitrary*
+  `g : α → α`. That is false -- take `g` constant. It now reads
+  `id ⁻¹' s = s`, which is what the surrounding text promises.
 
 ## A second check, for `00-Logic` only
 

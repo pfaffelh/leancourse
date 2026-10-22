@@ -208,6 +208,9 @@ example (n : ℕ) : (∃ (k : ℕ), n = 2 * k) ∨ (∃ (k : ℕ), n = 2 * k + 1
 #check pow_nonneg
 #check mul_le_one₀
 
+-- `refine` is `exact` with holes: write the term you mean and put
+-- `?_` where you do not know the argument yet, and each `?_` becomes
+-- a new goal. The alphabetical entry is in the Tactics appendix.
 example (x : ℝ) (n : ℕ) (h : 0 ≤ x) : x^(n+1) ≤ 1 ↔ x ≤ 1 := by
   refine pow_le_one_iff_of_nonneg h ?_
   exact Ne.symm (zero_ne_add_one n)
@@ -237,6 +240,13 @@ example (x y : ℝ) : (x + y) ^ 2 = x ^ 2 + 2 * x * y + y ^ 2 := by
 -- Exercise 4:
 example (n : ℕ) (x : ℝ) (h : 0 ≤ x) : (1 : ℝ) + n * x ≤ (1 + x)^n := by
   sorry
+
+-- The next two exercises use the sum notation. Read
+-- `∑ k ∈ Finset.range n, f k` as "the sum of `f k` for `k < n`";
+-- `Finset.range n` is the finite set `{0, ..., n-1}`. Finite sets in
+-- their own right are chapter 2.9 -- here the notation is all you
+-- need, together with `Finset.sum_range_succ`, which peels off the
+-- last summand and is what makes the induction step work.
 
 -- Exercise 5: Sum of the first n natural numbers is n*(n+1)/2.
 -- Use induction on n.

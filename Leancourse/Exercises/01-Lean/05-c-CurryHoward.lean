@@ -163,9 +163,11 @@ example : ∀ (n : ℕ), ∃ (k : ℕ), n + n = 2 * k :=
 -- Exercise 23: The type of proofs is a function type
 -- This exercise asks you to construct an element of a function type,
 -- which IS a proof of an implication. Reflect on this duality.
+set_option linter.defProp false in
 def modusPonens : (P → Q) → P → Q :=
   sorry
 
 -- Exercise 24: Flip function = commutativity of conjunction in disguise
+set_option linter.defProp false in
 def flip' (f : P → Q → R) : Q → P → R :=
   sorry

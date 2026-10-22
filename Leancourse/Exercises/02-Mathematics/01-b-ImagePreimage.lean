@@ -43,10 +43,10 @@ example : f '' s ⊆ t ↔ s ⊆ f ⁻¹' t := by
     apply h hs1
 
 -- Exercise 2:
--- Pushforward and pullback along the identity map don't change anything
--- pullback is actually simple:
-example (g : α → α): g ⁻¹' s = s := by
-
+-- Pushforward and pullback along the identity map don't change
+-- anything. Pullback is the simple one -- unfold both sides and
+-- compare.
+example : id ⁻¹' s = s := by
   sorry
 
 -- Exercise 3:

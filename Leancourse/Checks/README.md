@@ -66,6 +66,7 @@ survived for months precisely because nothing compared the two.
 | `03-Functions_and_Sets` | `03-00-Quantifiers`, `03-01-Predicates` only |
 | `05-TypeTheory` | `05-d-WellFoundedness` only |
 | `07-ProofEngineering` | `07-b-Conv` only |
+| `08-Puzzles` (a) | all 1 |
 | `04-FunctionalProgramming`, `06-Mathematics` | none |
 
 ## A second check, for `01-Logic` only

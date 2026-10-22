@@ -141,7 +141,7 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | 7 | 30.11. | 02.12. | Abhängige Typen und Notation | 1.6, 1.7 | 03-01, 03-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen und Typen | 2.1 | 03-b, 03-c | |
 | 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 05-a, 05-b | **Test 3** |
-| 10 | 21.12. | -- | Proof Engineering; `conv` | Appendix | 07-a, 07-b, 04-a | |
+| 10 | 21.12. | -- | Proof Engineering; `conv` | Appendix | 07-a, 07-b | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
 | 11 | 11.01. | 13.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 06-a, 06-d | |
 | 12 | 18.01. | 20.01. | Filter | 2.6 | 06-00, 06-b | |
@@ -149,8 +149,8 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 06-e | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 04-b, 06-f | **Test 5** |
 
-28 der 31 Blätter. Nicht im Pflichtprogramm sind `05-c`, `05-d` und
-das Bonusblatt `08-a`; siehe unten.
+27 der 31 Blätter. Nicht im Pflichtprogramm sind `04-a`, `05-c`,
+`05-d` und das Bonusblatt `08-a`; siehe unten.
 
 **Woche 1 trägt nur ein Blatt.** Montag ist reiner Kontext, Mittwoch
 reine Installation -- in dieser Woche sieht niemand eine geführte
@@ -238,12 +238,10 @@ und zwar besser als alles andere: Proof Engineering und `conv` sind
 für alle wichtig, die später zu Mathlib beitragen wollen, und die
 Blätter `07-a` und `07-b` sind in sich geschlossen.
 
-**Drei Blätter laufen als Ferienaufgabe über die Pause:** `07-a`,
-`07-b` und dazu `04-a` (Rekursion, Pattern Matching, Funktionen höherer
-Ordnung). Pattern Matching war in Woche 4 dran, mit Kapitel 1.3; der
-Rest von `04-a` steht für sich, genau wie die beiden anderen Blätter.
-Drei Wochen sind dafür reichlich, und das erste Labor nach der Pause
-(13.01., ohne Test) beginnt mit Fragen dazu.
+**Zwei Blätter laufen als Ferienaufgabe über die Pause:** `07-a` und
+`07-b`. Beide sind in sich geschlossen, drei Wochen sind dafür
+reichlich, und das erste Labor nach der Pause (13.01., ohne Test)
+beginnt mit Fragen dazu.
 
 `conv` kommt damit *vor* Filter und Topologie -- genau rechtzeitig,
 denn dort lässt zum ersten Mal jemand `rw` an der falschen Stelle
@@ -251,12 +249,12 @@ treffen.
 
 ### Nicht im Pflichtprogramm
 
-Zu den Kapiteln 1.2 und 1.3 gibt es kein eigenes Blatt. Induktive
-Typen und Pattern Matching stehen in `04-a`, die Universen in `05-b`.
-Strukturen und Quotiententypen bekommen keine Übung -- sie werden
-gelesen, nicht geübt.
+Zu den Kapiteln 1.2 und 1.3 gibt es kein eigenes Blatt. Pattern
+Matching und Rekursoren stehen in `02-a` und `02-b`, die Universen in
+`05-b`. Strukturen, Quotiententypen und eigene induktive Typen
+bekommen keine Übung -- sie werden gelesen, nicht geübt.
 
-Drei Blätter fallen heraus:
+Vier Blätter fallen heraus:
 
 - `05-c-Notation` -- kurz, und Kapitel 1.7 ist in Woche 7 vorgetragen;
   taugt als Selbststudium.
@@ -265,6 +263,10 @@ Drei Blätter fallen heraus:
   2.3 ist das einzige, das keinen Termin hat.
 - `08-a-Puzzles` -- Bonusblatt mit den drei Rätseln aus der
   Beweismaschine.
+- `04-a-Basics` -- Rekursion über `ℕ` und Pattern Matching stehen
+  schon auf `02-a` und `02-b`; was übrig bleibt, sind eigene
+  induktive Typen und Listenfunktionen höherer Ordnung. `04-b` deckt
+  davon genug ab und steht in Woche 15 bei den Monaden.
 
 ## Kurztests
 

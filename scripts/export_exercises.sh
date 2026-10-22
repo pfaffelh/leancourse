@@ -34,6 +34,20 @@ done
 
 mkdir -p "$TARGET"
 
+# The exercises repository publishes only the sheets the course has
+# reached; the full set lives on its `preparation` branch.  Because
+# the copy below runs with --delete, exporting onto `main` would put
+# every unreleased sheet back.  Export to `preparation` and release a
+# chapter there with `git checkout preparation -- Exercises/<chapter>`.
+if [ -d "$TARGET/.git" ]; then
+  BRANCH="$(git -C "$TARGET" branch --show-current)"
+  if [ "$BRANCH" != "preparation" ]; then
+    echo "ERROR: $TARGET is on branch '$BRANCH', expected 'preparation'." >&2
+    echo "       git -C \"$TARGET\" checkout preparation" >&2
+    exit 1
+  fi
+fi
+
 # --- exercises ------------------------------------------------------
 RSYNC_ARGS=(-a --delete --exclude 'MyExercises')
 

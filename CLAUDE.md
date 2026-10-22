@@ -2130,3 +2130,29 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
   traegt den langen Titel.
 - Neues Blatt `Exercises/02-Numbers/02-00-Bool.lean` (16 Aufgaben,
   Zeuge in `Checks/`), Woche 5 in `plan.md`.
+
+## 2026-10-22 -- Zwei Branches: preparation und main
+
+- **`preparation` traegt immer den vollen Text**, in beiden Repos
+  (`leancourse` und `leancourse_exercises`). Dort wird gearbeitet.
+- **`main` ist die Veroeffentlichung** und baut die GitHub-Pages-Seite
+  (`deploy.yml` haengt an `main`). Dort steht nur, was drankam:
+  Introduction, 1.1 Nat, 1.2 Types, Appendix, Bibliographie, Slides
+  vollstaendig; **1.3 bis 2.9 und die Projekte nur als
+  Ueberschriftenbaum**, Text ersetzt durch einen Platzhalter.
+- **Warum Ueberschriften bleiben:** alle 250 `{ref}`-Ziele sind
+  Ueberschriften-Tags. Die einzigen Tags im Fliesstext sind die 15
+  Abbildungen, und die liegen alle in der Introduction, die nie
+  gestrippt wird. Deshalb kann das Strippen keinen Link brechen --
+  gemessen und gebaut, `lake exe leancourse` meldet null
+  `No destination found`.
+- **Freigeben:** auf `preparation` arbeiten, dann
+  `git checkout main && git merge preparation`, Datei aus
+  `WITHHELD` in `scripts/strip_unreleased.py` streichen,
+  `python3 scripts/strip_unreleased.py`, committen, pushen.
+  Nie `main` nach `preparation` mergen -- das traegt die gestrippten
+  Dateien zurueck.
+- **Uebungen:** `main` hat momentan nur `Exercises/01-Logic`.
+  `scripts/export_exercises.sh` rsynct mit `--delete` und weigert
+  sich jetzt, wenn das Zielrepo nicht auf `preparation` steht.
+  Freigeben mit `git checkout preparation -- Exercises/<Kapitel>`.

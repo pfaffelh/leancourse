@@ -16,7 +16,7 @@ tag := "contrapose"
 
 *Summary:* `contrapose` applies the contrapositive: given a goal
 `P → Q`, it turns it into `¬Q → ¬P`.  The variant `contrapose!`
-additionally pushes the negations inward using `push_neg`.
+additionally pushes the negations inward using `push Not`.
 
 *Examples:*
 
@@ -35,7 +35,7 @@ additionally pushes the negations inward using `push_neg`.
 *Remarks:*
 
 * `contrapose` (without `!`) simply inserts `¬`.  `contrapose!`
-  additionally runs `push_neg` on both the hypothesis and the goal,
+  additionally runs `push Not` on both the hypothesis and the goal,
   so `¬(x ≤ y)` becomes `y < x` and so on.
 * `contrapose` operates on a hypothesis by default; to contrapose the
   goal only, use `contrapose` without an argument.

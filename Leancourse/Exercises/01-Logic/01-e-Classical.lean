@@ -22,7 +22,7 @@ logic is needed.
 | `by_cases h : P`| split into the case `h : P` and `h : ¬P`      |
 | `Classical.em P`| the same, as a term `P ∨ ¬P`                  |
 | `by_contra h`   | goal `⊢ P`: assume `h : ¬P`, derive `False`   |
-| `push_neg`      | push `¬` inwards through `∧`, `∨`, `→`       |
+| `push Not`      | push `¬` inwards through `∧`, `∨`, `→`       |
 -/
 
 variable (P Q R S T : Prop)
@@ -83,25 +83,25 @@ example : (P → Q) ↔ (¬P ∨ Q) := by
 example : ¬(P → Q) ↔ (P ∧ ¬Q) := by
   sorry
 
-/-! ## `push_neg`
+/-! ## `push Not`
 
-The exercises above are the rules for moving `¬` inwards. `push_neg`
+The exercises above are the rules for moving `¬` inwards. `push Not`
 applies them for you.
 
 `¬(P ∧ Q)` becomes `P → ¬Q`, `¬(P ∨ Q)` becomes `¬P ∧ ¬Q`, `¬¬P`
 becomes `P`, and `¬(P → Q)` becomes `P ∧ ¬Q`. -/
 
 example (h : ¬(P ∨ Q)) : ¬P ∧ ¬Q := by
-  push_neg at h
+  push Not at h
   exact h
 
 /-! Without `at h` it works on the goal instead: -/
 
 example (hP : P) (hnQ : ¬Q) : ¬(P → Q) := by
-  push_neg
+  push Not
   exact ⟨hP, hnQ⟩
 
--- Exercise 8) One `push_neg`, then finish.
+-- Exercise 8) One `push Not`, then finish.
 example (h : ¬(P → Q)) : P := by
   sorry
 

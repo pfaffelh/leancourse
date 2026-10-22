@@ -556,7 +556,7 @@ sentences, no chat.
 | `01-b-Apply`          | `01-b-AndIff`        | `constructor` `⟨_,_⟩` `.1/.2` `.mp/.mpr` `obtain`     |
 | `01-c-Negation`       | `01-c-Or`            | `left` `right` `Or.inl/inr` `obtain (_\|_)`           |
 | `01-d-AndOr`          | `01-d-Negation`      | `show` `exfalso` `False.elim` `contradiction` `absurd` |
-| `01-e-ByCasesHave`    | `01-e-Classical`     | `by_cases` `Classical.em` `by_contra` `push_neg`      |
+| `01-e-ByCasesHave`    | `01-e-Classical`     | `by_cases` `Classical.em` `by_contra` `push Not`      |
 | `01-f-PatternTactics` | `01-f-Structure`     | `have` `suffices` `refine ?_` `rintro` `rcases`       |
 | —                     | `01-g-Automation`    | `exact?` `apply?` `tauto` `itauto` `simp`             |
 
@@ -579,7 +579,7 @@ classical logic. That replaces a paragraph of assertion with an
 experiment.
 
 New tactics that sheet 01 never had: `revert`, `contradiction`,
-`absurd`, `show`, `suffices`, `push_neg`, `tauto`, `itauto`, and
+`absurd`, `show`, `suffices`, `push Not`, `tauto`, `itauto`, and
 `exact?`/`apply?` as executable code rather than prose mentions.
 `cases'` is gone; `obtain`/`rcases` is taught from `01-b` on.
 

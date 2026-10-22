@@ -8,12 +8,12 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "`push_neg`" =>
+#doc (Manual) "`push Not`" =>
 %%%
-tag := "push_neg"
+tag := "push-not"
 %%%
 
-*Summary:* In many steps of a proof, a negation must be carried out. In order to process the corresponding quantifiers etc. as well and to better reusable, the tactic `push_neg` is available.
+*Summary:* In many steps of a proof, a negation must be carried out. In order to process the corresponding quantifiers etc. as well and to better reusable, the tactic `push Not` is available.
 
 *Examples*
 
@@ -22,19 +22,19 @@ tag := "push_neg"
   + Tactic
   + New proof state
 * + ⊢ ¬(P ∨ Q)
-  + `push_neg`
+  + `push Not`
   + ⊢ ¬P ∧ ¬Q
 * + h : ¬(P ∨ Q)
-  + `push_neg at h`
+  + `push Not at h`
   + h : ¬P ∧ ¬Q
 * + ⊢ ¬(P ∧ Q)
-  + `push_neg`
+  + `push Not`
   + ⊢ P → ¬Q
 * + P : X → Prop {br}[] ⊢ ¬∀ (x : X), P x
-  + `push_neg`
+  + `push Not`
   + P : X → Prop {br}[] ⊢ ∃ (x : X), ¬P x
 * + P : X → Prop {br}[] ⊢ ¬∃ (x : X), P x
-  + `push_neg`
+  + `push Not`
   + P : X → Prop {br}[] ⊢ ∀ (x : X), ¬P x
 :::
 

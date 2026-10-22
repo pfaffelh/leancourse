@@ -66,17 +66,17 @@ example (x : ℝ) (n : ℕ) (h : 0 ≤ x) : x^(n+1) ≤ 1 ↔ x ≤ 1 := by
   | succ n hn =>
     rw [← not_iff_not] at *
     refine ⟨fun h' ↦ ?_, fun h' ↦ ?_⟩
-    · push_neg at *
+    · push Not at *
       rw [pow_succ] at h'
       rw [← not_iff_not] at hn
       by_contra g
       have f := hn.2 g
-      push_neg at *
+      push Not at *
       have k : x ^ (n + 1) * x ≤ 1 := by
         apply mul_le_one₀ f h g
       linarith
     · rw [pow_succ]
-      push_neg at *
+      push Not at *
       apply one_lt_mul _ h'
       exact le_of_lt (hn.2 h')
 

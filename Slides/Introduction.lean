@@ -182,8 +182,9 @@ The denominator doubled too: about 1 000 submissions a week in January, about 2 
 A share, not a count: a rising count would partly be that growth in
 submissions, which is itself worth a sentence.
 
-The last bar is the highest so far: 60 of 2 546 papers in the first
-week of October, 2.4 per 100. One week, so not a trend by itself.
+The highest bar so far: 62 of 2 567 papers in the first week of
+October, 2.4 per 100; the week after, 48 of 2 366, 2.0 per 100.
+One week, so not a trend by itself.
 
 Within a few years, reading and writing a formal proof will be
 ordinary equipment. This is the answer to "why spend a semester on

@@ -72,10 +72,10 @@ Counting per million corrects for GitHub's own growth, which was steep in 2026. 
 Until about 2023 the three were comparable, with Coq the largest. The rise is recent, and it is not evidence that Lean is better: Isabelle's automation is still ahead in places, and Rocq has decades of verified-software work behind it. It is evidence about where people are going.
 
 :::figure "Papers on the mathematics arXiv whose results are checked in Lean, per 100 submissions" (tag := "arxiv-lean")
-![Bar chart: weekly share of arXiv mathematics papers with a Lean-checked result during 2026, rising from about 0.3 per 100 in January to about 2.4 per 100 in the first week of October](/static/figures/arxiv_lean_formalized_share.png)
+![Bar chart: weekly share of arXiv mathematics papers with a Lean-checked result during 2026, rising from about 0.3 per 100 in January to about 2.4 per 100 in early October](/static/figures/arxiv_lean_formalized_share.png)
 :::
 
-The share rises through 2026. The highest week so far is the first of October, with 60 of 2 546 papers, 2.4 per 100. It is a share rather than a count because the denominator moved too: the mathematics arXiv received about a thousand submissions a week in January and about two and a half thousand in early October. Maybe, within a few years, reading and writing a formal proof will be ordinary equipment.
+The share rises through 2026. The highest week so far is the first of October, with 62 of 2 567 papers, 2.4 per 100. It is a share rather than a count because the denominator moved too: the mathematics arXiv received about a thousand submissions a week in January and about two and a half thousand in early October. Maybe, within a few years, reading and writing a formal proof will be ordinary equipment.
 
 # How we got here
 %%%

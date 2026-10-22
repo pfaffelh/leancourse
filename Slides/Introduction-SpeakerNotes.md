@@ -141,7 +141,8 @@ is not chronological, so say February first.
 
 - Share, not count — the denominator moved: ~1 000 arXiv math submissions
   a week in January, ~2 500 in early October.
-- Highest week so far: first week of October, 60 of 2 546 papers, 2.4 per 100.
+- Highest week so far: first week of October, 62 of 2 567 papers, 2.4 per 100.
+  Week of 12.10.: 48 of 2 366, 2.0 per 100.
   One week, so not a trend by itself.
 - Within a few years, reading and writing a formal proof will be ordinary
   equipment. **This is the answer to "why spend a semester on this".**

@@ -17,8 +17,6 @@ tag := "nat"
 
 We begin with the natural numbers, `ℕ` (notation for the type `Nat`), as a running example.
 
-The [slides](slides/nat/) for this chapter follow it section by section.
-
 # The natural numbers
 %%%
 tag := "nat-intro"
@@ -31,11 +29,11 @@ Nat.zero : Nat
 Nat.succ : Nat → Nat
 ```
 
-so every natural number is a finite tower of them: `Nat.zero` is `0`, `Nat.succ Nat.zero` is `1`, `Nat.succ (Nat.succ Nat.zero)` is `2`, and so on. (The numerals `0`, `1`, `2` are just notation for these terms.) The general `inductive` declaration comes {ref "inductive"}[later]; here we need only `Nat`.
+so every natural number is either `Nat.zero` is `0`, or the successor of another natural number, so `Nat.succ Nat.zero` is `1`, `Nat.succ (Nat.succ Nat.zero)` is `2`, and so on. (The numerals `0`, `1`, `2` are just notation for these terms.) The general `inductive` declaration comes {ref "inductive"}[later]; here we need only `Nat`.
 
-These two constructors are Giuseppe Peano's axiomatization of 1889: a zero, a successor, and induction. Peano credited Dedekind, who had given the same analysis in 1888. Induction is not a third constructor. It is the *recursor*, generated together with the type, and it is the subject of the next paragraph. What was a list of axioms in 1889 is a type declaration here.
+These two constructors are Giuseppe Peano's axiomatization of 1889: a zero, a successor, and induction. Induction is not a third constructor. It is the *recursor*, generated together with the type, and it is the subject of the next paragraph.
 
-Generated alongside the type is the *recursor* `Nat.rec`. The constructors *build* a value; the recursor *consumes* one. It is the primitive way to define a function with domain `Nat`. To define some `f : Nat → C` (where `C` is some type), you supply exactly two things: a base value `base : C` for the `zero` case (i.e. `f 0 := base`, where `f 0` is the Lean way to write `f(0)`), and a `step : Nat → C → C` such that, for `succ n` (which equals `n + 1`), you may reuse both `n` and the result already computed for `n`, i.e. you define in this way `f (n + 1) := step n (f n)`. (Note the important notation here: We write `α → β → γ` — with implicit brackets `g : α → (β → γ)` for a function `g` mapping every `a : α` to a function `β → γ`. So, `g a b : γ`. Application brackets the other way: `g a b` means `(g a) b`, first `g a : β → γ`, then that function applied to `b`. Arrows omit brackets on the right, application omits them on the left, and the two fit together. You only write brackets where an argument is itself an application, as in `step n (f n)`; see {ref "parenthesis"}[Different parentheses]. In other words, this is the Lean and more flexible way to write a function depending on two variables.)
+Generated alongside the type is the *recursor* `Nat.rec`. The constructors *build* a value; the recursor *consumes* one. With other words, it is the primitive way to define a function with domain `Nat`. To define some `f : Nat → C` (where `C` is some type), you supply two things: a base value `base : C` for the `zero` case (i.e. `f 0 := base`, where `f 0` is the Lean way to write `f(0)`), and a `step : Nat → C → C` such that, for `succ n` (which equals `n + 1`), you may reuse both `n` and the result already computed for `n`, i.e. you define in this way `f (n + 1) := step n (f n)`. (Note the important notation here: We write `α → β → γ` — with implicit brackets `g : α → (β → γ)` for a function `g` mapping every `a : α` to a function `β → γ`. So, `g a b : γ`. Application brackets the other way: `g a b` means `(g a) b`, first `g a : β → γ`, then that function applied to `b`. Arrows omit brackets on the right, application omits them on the left, and the two fit together. You only write brackets where an argument is itself an application, as in `step n (f n)`; see {ref "parenthesis"}[Different parentheses]. In other words, this is the Lean and more flexible way to write a function depending on two variables.)
 
 Noting the `example` keyword, as well as the inputs `C, base, step`, we define the terms of type `Nat → C` by introducing a function (using the `fun` keyword, and the mapping rule):
 
@@ -88,7 +86,7 @@ example : 2 + 2 = 4 := rfl
 example : Nat.succ 0 = 1 := rfl
 ```
 
-The `#eval` command (used throughout the {ref "terms"}[chapter on terms]) runs the same reduction and prints the value. `rfl`, `#eval` and every "reduces to" below are the same phenomenon. The steps are the kernel's *reduction rules*, named in full next; they recur whenever a later step is claimed to hold "by definition".
+The `#eval` command (used throughout the {ref "terms"}[chapter on terms]) runs the same reduction and prints the value. `rfl`, `#eval` and every "reduces to" below are the same phenomenon. The steps are the kernel's *reduction rules*; they recur whenever a later step is claimed to hold "by definition".
 
 ## The reduction rules
 %%%
@@ -96,7 +94,7 @@ number := false
 tag := "reduction-rules"
 %%%
 
-Definitional equality is *generated* by a fixed list of reduction rules that the kernel applies to compute terms. Most of the names come from the *lambda calculus* of Alonzo Church in the 1930s, where functions are written `fun x => e` and each rewriting rule carries a Greek letter. Lean's kernel uses six of them:
+Definitional equality is *generated* by a fixed list of reduction rules that the {ref "elaborator"}[kernel] applies to compute terms. Most of the names come from the *lambda calculus* of Alonzo Church in the 1930s, where functions are written `fun x => e` and each rewriting rule carries a Greek letter. Lean's kernel uses six of them:
 
 :::table (align := left) +header
 * + Rule
@@ -129,7 +127,7 @@ Definitional equality is *generated* by a fixed list of reduction rules that the
   + `let x := 4; x + x ⟶ 4 + 4`
 :::
 
-*Definitional equality* — Lean's notion of "the same by computation" — is *precisely* the equivalence generated by these rules, and that is *precisely* what `rfl` checks: `rfl` proves `a = b` whenever `a` and `b` reduce to a common form. So `rfl` is far stronger than "syntactically identical":
+Here are some examples:
 
 ```lean
 -- beta, then arithmetic computes (delta + iota)
@@ -142,6 +140,13 @@ example (f : Nat → Nat) : (fun x => f x) = f := rfl
 
 -- zeta: a `let` unfolds
 example : (let x := 4; x + x) = 8 := rfl
+
+-- iota: a recursor applied to a constructor
+example (b : Nat) (s : Nat → Nat → Nat) :
+    Nat.rec (motive := fun _ => Nat) b s 0 = b := rfl
+example (b : Nat) (s : Nat → Nat → Nat) (n : Nat) :
+    Nat.rec (motive := fun _ => Nat) b s (n + 1)
+      = s n (Nat.rec b s n) := rfl
 
 -- delta + iota: a defined function on a literal
 def twice (n : Nat) : Nat := 2 * n
@@ -179,49 +184,13 @@ example (n : Nat) : 0 + n = n := by
 
 (Here, `rw [...]` rewrites the goal using an equation; see {ref "rw"}[the `rw` tactic].) Note that `rw [ih]` *alone* fails here: the goal reads `0 + (k + 1) = k + 1`, and the subterm `0 + k` is not yet visible — it only appears after the ι step `0 + succ k ⟶ succ (0 + k)`, which `Nat.add_succ` performs. This is the same *stuck-until-a-constructor-shows-up* phenomenon one level down.
 
-Recognizing when a goal is "true by reduction" — and therefore closed by `rfl` — is one of the most useful instincts to develop; it is exactly the situation later chapters rely on whenever they say a step holds "by definition" or "definitionally".
-
-The ι rule is the one we met concretely with `Nat` in the {ref "nat-intro"}[previous section]: a *recursor* is applied to a value that is literally a *constructor*, selecting the matching case (`Nat.rec base step (Nat.succ n) ⟶ step n (Nat.rec base step n)`). It is the rule that makes every recursive definition reduce — and its getting *stuck*, when the recursed-on argument is still a variable rather than a constructor, is exactly what blocks `0 + n` above.
-
-
-::::keepEnv
-:::example "Two further rules: proof irrelevance and quotient computation"
-Beyond the six lambda-calculus rules, the kernel's definitional equality carries two further rules specific to Lean's foundations:
-* *Proof irrelevance*: any two proofs `h₁ h₂ : P` of the same proposition `P : Prop` are definitionally equal. (This is the *`Prop` is special* point, taken up in {ref "prop-special"}[why `Prop` is special].)
-* *Quotient computation*: the ι-like rule for {ref "quotient-types"}[quotient types], `Quot.lift f h (Quot.mk r a) ⟶ f a`. On `Nat`, a lifted function applied to a `Quot.mk` reduces to the underlying function:
-
-```lean
-example (r : Nat → Nat → Prop) (f : Nat → Nat)
-    (h : ∀ a b, r a b → f a = f b) (a : Nat) :
-    Quot.lift f h (Quot.mk r a) = f a := rfl
-```
-:::
-::::
-
-::::keepEnv
-:::example "η for structures"
-The η rule also applies to {ref "structures"}[*structures*]: a structure value equals the record of its own projections, `s ≡ ⟨s.1, s.2, …⟩` (η *for structures*). A pair of naturals, for instance, is definitionally its own pair of projections:
-
-```lean
-example (p : Nat × Nat) : p = (p.1, p.2) := rfl
-```
-:::
-::::
+Recognizing when a goal is "true by reduction" — and therefore closed by `rfl` — is one of the most useful instincts to develop.
 
 ::::keepEnv
 :::example "Reducibility, weak head normal form, and decidability"
 How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[reducible]` definition is unfolded freely, an ordinary `def` is unfolded on demand, and an `@[irreducible]` one is left folded. And the kernel usually does not reduce all the way to a *normal form*; it stops at *weak head normal form* (WHNF) — just far enough to expose the outermost constructor or binder — which is all that comparing two terms requires. Because this reduction system is *confluent* and *strongly normalizing*, definitional equality is decidable, which is exactly what lets `rfl` and the type-checker terminate.
 :::
 ::::
-
-## The kernel and the elaborator
-%%%
-number := false
-tag := "elaborator"
-%%%
-
-The *kernel* is the small, trusted core of Lean that has the final say on whether a term has the type it claims. Everything else you write — tactics, notation, `match`, coercions, `[…]` instance holes — is handled *outside* the kernel by the *elaborator*: the elaborator takes your surface syntax and turns it into a single, fully explicit term, which the kernel then re-checks from scratch against a fixed, tiny set of rules (the {ref "reduction-rules"}[reduction rules], the typing rules, and the primitive universes `Sort u`). A handful of things are *built into* this core rather than defined on top of it: the universes `Prop` and `Type u`, the way an `inductive` type generates its constructors and recursor, and proof irrelevance. The point of keeping the kernel small is *trust* — to believe a Lean proof you need only believe the kernel, not the large machinery of tactics and automation above it. That trust is reinforced by there being *several independent implementations* of the kernel: besides Lean's own reference kernel (written in C++), the same proof terms can be re-checked by separate type-checkers written in other languages, and even by one (`Lean4Lean`) written and formally verified in Lean itself. A proof accepted by one kernel can thus be cross-checked by another. The kernel's logic has a name, the *Calculus of Inductive Constructions*, discussed in the {ref "cic"}[Mathematics part].
-
 
 # Bool
 %%%
@@ -267,11 +236,21 @@ example (b : Bool) :
 
 Note that `Bool` also carries the usual `&&`, `||`, `!`.
 
+Instead of calling `Bool.rec` by hand, you can define a function on `Bool` by *pattern matching*: one line per constructor, introduced by `|`, giving the result for that constructor.
 
+```lean
+def myNot : Bool → Bool
+  | false => true
+  | true  => false
+
+example : myNot false = true := rfl
+```
+
+Lean translates such a definition into the recursor, so on constructors it reduces just as `Bool.rec` does. Pattern matching works for every inductive type, including recursive ones like `Nat`; it is treated in detail in {ref "pattern-matching"}[the chapter on terms].
 
 ::::keepEnv
 :::example "How `bif` is defined under the hood"
-Internally, Lean does not build runnable definitions from `Bool.rec` directly — the code generator cannot compile a bare recursor, whereas it *can* compile a `match`. So `bif` is not primitive: it is notation for a function `cond`, which does the actual branching with a `match`:
+Internally, Lean does not build runnable definitions from `Bool.rec` directly — the code generator cannot compile a bare recursor, whereas it *can* compile a `match`. So `bif` is not primitive: it is notation for a function `cond`, which does the actual branching with a `match` (the inline form of pattern matching, see {ref "pattern-matching"}[the chapter on terms]):
 
 ```
 -- the underlying function, defined by matching on `c`:
@@ -305,7 +284,11 @@ So proving `True` is as easy as naming that constructor:
 
 ```lean
 example : True := True.intro
+example : True := trivial
+example : True := by trivial
 ```
+
+The term `trivial` is nothing but a name for this constructor (`theorem trivial : True := True.intro`), and on a goal `True` the {ref "trivial"}[`trivial` tactic] does exactly this. The tactic also tries a few other simple steps, such as `rfl` and `assumption`, before it gives up.
 
 Its recursor has exactly *one* case, for the single constructor `True.intro`, so into a fixed result type `C` its (non-dependent) signature is:
 
@@ -329,19 +312,6 @@ False.rec : (motive : False → Sort u) → (t : False) → motive t
 ::::keepEnv
 :::example "Implicit vs. explicit `motive`: why `False.rec` looks different"
 This looks different from `Bool.rec` and `True.rec` above for one reason — *implicit* versus *explicit*: there the `motive` sat in curly braces `{motive …}` and Lean inferred it from the case values, which is why we could drop it and even present those signatures non-dependently as `C → C → Bool → C` and `C → True → C`. `False` has *no* case values, so nothing lets Lean infer the `motive`; it is therefore *explicit* (round brackets `(motive …)`), and you must supply it — you write `False.rec (fun _ => C) h`, or `False.rec _ h` letting the goal fix it, but never plain `False.rec h` (which would read `h` as the motive). Note also that between the `motive` and the input `t` there is *no* case argument at all — `Bool.rec` had two there, `True.rec` one, `False.rec` none — which is exactly why its result `motive t` may be of *any* type: the principle *ex falso quodlibet* ("from a falsehood, anything follows"). The filled-in form is packaged as `False.elim`, so that `False.elim h = False.rec (fun _ => C) h`.
-
-The very same split appears one universe down, in `Type` — which shows that it turns on the *number of constructors*, not on `Prop`. The `Type`-level twins of `True` and `False` are `Unit` (one constructor, written `()`) and `Empty` (no constructor at all):
-
-```
--- one constructor → motive implicit, as for `True.rec`
-PUnit.rec : {motive …} → motive PUnit.unit →
-              (t : PUnit) → motive t
--- no constructor  → motive explicit, as for `False.rec`
-Empty.rec : (motive : Empty → Sort u) →
-              (t : Empty) → motive t
-```
-
-So `Empty.rec` is the data version of `False.rec` — explicit `motive`, no case argument — and its packaged form `Empty.elim : Empty → C` is the `Type`-level *ex falso*, the exact twin of `False.elim`. (One wrinkle: `Unit` is a *reducible abbreviation* for `PUnit`, so its recursor is called `PUnit.rec`, not `Unit.rec`.) Whether the `motive` is implicit or explicit depends only on whether there is a case value to infer it from, never on `Prop` versus `Type`.
 :::
 ::::
 
@@ -357,6 +327,4 @@ example (h : False) : 0 = 1 := False.elim h
 example (h : False) (P : Prop) : P := h.elim
 ```
 
-This is exactly what makes `False` the yardstick of *consistency*. Because `False.elim` turns a single proof of `False` into a proof of *every* proposition `P` (the second example above), one term of type `False` would make every statement a theorem at once — `0 = 1`, its negation, everything — and the logic would no longer distinguish the provable from the false. A system in which `False` is inhabited therefore proves nothing of value; it is *contradictory*. So the entire point of the type theory is arranged around a single requirement: that no term of `False` can ever be built. Whenever we later call a construction *consistent*, or note that Lean rejects `Type : Type`, or that a tactic is *sound*, it comes back to this — `False` must stay empty.
-
-— We meet `False` again as the reason a contradiction closes any goal, and all three types return in the {ref "prop-special"}[discussion of why `Prop` is special], where `False`'s empty elimination and `Bool`'s two-way split are exactly what mark the line between *data* and *proof*.
+This is exactly why `False` is so important for *consistency*. Because `False.elim` turns a single proof of `False` into a proof of *every* proposition `P` (the second example above), one term of type `False` would make every statement a theorem — and the logic would no longer distinguish the provable from the false.

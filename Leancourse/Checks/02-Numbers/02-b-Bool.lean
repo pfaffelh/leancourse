@@ -1,11 +1,12 @@
 import Mathlib
 
 /-!
-# 02-00 -- `Bool`
+# 02-b -- `Bool`
 
 `Bool` is the smallest interesting inductive type: two constructors,
-no arguments. Everything that `Nat` does with reduction, `rfl` and
-case analysis already happens here, without the induction.
+no arguments. Reduction, `rfl` and stuck terms work as for `Nat` on
+the previous sheet, but without induction. New is case analysis
+with `cases`.
 
 Read the section *Bool* in the chapter on the natural numbers first.
 
@@ -33,7 +34,7 @@ example : Bool.rec 1 2 false = (1 : ℕ) := rfl
 
 -- Exercise 1) Why `"yes"`? Then prove it.
 example : Bool.rec "no" "yes" true = "yes" := by
-  sorry
+  rfl
 
 /-! `!`, `&&` and `||` are ordinary functions on `Bool`, defined by
 matching on the *first* argument. On constructors they compute. -/
@@ -42,7 +43,7 @@ example : (true && !false) = true := rfl
 
 -- Exercise 2)
 example : (false || (true && true)) = true := by
-  sorry
+  rfl
 
 /-! ## `decide`
 
@@ -54,7 +55,7 @@ example : (2 : ℕ) + 2 ≠ 5 := by
 
 -- Exercise 3) The two constructors are different.
 example : true ≠ false := by
-  sorry
+  decide
 
 /-! ## When reduction gets stuck
 
@@ -71,10 +72,10 @@ effect as `0 + n` versus `n + 0` for `Nat`. -/
 -- and why? Prove the `rfl` one with `rfl`; leave the other for
 -- Exercise 5.
 example (b : Bool) : (true || b) = true := by
-  sorry
+  rfl
 
 example (b : Bool) : (b || true) = true := by
-  sorry
+  cases b <;> rfl
 
 /-! ## `cases`
 
@@ -95,24 +96,24 @@ example (b : Bool) : (b && false) = false := by
 
 -- Exercise 5) Now the second statement of Exercise 4.
 example (b : Bool) : (b || true) = true := by
-  sorry
+  cases b <;> rfl
 
 -- Exercise 6)
 example (b : Bool) : (!!b) = b := by
-  sorry
+  cases b <;> rfl
 
 -- Exercise 7) Two variables, so two `cases`. Four goals in total.
 example (a b : Bool) : (a && b) = (b && a) := by
-  sorry
+  cases a <;> cases b <;> rfl
 
 -- Exercise 8) De Morgan for `Bool`.
 example (a b : Bool) : (!(a && b)) = (!a || !b) := by
-  sorry
+  cases a <;> cases b <;> rfl
 
 -- Exercise 9)
 example (a b c : Bool) :
     (a && (b || c)) = ((a && b) || (a && c)) := by
-  sorry
+  cases a <;> cases b <;> cases c <;> rfl
 
 /-! ## Defining functions on `Bool`
 
@@ -127,21 +128,22 @@ def myNot' : Bool → Bool
 
 -- Exercise 10) Show that both agree with `!`.
 example (b : Bool) : myNot b = !b := by
-  sorry
+  cases b <;> rfl
 
 example (b : Bool) : myNot' b = !b := by
-  sorry
+  cases b <;> rfl
 
 -- Exercise 11) Define exclusive or with `match` on both arguments,
 -- then prove it is commutative and that `myXor b b = false`.
 def myXor : Bool → Bool → Bool
-  | _, _ => sorry
+  | false, b => b
+  | true,  b => !b
 
 example (a b : Bool) : myXor a b = myXor b a := by
-  sorry
+  cases a <;> cases b <;> rfl
 
 example (b : Bool) : myXor b b = false := by
-  sorry
+  cases b <;> rfl
 
 /-! ## `bif`
 
@@ -151,12 +153,12 @@ example (b : Bool) : myXor b b = false := by
 -- Exercise 12)
 example {α : Type} (b : Bool) (x : α) :
     (bif b then x else x) = x := by
-  sorry
+  cases b <;> rfl
 
 -- Exercise 13)
 example {α : Type} (b : Bool) (x y : α) :
     (bif !b then x else y) = (bif b then y else x) := by
-  sorry
+  cases b <;> rfl
 
 /-! ## `Bool` and `Prop`
 
@@ -166,13 +168,15 @@ where a `Prop` is expected. -/
 
 -- Exercise 14) Every `Bool` is one of the two constructors.
 example (b : Bool) : b = true ∨ b = false := by
-  sorry
+  cases b
+  · right; rfl
+  · left; rfl
 
 -- Exercise 15) `cases a <;> cases b <;> decide` works here. Why does
 -- `decide` alone, without the `cases`, not work?
 example (a b : Bool) :
     (a && b) = true ↔ a = true ∧ b = true := by
-  sorry
+  cases a <;> cases b <;> decide
 
 /-! ## Splitting on an expression
 
@@ -190,4 +194,36 @@ example (f : Bool → Bool) : f true = true ∨ f true = false := by
 -- `b`, on `f true` and on `f false`; then `simp [h1, h2]` closes all
 -- eight goals.
 example (f : Bool → Bool) (b : Bool) : f (f (f b)) = f b := by
-  sorry
+  cases b <;> cases h1 : f true <;> cases h2 : f false <;>
+    simp [h1, h2]
+
+-- Exercise 17)
+example (h : False) : 0 = 1 :=
+  False.rec (fun _ => 0 = 1) h
+
+-- Exercise 18)
+example (P : Prop) (h : False) : P := by
+  exfalso
+  exact h
+
+example (P : Prop) (h : False) : P := by
+  exact False.elim h
+
+example (P : Prop) (h : False) : P := by
+  cases h
+
+-- Exercise 19)
+example (P : Prop) (hP : P) (h : True) : P := by
+  cases h
+  exact hP
+
+-- Exercise 20)
+example (h : true = false) : False := by
+  cases h
+
+-- Exercise 21)
+example (P : Prop) (h : 0 = 1) : P := by
+  cases h
+
+-- Exercise 22)
+def fromEmpty : Empty → ℕ := Empty.elim

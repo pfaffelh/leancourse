@@ -137,8 +137,8 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | 2 | 26.10. | 28.10. | Was ist ein Beweis? BHK-Interpretation | 01-b, 01-c | |
 | 3 | 02.11. | 04.11. | Konstruktiv gegen klassisch | 01-d, 01-e | |
 | 4 | 09.11. | 11.11. | Beweisstruktur; Automatik und Suche | 01-f, 01-g | **Test 1** |
-| 5 | 16.11. | 18.11. | `Nat`, `Bool`, Reduktionsregeln, Induktion | 02-00, 02-a, 02-b | |
-| 6 | 23.11. | 25.11. | Grenzwerte; Quantoren und Typen | 02-c, 03-00 | |
+| 5 | 16.11. | 18.11. | `Nat`, `Bool`, Reduktionsregeln, Induktion | 02-a, 02-b, 02-c, 02-d | |
+| 6 | 23.11. | 25.11. | Grenzwerte; Quantoren und Typen | 02-e, 03-00 | |
 | 7 | 30.11. | 02.12. | Prädikate; Funktionen in Mathlib | 03-01, 03-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen, Bild und Urbild | 03-b, 03-c | |
 | 9 | 14.12. | 16.12. | Curry-Howard, abhängige Typen | 05-a, 05-b | **Test 3** |

@@ -133,24 +133,24 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 
 ## Wochenplan
 
-| W | Mo | Mi | Vorlesung | Blätter | |
-|---|---|---|---|---|---|
-| 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | 01-a | |
-| 2 | 26.10. | 28.10. | Was ist ein Beweis? BHK-Interpretation | 01-b, 01-c | |
-| 3 | 02.11. | 04.11. | Konstruktiv gegen klassisch | 01-d, 01-e | |
-| 4 | 09.11. | 11.11. | Beweisstruktur; Automatik und Suche | 01-f, 01-g | **Test 1** |
-| 5 | 16.11. | 18.11. | `Nat`, `Bool`, Reduktionsregeln, Induktion | 02-a, 02-b, 02-c, 02-d | |
-| 6 | 23.11. | 25.11. | Grenzwerte; Quantoren und Typen | 02-e, 03-00 | |
-| 7 | 30.11. | 02.12. | Prädikate; Funktionen in Mathlib | 03-01, 03-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Mengen, Bild und Urbild | 03-b, 03-c | |
-| 9 | 14.12. | 16.12. | Curry-Howard, abhängige Typen | 05-a, 05-b | **Test 3** |
-| 10 | 21.12. | -- | Proof Engineering; `conv` | 07-a, 07-b, 04-a | |
-| | | | *Pause 23.12. -- 06.01.* | | |
-| 11 | 11.01. | 13.01. | Ordnungen und Verbände | 06-a | |
-| 12 | 18.01. | 20.01. | Algebraische Hierarchie | 06-d | |
-| 13 | 25.01. | 27.01. | Filter | 06-b | **Test 4** |
-| 14 | 01.02. | 03.02. | Topologie; Maßtheorie | 06-c, 06-e | |
-| 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 04-b, 06-f | **Test 5** |
+| W | Mo | Mi | Vorlesung | Kapitel | Blätter | |
+|---|---|---|---|---|---|---|
+| 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | 01-a | |
+| 2 | 26.10. | 28.10. | Was ist ein Beweis? BHK-Interpretation | 1.5 | 01-b, 01-c | |
+| 3 | 02.11. | 04.11. | Konstruktiv gegen klassisch | 2.2 | 01-d, 01-e | |
+| 4 | 09.11. | 11.11. | Beweisstruktur; Automatik und Suche | Appendix | 01-f, 01-g | **Test 1** |
+| 5 | 16.11. | 18.11. | `Nat`, `Bool`, Reduktionsregeln, Induktion | 1.1 | 02-a, 02-b, 02-c, 02-d | |
+| 6 | 23.11. | 25.11. | Grenzwerte; Quantoren und Typen | 1.2 | 02-e, 03-00 | |
+| 7 | 30.11. | 02.12. | Prädikate; Funktionen in Mathlib | 2.1 | 03-01, 03-a | **Test 2** |
+| 8 | 07.12. | 09.12. | Mengen, Bild und Urbild | 2.1 | 03-b, 03-c | |
+| 9 | 14.12. | 16.12. | Curry-Howard, abhängige Typen | 1.5, 1.6, 2.2 | 05-a, 05-b | **Test 3** |
+| 10 | 21.12. | -- | Proof Engineering; `conv` | Appendix | 07-a, 07-b, 04-a | |
+| | | | *Pause 23.12. -- 06.01.* | | | |
+| 11 | 11.01. | 13.01. | Ordnungen und Verbände | 2.4 | 06-a | |
+| 12 | 18.01. | 20.01. | Algebraische Hierarchie | 1.4, 2.5 | 06-d | |
+| 13 | 25.01. | 27.01. | Filter | 2.6 | 06-b | **Test 4** |
+| 14 | 01.02. | 03.02. | Topologie; Maßtheorie | 2.7, 2.8 | 06-c, 06-e | |
+| 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 04-b, 06-f | **Test 5** |
 
 27 der 29 Blätter.
 
@@ -165,12 +165,55 @@ konstruktiv gegen klassisch trifft auf genau die Blätter 01-d und
 01-e; die Quantoren liegen in derselben Woche wie die Grenzwerte, die
 sie brauchen.
 
+### Zwei Spuren, die nebeneinander laufen
+
+Die Spalte *Kapitel* läuft nicht von 1.1 nach 2.9, und die Vorlesung
+ist auch keine Vorbereitung auf das Blatt vom Mittwoch.
+
+Montag und Mittwoch sind zwei Spuren. In der Übung geht es praktisch
+weiter, Blatt für Blatt. In der Vorlesung läuft die Theorie, in ihrer
+eigenen Ordnung. Sie berühren sich oft, aber sie müssen sich nicht
+jede Woche treffen.
+
+Das ist der angenehmere Modus, nicht nur der notwendige: die Theorie
+hat man im Hinterkopf, während die Finger weiterarbeiten. Sie muss am
+Mittwoch nicht abgerufen werden.
+
+Dass die beiden Ordnungen überhaupt auseinanderlaufen, hat einen
+einfachen Grund. Das Skript ist nach der Sache geordnet und beginnt
+mit `Nat`. Die Blätter sind danach geordnet, was man am ersten Tag
+tippen kann, und beginnen mit Logik. Das Skript sagt das über sich
+selbst: Taktik und Theorie sind verschränkt, und man beginnt mit dem
+ersten Blatt, nicht mit dem ersten Kapitel.
+
+In den Wochen 2 und 3 wird je eine Idee aus einem späteren Kapitel
+vorgezogen -- die BHK-Interpretation aus 1.5, das ausgeschlossene
+Dritte aus 2.2. Beide kommen in Woche 9 formal wieder, dann als
+Propositionen-als-Typen und mit Universen. Das ist kein Versehen und
+keine Dopplung: in Woche 2 ist es eine Lesart, in Woche 9 ein Satz.
+
+**Drei Kapitel werden nie vorgetragen**, und zwar genau die drei,
+deren Blätter ohne Vorlesung auskommen:
+
+| Kapitel | Blatt | |
+|---|---|---|
+| 1.3 Terme | 04-a | Ferienaufgabe |
+| 1.7 Notation | 05-c | Selbststudium |
+| 2.3 Wohlfundiertheit | 05-d | Projektmaterial |
+
 ### Der Theoriefaden der ersten Wochen
 
 Die Frage, was man am Montag erzählt, wenn die Studierenden noch
 nichts können, hat drei Antworten, die ohne Vorwissen funktionieren.
 Abhängige Typen und Universen gehören *nicht* dazu -- die kommen in
 Woche 9, wenn Lean lesbar geworden ist.
+
+Die Linie dahinter: **vor Woche 5 kommt kein Typ außer `Prop` vor.**
+Nur Aussagen und Beweise, keine Daten. Das ist für das Erlernen von
+Lean der leichtere Einstieg -- ein Beweiszustand mit vier Hypothesen
+über `P`, `Q`, `R` hat nichts Beiläufiges darin, an dem man sich
+verlieren könnte. `Nat` ist der erste Typ, der kein `Prop` ist, und
+deshalb liegt Kapitel 1.1 in Woche 5 und nicht in Woche 2.
 
 **Woche 1 -- Warum überhaupt formalisieren?** Geschichte, Mathlib,
 aktuelle Lage; ausgearbeitet oben unter *Die erste Sitzung*. Null

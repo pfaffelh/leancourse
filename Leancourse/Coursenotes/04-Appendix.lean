@@ -19,7 +19,7 @@ tactics; how a Lean file is organized (imports, namespaces, sections,
 and scoping); how to navigate and search Mathlib; common pitfalls; and
 a collection of short reference topics — Lean's different brackets,
 the kinds of equality, exploring definitions with `#check`/`#print`,
-the diagnostic commands, and an alphabetical keyword reference.
+the kernel and the elaborator, the diagnostic commands, and an alphabetical keyword reference.
 
 {include 0 «Leancourse».Coursenotes.«04-Appendix».«01-Tactics»}
 

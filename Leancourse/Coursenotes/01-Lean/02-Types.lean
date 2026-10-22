@@ -204,18 +204,32 @@ The way out mirrors the one for `∃`, one level up. The data-carrying counterpa
 
 {docstring Decidable}
 
-Because `Decidable p` is in `Type`, it *may* eliminate into `Type` — which is exactly why `if h : p then _ else _` (a *dependent* `if`, whose `h : p` names the proof made available in the then-branch) and the {ref "decide"}[`decide`] tactic compute. The two stories line up exactly:
+Because `Decidable p` is in `Type`, it *may* eliminate into `Type` — which is exactly why `if h : p then _ else _` (a *dependent* `if`, whose `h : p` names the proof made available in the then-branch) and the {ref "decide"}[`decide`] tactic compute.
+
+`Decidable` is one of many such twins. Almost every logical type has a data version, and Lean keeps the two apart because every type lives in exactly one universe and is never lifted into another. So `List Empty` is a type, while `List False` is an error: `List` expects an argument in `Type`, and `False` is in `Prop`. The last column of the table says what the `Prop` version keeps hidden. Where nothing is hidden (at most one constructor, all fields proofs), subsingleton elimination lets the proposition eliminate into `Type` after all, as `False.elim` does. Where something is hidden, only the data version can hand it out:
 
 :::table (align := left) +header
 * + Proposition (in `Prop`)
   + Data version (in `Type`)
   + what stays hidden
-* + `∃ x, q x`
-  + {ref "sigma-types"}[`Σ x, q x`]
-  + the *witness*
+* + `False`
+  + `Empty`
+  + nothing (no constructor)
+* + `True`
+  + `Unit`
+  + nothing (one constructor, no fields)
+* + `P ∧ Q`
+  + `α × β`
+  + nothing (one constructor, fields are proofs)
+* + `P ∨ Q`
+  + `α ⊕ β`
+  + the *tag* (which side)
 * + `a ∨ ¬a`
   + `Decidable a`
   + the *tag* (which side)
+* + `∃ x, q x`
+  + {ref "sigma-types"}[`Σ x, q x`]
+  + the *witness*
 :::
 
 The classical route mirrors `Classical.choose` in the same way: `Classical.em : a ∨ ¬a` is always available (it is a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable` — a keyword marking a definition Lean cannot turn into runnable code, needed here because `Classical.choice` has no computational content to execute (this is the usual trigger for `noncomputable`, though not the only one). So the two halves — `∃`/`Σ`/`choose` for the *witness*, `∨`/`Decidable`/`em` for the *tag* — are really the same story: computationally relevant information can leave the `Prop` world only if we put it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` form of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)
@@ -329,6 +343,15 @@ This declares a type `Point` whose elements are records with two `ℕ` fields. T
 #check (Point.y : Point → ℕ)
 ```
 
+A value of a structure is determined by its fields: `p` and `Point.mk p.x p.y` are *definitionally* equal, so `rfl` proves it. This is the η rule of the {ref "reduction-rules"}[reduction rules], here *for structures*. It holds for every structure, for instance for pairs `ℕ × ℕ`:
+
+```lean
+example (p : Point) : p = Point.mk p.x p.y := rfl
+example (p : ℕ × ℕ) : p = (p.1, p.2) := rfl
+```
+
+For a general inductive type there is no such rule: `n : ℕ` is not definitionally `0` or a successor, and to split on it you need `cases`.
+
 Fields may be given *default values* as part of the declaration:
 
 ```lean
@@ -416,6 +439,14 @@ Its entire interface is four constants:
 - `Quot.sound` is the crux: if `r a b`, then the two classes are *the same term*. It is one of Lean's few genuine axioms — the `#print axioms name` command traces a constant back to the axioms it depends on, and here `#print axioms Quot.sound` reports `[Quot.sound]`.
 - `Quot.lift` defines a function *out of* the quotient — but only once you *prove* it respects `r` (the `∀ a b, r a b → f a = f b` argument), which is exactly the mathematician's "check that this is well-defined". And it computes: `Quot.lift f h (Quot.mk r a)` reduces to `f a`.
 - `Quot.ind` proves a property of every quotient element by checking it on the classes `Quot.mk r a`.
+
+The computation rule of `Quot.lift` is a {ref "reduction-rules"}[reduction rule] of its own, like ι for recursors, so `rfl` proves it:
+
+```lean
+example (r : Nat → Nat → Prop) (f : Nat → Nat)
+    (h : ∀ a b, r a b → f a = f b) (a : Nat) :
+    Quot.lift f h (Quot.mk r a) = f a := rfl
+```
 
 In practice one usually goes through `Quotient`, a thin wrapper of `Quot` over a bundled equivalence relation (a `Setoid`). The status of `Quot.sound` as an axiom is taken up again in the {ref "axiom-quot"}[axioms chapter].
 

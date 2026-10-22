@@ -13,7 +13,7 @@ set_option pp.rawOnError true
 tag := "exfalso"
 %%%
 
-*Summary:* The statement `false → P` is true for all `P`. If the current goal is `⊢ P`, and you would apply this true statement using `apply`, the new goal would be `⊢ false`. This is exactly what the `exfalso` tactic does.
+*Summary:* The statement `False → P` is true for all `P`. If the current goal is `⊢ P`, and you would apply this true statement using `apply`, the new goal would be `⊢ False`. This is exactly what the `exfalso` tactic does.
 
 *Examples:*
 
@@ -26,12 +26,12 @@ tag := "exfalso"
   + `h : P` {br}[] ⊢ False
 * + hP : P {br}[] hnP : ¬P {br}[] ⊢ Q
   + exfalso
-  + hP : P {br}[] hnP: ¬P {br}[] ⊢ false
+  + hP : P {br}[] hnP: ¬P {br}[] ⊢ False
 :::
 
 *Remarks:*
 
-* If you use this tactic, you leave the realm of constructive mathematics. (This dispenses with the rule of the excluded middle.)
+* `exfalso` is constructive: *ex falso quodlibet* is a rule of intuitionistic logic and needs no excluded middle. It is the recursor of `False`, which has no constructor and hence no case to supply; see {ref "true-false"}[`True` and `False`].
 * `exfalso` is the same as `apply False.elim`; see the examples for {ref "exact"}[`exact`].
 
 ::::keepEnv

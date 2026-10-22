@@ -149,6 +149,13 @@ searching the library by content or name, see
 {ref "navigating-mathlib"}[Navigating Mathlib].
 
 
+# The kernel and the elaborator
+%%%
+tag := "elaborator"
+%%%
+
+The *kernel* is the small, trusted core of Lean that has the final say on whether a term has the type it claims. Everything else you write — tactics, notation, `match`, coercions, `[…]` instance holes — is handled *outside* the kernel by the *elaborator*: the elaborator takes your surface syntax and turns it into a single, fully explicit term, which the kernel then re-checks from scratch against a fixed, tiny set of rules (the {ref "reduction-rules"}[reduction rules], the typing rules, and the primitive universes `Sort u`). A handful of things are *built into* this core rather than defined on top of it: the universes `Prop` and `Type u`, the way an `inductive` type generates its constructors and recursor, and proof irrelevance. The point of keeping the kernel small is *trust* — to believe a Lean proof you need only believe the kernel, not the large machinery of tactics and automation above it. That trust is reinforced by there being *several independent implementations* of the kernel: besides Lean's own reference kernel (written in C++), the same proof terms can be re-checked by separate type-checkers written in other languages, and even by one (`Lean4Lean`) written and formally verified in Lean itself. A proof accepted by one kernel can thus be cross-checked by another. The kernel's logic has a name, the *Calculus of Inductive Constructions*, discussed in the {ref "cic"}[Mathematics part].
+
 # Diagnostic Commands
 %%%
 tag := "diagnostics"

@@ -19,23 +19,6 @@ tag := "universes-axioms"
 
 Lean's type theory rests on a carefully designed system of universes, a small number of axioms, and a powerful logic that can be used both constructively and classically. In this chapter, we examine these foundational aspects.
 
-# The universe hierarchy
-%%%
-tag := "universe-hierarchy"
-%%%
-
-The {ref "type-universes"}[universe hierarchy] was given in Part 1: `Prop = Sort 0`, `Type = Type 0 = Sort 1`, `Type u = Sort (u+1)`, the rule `Sort u : Sort (u + 1)`, and universe-polymorphism via `Type*`. We now show why the absence of `Type : Type` is not optional. Were `Type : Type` to hold, one could reproduce Russell's paradox at the level of types — *Girard's paradox* — and thereby prove `False`. The stratification
-
-```lean
-#check (Type 0 : Type 1)    -- Type : Type 1
-#check (Type 1 : Type 2)    -- Type 1 : Type 2
-```
-
-is exactly what blocks this, and it is what keeps the whole system consistent. Everything else in this chapter — the axioms, proof irrelevance, the CIC — rests on top of it.
-
-How the collapse would actually unfold — building Girard's paradoxical universe in Lean, watching exactly where the type-checker stops it, and deriving `False` from the hypothesis that the stratification were absent — is not treated here: it is the subject of {ref "project-girard"}[Project 1 in the Projects chapter].
-
-
 # Prop vs Type: proof irrelevance
 %%%
 tag := "prop-vs-type"
@@ -43,10 +26,7 @@ tag := "prop-vs-type"
 
 `Prop` differs from every `Type n` by **proof irrelevance** (see {ref "prop-special"}[why `Prop` is special]): if `P : Prop` and `h1 h2 : P`, then `h1 = h2`. What follows is the foundational side of that.
 
-This is a deliberate design choice. It means:
-- You cannot pattern-match on a proof to extract computational data.
-- Proofs can be erased at compile time without affecting program behavior.
-- Two mathematical proofs of the same theorem are interchangeable.
+This is a deliberate design choice: it is what lets the compiler erase proofs entirely, without affecting the behaviour of a program.
 
 That any two proofs of the same `P : Prop` are *equal* is itself
 provable by `rfl` and costs no axiom; this, and the reason an
@@ -284,7 +264,7 @@ The list does not stop there:
 - *Native literal arithmetic*: the kernel computes `Nat`, `Int`, and `String` literals with bignum-backed operations rather than unary `succ` — a baked-in optimization you rely on every time you `decide` or `#eval`.
 - *Impredicative `Prop`*: `∀ (α : Type), p α` is again a `Prop`, no matter how large `α` is.
 - *Inductive types and their recursors*: every `inductive` declaration generates an eliminator together with its built-in computation (iota) rule (see {ref "cic"}[the CIC section]).
-- *The universe hierarchy* ({ref "universe-hierarchy"}[the first section]): in particular, never `Type : Type`.
+- *The universe hierarchy* ({ref "type-universes"}[Part 1]): in particular, never `Type : Type`.
 - *Subsingleton (large) elimination*: you may eliminate a `Prop` into `Type` only when it is a *subsingleton* — `False`, `Eq`, `And`, `Acc` qualify, but `Or` and `Exists` do not, because they would let you extract genuine data (which side, which witness) from a mere proof.
 
 That last rule is exactly why an existential lives in `Prop` and you need {ref "axiom-choice"}[choice] to get its witness:

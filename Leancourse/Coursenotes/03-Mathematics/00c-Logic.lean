@@ -189,7 +189,7 @@ runs into a contradiction.
 The very same typing discipline, one level up, forbids `Type : Type`:
 were `Type` to contain itself, Girard's paradox — a type-theoretic
 Russell — would make every proposition provable, and the
-{ref "universe-hierarchy"}[universe hierarchy] is exactly what rules it
+{ref "type-universes"}[universe hierarchy] is exactly what rules it
 out. Building Girard's term in Lean and tracing where predicativity
 stops it is {ref "project-girard"}[one of the course projects].
 

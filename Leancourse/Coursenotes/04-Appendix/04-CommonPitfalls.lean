@@ -22,7 +22,7 @@ Even experienced Lean users regularly run into frustrating situations where a pr
 tag := "universe-issues"
 %%%
 
-Every type in Lean lives in a {ref "universe-hierarchy"}[universe]. The hierarchy is:
+Every type in Lean lives in a {ref "type-universes"}[universe]. The hierarchy is:
 
 - {ref "prop-special"}[`Prop`] (also called `Sort 0`) — the universe of propositions
 - `Type 0` (also called `Type`) — the universe of "ordinary" types like `ℕ`, `ℝ`

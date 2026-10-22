@@ -223,20 +223,7 @@ The first form shows `[inst : CommMonoid M]` in brackets, meaning it is found au
 tag := "algebraic-hierarchy"
 %%%
 
-Mathlib uses typeclasses to build an extensive hierarchy of algebraic structures. Here are some key ones, ordered roughly from weakest to strongest:
-
-* `Add α` — a type with an addition operation
-* `Mul α` — a type with a multiplication operation
-* `AddMonoid α` — a type with addition, an additive identity `0`, and associativity
-* `Monoid α` — a type with multiplication, a multiplicative identity `1`, and associativity
-* `Group α` — a monoid with inverses
-* `AddCommGroup α` — a commutative group under addition
-* `Ring α` — an additive commutative group with a multiplication that distributes over addition
-* `CommRing α` — a ring with commutative multiplication
-* `Field α` — a commutative ring where every nonzero element has an inverse
-* `LinearOrder α` — a type with a total order
-
-Each of these is defined as a `class` that extends simpler classes. For example (simplified):
+Mathlib's algebraic structures are typeclasses, and each one `extends` the weaker structures below it. Simplified:
 
 ```
 class Group (α : Type) extends Monoid α where
@@ -244,9 +231,9 @@ class Group (α : Type) extends Monoid α where
   inv_mul_cancel : ∀ a : α, inv a * a = 1
 ```
 
-When you write a lemma that requires a `CommRing`, Lean automatically knows that it also has `Add`, `Mul`, `AddCommGroup`, etc., because of the `extends` chain.
+A lemma stated for `CommRing α` therefore also has `Add α`, `Mul α` and `AddCommGroup α` in scope, because instance resolution walks the `extends` chain. That is what lets `mul_comm` be stated once, for `CommMonoid`, and hold for `ℕ`, `ℝ`, polynomial rings and matrix rings alike.
 
-The power of this system is that we can state and prove theorems at the most general level. For instance, `mul_comm` works for any `CommMonoid`, which includes `ℕ`, `ℤ`, `ℚ`, `ℝ`, `ℂ`, polynomial rings, matrix rings (when the base is commutative), and many more.
+Which structures there are and how to move between them is {ref "algebraic-hierarchy-mathlib"}[a chapter of its own] in the Mathematics part.
 
 # Defining multiple instances
 %%%

@@ -16,7 +16,9 @@ htmlSplit := .never
 tag := "algebraic-hierarchy-mathlib"
 %%%
 
-Mathlib encodes the algebraic structures as a hierarchy of typeclasses. We
+Mathlib encodes the algebraic structures as a hierarchy of typeclasses,
+built with the `extends` mechanism of
+{ref "algebraic-hierarchy"}[the chapter on typeclasses]. We
 go through it from the ground up: basic operations, then groups, rings and
 fields, then their morphisms and substructures.
 

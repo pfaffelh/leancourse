@@ -47,34 +47,14 @@ This idea is sometimes called the **BHK interpretation** (Brouwer-Heyting-Kolmog
 tag := "term"
 %%%
 
-A proof is a term of the proposition's type, and there are two ways to build one. In *term mode* you write the term directly; in *tactic mode*, after the keyword `by`, you build it step by step with *tactics*.  With the cursor inside a tactic block, Lean shows the *proof state*: the hypotheses appear above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)) and the goal to its right.  The `sorry` tactic closes any goal as a placeholder (with a warning), so you can leave holes while developing a proof.
+A proof is a term of the proposition's type, and there are two ways to write one down. The exercises so far used *tactic mode*: after the keyword `by`, each tactic changes the *proof state* — the hypotheses above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)), the goal to its right — until nothing is left. In *term mode* you write the term itself, without `by`.
 
-The two modes are two views of the same thing. Two rules of thumb, made precise by the connectives below:
+Two rules of thumb connect the modes, and the sections below make them precise:
 
-* the tactic `exact` is the same as calling a function;
-* the tactic `intro` is like taking a variable that becomes the argument of a function.
+* `exact` is function application;
+* `intro` binds a variable, that is, it builds a lambda.
 
-For example, this term-mode proof
-
-```lean
-example (P : Prop) : False → P := False.elim
-```
-
-is the same as
-
-```lean
-example (P : Prop) : False → P := by
-  exact False.elim
-```
-
-and likewise
-
-```lean
-example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
-    x ∈ s → x ∈ t := fun hx ↦ hst hx
-```
-
-is the tactic proof
+So this tactic proof
 
 ```lean
 example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
@@ -83,22 +63,27 @@ example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
   exact hst hx
 ```
 
-The practical workflow — and *which* tactics to reach for — is taken up in the {ref "proof"}[last section of this chapter]; here we use `by`, `intro`, and `exact` just enough to exhibit the correspondence.
+and this term are the same object:
+
+```lean
+example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
+    x ∈ s → x ∈ t := fun hx ↦ hst hx
+```
+
+Each section below gives the term behind a connective you have already proved things with.
 
 # True and False: the unit and empty types
 %%%
 tag := "false-true-types"
 %%%
 
-The correspondence is clearest at the two extremes. A proposition that is *always* provable should be a type that is *always* inhabited; a proposition that can *never* be proved should be a type with *no* inhabitants at all. Lean's `True` and `False` are exactly these two types — both ordinary inductive types, {ref "true-false"}[introduced in the chapter on the natural numbers] (`True` with a single constructor, `False` with none). Here we only look at them through the Curry-Howard lens.
-
-`True` has the canonical proof `True.intro`, so it is inhabited and proving it is trivial:
+The correspondence is clearest at the two extremes. An always-provable proposition is an always-inhabited type; an unprovable one is a type with no inhabitants at all. `True` and `False` are exactly these, and both are ordinary inductive types, {ref "true-false"}[introduced in the chapter on the natural numbers] — `True` with one constructor, `False` with none.
 
 ```lean
 example : True := True.intro
 ```
 
-`False` has *no* constructor, so no proof of it can ever be built; and its recursor, having no cases, hands us *any* goal from a proof of `False` — the principle *ex falso quodlibet* (packaged as `False.elim`):
+`False` has no constructor, so no term of it can ever be built. Its recursor has no cases and therefore hands us *any* goal — *ex falso quodlibet*, packaged as `False.elim`:
 
 ```lean
 example (C : Prop) : False → C :=
@@ -114,27 +99,16 @@ The most fundamental instance of the correspondence: **implication corresponds t
 
 If `P` and `Q` are propositions, then `P → Q` is the type of functions from `P` to `Q`. A proof of `P → Q` is a function that, given a proof of `P`, produces a proof of `Q`.
 
-Here is the same theorem proved in two ways — by tactic and by term:
+Modus ponens is function application:
 
 ```lean
--- Tactic proof
-example (P Q : Prop) (hP : P) (hPQ : P → Q) : Q := by
-  exact hPQ hP
-
--- Term proof: just function application!
 example (P Q : Prop) (hP : P) (hPQ : P → Q) : Q :=
   hPQ hP
 ```
 
-A proof of `P → Q → R` is a function of two arguments (curried):
+A proof of `P → Q → R` is a curried function of two arguments, and chaining two implications is composition:
 
 ```lean
--- Tactic proof
-example (P Q R : Prop) : (P → Q) → (Q → R) → (P → R) := by
-  intro hPQ hQR hP
-  exact hQR (hPQ hP)
-
--- Term proof: composition of functions
 example (P Q R : Prop) : (P → Q) → (Q → R) → (P → R) :=
   fun hPQ hQR hP => hQR (hPQ hP)
 ```
@@ -147,15 +121,11 @@ tag := "conjunction-product"
 The conjunction `P ∧ Q` corresponds to the product type `P × Q` (more precisely, it is defined as a structure with two fields). A proof of `P ∧ Q` is a pair `⟨hP, hQ⟩` consisting of a proof of `P` and a proof of `Q`.
 
 ```lean
--- Tactic proof
-example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q := by
-  exact ⟨hP, hQ⟩
-
--- Term proof: just construct the pair
+-- Introduction: construct the pair
 example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q :=
   ⟨hP, hQ⟩
 
--- Eliminating a conjunction: projections
+-- Elimination: the projections
 example (P Q : Prop) (h : P ∧ Q) : P :=
   h.1
 
@@ -173,16 +143,11 @@ tag := "disjunction-sum"
 The disjunction `P ∨ Q` corresponds to the sum type (coproduct). A proof of `P ∨ Q` is either a proof of `P` (tagged with `Or.inl`) or a proof of `Q` (tagged with `Or.inr`).
 
 ```lean
--- Tactic proof
-example (P Q : Prop) (hP : P) : P ∨ Q := by
-  left
-  exact hP
-
--- Term proof: inject into the left summand
+-- Introduction: inject into the left summand
 example (P Q : Prop) (hP : P) : P ∨ Q :=
   Or.inl hP
 
--- Eliminating a disjunction: case analysis
+-- Elimination: case analysis
 example (P Q R : Prop) (h : P ∨ Q) (hPR : P → R) (hQR : Q → R) : R :=
   h.elim hPR hQR
 ```
@@ -198,11 +163,7 @@ Negation `¬P` is defined as `P → False`. That is, a proof of `¬P` is a funct
 -- Negation is just a function to False
 example (P : Prop) : (¬P) = (P → False) := rfl
 
--- Tactic proof
-example (P : Prop) (hP : P) (hnP : ¬P) : False := by
-  exact hnP hP
-
--- Term proof: function application
+-- So applying a negation is function application
 example (P : Prop) (hP : P) (hnP : ¬P) : False :=
   hnP hP
 
@@ -219,12 +180,7 @@ tag := "forall-pi"
 The universal quantifier `∀ (x : α), P x` corresponds to the **dependent function type** ({ref "pi-types"}[Pi type]) `(x : α) → P x`. A proof is a function that, for each `x : α`, produces a proof of `P x`.
 
 ```lean
--- Tactic proof
-example : ∀ (n : ℕ), n = n := by
-  intro n
-  rfl
-
--- Term proof: a dependent function (lambda)
+-- A dependent function (lambda)
 example : ∀ (n : ℕ), n = n :=
   fun n => rfl
 ```
@@ -239,15 +195,10 @@ tag := "exists-sigma"
 The existential quantifier `∃ (x : α), P x` corresponds to the {ref "sigma-types"}[dependent pair type]. A proof consists of a witness `a : α` together with a proof that `P a` holds.
 
 ```lean
--- Tactic proof
-example : ∃ (n : ℕ), n > 0 := by
-  use 1; norm_num
-
--- Term proof: construct the dependent pair
+-- The dependent pair: a witness and a proof about it
 example : ∃ (n : ℕ), n > 0 :=
   ⟨1, by norm_num⟩
 
--- Another example
 example : ∃ (n : ℕ), n + n = 10 :=
   ⟨5, by norm_num⟩
 ```
@@ -397,30 +348,3 @@ A term of this type — something that would replace the `sorry` — *is*
 a proof of the conjecture.  Constructing a term of type `ℕ` is easy
 (`0 : ℕ` will do); constructing this one would require actually
 proving Goldbach.
-
-## Which tactics, and where to find them
-%%%
-number := false
-tag := "firststeps"
-%%%
-
-The core tactics you meet first are `intro`, `exact`, `apply`, `rw`,
-`have`, `obtain`, `refine`, and `use`, together with the
-library-search helpers `apply?` and `simp?`.  Rather than tabulate
-them here, we introduce each one *hands-on in the exercises*, right
-where you first need it — so you can experiment immediately.  The
-complete alphabetical reference, with many more tactics, lives in the
-{ref "tactics"}[Tactics] appendix, and searching Mathlib for the
-right lemma is covered in {ref "navigating-mathlib"}[Navigating
-Mathlib].
-
-## Exercises
-%%%
-number := false
-tag := "exercises"
-%%%
-
-It is now time to move to the exercises.  Proceed to `vscode` (or
-`gitpod`), copy the exercises folder, and start coding.  Each sheet
-introduces the tactics it needs; the {ref "tactics"}[Tactics]
-appendix gives the alphabetical reference.

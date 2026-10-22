@@ -63,7 +63,7 @@ At the bottom sit the two universes you meet first (Here, the `#check` command g
 `Type` (which is the same as `Type 0`) is the universe of ordinary data types (`ℕ`, `ℝ`, `Bool`, `List α`, ...), and `Prop` (which is the universe of *propositions*, i.e. True/False-statements). But `Type` cannot contain itself — that would be paradoxical — so `Type` in turn lives in a larger universe `Type 1`, which lives in `Type 2`, and so on without end:
 
 ```lean
-#check (Type : Type 1)      -- Type   : Type 1
+#check (Type 0 : Type 1)    -- `Type 0`, i.e. `Type`, lives in `Type 1`
 #check (Type 1 : Type 2)    -- Type 1 : Type 2
 ```
 
@@ -81,7 +81,7 @@ example : Sort 1 = Type := rfl
 example : Type = Type 0 := rfl
 ```
 
-So `Sort` is the umbrella that unifies `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`. There is deliberately no `Type : Type`; *why* this restriction is needed — it blocks a type-theoretic version of Russell's paradox — is taken up in the {ref "universe-hierarchy"}[Mathematics part].
+So `Sort` is the umbrella that unifies `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`. There is deliberately no `Type : Type`; *why* this restriction is needed — it blocks a type-theoretic version of Russell's paradox — is taken up in the {ref "universe-determined"}[next section].
 :::
 
 # How the universe of a type is determined
@@ -106,7 +106,7 @@ The same holds for a `∀` (a *dependent* function type), whose universe is read
 
 The climbing is what *predicative* means: a predicative definition refers only to things already available below it, so whatever a type quantifies over is strictly smaller and the type it forms never lands back inside its own domain. That is why `∀ α : Type 5, α → α` is pushed up to `Type 6`, above everything it ranges over, and it keeps the hierarchy well-founded. (The term goes back to Poincaré and Russell, who imposed predicativity to outlaw the self-referential definitions behind the set-theoretic paradoxes.)
 
-The bump matters. Suppose `∀ α : Type, α → α` were allowed to have type `Type` rather than `Type 1` — i.e. a `∀` over `Type` could land back inside `Type`. That is the first step toward a universe that contains itself, `Type : Type`, and *that* is fatal: from `Type : Type` one can encode Russell's paradox at the level of types — *Girard's paradox* — and derive an honest proof of `False`, so *every* proposition becomes provable and the system is worthless. Predicativity, by forcing the climb to `Type 1`, is exactly what rules this out. (The proof is not short, and Lean's kernel enforces the bump, so you cannot even state `∀ α : Type, α → α : Type` to try it; why the hierarchy matters is discussed in {ref "universe-hierarchy"}[the Mathematics part], and carrying the construction of the paradox out in Lean is {ref "project-girard"}[one of the course projects].)
+The bump matters. Suppose `∀ α : Type, α → α` were allowed to have type `Type` rather than `Type 1` — i.e. a `∀` over `Type` could land back inside `Type`. That is the first step toward a universe that contains itself, `Type : Type`, and *that* is fatal: from `Type : Type` one can encode Russell's paradox at the level of types — *Girard's paradox* — and derive an honest proof of `False`, so *every* proposition becomes provable and the system is worthless. Predicativity, by forcing the climb to `Type 1`, is exactly what rules this out. (The proof is not short, and Lean's kernel enforces the bump, so you cannot even state `∀ α : Type, α → α : Type` to try it; carrying the construction out in Lean is {ref "project-girard"}[one of the course projects].)
 
 (A definition can also be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
 

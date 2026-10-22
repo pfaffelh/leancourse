@@ -38,15 +38,11 @@ Das Verhältnis stimmt in den ersten Wochen nicht von selbst. „So
 funktioniert `intro`" ist nach zwanzig Minuten erzählt, und der
 Mittwoch bräuchte das Doppelte, weil alle langsam tippen.
 
-Die Antwort ist nicht, die Termine zu mischen, sondern dem Montag
-einen eigenen Faden zu geben, der ohne Lean-Kenntnisse funktioniert:
-warum formalisieren, was ein Beweis ist, konstruktiv gegen klassisch.
-Ausgeführt unten unter *Der Theoriefaden der ersten Wochen*.
-
-Die Rechnung geht trotzdem nicht ganz auf. Die Wochen 2 und 3 tragen
-je zwei Blätter und haben dafür nur ein Labor. Wenn es dort klemmt,
-ist das der Ort zum Nachsteuern -- nicht durch Mischen der Termine,
-sondern indem ein Blatt eine Woche später fällig wird.
+Die Antwort ist nicht, die Termine zu mischen, sondern den Montag ab
+Woche 2 durch das Skript laufen zu lassen, von Kapitel 1.1 an. Die
+Übung bleibt derweil bei der Logik und nimmt das Blatt zur Vorlesung
+zusätzlich mit. Zwei Wochen lang sind das drei Blätter; siehe
+*Wochenplan*.
 
 ### Woche 1, Mittwoch: Installationstermin
 
@@ -136,112 +132,83 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | W | Mo | Mi | Vorlesung | Kapitel | Blätter | |
 |---|---|---|---|---|---|---|
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | 01-a | |
-| 2 | 26.10. | 28.10. | Was ist ein Beweis? BHK-Interpretation | 1.5 | 01-b, 01-c | |
-| 3 | 02.11. | 04.11. | Konstruktiv gegen klassisch | 2.2 | 01-d, 01-e | |
-| 4 | 09.11. | 11.11. | Beweisstruktur; Automatik und Suche | Appendix | 01-f, 01-g | **Test 1** |
-| 5 | 16.11. | 18.11. | `Nat`, `Bool`, Reduktionsregeln, Induktion | 1.1 | 02-a, 02-b, 02-c, 02-d | |
-| 6 | 23.11. | 25.11. | Grenzwerte; Quantoren und Typen | 1.2 | 02-e, 03-00 | |
-| 7 | 30.11. | 02.12. | Prädikate; Funktionen in Mathlib | 2.1 | 03-01, 03-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Mengen, Bild und Urbild | 2.1 | 03-b, 03-c | |
-| 9 | 14.12. | 16.12. | Curry-Howard, abhängige Typen | 1.5, 1.6, 2.2 | 05-a, 05-b | **Test 3** |
+| 2 | 26.10. | 28.10. | `Nat`, `Nat.rec`, Reduktionsregeln | 1.1 | 01-b, 01-c, 02-a | |
+| 3 | 02.11. | 04.11. | `Bool`, `True`, `False` | 1.1 | 01-d, 01-e, 02-b | |
+| 4 | 09.11. | 11.11. | Typen, Strukturen, Quotienten | 1.2 | 01-f, 01-g | **Test 1** |
+| 5 | 16.11. | 18.11. | Terme und Pattern Matching | 1.3 | 02-c, 02-d | |
+| 6 | 23.11. | 25.11. | Typklassen und Notation | 1.4, 1.7 | 02-e, 03-00 | |
+| 7 | 30.11. | 02.12. | Mengen und Typen | 2.1 | 03-01, 03-a | **Test 2** |
+| 8 | 07.12. | 09.12. | Universen und Axiome | 2.2 | 03-b, 03-c | |
+| 9 | 14.12. | 16.12. | Curry-Howard, abhängige Typen | 1.5, 1.6 | 05-a, 05-b | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Appendix | 07-a, 07-b, 04-a | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
 | 11 | 11.01. | 13.01. | Ordnungen und Verbände | 2.4 | 06-a | |
-| 12 | 18.01. | 20.01. | Algebraische Hierarchie | 1.4, 2.5 | 06-d | |
+| 12 | 18.01. | 20.01. | Algebraische Hierarchie | 2.5 | 06-d | |
 | 13 | 25.01. | 27.01. | Filter | 2.6 | 06-b | **Test 4** |
 | 14 | 01.02. | 03.02. | Topologie; Maßtheorie | 2.7, 2.8 | 06-c, 06-e | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 04-b, 06-f | **Test 5** |
 
-27 der 29 Blätter.
+29 der 32 Blätter. Nicht im Pflichtprogramm sind `05-c`, `05-d` und
+das Bonusblatt `08-a`; siehe unten.
 
 **Woche 1 trägt nur ein Blatt.** Montag ist reiner Kontext, Mittwoch
 reine Installation -- in dieser Woche sieht niemand eine geführte
-Minute Lean. Zwei Blätter wären dort Unfug. Der Rutsch läuft durch bis
-Woche 10, die dafür drei Blätter über die dreiwöchige Pause trägt.
+Minute Lean. Zwei Blätter wären dort Unfug.
 
-Nebeneffekt, und ein guter: die Paarungen passen jetzt besser zum
-Montagsthema. BHK trifft auf `∧`, `∨` statt auf die Negation;
-konstruktiv gegen klassisch trifft auf genau die Blätter 01-d und
-01-e; die Quantoren liegen in derselben Woche wie die Grenzwerte, die
-sie brauchen.
+**Die Wochen 2 und 3 tragen drei.** Die Logik läuft weiter (`01-b`
+bis `01-e`), und das Blatt zur Vorlesung kommt dazu: `02-a` zu
+`Nat.rec`, `02-b` zu `Bool`. So haben Montag und Mittwoch in diesen
+beiden Wochen dasselbe Thema, obwohl die Logik noch nicht fertig ist.
 
-### Zwei Spuren, die nebeneinander laufen
+Dafür verliert Woche 5 ihre vier Blätter -- die schlimmste Woche des
+alten Plans. Der Schnitt bleibt bei zwei Blättern pro Woche.
 
-Die Spalte *Kapitel* läuft nicht von 1.1 nach 2.9, und die Vorlesung
-ist auch keine Vorbereitung auf das Blatt vom Mittwoch.
+Wenn drei zu viel sind, rutscht `02-b`: `Bool` wird in den späteren
+Blättern kaum gebraucht.
 
-Montag und Mittwoch sind zwei Spuren. In der Übung geht es praktisch
-weiter, Blatt für Blatt. In der Vorlesung läuft die Theorie, in ihrer
-eigenen Ordnung. Sie berühren sich oft, aber sie müssen sich nicht
-jede Woche treffen.
+### Vorlesung und Skript
 
-Das ist der angenehmere Modus, nicht nur der notwendige: die Theorie
-hat man im Hinterkopf, während die Finger weiterarbeiten. Sie muss am
-Mittwoch nicht abgerufen werden.
+Die Spalte *Kapitel* läuft durch das Skript, von 1.1 bis 2.9. Jeder
+Montag hat damit sein Kapitel und seinen Foliensatz, und kein Kapitel
+bleibt übrig -- außer 2.3, das ohnehin Projektmaterial ist.
 
-Dass die beiden Ordnungen überhaupt auseinanderlaufen, hat einen
-einfachen Grund. Das Skript ist nach der Sache geordnet und beginnt
-mit `Nat`. Die Blätter sind danach geordnet, was man am ersten Tag
-tippen kann, und beginnen mit Logik. Das Skript sagt das über sich
-selbst: Taktik und Theorie sind verschränkt, und man beginnt mit dem
-ersten Blatt, nicht mit dem ersten Kapitel.
+Zwei Stellen weichen von der Reihenfolge des Skripts ab, beide, damit
+die Vorlesung auf ihre Blätter trifft:
 
-In den Wochen 2 und 3 wird je eine Idee aus einem späteren Kapitel
-vorgezogen -- die BHK-Interpretation aus 1.5, das ausgeschlossene
-Dritte aus 2.2. Beide kommen in Woche 9 formal wieder, dann als
-Propositionen-als-Typen und mit Universen. Das ist kein Versehen und
-keine Dopplung: in Woche 2 ist es eine Lesart, in Woche 9 ein Satz.
+- **1.5 und 1.6** (Curry-Howard, abhängige Typen) stehen in Woche 9,
+  hinter 2.1 und 2.2, weil dort die Blätter `05-a` und `05-b` liegen.
+- **1.7 Notation** hängt an 1.4 in Woche 6. Beides ist Maschinerie des
+  Elaborators, und allein trägt 1.7 keinen Termin.
 
-**Drei Kapitel werden nie vorgetragen**, und zwar genau die drei,
-deren Blätter ohne Vorlesung auskommen:
+Ab Woche 4 läuft die Vorlesung der Übung voraus, um ein bis drei
+Wochen. Das ist gewollt: die Theorie hat man im Hinterkopf, während
+die Finger an den Logikblättern weiterarbeiten. Die Blätter erklären
+sich selbst, und im Labor stehen zwei Leute daneben.
 
-| Kapitel | Blatt | |
-|---|---|---|
-| 1.3 Terme | 04-a | Ferienaufgabe |
-| 1.7 Notation | 05-c | Selbststudium |
-| 2.3 Wohlfundiertheit | 05-d | Projektmaterial |
+**Was es kostet.** Die BHK-Interpretation steht in 1.5, konstruktiv
+gegen klassisch in 2.2 -- also in den Wochen 9 und 8. Die Blätter
+`01-d` und `01-e` laufen damit fünf Wochen vor ihrer Theorie. Woche 3
+federt das teilweise ab: dort ist `False` dran, und `¬P` ist
+`P → False`. Für den Rest reichen die Taktikeinträge im Appendix
+(`by_cases`, `push Not`, `itauto` gegen `tauto`).
 
-### Der Theoriefaden der ersten Wochen
-
-Die Frage, was man am Montag erzählt, wenn die Studierenden noch
-nichts können, hat drei Antworten, die ohne Vorwissen funktionieren.
-Abhängige Typen und Universen gehören *nicht* dazu -- die kommen in
-Woche 9, wenn Lean lesbar geworden ist.
-
-Die Linie dahinter: **vor Woche 5 kommt kein Typ außer `Prop` vor.**
-Nur Aussagen und Beweise, keine Daten. Das ist für das Erlernen von
-Lean der leichtere Einstieg -- ein Beweiszustand mit vier Hypothesen
-über `P`, `Q`, `R` hat nichts Beiläufiges darin, an dem man sich
-verlieren könnte. `Nat` ist der erste Typ, der kein `Prop` ist, und
-deshalb liegt Kapitel 1.1 in Woche 5 und nicht in Woche 2.
+### Der Faden der ersten Wochen
 
 **Woche 1 -- Warum überhaupt formalisieren?** Geschichte, Mathlib,
 aktuelle Lage; ausgearbeitet oben unter *Die erste Sitzung*. Null
 Vorwissen nötig, und es erklärt, wofür die nächsten Wochen Mühe gut
 sind.
 
-**Woche 2--3 -- Konstruktive gegen klassische Logik.** Echte Theorie,
-braucht nur die Blätter 01-a bis 01-c als Vorwissen, und sie dient
-direkt dem Stoff: BHK-Interpretation, warum `¬¬P → P` kein Theorem
-ist, was ein Beweis von `P ∨ Q` eigentlich liefern muss. Zwei volle
-Montage trägt das, wenn man die BHK-Interpretation wirklich durchgeht
-statt sie zu erwähnen.
+**Woche 2--3 -- `Nat`, dann `Bool`, `True`, `False`.** Kapitel 1.1 auf
+zwei Montage: erst `Nat` mit zwei Konstruktoren, `Nat.rec`,
+definitionelle Gleichheit und die Reduktionsregeln; dann `Bool` und
+die beiden Propositionen `True` und `False`. Das Kapitel steht seit
+Juli 2026 bewusst *vor* *Types* -- diese Entscheidung trägt genau
+hier, denn `Nat` ist der konkreteste mögliche Einstieg in die
+Typentheorie.
 
-Der Clou: sie können es **selbst nachprüfen**. `itauto` gegen `tauto`
-ist genau dieses Experiment, und Blatt 01-g baut darauf auf. Theorie,
-die man im Labor testen kann, ist die beste Theorie für Woche 3.
-
-**Woche 5 -- `Nat` und Reduktionsregeln.** Die erste Dosis
-Typentheorie, und die richtige: `Nat` mit zwei Konstruktoren,
-`Nat.rec`, definitionelle Gleichheit, die Reduktionsregeln. Das Kapitel
-`01-Lean/01-Nat.lean` steht seit Juli 2026 bewusst *vor* *Types* --
-diese Entscheidung trägt genau hier.
-
-Woche 4 braucht nichts dergleichen mehr: Beweisstruktur, Automatik und
-Suche sind dann eine ganz gewöhnliche Vorlesung.
-
-Der Faden ist damit: *wozu* → *was ist ein Beweis* → *was ist ein
-Term*. Und erst ab Woche 9: *was ist ein Typ, wirklich*.
+**Woche 4 -- Typen.** Ab hier ist es eine gewöhnliche Vorlesung: das
+Skript der Reihe nach, ein Kapitel pro Woche.
 
 **Die Gewichtung ist Absicht.** Neun Wochen Handwerk vor der Pause,
 fünf Wochen Mathematik danach. Die Mathlib-Kapitel sind der Ertrag des
@@ -258,9 +225,9 @@ Blätter `07-a` und `07-b` sind in sich geschlossen.
 
 **Drei Blätter laufen als Ferienaufgabe über die Pause:** `07-a`,
 `07-b` und dazu `04-a` (Rekursion, Pattern Matching, Funktionen höherer
-Ordnung). `04-a` hat keine eigene Vorlesung und braucht auch keine --
-es steht für sich, genau wie die beiden anderen. Drei Wochen sind für
-drei solche Blätter reichlich, und das erste Labor nach der Pause
+Ordnung). Pattern Matching war in Woche 5 dran, mit Kapitel 1.3; der
+Rest von `04-a` steht für sich, genau wie die beiden anderen Blätter.
+Drei Wochen sind dafür reichlich, und das erste Labor nach der Pause
 (13.01., ohne Test) beginnt mit Fragen dazu.
 
 `conv` kommt damit *vor* Filter und Topologie -- genau rechtzeitig,
@@ -269,11 +236,15 @@ treffen.
 
 ### Nicht im Pflichtprogramm
 
-Zwei Blätter fallen heraus:
+Drei Blätter fallen heraus:
 
-- `05-c-Notation` -- eigenständig und kurz, taugt als Selbststudium.
+- `05-c-Notation` -- kurz, und Kapitel 1.7 ist in Woche 6 vorgetragen;
+  taugt als Selbststudium.
 - `05-d-WellFoundedness` -- ohnehin Projektmaterial
-  (Cantor-Schröder-Bernstein, ℤ als Quotient).
+  (Cantor-Schröder-Bernstein, ℤ als Quotient). Das zugehörige Kapitel
+  2.3 ist das einzige, das keinen Termin hat.
+- `08-a-Puzzles` -- Bonusblatt mit den drei Rätseln aus der
+  Beweismaschine.
 
 ## Kurztests
 

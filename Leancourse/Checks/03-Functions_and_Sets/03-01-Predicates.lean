@@ -61,7 +61,7 @@ example (P Q : Prop ) : (P → Q) ↔ (Q ∨ ¬P ) := by
   -- this is the result of clicking on the result of `apply?`
   exact imp_iff_or_not
 
--- Exercise 2: Now we can use `l1` in order to solve the difficult exercise from `01-e`. `push_neg` can be useful as well.
+-- Exercise 2: Now we can use `l1` in order to solve the difficult exercise from `01-e`. `push Not` can be useful as well.
 example (P Q : Prop): (((P → Q) → P) → P) := by
   rw [imp_iff_or_not]
   rw [imp_iff_or_not]
@@ -87,13 +87,13 @@ lemma l2 (P Q : Prop ) : (P → Q) ↔ (¬Q → ¬P) := by
   We now come to defining functions, for which we need a notation that is equivalent to `f : ↦ f x` (where `f x` is the lean way of writing `f(x)`; computer scientists sometimes use parentheses sparingly...) This is done with `fun`: the expression `fun x ↦ 2*x`
   is the function `x ↦ 2*x`. Here are two examples:-/
 
-example : (∃ (f : α → α), True) := by
+example : (∃ (f : α → α), f = f) := by
   use fun x ↦ default
 
 /-
   If you want to give the last example an explicit name, you can do so as follows:-/
 
-example : (∃ (f : α → α), True) := by
+example : (∃ (f : α → α), f = f) := by
   let f : α → α := fun x ↦ default
   use f
 

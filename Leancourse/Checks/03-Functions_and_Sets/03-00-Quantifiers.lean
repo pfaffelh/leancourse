@@ -26,7 +26,7 @@ variable (S T: Prop)
 
 -- First, we introduce the ∀ quantifier. If it appears in a goal, we can use `intro` to introduce a term of the corresponding type. This leads to a situation that we already know:
 
-example : (∀ (x : α), True) := by
+example : (∀ (x : α), x = x) := by
   intro x
   trivial
 
@@ -53,14 +53,14 @@ example (inh : Inhabited α) (h : P default) : (∃ x, P x) := by
   exact ⟨default, h⟩
 
 -- Of course, quantifiers can also be connected in series. In the following example, ∃ is also in an assumption. This is resolved using the `cases'` tactic.
-example (_ : Inhabited α) (h : ∃ x, ∀ y, R x y) : ∃ x, R x x := by
+example (h : ∃ x, ∀ y, R x y) : ∃ x, R x x := by
   cases' h with x h
   use x
   exact h x   -- or exact ⟨ x, h x ⟩,
 
 -- In fact, the `∃` in an assumption is equvalent to a pair: It gives an object which is assumed to exists, and a proof that it satisfies what comes after the `∃`.
 -- In addition, the proof in the last step can be abbreviated_
-example (inh : Inhabited α) (h : ∃ x, ∀ y, R x y) : ∃ x, R x x := by
+example (h : ∃ x, ∀ y, R x y) : ∃ x, R x x := by
   obtain ⟨x, hx⟩ := h
   use x, (hx x)
 
@@ -100,7 +100,7 @@ example  (h : ∀ (x : α), P x ↔ ∃ (y : α), R x y) : (∀ (y : α), ( ∀ 
   apply h.mpr
   use y
 
--- A few exercises follow in which you recalculate the usual rules for negating quantifiers. One tactic that automatically provides this is `push_neg`. However, you are not allowed to use this here.
+-- A few exercises follow in which you recalculate the usual rules for negating quantifiers. One tactic that automatically provides this is `push Not`. However, you are not allowed to use this here.
 
 -- Exercise 5:
 example (P : α → Prop) : (∀ (x : α), ¬ P x) → ¬(∃ (x : α), P x ) := by

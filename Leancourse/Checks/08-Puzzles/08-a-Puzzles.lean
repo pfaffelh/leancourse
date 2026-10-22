@@ -12,7 +12,7 @@ Not teaching material; see `Leancourse/Checks/README.md`.
 example (α : Type) [Inhabited α] (P : α → Prop) : ∃ x, P x → ∀ y, P y := by
   by_cases h : ∀ y, P y
   · exact ⟨default, fun _ => h⟩
-  · push_neg at h
+  · push Not at h
     obtain ⟨y, hy⟩ := h
     exact ⟨y, fun hPy => absurd hPy hy⟩
 

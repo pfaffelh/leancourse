@@ -17,7 +17,7 @@ theorem tendsTo_def {x : ℕ → ℝ} {t : ℝ} :
 
 -- Let us start by showing that a constant sequence has a limit. Note that the first line in the proof unfolds the definition of `TendsTo`.
 
-example (c : ℝ) : TendsTo (fun n ↦ c) c := by
+example (c : ℝ) : TendsTo (fun _ ↦ c) c := by
   rw [tendsTo_def]
   intro ε hε
   use 0

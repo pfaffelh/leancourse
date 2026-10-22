@@ -5,7 +5,7 @@ import Mathlib
 
 Three puzzles. All three need classical logic, and all three need
 planning: work the proof out before you type it. No new tactic is
-required -- `by_cases`, `by_contra`, `push_neg`, `obtain`, `refine`
+required -- `by_cases`, `by_contra`, `push Not`, `obtain`, `refine`
 and `absurd` are enough.
 
 A bonus sheet. Nothing later depends on it.
@@ -26,7 +26,7 @@ that guest makes the implication vacuously true. The pub needs at
 least one guest, which is what `[Inhabited α]` says: `default : α`. -/
 
 -- Exercise 1) Start with `by_cases h : ∀ y, P y`.  In the second
---   case `push_neg at h` produces a guest who does not drink.
+--   case `push Not at h` produces a guest who does not drink.
 example (α : Type) [Inhabited α] (P : α → Prop) : ∃ x, P x → ∀ y, P y := by
   sorry
 

@@ -9,7 +9,7 @@ theorem tendsTo_def {x : ℕ → ℝ} {t : ℝ} :
     TendsTo x t ↔ ∀ ε, 0 < ε → ∃ N : ℕ, ∀ n, N ≤ n → |x n - t| < ε := by
   rfl
 
-example (c : ℝ) : TendsTo (fun n ↦ c) c := by
+example (c : ℝ) : TendsTo (fun _ ↦ c) c := by
   rw [tendsTo_def]
   intro ε hε
   use 0

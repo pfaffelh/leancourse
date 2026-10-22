@@ -136,20 +136,20 @@ Die Pause frisst **drei Mittwoche** (23.12., 30.12., 06.01.), aber nur
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | 01-b, 01-c, 02-a | |
 | 3 | 02.11. | 04.11. | Typen, Strukturen, Quotienten | 1.2 | 01-d, 01-e, 02-b | |
 | 4 | 09.11. | 11.11. | Terme und Pattern Matching | 1.3 | 01-f, 01-g | **Test 1** |
-| 5 | 16.11. | 18.11. | Typklassen | 1.4 | 02-c, 02-d | |
-| 6 | 23.11. | 25.11. | Curry-Howard | 1.5 | 02-e, 03-00 | |
+| 5 | 16.11. | 18.11. | Typklassen | 1.4 | 02-c | |
+| 6 | 23.11. | 25.11. | Curry-Howard | 1.5 | 03-00 | |
 | 7 | 30.11. | 02.12. | Abhängige Typen und Notation | 1.6, 1.7 | 03-01, 03-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen und Typen | 2.1 | 03-b, 03-c | |
 | 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 05-a, 05-b | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Appendix | 07-a, 07-b, 04-a | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
-| 11 | 11.01. | 13.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 06-a | |
-| 12 | 18.01. | 20.01. | Filter | 2.6 | 06-d | |
-| 13 | 25.01. | 27.01. | Topologie | 2.7 | 06-b | **Test 4** |
-| 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 06-c, 06-e | |
+| 11 | 11.01. | 13.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 06-a, 06-d | |
+| 12 | 18.01. | 20.01. | Filter | 2.6 | 06-00, 06-b | |
+| 13 | 25.01. | 27.01. | Topologie | 2.7 | 06-c | **Test 4** |
+| 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 06-e | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 04-b, 06-f | **Test 5** |
 
-29 der 32 Blätter. Nicht im Pflichtprogramm sind `05-c`, `05-d` und
+28 der 31 Blätter. Nicht im Pflichtprogramm sind `05-c`, `05-d` und
 das Bonusblatt `08-a`; siehe unten.
 
 **Woche 1 trägt nur ein Blatt.** Montag ist reiner Kontext, Mittwoch
@@ -166,6 +166,14 @@ alten Plans. Der Schnitt bleibt bei zwei Blättern pro Woche.
 
 Wenn drei zu viel sind, rutscht `02-b`: `Bool` wird in den späteren
 Blättern kaum gebraucht.
+
+**Zwei Blätter sind umgezogen.** `02-c-Naturals` und `02-d-Induction`
+überschnitten sich -- beide begannen mit derselben Fallunterscheidung
+`n = 0 ∨ ∃ k, n = succ k` -- und sind zu einem Blatt verschmolzen:
+erst Arithmetik mit `rw`, `calc`, `ring`, dann Induktion. 22 Aufgaben.
+`02-e-Limits` heißt jetzt `06-00-Limits` und liegt in Woche 12, als
+Aufwärmen vor den Filtern: Grenzwerte sind der Fall, an dem man einen
+Filter zum ersten Mal brauchen kann.
 
 ### Vorlesung und Skript
 
@@ -242,6 +250,11 @@ denn dort lässt zum ersten Mal jemand `rw` an der falschen Stelle
 treffen.
 
 ### Nicht im Pflichtprogramm
+
+Zu den Kapiteln 1.2 und 1.3 gibt es kein eigenes Blatt. Induktive
+Typen und Pattern Matching stehen in `04-a`, die Universen in `05-b`.
+Strukturen und Quotiententypen bekommen keine Übung -- sie werden
+gelesen, nicht geübt.
 
 Drei Blätter fallen heraus:
 

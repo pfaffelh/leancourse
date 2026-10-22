@@ -18,8 +18,7 @@ tag := "lean"
 
 This part covers Lean both as a practical proof assistant and as the
 dependent type theory it is built on.  We begin with the natural
-numbers — a single type, dissected far enough to see how Lean
-*computes*, together with the reduction rules behind that computation.
+numbers — which comes with its *constructors* as well as with reduction rules.
 We then turn to types and the universe hierarchy — including how to
 define your own types with `inductive` and `structure` — then
 functions and terms and the typeclass system.  Finally comes the
@@ -28,7 +27,7 @@ and proofs to terms (and, with it, how to prove things interactively),
 dependent types, and notation.
 (Several reference topics — the alphabetical tactic glossary, how a
 Lean file is organized, Lean's brackets, equality and reduction, the
-diagnostic commands, and Navigating Mathlib — live in the
+diagnostic commands, and Navigating Mathlib — are covered in the
 {ref "appendix"}[Appendix]; the deeper foundations, the axioms of Lean
 and well-foundedness, are treated in the *Mathematics* part.)
 

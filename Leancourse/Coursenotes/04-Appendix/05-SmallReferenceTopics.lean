@@ -22,7 +22,7 @@ A handful of short, self-contained reference topics — consult them as needed r
 tag := "parenthesis"
 %%%
 
-`(...)` groups, as usual. What you have to learn is how `Lean` groups when no parentheses are given. Operators like `∧` and `∨` are right-associative, so `P ∧ Q ∧ R` means `P ∧ (Q ∧ R)`. Function application is left-associative: for `f : ℕ → ℝ` and `g : ℝ → ℝ` applied to `n : ℕ` you must write `g (f n)`, because `g` expects an `ℝ` and `f n` supplies it.
+`(...)` groups, as usual. What you have to learn is how `Lean` groups when no parentheses are given. Operators like `∧`, `∨` and `→` are right-associative, so `P ∧ Q ∧ R` means `P ∧ (Q ∧ R)` and `α → β → γ` means `α → (β → γ)`. Arithmetic is left-associative: `a + b + c` means `(a + b) + c`. Function application is left-associative too: `f a b` means `(f a) b`, which is exactly what `f : α → (β → γ)` needs. Brackets are therefore needed when an argument is itself an application: for `f : ℕ → ℝ` and `g : ℝ → ℝ` applied to `n : ℕ` you must write `g (f n)`, because `g` expects an `ℝ` and `f n` supplies it.
 
 Beyond grouping, `Lean` uses four kinds of *binder* brackets in a declaration's signature; they differ in *who supplies the argument, and how*:
 

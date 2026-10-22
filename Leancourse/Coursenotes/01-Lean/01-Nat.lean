@@ -15,7 +15,9 @@ htmlSplit := .never
 tag := "nat"
 %%%
 
-We begin with the natural numbers, `ℕ` (notation for the type `Nat`), as a running example. Types, terms and proofs are easier to read once you have seen how one type is built and how Lean *computes* with it.
+We begin with the natural numbers, `ℕ` (notation for the type `Nat`), as a running example.
+
+The [slides](slides/nat/) for this chapter follow it section by section.
 
 # The natural numbers
 %%%
@@ -33,7 +35,7 @@ so every natural number is a finite tower of them: `Nat.zero` is `0`, `Nat.succ 
 
 These two constructors are Giuseppe Peano's axiomatization of 1889: a zero, a successor, and induction. Peano credited Dedekind, who had given the same analysis in 1888. Induction is not a third constructor. It is the *recursor*, generated together with the type, and it is the subject of the next paragraph. What was a list of axioms in 1889 is a type declaration here.
 
-Generated alongside the type is the *recursor* `Nat.rec`. The constructors *build* a value; the recursor *consumes* one. It is the primitive way to define a function with domain `Nat`. To define some `f : Nat → C` (where `C` is some type), you supply exactly two things: a base value `base : C` for the `zero` case (i.e. `f 0 := base`, where `f 0` is the Lean way to write `f(0)`), and a `step : Nat → C → C` such that, for `succ n` (which equals `n + 1`), you may reuse both `n` and the result already computed for `n`, i.e. you define in this way `f (n + 1) := step n (f n)`. (Note the important notation here: We write `α → β → γ` — with implicit brackets `g : α → (β → γ)` for a function `g` mapping every `a : α` to a function `β → γ`. So, `g a b : γ`. In other words, this is the Lean and more flexible way to write a function depending on two variables.)
+Generated alongside the type is the *recursor* `Nat.rec`. The constructors *build* a value; the recursor *consumes* one. It is the primitive way to define a function with domain `Nat`. To define some `f : Nat → C` (where `C` is some type), you supply exactly two things: a base value `base : C` for the `zero` case (i.e. `f 0 := base`, where `f 0` is the Lean way to write `f(0)`), and a `step : Nat → C → C` such that, for `succ n` (which equals `n + 1`), you may reuse both `n` and the result already computed for `n`, i.e. you define in this way `f (n + 1) := step n (f n)`. (Note the important notation here: We write `α → β → γ` — with implicit brackets `g : α → (β → γ)` for a function `g` mapping every `a : α` to a function `β → γ`. So, `g a b : γ`. Application brackets the other way: `g a b` means `(g a) b`, first `g a : β → γ`, then that function applied to `b`. Arrows omit brackets on the right, application omits them on the left, and the two fit together. You only write brackets where an argument is itself an application, as in `step n (f n)`; see {ref "parenthesis"}[Different parentheses]. In other words, this is the Lean and more flexible way to write a function depending on two variables.)
 
 Noting the `example` keyword, as well as the inputs `C, base, step`, we define the terms of type `Nat → C` by introducing a function (using the `fun` keyword, and the mapping rule):
 

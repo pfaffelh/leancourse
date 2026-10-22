@@ -1,6 +1,13 @@
 import VersoSlides
 import Slides.Introduction
 import Slides.Filters
+import Slides.Nat
+import Slides.Types
+import Slides.Terms
+import Slides.Typeclasses
+import Slides.CurryHoward
+import Slides.DependentTypes
+import Slides.Notation
 
 open VersoSlides
 
@@ -84,7 +91,14 @@ def main (args : List String) : IO UInt32 := do
   let base := args.head?.getD "_slides"
   let decks : List (String × (String → IO UInt32)) :=
     [ ("introduction", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Introduction)),
-      ("filters",      fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Filters)) ]
+      ("filters",      fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Filters)),
+      ("nat",             fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Nat)),
+      ("types",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Types)),
+      ("terms",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Terms)),
+      ("typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Typeclasses)),
+      ("curry-howard",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.CurryHoward)),
+      ("dependent-types", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.DependentTypes)),
+      ("notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Notation)) ]
   let mut code : UInt32 := 0
   for (name, run) in decks do
     IO.println s!"slides: {name}"

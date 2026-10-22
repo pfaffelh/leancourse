@@ -2104,3 +2104,29 @@ im Kapitel (`### 1917 to 1931`) und nach dem Muster der Nachbarfolien
 (*Two repairs, 1908*, *Gödel, 1929 and 1931*). In den Notizen steht
 dazu, dass 1917 der Startschuss ist (*Axiomatisches Denken*) und die
 scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
+
+## 2026-10-19 -- Decks fuer Kapitel 1, Bool-Blatt
+
+- **Sieben neue Decks**, eins pro Unterkapitel von *Lean and its type
+  theory*: `Slides/{Nat,Types,Terms,Typeclasses,CurryHoward,
+  DependentTypes,Notation}.lean`, Verzeichnisse `slides/{nat,types,
+  terms,typeclasses,curry-howard,dependent-types,notation}/`. 12-19
+  Folien, **noch ohne Sprechernotizen** (kommen spaeter). Verlinkt aus
+  jedem Kapitel (Satz direkt vor dem ersten `#`) und aus `06-Slides`.
+- **Namenskollisionen:** alle Decks landen in *einer* Binary. Jedes Deck
+  hat deshalb `namespace Slides<Name>` direkt vor `#doc` (geprueft:
+  wirkt auf die Lean-Bloecke). Notation im Notation-Deck ist `local`
+  bzw. `scoped`.
+- **VersoSlides-Tabellen:** `+header` gibt es nicht ("Unexpected
+  argument"), richtig ist `+colHeaders`. Leere Zellen parsen nicht.
+- **Link-Falle:** jede Manual-Seite hat `<base href="./../">`, relative
+  Links gehen also vom Site-Root aus. Richtig ist `slides/<deck>/`.
+  Der Filter-Kapitel-Link `../slides/filters/` war live ein 404,
+  korrigiert.
+- Folienhoehen gemessen, Maximum 664 px (*Defining and evaluating
+  functions*, Terms-Deck).
+- Das Kapitel `01-Nat.lean` heisst im `#doc` noch `"Introduction"`, nicht
+  "The natural numbers and reduction rules" wie oben behauptet. Das Deck
+  traegt den langen Titel.
+- Neues Blatt `Exercises/02-Numbers/02-00-Bool.lean` (16 Aufgaben,
+  Zeuge in `Checks/`), Woche 5 in `plan.md`.

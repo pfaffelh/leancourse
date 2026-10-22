@@ -17,6 +17,8 @@ tag := "curry-howard"
 
 The Curry-Howard correspondence connects logic and type theory: **propositions correspond to types**, and **proofs correspond to terms** of those types. In Lean 4, this correspondence is not merely a theoretical curiosity — it is the very foundation on which the proof assistant is built.
 
+The [slides](slides/curry-howard/) for this chapter follow it section by section.
+
 # Historical context
 %%%
 tag := "curry-howard-history"

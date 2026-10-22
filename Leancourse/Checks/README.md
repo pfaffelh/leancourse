@@ -62,7 +62,7 @@ survived for months precisely because nothing compared the two.
 | Sheet | Witness |
 |-------|---------|
 | `01-Logic` (a–g) | all 7 |
-| `02-Numbers` (a–c) | all 3 |
+| `02-Numbers` (00, a–c) | all 4 |
 | `03-Functions_and_Sets` | `03-00-Quantifiers`, `03-01-Predicates` only |
 | `05-TypeTheory` | `05-d-WellFoundedness` only |
 | `07-ProofEngineering` | `07-b-Conv` only |

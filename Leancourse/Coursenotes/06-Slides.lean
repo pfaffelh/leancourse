@@ -15,6 +15,18 @@ used without the other.
 * [Why formalize?](slides/introduction/) — the first lecture: what
   formalizing means, where things stand in 2026, the four episodes and
   the landmark formalizations.
+* Lean and its type theory, one deck per chapter:
+  * [The natural numbers and reduction rules](slides/nat/) —
+    {ref "nat"}[chapter]
+  * [Types](slides/types/) — {ref "types"}[chapter]
+  * [Terms](slides/terms/) — {ref "terms"}[chapter]
+  * [Typeclasses](slides/typeclasses/) — {ref "typeclasses"}[chapter]
+  * [Propositions and proofs](slides/curry-howard/) —
+    {ref "curry-howard"}[chapter]
+  * [Dependent types in depth](slides/dependent-types/) —
+    {ref "dependent-types"}[chapter]
+  * [Notation and abbreviations](slides/notation/) —
+    {ref "notation"}[chapter]
 * [Filters in Mathlib](slides/filters/) — accompanies the
   {ref "filters"}[chapter on filters].
 

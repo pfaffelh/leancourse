@@ -19,7 +19,7 @@ tag := "terms"
 
 The previous chapter showed how *types* are formed. This chapter is about the other side: how to *define terms* — named inhabitants of those types.
 
-The [slides](slides/terms/) for this chapter follow it section by section.
+The [slides](slides/1-3-terms/) for this chapter follow it section by section.
 
 # Naming terms with `def`
 %%%

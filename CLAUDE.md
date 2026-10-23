@@ -2266,3 +2266,20 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
 - **Die Kurztests dauern jetzt 20 Minuten**, nicht 10. In `plan.md`
   und im neuen Kapitel.
 
+## 2026-10-23 (4) -- Decks nach Kapiteln benannt
+
+- `Slides/*.lean` heissen jetzt nach ihrem Kapitel und sortieren in
+  Kapitelreihenfolge: `0-Introduction`, `1-1-Nat` ... `1-7-Notation`,
+  `2-6-Filters` (plus `0-Introduction-SpeakerNotes.md`). Modulnamen
+  brauchen dadurch Guillemets: `import Slides.«1-1-Nat»`.
+- **Die URL eines Decks kommt nicht aus dem Dateinamen**, sondern aus
+  dem ersten Element der `decks`-Liste in `SlidesMain.lean`. Beides
+  ist jetzt gleich benannt, also `<site>/slides/1-1-nat/`. Wer eins
+  aendert, muss das andere mitaendern.
+- Alle `(slides/<deck>/)`-Links in den Kapiteln nachgezogen.
+  **Achtung beim Pruefen:** die Seiten tragen `<base href="./../">`,
+  diese Links gehen also vom Site-Root aus, nicht vom Verzeichnis der
+  Seite. Ein Checker, der das ignoriert, meldet 16 Fehlalarme.
+- Geprueft: 16 von 16 Deck-Links aufloesbar, Rueck-Link jedes Decks
+  (`../../Organization/`) vorhanden.
+

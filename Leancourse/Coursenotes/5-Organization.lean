@@ -177,22 +177,22 @@ Some chapters have a deck, used in the lecture and readable on its
 own.  The figures and claims are those of the text, so either can be
 used without the other.
 
-* [Why formalize?](slides/introduction/) — the first lecture: what
+* [Why formalize?](slides/0-introduction/) — the first lecture: what
   formalizing means, where things stand in 2026, the four episodes and
   the landmark formalizations.
 * Lean and its type theory, one deck per chapter:
-  * [The natural numbers and reduction rules](slides/nat/) —
+  * [The natural numbers and reduction rules](slides/1-1-nat/) —
     {ref "nat"}[chapter]
-  * [Types](slides/types/) — {ref "types"}[chapter]
-  * [Terms](slides/terms/) — {ref "terms"}[chapter]
-  * [Typeclasses](slides/typeclasses/) — {ref "typeclasses"}[chapter]
-  * [Propositions and proofs](slides/curry-howard/) —
+  * [Types](slides/1-2-types/) — {ref "types"}[chapter]
+  * [Terms](slides/1-3-terms/) — {ref "terms"}[chapter]
+  * [Typeclasses](slides/1-4-typeclasses/) — {ref "typeclasses"}[chapter]
+  * [Propositions and proofs](slides/1-5-curry-howard/) —
     {ref "curry-howard"}[chapter]
-  * [Dependent types in depth](slides/dependent-types/) —
+  * [Dependent types in depth](slides/1-6-dependent-types/) —
     {ref "dependent-types"}[chapter]
-  * [Notation and abbreviations](slides/notation/) —
+  * [Notation and abbreviations](slides/1-7-notation/) —
     {ref "notation"}[chapter]
-* [Filters in Mathlib](slides/filters/) — accompanies the
+* [Filters in Mathlib](slides/2-6-filters/) — accompanies the
   {ref "filters"}[chapter on filters].
 
 Press `s` in a deck for the speaker notes, `o` for an overview of all

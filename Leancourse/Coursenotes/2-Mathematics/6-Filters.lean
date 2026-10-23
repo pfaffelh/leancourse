@@ -25,7 +25,7 @@ Bhavik Mehta in their
 [Formalising Mathematics notes](https://github.com/b-mehta/formalising-mathematics-notes):
 a filter is a *generalized subset*.
 
-A short [slide deck](slides/filters/) accompanies this chapter: it
+A short [slide deck](slides/2-6-filters/) accompanies this chapter: it
 states the learning goal and the three axioms, and is meant for the
 opening minutes of a lecture rather than as a substitute for the text
 below.

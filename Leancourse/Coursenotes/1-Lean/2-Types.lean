@@ -25,7 +25,7 @@ These data types are abstract: Lean treats `ℕ` and `ℝ` as genuinely infinite
 
 In Lean every object is a term, and every term has a type. A type is itself a term, so it has a type as well.
 
-The [slides](slides/types/) for this chapter follow it section by section.
+The [slides](slides/1-2-types/) for this chapter follow it section by section.
 
 # Where types come from
 %%%

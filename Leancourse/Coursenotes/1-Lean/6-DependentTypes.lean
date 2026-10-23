@@ -17,7 +17,7 @@ tag := "dependent-types"
 
 In Lean, **types can depend on values**. That one feature separates it from most mainstream programming languages, and it it allows us to express precise specifications, encode mathematical statements, and catch entire classes of errors at compile time.
 
-The [slides](slides/dependent-types/) for this chapter follow it section by section.
+The [slides](slides/1-6-dependent-types/) for this chapter follow it section by section.
 
 # What makes dependent types special
 %%%

@@ -17,7 +17,7 @@ tag := "typeclasses"
 
 A typeclass associates operations and properties with a type and lets Lean find the right implementation on its own. It is the mechanism by which Lean knows that the integers form a ring and the reals a field, and it is how Mathlib organizes mathematics.
 
-The [slides](slides/typeclasses/) for this chapter follow it section by section.
+The [slides](slides/1-4-typeclasses/) for this chapter follow it section by section.
 
 # The problem typeclasses solve
 %%%

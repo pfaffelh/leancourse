@@ -100,7 +100,7 @@ example (x : ℝ) : volume ({x} : Set ℝ) = 0 := by
 
 -- Exercise 16: The Lebesgue measure of a closed interval.
 -- Hint: Real.volume_Icc
-example (a b : ℝ) (hab : a ≤ b) :
+example (a b : ℝ) (_hab : a ≤ b) :
     volume (Set.Icc a b) = ENNReal.ofReal (b - a) := by
   sorry
 

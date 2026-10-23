@@ -146,9 +146,10 @@ example {α β : Type*} (p : PMF α) (f : α → PMF β) :
 
 /- ## Part 6: A small concrete example -/
 
--- The PMF that is uniform on {0, 1} ⊆ ℕ
--- (using PMF.bernoulli specialized to ℕ via map).
-noncomputable def coin : PMF Bool := PMF.bernoulli (1 / 2) (by norm_num)
+-- A fair coin. `PMF.uniformOfFintype α` is the uniform distribution on
+-- a nonempty finite type. (`PMF.bernoulli` would do the same job but is
+-- deprecated.)
+noncomputable def coin : PMF Bool := PMF.uniformOfFintype Bool
 
 -- Exercise 26: The probability of true under a fair coin is 1/2.
 example : coin true = 1 / 2 := by

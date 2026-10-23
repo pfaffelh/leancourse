@@ -12,26 +12,51 @@ htmlSplit := .never
 What happens when, what the short tests are for, the slides, and the
 recordings. Winter term 2026/27, University of Freiburg.
 
-Lecture Monday, lab Wednesday, 90 minutes each. The lecture starts on
+Lecture Monday 16:15-17:45, lab Wednesday 16:15-17:45. The lecture starts on
 19 October 2026 and ends on 10 February 2027, with a break from
-23 December to 6 January. The break costs three Wednesdays but only
-two Mondays, so there are 15 lectures and 14 labs: **Monday 21
-December has no lab.**
+23 December to 6 January.
 
-# Goals
+
+# Slides
 %%%
-tag := "goals"
+tag := "slides"
 %%%
 
-The course is for mathematics students.
+Most chapters have a deck, used in the lecture and readable on its
+own.  The figures and claims are those of the text, so either can be
+used without the other.
 
-* *Reading formal statements.* Judging whether a formal statement says what the informal one claims ({ref "why-formalize"}[see above]).
-* *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write ({ref "term"}[the proof state]). This is not the older use of computers in mathematics, which was to work through many cases ({ref "four-colour-episode"}[the four colour theorem]).
-* *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — {ref "tactics"}[*tactics*] — fit together. The second half goes deeper into the mathematics.
-* *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "monads"}[monads], needed both to use Lean and to read *Mathlib*.
-* *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "dependent-types"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
-* *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
-* *Proof engineering.* Automation tactics, {ref "navigating-mathlib"}[searching *Mathlib*], and the {ref "common-pitfalls"}[common pitfalls] of a large formal library.
+* [Why formalize?](slides/0-introduction/) — the first lecture: what
+  formalizing means, where things stand in 2026, the four episodes and
+  the landmark formalizations.
+* Lean and its type theory, one deck per chapter:
+  * [The natural numbers and reduction rules](slides/1-1-nat/) —
+    {ref "nat"}[chapter]
+  * [Types](slides/1-2-types/) — {ref "types"}[chapter]
+  * [Terms](slides/1-3-terms/) — {ref "terms"}[chapter]
+  * [Typeclasses](slides/1-4-typeclasses/) — {ref "typeclasses"}[chapter]
+  * [Propositions and proofs](slides/1-5-curry-howard/) —
+    {ref "curry-howard"}[chapter]
+  * [Dependent types in depth](slides/1-6-dependent-types/) —
+    {ref "dependent-types"}[chapter]
+  * [Notation and abbreviations](slides/1-7-notation/) —
+    {ref "notation"}[chapter]
+* [Filters in Mathlib](slides/2-6-filters/) — accompanies the
+  {ref "filters"}[chapter on filters].
+
+Press `s` in a deck for the speaker notes, `o` for an overview of all
+slides, and `?` for the remaining keys.  Every slide carries a link in
+its upper right corner that leads back to this page.
+
+# Recordings
+%%%
+tag := "recordings"
+%%%
+
+The lectures and lab sessions are recorded and published on
+[*Formally proven*](https://www.youtube.com/channel/UCdCtAPNg3baUKSOT5YY28BA), the course's YouTube channel. Each
+recording carries chapter marks that follow the slides, so a single
+topic can be found without watching the whole hour.
 
 # What comes when
 %%%
@@ -142,12 +167,6 @@ and `A-b` are the appendix, `X-a` an extra sheet.
   + `2.9-a`, `2.9-b`
 :::
 
-The logic block runs ahead of its theory on purpose: you prove things
-by hand in weeks 2 to 5 and read why they work in chapters 1.5 and
-2.2. `A-a` and `A-b` are holiday work over the break.
-
-The individual projects come after the fifteen weeks, in the lecture-free
-period; see the {ref "projects"}[Projects chapter].
 
 # The short tests
 %%%
@@ -155,22 +174,13 @@ tag := "short-tests"
 %%%
 
 Five tests, 20 minutes each, at the start of the lab, on paper.
-**Three of the five must be passed** to be admitted to the oral exam.
-A test is passed when two of its three questions are right. A test not
+**Three of the five must be passed** for the _Studienleistung_.
+A test is passed when 50% of all points are achieved. A test not
 taken counts as not passed.
 
 Dates: **11.11., 02.12., 16.12., 27.01., 10.02.**
 
-The tests exist because the homework cannot tell us anything. Using AI
-on the sheets is allowed, and in any case Lean's own `grind` proves
-127 of the 128 statements of the logic block with one call and no
-arguments. A correct submission is therefore a sign of participation
-and nothing more. Admission has to rest on something else, and twenty
-minutes on paper every third week is the cheapest honest thing we
-could think of.
-
-What is tested is the proof state and understanding, not syntax and
-not lemma names -- looking those up is what `exact?` is for. Typical
+What is tested is the proof state and understanding. Here are some typical
 questions:
 
 * The state is `h : P ∧ Q`, the goal `⊢ R`. You write
@@ -179,9 +189,20 @@ questions:
   does the excluded middle come in?
 * This proof fails with "no binders to introduce". Why?
 
-The {ref "cheatsheet"}[cheatsheet] is exactly this format, and sheet
-`L-g` teaches you to check the second kind of question yourself, by
-running `itauto` against `tauto`.
+# Goals
+%%%
+tag := "goals"
+%%%
+
+The course is for mathematics students.
+
+* *Reading formal statements.* Judging whether a formal statement says what the informal one claims ({ref "why-formalize"}[see above]).
+* *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write ({ref "term"}[the proof state]). This is not the older use of computers in mathematics, which was to work through many cases ({ref "four-colour-episode"}[the four colour theorem]).
+* *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — {ref "tactics"}[*tactics*] — fit together. The second half goes deeper into the mathematics.
+* *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "monads"}[monads], needed both to use Lean and to read *Mathlib*.
+* *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "dependent-types"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
+* *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
+* *Proof engineering.* Automation tactics, {ref "navigating-mathlib"}[searching *Mathlib*], and the {ref "common-pitfalls"}[common pitfalls] of a large formal library.
 
 # Getting Lean running
 %%%
@@ -205,7 +226,7 @@ tag := "practical"
   + NVMe SSD
 :::
 
-Measured on the version of *Mathlib* used here: compiling one sheet peaks at about 6.6 GB of resident memory, and the language server behind *VS Code* sits at roughly 9 GB with one file open. Most of that is memory-mapped library data, which the system can drop and read back from disk, so less memory does not break anything, it only slows everything down. With 8 GB you can work with a single file open and little else running. On a mechanical hard disk you cannot.
+Most of the RAM requirement comes from memory-mapped library data, which the system can drop and read back from disk, so less memory does not break anything, it only slows everything down by a large margin.
 
 *If your machine is below the minimum, talk to the teachers at the start of the course.* A server with 128 GB of RAM is available and we can give you an account on it.
 
@@ -231,7 +252,7 @@ Another description of the installation is [here](https://leanprover-community.g
 After `code .` in the `leancourse_exercises` folder, open `Exercises/0-Logic/a-Propositions.lean`. It works once the orange and red bars disappear and moving the cursor on the left changes the infoview on the right.
 Then copy the `Exercises` directory to `MyExercises` and work there. To get updates, run `git pull` in `leancourse_exercises`. `MyExercises` is ignored by git, so an update never overwrites your files.
 
-If the installation gives you trouble, talk to the teachers rather than spending evenings on it.
+If the installation gives you trouble, talk to the teachers.
 
 # How these notes are organized
 %%%
@@ -254,49 +275,3 @@ The exercises carry the course (the `Exercises` folder of the exercises reposito
 In addition to the sheets, you work on an individual project, mostly self-chosen — an exercise from your first year, or a part of *Mathlib* you want to know; the {ref "projects"}[Projects chapter] has five worked-out suggestions.
 
 Before the first lab session, get Lean running on your own machine.
-
-# Slides
-%%%
-tag := "slides"
-%%%
-
-Some chapters have a deck, used in the lecture and readable on its
-own.  The figures and claims are those of the text, so either can be
-used without the other.
-
-* [Why formalize?](slides/0-introduction/) — the first lecture: what
-  formalizing means, where things stand in 2026, the four episodes and
-  the landmark formalizations.
-* Lean and its type theory, one deck per chapter:
-  * [The natural numbers and reduction rules](slides/1-1-nat/) —
-    {ref "nat"}[chapter]
-  * [Types](slides/1-2-types/) — {ref "types"}[chapter]
-  * [Terms](slides/1-3-terms/) — {ref "terms"}[chapter]
-  * [Typeclasses](slides/1-4-typeclasses/) — {ref "typeclasses"}[chapter]
-  * [Propositions and proofs](slides/1-5-curry-howard/) —
-    {ref "curry-howard"}[chapter]
-  * [Dependent types in depth](slides/1-6-dependent-types/) —
-    {ref "dependent-types"}[chapter]
-  * [Notation and abbreviations](slides/1-7-notation/) —
-    {ref "notation"}[chapter]
-* [Filters in Mathlib](slides/2-6-filters/) — accompanies the
-  {ref "filters"}[chapter on filters].
-
-Press `s` in a deck for the speaker notes, `o` for an overview of all
-slides, and `?` for the remaining keys.  Every slide carries a link in
-its upper right corner that leads back to this page.
-
-# Recordings
-%%%
-tag := "recordings"
-%%%
-
-The lectures are recorded and published on
-[*Formally proven*](https://www.youtube.com/channel/UCdCtAPNg3baUKSOT5YY28BA), the course's YouTube channel. Each
-recording carries chapter marks that follow the slides, so a single
-topic can be found without watching the whole hour.
-
-The exercise sheets are worked through on the same channel, one video
-per sheet. Each video description links to the sheet on GitHub and to
-a version that runs in the browser, so nothing has to be installed to
-follow along.

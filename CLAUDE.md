@@ -2222,3 +2222,29 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
 - Stand: 33 Blaetter ohne Fehler, 25 Zeugen ohne `sorry` (ausser dem
   einen gewollten auf `L-a`), `lake build Leancourse`, `lake build
   slides` und `lake exe leancourse` sauber, null tote Verweise.
+
+## 2026-10-23 (2) -- Alle Zeugen, zwei Blaetter neu, Folien geprueft
+
+- **Die acht fehlenden Zeugen sind geschrieben**: `A-a` (39), `2.4-a`
+  (37), `2.5-a` (28), `2.6-b` (46 inkl. der 15 Strukturfelder),
+  `2.7-a` (25), `2.8-a` (22), `2.9-a` (24), `2.9-b` (28). Damit
+  **33 von 33 Blaettern** einen Zeugen, alle `sorry`-frei bis auf das
+  eine gewollte auf `L-a`.
+- Dabei gefunden: `PMF.bernoulli` ist deprecated (neuer Name hat einen
+  anderen Typ) -- `coin` auf `2.9-b` ist jetzt
+  `PMF.uniformOfFintype Bool`. `2.8-a` Aufgabe 16 trug eine Hypothese
+  `a ≤ b`, die `Real.volume_Icc` nicht braucht. `A-a` E1 ist mit
+  `field_simp` allein fertig, das verlangte `ring` hat nichts mehr zu
+  tun; im Zeugen vermerkt.
+- **`1.2-a` und `1.5-a` sind neu geschrieben** (die letzten beiden im
+  alten Stil): Taktiktabelle, Abschnitte, `cases'` raus. Die
+  dokumentierten Fehler sind weg -- die `xxx`-Autorennotiz, das
+  `library_search`, und das `rw [l1]`-Geruest, dem der Zeuge nicht
+  folgte. `l1` **ist** `imp_iff_or_not`, also traegt das Geruest.
+  Aufgabe 8 auf `1.2-a` braucht `by_contra` (Woche 4), das Blatt
+  laeuft in Woche 3 -- als Extra markiert.
+- **Foliensaetze geprueft** (`audit7.py` im Scratchpad: Lean-Bloecke
+  gegen alles, was bis zur Woche des Decks dran war). Keine einzige
+  Taktik zu frueh. Sechs Folien trugen absatzlange Aufzaehlungen und
+  sind gekuerzt; was jetzt noch hoch zaehlt, sind Tabellen.
+

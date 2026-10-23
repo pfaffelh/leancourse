@@ -157,5 +157,4 @@ Studierende brauchen nur
 - Raumbuchung Mo/Mi, Rechnerausstattung im Labor.
 - Foliensätze fehlen für die Wochen 8 bis 15; der Filtersatz hat erst
   neun Folien.
-- Zeugen fehlen für die acht Mathlib-Blätter der Wochen 10 bis 15.
 - Abgabe- und Verteidigungstermin für die Projekte.

@@ -67,6 +67,7 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `1-Lean/1-a-NatRec` | 1.1 | 2 | yes |
 | `1-Lean/1-b-Bool` | 1.1 | 3 | yes |
 | `1-Lean/1-c-Naturals` | 1.1 | 4 | yes |
+| `1-Lean/2-a-Quantifiers` | 1.2 | 3 | yes |
 | `1-Lean/4-a-Typeclasses` | 1.4 | 5 | yes |
 | `1-Lean/4-b-Coercions` | 1.4 | 5 | yes |
 | `1-Lean/5-a-Predicates` | 1.5 | 6 | yes |
@@ -78,22 +79,21 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `2-Mathematics/1-c-Functions` | 2.1 | 8 | yes |
 | `2-Mathematics/2-a-Axioms` | 2.2 | 9 | yes |
 | `2-Mathematics/3-a-WellFoundedness` | 2.3 | 9 | yes |
-| `2-Mathematics/4-a-Orders` | 2.4 | 11 | **missing** |
-| `2-Mathematics/5-a-Algebra` | 2.5 | 11 | **missing** |
+| `2-Mathematics/4-a-Orders` | 2.4 | 11 | yes |
+| `2-Mathematics/5-a-Algebra` | 2.5 | 11 | yes |
 | `2-Mathematics/6-a-Limits` | 2.6 | 12 | yes |
-| `2-Mathematics/6-b-Filters` | 2.6 | 12 | **missing** |
-| `2-Mathematics/7-a-Topology` | 2.7 | 13 | **missing** |
-| `2-Mathematics/8-a-MeasureTheory` | 2.8 | 14 | **missing** |
-| `2-Mathematics/9-a-Monads` | 2.9 | 15 | **missing** |
-| `2-Mathematics/9-b-Probability` | 2.9 | 15 | **missing** |
-| `4-Appendix/a-ProofEngineering` | Appendix | 10 | **missing** |
+| `2-Mathematics/6-b-Filters` | 2.6 | 12 | yes |
+| `2-Mathematics/7-a-Topology` | 2.7 | 13 | yes |
+| `2-Mathematics/8-a-MeasureTheory` | 2.8 | 14 | yes |
+| `2-Mathematics/9-a-Monads` | 2.9 | 15 | yes |
+| `2-Mathematics/9-b-Probability` | 2.9 | 15 | yes |
+| `4-Appendix/a-ProofEngineering` | Appendix | 10 | yes |
 | `4-Appendix/b-Conv` | Appendix | 10 | yes |
 | `9-Extra/a-Puzzles` | — | 5 | yes |
 
-Everything handed out before the Christmas break has a witness --
-weeks 1 to 9, 16 sheets. The eight missing ones are the Mathlib-heavy
-sheets of weeks 10 to 15: proof engineering, orders, algebra, filters,
-topology, measure theory, monads and probability.
+Every sheet has a witness: 33 of 33, all sorry-free apart from the
+one deliberate `sorry` on `L-a`, where finding the unprovable
+statement is the exercise.
 
 Writing the first batch turned up three faults that a type-check
 alone could never have caught, because the broken lines sat in

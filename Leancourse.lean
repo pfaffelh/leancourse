@@ -9,7 +9,7 @@ import «Leancourse».Coursenotes.«1-Lean»
 import «Leancourse».Coursenotes.«2-Mathematics»
 import «Leancourse».Coursenotes.«3-Projects»
 import «Leancourse».Coursenotes.«4-Appendix»
-import «Leancourse».Coursenotes.«5-Slides»
+import «Leancourse».Coursenotes.«5-Organization»
 import «Leancourse».Coursenotes.«9-Bibliography»
 
 open Verso.Genre Manual
@@ -33,6 +33,6 @@ Notes for a course on formal proving with the interactive theorem prover Lean 4 
 
 {include 0 «Leancourse».Coursenotes.«4-Appendix»}
 
-{include 0 «Leancourse».Coursenotes.«5-Slides»}
+{include 0 «Leancourse».Coursenotes.«5-Organization»}
 
 {include 0 «Leancourse».Coursenotes.«9-Bibliography»}

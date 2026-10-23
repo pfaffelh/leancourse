@@ -2248,3 +2248,21 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
   Taktik zu frueh. Sechs Folien trugen absatzlange Aufzaehlungen und
   sind gekuerzt; was jetzt noch hoch zaehlt, sind Tabellen.
 
+## 2026-10-23 (3) -- Kapitel `Slides` wird `Organization`
+
+- `Coursenotes/5-Slides.lean` -> `5-Organization.lean`, Titel
+  *Organization*, `tag := "organization"`, `file := "Organization"`,
+  `htmlSplit := .never` (alles auf einer Seite). Der Decklisten-Teil
+  behaelt `tag := "slides"`, also bleiben die vorhandenen
+  `{ref "slides"}` gueltig.
+- **Wichtig:** der Rueck-Link in jedem Deck steht in `SlidesMain.lean`
+  und zeigte auf `../../Lecture-slides/`; mit dem neuen `file` ist das
+  jetzt `../../Organization/`. Wer `file` aendert, muss diese Zeile
+  mitaendern, sonst laufen alle Decks ins Leere.
+- Inhalt: Wochentabelle (was wann, mit `{ref}` auf jedes Kapitel),
+  Kurztests, Folien, Aufzeichnungen. Die Tabelle ist die aus
+  `plan.md`, aber nur der studierendenrelevante Teil -- Workload,
+  Tutor und die KI-Messungen bleiben intern.
+- **Die Kurztests dauern jetzt 20 Minuten**, nicht 10. In `plan.md`
+  und im neuen Kapitel.
+

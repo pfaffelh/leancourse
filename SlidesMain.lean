@@ -49,7 +49,7 @@ def backLinkCss : String := "
 /--
 Adds the back-link to the page.  The target is relative: a deck is
 written to `<site>/slides/<deck>/`, so two levels up is the site root
-and `Lecture-slides` is the chapter listing the decks.  Building the
+and `Organization` is the chapter listing the decks.  Building the
 decks on their own (`lake exe slides`) puts them outside the manual,
 and the link then has nothing to point at.
 -/
@@ -57,7 +57,7 @@ def backLinkJs : String := "
 document.addEventListener('DOMContentLoaded', function () {
   var a = document.createElement('a');
   a.className = 'course-back';
-  a.href = '../../Lecture-slides/';
+  a.href = '../../Organization/';
   a.title = 'Back to the course notes';
   a.textContent = '\\u2190 Course notes';
   document.body.appendChild(a);

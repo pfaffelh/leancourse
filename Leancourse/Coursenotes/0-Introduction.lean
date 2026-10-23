@@ -549,7 +549,7 @@ The rest of this chapter is about running the course.
 * *Appendix*: the glossary of tactics (a longer list is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)), the structure of a Lean file, navigating *Mathlib*, common pitfalls, and small reference topics such as the diagnostic commands (`#print axioms`, `#find_home`, `#lint`).
 * *Projects*: five topics for the individual formalization projects, each with a description, a sketch of an implementation and references.
 * *Bibliography*: the works cited throughout, with links.
-* *Slides*: the decks used in the lecture, readable on their own.
+* *Organization*: what comes when, the short tests, the slides and the recordings.
 
 Tactics and theory are interleaved. You usually meet a tactic in a working example before you read its entry in the glossary, which is meant for looking things up, not for reading in order. The {ref "cheatsheet"}[cheatsheet] lists the tactics needed first.
 

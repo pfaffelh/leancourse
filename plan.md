@@ -101,7 +101,7 @@ Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
 
 ## Kurztests
 
-Fünf Tests, jeweils zu Beginn des Labors, 10 Minuten, auf Papier.
+Fünf Tests, jeweils zu Beginn des Labors, 20 Minuten, auf Papier.
 Termine: **11.11., 02.12., 16.12., 27.01., 10.02.**
 
 > Es gibt fünf Kurztests. Zur Prüfung zugelassen wird, wer mindestens

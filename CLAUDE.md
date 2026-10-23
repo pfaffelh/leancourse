@@ -2283,3 +2283,30 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
 - Geprueft: 16 von 16 Deck-Links aufloesbar, Rueck-Link jedes Decks
   (`../../Organization/`) vorhanden.
 
+## 2026-10-23 (5) -- `old/` weg, `Misc/` bis auf `Defs.lean`
+
+- `old/` geloescht: 819 getrackte Dateien, 49 MB, seit April 2025
+  nicht angefasst, von nichts referenziert. Davon waren 748 `.pygtex`
+  in `_minted-*` reiner LaTeX-Cache. Inhalt war das Vorgaenger-Skript
+  (`Manuskript/skript.tex`, `skript.md`) und die Lean-3-Blaetter in
+  `src/`. Alles ueber die Historie zurueckholbar.
+- **Vier Dateien in `old/` waren gitignored**, standen also in keiner
+  Historie: `01- collection.lean`, `01-lean3.lean`, `03-c.lean`,
+  `A_Logic.lean` (Lean 3 bzw. ein Blatt von Mehta/Buzzard). Gesichert
+  nach `~/leancourse-old-untracked-20261023/`. `old/skript` war
+  bytegleich mit dem getrackten `Manuskript/skript.tex`.
+  **Merke:** vor `rm -rf` eines Ordners immer
+  `git ls-files --others --ignored --exclude-standard <dir>` laufen
+  lassen -- `git rm -r` fasst ignorierte Dateien nicht an, `rm -rf`
+  schon.
+- `Leancourse/Misc/` bis auf `Defs.lean` geloescht: `Basic.lean`,
+  `example.lean`, `02-Math/` importierte niemand. **`Defs.lean`
+  bleibt und ist nicht optional** -- 92 Dateien importieren sie, sie
+  definiert die `{br}`-Rolle fuer Zeilenumbrueche in den Tabellen des
+  Taktik-Anhangs.
+- **Die Teilnehmerliste SS 2025 (`.xlsx`, Klarnamen) lag im
+  oeffentlichen Repo** und liegt weiterhin auf `main` und in der
+  Historie beider Branches. Aus dem Arbeitsbaum von `preparation` ist
+  sie raus; das allein beendet die Veroeffentlichung **nicht**.
+  Offen: Loeschen auf `main` und `git filter-repo` + Force-Push.
+

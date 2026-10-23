@@ -27,7 +27,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLACEHOLDER = "This section is published once the chapter has been taught."
+PLACEHOLDER = "This section is published right before the chapter is taught."
 
 # Chapters whose text is withheld on `main`, in reading order.
 WITHHELD = [

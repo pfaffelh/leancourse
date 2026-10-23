@@ -15,19 +15,15 @@ which is what `open Nat` above is for.
 -/
 
 /-
-We now come to natural numbers, and first look at how these are implemented in Lean. The corresponding definition is
+`Nat`, its constructors `zero` and `succ` and the recursor were sheet
+`1.1-a`. There everything was built by hand. Here we use what Mathlib
+already proves about `ℕ`.
 
-inductive Nat
-| zero : Nat
-| succ (n : Nat) : Nat
+A hint we will use often: put the cursor on any name and press `F12`.
+That takes you to its definition.
 
-This means that the type `Nat` (or `ℕ`) has the term `zero` (or `0`), and if `n : ℕ`, then `succ n : ℕ` (where `succ` stands for successor). A natural number is therefore either 0 or the successor of a natural number. You can also access this definition by: -/
-
-#print Nat
-
--- Another hint that we will use often. Why don't you move the cursor to the `Nat` in the last line and press `F12`. You will then be guided to the definition of `Nat`.
-
--- The statement just made can also be proven (with cases')-/
+New here is `cases'`. It splits a variable into its constructors, like
+`induction`, but without an induction hypothesis: -/
 
 example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) := by
   cases' n with k
@@ -192,8 +188,6 @@ example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k^2 ≤ n^3 := by
   complete induction, which is close to the `cases'` at the top: the
   same case distinction, but with the induction hypothesis in hand.
 -/
-
-/-- With complete induction, there is also the induction assumption, but the proof is identical: The syntax of the induction tactic is _induction n with d hd_, where n is an induction on n, the variable is renamed d, and hd is the induction hypothesis. -/
 
 example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) := by
   induction n with

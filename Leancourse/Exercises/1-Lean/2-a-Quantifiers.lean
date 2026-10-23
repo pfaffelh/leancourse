@@ -12,14 +12,14 @@ a statement about terms of some type `α`.
 
 ## Tactics introduced here
 
-| tactic               | use it when                                  |
-|----------------------|----------------------------------------------|
-| `intro x`            | goal `∀ x, P x`: fix an `x`, prove `P x`     |
-| `h a`                | `h : ∀ x, P x`: a proof of `P a`             |
-| `specialize h a`     | the same, replacing `h` in place             |
-| `use a`              | goal `∃ x, P x`: offer `a` as the witness    |
-| `⟨a, h⟩`             | the same, as a term                          |
-| `obtain ⟨x, hx⟩ := h`| `h : ∃ x, P x`: name the witness and its proof |
+| tactic                | use it when                                    |
+|-----------------------|------------------------------------------------|
+| `intro x`             | goal `∀ x, P x`: fix an `x`, prove `P x`       |
+| `h a`                 | `h : ∀ x, P x`: a proof of `P a`               |
+| `specialize h a`      | the same, replacing `h` in place               |
+| `use a`               | goal `∃ x, P x`: offer `a` as the witness      |
+| `⟨a, h⟩`              | the same, as a term                            |
+| `obtain ⟨x, hx⟩ := h` | `h : ∃ x, P x`: name the witness and its proof |
 -/
 
 variable (α : Type) [Inhabited α]

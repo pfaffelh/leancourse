@@ -12,14 +12,14 @@ connective on this sheet is the implication `→`.
 
 ## Tactics introduced here
 
-| tactic       | use it when                                           |
-|--------------|-------------------------------------------------------|
-| `trivial`    | the goal is `True`                                    |
-| `intro hP`   | the goal is `P → Q`: assume `P`, then prove `Q`       |
-| `exact hP`   | `hP` is literally a proof of the goal                 |
-| `assumption` | *some* hypothesis is a proof of the goal              |
-| `apply hPQ`  | `hPQ : P → Q` and the goal is `Q`: now prove `P`      |
-| `revert hP`  | the opposite of `intro`: put `hP` back into the goal  |
+| tactic       | use it when                                          |
+|--------------|------------------------------------------------------|
+| `trivial`    | the goal is `True`                                   |
+| `intro hP`   | the goal is `P → Q`: assume `P`, then prove `Q`      |
+| `exact hP`   | `hP` is literally a proof of the goal                |
+| `assumption` | *some* hypothesis is a proof of the goal             |
+| `apply hPQ`  | `hPQ : P → Q` and the goal is `Q`: now prove `P`     |
+| `revert hP`  | the opposite of `intro`: put `hP` back into the goal |
 
 Work through the sheet from top to bottom. Each tactic is explained
 and demonstrated before the first exercise that needs it.

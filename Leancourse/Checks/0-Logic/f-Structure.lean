@@ -12,13 +12,13 @@ one line.
 
 ## Tactics introduced here
 
-| tactic              | use it when                                 |
-|---------------------|---------------------------------------------|
-| `have h : P := ...` | record an intermediate fact                 |
-| `suffices h : P`    | the same, backwards                         |
-| `refine ⟨?_, ?_⟩`   | build a term and leave holes                |
-| `rintro ⟨hP, hQ⟩`   | `intro` and take apart in one step          |
-| `rcases h with ...` | the flexible form of `obtain`               |
+| tactic              | use it when                        |
+|---------------------|------------------------------------|
+| `have h : P := ...` | record an intermediate fact        |
+| `suffices h : P`    | the same, backwards                |
+| `refine ⟨?_, ?_⟩`   | build a term and leave holes       |
+| `rintro ⟨hP, hQ⟩`   | `intro` and take apart in one step |
+| `rcases h with ...` | the flexible form of `obtain`      |
 -/
 
 variable (P Q R S T : Prop)

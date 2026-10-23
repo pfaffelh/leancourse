@@ -13,15 +13,15 @@ to know what it was trying to do.
 
 ## Tactics introduced here
 
-| tactic    | use it when                                        |
-|-----------|----------------------------------------------------|
-| `exact?`  | some lemma in Mathlib closes the goal              |
-| `apply?`  | some lemma reduces the goal                        |
-| `tauto`   | the goal is a tautology of propositional logic     |
-| `itauto`  | the same, but *constructively*                     |
-| `simp`    | rewrite with the simp set until nothing changes    |
-| `simp_all`| the same, on the goal and all hypotheses at once    |
-| `grind`   | the goal is "obvious" and mixes several kinds of reasoning |
+| tactic     | use it when                                                |
+|------------|------------------------------------------------------------|
+| `exact?`   | some lemma in Mathlib closes the goal                      |
+| `apply?`   | some lemma reduces the goal                                |
+| `tauto`    | the goal is a tautology of propositional logic             |
+| `itauto`   | the same, but *constructively*                             |
+| `simp`     | rewrite with the simp set until nothing changes            |
+| `simp_all` | the same, on the goal and all hypotheses at once           |
+| `grind`    | the goal is "obvious" and mixes several kinds of reasoning |
 -/
 
 variable (P Q R S T : Prop)

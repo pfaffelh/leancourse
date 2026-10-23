@@ -11,13 +11,13 @@ functions.
 
 ## Tactics introduced here
 
-| tactic        | use it when                                      |
-|---------------|--------------------------------------------------|
-| `ext x`       | goal `f = g`: prove `f x = g x` for every `x`    |
-| `change t`    | replace the goal by a definitionally equal `t`   |
-| `fun x ↦ e`   | the function sending `x` to `e`                  |
-| `let f := e`  | give a term a name inside a proof                |
-| `choose f hf using h` | `h : ∀ x, ∃ y, R x y`: get the function `f` |
+| tactic                | use it when                                    |
+|-----------------------|------------------------------------------------|
+| `ext x`               | goal `f = g`: prove `f x = g x` for every `x`  |
+| `change t`            | replace the goal by a definitionally equal `t` |
+| `fun x ↦ e`           | the function sending `x` to `e`                |
+| `let f := e`          | give a term a name inside a proof              |
+| `choose f hf using h` | `h : ∀ x, ∃ y, R x y`: get the function `f`    |
 
 `rfl`, `rw`, `exact?` and `apply?` are known from `1.1-a` and `L-g`.
 -/

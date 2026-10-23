@@ -10,14 +10,14 @@ functions. The only connective is `→`.
 
 ## Tactics introduced here
 
-| tactic       | use it when                                  |
-|--------------|----------------------------------------------|
-| `trivial`    | the goal is `True`                           |
-| `intro hP`   | goal `P → Q`: assume `P`, prove `Q`         |
-| `exact hP`   | `hP` proves the goal                         |
-| `assumption` | some hypothesis proves the goal              |
-| `apply hPQ`  | `hPQ : P → Q`, goal `Q`: now prove `P`      |
-| `revert hP`  | the opposite of `intro`                      |
+| tactic       | use it when                            |
+|--------------|----------------------------------------|
+| `trivial`    | the goal is `True`                     |
+| `intro hP`   | goal `P → Q`: assume `P`, prove `Q`    |
+| `exact hP`   | `hP` proves the goal                   |
+| `assumption` | some hypothesis proves the goal        |
+| `apply hPQ`  | `hPQ : P → Q`, goal `Q`: now prove `P` |
+| `revert hP`  | the opposite of `intro`                |
 -/
 
 variable (P Q R S T : Prop)

@@ -15,11 +15,11 @@ and `rfl`* in the chapter on the natural numbers first.
 
 ## Tactics introduced here
 
-| tactic                   | use it when                                  |
-|--------------------------|----------------------------------------------|
-| `show t`                 | replace the goal by a definitionally equal `t` |
-| `induction n with ...`   | `n : ℕ` is a variable that blocks reduction  |
-| `rw [h]`                 | rewrite the goal with an equation `h`        |
+| tactic                 | use it when                                    |
+|------------------------|------------------------------------------------|
+| `show t`               | replace the goal by a definitionally equal `t` |
+| `induction n with ...` | `n : ℕ` is a variable that blocks reduction    |
+| `rw [h]`               | rewrite the goal with an equation `h`          |
 -/
 
 /-! ## The recursor -/

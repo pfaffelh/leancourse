@@ -13,13 +13,13 @@ that do are in L-e.
 
 ## Tactics introduced here
 
-| tactic             | use it when                                 |
-|--------------------|---------------------------------------------|
-| `show`             | replace the goal by a definitionally equal one |
-| `exfalso`          | give up on the goal, prove `False` instead  |
-| `False.elim h`     | the same, as a term                         |
-| `contradiction`    | the hypotheses are already contradictory    |
-| `absurd hP hnP`    | `hP : P` and `hnP : ¬P` prove anything      |
+| tactic          | use it when                                    |
+|-----------------|------------------------------------------------|
+| `show`          | replace the goal by a definitionally equal one |
+| `exfalso`       | give up on the goal, prove `False` instead     |
+| `False.elim h`  | the same, as a term                            |
+| `contradiction` | the hypotheses are already contradictory       |
+| `absurd hP hnP` | `hP : P` and `hnP : ¬P` prove anything         |
 -/
 
 variable (P Q R S T : Prop)

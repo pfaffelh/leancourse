@@ -9,13 +9,13 @@ Two connectives: `∧` and `↔`. Still only propositions.
 
 ## Tactics introduced here
 
-| tactic            | use it when                                  |
-|-------------------|----------------------------------------------|
-| `constructor`     | goal `P ∧ Q` or `P ↔ Q`: split into two     |
-| `⟨hP, hQ⟩`        | the same, as a term                          |
-| `h.1`, `h.2`      | `h : P ∧ Q`: take the parts                  |
-| `h.mp`, `h.mpr`   | `h : P ↔ Q`: take one direction              |
-| `obtain ⟨hP, hQ⟩` | `h : P ∧ Q`: split it into two hypotheses    |
+| tactic            | use it when                               |
+|-------------------|-------------------------------------------|
+| `constructor`     | goal `P ∧ Q` or `P ↔ Q`: split into two   |
+| `⟨hP, hQ⟩`        | the same, as a term                       |
+| `h.1`, `h.2`      | `h : P ∧ Q`: take the parts               |
+| `h.mp`, `h.mpr`   | `h : P ↔ Q`: take one direction           |
+| `obtain ⟨hP, hQ⟩` | `h : P ∧ Q`: split it into two hypotheses |
 -/
 
 variable (P Q R S T : Prop)

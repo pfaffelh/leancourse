@@ -18,15 +18,15 @@ neither is excluded middle (Diaconescu derives it from choice,
 
 ## What is introduced here
 
-| name                 | what it does                                 |
-|----------------------|----------------------------------------------|
-| `funext`             | two functions agreeing pointwise are equal   |
-| `propext`            | two equivalent propositions are equal        |
-| `Classical.em`       | `P ∨ ¬P`, for every `P`                      |
-| `Classical.choice`   | turns `Nonempty α` into a term of `α`        |
-| `Classical.choose`   | picks a witness out of an `∃`                |
-| `noncomputable`      | marks a definition that cannot be run        |
-| `#print axioms f`    | lists the axioms `f` depends on              |
+| name               | what it does                               |
+|--------------------|--------------------------------------------|
+| `funext`           | two functions agreeing pointwise are equal |
+| `propext`          | two equivalent propositions are equal      |
+| `Classical.em`     | `P ∨ ¬P`, for every `P`                    |
+| `Classical.choice` | turns `Nonempty α` into a term of `α`      |
+| `Classical.choose` | picks a witness out of an `∃`              |
+| `noncomputable`    | marks a definition that cannot be run      |
+| `#print axioms f`  | lists the axioms `f` depends on            |
 -/
 
 /-

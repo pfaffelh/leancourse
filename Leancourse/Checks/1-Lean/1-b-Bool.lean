@@ -14,13 +14,13 @@ Read the section *Bool* in the chapter on the natural numbers first.
 
 ## Tactics introduced here
 
-| tactic       | use it when                                        |
-|--------------|----------------------------------------------------|
-| `rfl`        | both sides reduce to the same term                 |
-| `decide`     | the statement has no variables and can be computed |
-| `cases b`    | `b : Bool` is a variable that blocks reduction     |
-| `t <;> s`    | run `s` on every goal that `t` produces            |
-| `cases h : e`| split on the value of an expression `e`            |
+| tactic        | use it when                                        |
+|---------------|----------------------------------------------------|
+| `rfl`         | both sides reduce to the same term                 |
+| `decide`      | the statement has no variables and can be computed |
+| `cases b`     | `b : Bool` is a variable that blocks reduction     |
+| `t <;> s`     | run `s` on every goal that `t` produces            |
+| `cases h : e` | split on the value of an expression `e`            |
 -/
 
 /-! ## Constructors and the recursor -/

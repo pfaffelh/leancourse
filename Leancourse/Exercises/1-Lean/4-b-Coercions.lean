@@ -17,16 +17,16 @@ numerals, which are also resolved through a class.
 
 ## What is introduced here
 
-| notation / tactic | use it when                                     |
-|-------------------|-------------------------------------------------|
-| `↑x`, `(x : β)`   | write a coercion explicitly                     |
-| `Coe`             | a value becomes a value of another type         |
-| `CoeSort`         | a value becomes a *type*                        |
-| `CoeFun`          | a bundled object is applied like a function     |
-| `push_cast`       | push `↑` inwards: `↑(a+b)` becomes `↑a + ↑b`    |
-| `norm_cast`       | normalise casts, often closing the goal         |
-| `exact_mod_cast`  | `exact`, up to casts                            |
-| `OfNat`           | the class behind the numeral `2`                |
+| notation / tactic | use it when                                  |
+|-------------------|----------------------------------------------|
+| `↑x`, `(x : β)`   | write a coercion explicitly                  |
+| `Coe`             | a value becomes a value of another type      |
+| `CoeSort`         | a value becomes a *type*                     |
+| `CoeFun`          | a bundled object is applied like a function  |
+| `push_cast`       | push `↑` inwards: `↑(a+b)` becomes `↑a + ↑b` |
+| `norm_cast`       | normalise casts, often closing the goal      |
+| `exact_mod_cast`  | `exact`, up to casts                         |
+| `OfNat`           | the class behind the numeral `2`             |
 -/
 
 /-

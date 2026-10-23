@@ -17,14 +17,14 @@ The *axioms* that govern `Prop` -- `funext`, `propext`,
 
 ## Notation introduced here
 
-| notation            | means                                        |
-|---------------------|----------------------------------------------|
-| `Σ (x : α), β x`    | dependent pair, second component in `Type`   |
-| `(x : α) → β x`     | dependent function (Pi type)                 |
-| `{x : α // P x}`    | subtype: a value together with a proof       |
-| `p.1`, `p.2`        | the two components of a pair or subtype      |
-| `Subtype.ext`       | two subtype elements agree if their values do|
-| `universe u`        | declare a universe variable                  |
+| notation         | means                                         |
+|------------------|-----------------------------------------------|
+| `Σ (x : α), β x` | dependent pair, second component in `Type`    |
+| `(x : α) → β x`  | dependent function (Pi type)                  |
+| `{x : α // P x}` | subtype: a value together with a proof        |
+| `p.1`, `p.2`     | the two components of a pair or subtype       |
+| `Subtype.ext`    | two subtype elements agree if their values do |
+| `universe u`     | declare a universe variable                   |
 -/
 
 /-

@@ -19,13 +19,13 @@ logic is needed.
 
 ## Tactics introduced here
 
-| tactic          | use it when                                    |
-|-----------------|------------------------------------------------|
-| `by_cases h : P`| split into the case `h : P` and `h : ¬P`      |
-| `Classical.em P`| the same, as a term `P ∨ ¬P`                  |
-| `by_contra h`   | goal `⊢ P`: assume `h : ¬P`, derive `False`   |
-| `push Not`      | push `¬` inwards through `∧`, `∨`, `→`       |
-| `contrapose`    | goal `P → Q`: prove `¬Q → ¬P` instead             |
+| tactic           | use it when                                 |
+|------------------|---------------------------------------------|
+| `by_cases h : P` | split into the case `h : P` and `h : ¬P`    |
+| `Classical.em P` | the same, as a term `P ∨ ¬P`                |
+| `by_contra h`    | goal `⊢ P`: assume `h : ¬P`, derive `False` |
+| `push Not`       | push `¬` inwards through `∧`, `∨`, `→`      |
+| `contrapose`     | goal `P → Q`: prove `¬Q → ¬P` instead       |
 -/
 
 variable (P Q R S T : Prop)

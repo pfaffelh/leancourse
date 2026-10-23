@@ -4,13 +4,13 @@ import VersoManual
 import Manual.Meta
 import Mathlib
 
-import «Leancourse».Coursenotes.«00-Introduction»
-import «Leancourse».Coursenotes.«01-Lean»
-import «Leancourse».Coursenotes.«03-Mathematics»
-import «Leancourse».Coursenotes.«04-Appendix»
-import «Leancourse».Coursenotes.«05-Projects»
-import «Leancourse».Coursenotes.«06-Slides»
-import «Leancourse».Coursenotes.«99-Bibliography»
+import «Leancourse».Coursenotes.«0-Introduction»
+import «Leancourse».Coursenotes.«1-Lean»
+import «Leancourse».Coursenotes.«2-Mathematics»
+import «Leancourse».Coursenotes.«3-Projects»
+import «Leancourse».Coursenotes.«4-Appendix»
+import «Leancourse».Coursenotes.«5-Organization»
+import «Leancourse».Coursenotes.«9-Bibliography»
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
@@ -23,16 +23,16 @@ authors := ["Peter Pfaffelhuber"]
 
 Notes for a course on formal proving with the interactive theorem prover Lean 4 (below simply Lean), winter semester 2026/27, University of Freiburg. Start with the {ref "introduction"}[Introduction]; hardware, installation and the run of the semester are at its end.
 
-{include 0 «Leancourse».Coursenotes.«00-Introduction»}
+{include 0 «Leancourse».Coursenotes.«0-Introduction»}
 
-{include 0 «Leancourse».Coursenotes.«01-Lean»}
+{include 0 «Leancourse».Coursenotes.«1-Lean»}
 
-{include 0 «Leancourse».Coursenotes.«03-Mathematics»}
+{include 0 «Leancourse».Coursenotes.«2-Mathematics»}
 
-{include 0 «Leancourse».Coursenotes.«04-Appendix»}
+{include 0 «Leancourse».Coursenotes.«3-Projects»}
 
-{include 0 «Leancourse».Coursenotes.«05-Projects»}
+{include 0 «Leancourse».Coursenotes.«4-Appendix»}
 
-{include 0 «Leancourse».Coursenotes.«99-Bibliography»}
+{include 0 «Leancourse».Coursenotes.«5-Organization»}
 
-{include 0 «Leancourse».Coursenotes.«06-Slides»}
+{include 0 «Leancourse».Coursenotes.«9-Bibliography»}

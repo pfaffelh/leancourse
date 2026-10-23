@@ -31,21 +31,26 @@ PLACEHOLDER = "This section is published once the chapter has been taught."
 
 # Chapters whose text is withheld on `main`, in reading order.
 WITHHELD = [
-    "Leancourse/Coursenotes/01-Lean/03-Terms.lean",             # 1.3
-    "Leancourse/Coursenotes/01-Lean/04-Typeclasses.lean",       # 1.4
-    "Leancourse/Coursenotes/01-Lean/05-CurryHoward.lean",       # 1.5
-    "Leancourse/Coursenotes/01-Lean/06-DependentTypes.lean",    # 1.6
-    "Leancourse/Coursenotes/01-Lean/07-Notation.lean",          # 1.7
-    "Leancourse/Coursenotes/03-Mathematics/00-SetsAndTypes.lean",        # 2.1
-    "Leancourse/Coursenotes/03-Mathematics/00b-UniversesAndAxioms.lean", # 2.2
-    "Leancourse/Coursenotes/03-Mathematics/00c-Logic.lean",              # 2.3
-    "Leancourse/Coursenotes/03-Mathematics/01-OrdersAndLattices.lean",   # 2.4
-    "Leancourse/Coursenotes/03-Mathematics/02-AlgebraicHierarchy.lean",  # 2.5
-    "Leancourse/Coursenotes/03-Mathematics/03-Filters.lean",             # 2.6
-    "Leancourse/Coursenotes/03-Mathematics/04-Topology.lean",            # 2.7
-    "Leancourse/Coursenotes/03-Mathematics/05-MeasureTheory.lean",       # 2.8
-    "Leancourse/Coursenotes/03-Mathematics/06-Probability.lean",         # 2.9
-    "Leancourse/Coursenotes/05-Projects.lean",                           # 4
+    "Leancourse/Coursenotes/1-Lean/2-Types.lean",             # 1.2
+    "Leancourse/Coursenotes/1-Lean/3-Terms.lean",             # 1.3
+    "Leancourse/Coursenotes/1-Lean/4-Typeclasses.lean",       # 1.4
+    "Leancourse/Coursenotes/1-Lean/5-CurryHoward.lean",       # 1.5
+    "Leancourse/Coursenotes/1-Lean/6-DependentTypes.lean",    # 1.6
+    "Leancourse/Coursenotes/1-Lean/7-Notation.lean",          # 1.7
+    "Leancourse/Coursenotes/2-Mathematics/1-SetsAndTypes.lean",       # 2.1
+    "Leancourse/Coursenotes/2-Mathematics/2-UniversesAndAxioms.lean", # 2.2
+    "Leancourse/Coursenotes/2-Mathematics/3-Logic.lean",              # 2.3
+    "Leancourse/Coursenotes/2-Mathematics/4-OrdersAndLattices.lean",  # 2.4
+    "Leancourse/Coursenotes/2-Mathematics/5-AlgebraicHierarchy.lean", # 2.5
+    "Leancourse/Coursenotes/2-Mathematics/6-Filters.lean",            # 2.6
+    "Leancourse/Coursenotes/2-Mathematics/7-Topology.lean",           # 2.7
+    "Leancourse/Coursenotes/2-Mathematics/8-MeasureTheory.lean",      # 2.8
+    "Leancourse/Coursenotes/2-Mathematics/9-Probability.lean",        # 2.9
+    "Leancourse/Coursenotes/3-Projects/1-Girard.lean",                # 3
+    "Leancourse/Coursenotes/3-Projects/2-CantorSchroederBernstein.lean",
+    "Leancourse/Coursenotes/3-Projects/3-Limits.lean",
+    "Leancourse/Coursenotes/3-Projects/4-Integers.lean",
+    "Leancourse/Coursenotes/3-Projects/5-MontyHall.lean",
 ]
 
 HEADING = re.compile(r"^#{1,6} ")

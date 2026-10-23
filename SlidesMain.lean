@@ -1,13 +1,13 @@
 import VersoSlides
-import Slides.Introduction
-import Slides.Filters
-import Slides.Nat
-import Slides.Types
-import Slides.Terms
-import Slides.Typeclasses
-import Slides.CurryHoward
-import Slides.DependentTypes
-import Slides.Notation
+import Slides.«0-Introduction»
+import Slides.«1-1-Nat»
+import Slides.«1-2-Types»
+import Slides.«1-3-Terms»
+import Slides.«1-4-Typeclasses»
+import Slides.«1-5-CurryHoward»
+import Slides.«1-6-DependentTypes»
+import Slides.«1-7-Notation»
+import Slides.«2-6-Filters»
 
 open VersoSlides
 
@@ -49,7 +49,7 @@ def backLinkCss : String := "
 /--
 Adds the back-link to the page.  The target is relative: a deck is
 written to `<site>/slides/<deck>/`, so two levels up is the site root
-and `Lecture-slides` is the chapter listing the decks.  Building the
+and `Organization` is the chapter listing the decks.  Building the
 decks on their own (`lake exe slides`) puts them outside the manual,
 and the link then has nothing to point at.
 -/
@@ -57,7 +57,7 @@ def backLinkJs : String := "
 document.addEventListener('DOMContentLoaded', function () {
   var a = document.createElement('a');
   a.className = 'course-back';
-  a.href = '../../Lecture-slides/';
+  a.href = '../../Organization/';
   a.title = 'Back to the course notes';
   a.textContent = '\\u2190 Course notes';
   document.body.appendChild(a);
@@ -90,15 +90,8 @@ so the decks end up next to the rendered manual.
 def main (args : List String) : IO UInt32 := do
   let base := args.head?.getD "_slides"
   let decks : List (String × (String → IO UInt32)) :=
-    [ ("introduction", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Introduction)),
-      ("filters",      fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Filters)),
-      ("nat",             fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Nat)),
-      ("types",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Types)),
-      ("terms",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Terms)),
-      ("typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Typeclasses)),
-      ("curry-howard",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.CurryHoward)),
-      ("dependent-types", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.DependentTypes)),
-      ("notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.Notation)) ]
+    [ ("0-introduction", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«0-Introduction»)),
+      ("1-1-nat",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-1-Nat»)) ]
   let mut code : UInt32 := 0
   for (name, run) in decks do
     IO.println s!"slides: {name}"

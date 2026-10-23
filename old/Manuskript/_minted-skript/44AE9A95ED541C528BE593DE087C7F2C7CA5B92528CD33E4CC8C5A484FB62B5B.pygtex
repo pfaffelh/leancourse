@@ -1,3 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{induction} \PYG{n}{n} \PYG{k}{with} \PYG{n}{d} \PYG{n}{hd}\PYG{o}{,}
-\end{Verbatim}

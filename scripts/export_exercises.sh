@@ -152,8 +152,13 @@ notes are at <https://pfaffelh.github.io/leancourse/>.
    ```
 
 3. Open a file under `Exercises/` (start with
-   `Exercises/01-Logic/01-a-Propositions.lean`).  Once the orange
+   `Exercises/0-Logic/a-Propositions.lean`).  Once the orange
    bars disappear you are ready: replace the `sorry`s.
+
+   The folders follow the course notes: `0-Logic` is the logic
+   block of the first weeks, `1-Lean` and `2-Mathematics` match
+   the two parts of the notes, and a sheet's number is its chapter
+   -- `1-Lean/4-a-Typeclasses.lean` belongs to chapter 1.4.
 
 ## Working on the sheets
 

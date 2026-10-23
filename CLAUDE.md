@@ -11,9 +11,13 @@ Project notes for future Claude Code sessions working on the
   ```` ```lean ```` blocks are type-checked by Lean at build time.
 - Student exercise files (problem sets with `sorry`s) live under
   [Leancourse/Exercises/](Leancourse/Exercises/); they are plain Lean
-  files, not part of the Verso manual. Exercise files for the
-  mathematics chapter are in
-  [Leancourse/Exercises/06-Mathematics/](Leancourse/Exercises/06-Mathematics/).
+  files, not part of the Verso manual. A worked solution to every
+  sheet lives beside it in [Leancourse/Checks/](Leancourse/Checks/).
+- Directory and file prefixes are **single digits** since 2026-10-23
+  (`1-Lean`, `2-Mathematics/6-b-Filters.lean`), and a sheet's number
+  is its chapter: `2-Mathematics/6-b-Filters.lean` is sheet `2.6-b`
+  and belongs to chapter 2.6. `0-Logic` is the logic block, which has
+  no chapter; `9-Extra` holds the extra sheet.
 - Build individual chapter: `lake env lean <path-to-.lean>`.
 
 ## Verso conventions (gotchas)
@@ -2179,3 +2183,132 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
 - Glossar `Tactics/Exfalso.lean`: falsche Bemerkung entfernt, `exfalso`
   verlasse die konstruktive Mathematik (ex falso ist intuitionistisch
   gueltig); `false` → `False`.
+
+## 2026-10-23 -- Einstellige Praefixe, 1.2-a, fuenf fehlende Taktiken
+
+- **Alle zweistelligen Praefixe sind einstellig.** 86 `git mv` in
+  `Coursenotes/`, `Exercises/`, `Checks/`: `01-Lean` -> `1-Lean`,
+  `02-Mathematics/09-Probability` -> `2-Mathematics/9-Probability`,
+  `99-Extra` -> `9-Extra`, `99-Bibliography` -> `9-Bibliography`.
+  Danach Textersatz ueber alle Namenskomponenten in `Leancourse/`,
+  `Slides/`, `scripts/`, `Leancourse.lean`, `plan.md`, `README.md`.
+  **Nicht angefasst:** `old/`, `Exercises/MyExercises/`,
+  `Leancourse/Misc/` (tote bzw. private Baeume mit eigenem Schema),
+  und die datierten Log-Eintraege hier -- die beschreiben den Stand
+  von damals.
+- **`1.5-a-Quantifiers` heisst jetzt `1.2-a-Quantifiers`.** Es lief in
+  Woche 3 und damit drei Wochen vor seinem Kapitel, was der Regel
+  "die Nummer gibt die Reihenfolge" widersprach. Kapitel 1.2 benutzt
+  `∀` 29-mal und `∃` achtmal, mehr als jedes andere Kapitel des
+  ersten Teils, also gehoert das Blatt dorthin. Die Luecke wurde
+  geschlossen: `1.5-b-Predicates` -> `1.5-a`, `1.5-c-CurryHoward` ->
+  `1.5-b`. Damit laeuft **kein** Blatt mehr vor seinem Kapitel.
+- **`scripts/strip_unreleased.py` war seit dem Umbau vom 22.10. kaputt:**
+  die `WITHHELD`-Liste zeigte noch auf `03-Mathematics/00-SetsAndTypes`
+  usw. Ein Release haette die neun Mathematik-Kapitel und die fuenf
+  Projekte **unbemerkt ungestrippt** nach `main` gelassen. Liste
+  korrigiert, `--check` laeuft ueber alle 19 Dateien.
+- **Fuenf Taktiken waren nirgends eingefuehrt**, obwohl jede eine
+  Anhangseite hat: `contrapose` (jetzt `L-e`), `simp_all` (`L-g`),
+  `congr`/`convert` (`A-a`, Teil D), `filter_upwards` (`2.6-b`,
+  Teil 3), `fun_prop` (`2.7-a` Teil 1, Hinweis auf `2.8-a`).
+  Jeweils Tabellenzeile bzw. Absatz, ein vorgerechnetes Beispiel und
+  eine Aufgabe; Aufgabennummern nachgezogen.
+- `simp_rw` wurde auf `2.1-c` benutzt, ohne benannt zu werden.
+- Audit: `audit2.py` (benutzt eine Taktik etwas, das bis zu dieser
+  Woche nirgends erklaert wurde?) meldet jetzt fuer alle 33 Blaetter
+  nichts. `audit5.py` haelt die Anhangseiten gegen die Blaetter.
+  Beide im Scratchpad, Quelle der Wahrheit ist `sheets.py`.
+- Stand: 33 Blaetter ohne Fehler, 25 Zeugen ohne `sorry` (ausser dem
+  einen gewollten auf `L-a`), `lake build Leancourse`, `lake build
+  slides` und `lake exe leancourse` sauber, null tote Verweise.
+
+## 2026-10-23 (2) -- Alle Zeugen, zwei Blaetter neu, Folien geprueft
+
+- **Die acht fehlenden Zeugen sind geschrieben**: `A-a` (39), `2.4-a`
+  (37), `2.5-a` (28), `2.6-b` (46 inkl. der 15 Strukturfelder),
+  `2.7-a` (25), `2.8-a` (22), `2.9-a` (24), `2.9-b` (28). Damit
+  **33 von 33 Blaettern** einen Zeugen, alle `sorry`-frei bis auf das
+  eine gewollte auf `L-a`.
+- Dabei gefunden: `PMF.bernoulli` ist deprecated (neuer Name hat einen
+  anderen Typ) -- `coin` auf `2.9-b` ist jetzt
+  `PMF.uniformOfFintype Bool`. `2.8-a` Aufgabe 16 trug eine Hypothese
+  `a ≤ b`, die `Real.volume_Icc` nicht braucht. `A-a` E1 ist mit
+  `field_simp` allein fertig, das verlangte `ring` hat nichts mehr zu
+  tun; im Zeugen vermerkt.
+- **`1.2-a` und `1.5-a` sind neu geschrieben** (die letzten beiden im
+  alten Stil): Taktiktabelle, Abschnitte, `cases'` raus. Die
+  dokumentierten Fehler sind weg -- die `xxx`-Autorennotiz, das
+  `library_search`, und das `rw [l1]`-Geruest, dem der Zeuge nicht
+  folgte. `l1` **ist** `imp_iff_or_not`, also traegt das Geruest.
+  Aufgabe 8 auf `1.2-a` braucht `by_contra` (Woche 4), das Blatt
+  laeuft in Woche 3 -- als Extra markiert.
+- **Foliensaetze geprueft** (`audit7.py` im Scratchpad: Lean-Bloecke
+  gegen alles, was bis zur Woche des Decks dran war). Keine einzige
+  Taktik zu frueh. Sechs Folien trugen absatzlange Aufzaehlungen und
+  sind gekuerzt; was jetzt noch hoch zaehlt, sind Tabellen.
+
+## 2026-10-23 (3) -- Kapitel `Slides` wird `Organization`
+
+- `Coursenotes/5-Slides.lean` -> `5-Organization.lean`, Titel
+  *Organization*, `tag := "organization"`, `file := "Organization"`,
+  `htmlSplit := .never` (alles auf einer Seite). Der Decklisten-Teil
+  behaelt `tag := "slides"`, also bleiben die vorhandenen
+  `{ref "slides"}` gueltig.
+- **Wichtig:** der Rueck-Link in jedem Deck steht in `SlidesMain.lean`
+  und zeigte auf `../../Lecture-slides/`; mit dem neuen `file` ist das
+  jetzt `../../Organization/`. Wer `file` aendert, muss diese Zeile
+  mitaendern, sonst laufen alle Decks ins Leere.
+- Inhalt: Wochentabelle (was wann, mit `{ref}` auf jedes Kapitel),
+  Kurztests, Folien, Aufzeichnungen. Die Tabelle ist die aus
+  `plan.md`, aber nur der studierendenrelevante Teil -- Workload,
+  Tutor und die KI-Messungen bleiben intern.
+- **Die Kurztests dauern jetzt 20 Minuten**, nicht 10. In `plan.md`
+  und im neuen Kapitel.
+
+## 2026-10-23 (4) -- Decks nach Kapiteln benannt
+
+- `Slides/*.lean` heissen jetzt nach ihrem Kapitel und sortieren in
+  Kapitelreihenfolge: `0-Introduction`, `1-1-Nat` ... `1-7-Notation`,
+  `2-6-Filters` (plus `0-Introduction-SpeakerNotes.md`). Modulnamen
+  brauchen dadurch Guillemets: `import Slides.«1-1-Nat»`.
+- **Die URL eines Decks kommt nicht aus dem Dateinamen**, sondern aus
+  dem ersten Element der `decks`-Liste in `SlidesMain.lean`. Beides
+  ist jetzt gleich benannt, also `<site>/slides/1-1-nat/`. Wer eins
+  aendert, muss das andere mitaendern.
+- Alle `(slides/<deck>/)`-Links in den Kapiteln nachgezogen.
+  **Achtung beim Pruefen:** die Seiten tragen `<base href="./../">`,
+  diese Links gehen also vom Site-Root aus, nicht vom Verzeichnis der
+  Seite. Ein Checker, der das ignoriert, meldet 16 Fehlalarme.
+- Geprueft: 16 von 16 Deck-Links aufloesbar, Rueck-Link jedes Decks
+  (`../../Organization/`) vorhanden.
+
+## 2026-10-23 (5) -- `old/` weg, `Misc/` bis auf `Defs.lean`
+
+- `old/` geloescht: 819 getrackte Dateien, 49 MB, seit April 2025
+  nicht angefasst, von nichts referenziert. Davon waren 748 `.pygtex`
+  in `_minted-*` reiner LaTeX-Cache. Inhalt war das Vorgaenger-Skript
+  (`Manuskript/skript.tex`, `skript.md`) und die Lean-3-Blaetter in
+  `src/`. Alles ueber die Historie zurueckholbar.
+- **Vier Dateien in `old/` waren gitignored**, standen also in keiner
+  Historie: `01- collection.lean`, `01-lean3.lean`, `03-c.lean`,
+  `A_Logic.lean` (Lean 3 bzw. ein Blatt von Mehta/Buzzard). Gesichert
+  nach `~/leancourse-old-untracked-20261023/`. `old/skript` war
+  bytegleich mit dem getrackten `Manuskript/skript.tex`.
+  **Merke:** vor `rm -rf` eines Ordners immer
+  `git ls-files --others --ignored --exclude-standard <dir>` laufen
+  lassen -- `git rm -r` fasst ignorierte Dateien nicht an, `rm -rf`
+  schon.
+- `Leancourse/Misc/` ist ganz weg: `Basic.lean`, `example.lean` und
+  `02-Math/` importierte niemand. Die eine gebrauchte Datei,
+  `Misc/Defs.lean`, heisst jetzt **`Leancourse/Markup.lean`**
+  (`import Leancourse.Markup`, 90 Dateien umgestellt). Sie ist nicht
+  optional: sie definiert die `{br}`-Rolle fuer Zeilenumbrueche in
+  den Tabellen des Taktik-Anhangs, und ihr `open MyDef` am Dateiende
+  ist es, was `{br}` bei den Importeuren sichtbar macht.
+- **Die Teilnehmerliste SS 2025 (`.xlsx`, Klarnamen) lag im
+  oeffentlichen Repo** und liegt weiterhin auf `main` und in der
+  Historie beider Branches. Aus dem Arbeitsbaum von `preparation` ist
+  sie raus; das allein beendet die Veroeffentlichung **nicht**.
+  Offen: Loeschen auf `main` und `git filter-repo` + Force-Push.
+

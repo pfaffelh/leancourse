@@ -1,8 +1,8 @@
 /.lake
 /_out
-/docs
-/old
-/Leancourse/Other
-/Leancourse/Exercises/MyExercises
 /_slides
 /sources/*.pdf
+
+# Die eigene Arbeitskopie der Blaetter, auf welcher Ebene auch immer
+# sie liegt.
+MyExercises/

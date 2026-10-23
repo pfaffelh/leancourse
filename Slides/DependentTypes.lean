@@ -35,17 +35,16 @@ In Lean, types can depend on values.
 
 # What makes dependent types special
 
-Simply typed (Haskell, OCaml): the output type depends only on the
-_type_ of the input. `f : ℕ → ℕ` is fine, but not
-"a list whose length equals `n`".
+Simply typed (Haskell, OCaml): the output type sees only the _type_
+of the input.
 
-Dependently typed: the output type may mention the input _value_.
+Dependently typed: it may mention the input _value_.
 
 - `(n : ℕ) → Fin n → ℝ`
 - `(n : ℕ) → Vector ℝ n`
 
 :::class "key"
-This lets Lean be a programming language and a theorem prover at once.
+One language for programs and for proofs.
 :::
 
 # Pi types
@@ -216,14 +215,10 @@ The chapter on sets and types spells this out.
 
 # Why dependent types matter
 
-- Length-indexed collections: no `head` of an empty list, matching
-  matrix dimensions.
-- Precise specifications: a sort whose type says the output is sorted
-  and a permutation of the input.
-- Theorems: a term of
-  `∀ (n : ℕ), ∃ (p : ℕ), p > n ∧ Nat.Prime p` _is_ a proof of Euclid's
-  theorem.
-- Safe APIs: division that requires a proof of `b ≠ 0`.
+- No `head` of an empty list; matrix dimensions that must match.
+- A sort whose _type_ says the output is sorted.
+- A term of `∀ n, ∃ p, p > n ∧ Nat.Prime p` _is_ Euclid's theorem.
+- Division that demands a proof of `b ≠ 0`.
 
 # Safe division
 
@@ -243,13 +238,12 @@ No runtime exception is possible.
 
 # Summary
 
-- Pi types `(x : α) → β x`: dependent functions; `∀` is one.
-- Sigma types `Σ (x : α), β x`: dependent pairs, in `Type`.
-- `∃` is in `Prop`: the witness cannot be computed with.
-- `Fin n → α`, `Fin m → Fin n → α`: sizes checked by the type.
-- Type families and subtypes are everywhere in Mathlib.
+- `(x : α) → β x`: dependent functions. `∀` is one.
+- `Σ (x : α), β x`: dependent pairs, in `Type`.
+- `∃` lives in `Prop`: no computing with the witness.
+- `Fin n → α`: sizes checked by the type.
 
 :::class "key"
-Type checking becomes undecidable in general. In return, the type
-system is a logic in which we state and prove theorems.
+Type checking is undecidable in general, and the type system is a
+logic.
 :::

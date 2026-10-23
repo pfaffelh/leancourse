@@ -68,11 +68,11 @@ All four call the single constructor `Point.mk`.
 - explicit `Point.mk`
 - `where` form: one `field := value` line per field
 
-The `where` form is the record form over several lines. It is
-unrelated to the `|`-branches of pattern matching.
+`where` is the record form over several lines — unrelated to the
+`|`-branches of pattern matching.
 
 :::class "key"
-If the type is not clear from context, annotate the record itself.
+If the type is not clear from context, annotate the record.
 :::
 
 # Reading and updating fields

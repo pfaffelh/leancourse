@@ -160,10 +160,11 @@ Russell's vicious circle principle forbids this; he needed the axiom of reducibi
 
 # Is this consistent?
 
-- `Prop` can be modelled as a fixed collection of truth values; a `∀` over it is a meet, hence a member again.
-- Lean is not first-order, so the model has to be built by hand.
-- Carneiro, 2019: consistent relative to ZFC with $`n` inaccessibles — but an error was found, and unique typing and Pi-injectivity are unproved.
-- Werner 1997 is about the CIC; _Con-Leche_ works inside Carneiro's framework.
+- Model `Prop` as fixed truth values: a `∀` over it is a meet, hence
+  a member again.
+- Lean is not first-order, so the model is built by hand.
+- Carneiro 2019: relative to ZFC with $`n` inaccessibles. An error was
+  found; unique typing and Pi-injectivity remain open.
 
 :::class "key"
 Consistency is well supported, not settled.

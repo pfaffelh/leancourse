@@ -4,51 +4,78 @@ import Mathlib
 # (witness) 1.5-a -- Predicates and equality
 
 *Notes chapter 1.5, week 6.*
--/
 
-/-
-  We will learn a few more tactics here that will be important in the following. Overall, we continue to move within the framework of sheet `1.2-a` (week 3) and consider the following scenario:-/
+The setting is the one of sheet `1.2-a` (week 3): a type `α` and
+predicates on it. New here is equality — between terms, and between
+functions.
+
+## Tactics introduced here
+
+| tactic        | use it when                                      |
+|---------------|--------------------------------------------------|
+| `ext x`       | goal `f = g`: prove `f x = g x` for every `x`    |
+| `change t`    | replace the goal by a definitionally equal `t`   |
+| `fun x ↦ e`   | the function sending `x` to `e`                  |
+| `let f := e`  | give a term a name inside a proof                |
+| `choose f hf using h` | `h : ∀ x, ∃ y, R x y`: get the function `f` |
+
+`rfl`, `rw`, `exact?` and `apply?` are known from `1.1-a` and `L-g`.
+-/
 
 variable (α β : Type) [Inhabited α]
-variable (P Q : α → Prop )
-variable (R : α → α → Prop )
-variable (S T: Prop)
+variable (P Q : α → Prop)
+variable (R : α → α → Prop)
+variable (S T : Prop)
 
-/-
-  We start simple and prove `x = x`. The equality of a term with itself (or a term that is identical by definition). This is the `rfl` tactic. (Recall that reflexivity of a relation `R` means that `R x x` for all `x`. The `=` is reflexive, meaning that each term is equal to itself.)
--/
+/-! ## Equality and `rfl`
+
+`rfl` proves `a = a`, and more generally any `a = b` where the two
+sides reduce to the same term. The same tactic also proves `A ↔ B`
+when the two are definitionally equal, because `↔` on definitionally
+equal propositions is reflexive in the same way. -/
 
 example (x : α) : x = x := by
   rfl
 
--- Exercise 1: This also works differently, but it is faster using `rfl`.
+-- Exercise 1) `¬P` is *by definition* `P → False` (sheet `L-d`), so
+-- this needs nothing but reflexivity.
 example (P : Prop) : ¬P ↔ (P → False) := by
   rfl
 
-/-
-  Mathlib is already full of statements. To search through it, there are the tactics `apply?` and `exact?`; see script. Here is an example:-/
+/-! ## Finding the lemma
+
+Most of what you need is in Mathlib already. `exact?` looks for a
+lemma that closes the goal, `apply?` for one that reduces it. Here
+`exact?` finds the statement under a name worth remembering: -/
 
 example (P Q : Prop) : ((P → Q) ∧ (Q → P)) ↔ (P ↔ Q) := by
-  -- both, `apply?` and `exact?` give `Try this: exact Iff.symm iff_iff_implies_and_implies`
-  exact?
+  -- exact?
+  exact iff_def.symm
 
-/-
-  There is another tactic whicch we will need frequencly: `rw`; see manuscript. Here is an example:
--/
+/-! ## `rw`
+
+`rw [h]` rewrites with `h : a = b` left to right, `rw [← h]` right to
+left. It works on `↔` as well, because a proposition may be replaced
+by an equivalent one anywhere. -/
 
 example (x y z : α) : (x = y) → (y = z) → (x = z) := by
   intro h1 h2
   rw [h1]
   rw [h2]
 
--- What is the difference to the last proof?
+/-! The same statement, rewriting the other way round. Compare the
+goal after the first line in each. -/
+
 example (x y z : α) : (x = y) → (y = z) → (x = z) := by
   intro h1 h2
   rw [← h2]
   rw [h1]
 
--- The `rw` tactic works with `=` assertions, as well as with `↔` assertions. Let us prove a `↔` goal:
-example (P Q : Prop ) : (P → Q) ↔ (Q ∨ ¬P ) := by
+/-! To rewrite with an `↔` you first need one. This one says that an
+implication is a disjunction in disguise; it is in Mathlib as
+`imp_iff_or_not`, but proving it is two case splits. -/
+
+lemma l1 (P Q : Prop) : (P → Q) ↔ (Q ∨ ¬P) := by
   constructor
   · intro hPQ
     by_cases h : P
@@ -57,107 +84,109 @@ example (P Q : Prop ) : (P → Q) ↔ (Q ∨ ¬P ) := by
     · right
       exact h
   · intro h hP
-    cases' h with h1 h2
+    obtain (h1 | h2) := h
     · exact h1
-    · exfalso
-      exact h2 hP
+    · exact absurd hP h2
 
--- This statement is already in Mathlib, as you can see using `apply?`:
-example (P Q : Prop ) : (P → Q) ↔ (Q ∨ ¬P ) := by
-  -- this is the result of clicking on the result of `apply?`
-  exact imp_iff_or_not
-
--- Exercise 2: Now we can use `l1` in order to solve the difficult exercise from `L-e`. `push Not` can be useful as well.
-example (P Q : Prop): (((P → Q) → P) → P) := by
-  rw [imp_iff_or_not]
-  rw [imp_iff_or_not]
-  rw [imp_iff_or_not]
+-- Exercise 2) Peirce's law, which `L-e` left you to do by hand.
+-- Here `rw [l1]` rewrites the innermost implication; repeating it
+-- three times turns the goal into one about `∨` and `¬`, and then
+-- `by_cases` on `P` finishes it. `rintro (h1 | h2)` splits the
+-- disjunction as you introduce it.
+example (P Q : Prop) : (((P → Q) → P) → P) := by
+  rw [l1, l1, l1]
   by_cases hP : P
   · left
     exact hP
   · right
     rintro (h1 | h2)
-    · apply hP
-      exact h1
-    · apply h2
-      right
-      exact hP
+    · exact hP h1
+    · exact h2 (Or.inr hP)
 
--- Exercise 3:
--- Here you can use `apply?` directly.
-lemma l2 (P Q : Prop ) : (P → Q) ↔ (¬Q → ¬P) := by
-  -- `apply?` gives `Try this: exact Iff.symm not_imp_not`
-  rw [not_imp_not]
+-- Exercise 3) `exact?` finds this one outright (the name is
+-- `not_imp_not`). Do it with `rw [l1 ...]` instead: rewrite both
+-- sides, then `tauto`. Note that `l1` takes its two propositions as
+-- arguments, so you can say which instance you mean.
+lemma l2 (P Q : Prop) : (P → Q) ↔ (¬Q → ¬P) := by
+  rw [l1 P Q, l1 (¬Q) (¬P)]
+  tauto
 
-/-
-  We now come to defining functions, for which we need a notation that is equivalent to `f : ↦ f x` (where `f x` is the lean way of writing `f(x)`; computer scientists sometimes use parentheses sparingly...) This is done with `fun`: the expression `fun x ↦ 2*x`
-  is the function `x ↦ 2*x`. Here are two examples:-/
+/-! ## Functions
 
-example : (∃ (f : α → α), f = f) := by
-  use fun x ↦ default
+`fun x ↦ e` is the function sending `x` to `e`; `f x` is what the
+rest of mathematics writes `f(x)`. -/
 
-/-
-  If you want to give the last example an explicit name, you can do so as follows:-/
+example : ∃ (f : α → α), f = f := by
+  use fun _ ↦ default
 
-example : (∃ (f : α → α), f = f) := by
-  let f : α → α := fun x ↦ default
+/-! `let` gives the function a name first. -/
+
+example : ∃ (f : α → α), f = f := by
+  let f : α → α := fun _ ↦ default
   use f
 
--- Yet another example:
+/-! A predicate is a function into `Prop`, so the same notation
+builds one. -/
+
 example (f g : α → Prop) : ∃ (h : α → Prop), ∀ x, h x = (f x ∧ g x) := by
   use fun x ↦ f x ∧ g x
   intro x
   rfl
 
--- Exercise 4: Here it is best to explicitly state `f` and `g`.
+-- Exercise 4) Give `f` and `g` explicitly. Constant functions do.
 example : ∃ (f g : α → Prop), ∀ x, (f x) ↔ ¬(g x) := by
-  use fun x ↦ True
-  use fun x ↦ False
+  use fun _ ↦ True, fun _ ↦ False
   intro x
-  refine ⟨fun h hf ↦ ?_, fun h ↦ ?_⟩
-  · exact hf
-  · trivial
+  simp
 
--- Exercise 6: Here you can either use `apply?`, or you can manage to understand Mathlib so well that you can manage your own proof.
-example : (∀ (x : α), ∃ (y : α), R x y) → ∃ (f : α → α), ∀ (x : α), R x (f x) := by
+-- Exercise 5) Same idea with `Bool`. Put the cursor on `xor` and
+-- press `F12` to see its definition.
+example : ∃ (f g : α → Bool), ∀ x, xor (f x) (g x) := by
+  use fun _ ↦ true, fun _ ↦ false
   intro x
-  exact Classical.skolem.mp x
+  simp
 
-/-
-  When are two functions `f` and `g` equal? In Lean, this is the case when all function values are the same at all points. (Caution: in order to be able to claim that `f = g` at all, both functions must have the same type, i.e. domain and co-domain must match.) To turn the goal `f = g` into the goal that `f` and `g` are equal at all points, we use the `ext` (which stands for _extensionality_) tactic.
--/
+-- Exercise 6) Turning a `∀ x, ∃ y` into a function is exactly what
+-- `choose` does; it is the axiom of choice, chapter 2.2.
+example : (∀ (x : α), ∃ (y : α), R x y) →
+    ∃ (f : α → α), ∀ (x : α), R x (f x) := by
+  intro h
+  choose f hf using h
+  exact ⟨f, hf⟩
+
+/-! ## When are two functions equal?
+
+When they agree at every point. `ext x` turns the goal `f = g` into
+`f x = g x` for an arbitrary `x`. (Both functions must have the same
+type for `f = g` to be stated at all.) -/
 
 example (f g : α → Prop) (h : ∀ x, f x = ¬¬(g x)) : f = g := by
   ext x
   rw [h x]
   rw [not_not]
 
--- Exercise 7: This should be easy with the example above.
+-- Exercise 7) One direction is `ext`, the other is `rw`.
 example (f g : α → β) : (∀ x, ((f x) = (g x))) ↔ f = g := by
   constructor
   · intro h
     ext x
     exact h x
-  · intro h
-    intro x
+  · intro h x
     rw [h]
 
-/-
-  Here is another helpful tactic: `change`. This changes the goal or a statement into a definition-identical statement:
-  -/
+/-! ## `change`
+
+`change t` replaces the goal by `t`, provided the two are
+definitionally equal. It changes nothing for the kernel and
+everything for the reader. -/
 
 example (x : α) (f : α → Prop) : (¬(f x)) ↔ ((f x) → False) := by
   change (¬(f x)) ↔ (¬(f x))
   rfl
 
-
--- Exercise 8: Here, the right-hand side is a version saying that β contains only one element.
+-- Exercise 8) The right-hand side says that `β` has at most one
+-- element. Apply the hypothesis to two constant functions.
 example : (∀ (f g : α → β), f = g) → (∀ (y1 y2 : β), y1 = y2) := by
   intro h y1 y2
-  specialize h (fun _ ↦ y1) (fun _ ↦ y2)
-  have h' : ∀ x : α, (fun x => y1) x = (fun x => y2) x := by
-    rw [h]
-    intro x
-    rfl
-  specialize h' default
-  exact h'
+  have hfg := h (fun _ ↦ y1) (fun _ ↦ y2)
+  exact congrFun hfg default

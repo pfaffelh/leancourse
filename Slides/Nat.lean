@@ -185,14 +185,15 @@ example (n : Nat) : 0 + n = n := by
 
 # How far reduction goes
 
-- How eagerly δ fires: `@[reducible]` freely, a plain `def` on
-  demand, `@[irreducible]` not at all.
-- Reduction stops at *weak head normal form* — just far enough to
-  expose the outermost constructor or binder.
-- Confluent and strongly normalizing, so definitional equality is
-  decidable and `rfl` terminates.
-- Proof irrelevance, quotient computation and η for structures come
-  with the chapter on types.
+- δ fires freely for `@[reducible]`, on demand for `def`, never for
+  `@[irreducible]`.
+- Reduction stops at *weak head normal form*: the outermost
+  constructor or binder, no further.
+- Confluent and strongly normalizing, so `rfl` terminates.
+
+:::class "key"
+Definitional equality is therefore decidable.
+:::
 
 # Bool
 

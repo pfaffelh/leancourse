@@ -155,9 +155,6 @@ Studierende brauchen nur
 - Prüfungsordnung: Ist „3 von 5 Kurztests" als Studienleistung
   zulässig?
 - Raumbuchung Mo/Mi, Rechnerausstattung im Labor.
-- `1.2-a-Quantifiers` und `1.5-a-Predicates` sind noch im alten Stil
-  und mit bekannten Fehlern (siehe `CLAUDE.md`). `1.2-a` vor dem
-  02.11. überarbeiten, `1.5-a` bis Woche 6.
 - Foliensätze fehlen für die Wochen 8 bis 15; der Filtersatz hat erst
   neun Folien.
 - Zeugen fehlen für die acht Mathlib-Blätter der Wochen 10 bis 15.

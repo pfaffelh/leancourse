@@ -212,8 +212,10 @@ example (b : Bool) :
 
 For a variable `b`, `rfl` alone is stuck, as for `0 + n`.
 
-Instead of calling `Bool.rec`, define by *pattern matching*, one line
-per constructor. Lean translates it back into the recursor.
+# Pattern matching
+
+Instead of calling the recursor, write one line per constructor.
+Lean translates it back into `Bool.rec`.
 
 ```lean -panel -stretch
 def myNot : Bool → Bool

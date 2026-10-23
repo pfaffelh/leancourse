@@ -10,4 +10,4 @@ open Leancourse.Refs
 tag := "project-monty-hall"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.

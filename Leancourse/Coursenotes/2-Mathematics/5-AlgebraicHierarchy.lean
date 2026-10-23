@@ -16,67 +16,67 @@ htmlSplit := .never
 tag := "algebraic-hierarchy-mathlib"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.
 
 # Notation and naming conventions
 %%%
 tag := "algebra-notation"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.
 
 # From operations to monoids
 %%%
 tag := "operations-to-monoids"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.
 
 # Groups
 %%%
 tag := "groups"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.
 
 # Rings and fields
 %%%
 tag := "rings-and-fields"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.
 
 # Morphisms
 %%%
 tag := "morphisms"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.
 
 # Substructures
 %%%
 tag := "substructures"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.
 
 # Quotient structures
 %%%
 tag := "quotients"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.
 
 # The ext tactic for algebraic structures
 %%%
 tag := "ext-algebraic"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.
 
 # Navigating the hierarchy
 %%%
 tag := "navigating-hierarchy"
 %%%
 
-This section is published once the chapter has been taught.
+This section is published right before the chapter is taught.

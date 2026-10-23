@@ -3,7 +3,9 @@ import VersoManual
 open Lean Verso.Genre Manual
 open Verso.Doc.Elab
 
--- The following defines the possibility to get a newline within a table.
+-- The `{br}` role: a line break inside a Verso table cell. Verso has
+-- no inline break of its own, so the notes define one here.  Imported
+-- by every page of the tactic appendix.
 
 def Inline.br : Manual.Inline where
   name := `MyDef.br

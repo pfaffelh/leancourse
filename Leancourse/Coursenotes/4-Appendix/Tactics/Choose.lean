@@ -1,7 +1,7 @@
 import Lean
 import VersoManual
 import Manual.Meta
-import Leancourse.Misc.Defs
+import Leancourse.Markup
 import Mathlib
 
 open Verso.Genre Manual

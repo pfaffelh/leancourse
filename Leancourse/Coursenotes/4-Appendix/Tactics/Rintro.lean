@@ -1,6 +1,6 @@
 import VersoManual
 import Manual.Meta
-import Leancourse.Misc.Defs
+import Leancourse.Markup
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean

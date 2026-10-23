@@ -2299,11 +2299,13 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
   `git ls-files --others --ignored --exclude-standard <dir>` laufen
   lassen -- `git rm -r` fasst ignorierte Dateien nicht an, `rm -rf`
   schon.
-- `Leancourse/Misc/` bis auf `Defs.lean` geloescht: `Basic.lean`,
-  `example.lean`, `02-Math/` importierte niemand. **`Defs.lean`
-  bleibt und ist nicht optional** -- 92 Dateien importieren sie, sie
-  definiert die `{br}`-Rolle fuer Zeilenumbrueche in den Tabellen des
-  Taktik-Anhangs.
+- `Leancourse/Misc/` ist ganz weg: `Basic.lean`, `example.lean` und
+  `02-Math/` importierte niemand. Die eine gebrauchte Datei,
+  `Misc/Defs.lean`, heisst jetzt **`Leancourse/Markup.lean`**
+  (`import Leancourse.Markup`, 90 Dateien umgestellt). Sie ist nicht
+  optional: sie definiert die `{br}`-Rolle fuer Zeilenumbrueche in
+  den Tabellen des Taktik-Anhangs, und ihr `open MyDef` am Dateiende
+  ist es, was `{br}` bei den Importeuren sichtbar macht.
 - **Die Teilnehmerliste SS 2025 (`.xlsx`, Klarnamen) lag im
   oeffentlichen Repo** und liegt weiterhin auf `main` und in der
   Historie beider Branches. Aus dem Arbeitsbaum von `preparation` ist

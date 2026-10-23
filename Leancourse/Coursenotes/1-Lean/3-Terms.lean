@@ -1,6 +1,6 @@
 import VersoManual
 import Manual.Meta
-import Leancourse.Misc.Defs
+import Leancourse.Markup
 import Mathlib
 -- reuse the types (`Point`, `MyNat`, `MyComplex`, ...) declared there
 import «Leancourse».Coursenotes.«1-Lean».«2-Types»

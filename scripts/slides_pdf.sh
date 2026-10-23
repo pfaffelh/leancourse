@@ -7,7 +7,9 @@
 # Needs the decks built:  lake build slides && lake exe slides _out/html-multi/slides
 # Uses reveal.js print-pdf mode and Chrome's headless printer. The old
 # headless mode is required: the new one prints before reveal has laid
-# the slides out and yields a single blank page.
+# the slides out and yields a single blank page. Each run gets its own
+# --user-data-dir, otherwise a Chrome already running on the desktop
+# takes over the request and the PDF comes out blank as well.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -21,10 +23,14 @@ chrome=$(command -v google-chrome || command -v chromium || command -v chromium-
   || { echo "No Chrome or Chromium found." >&2; exit 1; }
 
 mkdir -p "$out"
+profile=$(mktemp -d)
 python3 -m http.server "$port" --directory "$root" >/dev/null 2>&1 &
 server=$!
-trap 'kill $server 2>/dev/null' EXIT
-sleep 1
+trap 'kill $server 2>/dev/null; rm -rf "$profile"' EXIT
+for _ in $(seq 20); do
+  curl -sf -o /dev/null "http://localhost:$port/" && break
+  sleep 0.5
+done
 
 decks=("$@")
 if [ ${#decks[@]} -eq 0 ]; then
@@ -35,6 +41,7 @@ fi
 for deck in "${decks[@]}"; do
   [ -f "$root/slides/$deck/index.html" ] || { echo "skip $deck -- not built"; continue; }
   "$chrome" --headless=old --disable-gpu --no-sandbox --no-pdf-header-footer \
+    --user-data-dir="$profile/$deck" \
     --run-all-compositor-stages-before-draw --virtual-time-budget=60000 \
     --print-to-pdf="$out/$deck.pdf" \
     "http://localhost:$port/slides/$deck/?print-pdf" >/dev/null 2>&1

@@ -1036,7 +1036,7 @@ before *Lean today*:
 
 1. **Slide 29 / notes.** The chapter says Commelin "works there" at the
    Mathlib Initiative. He **directs** it, and is an assistant professor at
-   Utrecht. Worth correcting in `00-Introduction.lean`.
+   Utrecht. Worth correcting in `0-Introduction.lean`.
 2. **Slide 22.** The Freiburg connection (Commelin as a postdoc in
    Kebekus's group) is not in the notes at all. It is the best local hook
    in the lecture; consider adding one clause.

@@ -11,9 +11,13 @@ Project notes for future Claude Code sessions working on the
   ```` ```lean ```` blocks are type-checked by Lean at build time.
 - Student exercise files (problem sets with `sorry`s) live under
   [Leancourse/Exercises/](Leancourse/Exercises/); they are plain Lean
-  files, not part of the Verso manual. Exercise files for the
-  mathematics chapter are in
-  [Leancourse/Exercises/06-Mathematics/](Leancourse/Exercises/06-Mathematics/).
+  files, not part of the Verso manual. A worked solution to every
+  sheet lives beside it in [Leancourse/Checks/](Leancourse/Checks/).
+- Directory and file prefixes are **single digits** since 2026-10-23
+  (`1-Lean`, `2-Mathematics/6-b-Filters.lean`), and a sheet's number
+  is its chapter: `2-Mathematics/6-b-Filters.lean` is sheet `2.6-b`
+  and belongs to chapter 2.6. `0-Logic` is the logic block, which has
+  no chapter; `9-Extra` holds the extra sheet.
 - Build individual chapter: `lake env lean <path-to-.lean>`.
 
 ## Verso conventions (gotchas)
@@ -2179,3 +2183,42 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
 - Glossar `Tactics/Exfalso.lean`: falsche Bemerkung entfernt, `exfalso`
   verlasse die konstruktive Mathematik (ex falso ist intuitionistisch
   gueltig); `false` → `False`.
+
+## 2026-10-23 -- Einstellige Praefixe, 1.2-a, fuenf fehlende Taktiken
+
+- **Alle zweistelligen Praefixe sind einstellig.** 86 `git mv` in
+  `Coursenotes/`, `Exercises/`, `Checks/`: `01-Lean` -> `1-Lean`,
+  `02-Mathematics/09-Probability` -> `2-Mathematics/9-Probability`,
+  `99-Extra` -> `9-Extra`, `99-Bibliography` -> `9-Bibliography`.
+  Danach Textersatz ueber alle Namenskomponenten in `Leancourse/`,
+  `Slides/`, `scripts/`, `Leancourse.lean`, `plan.md`, `README.md`.
+  **Nicht angefasst:** `old/`, `Exercises/MyExercises/`,
+  `Leancourse/Misc/` (tote bzw. private Baeume mit eigenem Schema),
+  und die datierten Log-Eintraege hier -- die beschreiben den Stand
+  von damals.
+- **`1.5-a-Quantifiers` heisst jetzt `1.2-a-Quantifiers`.** Es lief in
+  Woche 3 und damit drei Wochen vor seinem Kapitel, was der Regel
+  "die Nummer gibt die Reihenfolge" widersprach. Kapitel 1.2 benutzt
+  `∀` 29-mal und `∃` achtmal, mehr als jedes andere Kapitel des
+  ersten Teils, also gehoert das Blatt dorthin. Die Luecke wurde
+  geschlossen: `1.5-b-Predicates` -> `1.5-a`, `1.5-c-CurryHoward` ->
+  `1.5-b`. Damit laeuft **kein** Blatt mehr vor seinem Kapitel.
+- **`scripts/strip_unreleased.py` war seit dem Umbau vom 22.10. kaputt:**
+  die `WITHHELD`-Liste zeigte noch auf `03-Mathematics/00-SetsAndTypes`
+  usw. Ein Release haette die neun Mathematik-Kapitel und die fuenf
+  Projekte **unbemerkt ungestrippt** nach `main` gelassen. Liste
+  korrigiert, `--check` laeuft ueber alle 19 Dateien.
+- **Fuenf Taktiken waren nirgends eingefuehrt**, obwohl jede eine
+  Anhangseite hat: `contrapose` (jetzt `L-e`), `simp_all` (`L-g`),
+  `congr`/`convert` (`A-a`, Teil D), `filter_upwards` (`2.6-b`,
+  Teil 3), `fun_prop` (`2.7-a` Teil 1, Hinweis auf `2.8-a`).
+  Jeweils Tabellenzeile bzw. Absatz, ein vorgerechnetes Beispiel und
+  eine Aufgabe; Aufgabennummern nachgezogen.
+- `simp_rw` wurde auf `2.1-c` benutzt, ohne benannt zu werden.
+- Audit: `audit2.py` (benutzt eine Taktik etwas, das bis zu dieser
+  Woche nirgends erklaert wurde?) meldet jetzt fuer alle 33 Blaetter
+  nichts. `audit5.py` haelt die Anhangseiten gegen die Blaetter.
+  Beide im Scratchpad, Quelle der Wahrheit ist `sheets.py`.
+- Stand: 33 Blaetter ohne Fehler, 25 Zeugen ohne `sorry` (ausser dem
+  einen gewollten auf `L-a`), `lake build Leancourse`, `lake build
+  slides` und `lake exe leancourse` sauber, null tote Verweise.

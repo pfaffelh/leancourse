@@ -30,10 +30,10 @@ Kontext, ohne Lean.
 |---|---|---|---|---|---|---|
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | L-a | |
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | L-b, L-c, 1.1-a | |
-| 3 | 02.11. | 04.11. | Typen, induktive Typen, Quotienten | 1.2 | L-d, 1.5-a, 1.1-b | |
+| 3 | 02.11. | 04.11. | Typen, induktive Typen, Quotienten | 1.2 | L-d, 1.2-a, 1.1-b | |
 | 4 | 09.11. | 11.11. | Terme und Pattern Matching | 1.3 | L-e, L-f, 1.1-c | **Test 1** |
 | 5 | 16.11. | 18.11. | Typklassen | 1.4 | L-g, 1.4-a, 1.4-b · *extra:* X-a | |
-| 6 | 23.11. | 25.11. | Curry-Howard | 1.5 | 1.5-b, 1.5-c | |
+| 6 | 23.11. | 25.11. | Curry-Howard | 1.5 | 1.5-a, 1.5-b | |
 | 7 | 30.11. | 02.12. | Abhängige Typen und Notation | 1.6, 1.7 | 1.6-a, 1.7-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen und Typen; Fundiertheit | 2.1, 2.3 | 2.1-a, 2.1-b, 2.1-c | |
 | 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.2-a, 2.3-a | **Test 3** |
@@ -63,14 +63,13 @@ Wenn drei Blätter zu viel sind, rutscht `1.1-b`.
 
 Ein Blatt heißt nach seinem Kapitel: `1.1-a` bis `1.1-c` zu Kapitel
 1.1, `2.6-a` und `2.6-b` zu den Filtern. Dateien entsprechend,
-`Exercises/01-Lean/01-a-NatRec.lean`,
-`Exercises/02-Mathematics/06-b-Filters.lean`. `L-a` bis `L-g` ist der
+`Exercises/1-Lean/1-a-NatRec.lean`,
+`Exercises/2-Mathematics/6-b-Filters.lean`. `L-a` bis `L-g` ist der
 Logikblock ohne Kapitel, `A-a`/`A-b` der Anhang, `X-a` das Extrablatt.
 
-Kein Blatt läuft vor seinem Kapitel, Ausnahme `1.5-a` in Woche 3
-(Kapitel 1.2 benutzt `∀` 29-mal; neu auf dem Blatt sind nur `use` und
-`specialize`). Der Logikblock `L-b` bis `L-g` läuft in den Wochen 2
-bis 5 und damit vor seiner Theorie (1.5 und 2.2).
+Kein Blatt läuft vor seinem Kapitel. Der Logikblock `L-b` bis `L-g`
+läuft in den Wochen 2 bis 5 und damit vor seiner Theorie (1.5 und
+2.2).
 
 Die Logik ist nach Woche 5 abgeschlossen.
 
@@ -114,7 +113,7 @@ Keine Teilpunkte. Die Regel steht ab Woche 1 fest.
 
 Geprüft werden Beweiszustände und Verständnis, keine Lemmanamen und
 keine Syntax. Format und Fragebank:
-`Coursenotes/04-Appendix/Tactics/Cheatsheet.lean`.
+`Coursenotes/4-Appendix/Tactics/Cheatsheet.lean`.
 
 ## Hausaufgaben und KI
 
@@ -136,7 +135,7 @@ anderen.
 ## Projekt (3 zusätzliche ECTS)
 
 Nach den 15 Wochen, in der vorlesungsfreien Zeit. 90 h. Fünf
-Vorschläge in `Coursenotes/03-Projects.lean`. Benotet, mit
+Vorschläge in `Coursenotes/3-Projects.lean`. Benotet, mit
 Deklarationspflicht für KI-Nutzung.
 
 Festzulegen: Abgabetermin, Verteidigungstermin als Blocktag.
@@ -156,12 +155,10 @@ Studierende brauchen nur
 - Prüfungsordnung: Ist „3 von 5 Kurztests" als Studienleistung
   zulässig?
 - Raumbuchung Mo/Mi, Rechnerausstattung im Labor.
-- `1.5-a-Quantifiers` und `1.5-b-Predicates` sind noch im alten Stil
-  und mit bekannten Fehlern (siehe `CLAUDE.md`). `1.5-a` vor dem
-  02.11. überarbeiten, `1.5-b` bis Woche 6.
+- `1.2-a-Quantifiers` und `1.5-a-Predicates` sind noch im alten Stil
+  und mit bekannten Fehlern (siehe `CLAUDE.md`). `1.2-a` vor dem
+  02.11. überarbeiten, `1.5-a` bis Woche 6.
 - Foliensätze fehlen für die Wochen 8 bis 15; der Filtersatz hat erst
   neun Folien.
 - Zeugen fehlen für die acht Mathlib-Blätter der Wochen 10 bis 15.
-- Fünf Taktiken werden nirgends eingeführt: `filter_upwards`,
-  `simp_all`, `convert`/`congr`, `contrapose`, `fun_prop`.
 - Abgabe- und Verteidigungstermin für die Projekte.

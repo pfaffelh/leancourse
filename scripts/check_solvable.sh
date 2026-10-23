@@ -10,7 +10,7 @@
 # Arguments may be files or directories (relative to the repository
 # root or absolute), e.g.
 #
-#   scripts/check_solvable.sh Leancourse/Checks/01-Logic
+#   scripts/check_solvable.sh Leancourse/Checks/0-Logic
 #
 # Unlike the pre-export check in export_exercises.sh, a `sorry`
 # warning is a FAILURE here: the point of a witness is that the

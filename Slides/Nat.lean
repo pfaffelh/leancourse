@@ -7,7 +7,7 @@ set_option pp.rawOnError true
 
 /-
 Deck for the chapter on the natural numbers and reduction rules
-(01-Lean/01-Nat). It follows the chapter section by section: `Nat`
+(1-Lean/1-Nat). It follows the chapter section by section: `Nat`
 and its recursor, definitional equality and the reduction rules,
 then `Bool`, `True` and `False`.
 -/

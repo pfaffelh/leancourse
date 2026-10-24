@@ -32,6 +32,7 @@ for _ in $(seq 20); do
   sleep 0.5
 done
 
+status=0
 decks=("$@")
 if [ ${#decks[@]} -eq 0 ]; then
   decks=()
@@ -40,11 +41,24 @@ fi
 
 for deck in "${decks[@]}"; do
   [ -f "$root/slides/$deck/index.html" ] || { echo "skip $deck -- not built"; continue; }
-  "$chrome" --headless=old --disable-gpu --no-sandbox --no-pdf-header-footer \
-    --user-data-dir="$profile/$deck" \
-    --run-all-compositor-stages-before-draw --virtual-time-budget=60000 \
-    --print-to-pdf="$out/$deck.pdf" \
-    "http://localhost:$port/slides/$deck/?print-pdf" >/dev/null 2>&1
-  pages=$(pdfinfo "$out/$deck.pdf" 2>/dev/null | awk '/^Pages:/{print $2}')
-  echo "$out/$deck.pdf  (${pages:-?} pages)"
+  # Chrome occasionally prints before reveal has split the deck into
+  # pages and returns a single blank one. Retry in that case.
+  for attempt in 1 2 3; do
+    rm -rf "$profile/$deck"
+    "$chrome" --headless=old --disable-gpu --no-sandbox --no-pdf-header-footer \
+      --user-data-dir="$profile/$deck" \
+      --run-all-compositor-stages-before-draw --virtual-time-budget=60000 \
+      --print-to-pdf="$out/$deck.pdf" \
+      "http://localhost:$port/slides/$deck/?print-pdf" >/dev/null 2>&1
+    pages=$(pdfinfo "$out/$deck.pdf" 2>/dev/null | awk '/^Pages:/{print $2}')
+    [ "${pages:-0}" -gt 1 ] && break
+  done
+  if [ "${pages:-0}" -le 1 ]; then
+    echo "$out/$deck.pdf  FAILED after 3 attempts (${pages:-?} pages)" >&2
+    status=1
+  else
+    echo "$out/$deck.pdf  ($pages pages)"
+  fi
 done
+
+exit $status

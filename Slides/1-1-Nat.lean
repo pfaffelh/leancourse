@@ -204,16 +204,45 @@ practice. α and η almost never come up by hand.
 The letters are Church's, from the lambda calculus of the 1930s.
 :::
 
-# What `rfl` sees
+# What `rfl` sees: `α β η`
 
 ```lean -panel -stretch
+-- α: the bound name does not matter
+example : (fun x : Nat => x)
+    = (fun y : Nat => y) := rfl
+
+-- β: apply a function
 example : (fun x => x + 1) 4 = 5 := rfl
-example : List.length [7, 8, 9] = 3 := rfl
+
+-- η: a function equals its expansion
 example (f : Nat → Nat) :
     (fun x => f x) = f := rfl
-example : (let x := 4; x + x) = 8 := rfl
+```
+
+:::notes
+The three rules of the lambda calculus proper. Run them live.
+
+α is invisible in Lean: the kernel stores bound variables by position,
+so the two functions are not merely equal, they are the same term.
+
+η is the one people doubt. Ask whether `f` and `fun x => f x` should
+be equal before you show the line.
+:::
+
+# What `rfl` sees: `δ ι ζ`
+
+```lean -panel -stretch
+-- δ: unfold a definition
 def twice (n : Nat) : Nat := 2 * n
 example : twice 3 = 6 := rfl
+
+-- ι: recursor on a constructor
+example (b : Nat) (s : Nat → Nat → Nat) :
+    Nat.rec (motive := fun _ => Nat)
+      b s 0 = b := rfl
+
+-- ζ: substitute a `let`
+example : (let x := 4; x + x) = 8 := rfl
 ```
 
 :::class "key"
@@ -221,8 +250,14 @@ example : twice 3 = 6 := rfl
 :::
 
 :::notes
-Run these live. The last line is the message: `rfl` is far more than
-syntactic identity.
+The three rules Lean adds. δ and ι are the ones that will cost them
+time on the sheets.
+
+`motive` has to be given here because the goal does not determine it;
+wave at it and move on, the explanation is chapter 1.3.
+
+One more worth running: `List.length [7, 8, 9] = 3` by `rfl`. Several
+rules at once, and it makes the blue line concrete.
 :::
 
 # When `rfl` fails

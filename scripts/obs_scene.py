@@ -5,8 +5,9 @@
     scripts/obs_scene.py slides     -> "Vortrag"
     scripts/obs_scene.py code       -> "Blatt lösen (VS Code)"
     scripts/obs_scene.py "<scene>"  -> any scene by its exact name
+    scripts/obs_scene.py start|stop|pause|resume   -> the recording
 
-Bound to F1/F2/F3 by scripts/recording_keys.sh. Standard library only
+Bound to F1/F2/F3 and F7-F10 by scripts/recording_keys.sh. Standard library only
 (plus `xprop`), so it needs nothing installed. Port and password are
 read from OBS's own websocket settings, so they cannot drift apart.
 
@@ -32,6 +33,12 @@ SCENES = {
     "camera": "Nur Kamera",
     "slides": "Vortrag",
     "code": "Blatt lösen (VS Code)",
+}
+RECORD = {
+    "start": "StartRecord",
+    "stop": "StopRecord",
+    "pause": "PauseRecord",
+    "resume": "ResumeRecord",
 }
 # scene -> (window-capture input, regex on the window's WM_CLASS instance)
 WINDOWS = {
@@ -158,8 +165,16 @@ def request(sock, rtype, data, _n=[0]):
 def main():
     if len(sys.argv) != 2:
         sys.exit(__doc__)
-    scene = SCENES.get(sys.argv[1], sys.argv[1])
     sock = connect()
+    if sys.argv[1] in RECORD:
+        status = request(sock, RECORD[sys.argv[1]], {})["requestStatus"]
+        sock.close()
+        # already running / stopped / paused / resumed (OBS's own
+        # hotkey may have done it first): not an error
+        if not status["result"] and status.get("code") not in (500, 501, 502, 503):
+            sys.exit("OBS: %s" % status.get("comment", status))
+        return
+    scene = SCENES.get(sys.argv[1], sys.argv[1])
 
     if scene in WINDOWS:
         inp, pattern = WINDOWS[scene]

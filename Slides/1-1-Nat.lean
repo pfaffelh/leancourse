@@ -79,21 +79,21 @@ type as the recursor.
 # The recursor `Nat.rec`
 
 Constructors *build* a value, the recursor *consumes* one.
-To define `f : Nat → C`, supply `f 0 := base` and
-`f (n + 1) := step n (f n)`.
+For a fixed type `C`:
 
-```lean -panel -stretch
-example (C : Type) (base : C)
-    (step : Nat → C → C) : Nat → C :=
-  fun n ↦ Nat.rec base step n
 ```
+Nat.rec : C → (Nat → C → C) → Nat → C
+```
+
+`Nat.rec base step` is the function `f : Nat → C` with
+`f 0 = base` and `f (n + 1) = step n (f n)`.
 
 Pattern matching, `cases` and `induction` compile down to `Nat.rec`.
 
 :::notes
-Two arguments: a value for zero, and a rule for the successor. Stress
-that `step` receives both the predecessor and the value already
-computed for it.
+Read the type left to right: a value for zero, a rule for the
+successor, then the number. Stress that `step` receives both the
+predecessor and the value already computed for it.
 
 If currying has not come up yet, do it now: `α → β → γ` brackets to the
 right, application to the left, and the two fit together.
@@ -104,8 +104,7 @@ needs universes and waits for chapter 1.3.
 
 # `Nat.rec` computes
 
-On a constructor, the recursor picks the matching case — the
-*iota rule* ι:
+On a constructor, the recursor picks the matching case:
 
 ```
 Nat.rec base step Nat.zero
@@ -117,7 +116,8 @@ Nat.rec base step (Nat.succ n)
 Numerals such as `2` are put into constructor form first.
 
 :::notes
-ι is the only rule doing work here.
+Do not name the rule yet. It gets its letter, ι, with the others on
+the reduction-rules slide.
 
 Numerals are put into constructor form first, which is why the rule
 applies to `2` at all.
@@ -131,16 +131,23 @@ def step (_ j : Nat) : Nat := j + 2
 def myDouble (n : Nat) : Nat :=
   Nat.rec 0 step n
 
+--   myDouble 2
+-- ⟶ Nat.rec 0 step 2           -- unfold myDouble
+-- ⟶ step 1 (Nat.rec 0 step 1)  -- 2 = succ 1
+-- ⟶ Nat.rec 0 step 1 + 2       -- unfold step
+-- ⟶ step 0 (Nat.rec 0 step 0) + 2  -- 1 = succ 0
+-- ⟶ Nat.rec 0 step 0 + 2 + 2   -- unfold step
+-- ⟶ 0 + 2 + 2  ⟶  4            -- zero case, add
 example : myDouble 2 = 4 := rfl
 ```
 
-`myDouble 2 ⟶ Nat.rec 0 step 2` is δ; then ι plus δβ, twice,
-then ι on zero and `0 + 2 + 2 ⟶ 4`.
-
 :::notes
-Run it in the editor rather than reading the slide. The chapter has the
-full chain as a comment; expand one or two steps on the board and let
-the rest stand.
+Walk through the comment chain line by line. Every step is one of two
+kinds: unfold a definition (`myDouble`, `step`), or let the recursor
+pick its case because the argument is a constructor. Those two kinds
+get their names, δ and ι, two slides on.
+
+Then run it in the editor: `rfl` accepts because the chain ends at `4`.
 :::
 
 # Definitional equality and `rfl`
@@ -397,27 +404,49 @@ One constructor means one case in the recursor, which is why a proof of
 
 # `False`
 
-No constructors at all, so no term can be built.
+No constructors, so no term can be built. The recursor has no
+case argument, so the result may be of any type:
+*ex falso quodlibet*.
 
 ```
-False.rec : (motive : False → Sort u) →
-  (t : False) → motive t
+False.rec  : (motive : False → Sort u) →
+               (t : False) → motive t
+False.elim : {C : Sort u} → False → C
+False.elim h := False.rec (fun _ => C) h
 ```
 
-No case argument, so the result may be of any type:
-*ex falso quodlibet*, packaged as `False.elim`.
+`False.elim` is `False.rec` with a constant motive, which Lean
+reads off the goal:
 
 ```lean -panel -stretch
+example (h : False) : 0 = 1 :=
+  False.rec (fun _ => 0 = 1) h
 example (h : False) : 0 = 1 := False.elim h
-example (h : False) (P : Prop) : P := h.elim
 ```
 
 :::notes
 No constructors, so no term — exactly what a proposition without a
 proof should look like.
 
-Why the `motive` is explicit here and implicit elsewhere: there are no
-case values for Lean to infer it from. Background, the chapter has it.
+*Same thing or not?* Same principle, two constants. `False.rec` is
+the recursor the kernel generates; `False.elim` is an ordinary
+definition on top of it (`#print False.elim` shows the line on the
+slide). Two differences, both about convenience:
+
+- The motive is explicit in `False.rec` and must be written out.
+  `False.elim` takes a plain type `C` instead, implicitly, so Lean
+  fills it in from the goal. Plain `False.rec h` is an error — Lean
+  reads `h` as the motive.
+- The motive of `False.rec` may depend on the proof `t`.
+  `False.elim` throws that away. For `False` it costs nothing, there
+  is no proof to depend on.
+
+Why the motive is explicit here and implicit for `Bool.rec`: there
+are no case values for Lean to infer it from. The chapter has it in
+a box.
+
+In practice students write `h.elim`, `exfalso`, or `cases h`, never
+`False.rec`.
 :::
 
 # `False` and consistency

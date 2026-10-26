@@ -15,12 +15,12 @@ do not contain themselves" is contradictory.  *Girard's paradox* is
 its type-theoretic incarnation: in a type theory where the universe
 contains itself — where `Type : Type` holds — one can construct a
 closed term of type `False`, so the whole system collapses.  This is
-precisely why Lean stratifies its universes
+precisely why Lean arranges its universes in a hierarchy
 ({ref "type-universes"}[the universe hierarchy]): `Type u` lives
 in `Type (u+1)`, never in itself.  The project is to make this story
 precise in Lean: build the paradoxical machinery, watch *exactly*
 where the type-checker stops it, and prove that any universe evading
-the stratification is contradictory.
+the hierarchy is contradictory.
 
 *Implementation idea.*  A possible route, in four steps of increasing
 depth:

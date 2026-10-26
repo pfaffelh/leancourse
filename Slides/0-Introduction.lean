@@ -302,7 +302,7 @@ stays a well-formed formula, and that it is false for every set is
 the axiom of foundation, added by von Neumann in 1925 and Zermelo in
 1930 — later, and not the repair.
 
-Russell stratifies the grammar. `x in x` is not a false statement but
+Russell restricts the grammar. `x in x` is not a false statement but
 no statement at all, so well-formedness is a question about syntax
 and is decidable. That is what a type checker decides, and it is why
 Lean has `Type 0 : Type 1 : ...` and no type of all types.

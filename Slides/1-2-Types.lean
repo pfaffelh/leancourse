@@ -62,7 +62,7 @@ Russell's paradox, 1902: $`R = \{x : x \notin x\}`. Two repairs in 1908.
 :::
 
 :::class "key"
-In type theory the stratification is the language, and well-formedness is decidable.
+In type theory the hierarchy is the language, and well-formedness is decidable.
 :::
 
 # The same move, three times

@@ -107,7 +107,7 @@ Two answers appeared in 1908, and both are still in use. They differ in what the
 * + 1908
   + restricts
   + `x ∈ x` is
-  + the stratification is
+  + the hierarchy is
 * + Ernst Zermelo
   + which sets *exist*
   + well-formed, and false
@@ -120,7 +120,7 @@ Two answers appeared in 1908, and both are still in use. They differ in what the
 
 Zermelo replaced unrestricted comprehension, which forms $`\{x : \varphi(x)\}` for any property, by separation, which forms only $`\{x \in A : \varphi(x)\}` out of a set $`A` already given. Then $`R` is never formed, and Russell's argument turns into a theorem instead of a contradiction: there is no set of all sets. That `x ∈ x` holds for no set is a later and separate axiom, foundation.
 
-Russell stratified the language itself, so that `x ∈ x` is not false but ungrammatical. Well-formedness is then a question about syntax, settled before any question of truth arises.
+Russell restricted the language itself, so that `x ∈ x` is not false but ungrammatical. Well-formedness is then a question about syntax, settled before any question of truth arises.
 
 However, Russell's ban was wider than the paradox. It forbids *every* definition that quantifies over a totality containing the object being defined, and ordinary mathematics is full of those. The supremum of a bounded set of reals is defined by quantifying over reals, so under the ban it is not itself a real number, and analysis stops. Russell recovered it by adding an axiom, reducibility, which grants that every forbidden definition agrees with a permitted one — an axiom that returns most of what the ban had taken. Lean draws the line differently for propositions and for data: definitions that quantify over all propositions are allowed in `Prop`, but not over all types in `Type`; see {ref "prop-special"}[Why `Prop` is special].
 

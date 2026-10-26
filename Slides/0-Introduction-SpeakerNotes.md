@@ -224,7 +224,7 @@ is not chronological, so say February first.
     set of all sets. Nothing was forbidden; something was proved.
   - Foundation came later (von Neumann 1925, Zermelo 1930) and is *not*
     the repair.
-- **Russell** restricts what may be *said*: he stratifies the grammar, so
+- **Russell** restricts what may be *said*: he restricts the grammar, so
   `x ∈ x` is not a false statement but no statement at all.
   - Well-formedness becomes a question about syntax — and therefore
     decidable. **That is exactly what a type checker decides.**

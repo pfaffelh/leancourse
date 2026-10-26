@@ -17,7 +17,7 @@ htmlSplit := .never
 tag := "types"
 %%%
 
-Lean has the data types every programming language has — `int`, `string`, `float` — and you can define your own, as you will in this course. Throughout, `x : α` means that `x` is a term of type `α`: `False : Bool`, `42 : ℕ`, `f : ℕ → ℝ` for a function from ℕ to ℝ (itself a type), and `0 ≠ 1 : Prop` for the proposition that 0 and 1 differ. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → (Fin n → ℝ)` where `Fin n` is the type which carries `{0, ..., n-1}` (here, the type `Fin n → ℝ` depends on `n : ℕ`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
+Lean has the data types every programming language has — `int`, `string`, `float` — and you can define your own, as you will in this course. Throughout, `x : α` means that `x` is a term of type `α`: `false : Bool`, `42 : ℕ`, `f : ℕ → ℝ` for a function from ℕ to ℝ (itself a type), and `0 ≠ 1 : Prop` for the proposition that 0 and 1 differ. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → (Fin n → ℝ)` where `Fin n` is the type which carries `{0, ..., n-1}` (here, the type `Fin n → ℝ` depends on `n : ℕ`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` will be called a universe) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
 
@@ -32,9 +32,9 @@ The [slides](slides/1-2-types/) for this chapter follow it section by section.
 tag := "types-history"
 %%%
 
-Types were invented to stop a contradiction. Bertrand Russell's letter of 1902 broke the system of Gottlob Frege's *Grundgesetze der Arithmetik* with the set $`R = \{x : x \notin x\}`, which is a member of itself exactly if it is not ({ref "prehistory"}[Introduction]). Russell's repair, published in 1908, was to stratify. Every object gets a type, a type may be applied only to objects of lower type, and `x ∈ x` is then not a false statement but no statement at all. *Principia Mathematica* is written in that theory. Leon Chwistek and Frank Ramsey simplified it in the 1920s to what is now called the simple theory of types.
+Types were invented to stop a contradiction. Bertrand Russell's letter of 1902 broke the system of Gottlob Frege's *Grundgesetze der Arithmetik* with the set $`R = \{x : x \notin x\}`, which is a member of itself exactly if it is not ({ref "prehistory"}[Introduction]). Russell's repair, published in 1908, was to introduce a hierarchy. Every object gets a type, a type may be applied only to objects of lower type, and `x ∈ x` is then not a false statement but no statement at all. *Principia Mathematica* is written in that theory. Leon Chwistek and Frank Ramsey simplified it in the 1920s to what is now called the simple theory of types.
 
-Ernst Zermelo's answer of the same year restricts which sets exist rather than what can be said: separation in place of unrestricted comprehension, so $`R` is never formed. `x ∈ x` stays a well-formed formula there; that it holds for no set is the axiom of foundation, added by John von Neumann in 1925 and Zermelo in 1930, and foundation is not what repairs the paradox. Set theory has a hierarchy as well, the cumulative hierarchy of ranks $`V_\alpha`, but it is a theorem about which sets there are, not a rule of the language. In type theory the stratification *is* the language, and well-formedness is decidable. A proof assistant needs that: the type checker settles whether an expression means anything before anyone asks whether it is true.
+Ernst Zermelo's answer of the same year restricts which sets exist: `x ∈ x` stays a well-formed formula there; that it holds for no set is the axiom of foundation, added by John von Neumann in 1925 and Zermelo in 1930, and foundation is not what repairs the paradox. Set theory has a hierarchy as well, the cumulative hierarchy of ranks $`V_\alpha`, but it is a theorem about which sets there are, not a rule of the language. In type theory the hierarchy *is* the language, and well-formedness is decidable. A proof assistant needs that: the type checker settles whether an expression means anything before anyone asks whether it is true.
 
 Mathematics took the other road for reasons that were good at the time. Russell's ramified theory needed a further axiom, reducibility, before ordinary analysis could be recovered, and it forced every definition and every theorem to be repeated at every level. Zermelo's axioms left mathematical practice as it was, and they settled a question mathematicians already cared about, the well-ordering theorem. The balance reverses once a machine does the checking: an untyped term tells the checker nothing, and every object has to be coded as a set. *Mizar*, the one large system built on set theory, carries a layer of soft types on top of it.
 
@@ -43,6 +43,52 @@ Alonzo Church made the simple theory of types a calculus in 1940. His own lambda
 Two independent lines added *dependent* types, in which a type may mention a term. Nicolaas Govert de Bruijn built them into Automath from 1967. Per Martin-Löf developed intuitionistic type theory from 1971; his first version was again inconsistent, by an argument of Jean-Yves Girard, and the repair is the universe hierarchy of the next section. Thierry Coquand and Gérard Huet added impredicative quantification in the Calculus of Constructions in 1985, and Christine Paulin-Mohring added inductive types in 1990. Lean's type theory is a variant of the result, the {ref "cic"}[Calculus of Inductive Constructions].
 
 The same move occurs three times. A system lets an object be applied to itself, a contradiction follows, and types forbid it. In Lean the ban is visible as `Type 0 : Type 1 : Type 2 : ...`, which is why there is no type of all types.
+
+Lean's answer can be written out in full, as a short list of rules; the box below gives it. The axioms of ZFC, and what replaces each of them in Lean, are in {ref "comparison-zfc"}[Comparison with ZFC set theory].
+
+::::example "The rules of Lean's type theory"
+Lean's type theory has no logic underneath it. It consists of inference rules for two kinds of judgement: $`\Gamma \vdash e : \alpha` (in the context $`\Gamma`, the term $`e` has type $`\alpha`) and $`\Gamma \vdash e \equiv e'` ($`e` and $`e'` are definitionally equal). A context is a list of variables with their types, $`x_1 : \alpha_1, \dots, x_n : \alpha_n`. A rule says: if the judgements above the line hold, so does the one below. The rules are not formulas, and $`\land`, $`\lor`, $`\exists` and $`=` do not occur in them; these are defined later as inductive types.
+
+*Universes.* With $`\mathrm{Prop} := \mathrm{Sort}\ 0` and $`\mathrm{Type}\ u := \mathrm{Sort}\ (u+1)`,
+
+$$`\frac{}{\Gamma \vdash \mathrm{Sort}\ u : \mathrm{Sort}\ (u+1)}`
+
+*Variables.*
+
+$$`\frac{(x : \alpha) \in \Gamma}{\Gamma \vdash x : \alpha}`
+
+*Function types.* Here $`\mathrm{imax}\ u\ v` is $`0` if $`v = 0` and $`\max(u, v)` otherwise. The case $`v = 0` is the impredicativity of `Prop` ({ref "prop-special"}[below]).
+
+$$`\frac{\Gamma \vdash \alpha : \mathrm{Sort}\ u \qquad \Gamma,\, x : \alpha \vdash \beta : \mathrm{Sort}\ v}{\Gamma \vdash (x : \alpha) \to \beta : \mathrm{Sort}\ (\mathrm{imax}\ u\ v)}`
+
+*Abstraction and application.* Lean writes `fun x => e` for $`\lambda x.\, e`.
+
+$$`\frac{\Gamma,\, x : \alpha \vdash e : \beta}{\Gamma \vdash \lambda x.\, e : (x : \alpha) \to \beta} \qquad \frac{\Gamma \vdash f : (x : \alpha) \to \beta \qquad \Gamma \vdash a : \alpha}{\Gamma \vdash f\ a : \beta[x := a]}`
+
+*Conversion.*
+
+$$`\frac{\Gamma \vdash e : \alpha \qquad \Gamma \vdash \alpha \equiv \beta}{\Gamma \vdash e : \beta}`
+
+*Definitional equality* is the smallest congruence containing the reduction rules β, δ, ζ, η and ι ({ref "reduction-rules"}[The reduction rules]) and two more: proof irrelevance, and η for structures.
+
+$$`\frac{\Gamma \vdash p : \mathrm{Prop} \qquad \Gamma \vdash h : p \qquad \Gamma \vdash h' : p}{\Gamma \vdash h \equiv h'}`
+
+*Inductive types.* Each `inductive` declaration adds the type, its constructors and its recursor as constants, together with an ι-rule ({ref "inductive"}[Inductive types]). A declaration is accepted only if it is strictly positive ({ref "strict-positivity"}[strict positivity]), and the recursor of a type in `Prop` eliminates only into `Prop`, apart from a few exceptions such as `Eq` and `And`.
+
+*Quotients.* `Quot`, `Quot.mk`, `Quot.lift` and `Quot.ind` are built in, with the computation rule `Quot.lift f h (Quot.mk r a) ≡ f a` ({ref "quotient-types"}[Quotient types]).
+
+*Axioms.* Beyond the rules there are exactly three.
+
+```lean
+#check @propext          -- (a ↔ b) → a = b
+#check @Quot.sound       -- r a b → Quot.mk r a = Quot.mk r b
+#check @Classical.choice -- Nonempty α → α
+```
+
+The excluded middle is not among them: `Classical.em` is a theorem, proved from these three (Diaconescu's theorem). Function extensionality `funext` is a theorem as well, proved from `Quot.sound`.
+
+A full account of the rules is in Mario Carneiro's [*The Type Theory of Lean*](https://github.com/digama0/lean-type-theory).
+::::
 
 # The universe hierarchy
 %%%

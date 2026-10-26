@@ -491,6 +491,77 @@ Most mathematicians are (at least implicitly) trained in ZFC set theory. Here ar
 
 A key practical difference: in ZFC, you can ask nonsensical questions like "is 3 ∈ π?" and get an answer. In Lean, comparing objects of different types is a type error, which catches many mistakes early.
 
+
+The axioms of ZFC are listed in the box below. Lean's type theory has rules instead, given in {ref "types-history"}[Where types come from], and three axioms: `propext`, `Quot.sound` and `Classical.choice`.
+
+::::example "The axioms of ZFC"
+ZFC is a theory in first-order logic with a single binary relation $`\in`. The logic brings its own rules (modus ponens, generalization, the rules for equality); the theory adds the axioms below. Symbols such as $`\emptyset`, $`\subseteq`, $`\cup` and $`\{x\}` are abbreviations defined from $`\in`. Separation and replacement are schemas, one axiom for each formula $`\varphi`.
+
+:::table (align := left) +header
+* + Axiom
+  + Statement
+* + Extensionality
+  + $`\forall A\, \forall B\, \big(\forall x\, (x \in A \leftrightarrow x \in B) \to A = B\big)`
+* + Empty set
+  + $`\exists A\, \forall x\, \neg (x \in A)`
+* + Pairing
+  + $`\forall a\, \forall b\, \exists A\, \forall x\, (x \in A \leftrightarrow x = a \lor x = b)`
+* + Union
+  + $`\forall \mathcal F\, \exists A\, \forall x\, \big(x \in A \leftrightarrow \exists B\, (x \in B \land B \in \mathcal F)\big)`
+* + Power set
+  + $`\forall A\, \exists P\, \forall B\, (B \in P \leftrightarrow B \subseteq A)`
+* + Infinity
+  + $`\exists A\, \big(\emptyset \in A \land \forall x\, (x \in A \to x \cup \{x\} \in A)\big)`
+* + Separation
+  + $`\forall A\, \exists B\, \forall x\, \big(x \in B \leftrightarrow x \in A \land \varphi(x)\big)`
+* + Replacement
+  + $`\forall A\, \big(\forall x \in A\, \exists! y\, \varphi(x, y) \to \exists B\, \forall x \in A\, \exists y \in B\, \varphi(x, y)\big)`
+* + Foundation
+  + $`\forall A\, \big(A \neq \emptyset \to \exists x \in A\, (x \cap A = \emptyset)\big)`
+* + Choice
+  + $`\forall \mathcal F\, \big(\emptyset \notin \mathcal F \to \exists f \colon \mathcal F \to \textstyle\bigcup \mathcal F\ \forall A \in \mathcal F\, f(A) \in A\big)`
+:::
+
+Zermelo's list of 1908 contains all of these except replacement and foundation. Replacement was added by Abraham Fraenkel and Thoralf Skolem in 1922. Separation is the axiom that answers Russell.
+::::
+
+Each ZFC axiom has a counterpart in Lean:
+
+:::table (align := left) +header
+* + ZFC
+  + in Lean
+  + status
+* + Extensionality
+  + `funext`, `propext`, `Set.ext`
+  + theorem, axiom, theorem
+* + Empty set
+  + `Empty`, `(∅ : Set α)`
+  + inductive type, definition
+* + Pairing, union
+  + `α × β`, `α ⊕ β`, `Σ`; for sets `{a, b}`, `⋃`
+  + inductive types, definitions
+* + Power set
+  + `Set α := α → Prop`
+  + function type
+* + Infinity
+  + `ℕ`
+  + inductive type
+* + Separation
+  + `{x : α // p x}`, `{x | p x}`
+  + definitions
+* + Replacement
+  + the image `f '' s`
+  + definition
+* + Foundation
+  + no counterpart: `x ∈ x` is not well-typed
+  + not needed
+* + Choice
+  + `Classical.choice`
+  + axiom
+:::
+
+Of the ten ZFC axioms, two survive as axioms; the rest become rules, inductive types or definitions.
+
 Nearly everything that can be formalized in ZFC can also be formalized in Lean's type theory, and the other way round. {citet werner1997}[] makes one half of this precise: ZFC embeds into the CIC, and a dialect of the CIC embeds back into ZFC with a hierarchy of inaccessible cardinals. It is not a statement about Lean. The type theory Lean actually implements has no complete public relative-consistency proof{citep hales2026}[]; see {ref "prop-special"}[the chapter on types].
 
 # Brief mention of other type theories

@@ -68,102 +68,165 @@ second sheet on chapter 2.6. `L-a` to `L-g` are the logic block, which
 belongs to no chapter and runs alongside the first five weeks; `A-a`
 and `A-b` are the appendix, `X-a` an extra sheet.
 
+Each week has two rows: the lecture on Monday presents a chapter, the
+lab on Wednesday works on the sheets of that week. The short tests are
+written at the start of the lab.
+
 :::table (align := left) +header
 * + W
-  + Mon
-  + Wed
-  + Lecture
-  + Chapter
-  + Sheets
+  + Date
+  + Session
+  + Content
+  + Chapter / sheets
 * + 1
-  + 19.10.
-  + 21.10.
-  + Why formalize? *Wed: installation*
+  + Mon 19.10.
+  + Lecture
+  + Why formalize?
   + {ref "introduction"}[Introduction]
+* + 1
+  + Wed 21.10.
+  + Lab
+  + Installation, then sheets
   + `L-a`
 * + 2
-  + 26.10.
-  + 28.10.
+  + Mon 26.10.
+  + Lecture
   + `Nat`, `Bool`, reduction rules
   + {ref "nat"}[1.1]
+* + 2
+  + Wed 28.10.
+  + Lab
+  + Sheets
   + `L-b`, `L-c`, `1.1-a`
 * + 3
-  + 02.11.
-  + 04.11.
+  + Mon 02.11.
+  + Lecture
   + Types, inductive types, quotients
   + {ref "types"}[1.2]
+* + 3
+  + Wed 04.11.
+  + Lab
+  + Sheets
   + `L-d`, `1.2-a`, `1.1-b`
 * + 4
-  + 09.11.
-  + 11.11.
-  + Terms and pattern matching · **test 1**
+  + Mon 09.11.
+  + Lecture
+  + Terms and pattern matching
   + {ref "terms"}[1.3]
+* + 4
+  + Wed 11.11.
+  + Lab
+  + *Test 1*, then sheets
   + `L-e`, `L-f`, `1.1-c`
 * + 5
-  + 16.11.
-  + 18.11.
+  + Mon 16.11.
+  + Lecture
   + Typeclasses
   + {ref "typeclasses"}[1.4]
+* + 5
+  + Wed 18.11.
+  + Lab
+  + Sheets
   + `L-g`, `1.4-a`, `1.4-b`, extra `X-a`
 * + 6
-  + 23.11.
-  + 25.11.
+  + Mon 23.11.
+  + Lecture
   + Curry-Howard
   + {ref "curry-howard"}[1.5]
+* + 6
+  + Wed 25.11.
+  + Lab
+  + Sheets
   + `1.5-a`, `1.5-b`
 * + 7
-  + 30.11.
-  + 02.12.
-  + Dependent types and notation · **test 2**
+  + Mon 30.11.
+  + Lecture
+  + Dependent types and notation
   + {ref "dependent-types"}[1.6], {ref "notation"}[1.7]
+* + 7
+  + Wed 02.12.
+  + Lab
+  + *Test 2*, then sheets
   + `1.6-a`, `1.7-a`
 * + 8
-  + 07.12.
-  + 09.12.
+  + Mon 07.12.
+  + Lecture
   + Sets and types; well-foundedness
   + {ref "sets-and-types"}[2.1], {ref "logic-wf"}[2.3]
+* + 8
+  + Wed 09.12.
+  + Lab
+  + Sheets
   + `2.1-a`, `2.1-b`, `2.1-c`
 * + 9
-  + 14.12.
-  + 16.12.
-  + Universes and axioms · **test 3**
+  + Mon 14.12.
+  + Lecture
+  + Universes and axioms
   + {ref "universes-axioms"}[2.2]
+* + 9
+  + Wed 16.12.
+  + Lab
+  + *Test 3*, then sheets
   + `2.2-a`, `2.3-a`
 * + 10
-  + 21.12.
-  + --
+  + Mon 21.12.
+  + Lecture
   + Proof engineering; `conv`
   + {ref "tactics"}[Appendix]
+* + 10
+  + —
+  + Lab
+  + No lab; sheets over the break
   + `A-a`, `A-b`
 * + 11
-  + 11.01.
-  + 13.01.
+  + Mon 11.01.
+  + Lecture
   + Orders, the algebraic hierarchy
   + {ref "orders-and-lattices"}[2.4], {ref "algebraic-hierarchy-mathlib"}[2.5]
+* + 11
+  + Wed 13.01.
+  + Lab
+  + Sheets
   + `2.4-a`, `2.5-a`
 * + 12
-  + 18.01.
-  + 20.01.
+  + Mon 18.01.
+  + Lecture
   + Filters
   + {ref "filters"}[2.6]
+* + 12
+  + Wed 20.01.
+  + Lab
+  + Sheets
   + `2.6-a`, `2.6-b`
 * + 13
-  + 25.01.
-  + 27.01.
-  + Topology · **test 4**
+  + Mon 25.01.
+  + Lecture
+  + Topology
   + {ref "topology"}[2.7]
+* + 13
+  + Wed 27.01.
+  + Lab
+  + *Test 4*, then sheets
   + `2.7-a`
 * + 14
-  + 01.02.
-  + 03.02.
+  + Mon 01.02.
+  + Lecture
   + Measure theory
   + {ref "measure-theory"}[2.8]
+* + 14
+  + Wed 03.02.
+  + Lab
+  + Sheets
   + `2.8-a`
 * + 15
-  + 08.02.
-  + 10.02.
-  + Monads and probability · **test 5**
+  + Mon 08.02.
+  + Lecture
+  + Monads and probability
   + {ref "probability-pmf"}[2.9]
+* + 15
+  + Wed 10.02.
+  + Lab
+  + *Test 5*, then sheets
   + `2.9-a`, `2.9-b`
 :::
 

@@ -42,7 +42,9 @@ RECORD = {
 }
 # scene -> (window-capture input, regex on the window's WM_CLASS instance)
 WINDOWS = {
-    "Vortrag": ("Folien (Fenster)", r"^localhost__slides_"),
+    # Chrome --app names the window after host and path:
+    # localhost__slides_1-1-nat or pfaffelh.github.io__leancourse_slides_1-1-nat
+    "Vortrag": ("Folien (Fenster)", r"__(leancourse_)?slides_"),
     # the snap package of VS Code reports `code_code`
     "Blatt lösen (VS Code)": ("VS Code (Fenster)", r"^code(_code)?$"),
 }

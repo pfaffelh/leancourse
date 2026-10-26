@@ -1,8 +1,11 @@
 name: Build and deploy manual
 
+# Both branches are built in every run: main is the site at the root,
+# preparation (the full text) a preview under /preview/, kept out of
+# search engines. A push to either branch redeploys both.
 on:
   push:
-    branches: [main]
+    branches: [main, preparation]
   # Allow manual runs from the Actions tab
   workflow_dispatch:
 
@@ -23,6 +26,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       # Installs the Lean toolchain from lean-toolchain, downloads the
       # Mathlib build cache (lake exe cache get), and runs `lake build`,
@@ -48,10 +54,26 @@ jobs:
       - name: Generate the slide decks
         run: lake exe slides _out/html-multi/slides
 
+      - name: Keep the main site
+        run: mv _out/html-multi site
+
+      # Same build again on preparation. .lake stays, so only the
+      # modules that differ are recompiled.
+      - name: Build the preparation preview
+        run: |
+          git checkout --force origin/preparation
+          rm -rf _out
+          lake build
+          lake exe leancourse --output _out/
+          lake exe slides _out/html-multi/slides
+          find _out/html-multi -name '*.html' -exec \
+            sed -i 's|<head>|<head><meta name="robots" content="noindex">|' {} +
+          mv _out/html-multi site/preview
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _out/html-multi
+          path: site
 
   deploy:
     needs: build

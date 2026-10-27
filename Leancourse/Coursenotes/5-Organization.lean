@@ -32,11 +32,12 @@ used without the other.
 * Lean and its type theory, one deck per chapter:
   * [The natural numbers and reduction rules](slides/1-1-nat/) —
     {ref "nat"}[chapter]
-  * [Types I: building types](slides/1-2-types/) —
+  * [Types and terms I: functions and inductive types](slides/1-2-types/) —
     {ref "types"}[chapter]
-  * [Types II: the rules](slides/1-3-rules/) —
+  * [Types and terms II: structures, pairs, subtypes, quotients](slides/1-3-type-formers/) —
+    {ref "type-formers"}[chapter]
+  * [Types III: the rules](slides/1-4-rules/) —
     {ref "rules"}[chapter]
-  * [Terms](slides/1-4-terms/) — {ref "terms"}[chapter]
   * [Typeclasses](slides/1-5-typeclasses/) — {ref "typeclasses"}[chapter]
   * [Propositions and proofs](slides/1-6-curry-howard/) —
     {ref "curry-howard"}[chapter]
@@ -102,7 +103,7 @@ written at the start of the lab.
 * + 3
   + Mon 02.11.
   + Lecture
-  + Types I: function types, inductive types, structures, Σ, quotients, universes
+  + Types and terms I: universes, functions, inductive types, pattern matching
   + {ref "types"}[1.2]
 * + 3
   + Wed 04.11.
@@ -112,8 +113,8 @@ written at the start of the lab.
 * + 4
   + Mon 09.11.
   + Lecture
-  + Types II: the rules, `Prop`
-  + {ref "rules"}[1.3]
+  + Types and terms II: structures, Σ, subtypes, quotients
+  + {ref "type-formers"}[1.3]
 * + 4
   + Wed 11.11.
   + Lab
@@ -122,13 +123,13 @@ written at the start of the lab.
 * + 5
   + Mon 16.11.
   + Lecture
-  + Terms and pattern matching
-  + {ref "terms"}[1.4]
+  + Types III: the rules, `Prop`
+  + {ref "rules"}[1.4]
 * + 5
   + Wed 18.11.
   + Lab
   + Sheets
-  + `L-g`, `1.2-b`, extra `X-a`
+  + `L-g`, `1.3-a`, extra `X-a`
 * + 6
   + Mon 23.11.
   + Lecture

@@ -86,7 +86,7 @@ example : 2 + 2 = 4 := rfl
 example : Nat.succ 0 = 1 := rfl
 ```
 
-The `#eval` command (used throughout the {ref "terms"}[chapter on terms]) runs the same reduction and prints the value. `rfl`, `#eval` and every "reduces to" below are the same phenomenon. The steps are the kernel's *reduction rules*; they recur whenever a later step is claimed to hold "by definition".
+The `#eval` command (introduced with the other {ref "naming-terms"}[commands for terms] in the next chapter) runs the same reduction and prints the value. `rfl`, `#eval` and every "reduces to" below are the same phenomenon. The steps are the kernel's *reduction rules*; they recur whenever a later step is claimed to hold "by definition".
 
 ## The reduction rules
 %%%
@@ -246,11 +246,11 @@ def myNot : Bool → Bool
 example : myNot false = true := rfl
 ```
 
-Lean translates such a definition into the recursor, so on constructors it reduces just as `Bool.rec` does. Pattern matching works for every inductive type, including recursive ones like `Nat`; it is treated in detail in {ref "pattern-matching"}[the chapter on terms].
+Lean translates such a definition into the recursor, so on constructors it reduces just as `Bool.rec` does. Pattern matching works for every inductive type, including recursive ones like `Nat`; it is treated in detail in {ref "pattern-matching"}[the next chapter].
 
 ::::keepEnv
 :::example "How `bif` is defined under the hood"
-Internally, Lean does not build runnable definitions from `Bool.rec` directly — the code generator cannot compile a bare recursor, whereas it *can* compile a `match`. So `bif` is not primitive: it is notation for a function `cond`, which does the actual branching with a `match` (the inline form of pattern matching, see {ref "pattern-matching"}[the chapter on terms]):
+Internally, Lean does not build runnable definitions from `Bool.rec` directly — the code generator cannot compile a bare recursor, whereas it *can* compile a `match`. So `bif` is not primitive: it is notation for a function `cond`, which does the actual branching with a `match` (the inline form of pattern matching, see {ref "pattern-matching"}[the next chapter]):
 
 ```
 -- the underlying function, defined by matching on `c`:

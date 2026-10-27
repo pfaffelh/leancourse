@@ -59,9 +59,11 @@ Because a `class` is a `structure`, the applied class `C α` is an ordinary *typ
 *Data classes* bundle operations, so they carry `Type`-valued fields and live in `Type`. Their instances are *data*: a record of operations and proofs, carried at runtime and projected like any structure.
 
 ```lean
-#check (Monoid ℕ)                    -- Type
-#check (inferInstance : Monoid ℕ)    -- a term of it -- data
+#check (Add ℕ)                    -- Type
+#check (inferInstance : Add ℕ)    -- a term of it: data
 ```
+
+(`inferInstance` stands for the instance that Lean finds by itself.)
 
 *Prop classes* have only propositional fields, so they live in `Prop`, and their instances are *proofs*. Mathlib's `Fact` is the standard example — it merely packages a proof of `p` as a searchable instance.
 
@@ -315,7 +317,7 @@ The standard example is heterogeneous multiplication `a * b`, whose result type 
 -- HMul : Type → Type → outParam Type → Type
 ```
 
-Because the result `γ` is an `outParam`, Lean resolves `HMul α β ?γ` from `α` and `β` alone and *learns* `γ` from the chosen instance. The same device lets `a ∈ s` infer the element type from the collection — `Membership`'s element type is an `outParam` too. This is why you often see it in Mathlib signatures, and why the `CoeSort … → outParam Sort` from the previous section is written that way.
+Because the result `γ` is an `outParam`, Lean resolves `HMul α β ?γ` from `α` and `β` alone and *learns* `γ` from the chosen instance. The same device lets `a ∈ s` infer the element type from the collection — `Membership`'s element type is an `outParam` too. This is why you often see it in Mathlib signatures.
 
 # The `Decidable` typeclass
 %%%
@@ -404,7 +406,7 @@ There are three flavours, according to *what* the target is:
 example (s : {n : ℕ // n > 0}) : ℕ := s   -- the subtype's `.val`
 ```
 
-`CoeSort` lets a term stand in for a *type*. This is exactly the `Bool → Prop` bridge from the {ref "decidable-typeclass"}[previous section] (`b` becomes `b = true`), and it is how a `Set α` may be written where a type is expected:
+`CoeSort` lets a term stand in for a *type*. It turns `b : Bool` into the proposition `b = true`, and it is how a `Set α` may be written where a type is expected:
 
 ```lean
 example (b : Bool) : Prop := b

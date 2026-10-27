@@ -57,7 +57,7 @@ instance : MyAdd ℕ where
 # Data classes and Prop classes
 
 ```lean -panel -stretch
-#check (Monoid ℕ)     -- Type
+#check (Add ℕ)        -- Type
 #check @Fact          -- Prop → Prop
 example (h₁ h₂ : Fact (2 = 2)) : h₁ = h₂ := rfl
 ```

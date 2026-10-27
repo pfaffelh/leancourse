@@ -57,17 +57,17 @@ Two rules of thumb connect the modes, and the sections below make them precise:
 So this tactic proof
 
 ```lean
-example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
-    x ∈ s → x ∈ t := by
-  intro hx
-  exact hst hx
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := by
+  intro hP
+  exact hQR (hPQ hP)
 ```
 
 and this term are the same object:
 
 ```lean
-example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
-    x ∈ s → x ∈ t := fun hx ↦ hst hx
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := fun hP ↦ hQR (hPQ hP)
 ```
 
 Each section below gives the term behind a connective you have already proved things with.

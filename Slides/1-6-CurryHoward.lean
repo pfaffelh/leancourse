@@ -73,13 +73,13 @@ example (P : Prop) : False → P := by
 # `intro` takes an argument
 
 ```lean -panel -stretch
-example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
-    x ∈ s → x ∈ t := fun hx ↦ hst hx
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := fun hP ↦ hQR (hPQ hP)
 
-example (s t : Set ℝ) (hst : s ⊆ t) (x : ℝ) :
-    x ∈ s → x ∈ t := by
-  intro hx
-  exact hst hx
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := by
+  intro hP
+  exact hQR (hPQ hP)
 ```
 
 :::class "key"

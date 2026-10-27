@@ -7,14 +7,14 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the chapter "Types II: the rules" of part 1 (Lean and its
+Deck for the chapter "Types III: the rules" of part 1 (Lean and its
 type theory). It follows the chapter section by section: the rules of
-Lean's type theory, how the universe of a type is determined, why
-and why `Prop` is special.
+Lean's type theory, how the universe of a type is determined, and why
+`Prop` is special.
 -/
 
 namespace SlidesRules
-#doc (Slides) "Types II: the rules" =>
+#doc (Slides) "Types III: the rules" =>
 
 ```css
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
@@ -26,9 +26,40 @@ namespace SlidesRules
 .reveal section .math.display { font-size: 0.7em; }
 ```
 
-# Types II: the rules
+# Types III: the rules
 
-Lean and its type theory — chapter 3
+Lean and its type theory — chapter 4
+
+# Four steps, four kinds of rule
+
+Chapters 1.2 and 1.3 described each type former in four steps. Type theory calls them:
+
+:::table +colHeaders +rowSeps
+*
+  * step
+  * kind of rule
+  * for functions
+*
+  * formation
+  * formation
+  * `(x : α) → β x`
+*
+  * construction
+  * introduction
+  * `fun x => e`
+*
+  * use
+  * elimination
+  * `f a`
+*
+  * computation
+  * computation
+  * `(fun x => e) a ⟶ e[x := a]`
+:::
+
+:::class "key"
+This chapter writes them down as rules.
+:::
 
 # The rules of Lean's type theory
 
@@ -128,7 +159,7 @@ This is the rule behind `rfl`.
 
 # Rules for inductive types
 
-Each `inductive` adds the type, its constructors, the recursor and ι-rules:
+Each `inductive` adds the type (formation), its constructors (introduction), the recursor (elimination) and ι-rules (computation):
 
 $$`\mathrm{Nat.rec} : (m : \mathbb N \to \mathrm{Sort}\ u) \to m\ 0 \to \big((n : \mathbb N) \to m\ n \to m\ (n+1)\big) \to (t : \mathbb N) \to m\ t`
 

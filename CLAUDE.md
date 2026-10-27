@@ -2357,3 +2357,41 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
 - Decks: `slides/1-2-types/` (Bauen) und `slides/1-3-rules/`
   (Regeln); Blatt `1.3-a` heisst jetzt `1.2-b`
   (`2-b-DependentTypes.lean`), weiter in Woche 5.
+
+## 2026-10-27 (3) -- Typen und Terme zusammen, Regeln danach
+
+- Auf Wunsch des Autors ("Terme und Typen kann man nicht trennen")
+  ist das Kapitel *Terms* aufgeloest. Neue Ordnung:
+  **1.2 `2-Types.lean` "Types and terms I: functions and inductive
+  types"** (tag `types`): Befehle `#check`/`def`/`example`/`#eval`
+  (tag `naming-terms`), Universen (jetzt *vorn*), Funktionstypen mit
+  `def`, Currying, `fun`/`·`, abhaengigen und polymorphen Funktionen,
+  induktive Typen mit Mustervergleich, Rekursion/Terminierung,
+  Rekursor, strikter Positivitaet, Geschichte.
+  **1.3 `3-TypeFormers.lean` "Types and terms II: structures, pairs,
+  subtypes, quotients"** (tag `type-formers`): Strukturen mit
+  Strukturwerten, Σ, Subtypen, Typfamilien, Quotienten, dazu die
+  Tabelle `four-steps`. **1.4 `4-Rules.lean` "Types III: the rules"**
+  (tag `rules`). Tag `terms` gibt es nicht mehr; die Abschnitts-Tags
+  aus Terms (`structure-values`, `pure-functions`,
+  `polymorphic-functions`, `anonymous-functions`, `pattern-matching`,
+  `recursion`) leben an der neuen Stelle weiter.
+- **Jeder Typbildner in vier Schritten**: Formation, Construction,
+  Use, Computation (Idee des Autors). In 1.4 heissen sie formation /
+  introduction / elimination / computation rules, und die Regeln
+  verweisen darauf zurueck.
+- Decks: `slides/1-2-types/`, `slides/1-3-type-formers/`,
+  `slides/1-4-rules/` (Terms-Deck aufgeteilt). Blatt `1.2-b` heisst
+  `1.3-a` (`3-a-DependentTypes.lean`), weiter Woche 5. Wochen: 3 = 1.2,
+  4 = 1.3, 5 = 1.4.
+- **Vorwaertsverweise in 1.2-1.6**: Pruefskript im Scratchpad
+  (`fwd.py`: jeder `{ref}`, dessen Ziel spaeter im Dokument steht).
+  Vorher 37, jetzt 21; uebrig sind Orientierungssaetze und
+  Nachschlage-Verweise in Anhang und Teil 2. Dazu ein inhaltliches
+  Audit (Begriffe vor ihrer Erklaerung); die Funde in 1.2-1.4 sind
+  eingearbeitet (`norm_num` -> `simp`/`rfl`, `[Add α]` -> konkretes
+  `IntAddMap`, `![…]`, `%`, abhaengiges `if`, `omega`, `_`, `List`-
+  Konstruktoren, Beweisirrelevanz, `@` erklaert). In 1.5/1.6 nur die
+  drei falschen Saetze ("previous section" zu `CoeSort` und
+  `Bool → Prop`) und die Beispiele mit `Monoid`/`Set ℝ` ersetzt; der
+  Rest der 1.5/1.6-Funde ist offen.

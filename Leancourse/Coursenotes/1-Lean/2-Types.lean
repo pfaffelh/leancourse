@@ -53,14 +53,43 @@ A rule is written as a fraction. If the judgements above the line hold, then so 
 
 $$`\Gamma = x_1 : \alpha_1,\ x_2 : \alpha_2,\ \dots,\ x_n : \alpha_n .`
 
-It records what may be assumed at a given point: the variables in scope and the hypotheses about them. Three points about it.
+It records what may be assumed at a given point: the variables in scope and the hypotheses about them.
+For example, take
 
-* *Order matters.* The type $`\alpha_i` may mention $`x_1, \dots, x_{i-1}`, but not later variables. In `n : ℕ, h : 0 < n` the hypothesis `h` talks about `n`, so `n` must come first. A list is *well formed* if each $`\alpha_i` is a type in the context before it:
+$$`\Gamma = n : \mathbb N,\ h : 0 < n,\ v : \mathrm{Fin}\ n \to \mathbb N .`
 
-  $$`\frac{}{\emptyset\ \mathrm{ok}} \qquad \frac{\Gamma\ \mathrm{ok} \qquad \Gamma \vdash \alpha : \mathrm{Sort}\ u}{\Gamma,\ x : \alpha\ \mathrm{ok}}`
+In this context `v` is a vector of length `n`, and `h` says that it is not empty. Then $`\Gamma \vdash v\ \langle 0, h\rangle : \mathbb N`: the pair $`\langle 0, h\rangle` is an element of `Fin n`, so `v` can be applied to it. In Lean, the parameters of a declaration form its context:
+
+```lean
+example (n : ℕ) (h : 0 < n) (v : Fin n → ℕ) : ℕ :=
+  v ⟨0, h⟩
+```
+
+Without `h` the term `v ⟨0, _⟩` would not typecheck, because there would be no proof of `0 < n` in the context.
+
+Three points about contexts.
+
+* *Order matters.* The type $`\alpha_i` may mention $`x_1, \dots, x_{i-1}`, but not later variables. A context is built from left to right, one variable at a time, and each new type must be a type in the context to its left. For the example above:
+
+  :::table (align := left) +header
+  * + context
+    + new type
+    + is a type in the context before, because
+  * + `n : ℕ`
+    + `ℕ : Type`
+    + `ℕ` is in the environment
+  * + `n : ℕ, h : 0 < n`
+    + `0 < n : Prop`
+    + `n` is in the context
+  * + `n : ℕ, h : 0 < n, v : Fin n → ℕ`
+    + `Fin n → ℕ : Type`
+    + `n` is in the context
+  :::
+
+  In the order `h : 0 < n, n : ℕ` the first step fails: in the empty context `n` is unknown, so `0 < n` is not a type.
 
 * *Variables, not constants.* A variable in $`\Gamma` has a type but no value. It stands for an arbitrary element of its type, or for an arbitrary proof of its proposition.
-* *Binders extend it.* The context grows when a rule goes under a binder. To check `fun x => e` or `∀ x : α, β`, the body is checked in $`\Gamma,\ x : \alpha`; afterwards $`x` is gone again. The rules for functions below are written that way.
+* *Binders extend it.* A *binder* is a construction that introduces a variable for a part of a term, its *body*. In `fun x => x + 1` the binder `fun x` introduces `x`, and the body is `x + 1`; in `∀ n : ℕ, n < n + 1` the binder is `∀ n : ℕ`. Outside the body the variable does not exist, just as $`i` in $`\sum_{i=1}^n i^2` or $`x` in $`\int_0^1 x^2\,dx` has no meaning outside the sum or the integral. Such a variable is called *bound*, a variable from the context *free*. In Lean the binders are `fun`, `∀` (and the arrow `(x : α) → β`), and `let`; `∃ x, P x` is notation for `Exists (fun x => P x)` and so binds through `fun`. The context grows when a rule goes under a binder. To check `fun x => e` or `∀ x : α, β`, the body is checked in $`\Gamma,\ x : \alpha`; afterwards $`x` is gone again. The rules for functions below are written that way.
 
 You see contexts all the time. The goal
 
@@ -75,6 +104,8 @@ is the context `n : ℕ, h : 0 < n` together with the type `n ≠ 0`, and provin
 *The environment.* Besides $`\Gamma` there is the *environment*: the constants declared so far by `def`, `theorem`, `inductive` and `axiom`, such as `Nat.succ` or `Nat.add_comm`. Unlike a variable, a constant is global, and a definition has a value. A declared constant $`c : \alpha` may be used in every context, and if it is defined by $`c := t`, then $`c \equiv t` (the δ-rule). Every rule below has the environment in the background, but it is not written.
 
 The second kind of judgement is what `rfl` checks ({ref "defeq"}[Definitional equality]).
+
+*Where the first types come from.* A derivation has to start somewhere, and two rules have nothing above the line. The universe rule (*Universes* below) gives `Prop`, `Type`, `Type 1`, … without any premise. And every `inductive` declaration puts its type and constructors into the environment, for `ℕ` the judgements $`\vdash \mathbb N : \mathrm{Type}`, $`\vdash \mathrm{zero} : \mathbb N` and $`\vdash \mathrm{succ} : \mathbb N \to \mathbb N` (see *Inductive types* below). Every other type is built from these with the rules for functions. Lean has no built-in basic types: `Nat`, `Bool` and `Eq` are ordinary inductive declarations in `Prelude`, the first file Lean loads. Without inductive types only the universes remain, and still interesting types can be built from them (*Without inductive types* below).
 
 ## Universes
 

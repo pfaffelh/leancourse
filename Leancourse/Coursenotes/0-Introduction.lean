@@ -124,7 +124,7 @@ Russell restricted the language itself, so that `x ∈ x` is not false but ungra
 
 However, Russell's ban was wider than the paradox. It forbids *every* definition that quantifies over a totality containing the object being defined, and ordinary mathematics is full of those. The supremum of a bounded set of reals is defined by quantifying over reals, so under the ban it is not itself a real number, and analysis stops. Russell recovered it by adding an axiom, reducibility, which grants that every forbidden definition agrees with a permitted one — an axiom that returns most of what the ban had taken. Lean draws the line differently for propositions and for data: definitions that quantify over all propositions are allowed in `Prop`, but not over all types in `Type`; see {ref "prop-special"}[Why `Prop` is special].
 
-Mathematics went with Zermelo, proof assistants with Russell ({ref "types-history"}[Where types come from]).
+Mathematics went with Zermelo, proof assistants with Russell ({ref "type-rules"}[The rules of Lean's type theory]).
 
 Whitehead and Russell spent *Principia Mathematica* rebuilding the rest; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
 

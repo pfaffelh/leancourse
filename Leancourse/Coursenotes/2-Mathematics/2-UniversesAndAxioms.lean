@@ -369,7 +369,7 @@ theorem no_negative_occurrence (Bad : Type)
   delta (mk delta)
 ```
 
-The term is $`(\lambda x.\, x\,x)(\lambda x.\, x\,x)` in disguise. A negative occurrence makes `Bad` a fixed point of $`X \mapsto (X \to \bot)`, so `Bad` and `Bad → False` become interchangeable — which is Russell's paradox with application in place of $`\in` ({ref "types-history"}[Where types come from]). Strict positivity belongs on the list of {ref "baked-in-more"}[things the kernel bakes in].
+The term is $`(\lambda x.\, x\,x)(\lambda x.\, x\,x)` in disguise. A negative occurrence makes `Bad` a fixed point of $`X \mapsto (X \to \bot)`, so `Bad` and `Bad → False` become interchangeable — which is Russell's paradox with application in place of $`\in` ({ref "prehistory"}[Introduction]). Strict positivity belongs on the list of {ref "baked-in-more"}[things the kernel bakes in].
 
 ## Non-termination is allowed, just not in proofs
 %%%
@@ -492,7 +492,7 @@ Most mathematicians are (at least implicitly) trained in ZFC set theory. Here ar
 A key practical difference: in ZFC, you can ask nonsensical questions like "is 3 ∈ π?" and get an answer. In Lean, comparing objects of different types is a type error, which catches many mistakes early.
 
 
-The axioms of ZFC are listed in the box below. Lean's type theory has rules instead, given in {ref "types-history"}[Where types come from], and three axioms: `propext`, `Quot.sound` and `Classical.choice`.
+The axioms of ZFC are listed in the box below. Lean's type theory has rules instead, given in {ref "type-rules"}[The rules of Lean's type theory], and three axioms: `propext`, `Quot.sound` and `Classical.choice`.
 
 ::::example "The axioms of ZFC"
 ZFC is a theory in first-order logic with a single binary relation $`\in`. The logic brings its own rules (modus ponens, generalization, the rules for equality); the theory adds the axioms below. Symbols such as $`\emptyset`, $`\subseteq`, $`\cup` and $`\{x\}` are abbreviations defined from $`\in`. Separation and replacement are schemas, one axiom for each formula $`\varphi`.

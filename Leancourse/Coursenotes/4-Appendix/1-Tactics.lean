@@ -71,8 +71,11 @@ import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Trivial»
 import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Unfold»
 import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Use»
 import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Wlog»
+import Manual.Meta
+import Mathlib
 
 open Verso.Genre Manual
+open Verso.Genre.Manual.InlineLean
 
 set_option pp.rawOnError true
 
@@ -104,6 +107,48 @@ goal only if inference fails. A `?_` *always* leaves a new goal for you
 to prove (and `?name` labels it `case name`). This is exactly the
 difference between {ref "exact"}[`exact`] and {ref "refine"}[`refine`]:
 `refine` is `exact` that also tolerates `?_` holes.
+
+*Combining tactics.* Tactics are themselves a small language. When a
+step leaves several goals, these combinators act on them:
+
+:::table +header
+* + Syntax
+  + Effect
+* + `t <;> s`
+  + runs `t`, then `s` on every goal that `t` produced
+* + `all_goals t`
+  + runs `t` on every open goal; fails if it fails on one
+* + `any_goals t`
+  + runs `t` on every open goal; succeeds if it succeeds on one
+* + `first | t | s`
+  + tries `t`, and `s` if `t` fails
+* + `· t`
+  + works on the first goal only and must close it
+* + `case name => t`, `next => t`
+  + works on the goal labelled `name`, or on the next goal
+* + `rename_i x y`
+  + names the inaccessible hypotheses, shown as `x✝`, of the current goal
+:::
+
+```lean
+example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q := by
+  constructor <;> assumption
+
+example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q ∧ P := by
+  refine ⟨?_, ?_, ?_⟩
+  any_goals exact hP
+  exact hQ
+
+example : ∀ n : ℕ, n = n := by
+  intro
+  rename_i k
+  rfl
+```
+
+A name shown with a dagger, such as `n✝`, belongs to a variable that
+was introduced without a name, by `intro` without argument or by
+`cases` and `induction` without `with`. Such a variable cannot be
+referred to until `rename_i`, or a named `intro`, gives it a name.
 
 Before the alphabetical list, here is a rough guide to which
 *automation* tactic fits which kind of goal.

@@ -394,7 +394,42 @@ decreasing_by omega
 #eval log2 16   -- 4
 ```
 
-Lean translates such a definition into *well-founded recursion* (`WellFounded.fix`). The theory behind it, what makes a relation well-founded and why `<` on `Nat` qualifies, is developed in the *Mathematics* part.
+Lean translates such a definition into *well-founded recursion* (`WellFounded.fix`). The theory behind it, what makes a relation well-founded and why `<` on `Nat` qualifies, is developed in the *Mathematics* part. If `decreasing_by` is left out, Lean tries a standard tactic, `decreasing_tactic`, which handles the simple cases on its own.
+
+## Proving things about recursive definitions
+%%%
+tag := "recursive-proofs"
+%%%
+
+A structurally recursive definition is translated into the recursor, and the recursor computes by ι. So `rfl` and `#eval` see through it, even with a variable in the argument:
+
+```lean
+example : fib 10 = 55 := rfl
+example (n : ℕ) : fib (n + 2) = fib n + fib (n + 1) := rfl
+```
+
+A definition by well-founded recursion does not compute in this way. `#eval` runs it, but the kernel does not unfold `WellFounded.fix`, so `rfl` and `decide` fail even on closed terms:
+
+```lean +error
+example : log2 16 = 4 := rfl
+```
+
+Instead Lean proves an *equation lemma* for every definition, here `log2.eq_1`, which states the defining equation. Proofs use it through `rw [log2]`, `unfold log2` or `simp [log2]`:
+
+```lean
+#check log2.eq_1
+-- log2.eq_1 (n : ℕ) : log2 n =
+--   if _h : 2 ≤ n then 1 + log2 (n / 2) else 0
+
+example : log2 16 = 4 := by simp [log2]
+
+example (n : ℕ) (h : 2 ≤ n) :
+    log2 n = 1 + log2 (n / 2) := by
+  rw [log2]
+  simp [h]
+```
+
+Proofs by induction that follow the recursion of a function, one case per branch, are done with `fun_induction` ({ref "induction"}[induction]).
 
 ## The recursor
 

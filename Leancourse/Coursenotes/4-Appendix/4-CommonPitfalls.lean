@@ -76,18 +76,18 @@ tag := "definitional-equality"
 
 In Lean, some equalities hold _by definition_ ({ref "defeq"}[definitional equality]), while others require a proof (propositional equality). The distinction can be surprising.
 
-**When `rfl` works:** `rfl` closes a goal `a = b` when `a` and `b` are definitionally equal. For example:
+*When `rfl` works.* `rfl` closes a goal `a = b` when `a` and `b` are definitionally equal. For example:
 ```lean
 example : 2 + 3 = 5 := by rfl        -- Lean computes this
 example (n : ℕ) : n + 0 = n := by rfl -- by definition of Nat.add
 ```
 
-**When `rfl` fails:**
+*When `rfl` fails.*
 ```
 -- This does NOT work:
 -- example (n : ℕ) : 0 + n = n := by rfl
--- Because Nat.add is defined by recursion on the first argument,
--- 0 + n is not definitionally equal to n.
+-- Because Nat.add is defined by recursion on the second
+-- argument, 0 + n is not definitionally equal to n.
 ```
 
 The {ref "change"}[`change`] tactic lets you replace the goal with a definitionally equal one:
@@ -104,7 +104,45 @@ example (n : ℕ) : Nat.succ n = n + 1 := by
   rfl
 ```
 
-**Tip:** If a tactic unexpectedly fails, try using `change` to rewrite the goal into an equivalent form. Sometimes the goal looks right in the Infoview but contains hidden definitional mismatches.
+*Tip.* If a tactic unexpectedly fails, try using `change` to rewrite the goal into an equivalent form. Sometimes the goal looks right in the Infoview but contains hidden definitional mismatches.
+
+*`rw` and `simp` do not unfold definitions.* Definitional equality is checked by `rfl`, `exact` and `change`, which unfold definitions as far as needed. `rw` and `simp` instead look for the pattern *syntactically*, as it is written. So a hypothesis about `n + n` does not rewrite a goal about `double' n`, although the two are definitionally equal:
+
+```lean
+def double' (n : ℕ) : ℕ := n + n
+
+example (n : ℕ) (h : n + n = 4) : double' n = 4 := h
+```
+
+```lean +error
+example (n : ℕ) (h : n + n = 4) : double' n = 4 := by
+  rw [h]
+```
+
+The remedy is to unfold first, with `unfold double'`, `rw [double']` or `simp [double']`:
+
+```lean
+example (n : ℕ) (h : n + n = 4) : double' n = 4 := by
+  unfold double'
+  rw [h]
+```
+
+*How far definitions unfold.* Every definition carries a *reducibility*, which says how readily tactics unfold it:
+
+:::table (align := left) +header
+* + Declared with
+  + Unfolded
+* + `abbrev`, or `@[reducible] def`
+  + by almost every tactic, also by `simp` and instance search; behaves like notation
+* + `def`
+  + by `rfl`, `exact`, `change`, and the kernel; by `rw` and `simp` only when asked
+* + `@[irreducible] def`, `irreducible_def`
+  + only on explicit request (`unfold`, `rw [f]`, or the equation lemma)
+* + `theorem`
+  + in practice never: by proof irrelevance, the value of a proof is not needed
+:::
+
+This is also why a statement is a `theorem` and a construction a `def`; a `def` whose type is a proposition is accepted, but Lean warns. Mathlib uses `irreducible_def` for objects whose definition should be reached only through the lemmas proved about it, for instance `Asymptotics.IsBigOWith` and the composition `ProbabilityTheory.Kernel.compProd` of kernels.
 
 # Typeclass diamonds
 %%%

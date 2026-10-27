@@ -305,6 +305,19 @@ decreasing_by
 
 Goal: `n % m < m`. The dependent `if` puts `_h : m ≠ 0` in scope. Routine cases: `decreasing_by omega`.
 
+# Proving things about recursive definitions
+
+```lean -panel -stretch
+def log2 (n : Nat) : Nat :=
+  if _h : 2 ≤ n then 1 + log2 (n / 2) else 0
+
+example (n : ℕ) : fib (n + 2) = fib n + fib (n + 1) :=
+  rfl
+example : log2 16 = 4 := by simp [log2]
+```
+
+Structural recursion computes, so `rfl` works. Well-founded recursion does not: use the equation lemma `log2.eq_1`, via `rw [log2]`, `unfold log2` or `simp [log2]`.
+
 # The recursor
 
 ```lean -panel -stretch

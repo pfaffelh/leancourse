@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "type-formers"
 %%%
 
-The {ref "types"}[previous chapter] treated function types and inductive types. This chapter treats types whose terms bundle several components: structures, pairs and subtypes. Then come type families, functions whose values are types, and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
+The {ref "types"}[previous chapter] treated function types and inductive types. This chapter treats types whose terms bundle several components: structures, pairs and subtypes. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
 
 The [slides](slides/1-3-type-formers/) for this chapter follow it section by section.
 
@@ -360,6 +360,69 @@ def myMatrix : Fin 2 → Fin 3 → ℕ :=
 
 In Mathlib, matrix multiplication is only defined when the dimensions match. If `A` is an `m × n` matrix and `B` is an `n × p` matrix, then `A * B` is an `m × p` matrix. The dependent types enforce that the inner dimensions agree — a dimension mismatch is a *type error*, caught at compile time.
 
+# Indexed families and inductive predicates
+%%%
+tag := "indexed-families"
+%%%
+
+A type family can also be declared with `inductive`. Then the constructors decide, for each value of the argument, which elements the type has. The standard example is the type of lists of length `n`:
+
+```lean
+inductive Vec (α : Type) : ℕ → Type where
+  | nil : Vec α 0
+  | cons {n : ℕ} (a : α) (v : Vec α n) : Vec α (n + 1)
+```
+
+The two arguments play different roles. `α`, written before the colon, is a *parameter*: it is the same in every constructor, and every constructor returns a `Vec α _`. The `ℕ` after the colon is an *index*: each constructor chooses its value, `nil` the index `0` and `cons` the index `n + 1`. `MyOption α` in the {ref "inductive"}[previous chapter] had a parameter and no index.
+
+*Formation.* `Vec α n` is a type for every `α` and `n`; `Vec α : ℕ → Type` is a type family.
+
+*Construction.* The constructors, with the indices they fix: `Vec.cons 1 (Vec.cons 2 .nil) : Vec ℕ 2`.
+
+*Use.* Pattern matching, where only the constructors whose index fits are possible.
+
+*Computation.* As for every inductive type, a match on a constructor takes its branch (ι).
+
+The *Use* step is where indices pay off. The first element of a vector of length `n + 1` needs no case for `nil`, because `nil` has index `0`, which is not of the form `n + 1`:
+
+```lean
+def Vec.head {α : Type} {n : ℕ} : Vec α (n + 1) → α
+  | .cons a _ => a
+
+#eval (Vec.cons 1 (Vec.cons 2 .nil)).head   -- 1
+```
+
+*Inductive predicates.* If the family lands in `Prop`, the constructors are the rules by which a statement may be proved, and nothing else proves it. The even numbers:
+
+```lean
+inductive MyEven : ℕ → Prop where
+  | zero : MyEven 0
+  | add_two (n : ℕ) : MyEven n → MyEven (n + 2)
+
+example : MyEven 4 := .add_two 2 (.add_two 0 .zero)
+```
+
+A hypothesis `h : MyEven k` is used with `cases h`, which produces one goal for each constructor whose index can equal `k`. For `k = 1` there is none, since `0 ≠ 1` and `n + 2 ≠ 1`, so `cases` closes the goal. For `k = n + 2` only `add_two` remains, and `cases` hands over its argument:
+
+```lean
+example : ¬ MyEven 1 := by
+  intro h
+  cases h
+
+example (n : ℕ) (h : MyEven (n + 2)) : MyEven n := by
+  cases h with
+  | add_two _ h' => exact h'
+```
+
+Mathlib defines `Even n` differently, as `∃ r, n = r + r`. But `≤` on `ℕ` and equality itself are inductive predicates of exactly this kind:
+
+```lean
+#print Nat.le
+#print Eq
+```
+
+`Nat.le n` has the constructors `refl : n ≤ n` and `step : n ≤ m → n ≤ m + 1`. `Eq a` has the parameter `a`, one index, and the single constructor `Eq.refl a : a = a`. So for `h : a = b`, `cases h` leaves only the case in which the index `b` is `a`: it replaces `b` by `a` everywhere. That is what rewriting with an equation rests on.
+
 # Quotient types
 %%%
 tag := "quotient-types"
@@ -470,6 +533,11 @@ tag := "four-steps"
   + `⟨a, h⟩`
   + `.val`, `.property`
   + `⟨a, h⟩.val ⟶ a`
+* + indexed family
+  + `inductive T : I → Sort u`
+  + constructors, each fixing an index
+  + pattern matching, `cases`
+  + a match on a constructor takes its branch
 * + quotient
   + `Quot r`
   + `Quot.mk r a`

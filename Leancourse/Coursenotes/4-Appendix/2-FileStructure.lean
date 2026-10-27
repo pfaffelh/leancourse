@@ -113,8 +113,10 @@ tag := "sections"
 
 A `section` groups commands and, crucially, delimits the scope of
 `variable` declarations.  A `variable` introduces a parameter that
-several declarations share, without repeating it in each signature;
-Lean adds it only to the declarations that actually use it.
+several declarations share, without repeating it in each signature.
+Lean adds it to a declaration if the *statement* uses it, or, for a
+`def`, the body.  For a `theorem` only the statement counts; see
+`include` below.
 
 ```lean
 section
@@ -127,6 +129,26 @@ end
 -- outside the section `n` is gone; it became an argument
 #check @addN    -- addN : ℕ → ℕ → ℕ
 ```
+
+A hypothesis that only the *proof* of a theorem needs is therefore
+not added, and the proof fails.  `include h` adds the variable `h` to
+every following theorem of the section, `include h in` to the next
+one only, and `omit h in` leaves it out of the next one:
+
+```lean
+section
+variable (n : ℕ) (hn : 0 < n)
+
+include hn in
+theorem ne_zero_of_pos_demo : n ≠ 0 := by omega
+
+end
+#check @ne_zero_of_pos_demo   -- ∀ (n : ℕ), 0 < n → n ≠ 0
+```
+
+Without `include hn in`, the theorem would have the statement
+`∀ n, n ≠ 0`, and `omega` would rightly fail.  Similarly,
+`variable (x : ℕ) in` declares a variable for the next command only.
 
 Sections may be named (`section Foo ... end Foo`) and nested; the name
 is only a readability aid that must match the closing `end`.  A file

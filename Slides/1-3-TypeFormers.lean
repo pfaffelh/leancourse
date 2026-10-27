@@ -24,6 +24,9 @@ namespace SlidesTypeFormers
 .reveal section table th,
 .reveal section table td { padding: 0.18em 0.9em; }
 .reveal section li { font-size: 0.8em; }
+.reveal section .small table, .reveal section table.small { font-size: 0.5em; }
+.reveal section .small table code, .reveal section table.small code { font-size: 0.95em; }
+.reveal section .small td, .reveal section table.small td { padding: 0.1em 0.6em; }
 ```
 
 # Types and terms II
@@ -253,6 +256,43 @@ def myMatrix : Fin 2 → Fin 3 → ℕ :=
 Index 5 of a 3-element vector does not exist. A dimension mismatch is a type error.
 :::
 
+# Indexed families
+
+```lean -panel -stretch
+inductive Vec (α : Type) : ℕ → Type where
+  | nil : Vec α 0
+  | cons {n : ℕ} : α → Vec α n →
+      Vec α (n + 1)
+
+def Vec.head {α : Type} {n : ℕ} :
+    Vec α (n + 1) → α
+  | .cons a _ => a
+```
+
+`α` is a _parameter_, fixed for all constructors. The `ℕ` is an _index_: each constructor chooses it.
+
+:::class "key"
+`head` needs no case for `nil`: its index `0` is not `n + 1`.
+:::
+
+# Inductive predicates
+
+```lean -panel -stretch
+inductive MyEven : ℕ → Prop where
+  | zero : MyEven 0
+  | add_two (n : ℕ) : MyEven n → MyEven (n + 2)
+
+example : ¬ MyEven 1 := by
+  intro h
+  cases h
+```
+
+The constructors are the only ways to prove `MyEven n`. `cases h` keeps the constructors whose index fits.
+
+:::class "key"
+`≤` on `ℕ` and `=` are inductive predicates of this kind.
+:::
+
 # Quotient types
 
 `Quot r`: the type `α` seen up to a relation `r`. Examples: `ℤ`, `ℚ`, `ℝ`, `Multiset α`, `ZMod n`.
@@ -277,6 +317,7 @@ That related elements have the _same_ class does not follow from the four steps.
 
 # The four steps at a glance
 
+::::class "small"
 :::table +colHeaders +rowSeps
 *
   * type
@@ -315,12 +356,19 @@ That related elements have the _same_ class does not follow from the four steps.
   * `.val`
   * `⟨a, h⟩.val ⟶ a`
 *
+  * indexed family
+  * `inductive T : I → Sort u`
+  * constructors
+  * `cases`
+  * ι
+*
   * quotient
   * `Quot r`
   * `Quot.mk r a`
   * `Quot.lift f h`
   * `… ⟶ f a`
 :::
+::::
 
 :::class "key"
 Chapter 1.4 states these steps as the rules of Lean's type theory.

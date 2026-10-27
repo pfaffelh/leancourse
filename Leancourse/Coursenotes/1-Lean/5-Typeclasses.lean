@@ -286,7 +286,7 @@ When Lean encounters an expression like `a + b` where `a b : α`, it needs to fi
 1. Lean looks through all registered instances (those declared with `instance`).
 2. It tries to unify the goal `Add α` with the type of each instance.
 3. If an instance itself requires other instances (e.g., `Add (Prod α β)` might require `Add α` and `Add β`), Lean recursively resolves those.
-4. If exactly one chain of instances leads to a solution, Lean uses it. If none or multiple exist, it reports an error.
+4. Lean uses the first chain of instances that leads to a solution, trying instances of higher priority first and, among equal priorities, the more recently declared ones first. If no chain exists, it reports an error. Several solutions are no error, so different instances for the same type had better agree ({ref "typeclass-diamonds"}[Typeclass diamonds]).
 
 This process is deterministic and happens at {ref "elaborator"}[elaboration time] (when Lean checks your code), not at runtime. So there is no performance penalty.
 
@@ -459,7 +459,7 @@ tag := "managing-instances"
 
 A few further knobs control *which* instance is found. You rarely need them at first, but they show up when reading Mathlib:
 
-* *Priorities.* `instance (priority := 1000) : …` makes an instance tried earlier (the default priority is `1000`). Since Lean takes the first solution it finds, priorities resolve overlaps.
+* *Priorities.* Every instance has a priority, by default `1000`; `instance (priority := 2000) : …` is tried before the others, `instance (priority := 100) : …` after them. Since Lean takes the first solution it finds, priorities resolve overlaps.
 * *`local` and `scoped` instances.* A `local instance` is active only until the end of the current section, namespace, or file; a `scoped instance` is active only inside its namespace or once you `open` it. Mathlib uses `scoped` heavily — `open scoped Classical`, for instance, switches on classical decidability exactly where you want it.
 * *Default instances.* `@[default_instance]` supplies a fallback when synthesis would otherwise be ambiguous — it is how a bare numeral like `2` defaults to `ℕ` when nothing else pins down its type.
 

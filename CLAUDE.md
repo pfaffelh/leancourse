@@ -2395,3 +2395,34 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
   drei falschen Saetze ("previous section" zu `CoeSort` und
   `Bool → Prop`) und die Beispiele mit `Monoid`/`Set ℝ` ersetzt; der
   Rest der 1.5/1.6-Funde ist offen.
+
+## 2026-10-27 (4) -- Luecken gegenueber dem Lean Reference Manual
+
+Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
+(Agent, Ergebnis stichprobenartig geprueft). Eingearbeitet:
+
+- 1.3 *Indexed families and inductive predicates* (tag
+  `indexed-families`): Parameter gegen Index (`Vec α n`, `Vec.head`
+  ohne `nil`-Fall), `MyEven` mit `cases`, `#print Nat.le`/`Eq`, warum
+  `cases h` auf `h : a = b` ersetzt. Zeile in der Vier-Schritte-
+  Tabelle. Der `Vec`-Verweis in Kapitel 0 zeigt jetzt hierher.
+- 1.2 *Proving things about recursive definitions* (tag
+  `recursive-proofs`): strukturell -> `rfl`; wohlfundiert -> `rfl`
+  scheitert (`+error`-Block), Gleichungslemma `log2.eq_1`,
+  `rw`/`unfold`/`simp [f]`; `decreasing_tactic` als Voreinstellung.
+- Anhang: `induction` mit `using Nat.strong_induction_on`,
+  `Nat.le_induction`, `generalizing`, `fun_induction`; `simp` mit
+  `@[simp]`, Normalform, Varianten-Tabelle; *File structure* mit
+  `include`/`omit` (der alte Satz "nur wo benutzt" war fuer Theoreme
+  falsch); *Common pitfalls*: `rw`/`simp` falten nicht auf,
+  Reduzierbarkeits-Tabelle (`abbrev`, `def`, `irreducible_def`,
+  `theorem`) -- und der Fehler "Nat.add rekursiv im ersten Argument"
+  korrigiert (es ist das zweite); Taktik-Kombinatoren (`<;>`,
+  `all_goals`, `any_goals`, `first`, `case`, `rename_i`, `x✝`) in der
+  Einleitung des Taktik-Anhangs.
+- 1.4: `lean4checker`. 1.5: Schritt 4 der Instanzsuche war falsch
+  ("mehrere Loesungen -> Fehler"); Lean nimmt die erste. Prioritaeten-
+  Satz korrigiert.
+- Offen aus dem Abgleich: Koerzion gebuendelter Morphismen
+  (`DFunLike`), `@[ext]` fuer Strukturen, `autoImplicit`, `#synth`,
+  mutual/nested inductives, Modulsystem.

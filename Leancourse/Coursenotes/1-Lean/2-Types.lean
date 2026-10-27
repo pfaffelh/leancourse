@@ -11,21 +11,21 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types" =>
+#doc (Manual) "Types I: rules and universes" =>
 %%%
 htmlSplit := .never
 tag := "types"
 %%%
 
+Here are the [slides](slides/1-2-types/) of this section.
+
 Lean has the data types every programming language has — `int`, `string`, `float` — and you can define your own, as you will in this course. Throughout, `x : α` means that `x` is a term of type `α`: `false : Bool`, `42 : ℕ`, `f : ℕ → ℝ` for a function from ℕ to ℝ (itself a type), and `0 ≠ 1 : Prop` for the proposition that 0 and 1 differ. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → (Fin n → ℝ)` where `Fin n` is the type which carries `{0, ..., n-1}` (here, the type `Fin n → ℝ` depends on `n : ℕ`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` will be called a universe) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
 
-These data types are abstract: Lean treats `ℕ` and `ℝ` as genuinely infinite, not as floating-point approximations. `ℕ` is the `zero`/`succ` construction of the {ref "nat"}[introduction]; `ℝ` is built from an equivalence relation on Cauchy sequences, a {ref "quotient-types"}[quotient type] (end of this chapter).
+These data types are abstract: Lean treats `ℕ` and `ℝ` as genuinely infinite, not as floating-point approximations. `ℕ` is the `zero`/`succ` construction of the {ref "nat"}[introduction]; `ℝ` is built from an equivalence relation on Cauchy sequences, a {ref "quotient-types"}[quotient type] (next chapter). As a consequence, `0 : ℕ` and `0 : ℝ` are different objects. Where a natural number is used as a real number, Lean inserts a conversion, a {ref "coercions"}[coercion], and displays it as `↑n`.
 
 In Lean every object is a term, and every term has a type. A type is itself a term, so it has a type as well.
-
-The [slides](slides/1-2-types/) for this chapter follow it section by section.
 
 # The rules of Lean's type theory
 %%%
@@ -322,7 +322,7 @@ This is the application rule. The type of $`f` must be a function type $`(x : \a
 
 *Size.* The whole kernel is about 350 kB of C++ in `src/kernel`, of which `type_checker.cpp` has about 1 400 lines and the checking of inductive declarations (`inductive.cpp`) a similar amount. That is small enough to be read, and there are independent reimplementations that check the same terms: *lean4lean* in Lean, *nanoda* in Rust, and *Con-Leche*, mentioned in {ref "prop-special"}[Why `Prop` is special].
 
-The rest of this chapter takes these rules one at a time: universes, `Prop`, inductive types, structures and quotients. A complete account is in Mario Carneiro's [*The Type Theory of Lean*](https://github.com/digama0/lean-type-theory).
+The rest of this chapter treats universes and `Prop`. Inductive types, structures and quotients are the subject of the {ref "type-formers"}[next chapter]. A complete account is in Mario Carneiro's [*The Type Theory of Lean*](https://github.com/digama0/lean-type-theory).
 
 # The universe hierarchy
 %%%
@@ -513,257 +513,3 @@ Because `Decidable p` is in `Type`, it *may* eliminate into `Type` — which is 
 :::
 
 The classical route mirrors `Classical.choose` in the same way: `Classical.em : a ∨ ¬a` is always available (it is a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable` — a keyword marking a definition Lean cannot turn into runnable code, needed here because `Classical.choice` has no computational content to execute (this is the usual trigger for `noncomputable`, though not the only one). So the two halves — `∃`/`Σ`/`choose` for the *witness*, `∨`/`Decidable`/`em` for the *tag* — are really the same story: computationally relevant information can leave the `Prop` world only if we put it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` form of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)
-
-# Inductive types
-%%%
-tag := "inductive"
-%%%
-
-`Nat`, `List`, `Option`, `Bool` and `Empty` are all *inductive* types; `Nat` and `Bool` were dissected in the {ref "nat-intro"}[previous chapter]. What follows is how to declare such a type yourself, and which declarations Lean accepts.
-
-You declare an inductive type by giving a name, the type's universe, and a list of *constructors*, each saying how to build a new element out of existing pieces. Declaring the natural numbers by hand reproduces exactly the structure of `Nat`:
-
-```lean
-inductive MyNat where
-  | zero : MyNat
-  | succ (n : MyNat) : MyNat
-```
-
-As with `Nat`, this single declaration introduces three things at once: the type `MyNat`; its two constructors `MyNat.zero` and `MyNat.succ`, so every element is either `zero` or `succ n`; and a *recursor* `MyNat.rec` — the type's *eliminator*, the counterpart of its constructors — of the same shape as `Nat.rec`, into which pattern matching, `cases`, and `induction` all translate. Its {ref "reduction-rules"}[iota rule], `MyNat.rec z s (.succ n) ⟶ s n (MyNat.rec z s n)`, is the firing we watched for `Nat`. And a recursor is not special to `inductive`: since a `structure` is a single-constructor inductive, it too has one — `Point.rec` (from the next section) takes a single case, a function of the fields, and the projections `Point.x`, `Point.y` are defined through it.
-
-With {ref "type-universes"}[universes] available, the recursor can be stated in full generality. The introduction used its *non-dependent* form, into a fixed result type; the true `MyNat.rec` lets that type *depend* on the value being consumed, a dependency recorded by a *motive* `MyNat → Sort u` (the leading `@` in `@MyNat.rec` makes Lean's normally-hidden implicit arguments — here the `motive` — explicit, so that `#check` prints them; see {ref "strict-implicit"}[the appendix on parentheses]):
-
-```lean
-#check @MyNat.rec
--- {motive : MyNat → Sort u} →
---   motive .zero →                      -- zero case
---   ((n : MyNat) → motive n →
---      motive n.succ) →                 -- succ case
---   (t : MyNat) → motive t
-```
-
-With a data-valued `motive` this is the *recursion* the introduction showed; with a `Prop`-valued one it is precisely the *induction principle*. Recursion and induction are thus two readings of the single primitive `MyNat.rec` — which is why the `induction` tactic and recursive definitions feel so alike.
-
-The declaration only *forms the type*. How to actually build its elements and *define functions* on it — typically by pattern matching on the constructors — is the subject of {ref "terms"}[the next chapter], on constructing terms.
-
-Proofs about an inductive type use the `induction` tactic, which applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.
-
-Inductive types also cover non-recursive data:
-
-```lean
-inductive Colour where
-  | red | green | blue
-```
-
-and parameterized types:
-
-```lean
--- `MyOption α` is either `none` or `some a` for some `a : α`.
-inductive MyOption (α : Type) where
-  | none : MyOption α
-  | some (a : α) : MyOption α
-```
-
-Inductive types are the main mechanism by which new data types enter Lean, and `Mathlib` uses them throughout. They also settle the universe question from the other side: the universe of an inductive type must be large enough to hold all of its constructor arguments.
-
-Not every `inductive` declaration is accepted. A constructor may mention the type being defined, but only *positively*: never to the *left* of an arrow inside one of its arguments. This *strict positivity* condition keeps inductive types well-founded and free of paradox. An *infinitely-branching* tree — where a `node` carries one subtree for each natural number — is fine, because in the `node` constructor `MyTree` occurs only to the *right* of `→`:
-
-```lean
-inductive MyTree where
-  | leaf : ℕ → MyTree              -- a leaf holds a value
-  | node : (ℕ → MyTree) → MyTree   -- positive occurrence
-
--- leaves now carry data, and trees can be built:
-example : MyTree := .leaf 7
-example : MyTree := .node (fun n => .leaf n)
-```
-
-The `leaf` case is what gets the type off the ground. Positivity constrains only *where* `MyTree` may occur, not whether the type has any elements: drop `leaf`, and the declaration is *still accepted*, but no closed `MyTree` can ever be built — every `node` already demands a whole family `ℕ → MyTree` of subtrees, with nothing to start from, so the type is *empty* (like `Empty`; one can even prove `MyTree → False`). With `leaf` present you build upward — `leaf 7`, then `node (fun n => leaf n)`, then trees over those. Note that `leaf` here *carries* a `ℕ`, so different leaves are genuinely different; a bare `leaf : MyTree` would give a single, featureless leaf, indistinguishable from every other.
-
-Because `node` takes a *function* `ℕ → MyTree`, every node has one child per natural number — it branches *infinitely*. It is not that *every* `MyTree` is infinite: a leaf is finite (`leaf 7` is a complete tree), so only trees that actually use `node` are. The infinite branching comes from the function-typed argument. A finitely-branching tree would be `node : MyTree → MyTree → MyTree`, where `MyTree` occurs directly rather than inside a function, so the right-of-`→` case would not arise.
-
-But a constructor that stores a *function out of* the type is rejected:
-
-```
-inductive Bad where
-  | mk : (Bad → False) → Bad
--- error: (kernel) arg #1 of 'Bad.mk' has a non positive
---        occurrence of the datatypes being declared
-```
-
-The rejection is not pedantry: were `Bad` allowed, one could prove `False`. Project the stored function out of a `b : Bad` and apply it to `b` itself,
-
-```
-def app : Bad → (Bad → False) | .mk f => f
-def neg (b : Bad) : False := app b b
-```
-
-so `neg : Bad → False`. Then `Bad.mk neg : Bad`, and `neg (Bad.mk neg) : False` is a closed proof of `False` (it even loops, `neg (Bad.mk neg) ⟶ neg (Bad.mk neg)` — the untyped Ω combinator smuggled into the theory). Strict positivity outlaws exactly the negative occurrence that ties this self-applying knot — the same consistency concern that rules out `Type : Type`. (That positivity is also *sufficient* for consistency — every strictly positive type is the least fixed point of a monotone functor, so the theory has a model — is a deep metatheorem, not something Lean proves about itself.)
-
-# Structures
-%%%
-tag := "structures"
-%%%
-
-While inductive types let us define types with multiple constructors, many mathematical objects are better described as a *collection of named fields*. For example, a point in the plane has an `x`-coordinate and a `y`-coordinate. In Lean, we use `structure` for this.
-
-A `structure` is a special case of an inductive type with exactly one constructor and named fields. Here is a simple example:
-
-```lean
-structure Point where
-  x : ℕ
-  y : ℕ
-```
-
-This declares a type `Point` whose elements are records with two `ℕ` fields. There is a single constructor, so both fields must be supplied. The declaration also produces that constructor `Point.mk` and one projection per field, whose types can be inspected without building a value:
-
-```lean
-#check (Point.mk : ℕ → ℕ → Point)
-#check (Point.x : Point → ℕ)
-#check (Point.y : Point → ℕ)
-```
-
-A value of a structure is determined by its fields: `p` and `Point.mk p.x p.y` are *definitionally* equal, so `rfl` proves it. This is the η rule of the {ref "reduction-rules"}[reduction rules], here *for structures*. It holds for every structure, for instance for pairs `ℕ × ℕ`:
-
-```lean
-example (p : Point) : p = Point.mk p.x p.y := rfl
-example (p : ℕ × ℕ) : p = (p.1, p.2) := rfl
-```
-
-For a general inductive type there is no such rule: `n : ℕ` is not definitionally `0` or a successor, and to split on it you need `cases`.
-
-Fields may be given *default values* as part of the declaration:
-
-```lean
-structure MyConfig where
-  width : ℕ := 80
-  height : ℕ := 24
-  title : String := "Untitled"
-```
-
-These defaults are used whenever a value is built without specifying every field.
-
-One structure can *extend* another, inheriting all of its fields:
-
-```lean
-structure Point3D extends Point where
-  z : ℕ
-```
-
-so a `Point3D` has fields `x`, `y` (from `Point`) and `z`. This is particularly important in Mathlib, where the algebraic hierarchy uses structure extension extensively: `CommRing` extends `Ring`, which extends `Semiring`, and so on.
-
-Structures are natural for representing mathematical objects. A *Gaussian integer* (a complex number with integer parts) is a pair of `ℤ`s,
-
-```lean
-structure MyComplex where
-  re : ℤ
-  im : ℤ
-```
-
-and a structure may bundle *data together with a property* — here a linear map, carrying both a function and a proof that it respects addition (the square brackets `[Add α]` are an *instance-implicit* argument, requiring `α` to carry an addition; see {ref "square-bracket-notation"}[the typeclasses chapter]):
-
-```lean
-structure MyLinearMap (α β : Type) [Add α] [Add β] where
-  toFun : α → β
-  map_add : ∀ x y : α, toFun (x + y) = toFun x + toFun y
-```
-
-This pattern of bundling data with properties is fundamental to how Mathlib organizes mathematics.
-
-How to *construct* values of these types, read their fields, and define operations on them is the subject of {ref "terms"}[the next chapter].
-
-# Inductive types vs structures
-%%%
-tag := "inductive-vs-structure"
-%%%
-
-When should you use `inductive` and when `structure`?
-
-* Use `structure` when your type has a single constructor with named fields. Examples: points, complex numbers, algebraic structures.
-* Use `inductive` when your type has multiple constructors. Examples: natural numbers, lists, trees, `Option`, `Bool`.
-
-A `structure` is syntactic sugar for an inductive type with one constructor. The definition
-
-```
-structure Point where
-  x : ℕ
-  y : ℕ
-```
-
-is essentially equivalent to
-
-```
-inductive Point where
-  | mk : ℕ → ℕ → Point
-```
-
-but the `structure` version gives us named fields, {ref "structure-values"}[dot notation], the possibility for default values, and the `extends` mechanism. (A `class` is in turn a `structure` marked for use by instance search; we return to it in the {ref "typeclasses"}[Typeclass] chapter.)
-
-# Quotient types
-%%%
-tag := "quotient-types"
-%%%
-
-The fourth way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction. `ℤ`, `ℚ`, `Multiset α` (lists up to reordering) and `ZMod n` are quotients too.
-
-Its entire interface is four constants:
-
-```lean
-#check @Quot.mk     -- (r : α → α → Prop) → α → Quot r
-#check @Quot.sound  -- r a b → Quot.mk r a = Quot.mk r b
-#check @Quot.lift   -- (f : α → β) → (∀ a b, r a b → f a = f b) → Quot r → β
-#check @Quot.ind
-```
-
-- `Quot.mk r` sends each element to its class.
-- `Quot.sound` is the crux: if `r a b`, then the two classes are *the same term*. It is one of Lean's few genuine axioms — the `#print axioms name` command traces a constant back to the axioms it depends on, and here `#print axioms Quot.sound` reports `[Quot.sound]`.
-- `Quot.lift` defines a function *out of* the quotient — but only once you *prove* it respects `r` (the `∀ a b, r a b → f a = f b` argument), which is exactly the mathematician's "check that this is well-defined". And it computes: `Quot.lift f h (Quot.mk r a)` reduces to `f a`.
-- `Quot.ind` proves a property of every quotient element by checking it on the classes `Quot.mk r a`.
-
-The computation rule of `Quot.lift` is a {ref "reduction-rules"}[reduction rule] of its own, like ι for recursors, so `rfl` proves it:
-
-```lean
-example (r : Nat → Nat → Prop) (f : Nat → Nat)
-    (h : ∀ a b, r a b → f a = f b) (a : Nat) :
-    Quot.lift f h (Quot.mk r a) = f a := rfl
-```
-
-In practice one usually goes through `Quotient`, a thin wrapper of `Quot` over a bundled equivalence relation (a `Setoid`). The status of `Quot.sound` as an axiom is taken up again in the {ref "axiom-quot"}[axioms chapter].
-
-::::keepEnv
-:::example "How `ℝ` is built as a quotient"
-Mathlib's real numbers are a concrete instance of exactly this construction. First, a `CauSeq` is a {ref "subtypes"}[*subtype*]: the notation `{ f : ℕ → ℚ // IsCauSeq abs f }` means a rational sequence `f : ℕ → ℚ` bundled with a proof that it is Cauchy.
-
-```lean
-#check (CauSeq ℚ abs)
--- CauSeq ℚ abs = { f : ℕ → ℚ // IsCauSeq abs f }
-example (f : CauSeq ℚ abs) : ℕ → ℚ := f.1
-```
-
-`ℝ` is then a one-field structure wrapping the *quotient* of these sequences by the relation "the difference tends to `0`". The class map `CauSeq.Completion.mk` is the `Quot.mk` of that quotient:
-
-```lean
-#check @Real.ofCauchy
--- CauSeq.Completion.Cauchy abs → ℝ
-
-#check @CauSeq.Completion.mk
--- CauSeq ℚ abs → CauSeq.Completion.Cauchy abs
-
--- two sequences give the same real iff (f - g) → 0;
--- `≈` is the Setoid equivalence relation on `CauSeq`
-example (f g : CauSeq ℚ abs) :
-    f ≈ g ↔ (f - g).LimZero := Iff.rfl
-```
-
-Addition is the first use of `Quot.lift`. Two reals are added by adding *representative* sequences termwise, which is well-defined because `+` respects the relation: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`. With that checked, `Quot.lift` yields the computation rule that `mk` is an additive homomorphism:
-
-```lean
-example (f g : CauSeq ℚ abs) :
-    CauSeq.Completion.mk f + CauSeq.Completion.mk g
-      = CauSeq.Completion.mk (f + g) :=
-  CauSeq.Completion.mk_add f g
-```
-
-This `mk (f) + mk (g) = mk (f + g)` equation *is* the `Quot.lift f h (Quot.mk r a) ⟶ f a` reduction from the {ref "reduction-rules"}[reduction rules], applied to a two-argument operation.
-:::
-::::

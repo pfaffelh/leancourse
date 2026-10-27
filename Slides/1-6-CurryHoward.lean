@@ -195,6 +195,27 @@ example : ∃ (n : ℕ), n + n = 10 :=
 
 `∃` lives in `Prop`, `Σ` lives in `Type`.
 
+# Σ and ∃
+
+:::table +colHeaders
+*
+  * type
+  * lives in
+  * the witness
+*
+  * `(x : α) × β x`
+  * `Type`
+  * can be read off and computed with
+*
+  * `∃ x, P x`
+  * `Prop`
+  * usable only inside proofs
+:::
+
+:::class "key"
+`∃` is the propositional truncation of `Σ`: it keeps only whether a witness exists.
+:::
+
 # Nonempty
 
 `Nonempty α` is a proposition: `α` has an element, but none is given.

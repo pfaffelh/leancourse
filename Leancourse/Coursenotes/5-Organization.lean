@@ -32,13 +32,14 @@ used without the other.
 * Lean and its type theory, one deck per chapter:
   * [The natural numbers and reduction rules](slides/1-1-nat/) —
     {ref "nat"}[chapter]
-  * [Types](slides/1-2-types/) — {ref "types"}[chapter]
-  * [Terms](slides/1-3-terms/) — {ref "terms"}[chapter]
-  * [Typeclasses](slides/1-4-typeclasses/) — {ref "typeclasses"}[chapter]
-  * [Propositions and proofs](slides/1-5-curry-howard/) —
+  * [Types I: rules and universes](slides/1-2-types/) —
+    {ref "types"}[chapter]
+  * [Types II: type formers](slides/1-3-type-formers/) —
+    {ref "type-formers"}[chapter]
+  * [Terms](slides/1-4-terms/) — {ref "terms"}[chapter]
+  * [Typeclasses](slides/1-5-typeclasses/) — {ref "typeclasses"}[chapter]
+  * [Propositions and proofs](slides/1-6-curry-howard/) —
     {ref "curry-howard"}[chapter]
-  * [Dependent types in depth](slides/1-6-dependent-types/) —
-    {ref "dependent-types"}[chapter]
   * [Notation and abbreviations](slides/1-7-notation/) —
     {ref "notation"}[chapter]
 * [Filters in Mathlib](slides/2-6-filters/) — accompanies the
@@ -101,7 +102,7 @@ written at the start of the lab.
 * + 3
   + Mon 02.11.
   + Lecture
-  + Types, inductive types, quotients
+  + Types I: rules, universes, `Prop`
   + {ref "types"}[1.2]
 * + 3
   + Wed 04.11.
@@ -111,8 +112,8 @@ written at the start of the lab.
 * + 4
   + Mon 09.11.
   + Lecture
-  + Terms and pattern matching
-  + {ref "terms"}[1.3]
+  + Types II: function types, inductive types, structures, Σ, quotients
+  + {ref "type-formers"}[1.3]
 * + 4
   + Wed 11.11.
   + Lab
@@ -121,18 +122,18 @@ written at the start of the lab.
 * + 5
   + Mon 16.11.
   + Lecture
-  + Typeclasses
-  + {ref "typeclasses"}[1.4]
+  + Terms and pattern matching
+  + {ref "terms"}[1.4]
 * + 5
   + Wed 18.11.
   + Lab
   + Sheets
-  + `L-g`, `1.4-a`, `1.4-b`, extra `X-a`
+  + `L-g`, `1.3-a`, extra `X-a`
 * + 6
   + Mon 23.11.
   + Lecture
-  + Curry-Howard
-  + {ref "curry-howard"}[1.5]
+  + Typeclasses
+  + {ref "typeclasses"}[1.5]
 * + 6
   + Wed 25.11.
   + Lab
@@ -141,13 +142,13 @@ written at the start of the lab.
 * + 7
   + Mon 30.11.
   + Lecture
-  + Dependent types and notation
-  + {ref "dependent-types"}[1.6], {ref "notation"}[1.7]
+  + Curry-Howard and notation
+  + {ref "curry-howard"}[1.6], {ref "notation"}[1.7]
 * + 7
   + Wed 02.12.
   + Lab
   + *Test 2*, then sheets
-  + `1.6-a`, `1.7-a`
+  + `1.6-a`, `1.6-b`, `1.7-a`
 * + 8
   + Mon 07.12.
   + Lecture
@@ -263,7 +264,7 @@ The course is for mathematics students.
 * *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write ({ref "term"}[the proof state]). This is not the older use of computers in mathematics, which was to work through many cases ({ref "four-colour-episode"}[the four colour theorem]).
 * *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — {ref "tactics"}[*tactics*] — fit together. The second half goes deeper into the mathematics.
 * *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "monads"}[monads], needed both to use Lean and to read *Mathlib*.
-* *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "dependent-types"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
+* *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "type-formers"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
 * *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
 * *Proof engineering.* Automation tactics, {ref "navigating-mathlib"}[searching *Mathlib*], and the {ref "common-pitfalls"}[common pitfalls] of a large formal library.
 

@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # L-d -- Negation, `False` and `True`
 
-*Logic block, week 3. No chapter of its own: the theory is Curry-Howard (1.5) and the axioms (2.2), both later.*
+*Logic block, week 3. No chapter of its own: the theory is Curry-Howard (1.6) and the axioms (2.2), both later.*
 
 `¬P` is *by definition* `P → False`. Everything on this sheet follows
 from that.

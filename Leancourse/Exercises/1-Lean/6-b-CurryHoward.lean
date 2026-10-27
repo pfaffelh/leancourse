@@ -1,9 +1,9 @@
 import Mathlib
 
 /-
-# 1.5-b -- The Curry-Howard correspondence
+# 1.6-b -- The Curry-Howard correspondence
 
-*Notes chapter 1.5, week 6.*
+*Notes chapter 1.6, week 7.*
 
 In these exercises, you will practice writing term-mode proofs (without tactics)
 and compare them with tactic proofs. The goal is to see the Curry-Howard

@@ -2,10 +2,10 @@ import VersoSlides
 import Slides.«0-Introduction»
 import Slides.«1-1-Nat»
 import Slides.«1-2-Types»
-import Slides.«1-3-Terms»
-import Slides.«1-4-Typeclasses»
-import Slides.«1-5-CurryHoward»
-import Slides.«1-6-DependentTypes»
+import Slides.«1-3-TypeFormers»
+import Slides.«1-4-Terms»
+import Slides.«1-5-Typeclasses»
+import Slides.«1-6-CurryHoward»
 import Slides.«1-7-Notation»
 import Slides.«2-6-Filters»
 
@@ -93,10 +93,10 @@ def main (args : List String) : IO UInt32 := do
     [ ("0-introduction",      fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«0-Introduction»)),
       ("1-1-nat",             fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-1-Nat»)),
       ("1-2-types",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-2-Types»)),
-      ("1-3-terms",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-3-Terms»)),
-      ("1-4-typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-4-Typeclasses»)),
-      ("1-5-curry-howard",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-5-CurryHoward»)),
-      ("1-6-dependent-types", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-DependentTypes»)),
+      ("1-3-type-formers",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-3-TypeFormers»)),
+      ("1-4-terms",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-4-Terms»)),
+      ("1-5-typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-5-Typeclasses»)),
+      ("1-6-curry-howard",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-CurryHoward»)),
       ("1-7-notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-7-Notation»)),
       ("2-6-filters",         fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-6-Filters»)) ]
   let mut code : UInt32 := 0

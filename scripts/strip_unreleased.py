@@ -32,10 +32,10 @@ PLACEHOLDER = "This section is published right before the chapter is taught."
 # Chapters whose text is withheld on `main`, in reading order.
 WITHHELD = [
     "Leancourse/Coursenotes/1-Lean/2-Types.lean",             # 1.2
-    "Leancourse/Coursenotes/1-Lean/3-Terms.lean",             # 1.3
-    "Leancourse/Coursenotes/1-Lean/4-Typeclasses.lean",       # 1.4
-    "Leancourse/Coursenotes/1-Lean/5-CurryHoward.lean",       # 1.5
-    "Leancourse/Coursenotes/1-Lean/6-DependentTypes.lean",    # 1.6
+    "Leancourse/Coursenotes/1-Lean/3-TypeFormers.lean",       # 1.3
+    "Leancourse/Coursenotes/1-Lean/4-Terms.lean",             # 1.4
+    "Leancourse/Coursenotes/1-Lean/5-Typeclasses.lean",       # 1.5
+    "Leancourse/Coursenotes/1-Lean/6-CurryHoward.lean",       # 1.6
     "Leancourse/Coursenotes/1-Lean/7-Notation.lean",          # 1.7
     "Leancourse/Coursenotes/2-Mathematics/1-SetsAndTypes.lean",       # 2.1
     "Leancourse/Coursenotes/2-Mathematics/2-UniversesAndAxioms.lean", # 2.2

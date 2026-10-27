@@ -3,7 +3,7 @@ import Manual.Meta
 import Leancourse.Markup
 import Mathlib
 -- reuse the types (`Point`, `MyNat`, `MyComplex`, ...) declared there
-import «Leancourse».Coursenotes.«1-Lean».«2-Types»
+import «Leancourse».Coursenotes.«1-Lean».«3-TypeFormers»
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
@@ -17,9 +17,9 @@ htmlSplit := .never
 tag := "terms"
 %%%
 
-The previous chapter showed how *types* are formed. This chapter is about the other side: how to *define terms* — named inhabitants of those types.
+The previous two chapters showed how *types* are formed. This chapter is about the other side: how to *define terms* — named inhabitants of those types.
 
-The [slides](slides/1-3-terms/) for this chapter follow it section by section.
+The [slides](slides/1-4-terms/) for this chapter follow it section by section.
 
 # Naming terms with `def`
 %%%

@@ -7,14 +7,14 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the chapter "Types" of part 1 (Lean and its type theory).
-It follows the chapter section by section: the rules of Lean's type
-theory (with a short history), the universe hierarchy, why `Prop` is special, inductive types, structures
-and quotient types.
+Deck for the chapter "Types I: rules and universes" of part 1 (Lean
+and its type theory). It follows the chapter section by section: the
+rules of Lean's type theory (with a short history), the universe
+hierarchy, and why `Prop` is special.
 -/
 
 namespace SlidesTypes
-#doc (Slides) "Types" =>
+#doc (Slides) "Types I: rules and universes" =>
 
 ```css
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
@@ -26,7 +26,7 @@ namespace SlidesTypes
 .reveal section .math.display { font-size: 0.7em; }
 ```
 
-# Types
+# Types I: rules and universes
 
 Lean and its type theory — chapter 2
 
@@ -333,93 +333,10 @@ A `which : a ∨ b → Bool` would give `true ≡ false`.
   * the tag
 :::
 
-# Inductive types
-
-```lean -panel -stretch
-inductive MyNat where
-  | zero : MyNat
-  | succ : MyNat → MyNat
-
-#check @MyNat.rec
-```
-
-One declaration gives the type, its constructors and the recursor `MyNat.rec`, with a `motive : MyNat → Sort u`.
-
-:::class "key"
-Data-valued motive: recursion. `Prop`-valued motive: induction.
-:::
-
-# Strict positivity
-
-```lean -panel -stretch
-inductive MyTree where
-  | leaf : ℕ → MyTree
-  | node : (ℕ → MyTree) → MyTree
-```
-
-```
-inductive Bad where
-  | mk : (Bad → False) → Bad   -- rejected
-```
-
-With `Bad`, `neg b := app b b` gives `neg (Bad.mk neg) : False`.
-
-:::class "key"
-The type may occur only to the right of an arrow.
-:::
-
-# Structures
-
-One constructor, named fields.
-
-```lean -panel -stretch
-structure Point where
-  x : ℕ
-  y : ℕ
-structure Point3D extends Point where
-  z : ℕ
-#check (Point.mk : ℕ → ℕ → Point)
-```
-
-Data with a property: `MyLinearMap` bundles `toFun` and `map_add`.
-
-# Inductive types vs structures
-
-:::table +colHeaders +rowSeps
-*
-  * use
-  * when
-  * examples
-*
-  * `structure`
-  * one constructor, named fields
-  * points, complex numbers, algebraic structures
-*
-  * `inductive`
-  * several constructors
-  * `ℕ`, lists, trees, `Option`, `Bool`
-:::
-
-A `structure` is sugar for a one-constructor `inductive`, plus field names, dot notation, defaults and `extends`.
-
-# Quotient types
-
-`Quot r`: the type `α` seen up to a relation `r`. Examples: `ℤ`, `ℚ`, `ℝ`, `Multiset α`, `ZMod n`.
-
-- `Quot.mk r` sends an element to its class
-- `Quot.sound`: `r a b → Quot.mk r a = Quot.mk r b` — an axiom
-- `Quot.lift f h`: needs a proof that `f` respects `r`
-- `Quot.ind`: induction over classes
-
-:::class "key"
-`Quot.lift` is the mathematician's "check that this is well-defined".
-:::
-
 # Summary
 
 - A few rules (context, universes, functions, conversion, inductive types) are all of Lean's logic.
 - Types were invented to stop paradoxes of self-application.
 - Universes: `Prop`, `Type 0 : Type 1 : ...`; there is no `Type : Type`.
 - `Prop` is proof irrelevant, impredicative, and eliminates only into `Prop`.
-- New types: inductive types, structures, quotients.
-- Constructors build values; the recursor uses them.
+- Next chapter: the types these rules build — Π, inductive types, structures, Σ, quotients.

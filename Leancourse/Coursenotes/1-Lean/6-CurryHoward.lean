@@ -17,7 +17,7 @@ tag := "curry-howard"
 
 The Curry-Howard correspondence connects logic and type theory: **propositions correspond to types**, and **proofs correspond to terms** of those types. In Lean 4, this correspondence is not merely a theoretical curiosity — it is the very foundation on which the proof assistant is built.
 
-The [slides](slides/1-5-curry-howard/) for this chapter follow it section by section.
+The [slides](slides/1-6-curry-howard/) for this chapter follow it section by section.
 
 # Historical context
 %%%
@@ -203,7 +203,26 @@ example : ∃ (n : ℕ), n + n = 10 :=
   ⟨5, by norm_num⟩
 ```
 
-Note: There is an important distinction between `∃` (which lives in `Prop`) and `Σ` (which lives in `Type`). We discuss this further in {ref "sigma-vs-exists"}[the difference between `∃` and `Σ`].
+# Σ and ∃
+%%%
+tag := "sigma-vs-exists"
+%%%
+
+A proof of `∃ x, P x` is a pair `⟨a, h⟩` with `h : P a`, just like an element of the Σ-type `(x : α) × β x`. The difference is the universe. `Σ` lives in `Type`, and both components can be read off and computed with. `∃` lives in `Prop`, and by {ref "prop-special"}[restricted elimination] the witness can be used inside proofs but not to compute data.
+
+```lean
+def big : (n : ℕ) × PLift (n > 5) := ⟨7, ⟨by norm_num⟩⟩
+#eval big.1   -- 7
+
+example : ∃ n : ℕ, n > 5 := ⟨7, by norm_num⟩
+```
+
+(`PLift` turns the proof into data, because `Σ` requires a `Type` in both components. A subtype `{n : ℕ // n > 5}` does the same job more conveniently.)
+
+Counting makes the difference visible. A proposition has at most one proof up to equality, so it counts as 0 if false and 1 if true. The Σ-type has $`\sum_x |P(x)|` elements, which is the number of witnesses. `∃ x, P x` keeps only whether this sum is positive, that is, whether *some* `P x` holds. In the same way $`\prod_x |P(x)|` is positive exactly if *every* `P x` holds, which is `∀`. `∃` is the *propositional truncation* of `Σ`: it forgets which witness was given. Getting it back needs the axiom of choice, `Classical.choose`.
+
+Use `∃` when only the existence matters, which is the usual case in mathematics, and `Σ` or a subtype when the witness is needed.
+
 
 # `Nonempty` and propositional truncation
 %%%

@@ -158,7 +158,7 @@ notes are at <https://pfaffelh.github.io/leancourse/>.
    The folders follow the course notes: `0-Logic` is the logic
    block of the first weeks, `1-Lean` and `2-Mathematics` match
    the two parts of the notes, and a sheet's number is its chapter
-   -- `1-Lean/4-a-Typeclasses.lean` belongs to chapter 1.4.
+   -- `1-Lean/5-a-Typeclasses.lean` belongs to chapter 1.5.
 
 ## Working on the sheets
 

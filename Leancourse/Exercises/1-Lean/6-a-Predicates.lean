@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# (witness) 1.5-a -- Predicates and equality
+# 1.6-a -- Predicates and equality
 
-*Notes chapter 1.5, week 6.*
+*Notes chapter 1.6, week 7.*
 
 The setting is the one of sheet `1.2-a` (week 3): a type `α` and
 predicates on it. New here is equality — between terms, and between
@@ -40,7 +40,7 @@ example (x : α) : x = x := by
 -- Exercise 1) `¬P` is *by definition* `P → False` (sheet `L-d`), so
 -- this needs nothing but reflexivity.
 example (P : Prop) : ¬P ↔ (P → False) := by
-  rfl
+  sorry
 
 /-! ## Finding the lemma
 
@@ -95,13 +95,7 @@ lemma l1 (P Q : Prop) : (P → Q) ↔ (Q ∨ ¬P) := by
 -- disjunction as you introduce it.
 example (P Q : Prop) : (((P → Q) → P) → P) := by
   rw [l1, l1, l1]
-  by_cases hP : P
-  · left
-    exact hP
-  · right
-    rintro (h1 | h2)
-    · exact hP h1
-    · exact h2 (Or.inr hP)
+  sorry
 
 -- Exercise 3) `exact?` finds this one outright (the name is
 -- `not_imp_not`). Do it with `rw [l1 ...]` instead: rewrite both
@@ -109,7 +103,7 @@ example (P Q : Prop) : (((P → Q) → P) → P) := by
 -- arguments, so you can say which instance you mean.
 lemma l2 (P Q : Prop) : (P → Q) ↔ (¬Q → ¬P) := by
   rw [l1 P Q, l1 (¬Q) (¬P)]
-  tauto
+  sorry
 
 /-! ## Functions
 
@@ -135,24 +129,18 @@ example (f g : α → Prop) : ∃ (h : α → Prop), ∀ x, h x = (f x ∧ g x) 
 
 -- Exercise 4) Give `f` and `g` explicitly. Constant functions do.
 example : ∃ (f g : α → Prop), ∀ x, (f x) ↔ ¬(g x) := by
-  use fun _ ↦ True, fun _ ↦ False
-  intro x
-  simp
+  sorry
 
 -- Exercise 5) Same idea with `Bool`. Put the cursor on `xor` and
 -- press `F12` to see its definition.
 example : ∃ (f g : α → Bool), ∀ x, xor (f x) (g x) := by
-  use fun _ ↦ true, fun _ ↦ false
-  intro x
-  simp
+  sorry
 
 -- Exercise 6) Turning a `∀ x, ∃ y` into a function is exactly what
 -- `choose` does; it is the axiom of choice, chapter 2.2.
 example : (∀ (x : α), ∃ (y : α), R x y) →
     ∃ (f : α → α), ∀ (x : α), R x (f x) := by
-  intro h
-  choose f hf using h
-  exact ⟨f, hf⟩
+  sorry
 
 /-! ## When are two functions equal?
 
@@ -167,12 +155,7 @@ example (f g : α → Prop) (h : ∀ x, f x = ¬¬(g x)) : f = g := by
 
 -- Exercise 7) One direction is `ext`, the other is `rw`.
 example (f g : α → β) : (∀ x, ((f x) = (g x))) ↔ f = g := by
-  constructor
-  · intro h
-    ext x
-    exact h x
-  · intro h x
-    rw [h]
+  sorry
 
 /-! ## `change`
 
@@ -187,6 +170,4 @@ example (x : α) (f : α → Prop) : (¬(f x)) ↔ ((f x) → False) := by
 -- Exercise 8) The right-hand side says that `β` has at most one
 -- element. Apply the hypothesis to two constant functions.
 example : (∀ (f g : α → β), f = g) → (∀ (y1 y2 : β), y1 = y2) := by
-  intro h y1 y2
-  have hfg := h (fun _ ↦ y1) (fun _ ↦ y2)
-  exact congrFun hfg default
+  sorry

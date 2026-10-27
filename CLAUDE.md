@@ -2312,3 +2312,30 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
   sie raus; das allein beendet die Veroeffentlichung **nicht**.
   Offen: Loeschen auf `main` und `git filter-repo` + Force-Push.
 
+
+## 2026-10-27 -- 1.2 und 1.6 zu *Typen I* und *Typen II*
+
+- **Notation bekommt keine eigene Vorlesung** (Nutzer: Studierende
+  fuehren kaum eigene Notation ein). Die gewonnene Woche geht an die
+  Grundlagen. Die Kapitelzahl bleibt bei sieben.
+- **Schnitt:** `1.2 Types I: rules and universes` (tag `types`) endet
+  jetzt vor `# Inductive types`. Alles ab dort plus der Inhalt des
+  alten 1.6 steht in `1-Lean/3-TypeFormers.lean`, *Types II: type
+  formers*, tag `type-formers`: Π (mit Konvention `→` fuer Daten,
+  `∀` fuer Propositionen, `Fin.last`), inductive, structures,
+  **Σ (neu, als Struktur, disjunkte Vereinigung, Zaehlbeispiel mit
+  `Fin 4`: 10 gegen 24)**, Subtypen, Typfamilien, Vektoren,
+  Matrizen, Quotienten. *Σ und ∃* (tag `sigma-vs-exists`) steht
+  jetzt in Curry-Howard bei `Nonempty`.
+- Altes 1.6 hatte zwei falsche "Σ-Beispiele", die Subtypen waren;
+  korrigiert. "What makes" und "Why dependent types matter" sind weg
+  (`safeDiv` steht im Π-Abschnitt). Tag `dependent-types` gibt es
+  nicht mehr.
+- **Umnummerierung** (`git mv`, Tags unveraendert): Kapitel
+  `3-Terms`→`4`, `4-Typeclasses`→`5`, `5-CurryHoward`→`6`; Decks
+  gleich, URLs `slides/1-3-type-formers/` ... `1-6-curry-howard/`;
+  Blaetter `1.6-a`→`1.3-a` (Woche 5), `1.4-a/b`→`1.5-a/b`,
+  `1.5-a/b`→`1.6-a/b`. `WITHHELD`, Organization, `plan.md`,
+  `Checks/README.md` nachgezogen.
+- Deck 1.2 endet jetzt nach "The tag has to stay hidden"; die Folien
+  ab "Inductive types" stehen im Deck 1.3. Hoechste Folie 642 px.

@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# 1.6-a -- Dependent types
+# 1.3-a -- Dependent types
 
-*Notes chapter 1.6, week 7.*
+*Notes chapter 1.3, week 5.*
 
 A type may depend on a value. `Σ (x : α), β x` pairs a value with
 data whose type depends on it, `(x : α) → β x` is the function

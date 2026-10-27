@@ -51,7 +51,7 @@ The one thing that *does* have to hold: a witness must prove the same
 statement as the sheet. When an exercise statement changes, the witness
 has to follow, or the check is worthless. The failure mode to watch for
 is silent drift — in October 2026 the witness for the old `01-h`
-(now `1-Lean/5-a-Predicates`) exercises 2 and 3 had been rewritten to use
+(now `1-Lean/6-a-Predicates`) exercises 2 and 3 had been rewritten to use
 `imp_iff_or_not` and `not_imp_not` while the sheet still told
 students to start with `rw [l1]`, which rewrites the *outer*
 implication and leads somewhere else entirely. That mismatch
@@ -68,11 +68,11 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `1-Lean/1-b-Bool` | 1.1 | 3 | yes |
 | `1-Lean/1-c-Naturals` | 1.1 | 4 | yes |
 | `1-Lean/2-a-Quantifiers` | 1.2 | 3 | yes |
-| `1-Lean/4-a-Typeclasses` | 1.4 | 5 | yes |
-| `1-Lean/4-b-Coercions` | 1.4 | 5 | yes |
-| `1-Lean/5-a-Predicates` | 1.5 | 6 | yes |
-| `1-Lean/5-b-CurryHoward` | 1.5 | 6 | yes |
-| `1-Lean/6-a-DependentTypes` | 1.6 | 7 | yes |
+| `1-Lean/3-a-DependentTypes` | 1.3 | 5 | yes |
+| `1-Lean/5-a-Typeclasses` | 1.5 | 6 | yes |
+| `1-Lean/5-b-Coercions` | 1.5 | 6 | yes |
+| `1-Lean/6-a-Predicates` | 1.6 | 7 | yes |
+| `1-Lean/6-b-CurryHoward` | 1.6 | 7 | yes |
 | `1-Lean/7-a-Notation` | 1.7 | 7 | yes |
 | `2-Mathematics/1-a-Sets` | 2.1 | 8 | yes |
 | `2-Mathematics/1-b-ImagePreimage` | 2.1 | 8 | yes |

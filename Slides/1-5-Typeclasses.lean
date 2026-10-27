@@ -26,7 +26,7 @@ namespace SlidesTypeclasses
 
 # Typeclasses
 
-Lean and its type theory — chapter 4
+Lean and its type theory — chapter 5
 
 # The problem typeclasses solve
 

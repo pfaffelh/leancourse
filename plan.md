@@ -30,11 +30,11 @@ Kontext, ohne Lean.
 |---|---|---|---|---|---|---|
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | L-a | |
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | L-b, L-c, 1.1-a | |
-| 3 | 02.11. | 04.11. | Typen, induktive Typen, Quotienten | 1.2 | L-d, 1.2-a, 1.1-b | |
-| 4 | 09.11. | 11.11. | Terme und Pattern Matching | 1.3 | L-e, L-f, 1.1-c | **Test 1** |
-| 5 | 16.11. | 18.11. | Typklassen | 1.4 | L-g, 1.4-a, 1.4-b · *extra:* X-a | |
-| 6 | 23.11. | 25.11. | Curry-Howard | 1.5 | 1.5-a, 1.5-b | |
-| 7 | 30.11. | 02.12. | Abhängige Typen und Notation | 1.6, 1.7 | 1.6-a, 1.7-a | **Test 2** |
+| 3 | 02.11. | 04.11. | Typen I: Regeln, Universen, `Prop` | 1.2 | L-d, 1.2-a, 1.1-b | |
+| 4 | 09.11. | 11.11. | Typen II: Funktionstypen, induktive Typen, Strukturen, Σ, Quotienten | 1.3 | L-e, L-f, 1.1-c | **Test 1** |
+| 5 | 16.11. | 18.11. | Terme und Pattern Matching | 1.4 | L-g, 1.3-a · *extra:* X-a | |
+| 6 | 23.11. | 25.11. | Typklassen | 1.5 | 1.5-a, 1.5-b | |
+| 7 | 30.11. | 02.12. | Curry-Howard und Notation | 1.6, 1.7 | 1.6-a, 1.6-b, 1.7-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen und Typen; Fundiertheit | 2.1, 2.3 | 2.1-a, 2.1-b, 2.1-c | |
 | 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.2-a, 2.3-a | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Anhang | A-a, A-b | |
@@ -49,9 +49,12 @@ Kontext, ohne Lean.
 `A-b` laufen als Ferienaufgabe über die Pause.
 
 Drei Kapitelpaare teilen sich einen Termin: 1.6+1.7 (W7), 2.1+2.3
-(W8), 2.4+2.5 (W11). Es sind die vier kürzesten Kapitel (1.7 5,8k,
-2.1 8,1k, 2.3 8,6k, 2.5 8,9k Zeichen); jedes Paar bleibt unter 1.4
-allein.
+(W8), 2.4+2.5 (W11). Notation (1.7) bekommt keine eigene Vorlesung:
+eigene Notation führen Studierende kaum ein. Die gewonnene Woche
+geht an die Grundlagen: die frühere 1.2 und 1.6 sind seit dem
+27.10.2026 zwei Kapitel *Typen I* (Regeln, Universen, `Prop`) und
+*Typen II* (Typbildner: Π, induktive Typen, Strukturen, Σ,
+Subtypen, Quotienten).
 
 Skriptzeilen je Termin: Mittel 474, Spanne 330 (W2) bis 768 (W15).
 Woche 11 ist zugleich die schwerste Übungswoche (67 Aufgaben, `2.4-a`
@@ -68,7 +71,7 @@ Ein Blatt heißt nach seinem Kapitel: `1.1-a` bis `1.1-c` zu Kapitel
 Logikblock ohne Kapitel, `A-a`/`A-b` der Anhang, `X-a` das Extrablatt.
 
 Kein Blatt läuft vor seinem Kapitel. Der Logikblock `L-b` bis `L-g`
-läuft in den Wochen 2 bis 5 und damit vor seiner Theorie (1.5 und
+läuft in den Wochen 2 bis 5 und damit vor seiner Theorie (1.6 und
 2.2).
 
 Die Logik ist nach Woche 5 abgeschlossen.
@@ -88,8 +91,8 @@ Vorgetragen werden die Abschnitte, die `A-a` verlangt:
 
 ### Ohne eigenes Blatt
 
-Kapitel 1.2 und 1.3. Pattern Matching und Rekursoren stehen auf
-`1.1-a` und `1.1-b`, die Universen auf `1.6-a`. Strukturen,
+Kapitel 1.4. Pattern Matching und Rekursoren stehen auf
+`1.1-a` und `1.1-b`, die Universen auf `1.3-a`. Strukturen,
 Quotiententypen und eigene induktive Typen werden gelesen, nicht
 geübt.
 

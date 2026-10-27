@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# (witness) 1.6-a -- Dependent types
+# (witness) 1.3-a -- Dependent types
 
-*Notes chapter 1.6, week 7.*
+*Notes chapter 1.3, week 5.*
 -/
 
 /- ## Part 1: Sigma types -/

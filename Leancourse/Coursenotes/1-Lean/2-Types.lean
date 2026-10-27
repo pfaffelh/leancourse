@@ -11,356 +11,399 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types I: rules and universes" =>
+#doc (Manual) "Types I: building types" =>
 %%%
 htmlSplit := .never
 tag := "types"
 %%%
 
-Here are the [slides](slides/1-2-types/) of this section.
-
 Lean has the data types every programming language has — `int`, `string`, `float` — and you can define your own, as you will in this course. Throughout, `x : α` means that `x` is a term of type `α`: `false : Bool`, `42 : ℕ`, `f : ℕ → ℝ` for a function from ℕ to ℝ (itself a type), and `0 ≠ 1 : Prop` for the proposition that 0 and 1 differ. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → (Fin n → ℝ)` where `Fin n` is the type which carries `{0, ..., n-1}` (here, the type `Fin n → ℝ` depends on `n : ℕ`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
 
-Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` will be called a universe) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the next section.)
+Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` will be called a universe) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the {ref "type-universes"}[last section].)
 
 These data types are abstract: Lean treats `ℕ` and `ℝ` as genuinely infinite, not as floating-point approximations. `ℕ` is the `zero`/`succ` construction of the {ref "nat"}[introduction]; `ℝ` is built from an equivalence relation on Cauchy sequences, a {ref "quotient-types"}[quotient type] (next chapter). As a consequence, `0 : ℕ` and `0 : ℝ` are different objects. Where a natural number is used as a real number, Lean inserts a conversion, a {ref "coercions"}[coercion], and displays it as `↑n`.
 
 In Lean every object is a term, and every term has a type. A type is itself a term, so it has a type as well.
 
-# The rules of Lean's type theory
+This chapter shows how types are built: function types, inductive types and structures, pairs, subtypes and type families. In several of them the type of one part depends on the value of another. Such types are called *dependent*, and they are what separates Lean from most programming languages. The rules behind the constructions are the subject of the {ref "rules"}[next chapter].
+
+The [slides](slides/1-2-types/) for this chapter follow it section by section.
+
+# Function types and Π-types
 %%%
-tag := "type-rules"
+tag := "pi-types"
 %%%
 
-Lean accepts a term only if it can be built with a small, fixed set of rules. These rules are all of Lean's logic. There are no separate rules for $`\land`, $`\lor`, $`\forall`, $`\exists` or $`=`: $`\forall` is a function type, and the others are inductive types, defined with the rules below. Set theory is organized differently. ZFC is a theory in first-order logic, which brings its own rules of inference, and on top of it come ten axioms about $`\in` ({ref "comparison-zfc"}[Comparison with ZFC set theory]).
+The function `fun n => n + 1` takes each `n : ℕ` to a term of type `ℕ`, so its type is `ℕ → ℕ`. A proof of `∀ n : ℕ, n < n + 1` takes each `n : ℕ` to a proof of `n < n + 1`. The two differ only in that the type of the value, `n < n + 1`, depends on `n`. Both are instances of one type former, the *dependent function type* or *Π-type* `(x : α) → β x`.
 
-:::example "Where types come from"
-Types were introduced to stop a contradiction. Russell's set $`R = \{x : x \notin x\}` broke Frege's *Grundgesetze der Arithmetik* in 1902 ({ref "prehistory"}[Introduction]). Russell's repair of 1908 gave every object a type and let a type apply only to objects of lower type, so that `x ∈ x` is not false but not a statement at all. Zermelo's repair of the same year instead restricts which sets exist and leaves `x ∈ x` a formula. Mathematics followed Zermelo; proof assistants follow Russell, because a type checker can decide before any question of truth whether an expression means anything.
+There are two notations for it. We write `(x : α) → β x`, or `α → β` if `β` does not mention `x`, when `β x` is data, and `∀ x : α, β x` when `β x` is a proposition. Lean prints them the same way. The two notations denote the same type, so `rfl` proves them equal:
 
-Alonzo Church turned the simple theory of types into a calculus in 1940, the simply typed lambda calculus on which *Isabelle/HOL* still rests. Dependent types, in which a type may mention a term, came with de Bruijn's Automath (1967) and Martin-Löf's type theory (1971). Coquand and Huet added impredicative quantification in the Calculus of Constructions (1985), and Paulin-Mohring added inductive types (1990). Lean's type theory is a variant of the result, the {ref "cic"}[Calculus of Inductive Constructions]. Three times the same thing happened: a system let an object be applied to itself, a contradiction followed, and types forbade it. In Lean the ban is visible as `Type 0 : Type 1 : Type 2 : ...`.
+```lean
+#check (fun n => n + 1 : ℕ → ℕ)
+
+example : ∀ n : ℕ, n < n + 1 :=
+  fun n => Nat.lt_succ_self n
+
+example : ((n : ℕ) → n < n + 1) =
+    (∀ n : ℕ, n < n + 1) := rfl
+```
+
+A dependent function whose values are data: `Fin.last n` is the largest element of `Fin (n + 1)`, so each value lies in a different type.
+
+```lean
+def lastOf : (n : ℕ) → Fin (n + 1) :=
+  fun n => Fin.last n
+
+#check lastOf 3   -- lastOf 3 : Fin (3 + 1)
+#eval lastOf 3    -- 3
+```
+
+The argument may itself be a type. The polymorphic identity takes a type `α` and returns the identity on `α`:
+
+```lean
+def polyId : (α : Type) → α → α :=
+  fun _ a => a
+
+#check polyId ℕ 42        -- ℕ
+#check polyId String "hi" -- String
+```
+
+An argument may also be a proof. A division that demands a proof that the denominator is not zero cannot be called with zero:
+
+```lean
+def safeDiv (a b : ℤ) (_ : b ≠ 0) : ℤ := a / b
+
+#eval safeDiv 10 3 (by norm_num)   -- 3
+```
+
+In terms of sets, a function `f : (x : α) → β x` chooses one element `f x ∈ β x` for every `x`. It is an element of the product $`\prod_{x \in \alpha} \beta(x)`. This is where the name Π comes from.
+
+# Inductive types
+%%%
+tag := "inductive"
+%%%
+
+`Nat`, `List`, `Option`, `Bool` and `Empty` are all *inductive* types; `Nat` and `Bool` were dissected in the {ref "nat-intro"}[previous chapter]. What follows is how to declare such a type yourself, and which declarations Lean accepts.
+
+You declare an inductive type by giving a name, the type's universe, and a list of *constructors*, each saying how to build a new element out of existing pieces. Declaring the natural numbers by hand reproduces exactly the structure of `Nat`:
+
+```lean
+inductive MyNat where
+  | zero : MyNat
+  | succ (n : MyNat) : MyNat
+```
+
+As with `Nat`, this single declaration introduces three things at once: the type `MyNat`; its two constructors `MyNat.zero` and `MyNat.succ`, so every element is either `zero` or `succ n`; and a *recursor* `MyNat.rec` — the type's *eliminator*, the counterpart of its constructors — of the same shape as `Nat.rec`, into which pattern matching, `cases`, and `induction` all translate. Its {ref "reduction-rules"}[iota rule], `MyNat.rec z s (.succ n) ⟶ s n (MyNat.rec z s n)`, is the firing we watched for `Nat`. And a recursor is not special to `inductive`: since a `structure` is a single-constructor inductive, it too has one — `Point.rec` (from the next section) takes a single case, a function of the fields, and the projections `Point.x`, `Point.y` are defined through it.
+
+With {ref "type-universes"}[universes] available, the recursor can be stated in full generality. The introduction used its *non-dependent* form, into a fixed result type; the true `MyNat.rec` lets that type *depend* on the value being consumed, a dependency recorded by a *motive* `MyNat → Sort u` (the leading `@` in `@MyNat.rec` makes Lean's normally-hidden implicit arguments — here the `motive` — explicit, so that `#check` prints them; see {ref "strict-implicit"}[the appendix on parentheses]):
+
+```lean
+#check @MyNat.rec
+-- {motive : MyNat → Sort u} →
+--   motive .zero →                      -- zero case
+--   ((n : MyNat) → motive n →
+--      motive n.succ) →                 -- succ case
+--   (t : MyNat) → motive t
+```
+
+With a data-valued `motive` this is the *recursion* the introduction showed; with a `Prop`-valued one it is precisely the *induction principle*. Recursion and induction are thus two readings of the single primitive `MyNat.rec` — which is why the `induction` tactic and recursive definitions feel so alike.
+
+The declaration only *forms the type*. How to actually build its elements and *define functions* on it — typically by pattern matching on the constructors — is the subject of {ref "terms"}[the chapter on terms].
+
+Proofs about an inductive type use the `induction` tactic, which applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.
+
+Inductive types also cover non-recursive data:
+
+```lean
+inductive Colour where
+  | red | green | blue
+```
+
+and parameterized types:
+
+```lean
+-- `MyOption α` is either `none` or `some a` for some `a : α`.
+inductive MyOption (α : Type) where
+  | none : MyOption α
+  | some (a : α) : MyOption α
+```
+
+Inductive types are the main mechanism by which new data types enter Lean, and `Mathlib` uses them throughout. They also settle the universe question from the other side: the universe of an inductive type must be large enough to hold all of its constructor arguments.
+
+Not every `inductive` declaration is accepted. A constructor may mention the type being defined, but only *positively*: never to the *left* of an arrow inside one of its arguments. This *strict positivity* condition keeps inductive types well-founded and free of paradox. An *infinitely-branching* tree — where a `node` carries one subtree for each natural number — is fine, because in the `node` constructor `MyTree` occurs only to the *right* of `→`:
+
+```lean
+inductive MyTree where
+  | leaf : ℕ → MyTree              -- a leaf holds a value
+  | node : (ℕ → MyTree) → MyTree   -- positive occurrence
+
+-- leaves now carry data, and trees can be built:
+example : MyTree := .leaf 7
+example : MyTree := .node (fun n => .leaf n)
+```
+
+The `leaf` case is what gets the type off the ground. Positivity constrains only *where* `MyTree` may occur, not whether the type has any elements: drop `leaf`, and the declaration is *still accepted*, but no closed `MyTree` can ever be built — every `node` already demands a whole family `ℕ → MyTree` of subtrees, with nothing to start from, so the type is *empty* (like `Empty`; one can even prove `MyTree → False`). With `leaf` present you build upward — `leaf 7`, then `node (fun n => leaf n)`, then trees over those. Note that `leaf` here *carries* a `ℕ`, so different leaves are genuinely different; a bare `leaf : MyTree` would give a single, featureless leaf, indistinguishable from every other.
+
+Because `node` takes a *function* `ℕ → MyTree`, every node has one child per natural number — it branches *infinitely*. It is not that *every* `MyTree` is infinite: a leaf is finite (`leaf 7` is a complete tree), so only trees that actually use `node` are. The infinite branching comes from the function-typed argument. A finitely-branching tree would be `node : MyTree → MyTree → MyTree`, where `MyTree` occurs directly rather than inside a function, so the right-of-`→` case would not arise.
+
+But a constructor that stores a *function out of* the type is rejected:
+
+```
+inductive Bad where
+  | mk : (Bad → False) → Bad
+-- error: (kernel) arg #1 of 'Bad.mk' has a non positive
+--        occurrence of the datatypes being declared
+```
+
+The rejection is not pedantry: were `Bad` allowed, one could prove `False`. Project the stored function out of a `b : Bad` and apply it to `b` itself,
+
+```
+def app : Bad → (Bad → False) | .mk f => f
+def neg (b : Bad) : False := app b b
+```
+
+so `neg : Bad → False`. Then `Bad.mk neg : Bad`, and `neg (Bad.mk neg) : False` is a closed proof of `False` (it even loops, `neg (Bad.mk neg) ⟶ neg (Bad.mk neg)` — the untyped Ω combinator smuggled into the theory). Strict positivity outlaws exactly the negative occurrence that ties this self-applying knot — the same consistency concern that rules out `Type : Type`. (That positivity is also *sufficient* for consistency — every strictly positive type is the least fixed point of a monotone functor, so the theory has a model — is a deep metatheorem, not something Lean proves about itself.)
+
+# Structures
+%%%
+tag := "structures"
+%%%
+
+While inductive types let us define types with multiple constructors, many mathematical objects are better described as a *collection of named fields*. For example, a point in the plane has an `x`-coordinate and a `y`-coordinate. In Lean, we use `structure` for this.
+
+A `structure` is a special case of an inductive type with exactly one constructor and named fields. Here is a simple example:
+
+```lean
+structure Point where
+  x : ℕ
+  y : ℕ
+```
+
+This declares a type `Point` whose elements are records with two `ℕ` fields. There is a single constructor, so both fields must be supplied. The declaration also produces that constructor `Point.mk` and one projection per field, whose types can be inspected without building a value:
+
+```lean
+#check (Point.mk : ℕ → ℕ → Point)
+#check (Point.x : Point → ℕ)
+#check (Point.y : Point → ℕ)
+```
+
+A value of a structure is determined by its fields: `p` and `Point.mk p.x p.y` are *definitionally* equal, so `rfl` proves it. This is the η rule of the {ref "reduction-rules"}[reduction rules], here *for structures*. It holds for every structure, for instance for pairs `ℕ × ℕ`:
+
+```lean
+example (p : Point) : p = Point.mk p.x p.y := rfl
+example (p : ℕ × ℕ) : p = (p.1, p.2) := rfl
+```
+
+For a general inductive type there is no such rule: `n : ℕ` is not definitionally `0` or a successor, and to split on it you need `cases`.
+
+Fields may be given *default values* as part of the declaration:
+
+```lean
+structure MyConfig where
+  width : ℕ := 80
+  height : ℕ := 24
+  title : String := "Untitled"
+```
+
+These defaults are used whenever a value is built without specifying every field.
+
+One structure can *extend* another, inheriting all of its fields:
+
+```lean
+structure Point3D extends Point where
+  z : ℕ
+```
+
+so a `Point3D` has fields `x`, `y` (from `Point`) and `z`. This is particularly important in Mathlib, where the algebraic hierarchy uses structure extension extensively: `CommRing` extends `Ring`, which extends `Semiring`, and so on.
+
+Structures are natural for representing mathematical objects. A *Gaussian integer* (a complex number with integer parts) is a pair of `ℤ`s,
+
+```lean
+structure MyComplex where
+  re : ℤ
+  im : ℤ
+```
+
+and a structure may bundle *data together with a property* — here a linear map, carrying both a function and a proof that it respects addition (the square brackets `[Add α]` are an *instance-implicit* argument, requiring `α` to carry an addition; see {ref "square-bracket-notation"}[the typeclasses chapter]):
+
+```lean
+structure MyLinearMap (α β : Type) [Add α] [Add β] where
+  toFun : α → β
+  map_add : ∀ x y : α, toFun (x + y) = toFun x + toFun y
+```
+
+This pattern of bundling data with properties is fundamental to how Mathlib organizes mathematics.
+
+How to *construct* values of these types, read their fields, and define operations on them is the subject of {ref "terms"}[the chapter on terms].
+
+# Inductive types vs structures
+%%%
+tag := "inductive-vs-structure"
+%%%
+
+When should you use `inductive` and when `structure`?
+
+* Use `structure` when your type has a single constructor with named fields. Examples: points, complex numbers, algebraic structures.
+* Use `inductive` when your type has multiple constructors. Examples: natural numbers, lists, trees, `Option`, `Bool`.
+
+A `structure` is syntactic sugar for an inductive type with one constructor. The definition
+
+```
+structure Point where
+  x : ℕ
+  y : ℕ
+```
+
+is essentially equivalent to
+
+```
+inductive Point where
+  | mk : ℕ → ℕ → Point
+```
+
+but the `structure` version gives us named fields, {ref "structure-values"}[dot notation], the possibility for default values, and the `extends` mechanism. (A `class` is in turn a `structure` marked for use by instance search; we return to it in the {ref "typeclasses"}[Typeclass] chapter.)
+
+# Pairs and Σ-types
+%%%
+tag := "sigma-types"
+%%%
+
+A *dependent pair* consists of a first component `a : α` and a second component `b : β a` whose type depends on `a`. Their type is the *Σ-type*, written `(x : α) × β x` or `Σ x : α, β x`. It is not a new primitive but a structure with two fields:
+
+```lean
+#print Sigma
+
+def aPair : (n : ℕ) × Fin (n + 1) := ⟨3, Fin.last 3⟩
+
+#eval aPair.1   -- 3
+#check aPair.2  -- aPair.2 : Fin (aPair.fst + 1)
+```
+
+In terms of sets, the pairs `⟨a, b⟩` with a fixed `a` form the piece $`\{a\} \times \beta(a)`, and the Σ-type is the disjoint union of these pieces, $`\coprod_{x \in \alpha} \beta(x)`. Counting shows the difference to the Π-type: the Σ-type has $`\sum_x |\beta(x)|` elements, the Π-type $`\prod_x |\beta(x)|`.
+
+```lean
+-- Σ: 1 + 2 + 3 + 4 = 10 elements
+example : Fintype.card
+    ((n : Fin 4) × Fin (n + 1)) = 10 := by decide
+-- Π: 1 · 2 · 3 · 4 = 24 elements
+example : Fintype.card
+    ((n : Fin 4) → Fin (n + 1)) = 24 := by decide
+```
+
+If `β` does not depend on `x`, all pieces are equal, and the Σ-type is the product `α × β`: the sum of $`|\alpha|` equal summands $`|\beta|`. The notation `×` for the dependent pair is named after this special case.
+
+:::table (align := left) +header
+* + non-dependent
+  + dependent
+  + in sets
+  + for propositions
+* + `α → β`
+  + `(x : α) → β x`
+  + $`\prod_x \beta(x)`
+  + `∀ x, P x`
+* + `α × β`
+  + `(x : α) × β x`
+  + $`\coprod_x \beta(x)`
+  + `∃ x, P x`
 :::
 
-## Judgements and contexts
+The last column is the subject of {ref "curry-howard"}[the Curry-Howard correspondence]. `∃` is not literally a Σ-type: it forgets which witness was given ({ref "sigma-vs-exists"}[Σ and ∃]).
 
-The rules derive statements of two kinds, called *judgements*:
+# Subtypes
+%%%
+tag := "subtypes"
+%%%
 
-* $`\Gamma \vdash e : \alpha`: in the context $`\Gamma`, the term $`e` has type $`\alpha`;
-* $`\Gamma \vdash e \equiv e'`: in the context $`\Gamma`, the terms $`e` and $`e'` are definitionally equal.
-
-A rule is written as a fraction. If the judgements above the line hold, then so does the one below. A rule with nothing above the line holds outright.
-
-*The context.* $`\Gamma` is a finite list of variables with their types,
-
-$$`\Gamma = x_1 : \alpha_1,\ x_2 : \alpha_2,\ \dots,\ x_n : \alpha_n .`
-
-It records what may be assumed at a given point: the variables in scope and the hypotheses about them.
-For example, take
-
-$$`\Gamma = n : \mathbb N,\ h : 0 < n,\ v : \mathrm{Fin}\ n \to \mathbb N .`
-
-In this context `v` is a vector of length `n`, and `h` says that it is not empty. Then $`\Gamma \vdash v\ \langle 0, h\rangle : \mathbb N`: the pair $`\langle 0, h\rangle` is an element of `Fin n`, so `v` can be applied to it. In Lean, the parameters of a declaration form its context:
+The *subtype* `{x : α // P x}` is the Σ-type in which the second component is a proof: a pair of `x : α` and `h : P x`, where `P : α → Prop`. It represents elements of `α` satisfying predicate `P`. Since the second component is a proof (in `Prop`), subtypes enjoy proof irrelevance: two elements of `{x : α // P x}` are equal if and only if their first components are equal.
 
 ```lean
-example (n : ℕ) (h : 0 < n) (v : Fin n → ℕ) : ℕ :=
-  v ⟨0, h⟩
+-- The type of natural numbers greater than 5
+def BigNat : Type := {n : ℕ // n > 5}
+
+def seven : BigNat := ⟨7, by norm_num⟩
+def ten : BigNat := ⟨10, by norm_num⟩
+
+-- We can extract the value
+#eval seven.val  -- 7
 ```
 
-Without `h` the term `v ⟨0, _⟩` would not typecheck, because there would be no proof of `0 < n` in the context.
+This is how many mathematical objects are defined in Mathlib. For example, the type of prime numbers could be defined as `{n : ℕ // Nat.Prime n}`.
 
-Three points about contexts.
+A subtype is closely related to, but distinct from, a *set* `s : Set α`: a set selects elements of `α` (which keep their type `α`), whereas the subtype `{x : α // P x}` is a *new* type. The relationship — including the coercion `↥s` from a set to its subtype of members — is spelled out in {ref "sets-and-types"}[the chapter on sets and types].
 
-* *Order matters.* The type $`\alpha_i` may mention $`x_1, \dots, x_{i-1}`, but not later variables. A context is built from left to right, one variable at a time, and each new type must be a type in the context to its left. For the example above:
+# Type families
+%%%
+tag := "type-families"
+%%%
 
-  :::table (align := left) +header
-  * + context
-    + new type
-    + is a type in the context before, because
-  * + `n : ℕ`
-    + `ℕ : Type`
-    + `ℕ` is in the environment
-  * + `n : ℕ, h : 0 < n`
-    + `0 < n : Prop`
-    + `n` is in the context
-  * + `n : ℕ, h : 0 < n, v : Fin n → ℕ`
-    + `Fin n → ℕ : Type`
-    + `n` is in the context
-  :::
-
-  In the order `h : 0 < n, n : ℕ` the first step fails: in the empty context `n` is unknown, so `0 < n` is not a type.
-
-* *Variables, not constants.* A variable in $`\Gamma` has a type but no value. It stands for an arbitrary element of its type, or for an arbitrary proof of its proposition.
-* *Binders extend it.* A *binder* is a construction that introduces a variable for a part of a term, its *body*. In `fun x => x + 1` the binder `fun x` introduces `x`, and the body is `x + 1`; in `∀ n : ℕ, n < n + 1` the binder is `∀ n : ℕ`. Outside the body the variable does not exist, just as $`i` in $`\sum_{i=1}^n i^2` or $`x` in $`\int_0^1 x^2\,dx` has no meaning outside the sum or the integral. Such a variable is called *bound*, a variable from the context *free*. In Lean the binders are `fun`, `∀` (and the arrow `(x : α) → β`), and `let`; `∃ x, P x` is notation for `Exists (fun x => P x)` and so binds through `fun`. The context grows when a rule goes under a binder. To check `fun x => e` or `∀ x : α, β`, the body is checked in $`\Gamma,\ x : \alpha`; afterwards $`x` is gone again. The rules for functions below are written that way.
-
-You see contexts all the time. The goal
-
-```
-n : ℕ
-h : 0 < n
-⊢ n ≠ 0
-```
-
-is the context `n : ℕ, h : 0 < n` together with the type `n ≠ 0`, and proving the goal means finding a term $`e` with $`\Gamma \vdash e : n \neq 0`. The parameters of a theorem form the initial context: `theorem foo (n : ℕ) (h : 0 < n) : n ≠ 0` starts with exactly this goal. The tactic `intro x` moves a binder of the goal into the context, which is the abstraction rule below read backwards.
-
-*The environment.* Besides $`\Gamma` there is the *environment*: the constants declared so far by `def`, `theorem`, `inductive` and `axiom`, such as `Nat.succ` or `Nat.add_comm`. Unlike a variable, a constant is global, and a definition has a value. A declared constant $`c : \alpha` may be used in every context, and if it is defined by $`c := t`, then $`c \equiv t` (the δ-rule). Every rule below has the environment in the background, but it is not written.
-
-The second kind of judgement is what `rfl` checks ({ref "defeq"}[Definitional equality]).
-
-*Where the first types come from.* A derivation has to start somewhere, and two rules have nothing above the line. The universe rule (*Universes* below) gives `Prop`, `Type`, `Type 1`, … without any premise. And every `inductive` declaration puts its type and constructors into the environment, for `ℕ` the judgements $`\vdash \mathbb N : \mathrm{Type}`, $`\vdash \mathrm{zero} : \mathbb N` and $`\vdash \mathrm{succ} : \mathbb N \to \mathbb N` (see *Inductive types* below). Every other type is built from these with the rules for functions. Lean has no built-in basic types: `Nat`, `Bool` and `Eq` are ordinary inductive declarations in `Prelude`, the first file Lean loads. Without inductive types only the universes remain, and still interesting types can be built from them (*Without inductive types* below).
-
-## Universes
-
-With $`\mathrm{Prop} := \mathrm{Sort}\ 0` and $`\mathrm{Type}\ u := \mathrm{Sort}\ (u+1)`:
-
-$$`\frac{}{\Gamma \vdash \mathrm{Sort}\ u : \mathrm{Sort}\ (u+1)}`
-
-So `Prop : Type`, `Type : Type 1`, and so on. No universe is a member of itself, which is what prevents the paradoxes above. The tower is the subject of the {ref "type-universes"}[next section].
+A *type family* is a function that returns a type, such as `Fin : ℕ → Type`. The second component of a Σ-type and the codomain of a Π-type are type families:
 
 ```lean
-#check Sort 0   -- Prop : Type
-#check Type 3   -- Type 3 : Type 4
+-- A simple type family indexed by Bool
+def BoolFamily : Bool → Type
+  | true  => ℕ
+  | false => String
+
+-- Dependent function using the type family
+def boolFamilyExample : (b : Bool) → BoolFamily b
+  | true  => (42 : ℕ)
+  | false => ("hello" : String)
 ```
 
-## Variables
-
-$$`\frac{(x : \alpha) \in \Gamma}{\Gamma \vdash x : \alpha}`
-
-A hypothesis may be used as it stands. In a proof this is `exact h` for `h` in the context, or the tactic `assumption`.
-
-## Function types
-
-$$`\frac{\Gamma \vdash \alpha : \mathrm{Sort}\ u \qquad \Gamma,\, x : \alpha \vdash \beta : \mathrm{Sort}\ v}{\Gamma \vdash (x : \alpha) \to \beta : \mathrm{Sort}\ (\mathrm{imax}\ u\ v)}`
-
-Here $`\mathrm{imax}\ u\ v` is $`0` if $`v = 0`, and $`\max(u, v)` otherwise.
-
-The type $`\beta` may contain $`x`, so the type of the value may depend on the argument. This one rule covers three things that look different:
-
-* If $`x` does not occur in $`\beta`, then $`(x : \alpha) \to \beta` is the ordinary function type $`\alpha \to \beta`.
-* If $`x` occurs in $`\beta`, it is a *dependent* function type, as in `(n : ℕ) → Fin n`, whose values are functions $`f` with $`f(n) \in \{0, \dots, n-1\}`.
-* If $`\beta` is a proposition, Lean writes $`\forall x : \alpha,\ \beta`. A universal statement is a function type: a proof of it is a function that takes any $`x : \alpha` to a proof of $`\beta`. In the same way, for propositions $`P` and $`Q` the implication $`P \to Q` is the type of functions from proofs of $`P` to proofs of $`Q`.
-
-The universe of the result is the larger of the two, except that a function type into `Prop` is always in `Prop`, whatever $`\alpha` is. That exception is the *impredicativity* of `Prop`, discussed in {ref "prop-special"}[Why `Prop` is special].
+In mathematical formalization, type families appear everywhere. For instance, the fiber of a function `f : α → β` over a point `b : β` is the subtype `{a : α // f a = b}`, which is a type family indexed by `β`.
 
 ```lean
-#check ℕ → ℕ               -- Type    (imax 1 1 = 1)
-#check ℕ → Type            -- Type 1  (imax 1 2 = 2)
-#check (n : ℕ) → Fin n     -- Type
-#check ∀ n : ℕ, n + 0 = n  -- Prop    (imax 1 0 = 0)
-#check ∀ p : Prop, p → p   -- Prop    (imax 1 0 = 0)
+-- The fiber of a function as a type family
+def fiber (f : ℕ → ℕ) (b : ℕ) : Type :=
+  {a : ℕ // f a = b}
+
+-- An element of the fiber of (· * 2) over 10
+def fiberExample : fiber (· * 2) 10 :=
+  ⟨5, by norm_num⟩
 ```
 
-## Abstraction and application
+## Vectors indexed by length
+%%%
+tag := "vectors-indexed"
+%%%
 
-$$`\frac{\Gamma,\, x : \alpha \vdash e : \beta}{\Gamma \vdash (\mathrm{fun}\ x \Rightarrow e) : (x : \alpha) \to \beta} \qquad \frac{\Gamma \vdash f : (x : \alpha) \to \beta \qquad \Gamma \vdash a : \alpha}{\Gamma \vdash f\ a : \beta[x := a]}`
-
-The left rule builds a function: if $`e` has type $`\beta` once $`x : \alpha` is assumed, then `fun x => e` is a function. The right rule applies one. The notation $`\beta[x := a]` means $`\beta` with $`a` substituted for $`x`, so for a dependent function the type of the value depends on the argument.
-
-For proofs, the left rule is the tactic `intro`: to prove $`\forall x, \beta` or $`P \to Q`, assume the argument and prove the rest. The right rule is how a hypothesis $`h : P \to Q` or $`h : \forall x, \beta` is used: `h hP` or `h a`, which is what `apply` and `exact` produce.
+Vectors are the standard example: a vector of length `n` with entries in `α` is a function `Fin n → α`, where `Fin n` is the type with `n` elements (see the {ref "types"}[Types chapter]).
 
 ```lean
--- application with substitution: Fin (n + 1) at n := 3
-#check (fun n : ℕ => (0 : Fin (n + 1))) 3
--- the same two rules, for proofs
-example (P Q : Prop) (f : P → Q) (hP : P) : Q := f hP
-example (P Q : Prop) (hQ : Q) : P → Q := fun _ => hQ
+-- A vector of 3 natural numbers, represented as a function from Fin 3
+def myVec : Fin 3 → ℕ := ![10, 20, 30]
+
+#eval myVec 0   -- 10
+#eval myVec 1   -- 20
+#eval myVec 2   -- 30
 ```
 
-A local definition `let x := a; e` has its own rule, and the ζ-rule replaces it by $`e[x := a]`.
+The advantage of this representation is that indexing is *always safe*: you cannot access index 5 of a 3-element vector, because `5` is not a term of type `Fin 3`. The type system prevents out-of-bounds errors at compile time.
 
-## Conversion
+## Matrices as dependent types
+%%%
+tag := "matrices-dependent"
+%%%
 
-$$`\frac{\Gamma \vdash e : \alpha \qquad \Gamma \vdash \alpha \equiv \beta}{\Gamma \vdash e : \beta}`
-
-A term of type $`\alpha` also has every type that is definitionally equal to $`\alpha`. This is the rule behind `rfl`. The term `rfl` has type `2 + 2 = 2 + 2`. Because `2 + 2 ≡ 4` by computation, conversion gives it the type `2 + 2 = 4` as well.
+Matrices are a natural extension. An `m × n` matrix with entries in `α` can be represented as a function `Fin m → Fin n → α`, or equivalently as `Matrix (Fin m) (Fin n) α` in Mathlib:
 
 ```lean
-example : 2 + 2 = 4 := rfl
-example (v : Fin (2 + 2)) : Fin 4 := v
+-- A 2×3 matrix of natural numbers
+def myMatrix : Fin 2 → Fin 3 → ℕ :=
+  ![![1, 2, 3], ![4, 5, 6]]
+
+#eval myMatrix 0 1  -- 2
+#eval myMatrix 1 2  -- 6
 ```
 
-Definitional equality $`\equiv` is the smallest equivalence relation that is compatible with all term formers and contains
-
-* the reduction rules β, δ, ζ, η and ι ({ref "reduction-rules"}[The reduction rules]);
-* *proof irrelevance*: any two proofs of the same proposition are equal,
-
-  $$`\frac{\Gamma \vdash p : \mathrm{Prop} \qquad \Gamma \vdash h : p \qquad \Gamma \vdash h' : p}{\Gamma \vdash h \equiv h'}`
-
-* *η for structures*: a term of a structure type equals the structure built from its fields.
-
-```lean
-example (p : Prop) (h h' : p) : h = h' := rfl
-example (x : ℕ × ℕ) : x = (x.1, x.2) := rfl
-```
-
-The type checker decides $`\equiv` by an algorithm. Carneiro showed that $`\equiv` as defined here is undecidable, so the algorithm is incomplete: in rare, constructed cases it fails on terms that are definitionally equal. Ordinary mathematics does not meet these cases.
-
-## Inductive types
-
-Every `inductive` declaration adds new constants to the environment: the type itself, its constructors and its *recursor*, together with ι-rules that say how the recursor computes on constructors ({ref "inductive"}[Inductive types]). For `ℕ`:
-
-$$`\vdash \mathbb N : \mathrm{Type} \qquad \vdash \mathrm{zero} : \mathbb N \qquad \vdash \mathrm{succ} : \mathbb N \to \mathbb N`
-
-$$`\vdash \mathrm{Nat.rec} : (m : \mathbb N \to \mathrm{Sort}\ u) \to m\ \mathrm{zero} \to \big((n : \mathbb N) \to m\ n \to m\ (\mathrm{succ}\ n)\big) \to (t : \mathbb N) \to m\ t`
-
-$$`\mathrm{Nat.rec}\ m\ z\ s\ \mathrm{zero} \equiv z \qquad \mathrm{Nat.rec}\ m\ z\ s\ (\mathrm{succ}\ n) \equiv s\ n\ (\mathrm{Nat.rec}\ m\ z\ s\ n)`
-
-The recursor is both recursion and induction: with $`m\ t` a type it defines functions by recursion, with $`m\ t` a proposition it proves statements by induction ({ref "nat"}[The natural numbers]).
-
-The logical connectives other than $`\forall` and $`\to` are inductive types of exactly this kind, and `#print` shows their declarations:
-
-```lean
-#print And
-#print Or
-#print Exists
-#print Eq
-#print False
-```
-
-So `False` is the type with no constructor, `Or` has the two constructors `Or.inl` and `Or.inr` from sheet `L-c`, and `Eq a` has the single constructor `Eq.refl a : a = a`.
-
-A declaration is accepted only under two conditions:
-
-* *Strict positivity*: the type being defined must not occur to the left of an arrow in the type of a constructor argument. Otherwise `False` can be proved without any axiom ({ref "strict-positivity"}[Strict positivity]).
-* *Restricted elimination*: for an inductive type in `Prop`, the motive of the recursor must again land in `Prop`. A proof can be used to prove things, but not to compute data. The exceptions are types with at most one constructor whose arguments are all proofs, such as `Eq`, `And`, `True` and `False`.
-
-The second condition is forced by proof irrelevance. For `h : P`, the terms `Or.inl h` and `Or.inr h` are two proofs of `P ∨ P`, hence definitionally equal. A function `P ∨ P → Bool` defined by recursion could send them to `true` and `false`, and then `true ≡ false`.
-
-```lean
-#check @Or.rec     -- motive : a ∨ b → Prop
-#check @False.rec  -- motive : False → Sort u
-```
-
-## Without inductive types
-
-The rules for universes, functions and conversion alone form the Calculus of Constructions of 1985. It has no inductive types, and yet logic can be done in it. Because `Prop` is impredicative, a proposition may quantify over all propositions, and each connective can be defined by what it lets you conclude:
-
-```lean
-def EFalse : Prop := ∀ p : Prop, p
-def EAnd (P Q : Prop) : Prop :=
-  ∀ R : Prop, (P → Q → R) → R
-def EOr (P Q : Prop) : Prop :=
-  ∀ R : Prop, (P → R) → (Q → R) → R
-
-example (P : Prop) (h : EFalse) : P := h P
-example (P Q : Prop) (hP : P) (hQ : Q) : EAnd P Q :=
-  fun _ k => k hP hQ
-example (P Q : Prop) (h : EAnd P Q) : P :=
-  h P (fun hP _ => hP)
-example (P Q : Prop) (h : EOr P Q) : EOr Q P :=
-  h _ (fun hP _ _ k => k hP) (fun hQ _ k _ => k hQ)
-```
-
-`EFalse` proves everything, and `EAnd P Q` holds if every $`R` that follows from $`P` and $`Q` together holds. Introduction and elimination work as for `False`, `And` and `Or`. For propositions the encodings are adequate.
-
-For data they are not. The same idea gives the natural numbers as iteration: $`n` is the operation that applies a function $`n` times.
-
-```lean
-def ChNat : Type 1 := (α : Type) → (α → α) → α → α
-def chZero : ChNat := fun _ _ x => x
-def chSucc (n : ChNat) : ChNat :=
-  fun α f x => f (n α f x)
-```
-
-Two things go wrong.
-
-* *The universe.* `ChNat` quantifies over all of `Type`, and the function type rule puts it in `Type 1`, not in `Type`. A type of lists of such numbers, or functions on them, climbs further, and `ChNat` cannot be applied to itself.
-* *Induction.* Nothing says that every element of `ChNat` is `chZero` or `chSucc m`. With classical logic one can define an element that is neither: it applies `f` once if `α` is `Bool`, and not at all otherwise.
-
-```lean
-open Classical in
-noncomputable def strange : ChNat :=
-  fun α f x => if α = Bool then f x else x
-
-example : strange ≠ chZero := by
-  intro h
-  have := congrFun (congrFun (congrFun h Bool) not) true
-  simp [strange, chZero] at this
-
-example (m : ChNat) : strange ≠ chSucc m := by
-  intro h
-  have := congrFun (congrFun (congrFun h ℕ) Nat.succ) 0
-  have hne : ℕ ≠ Bool := by
-    intro e
-    have : Infinite Bool := e ▸ inferInstance
-    exact not_finite Bool
-  simp [strange, chSucc, hne] at this
-```
-
-So induction over `ChNat` is false, not merely unprovable. An inductive type rules this out by construction: its recursor *is* the induction principle, and an element of `ℕ` is built from `zero` and `succ` and nothing else. This is why Christine Paulin-Mohring added inductive types to the calculus in 1990.
-
-## Quotients
-
-For a relation $`r : \alpha \to \alpha \to \mathrm{Prop}`, the type `Quot r` of equivalence classes is built in, with the constants `Quot.mk`, `Quot.lift` and `Quot.ind` and one computation rule:
-
-$$`\mathrm{Quot.lift}\ f\ h\ (\mathrm{Quot.mk}\ r\ a) \equiv f\ a`
-
-Here $`h` is a proof that $`f` respects $`r`. That two related elements give the same class is not a rule but an axiom, `Quot.sound` ({ref "quotient-types"}[Quotient types]).
-
-## Axioms
-
-Beyond the rules, Lean has exactly three axioms:
-
-```lean
-#check @propext          -- (a ↔ b) → a = b
-#check @Quot.sound  -- r a b → Quot.mk r a = Quot.mk r b
-#check @Classical.choice -- Nonempty α → α
-```
-
-`propext` says that equivalent propositions are equal. `Quot.sound` says that related elements have the same class. `Classical.choice` picks an element from any nonempty type, with no information about which one. The excluded middle is not among them: `Classical.em` is a theorem, proved from all three (Diaconescu's theorem). Function extensionality `funext` is a theorem as well, proved from `Quot.sound`. `#print axioms` lists the axioms a theorem depends on:
-
-```lean
-#print axioms Classical.em
-#print axioms funext
-```
-
-A theorem whose list is empty holds in the rules alone, and its proof is constructive.
-
-## How Lean implements the rules
-
-Lean has two programs that deal with terms. The *elaborator* turns what you write — notation, implicit arguments, type classes, tactic proofs — into a fully explicit term. It is large and complicated, and it is not trusted. The *kernel* then checks that term against the rules above, and only then is the declaration added to the environment. A tactic can therefore produce a wrong term, but it cannot get one past the kernel.
-
-*Terms.* In the kernel, a term is a value of the type `Lean.Expr`. Its constructors are the term formers of the rules: `sort` for $`\mathrm{Sort}\ u`, `const` for a constant of the environment, `bvar` and `fvar` for variables, `lam` for `fun`, `forallE` for $`(x : \alpha) \to \beta`, `app` for application, `letE` for `let`, and three more for efficiency: `lit` for numerals and strings, `proj` for structure fields, and `mdata` for annotations. Here is `id`, as the kernel stores it:
-
-```lean
-open Lean in
-#eval show MetaM Unit from do
-  let c ← getConstInfo ``id
-  IO.println (repr c.value!)
-```
-
-The output reads `lam α (sort u) (lam a (bvar 0) (bvar 0))`, that is, `fun {α : Sort u} (a : α) => a`. Bound variables have no names, only indices: `bvar 0` is the nearest enclosing binder. In the type `bvar 0` it refers to `α`, in the body to `a`.
-
-*The context.* When the type checker goes under a binder, it replaces the bound variable by a fresh *free* variable (`fvar`) and records its type in a local context. That local context is $`\Gamma`, and this step is $`\Gamma,\ x : \alpha`.
-
-*The rules.* The type checker is a function `infer_type` that computes the type of a term by a case distinction on its constructor, one case per rule. In the source, `src/kernel/type_checker.cpp` in the Lean repository, the case for `Sort` is
-
-```
-case expr_kind::Sort:
-    r = mk_sort(mk_succ(sort_level(e)));
-```
-
-which is the rule $`\mathrm{Sort}\ u : \mathrm{Sort}\ (u+1)`. The other cases call `infer_fvar` (look the variable up in the local context), `infer_constant` (look it up in the environment), `infer_pi` (compute the levels of domain and codomain and combine them with `mk_imax`), `infer_lambda` and `infer_app`. The last one, slightly shortened:
-
-```
-expr f_type = ensure_pi(infer_type(app_fn(e)));
-expr a_type = infer_type(app_arg(e));
-expr d_type = binding_domain(f_type);
-if (!is_def_eq(a_type, d_type))
-    throw app_type_mismatch_exception(...);
-return instantiate(binding_body(f_type), app_arg(e));
-```
-
-This is the application rule. The type of $`f` must be a function type $`(x : \alpha) \to \beta`, the type of the argument must be $`\alpha`, and the result is $`\beta[x := a]`, which `instantiate` computes. The conversion rule does not appear as a step of its own: it is the call `is_def_eq`, which accepts the argument if its type is definitionally equal to $`\alpha` rather than identical. `is_def_eq` reduces both sides with the rules β, δ, ζ, η, ι as far as needed and compares them. The elaborator runs the same test before the kernel does, and its error `Application type mismatch`, which you will see often, is a failure of exactly this check.
-
-*Size.* The whole kernel is about 350 kB of C++ in `src/kernel`, of which `type_checker.cpp` has about 1 400 lines and the checking of inductive declarations (`inductive.cpp`) a similar amount. That is small enough to be read, and there are independent reimplementations that check the same terms: *lean4lean* in Lean, *nanoda* in Rust, and *Con-Leche*, mentioned in {ref "prop-special"}[Why `Prop` is special].
-
-The rest of this chapter treats universes and `Prop`. Inductive types, structures and quotients are the subject of the {ref "type-formers"}[next chapter]. A complete account is in Mario Carneiro's [*The Type Theory of Lean*](https://github.com/digama0/lean-type-theory).
+In Mathlib, matrix multiplication is only defined when the dimensions match. If `A` is an `m × n` matrix and `B` is an `n × p` matrix, then `A * B` is an `m × p` matrix. The dependent types enforce that the inner dimensions agree — a dimension mismatch is a *type error*, caught at compile time.
 
 # The universe hierarchy
 %%%
 tag := "type-universes"
 %%%
 
-By the rule for universes, every universe lives in the next one. These types-of-types (called *universes*) form a countably infinite tower, which is what keeps the system consistent.
+Every type is itself a term, so it has a type as well. These types-of-types (called *universes*) form a countably infinite tower, which is what keeps the system consistent.
 
 At the bottom sit the two universes you meet first (Here, the `#check` command gives the type of a term):
 
@@ -392,155 +435,11 @@ example : Sort 1 = Type := rfl
 example : Type = Type 0 := rfl
 ```
 
-So `Sort` is the umbrella that unifies `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`. There is deliberately no `Type : Type`; *why* this restriction is needed — it blocks a type-theoretic version of Russell's paradox — is taken up in the {ref "universe-determined"}[next section].
+So `Sort` is the umbrella that unifies `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`. There is deliberately no `Type : Type`; *why* this restriction is needed — it blocks a type-theoretic version of Russell's paradox — is taken up in the {ref "universe-determined"}[next chapter].
 :::
 
-# How the universe of a type is determined
-%%%
-tag := "universe-determined"
-%%%
+:::example "Where types come from"
+Types were introduced to stop a contradiction. Russell's set $`R = \{x : x \notin x\}` broke Frege's *Grundgesetze der Arithmetik* in 1902 ({ref "prehistory"}[Introduction]). Russell's repair of 1908 gave every object a type and let a type apply only to objects of lower type, so that `x ∈ x` is not false but not a statement at all. Zermelo's repair of the same year instead restricts which sets exist and leaves `x ∈ x` a formula. Mathematics followed Zermelo; proof assistants follow Russell, because a type checker can decide before any question of truth whether an expression means anything.
 
-You rarely write universe levels by hand — Lean computes the universe of a compound type from the universes of its parts. A function type `α → β` lands in the *larger* of the two universes involved:
-
-```lean
-#check (ℕ → ℕ)        -- Type
-#check (ℕ → Type)     -- Type 1  (because `Type : Type 1`)
-```
-
-The same holds for a `∀` (a *dependent* function type), whose universe is read off from the universe it ranges over together with that of its body. When the body is data — something in a `Type` — the whole `∀` is forced to grow with the domain:
-
-```lean
--- Type-valued body: the universe grows with the domain.
-#check (∀ α : Type, α → α)     -- Type 1
-#check (∀ α : Type 5, α → α)   -- Type 6
-```
-
-The climbing is what *predicative* means: a predicative definition refers only to things already available below it, so whatever a type quantifies over is strictly smaller and the type it forms never lands back inside its own domain. That is why `∀ α : Type 5, α → α` is pushed up to `Type 6`, above everything it ranges over, and it keeps the hierarchy well-founded. (The term goes back to Poincaré and Russell, who imposed predicativity to outlaw the self-referential definitions behind the set-theoretic paradoxes.)
-
-The bump matters. Suppose `∀ α : Type, α → α` were allowed to have type `Type` rather than `Type 1` — i.e. a `∀` over `Type` could land back inside `Type`. That is the first step toward a universe that contains itself, `Type : Type`, and *that* is fatal: from `Type : Type` one can encode Russell's paradox at the level of types — *Girard's paradox* — and derive an honest proof of `False`, so *every* proposition becomes provable and the system is worthless. Predicativity, by forcing the climb to `Type 1`, is exactly what rules this out. (The proof is not short, and Lean's kernel enforces the bump, so you cannot even state `∀ α : Type, α → α : Type` to try it; carrying the construction out in Lean is {ref "project-girard"}[one of the course projects].)
-
-(A definition can also be made to work at *any* universe level at once; that uses `def`, so we defer it to the {ref "polymorphic-functions"}[chapter on functions].)
-
-There is exactly one universe that is allowed to break this rule — `Prop` — and that exception is the subject of the next section.
-
-# Why `Prop` is special
-%%%
-tag := "prop-special"
-%%%
-
-`Prop` is the type of statements that can be `True` or `False`, so both the hypotheses and the goal live there. A hypothesis has the form `hP : P`: `P` holds, and `hP` is a proof of it. Below, the hypotheses are named `P Q R S` and their proofs `hP hQ hR hS`; the names are arbitrary. A hypothesis `P → Q` states that `P` implies `Q`, written like the function type `f : ℝ → ℝ`.
-
-We note three specifics which only apply to `Prop`:
-
-*Proof irrelevance*: Note that `Prop` only records *that* a statement holds, but not *which* proof we chose. This is *proof irrelevance*, which means the following goal closes by `rfl`:
-
-```lean
-example (P : Prop) (h₁ h₂ : P) : h₁ = h₂ := rfl
-```
-
-For data living in a `Type` there is no such collapse, for obvious reasons.
-
-```lean +error
-example (a b : ℕ) : a = b := rfl
-```
-See also {ref "prop-vs-type"}[Prop vs Type].
-
-*`Prop` is impredicative*: `Prop` is the one universe that escapes the predicativity of the {ref "universe-determined"}[previous section]. As long as the body of a `∀` statement is a proposition, the whole `∀` is a `Prop` — even when we range over an arbitrarily large universe of types:
-
-```lean
--- Prop-valued body: stays `Prop`, however big the domain.
-#check (∀ α : Type, α = α)     -- Prop
-#check (∀ α : Type 5, α = α)   -- Prop
--- and the domain may be `Prop` itself.
-#check (∀ p : Prop, p → p)     -- Prop
-#check (∀ p : Prop, p)         -- Prop
-```
-
-Compare this with the `Type`-valued `∀ α : Type 5, α → α`, which had to climb to `Type 6`. The two statements are syntactically parallel and differ only in their body, yet land in wildly different places — `Prop` versus `Type 6`. A `∀` into `Prop` stays small; a `∀` into `Type u` must climb. The last two lines are the sharp case. `∀ p : Prop, p → p` is itself a `Prop`, so it quantifies over a totality *to which it belongs*, and `∀ p : Prop, p` does the same. That is what *impredicative* means: the definition, so to speak, feeds on itself.
-
-It is also exactly what Russell forbade. His vicious circle principle rules out defining an object by quantifying over a collection that contains it, and the ban costs ordinary analysis: the supremum of a set of reals is defined by quantifying over reals. Russell bought it back with a further axiom, reducibility, which says that every such definition is coextensional with a predicative one ({ref "prehistory"}[Introduction]).
-
-Lean needs no such axiom, because it does not apply one rule to everything. The circle is granted in `Prop` and refused for data: a proposition may be defined by quantifying over all propositions, a type may not be defined by quantifying over all types. Russell's supremum is then unproblematic. The cut that defines it is a predicate on $`ℚ` whose body quantifies over all of $`ℝ`, and because that body is a `Prop` it does not climb; what the quantification defines is an ordinary `Set ℚ`, at the same level as any other.
-
-```lean
--- The defining property ranges over all reals ...
-#check fun (S : Set ℝ) (q : ℚ) => (∃ x ∈ S, (q : ℝ) < x)  -- ... Prop
--- ... so the cut it carves out is an ordinary set of rationals.
-#check fun (S : Set ℝ) => {q : ℚ | ∃ x ∈ S, (q : ℝ) < x}    -- Set ℚ
-```
-
-That this is consistent is not obvious, and it is not a convention. Impredicativity in the syntax need not be circularity in the meaning: `Prop` can be modelled as a fixed collection of truth values, given in advance, and a `∀` over it is then a meet of members of that collection, hence a member again. The definition picks something out; it does not enlarge the totality. For a first-order theory, being consistent and having a model are the same thing — that is Gödel's completeness theorem of 1929 ({ref "hilbert-programme"}[Introduction]). Lean's logic is not first-order: its quantifiers range over types and over propositions, not only over the elements of one domain, so that equivalence is unavailable and the model has to be built by hand. Mario Carneiro built the set-theoretic model and proved Lean consistent relative to ZFC with $`n` inaccessible cardinals for each finite $`n` ([*The Type Theory of Lean*](https://github.com/digama0/lean-type-theory), 2019). The assumption is of the right strength, since Lean itself proves that models of ZFC with $`n` inaccessibles exist. The proof is not closed, however. An error was found in the thesis, and basic properties of Lean's type theory remain unproved, among them unique typing and Pi-injectivity; as of October 2026 there is no complete public relative-consistency proof for the type theory Lean implements{citep hales2026}[]. What stands in its place is weaker, in two directions. {citet werner1997}[] embeds ZFC into the CIC, and a dialect of the CIC back into ZFC with inaccessibles — a result about the CIC, not about the system Lean implements. And Joachim Breitner's [*Con-Leche*](https://github.com/leanprover/con-leche) is an external checker for Lean, written in Lean, with a proof in Lean that it never accepts a proof of `False`. That proof does not close the gap above: it is carried out *inside* Carneiro's framework, so it inherits the framework's open questions. What it establishes is that the checker is faithful to the model, not that the model is there. Consistency is therefore well supported, not settled.
-
-One level up the same move is fatal: `Type : Type` is inconsistent by Girard's paradox, which is why `Type u : Type (u+1)` and why `∀ α : Type 5, α → α` has to climb. And impredicativity is not free in `Prop` either. It is paid for by the restriction in the next item: if a proof could be taken apart to yield data *and* propositions could be formed impredicatively, the paradox would return.
-
-*Restricted (subsingleton) elimination.* A type's constructors *introduce* its values — they are the ways we build them (`Or.inl`, `isTrue`, `Nat.succ`, and so on). *Eliminating* a value is the opposite: we *use* it, by looking at which constructor produced it. This is what a `match` does — the {ref "pattern-matching"}[pattern-matching] construct `match h with | … => …`, taken up properly in the chapter on terms — and it is ultimately the job of the type's {ref "inductive"}[recursor] (see the {ref "nat-intro"}[introduction]). For a *proposition* `P : Prop`, then, eliminating a proof means running `P`'s own recursor — `Or.rec`, `And.rec`, and the like (the error below names `Or.casesOn`, the `match`-friendly form of `Or.rec`) — and the restriction we are about to meet is a restriction on exactly that recursor. To *eliminate into a type `T`* means that this case analysis returns a result of type `T`; eliminating into `T`, defining a function into `T` by the recursor, and letting that recursor compute are three names for one act. A proof carries no observable content, so Lean does not let us *read data off a proof* in this way: otherwise the result could depend on *which* proof we started from, and proof irrelevance says there is no such difference to observe. So eliminating a proposition may, in general, only produce further propositions, never data. For example, deciding as a {ref "bool"}[`Bool`] which side of a disjunction holds is rejected:
-
-```lean +error
-example (a b : Prop) (h : a ∨ b) : Bool :=
-  match h with
-  | Or.inl _ => true
-  | Or.inr _ => false
-```
-
-The error message is telling: `recursor 'Or.casesOn' can only eliminate into 'Prop'`. There is one exception, called *subsingleton elimination*. If a proposition has *at most one constructor* and all of its fields are *themselves proofs*, then it has at most one inhabitant, so eliminating it can reveal nothing — and Lean does allow it into *any* type. This covers `False` (no constructors at all, which is exactly why `False.elim` closes *any* goal), `Eq` (which is why we may `rw` even in goals that carry data), and `And` (both of its fields are proofs). It does *not* cover `Or` (the {ref "disjunction-sum"}[disjunction] `∨`, which has two constructors) or `∃` (its first field is a genuine witness, not a proof). None of this applies to `Type`: an inductive type in `Type` always eliminates into anything.
-
-Consistency forces this. For `Or`, what cannot escape is not a *witness*, as it would be for `∃`, but the *tag*: the information about *which* of the two branches holds. Take a true `a` and consider the proposition `a ∨ a`. Its two constructors give definitionally equal terms, by proof irrelevance:
-
-```lean
-example {a : Prop} (h : a) :
-    (Or.inl (b := a) h) = Or.inr (b := a) h := rfl
-```
-
-Here `h : a` is a proof of the (true) proposition `a`. "Left or right?" is simply not a well-posed question about a proof of `a ∨ a`: the tag is not distinguishable content. So if the rejected `(a ∨ b) → Bool` above were allowed — call the resulting function `which` — then setting `b := a` would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h` (they are {ref "defeq"}[definitionally equal], the `≡` from the previous chapter), so we would get `true ≡ false`, a contradiction. Because proofs are indistinguishable, the tag has to stay trapped — just as a leaked `∃`-witness would have forced `3 ≡ 5`.
-
-We cannot *build* such a `which` — Lean rejects it — but we can *assume* one exists for *every* `a ∨ b` (with its left- and right-branch computation rules as hypotheses) and then instantiate at `b := a`, where the two injections collide. Watch `true = false` — hence `False` — drop out:
-
-```lean
-example
-    (which : ∀ {a b : Prop}, a ∨ b → Bool)
-    (left : ∀ {a b : Prop} (h : a),
-      which (Or.inl h : a ∨ b) = true)
-    (right : ∀ {a b : Prop} (h : a),
-      which (Or.inr h : b ∨ a) = false) :
-    False := by
-  -- at `a, b := True`, the injections collide:
-  have htf : true = false := by
-    rw [← left (a := True) (b := True) trivial,
-        right (a := True) (b := True) trivial]
-  revert htf
-  decide
-```
-
-The way out mirrors the one for `∃`, one level up. The data-carrying counterpart of `a ∨ ¬a` is `Decidable a` (the {ref "decidable-typeclass"}[`Decidable` typeclass]), which — crucially — lives in `Type`, not `Prop` (its declaration uses the constructor-list `where` from the {ref "bool"}[`Bool` section]):
-
-{docstring Decidable}
-
-Because `Decidable p` is in `Type`, it *may* eliminate into `Type` — which is exactly why `if h : p then _ else _` (a *dependent* `if`, whose `h : p` names the proof made available in the then-branch) and the {ref "decide"}[`decide`] tactic compute.
-
-`Decidable` is one of many such twins. Almost every logical type has a data version, and Lean keeps the two apart because every type lives in exactly one universe and is never lifted into another. So `List Empty` is a type, while `List False` is an error: `List` expects an argument in `Type`, and `False` is in `Prop`. The last column of the table says what the `Prop` version keeps hidden. Where nothing is hidden (at most one constructor, all fields proofs), subsingleton elimination lets the proposition eliminate into `Type` after all, as `False.elim` does. Where something is hidden, only the data version can hand it out:
-
-:::table (align := left) +header
-* + Proposition (in `Prop`)
-  + Data version (in `Type`)
-  + what stays hidden
-* + `False`
-  + `Empty`
-  + nothing (no constructor)
-* + `True`
-  + `Unit`
-  + nothing (one constructor, no fields)
-* + `P ∧ Q`
-  + `α × β`
-  + nothing (one constructor, fields are proofs)
-* + `P ∨ Q`
-  + `α ⊕ β`
-  + the *tag* (which side)
-* + `a ∨ ¬a`
-  + `Decidable a`
-  + the *tag* (which side)
-* + `∃ x, q x`
-  + {ref "sigma-types"}[`Σ x, q x`]
-  + the *witness*
+Alonzo Church turned the simple theory of types into a calculus in 1940, the simply typed lambda calculus on which *Isabelle/HOL* still rests. Dependent types, in which a type may mention a term, came with de Bruijn's Automath (1967) and Martin-Löf's type theory (1971). Coquand and Huet added impredicative quantification in the Calculus of Constructions (1985), and Paulin-Mohring added inductive types (1990). Lean's type theory is a variant of the result, the {ref "cic"}[Calculus of Inductive Constructions]. Three times the same thing happened: a system let an object be applied to itself, a contradiction followed, and types forbade it. In Lean the ban is visible as `Type 0 : Type 1 : Type 2 : ...`.
 :::
-
-The classical route mirrors `Classical.choose` in the same way: `Classical.em : a ∨ ¬a` is always available (it is a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable` — a keyword marking a definition Lean cannot turn into runnable code, needed here because `Classical.choice` has no computational content to execute (this is the usual trigger for `noncomputable`, though not the only one). So the two halves — `∃`/`Σ`/`choose` for the *witness*, `∨`/`Decidable`/`em` for the *tag* — are really the same story: computationally relevant information can leave the `Prop` world only if we put it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` form of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)

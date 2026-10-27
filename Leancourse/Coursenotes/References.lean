@@ -160,6 +160,13 @@ def mathlibDocs : InProceedings := misc
   (howpublished := inlines!"Online API documentation")
   (url := some "https://leanprover-community.github.io/mathlib4_docs/")
 
+def carneiro2019 : InProceedings := misc
+  (title := inlines!"The Type Theory of Lean")
+  (authors := #[inlines!"Mario Carneiro"])
+  (year := 2019)
+  (howpublished := inlines!"MSc thesis, Carnegie Mellon University")
+  (url := some "https://github.com/digama0/lean-type-theory")
+
 def hales2026 : InProceedings := misc
   (title := inlines!"What Mathematicians Should Know About the Lean Theorem Prover: Questions of Reliability and AI")
   (authors := #[inlines!"Thomas Hales"])

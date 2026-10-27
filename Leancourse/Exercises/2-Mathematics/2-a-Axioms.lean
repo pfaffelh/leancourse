@@ -92,7 +92,7 @@ the property.
 -/
 
 -- Exercise 7: From a bare existence proof to an actual term.
--- This is the direction that sheet `1.3-a` had to leave open.
+-- This is the direction that sheet `1.2-b` had to leave open.
 noncomputable def existsToSubtype {α : Type} {P : α → Prop}
     (h : ∃ (x : α), P x) : {x : α // P x} :=
   sorry

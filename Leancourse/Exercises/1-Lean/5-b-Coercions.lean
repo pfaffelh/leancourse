@@ -46,7 +46,7 @@ example (n : ℕ) : ℤ := (n : ℤ)  -- and again, as an ascription
 The ordinary case. A subtype `{n : ℕ // n > 0}` is the type of
 natural numbers carrying a proof that they are positive; it coerces
 to `ℕ` by forgetting that proof. Subtypes in their own right are
-chapter 1.3 and sheet `1.3-a` -- here they are only the most
+chapter 1.2 and sheet `1.2-b` -- here they are only the most
 convenient example of a coercion.
 -/
 

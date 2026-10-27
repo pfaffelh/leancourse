@@ -7,14 +7,14 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the chapter "Types I: rules and universes" of part 1 (Lean
-and its type theory). It follows the chapter section by section: the
-rules of Lean's type theory (with a short history), the universe
-hierarchy, and why `Prop` is special.
+Deck for the chapter "Types I: building types" of part 1 (Lean and
+its type theory). It follows the chapter section by section: function
+types and Π-types, inductive types, structures, Σ-types, subtypes,
+type families, the universe hierarchy.
 -/
 
 namespace SlidesTypes
-#doc (Slides) "Types I: rules and universes" =>
+#doc (Slides) "Types I: building types" =>
 
 ```css
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
@@ -26,9 +26,13 @@ namespace SlidesTypes
 .reveal section .math.display { font-size: 0.7em; }
 ```
 
-# Types I: rules and universes
+# Types I: building types
 
 Lean and its type theory — chapter 2
+
+:::class "key"
+In Lean, types can depend on values.
+:::
 
 # Every term has a type
 
@@ -43,154 +47,252 @@ Lean and its type theory — chapter 2
 A type is itself a term, so it has a type as well.
 :::
 
-# The rules of Lean's type theory
-
-Lean accepts a term only if a small, fixed set of rules builds it. They derive two kinds of _judgement_:
-
-- $`\Gamma \vdash e : \alpha` — in the context $`\Gamma`, the term $`e` has type $`\alpha`
-- $`\Gamma \vdash e \equiv e'` — in $`\Gamma`, $`e` and $`e'` are definitionally equal
-
-A rule is a fraction: if the judgements above the line hold, so does the one below.
-
-:::class "key"
-These rules are all of Lean's logic. `∀` is a function type; `∧`, `∨`, `∃`, `=`, `False` are inductive types.
-:::
-
-# The context
-
-$$`\Gamma = x_1 : \alpha_1,\ \dots,\ x_n : \alpha_n \qquad \frac{}{\emptyset\ \mathrm{ok}} \qquad \frac{\Gamma\ \mathrm{ok} \qquad \Gamma \vdash \alpha : \mathrm{Sort}\ u}{\Gamma,\ x : \alpha\ \mathrm{ok}}`
-
-- _Order matters_: $`\alpha_i` may mention only $`x_1, \dots, x_{i-1}`.
-- _Variables, not constants_: no value, an arbitrary element or proof.
-- _Binders extend it_: the body of `fun x => e` is checked in $`\Gamma,\ x : \alpha`.
-
-```
-n : ℕ
-h : 0 < n
-⊢ n ≠ 0
-```
-
-The goal is $`\Gamma` and a type; a proof is an $`e` with $`\Gamma \vdash e : n \neq 0`. The constants of `def`, `theorem`, `inductive` form the _environment_.
-
-# Universes and variables
-
-$$`\frac{}{\Gamma \vdash \mathrm{Sort}\ u : \mathrm{Sort}\ (u+1)} \qquad\qquad \frac{(x : \alpha) \in \Gamma}{\Gamma \vdash x : \alpha}`
-
-with $`\mathrm{Prop} = \mathrm{Sort}\ 0` and $`\mathrm{Type}\ u = \mathrm{Sort}\ (u+1)`.
+# Function types and Π-types
 
 ```lean -panel -stretch
-#check Sort 0   -- Prop : Type
-#check Type 3   -- Type 3 : Type 4
-example (P : Prop) (h : P) : P := h
+#check (fun n => n + 1 : ℕ → ℕ)
+
+example : ∀ n : ℕ, n < n + 1 :=
+  fun n => Nat.lt_succ_self n
+```
+
+Both are instances of `(x : α) → β x`; here `β n` is `n < n + 1`, which depends on `n`.
+
+:::table +colHeaders
+*
+  * `β x` is
+  * we write
+*
+  * data
+  * `(x : α) → β x`, or `α → β`
+*
+  * a proposition
+  * `∀ x : α, β x`
+:::
+
+# Dependent functions
+
+```lean -panel -stretch
+def lastOf : (n : ℕ) → Fin (n + 1) :=
+  fun n => Fin.last n
+#check lastOf 3   -- Fin (3 + 1)
+
+def polyId : (α : Type) → α → α :=
+  fun _ a => a
+#check polyId ℕ 42  -- ℕ
 ```
 
 :::class "key"
-The variable rule is `exact h`, or `assumption`.
+`f : (x : α) → β x` picks `f x ∈ β x` for every `x`: an element of $`\prod_x \beta(x)`.
 :::
 
-# Function types
-
-$$`\frac{\Gamma \vdash \alpha : \mathrm{Sort}\ u \qquad \Gamma,\, x : \alpha \vdash \beta : \mathrm{Sort}\ v}{\Gamma \vdash (x : \alpha) \to \beta : \mathrm{Sort}\ (\mathrm{imax}\ u\ v)}`
-
-$`\mathrm{imax}\ u\ v = 0` if $`v = 0`, else $`\max(u, v)`. One rule, three readings: `α → β`, `(n : ℕ) → Fin n`, and `∀ x : α, P x`.
+# Inductive types
 
 ```lean -panel -stretch
-#check ℕ → Type            -- Type 1
-#check (n : ℕ) → Fin n     -- Type
-#check ∀ p : Prop, p → p   -- Prop
+inductive MyNat where
+  | zero : MyNat
+  | succ : MyNat → MyNat
+
+#check @MyNat.rec
 ```
 
-# Abstraction and application
+One declaration gives the type, its constructors and the recursor `MyNat.rec`, with a `motive : MyNat → Sort u`.
 
-$$`\frac{\Gamma,\, x : \alpha \vdash e : \beta}{\Gamma \vdash (\mathrm{fun}\ x \Rightarrow e) : (x : \alpha) \to \beta} \qquad\quad \frac{\Gamma \vdash f : (x : \alpha) \to \beta \qquad \Gamma \vdash a : \alpha}{\Gamma \vdash f\ a : \beta[x := a]}`
+:::class "key"
+Data-valued motive: recursion. `Prop`-valued motive: induction.
+:::
+
+# Strict positivity
 
 ```lean -panel -stretch
-#check (fun n : ℕ => (0 : Fin (n + 1))) 3
-example (P Q : Prop) (f : P → Q) (hP : P) : Q :=
-  f hP
-example (P Q : Prop) (hQ : Q) : P → Q :=
-  fun _ => hQ
+inductive MyTree where
+  | leaf : ℕ → MyTree
+  | node : (ℕ → MyTree) → MyTree
+```
+
+```
+inductive Bad where
+  | mk : (Bad → False) → Bad   -- rejected
+```
+
+With `Bad`, `neg b := app b b` gives `neg (Bad.mk neg) : False`.
+
+:::class "key"
+The type may occur only to the right of an arrow.
+:::
+
+# Structures
+
+One constructor, named fields.
+
+```lean -panel -stretch
+structure Point where
+  x : ℕ
+  y : ℕ
+structure Point3D extends Point where
+  z : ℕ
+#check (Point.mk : ℕ → ℕ → Point)
+```
+
+Data with a property: `MyLinearMap` bundles `toFun` and `map_add`.
+
+# Inductive types vs structures
+
+:::table +colHeaders +rowSeps
+*
+  * use
+  * when
+  * examples
+*
+  * `structure`
+  * one constructor, named fields
+  * points, complex numbers, algebraic structures
+*
+  * `inductive`
+  * several constructors
+  * `ℕ`, lists, trees, `Option`, `Bool`
+:::
+
+A `structure` is sugar for a one-constructor `inductive`, plus field names, dot notation, defaults and `extends`.
+
+# Pairs and Σ-types
+
+```lean -panel -stretch
+def aPair : (n : ℕ) × Fin (n + 1) :=
+  ⟨3, Fin.last 3⟩
+#eval aPair.1   -- 3
+```
+
+`(x : α) × β x`, also `Σ x, β x`: pairs `⟨a, b⟩` with `b : β a`.
+A structure with two fields, `Sigma.fst` and `Sigma.snd`.
+
+:::class "key"
+In sets: the disjoint union $`\coprod_x \beta(x)`. If `β` is constant, `α × β`.
+:::
+
+# Sum and product
+
+```lean -panel -stretch
+-- Σ: 1 + 2 + 3 + 4
+example : Fintype.card
+    ((n : Fin 4) × Fin (n + 1)) = 10 := by decide
+-- Π: 1 · 2 · 3 · 4
+example : Fintype.card
+    ((n : Fin 4) → Fin (n + 1)) = 24 := by decide
+```
+
+:::table +colHeaders
+*
+  * non-dependent
+  * dependent
+  * for propositions
+*
+  * `α → β`
+  * `(x : α) → β x`
+  * `∀ x, P x`
+*
+  * `α × β`
+  * `(x : α) × β x`
+  * `∃ x, P x`
+:::
+
+# Subtypes
+
+`{x : α // P x}` with `P : α → Prop`: a pair whose second
+component is a proof.
+
+```lean -panel -stretch
+def BigNat : Type := {n : ℕ // n > 5}
+
+def seven : BigNat := ⟨7, by norm_num⟩
+#eval seven.val  -- 7
 ```
 
 :::class "key"
-Left rule: `intro`. Right rule: `exact h a`, `apply h`.
+Proof irrelevance: two elements are equal iff their first components are.
 :::
 
-# Conversion
+# Subtypes and sets
 
-$$`\frac{\Gamma \vdash e : \alpha \qquad \Gamma \vdash \alpha \equiv \beta}{\Gamma \vdash e : \beta}`
+- Many Mathlib objects are subtypes, e.g. `{n : ℕ // Nat.Prime n}`.
+- A set `s : Set α` selects elements, which keep their type `α`.
+- The subtype `{x : α // P x}` is a _new_ type.
+- `↥s` turns a set into the subtype of its members.
 
-```lean -panel -stretch
-example : 2 + 2 = 4 := rfl
-example (v : Fin (2 + 2)) : Fin 4 := v
-example (p : Prop) (h h' : p) : h = h' := rfl
-example (x : ℕ × ℕ) : x = (x.1, x.2) := rfl
-```
+The chapter on sets and types spells this out.
 
-$`\equiv` is generated by β, δ, ζ, η, ι, proof irrelevance and η for structures.
+# Type families
 
-:::class "key"
-This is the rule behind `rfl`.
-:::
-
-# Rules for inductive types
-
-Each `inductive` adds the type, its constructors, the recursor and ι-rules:
-
-$$`\mathrm{Nat.rec} : (m : \mathbb N \to \mathrm{Sort}\ u) \to m\ 0 \to \big((n : \mathbb N) \to m\ n \to m\ (n+1)\big) \to (t : \mathbb N) \to m\ t`
-
-$$`\mathrm{Nat.rec}\ m\ z\ s\ 0 \equiv z \qquad \mathrm{Nat.rec}\ m\ z\ s\ (n+1) \equiv s\ n\ (\mathrm{Nat.rec}\ m\ z\ s\ n)`
-
-`#print Or` shows `Or.inl`, `Or.inr`; `#print False` shows no constructor at all. Two conditions: _strict positivity_, and _restricted elimination_ out of `Prop`.
-
-# Without inductive types
-
-Impredicative `Prop` encodes the connectives:
+A type family is a function that returns a type.
 
 ```lean -panel -stretch
-def EAnd (P Q : Prop) : Prop :=
-  ∀ R : Prop, (P → Q → R) → R
-example (P Q : Prop) (h : EAnd P Q) : P :=
-  h P (fun hP _ => hP)
-def ChNat : Type 1 :=
-  (α : Type) → (α → α) → α → α
+def BoolFamily : Bool → Type
+  | true  => ℕ
+  | false => String
+
+def boolFamilyExample : (b : Bool) → BoolFamily b
+  | true  => (42 : ℕ)
+  | false => ("hello" : String)
 ```
 
-For data it fails: `ChNat` lives in `Type 1`, and classically there is an element `fun α f x => if α = Bool then f x else x` that is neither zero nor a successor.
+# Fibers
 
-:::class "key"
-Induction over `ChNat` is false. Hence inductive types, Paulin-Mohring 1990.
-:::
-
-# Quotients and axioms
-
-$$`\mathrm{Quot.lift}\ f\ h\ (\mathrm{Quot.mk}\ r\ a) \equiv f\ a`
+The fiber of `f : α → β` over `b : β` is the subtype
+`{a : α // f a = b}` — a type family indexed by `β`.
 
 ```lean -panel -stretch
-#check @propext    -- (a ↔ b) → a = b
-#check @Classical.choice -- Nonempty α → α
-#print axioms Classical.em
+def fiber (f : ℕ → ℕ) (b : ℕ) : Type :=
+  {a : ℕ // f a = b}
+
+def fiberExample : fiber (· * 2) 10 :=
+  ⟨5, by norm_num⟩
 ```
 
-The third axiom is `Quot.sound`: related elements have the same class. `Classical.em` and `funext` are theorems.
+# Vectors indexed by length
 
-# How Lean checks the rules
+A vector of length `n` over `α` is a function `Fin n → α`.
 
-The _elaborator_ turns notation, implicit arguments and tactics into an explicit term; it is not trusted. The _kernel_ checks that term.
+```lean -panel -stretch
+def myVec : Fin 3 → ℕ := ![10, 20, 30]
 
-From `src/kernel/type_checker.cpp`, the application rule:
-
-```
-expr f_type = ensure_pi(infer_type(app_fn(e)));
-expr a_type = infer_type(app_arg(e));
-if (!is_def_eq(a_type, binding_domain(f_type)))
-    throw app_type_mismatch_exception(...);
-return instantiate(binding_body(f_type), app_arg(e));
+#eval myVec 0   -- 10
+#eval myVec 2   -- 30
 ```
 
 :::class "key"
-Conversion is the call `is_def_eq`. About 1 400 lines check every proof.
+Index 5 of a 3-element vector does not exist: `5` is not a term of
+type `Fin 3`. Out-of-bounds is a compile-time error.
 :::
+
+# Matrices
+
+An `m × n` matrix is a function `Fin m → Fin n → α`, or
+`Matrix (Fin m) (Fin n) α` in Mathlib.
+
+```lean -panel -stretch
+def myMatrix : Fin 2 → Fin 3 → ℕ :=
+  ![![1, 2, 3], ![4, 5, 6]]
+
+#eval myMatrix 0 1  -- 2
+#eval myMatrix 1 2  -- 6
+```
+
+:::class "key"
+`A * B` needs `m × n` times `n × p`. A dimension mismatch is a type error.
+:::
+
+# The universe hierarchy
+
+```lean -panel -stretch
+#check (ℕ : Type)
+#check (Prop : Type)
+#check (Type : Type 1)
+#check (Type 1 : Type 2)
+example : Sort 0 = Prop := rfl
+example : Sort 1 = Type := rfl
+```
+
+One rule: `Sort u : Sort (u+1)`. There is no `Type : Type`.
 
 # Where types come from
 
@@ -217,126 +319,10 @@ Russell's set $`R = \{x : x \notin x\}` broke Frege in 1902. Russell's repair (1
 
 Then the Calculus of Constructions (1985) and inductive types (1990).
 
-# The universe hierarchy
-
-```lean -panel -stretch
-#check (ℕ : Type)
-#check (Prop : Type)
-#check (Type : Type 1)
-#check (Type 1 : Type 2)
-example : Sort 0 = Prop := rfl
-example : Sort 1 = Type := rfl
-```
-
-One rule: `Sort u : Sort (u+1)`. There is no `Type : Type`.
-
-# How the universe is determined
-
-```lean -panel -stretch
-#check (ℕ → Type)             -- Type 1
-#check (∀ α : Type, α → α)    -- Type 1
-#check (∀ α : Type 5, α → α)  -- Type 6
-```
-
-_Predicative_: a type lands above everything it quantifies over.
-
-:::class "key"
-`Type : Type` would give Girard's paradox, a proof of `False`.
-:::
-
-# Why `Prop` is special: proof irrelevance
-
-`Prop` records _that_ a statement holds, not _which_ proof.
-
-```lean -panel -stretch
-example (P : Prop) (h₁ h₂ : P) : h₁ = h₂ := rfl
-```
-
-```lean +error -panel -stretch
-example (a b : ℕ) : a = b := rfl
-```
-
-# `Prop` is impredicative
-
-```lean -panel -stretch
-#check (∀ α : Type 5, α = α)  -- Prop
-#check (∀ p : Prop, p → p)    -- Prop
-#check (∀ p : Prop, p)        -- Prop
-```
-
-`∀ p : Prop, p → p` quantifies over a totality to which it belongs.
-
-:::class "key"
-A `∀` into `Prop` stays small; a `∀` into `Type u` must climb.
-:::
-
-# Russell's supremum
-
-Russell's vicious circle principle forbids this; he needed the axiom of reducibility. Lean grants the circle in `Prop` and refuses it for data.
-
-```lean -panel -stretch
--- the body ranges over all reals ...
-#check fun (S : Set ℝ) (q : ℚ) =>
-  (∃ x ∈ S, (q : ℝ) < x)       -- Prop
--- ... the cut is an ordinary Set ℚ
-#check fun (S : Set ℝ) =>
-  {q : ℚ | ∃ x ∈ S, (q : ℝ) < x}
-```
-
-# Is this consistent?
-
-- Model `Prop` as fixed truth values: a `∀` over it is a meet, hence
-  a member again.
-- Lean is not first-order, so the model is built by hand.
-- Carneiro 2019: relative to ZFC with $`n` inaccessibles. An error was
-  found; unique typing and Pi-injectivity remain open.
-
-:::class "key"
-Consistency is well supported, not settled.
-:::
-
-# Restricted elimination
-
-A proof carries no observable content, so no data can be read off it.
-
-```lean +error -panel -stretch
-example (a b : Prop) (h : a ∨ b) : Bool :=
-  match h with
-  | Or.inl _ => true
-  | Or.inr _ => false
-```
-
-Exception, _subsingleton elimination_: `False`, `Eq`, `And`. Not `Or`, not `∃`.
-
-# The tag has to stay hidden
-
-```lean -panel -stretch
-example {a : Prop} (h : a) :
-    (Or.inl (b := a) h) = Or.inr (b := a) h :=
-  rfl
-```
-
-A `which : a ∨ b → Bool` would give `true ≡ false`.
-
-:::table +colHeaders +rowSeps
-*
-  * in `Prop`
-  * in `Type`
-  * stays hidden
-*
-  * `∃ x, q x`
-  * `Σ x, q x`
-  * the witness
-*
-  * `a ∨ ¬a`
-  * `Decidable a`
-  * the tag
-:::
-
 # Summary
 
-- A few rules (context, universes, functions, conversion, inductive types) are all of Lean's logic.
-- Types were invented to stop paradoxes of self-application.
+- `(x : α) → β x`: dependent functions; `∀` for propositions, `→` if nothing depends.
+- `inductive`: constructors and a recursor; only strictly positive.
+- `structure`: one constructor, named fields.
+- `(x : α) × β x`: dependent pairs, a disjoint union. Subtypes: the second component is a proof.
 - Universes: `Prop`, `Type 0 : Type 1 : ...`; there is no `Type : Type`.
-- `Prop` is proof irrelevant, impredicative, and eliminates only into `Prop`.
-- Next chapter: the types these rules build — Π, inductive types, structures, Σ, quotients.

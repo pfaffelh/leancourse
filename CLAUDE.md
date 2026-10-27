@@ -2339,3 +2339,20 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
   `Checks/README.md` nachgezogen.
 - Deck 1.2 endet jetzt nach "The tag has to stay hidden"; die Folien
   ab "Inductive types" stehen im Deck 1.3. Hoechste Folie 642 px.
+
+## 2026-10-27 (2) -- Typen I/II umgedreht: erst bauen, dann Regeln
+
+- Auf Wunsch des Autors ("einfach anfangen, danach spezieller,
+  moeglichst wenig Vorwaertsreferenzen") ist die Reihenfolge der
+  beiden Typkapitel vertauscht:
+  **1.2 `2-Types.lean` "Types I: building types"** (tag `types`):
+  Π, inductive, structures, Σ, Subtypen, Typfamilien,
+  Universenhierarchie, dazu die Geschichtsbox "Where types come
+  from". **1.3 `3-Rules.lean` "Types II: the rules"** (tag `rules`):
+  die Regeln, `imax`, `Prop`, Quotienten. Der Tag `type-formers` ist
+  weg. Montag 02.11. wird ueber das neue 1.2 gelesen.
+- 1.2.1.8 *Without inductive types* (Church-Kodierungen, `ChNat`) ist
+  ersatzlos gestrichen, im Kapitel und im Deck.
+- Decks: `slides/1-2-types/` (Bauen) und `slides/1-3-rules/`
+  (Regeln); Blatt `1.3-a` heisst jetzt `1.2-b`
+  (`2-b-DependentTypes.lean`), weiter in Woche 5.

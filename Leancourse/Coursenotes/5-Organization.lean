@@ -32,10 +32,10 @@ used without the other.
 * Lean and its type theory, one deck per chapter:
   * [The natural numbers and reduction rules](slides/1-1-nat/) —
     {ref "nat"}[chapter]
-  * [Types I: rules and universes](slides/1-2-types/) —
+  * [Types I: building types](slides/1-2-types/) —
     {ref "types"}[chapter]
-  * [Types II: type formers](slides/1-3-type-formers/) —
-    {ref "type-formers"}[chapter]
+  * [Types II: the rules](slides/1-3-rules/) —
+    {ref "rules"}[chapter]
   * [Terms](slides/1-4-terms/) — {ref "terms"}[chapter]
   * [Typeclasses](slides/1-5-typeclasses/) — {ref "typeclasses"}[chapter]
   * [Propositions and proofs](slides/1-6-curry-howard/) —
@@ -102,7 +102,7 @@ written at the start of the lab.
 * + 3
   + Mon 02.11.
   + Lecture
-  + Types I: rules, universes, `Prop`
+  + Types I: function types, inductive types, structures, Σ, universes
   + {ref "types"}[1.2]
 * + 3
   + Wed 04.11.
@@ -112,8 +112,8 @@ written at the start of the lab.
 * + 4
   + Mon 09.11.
   + Lecture
-  + Types II: function types, inductive types, structures, Σ, quotients
-  + {ref "type-formers"}[1.3]
+  + Types II: the rules, `Prop`, quotients
+  + {ref "rules"}[1.3]
 * + 4
   + Wed 11.11.
   + Lab
@@ -128,7 +128,7 @@ written at the start of the lab.
   + Wed 18.11.
   + Lab
   + Sheets
-  + `L-g`, `1.3-a`, extra `X-a`
+  + `L-g`, `1.2-b`, extra `X-a`
 * + 6
   + Mon 23.11.
   + Lecture
@@ -264,7 +264,7 @@ The course is for mathematics students.
 * *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write ({ref "term"}[the proof state]). This is not the older use of computers in mathematics, which was to work through many cases ({ref "four-colour-episode"}[the four colour theorem]).
 * *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — {ref "tactics"}[*tactics*] — fit together. The second half goes deeper into the mathematics.
 * *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "monads"}[monads], needed both to use Lean and to read *Mathlib*.
-* *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "type-formers"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
+* *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "types"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
 * *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
 * *Proof engineering.* Automation tactics, {ref "navigating-mathlib"}[searching *Mathlib*], and the {ref "common-pitfalls"}[common pitfalls] of a large formal library.
 

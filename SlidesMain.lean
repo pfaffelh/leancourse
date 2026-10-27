@@ -2,7 +2,7 @@ import VersoSlides
 import Slides.«0-Introduction»
 import Slides.«1-1-Nat»
 import Slides.«1-2-Types»
-import Slides.«1-3-TypeFormers»
+import Slides.«1-3-Rules»
 import Slides.«1-4-Terms»
 import Slides.«1-5-Typeclasses»
 import Slides.«1-6-CurryHoward»
@@ -93,7 +93,7 @@ def main (args : List String) : IO UInt32 := do
     [ ("0-introduction",      fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«0-Introduction»)),
       ("1-1-nat",             fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-1-Nat»)),
       ("1-2-types",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-2-Types»)),
-      ("1-3-type-formers",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-3-TypeFormers»)),
+      ("1-3-rules",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-3-Rules»)),
       ("1-4-terms",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-4-Terms»)),
       ("1-5-typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-5-Typeclasses»)),
       ("1-6-curry-howard",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-CurryHoward»)),

@@ -32,4 +32,5 @@ the source.
 * {citehere mathematicsInLean}[]
 * {citehere mathlibDocs}[]
 * {citehere hottBook}[]
+* {citehere carneiro2019}[]
 * {citehere hales2026}[]

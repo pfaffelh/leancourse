@@ -10,7 +10,8 @@ set_option pp.rawOnError true
 Deck for the chapter "Types and terms II: pairs, subtypes, families,
 quotients" of part 1 (Lean and its type theory). It follows the
 chapter section by section: Σ-types, subtypes, type families, indexed
-families, the logical connectives as types, quotient types, and the
+families, the logical connectives as types with tactic and term mode, quotient
+types, and the
 table of the four steps.
 -/
 
@@ -191,6 +192,40 @@ example (C : Prop) (h : False) : C := nomatch h
 - `→`, `∀`: function types; `¬P` is `P → False`
 - `True`: one constructor; `False`: none, so `nomatch` needs no branch
 
+# Proofs of implications
+
+A proof of `P → Q` is a function from proofs of `P` to proofs of `Q`.
+
+```lean -panel -stretch
+example (P Q : Prop) (hP : P) (hPQ : P → Q) :
+    Q :=
+  hPQ hP
+
+example (P Q R : Prop) :
+    (P → Q) → (Q → R) → (P → R) :=
+  fun hPQ hQR hP => hQR (hPQ hP)
+```
+
+Modus ponens is application; chaining is composition.
+
+# Tactic mode and term mode
+
+```lean -panel -stretch
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := by
+  intro hP
+  exact hQR (hPQ hP)
+
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := fun hP ↦ hQR (hPQ hP)
+```
+
+After `by`, each tactic changes the proof state: hypotheses above `⊢`, the goal after it. `show_term` prints the term built.
+
+:::class "key"
+`intro` builds a `fun`; `exact` supplies a term.
+:::
+
 # Conjunction and disjunction
 
 ```lean -panel -stretch
@@ -282,6 +317,51 @@ example (P Q : ℕ → Prop) (h : ∃ n, P n ∧ Q n) :
 
 That related elements have the _same_ class does not follow from the four steps. Lean assumes it as an _axiom_.
 
+# The real numbers as a quotient
+
+A real number: a Cauchy sequence of rationals; sequences whose difference tends to `0` give the same number.
+
+::::class "small"
+:::table +colHeaders +rowSeps
+*
+  * step
+  * in Mathlib
+  * type former
+*
+  * Cauchy sequences
+  * `CauSeq ℚ abs` = `{f : ℕ → ℚ // IsCauSeq abs f}`
+  * subtype
+*
+  * their classes
+  * `CauSeq.Completion.Cauchy abs`, by `f ≈ g ↔ f - g → 0`
+  * quotient
+*
+  * `ℝ`
+  * `structure Real` with one field `cauchy`
+  * structure
+:::
+::::
+
+```lean -panel -stretch
+example (f g : CauSeq ℚ abs) :
+    f ≈ g ↔ (f - g).LimZero := Iff.rfl
+```
+
+# Adding real numbers
+
+```lean -panel -stretch
+example (f g : CauSeq ℚ abs) :
+    CauSeq.Completion.mk f + CauSeq.Completion.mk g
+      = CauSeq.Completion.mk (f + g) :=
+  CauSeq.Completion.mk_add f g
+```
+
+Add representatives termwise. Well defined: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`; then `Quot.lift` gives `+` on the classes.
+
+:::class "key"
+This equation is the computation rule `Quot.lift f h (Quot.mk r a) ⟶ f a`.
+:::
+
 # The four steps at a glance
 
 ::::class "small"
@@ -345,5 +425,6 @@ Chapter 1.4 states these steps as the rules of Lean's type theory.
 
 - `(x : α) × β x`: dependent pairs, a disjoint union. Subtypes: the second component is a proof.
 - Type families are functions into a universe; with `inductive`, the constructors fix the index.
+- A proof of `P → Q` is a function; `intro` builds it, `exact` supplies a term.
 - The connectives are these type formers in `Prop`: `∧` a structure, `∨`, `∃`, `False` inductive types.
-- `Quot r`: a type up to a relation, with the axiom `Quot.sound`.
+- `Quot r`: a type up to a relation, with the axiom `Quot.sound`. `ℝ`: Cauchy sequences up to null sequences.

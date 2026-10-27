@@ -105,7 +105,7 @@ example : Sort 1 = Type := rfl
 example : Type = Type 0 := rfl
 ```
 
-So `Sort` covers `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`. Of the four steps, universes have only the first: `Sort u` is a type, and its terms are the types built in the rest of this chapter and the next.
+So `Sort` covers `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`; in particular `Prop : Type`. In signatures you will often see `{α : Type*}`: `α` is a type in some universe `Type u`, and Lean introduces the universe variable `u` itself ({ref "polymorphic-functions"}[Polymorphic functions] below). Of the four steps, universes have only the first: `Sort u` is a type, and its terms are the types built in the rest of this chapter and the next.
 
 There is deliberately no `Type : Type`. A universe that contains itself admits a version of Russell's paradox for types, *Girard's paradox*, and with it a proof of `False`.
 
@@ -246,50 +246,6 @@ def safeDiv (a b : ℤ) (_ : b ≠ 0) : ℤ := a / b
 ```
 
 The third argument is a proof of `3 ≠ 0`, here written as a tactic proof `by decide` in the place of a term: `decide` proves a statement without variables by computing whether it holds. The type `(a b : ℤ) → b ≠ 0 → ℤ` of `safeDiv` is a Π-type, because the type of the proof depends on `b`.
-
-## Proofs of implications
-%%%
-tag := "term"
-%%%
-
-For propositions `P` and `Q`, `P → Q` is a function type like any other, and a proof of `P → Q` is a function that takes a proof of `P` to a proof of `Q`. Modus ponens is function application, and chaining two implications is composition:
-
-```lean
-example (P Q : Prop) (hP : P) (hPQ : P → Q) : Q :=
-  hPQ hP
-
-example (P Q R : Prop) :
-    (P → Q) → (Q → R) → (P → R) :=
-  fun hPQ hQR hP => hQR (hPQ hP)
-```
-
-A proof written down as a term is in *term mode*. The exercise sheets mostly use *tactic mode*: after the keyword `by`, each tactic changes the *proof state* — the hypotheses above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)), the goal to its right — until no goal is left. Tactic mode builds a term as well. Two tactics correspond directly to the constructions of this section:
-
-* `intro h` builds a function `fun h => …`;
-* `exact t` supplies the term `t`, often a function application.
-
-So the tactic proof and the term below are the same object:
-
-```lean
-example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
-    P → R := by
-  intro hP
-  exact hQR (hPQ hP)
-
-example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
-    P → R := fun hP ↦ hQR (hPQ hP)
-```
-
-`show_term` in front of tactics prints the term they build:
-
-```lean
-example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
-    P → R := by
-  show_term
-    intro hP
-    exact hQR (hPQ hP)
--- Try this: exact fun hP => hQR (hPQ hP)
-```
 
 # Structures
 %%%
@@ -618,6 +574,27 @@ def MyNat.toNat : MyNat → ℕ
 ```
 
 Writing plain `zero` in place of `.zero` would fail: there is no `zero` in scope, only `MyNat.zero`. As for `Point.x`, for `m : MyNat` the name `m.toNat` means `MyNat.toNat m`.
+
+A function can also be defined with the recursor directly, as `myDouble` was defined with `Nat.rec` in the {ref "nat-intro"}[previous chapter]: one argument for each constructor, and for `succ` the value on the predecessor is handed over as `d`. Lean's compiler, which runs `#eval`, does not support the recursors of your own types (for `Nat` it has special support), so the definition has to be marked `noncomputable`. The kernel reduces it all the same, so `rfl` works, and induction shows that it agrees with the version by pattern matching:
+
+```lean
+noncomputable def MyNat.double' (n : MyNat) : MyNat :=
+  MyNat.rec .zero (fun _ d => .succ (.succ d)) n
+
+example :
+    MyNat.double' (.succ .zero) = .succ (.succ .zero) :=
+  rfl
+
+example (n : MyNat) : n.double' = n.double := by
+  induction n with
+  | zero => rfl
+  | succ n ih =>
+    show MyNat.succ (MyNat.succ n.double') = _
+    rw [ih]
+    rfl
+```
+
+Pattern matching is translated into the recursor for the kernel and into running code for `#eval`. That is why functions are usually written by pattern matching.
 
 Pattern matching works for any inductive type. A list is empty, or a first element followed by a list. In Lean's library (`u` is a universe variable, {ref "polymorphic-functions"}[above]):
 

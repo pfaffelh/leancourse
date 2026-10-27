@@ -250,13 +250,57 @@ A proposition `P : Prop` is a type, and a proof of `P` is a term `h : P`. A prop
 tag := "forall-pi"
 %%%
 
-`P → Q` and `∀ x : α, P x` are the function types of the previous chapter: a proof of `P → Q` takes proofs of `P` to proofs of `Q` ({ref "term"}[Proofs of implications]), and a proof of `∀ x : α, P x` takes each `x : α` to a proof of `P x` ({ref "pi-types"}[Function types and Π-types]). Negation is defined from them: `¬P` is `P → False`.
+For propositions `P` and `Q`, `P → Q` is a function type like any other, and a proof of `P → Q` is a function that takes a proof of `P` to a proof of `Q`. Modus ponens is function application, and chaining two implications is composition:
+
+```lean
+example (P Q : Prop) (hP : P) (hPQ : P → Q) : Q :=
+  hPQ hP
+
+example (P Q R : Prop) :
+    (P → Q) → (Q → R) → (P → R) :=
+  fun hPQ hQR hP => hQR (hPQ hP)
+```
+
+A proof of `∀ x : α, P x` takes each `x : α` to a proof of `P x`: it is a dependent function ({ref "pi-types"}[Function types and Π-types]). Negation is defined from implication: `¬P` is `P → False`.
 
 ```lean
 example (P : Prop) : (¬P) = (P → False) := rfl
 
 example (P : Prop) (hP : P) (hnP : ¬P) : False :=
   hnP hP
+```
+
+## Tactic mode and term mode
+%%%
+tag := "term"
+%%%
+
+A proof written down as a term is in *term mode*. The exercise sheets mostly use *tactic mode*: after the keyword `by`, each tactic changes the *proof state* — the hypotheses above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)), the goal to its right — until no goal is left. Tactic mode builds a term as well. Two tactics correspond directly to the constructions above:
+
+* `intro h` builds a function `fun h => …`;
+* `exact t` supplies the term `t`, often a function application.
+
+So the tactic proof and the term below are the same object:
+
+```lean
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := by
+  intro hP
+  exact hQR (hPQ hP)
+
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := fun hP ↦ hQR (hPQ hP)
+```
+
+`show_term` in front of tactics prints the term they build:
+
+```lean
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := by
+  show_term
+    intro hP
+    exact hQR (hPQ hP)
+-- Try this: exact fun hP => hQR (hPQ hP)
 ```
 
 ## `True` and `False`
@@ -388,7 +432,7 @@ A term that replaces the `sorry` is a proof of the conjecture.
 tag := "quotient-types"
 %%%
 
-The last way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction. `ℤ`, `ℚ`, `Multiset α` (lists up to reordering) and `ZMod n` (the integers mod `n`) are quotients too.
+The last way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction ({ref "reals-quotient"}[below]). `ℤ`, `ℚ`, `Multiset α` (lists up to reordering) and `ZMod n` (the integers mod `n`) are quotients too.
 
 *Formation.* `Quot r` is a type.
 
@@ -419,32 +463,43 @@ One property is missing from the four steps: related elements should have the *s
 
 `#print axioms name` lists the axioms that a constant depends on. In practice one usually goes through `Quotient`, a thin wrapper of `Quot` for a relation that is an equivalence relation; such a relation, bundled with the proof that it is one, is called a `Setoid`.
 
-::::keepEnv
-:::example "How `ℝ` is built as a quotient"
-Mathlib's real numbers are a concrete instance of exactly this construction. First, a `CauSeq` is a {ref "subtypes"}[*subtype*]: the notation `{ f : ℕ → ℚ // IsCauSeq abs f }` means a rational sequence `f : ℕ → ℚ` bundled with a proof that it is Cauchy.
+## Example: the real numbers
+%%%
+tag := "reals-quotient"
+%%%
+
+In analysis, `ℝ` is the completion of `ℚ`: a real number is given by a Cauchy sequence of rationals, and two Cauchy sequences give the same real number if their difference tends to `0`. Mathlib builds `ℝ` in exactly this way, in three steps, each a type former of this chapter or the previous one.
+
+*Cauchy sequences: a subtype.* `CauSeq ℚ abs` is `{f : ℕ → ℚ // IsCauSeq abs f}`, a sequence of rationals together with a proof that it is Cauchy for the absolute value `abs`.
 
 ```lean
 #check (CauSeq ℚ abs)
--- CauSeq ℚ abs = { f : ℕ → ℚ // IsCauSeq abs f }
 example (f : CauSeq ℚ abs) : ℕ → ℚ := f.1
 ```
 
-`ℝ` is then a one-field structure wrapping the *quotient* of these sequences by the relation "the difference tends to `0`". The class map `CauSeq.Completion.mk` is the `Quot.mk` of that quotient:
+*Classes of sequences: a quotient.* Two Cauchy sequences are related, `f ≈ g`, if `f - g` tends to `0`. The quotient by this relation is `CauSeq.Completion.Cauchy abs`, and `CauSeq.Completion.mk` is its `Quot.mk`. Related sequences give the same class by `Quotient.sound`, the form of `Quot.sound` for an equivalence relation:
 
 ```lean
-#check @Real.ofCauchy
--- CauSeq.Completion.Cauchy abs → ℝ
-
-#check @CauSeq.Completion.mk
--- CauSeq ℚ abs → CauSeq.Completion.Cauchy abs
-
--- two sequences give the same real iff (f - g) → 0;
--- `≈` is the Setoid equivalence relation on `CauSeq`
 example (f g : CauSeq ℚ abs) :
     f ≈ g ↔ (f - g).LimZero := Iff.rfl
+
+example : CauSeq.Completion.Cauchy (abs : ℚ → ℚ) =
+    Quotient (CauSeq.equiv (abv := (abs : ℚ → ℚ))) := rfl
+
+example (f g : CauSeq ℚ abs) (h : f ≈ g) :
+    CauSeq.Completion.mk f = CauSeq.Completion.mk g :=
+  Quotient.sound h
 ```
 
-Addition is the first use of `Quot.lift`. Two reals are added by adding *representative* sequences termwise, which is well-defined because `+` respects the relation: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`. With that checked, `Quot.lift` yields the computation rule that `mk` is an additive homomorphism:
+*The real numbers: a structure.* `ℝ` is a {ref "structures"}[structure] with one field, an element of this quotient. The wrapper makes Lean treat `ℝ` as a type of its own instead of unfolding it to the quotient.
+
+```lean
+#print Real
+-- structure Real : Type
+--   Real.cauchy : CauSeq.Completion.Cauchy abs
+```
+
+*Operations: well-definedness.* Two real numbers are added by adding representative sequences termwise. This is well defined because addition respects the relation: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`. With that proved, `Quot.lift` gives addition on the classes, and its computation rule says that `mk` turns the sum of sequences into the sum of reals:
 
 ```lean
 example (f g : CauSeq ℚ abs) :
@@ -453,9 +508,7 @@ example (f g : CauSeq ℚ abs) :
   CauSeq.Completion.mk_add f g
 ```
 
-This `mk (f) + mk (g) = mk (f + g)` equation *is* the `Quot.lift f h (Quot.mk r a) ⟶ f a` reduction from the {ref "reduction-rules"}[reduction rules], applied to a two-argument operation.
-:::
-::::
+This equation is the computation step `Quot.lift f h (Quot.mk r a) ⟶ f a`, for an operation with two arguments. Multiplication, the order and the limits of `ℝ` are defined in the same way: on representatives, with a proof that the result does not depend on the choice.
 
 # The four steps at a glance
 %%%

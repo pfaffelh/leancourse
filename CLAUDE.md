@@ -2514,3 +2514,23 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   types*, 1.3 *Types and terms II: pairs, subtypes, families,
   quotients*. In 1.3 verweisen ∧ und ∨ unter *Propositions as types*
   zurueck. Decks entsprechend (1-2: 31 Folien, 1-3: 17).
+
+## 2026-10-27 (10) -- Taktik-/Termmodus nach 1.3, Rekursor, `Type*`
+
+- *Proofs of implications* und Taktik-/Termmodus (tag `term`) stehen
+  jetzt in 1.3 unter *Propositions as types* (Unterabschnitte
+  *Implication, negation, and ∀* und *Tactic mode and term mode*);
+  in 1.2 wirkten sie zwischen Funktionen und Strukturen themenfremd.
+  Die beiden Folien sind entsprechend von Deck 1-2 nach 1-3 gewandert.
+- 1.2: Funktion per Rekursor (`MyNat.double'` mit `MyNat.rec`). Der
+  Compiler kann Rekursoren eigener Typen nicht ausfuehren ("code
+  generator does not support recursor"), also `noncomputable`;
+  `rfl` geht, `#eval` nicht. `Nat.rec` hat Sonderunterstuetzung.
+  Neue Folie "Or with the recursor".
+- Universen-Folie und -Abschnitt erklaeren `{α : Type*}`.
+- 1.3 *Quotient types*: ℝ steht nicht mehr in einer Klappbox, sondern
+  als Unterabschnitt *Example: the real numbers* (tag
+  `reals-quotient`): Subtyp `CauSeq ℚ abs` -> Quotient
+  `CauSeq.Completion.Cauchy abs` (`Quotient.sound`) -> Struktur
+  `Real`; Addition per Repraesentanten (`mk_add`). Deck 1-3: zwei neue
+  Folien ("The real numbers as a quotient", "Adding real numbers").

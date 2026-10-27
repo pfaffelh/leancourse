@@ -42,6 +42,7 @@ In Lean, types can depend on values.
 - types may depend on terms: `f : (n : ℕ) → (Fin n → ℝ)`
 - `h : P` with `P : Prop` is a _proof_
 - `a : α` with `α : Type u` is _data_
+- `0 : ℕ` and `0 : ℝ` are different terms; Lean converts with a _coercion_ `↑n`
 
 :::class "key"
 A type is itself a term, so it has a type as well.
@@ -115,10 +116,10 @@ inductive Bad where
   | mk : (Bad → False) → Bad   -- rejected
 ```
 
-With `Bad`, `neg b := app b b` gives `neg (Bad.mk neg) : False`.
+The argument of `node` has type `ℕ → MyTree`: `MyTree` right of `→`. The argument of `Bad.mk` has type `Bad → False`: `Bad` left of `→`. With `Bad`, `neg b := app b b` gives `neg (Bad.mk neg) : False`.
 
 :::class "key"
-The type may occur only to the right of an arrow.
+In the argument types of a constructor, the type may occur only to the right of an arrow.
 :::
 
 # Structures
@@ -135,6 +136,8 @@ structure Point3D extends Point where
 ```
 
 Data with a property: `MyLinearMap` bundles `toFun` and `map_add`.
+
+`Fin n` is a structure too: `⟨i, h⟩ = Fin.mk i h` with `h : i < n`.
 
 # Inductive types vs structures
 
@@ -198,8 +201,13 @@ example : Fintype.card
 
 # Subtypes
 
-`{x : α // P x}` with `P : α → Prop`: a pair whose second
-component is a proof.
+```
+structure Subtype {α : Sort u} (p : α → Prop) where
+  val : α
+  property : p val
+```
+
+`{x : α // P x}` is `Subtype P`; `Fin n` has the same shape but is a type of its own.
 
 ```lean -panel -stretch
 def BigNat : Type := {n : ℕ // n > 5}
@@ -305,9 +313,9 @@ example : Sort 0 = Prop := rfl
 example : Sort 1 = Type := rfl
 ```
 
-One rule: `Sort u : Sort (u+1)`. There is no `Type : Type`.
+`Sort 0` is `Prop`, `Sort (u+1)` is `Type u`. One rule: `Sort u : Sort (u+1)`. There is no `Type : Type`.
 
-# Where types come from
+# Some history
 
 Russell's set $`R = \{x : x \notin x\}` broke Frege in 1902. Russell's repair (1908): `x ∈ x` is not a statement at all.
 

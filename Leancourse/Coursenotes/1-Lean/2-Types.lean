@@ -234,6 +234,16 @@ structure MyLinearMap (α β : Type) [Add α] [Add β] where
 
 This pattern of bundling data with properties is fundamental to how Mathlib organizes mathematics.
 
+`Fin n`, which appeared above, is a structure as well. An element consists of a natural number `val` together with a proof `isLt` that it is less than `n`, and the constructor `Fin.mk` takes both. The angle brackets `⟨2, h⟩` are short for `Fin.mk 2 h`, here as everywhere for a structure:
+
+```lean
+#check @Fin.mk
+-- {n : ℕ} → (val : ℕ) → val < n → Fin n
+
+example : Fin 3 := ⟨2, by decide⟩
+example (n : ℕ) (h : 0 < n) : Fin n := ⟨0, h⟩
+```
+
 How to *construct* values of these types, read their fields, and define operations on them is the subject of {ref "terms"}[the chapter on terms].
 
 # Inductive types vs structures
@@ -314,7 +324,23 @@ The last column is the subject of {ref "curry-howard"}[the Curry-Howard correspo
 tag := "subtypes"
 %%%
 
-The *subtype* `{x : α // P x}` is the Σ-type in which the second component is a proof: a pair of `x : α` and `h : P x`, where `P : α → Prop`. It represents elements of `α` satisfying predicate `P`. Since the second component is a proof (in `Prop`), subtypes enjoy proof irrelevance: two elements of `{x : α // P x}` are equal if and only if their first components are equal.
+A *subtype* consists of the elements of a type `α` that satisfy a predicate `P : α → Prop`. It is a structure with two fields, an element and a proof:
+
+```
+structure Subtype {α : Sort u} (p : α → Prop) where
+  val : α
+  property : p val
+```
+
+`{x : α // P x}` is notation for `Subtype P`, and `⟨a, h⟩` for `Subtype.mk a h`. It is the analogue of the Σ-type in which the second component is a proof rather than data. Because of proof irrelevance, two elements are equal as soon as their first components are, which is `Subtype.ext`:
+
+```lean
+example (a b : {n : ℕ // 0 < n}) (h : a.val = b.val) :
+    a = b :=
+  Subtype.ext h
+```
+
+`Subtype` is one structure for all predicates, so the coercion to `α`, `Subtype.ext` and the rest of its API apply to every subtype at once. A structure of your own with the same two fields is a new type. `Fin n` above is of this kind: it carries the same data as `{i : ℕ // i < n}`, and Mathlib has the bijection `Fin.equivSubtype : Fin n ≃ {i // i < n}`, but the two types are different. The separate type lets `Fin n` have instances of its own, such as arithmetic mod `n`.
 
 ```lean
 -- The type of natural numbers greater than 5
@@ -362,12 +388,7 @@ def fiberExample : fiber (· * 2) 10 :=
   ⟨5, by norm_num⟩
 ```
 
-## Vectors indexed by length
-%%%
-tag := "vectors-indexed"
-%%%
-
-Vectors are the standard example: a vector of length `n` with entries in `α` is a function `Fin n → α`, where `Fin n` is the type with `n` elements (see the {ref "types"}[Types chapter]).
+*Vectors.* Vectors are the standard example: a vector of length `n` with entries in `α` is a function `Fin n → α`, where `Fin n` is the type with `n` elements (see the {ref "types"}[Types chapter]).
 
 ```lean
 -- A vector of 3 natural numbers, represented as a function from Fin 3
@@ -380,12 +401,7 @@ def myVec : Fin 3 → ℕ := ![10, 20, 30]
 
 The advantage of this representation is that indexing is *always safe*: you cannot access index 5 of a 3-element vector, because `5` is not a term of type `Fin 3`. The type system prevents out-of-bounds errors at compile time.
 
-## Matrices as dependent types
-%%%
-tag := "matrices-dependent"
-%%%
-
-Matrices are a natural extension. An `m × n` matrix with entries in `α` can be represented as a function `Fin m → Fin n → α`, or equivalently as `Matrix (Fin m) (Fin n) α` in Mathlib:
+*Matrices.* Matrices are a natural extension. An `m × n` matrix with entries in `α` can be represented as a function `Fin m → Fin n → α`, or equivalently as `Matrix (Fin m) (Fin n) α` in Mathlib:
 
 ```lean
 -- A 2×3 matrix of natural numbers
@@ -490,8 +506,6 @@ At the bottom sit the two universes you meet first (Here, the `#check` command g
 #check (Type 1 : Type 2)    -- Type 1 : Type 2
 ```
 
-:::example "The connection of `Type` to `Sort`"
-
 The whole tower is captured by a single keyword `Sort`:
 
 * `Sort 0` is `Prop`;
@@ -505,10 +519,12 @@ example : Type = Type 0 := rfl
 ```
 
 So `Sort` is the umbrella that unifies `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`. There is deliberately no `Type : Type`; *why* this restriction is needed — it blocks a type-theoretic version of Russell's paradox — is taken up in the {ref "universe-determined"}[next chapter].
-:::
 
-:::example "Where types come from"
+# Some history
+%%%
+tag := "types-history"
+%%%
+
 Types were introduced to stop a contradiction. Russell's set $`R = \{x : x \notin x\}` broke Frege's *Grundgesetze der Arithmetik* in 1902 ({ref "prehistory"}[Introduction]). Russell's repair of 1908 gave every object a type and let a type apply only to objects of lower type, so that `x ∈ x` is not false but not a statement at all. Zermelo's repair of the same year instead restricts which sets exist and leaves `x ∈ x` a formula. Mathematics followed Zermelo; proof assistants follow Russell, because a type checker can decide before any question of truth whether an expression means anything.
 
 Alonzo Church turned the simple theory of types into a calculus in 1940, the simply typed lambda calculus on which *Isabelle/HOL* still rests. Dependent types, in which a type may mention a term, came with de Bruijn's Automath (1967) and Martin-Löf's type theory (1971). Coquand and Huet added impredicative quantification in the Calculus of Constructions (1985), and Paulin-Mohring added inductive types (1990). Lean's type theory is a variant of the result, the {ref "cic"}[Calculus of Inductive Constructions]. Three times the same thing happened: a system let an object be applied to itself, a contradiction followed, and types forbade it. In Lean the ban is visible as `Type 0 : Type 1 : Type 2 : ...`.
-:::

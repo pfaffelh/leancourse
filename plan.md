@@ -30,8 +30,8 @@ Kontext, ohne Lean.
 |---|---|---|---|---|---|---|
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | L-a | |
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | L-b, L-c, 1.1-a | |
-| 3 | 02.11. | 04.11. | Typen I: Funktionstypen, induktive Typen, Strukturen, Σ, Universen | 1.2 | L-d, 1.2-a, 1.1-b | |
-| 4 | 09.11. | 11.11. | Typen II: die Regeln, `Prop`, Quotienten | 1.3 | L-e, L-f, 1.1-c | **Test 1** |
+| 3 | 02.11. | 04.11. | Typen I: Funktionstypen, induktive Typen, Strukturen, Σ, Quotienten, Universen | 1.2 | L-d, 1.2-a, 1.1-b | |
+| 4 | 09.11. | 11.11. | Typen II: die Regeln, `Prop` | 1.3 | L-e, L-f, 1.1-c | **Test 1** |
 | 5 | 16.11. | 18.11. | Terme und Pattern Matching | 1.4 | L-g, 1.2-b · *extra:* X-a | |
 | 6 | 23.11. | 25.11. | Typklassen | 1.5 | 1.5-a, 1.5-b | |
 | 7 | 30.11. | 02.12. | Curry-Howard und Notation | 1.6, 1.7 | 1.6-a, 1.6-b, 1.7-a | **Test 2** |
@@ -53,8 +53,8 @@ Drei Kapitelpaare teilen sich einen Termin: 1.6+1.7 (W7), 2.1+2.3
 eigene Notation führen Studierende kaum ein. Die gewonnene Woche
 geht an die Grundlagen: die frühere 1.2 und 1.6 sind seit dem
 27.10.2026 zwei Kapitel *Typen I* (Typbildner: Π, induktive Typen, Strukturen, Σ,
-Subtypen, Universenhierarchie) und *Typen II* (die Regeln, `imax`,
-`Prop`, Quotienten): erst das Einfache, dann die Regeln dahinter.
+Subtypen, Quotienten, Universenhierarchie) und *Typen II* (die
+Regeln, `imax`, `Prop`): erst das Einfache, dann die Regeln dahinter.
 
 Skriptzeilen je Termin: Mittel 474, Spanne 330 (W2) bis 768 (W15).
 Woche 11 ist zugleich die schwerste Übungswoche (67 Aufgaben, `2.4-a`

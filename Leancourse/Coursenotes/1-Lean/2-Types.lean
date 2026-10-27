@@ -21,11 +21,11 @@ Lean has the data types every programming language has — `int`, `string`, `flo
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` will be called a universe) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it. (The two kinds of universe, `Prop` and `Type u`, are the subject of the {ref "type-universes"}[last section].)
 
-These data types are abstract: Lean treats `ℕ` and `ℝ` as genuinely infinite, not as floating-point approximations. `ℕ` is the `zero`/`succ` construction of the {ref "nat"}[introduction]; `ℝ` is built from an equivalence relation on Cauchy sequences, a {ref "quotient-types"}[quotient type] (next chapter). As a consequence, `0 : ℕ` and `0 : ℝ` are different objects. Where a natural number is used as a real number, Lean inserts a conversion, a {ref "coercions"}[coercion], and displays it as `↑n`.
+These data types are abstract: Lean treats `ℕ` and `ℝ` as genuinely infinite, not as floating-point approximations. `ℕ` is the `zero`/`succ` construction of the {ref "nat"}[introduction]; `ℝ` is built from an equivalence relation on Cauchy sequences, a {ref "quotient-types"}[quotient type]. As a consequence, `0 : ℕ` and `0 : ℝ` are different objects. Where a natural number is used as a real number, Lean inserts a conversion, a {ref "coercions"}[coercion], and displays it as `↑n`.
 
 In Lean every object is a term, and every term has a type. A type is itself a term, so it has a type as well.
 
-This chapter shows how types are built: function types, inductive types and structures, pairs, subtypes and type families. In several of them the type of one part depends on the value of another. Such types are called *dependent*, and they are what separates Lean from most programming languages. The rules behind the constructions are the subject of the {ref "rules"}[next chapter].
+This chapter shows how types are built: function types, inductive types and structures, pairs, subtypes, type families and quotients. In several of them the type of one part depends on the value of another. Such types are called *dependent*, and they are what separates Lean from most programming languages. The rules behind the constructions are the subject of the {ref "rules"}[next chapter].
 
 The [slides](slides/1-2-types/) for this chapter follow it section by section.
 
@@ -130,7 +130,7 @@ inductive MyOption (α : Type) where
 
 Inductive types are the main mechanism by which new data types enter Lean, and `Mathlib` uses them throughout. They also settle the universe question from the other side: the universe of an inductive type must be large enough to hold all of its constructor arguments.
 
-Not every `inductive` declaration is accepted. A constructor may mention the type being defined, but only *positively*: never to the *left* of an arrow inside one of its arguments. This *strict positivity* condition keeps inductive types well-founded and free of paradox. An *infinitely-branching* tree — where a `node` carries one subtree for each natural number — is fine, because in the `node` constructor `MyTree` occurs only to the *right* of `→`:
+Not every `inductive` declaration is accepted. A constructor may mention the type being defined, but only *positively*. The *arrow* here is the `→` of a function type: in `α → β` the type `α` of the inputs stands to the left of the arrow, the type `β` of the values to the right. Strictly positive means that in the type of an argument of a constructor, the type being defined never stands to the left of an arrow. The type of the constructor itself does not count: every constructor ends in `→ MyTree`, and it is only the arguments before that last arrow that are checked. This *strict positivity* condition keeps inductive types well-founded and free of paradox. An *infinitely-branching* tree — where a `node` carries one subtree for each natural number — is fine, because the argument of `node` has type `ℕ → MyTree`, and there `MyTree` stands to the *right* of `→`:
 
 ```lean
 inductive MyTree where
@@ -146,7 +146,7 @@ The `leaf` case is what gets the type off the ground. Positivity constrains only
 
 Because `node` takes a *function* `ℕ → MyTree`, every node has one child per natural number — it branches *infinitely*. It is not that *every* `MyTree` is infinite: a leaf is finite (`leaf 7` is a complete tree), so only trees that actually use `node` are. The infinite branching comes from the function-typed argument. A finitely-branching tree would be `node : MyTree → MyTree → MyTree`, where `MyTree` occurs directly rather than inside a function, so the right-of-`→` case would not arise.
 
-But a constructor that stores a *function out of* the type is rejected:
+But a constructor that stores a *function out of* the type is rejected. The argument of `Bad.mk` has type `Bad → False`, and there `Bad` stands to the *left* of `→`:
 
 ```
 inductive Bad where
@@ -397,6 +397,75 @@ def myMatrix : Fin 2 → Fin 3 → ℕ :=
 ```
 
 In Mathlib, matrix multiplication is only defined when the dimensions match. If `A` is an `m × n` matrix and `B` is an `n × p` matrix, then `A * B` is an `m × p` matrix. The dependent types enforce that the inner dimensions agree — a dimension mismatch is a *type error*, caught at compile time.
+
+# Quotient types
+%%%
+tag := "quotient-types"
+%%%
+
+The fourth way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction. `ℤ`, `ℚ`, `Multiset α` (lists up to reordering) and `ZMod n` are quotients too.
+
+Its entire interface is four constants:
+
+```lean
+#check @Quot.mk     -- (r : α → α → Prop) → α → Quot r
+#check @Quot.sound  -- r a b → Quot.mk r a = Quot.mk r b
+#check @Quot.lift   -- (f : α → β) → (∀ a b, r a b → f a = f b) → Quot r → β
+#check @Quot.ind
+```
+
+- `Quot.mk r` sends each element to its class.
+- `Quot.sound` is the crux: if `r a b`, then the two classes are *the same term*. It is one of Lean's few genuine axioms — the `#print axioms name` command traces a constant back to the axioms it depends on, and here `#print axioms Quot.sound` reports `[Quot.sound]`.
+- `Quot.lift` defines a function *out of* the quotient — but only once you *prove* it respects `r` (the `∀ a b, r a b → f a = f b` argument), which is exactly the mathematician's "check that this is well-defined". And it computes: `Quot.lift f h (Quot.mk r a)` reduces to `f a`.
+- `Quot.ind` proves a property of every quotient element by checking it on the classes `Quot.mk r a`.
+
+The computation rule of `Quot.lift` is a {ref "reduction-rules"}[reduction rule] of its own, like ι for recursors, so `rfl` proves it:
+
+```lean
+example (r : Nat → Nat → Prop) (f : Nat → Nat)
+    (h : ∀ a b, r a b → f a = f b) (a : Nat) :
+    Quot.lift f h (Quot.mk r a) = f a := rfl
+```
+
+In practice one usually goes through `Quotient`, a thin wrapper of `Quot` over a bundled equivalence relation (a `Setoid`). The status of `Quot.sound` as an axiom is taken up again in the {ref "axiom-quot"}[axioms chapter].
+
+::::keepEnv
+:::example "How `ℝ` is built as a quotient"
+Mathlib's real numbers are a concrete instance of exactly this construction. First, a `CauSeq` is a {ref "subtypes"}[*subtype*]: the notation `{ f : ℕ → ℚ // IsCauSeq abs f }` means a rational sequence `f : ℕ → ℚ` bundled with a proof that it is Cauchy.
+
+```lean
+#check (CauSeq ℚ abs)
+-- CauSeq ℚ abs = { f : ℕ → ℚ // IsCauSeq abs f }
+example (f : CauSeq ℚ abs) : ℕ → ℚ := f.1
+```
+
+`ℝ` is then a one-field structure wrapping the *quotient* of these sequences by the relation "the difference tends to `0`". The class map `CauSeq.Completion.mk` is the `Quot.mk` of that quotient:
+
+```lean
+#check @Real.ofCauchy
+-- CauSeq.Completion.Cauchy abs → ℝ
+
+#check @CauSeq.Completion.mk
+-- CauSeq ℚ abs → CauSeq.Completion.Cauchy abs
+
+-- two sequences give the same real iff (f - g) → 0;
+-- `≈` is the Setoid equivalence relation on `CauSeq`
+example (f g : CauSeq ℚ abs) :
+    f ≈ g ↔ (f - g).LimZero := Iff.rfl
+```
+
+Addition is the first use of `Quot.lift`. Two reals are added by adding *representative* sequences termwise, which is well-defined because `+` respects the relation: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`. With that checked, `Quot.lift` yields the computation rule that `mk` is an additive homomorphism:
+
+```lean
+example (f g : CauSeq ℚ abs) :
+    CauSeq.Completion.mk f + CauSeq.Completion.mk g
+      = CauSeq.Completion.mk (f + g) :=
+  CauSeq.Completion.mk_add f g
+```
+
+This `mk (f) + mk (g) = mk (f + g)` equation *is* the `Quot.lift f h (Quot.mk r a) ⟶ f a` reduction from the {ref "reduction-rules"}[reduction rules], applied to a two-argument operation.
+:::
+::::
 
 # The universe hierarchy
 %%%

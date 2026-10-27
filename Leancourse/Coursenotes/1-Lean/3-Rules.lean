@@ -17,7 +17,7 @@ htmlSplit := .never
 tag := "rules"
 %%%
 
-The {ref "types"}[previous chapter] built types: functions, inductive types, structures, pairs, subtypes. This chapter gives the rules that decide which terms Lean accepts. Every type of the previous chapter is an instance of them, and the chapter ends with the last type former, the quotient.
+The {ref "types"}[previous chapter] built types: functions, inductive types, structures, pairs, subtypes, quotients. This chapter gives the rules that decide which terms Lean accepts. Every type of the previous chapter is an instance of them.
 
 The [slides](slides/1-3-rules/) for this chapter follow it section by section.
 
@@ -234,7 +234,7 @@ For a relation $`r : \alpha \to \alpha \to \mathrm{Prop}`, the type `Quot r` of 
 
 $$`\mathrm{Quot.lift}\ f\ h\ (\mathrm{Quot.mk}\ r\ a) \equiv f\ a`
 
-Here $`h` is a proof that $`f` respects $`r`. That two related elements give the same class is not a rule but an axiom, `Quot.sound` ({ref "quotient-types"}[Quotient types]).
+Here $`h` is a proof that $`f` respects $`r`. That two related elements give the same class is not a rule but an axiom, `Quot.sound` ({ref "quotient-types"}[Quotient types] in the previous chapter).
 
 ## Axioms
 
@@ -294,7 +294,7 @@ This is the application rule. The type of $`f` must be a function type $`(x : \a
 
 *Size.* The whole kernel is about 350 kB of C++ in `src/kernel`, of which `type_checker.cpp` has about 1 400 lines and the checking of inductive declarations (`inductive.cpp`) a similar amount. That is small enough to be read, and there are independent reimplementations that check the same terms: *lean4lean* in Lean, *nanoda* in Rust, and *Con-Leche*, mentioned in {ref "prop-special"}[Why `Prop` is special].
 
-The rest of this chapter treats the universe of a type, `Prop`, and quotients. A complete account is in Mario Carneiro's [*The Type Theory of Lean*](https://github.com/digama0/lean-type-theory).
+The rest of this chapter treats the universe of a type and `Prop`. A complete account is in Mario Carneiro's [*The Type Theory of Lean*](https://github.com/digama0/lean-type-theory).
 
 # How the universe of a type is determined
 %%%
@@ -445,72 +445,3 @@ Because `Decidable p` is in `Type`, it *may* eliminate into `Type` — which is 
 :::
 
 The classical route mirrors `Classical.choose` in the same way: `Classical.em : a ∨ ¬a` is always available (it is a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through `Classical.choice` and is therefore `noncomputable` — a keyword marking a definition Lean cannot turn into runnable code, needed here because `Classical.choice` has no computational content to execute (this is the usual trigger for `noncomputable`, though not the only one). So the two halves — `∃`/`Σ`/`choose` for the *witness*, `∨`/`Decidable`/`em` for the *tag* — are really the same story: computationally relevant information can leave the `Prop` world only if we put it in `Type` from the start, or pay for it noncomputably with the axiom of choice. (The `Nonempty`/`Classical.choice` form of this is taken up in the {ref "curry-howard"}[chapter on propositions and proofs].)
-
-# Quotient types
-%%%
-tag := "quotient-types"
-%%%
-
-The fourth way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction. `ℤ`, `ℚ`, `Multiset α` (lists up to reordering) and `ZMod n` are quotients too.
-
-Its entire interface is four constants:
-
-```lean
-#check @Quot.mk     -- (r : α → α → Prop) → α → Quot r
-#check @Quot.sound  -- r a b → Quot.mk r a = Quot.mk r b
-#check @Quot.lift   -- (f : α → β) → (∀ a b, r a b → f a = f b) → Quot r → β
-#check @Quot.ind
-```
-
-- `Quot.mk r` sends each element to its class.
-- `Quot.sound` is the crux: if `r a b`, then the two classes are *the same term*. It is one of Lean's few genuine axioms — the `#print axioms name` command traces a constant back to the axioms it depends on, and here `#print axioms Quot.sound` reports `[Quot.sound]`.
-- `Quot.lift` defines a function *out of* the quotient — but only once you *prove* it respects `r` (the `∀ a b, r a b → f a = f b` argument), which is exactly the mathematician's "check that this is well-defined". And it computes: `Quot.lift f h (Quot.mk r a)` reduces to `f a`.
-- `Quot.ind` proves a property of every quotient element by checking it on the classes `Quot.mk r a`.
-
-The computation rule of `Quot.lift` is a {ref "reduction-rules"}[reduction rule] of its own, like ι for recursors, so `rfl` proves it:
-
-```lean
-example (r : Nat → Nat → Prop) (f : Nat → Nat)
-    (h : ∀ a b, r a b → f a = f b) (a : Nat) :
-    Quot.lift f h (Quot.mk r a) = f a := rfl
-```
-
-In practice one usually goes through `Quotient`, a thin wrapper of `Quot` over a bundled equivalence relation (a `Setoid`). The status of `Quot.sound` as an axiom is taken up again in the {ref "axiom-quot"}[axioms chapter].
-
-::::keepEnv
-:::example "How `ℝ` is built as a quotient"
-Mathlib's real numbers are a concrete instance of exactly this construction. First, a `CauSeq` is a {ref "subtypes"}[*subtype*]: the notation `{ f : ℕ → ℚ // IsCauSeq abs f }` means a rational sequence `f : ℕ → ℚ` bundled with a proof that it is Cauchy.
-
-```lean
-#check (CauSeq ℚ abs)
--- CauSeq ℚ abs = { f : ℕ → ℚ // IsCauSeq abs f }
-example (f : CauSeq ℚ abs) : ℕ → ℚ := f.1
-```
-
-`ℝ` is then a one-field structure wrapping the *quotient* of these sequences by the relation "the difference tends to `0`". The class map `CauSeq.Completion.mk` is the `Quot.mk` of that quotient:
-
-```lean
-#check @Real.ofCauchy
--- CauSeq.Completion.Cauchy abs → ℝ
-
-#check @CauSeq.Completion.mk
--- CauSeq ℚ abs → CauSeq.Completion.Cauchy abs
-
--- two sequences give the same real iff (f - g) → 0;
--- `≈` is the Setoid equivalence relation on `CauSeq`
-example (f g : CauSeq ℚ abs) :
-    f ≈ g ↔ (f - g).LimZero := Iff.rfl
-```
-
-Addition is the first use of `Quot.lift`. Two reals are added by adding *representative* sequences termwise, which is well-defined because `+` respects the relation: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`. With that checked, `Quot.lift` yields the computation rule that `mk` is an additive homomorphism:
-
-```lean
-example (f g : CauSeq ℚ abs) :
-    CauSeq.Completion.mk f + CauSeq.Completion.mk g
-      = CauSeq.Completion.mk (f + g) :=
-  CauSeq.Completion.mk_add f g
-```
-
-This `mk (f) + mk (g) = mk (f + g)` equation *is* the `Quot.lift f h (Quot.mk r a) ⟶ f a` reduction from the {ref "reduction-rules"}[reduction rules], applied to a two-argument operation.
-:::
-::::

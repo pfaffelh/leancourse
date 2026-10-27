@@ -10,7 +10,7 @@ set_option pp.rawOnError true
 Deck for the chapter "Types I: building types" of part 1 (Lean and
 its type theory). It follows the chapter section by section: function
 types and Π-types, inductive types, structures, Σ-types, subtypes,
-type families, the universe hierarchy.
+type families, quotient types, the universe hierarchy.
 -/
 
 namespace SlidesTypes
@@ -281,6 +281,19 @@ def myMatrix : Fin 2 → Fin 3 → ℕ :=
 `A * B` needs `m × n` times `n × p`. A dimension mismatch is a type error.
 :::
 
+# Quotient types
+
+`Quot r`: the type `α` seen up to a relation `r`. Examples: `ℤ`, `ℚ`, `ℝ`, `Multiset α`, `ZMod n`.
+
+- `Quot.mk r` sends an element to its class
+- `Quot.sound`: `r a b → Quot.mk r a = Quot.mk r b` — an axiom
+- `Quot.lift f h`: needs a proof that `f` respects `r`
+- `Quot.ind`: induction over classes
+
+:::class "key"
+`Quot.lift` is the mathematician's "check that this is well-defined".
+:::
+
 # The universe hierarchy
 
 ```lean -panel -stretch
@@ -325,4 +338,5 @@ Then the Calculus of Constructions (1985) and inductive types (1990).
 - `inductive`: constructors and a recursor; only strictly positive.
 - `structure`: one constructor, named fields.
 - `(x : α) × β x`: dependent pairs, a disjoint union. Subtypes: the second component is a proof.
+- `Quot r`: a type up to a relation, with the axiom `Quot.sound`.
 - Universes: `Prop`, `Type 0 : Type 1 : ...`; there is no `Type : Type`.

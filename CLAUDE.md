@@ -2347,9 +2347,10 @@ scharfe Fassung der drei Fragen Hilbert/Ackermann 1928 ist.
   beiden Typkapitel vertauscht:
   **1.2 `2-Types.lean` "Types I: building types"** (tag `types`):
   Π, inductive, structures, Σ, Subtypen, Typfamilien,
-  Universenhierarchie, dazu die Geschichtsbox "Where types come
-  from". **1.3 `3-Rules.lean` "Types II: the rules"** (tag `rules`):
-  die Regeln, `imax`, `Prop`, Quotienten. Der Tag `type-formers` ist
+  Quotienten, Universenhierarchie, dazu die Geschichtsbox "Where
+  types come from". **1.3 `3-Rules.lean` "Types II: the rules"** (tag
+  `rules`): die Regeln, `imax`, `Prop`. Die Regel-Unterabschnitte
+  *Quotients* und *Axioms* in 1.3 verweisen zurueck auf 1.2. Der Tag `type-formers` ist
   weg. Montag 02.11. wird ueber das neue 1.2 gelesen.
 - 1.2.1.8 *Without inductive types* (Church-Kodierungen, `ChNat`) ist
   ersatzlos gestrichen, im Kapitel und im Deck.

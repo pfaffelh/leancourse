@@ -10,7 +10,7 @@ set_option pp.rawOnError true
 Deck for the chapter "Types II: the rules" of part 1 (Lean and its
 type theory). It follows the chapter section by section: the rules of
 Lean's type theory, how the universe of a type is determined, why
-`Prop` is special, and quotient types.
+and why `Prop` is special.
 -/
 
 namespace SlidesRules
@@ -263,22 +263,8 @@ A `which : a ∨ b → Bool` would give `true ≡ false`.
   * the tag
 :::
 
-# Quotient types
-
-`Quot r`: the type `α` seen up to a relation `r`. Examples: `ℤ`, `ℚ`, `ℝ`, `Multiset α`, `ZMod n`.
-
-- `Quot.mk r` sends an element to its class
-- `Quot.sound`: `r a b → Quot.mk r a = Quot.mk r b` — an axiom
-- `Quot.lift f h`: needs a proof that `f` respects `r`
-- `Quot.ind`: induction over classes
-
-:::class "key"
-`Quot.lift` is the mathematician's "check that this is well-defined".
-:::
-
 # Summary
 
 - A few rules (context, universes, functions, conversion, inductive types) are all of Lean's logic.
 - `imax`: a function type into `Prop` is in `Prop`.
 - `Prop` is proof irrelevant, impredicative, and eliminates only into `Prop`.
-- `Quot r`: a type up to a relation, with the axiom `Quot.sound`.

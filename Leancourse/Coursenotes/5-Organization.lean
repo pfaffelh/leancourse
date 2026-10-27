@@ -102,7 +102,7 @@ written at the start of the lab.
 * + 3
   + Mon 02.11.
   + Lecture
-  + Types I: function types, inductive types, structures, Σ, universes
+  + Types I: function types, inductive types, structures, Σ, quotients, universes
   + {ref "types"}[1.2]
 * + 3
   + Wed 04.11.
@@ -112,7 +112,7 @@ written at the start of the lab.
 * + 4
   + Mon 09.11.
   + Lecture
-  + Types II: the rules, `Prop`, quotients
+  + Types II: the rules, `Prop`
   + {ref "rules"}[1.3]
 * + 4
   + Wed 11.11.

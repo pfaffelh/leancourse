@@ -20,9 +20,9 @@ This part covers Lean both as a practical proof assistant and as the
 dependent type theory it is built on.  We begin with the natural
 numbers — which comes with its *constructors* as well as with reduction rules.
 Two chapters on types follow: first how types are built —
-function types, `inductive` types and structures, pairs, subtypes and
-the universe hierarchy — and then the rules behind them, with `Prop`
-and quotients.  After that come terms and the typeclass system, the
+function types, `inductive` types and structures, pairs, subtypes,
+quotients and the universe hierarchy — and then the rules behind
+them, with `Prop`.  After that come terms and the typeclass system, the
 Curry-Howard correspondence tying propositions to types and proofs to
 terms, and notation.
 (Several reference topics — the alphabetical tactic glossary, how a

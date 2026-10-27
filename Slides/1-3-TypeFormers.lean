@@ -7,16 +7,15 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the chapter "Types and terms II: structures, pairs,
-subtypes, quotients" of part 1 (Lean and its type theory). It follows
-the chapter section by section: structures and their values, data
-with a property, Σ-types, subtypes, type families, indexed families,
-the logical connectives as types, quotient types, and the table of the
-four steps.
+Deck for the chapter "Types and terms II: pairs, subtypes, families,
+quotients" of part 1 (Lean and its type theory). It follows the
+chapter section by section: Σ-types, subtypes, type families, indexed
+families, the logical connectives as types, quotient types, and the
+table of the four steps.
 -/
 
 namespace SlidesTypeFormers
-#doc (Slides) "Types and terms II: structures, pairs, subtypes, quotients" =>
+#doc (Slides) "Types and terms II: pairs, subtypes, families, quotients" =>
 
 ```css
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
@@ -32,127 +31,11 @@ namespace SlidesTypeFormers
 
 # Types and terms II
 
-Lean and its type theory — chapter 3: structures, pairs, subtypes, quotients
+Lean and its type theory — chapter 3: pairs, subtypes, families, quotients
 
 :::class "key"
 Each type former again in four steps: formation, construction, use, computation.
 :::
-
-# Structures
-
-```lean -panel -stretch
-structure Point where
-  x : ℕ
-  y : ℕ
-
-example : (Point.mk 3 4).x = 3 := rfl
-example (p : Point) : p = Point.mk p.x p.y := rfl
-```
-
-- _Formation_: `Point : Type`
-- _Construction_: the one constructor `Point.mk`
-- _Use_: projections `Point.x p`, also `p.x`
-- _Computation_: `(Point.mk 3 4).x` reduces to `3`; η: `p ≡ Point.mk p.x p.y`
-
-# Four forms, one constructor
-
-```lean -panel -stretch
-def origin : Point := { x := 0, y := 0 }
-def p1 : Point := ⟨1, 2⟩
-def p2 : Point := Point.mk 3 4
-def p3 : Point where
-  x := 0
-  y := 0
-#check ({ x := 0, y := 0 } : Point)
-```
-
-`where` is the record form over several lines — unrelated to the `|`-branches of pattern matching.
-
-# Reading and updating fields
-
-```lean -panel -stretch
-#eval p1.x          -- 1
-
-def p4 : Point := { p1 with y := 10 }
--- p4.x = 1, p4.y = 10
-```
-
-:::class "key"
-Structures are immutable: `with` builds a new `Point`.
-:::
-
-# Defaults and extensions
-
-```lean -panel -stretch
-structure MyConfig where
-  width : ℕ := 80
-  title : String := "Untitled"
-def myConfig : MyConfig := { title := "Win" }
-
-structure Point3D extends Point where
-  z : ℕ
-def q : Point3D := { x := 1, y := 2, z := 3 }
-#eval q.x    -- 1 (inherited)
-```
-
-# Operations and dot notation
-
-```lean -panel -stretch
-def Point.normSq (p : Point) : ℕ :=
-  p.x * p.x + p.y * p.y
-
-#eval p2.normSq    -- 25
-```
-
-`p2 : Point`, so Lean looks for `Point.normSq`.
-
-# Data with a property
-
-```lean -panel -stretch
-structure IntAddMap where
-  toFun : ℤ → ℤ
-  map_add : ∀ x y,
-    toFun (x + y) = toFun x + toFun y
-
-def triple : IntAddMap where
-  toFun x := 3 * x
-  map_add x y := mul_add 3 x y
-```
-
-:::class "key"
-A field may be a proof. Linear maps, continuous functions, homomorphisms: all of this kind.
-:::
-
-# `Fin n` is a structure
-
-```lean -panel -stretch
-#check @Fin.mk
--- {n : ℕ} → (val : ℕ) → val < n → Fin n
-
-example : Fin 3 := ⟨2, by simp⟩
-example (n : ℕ) (h : 0 < n) : Fin n := ⟨0, h⟩
-```
-
-An element is a number together with a proof that it is less than `n`.
-
-# Inductive types vs structures
-
-:::table +colHeaders +rowSeps
-*
-  * use
-  * when
-  * examples
-*
-  * `structure`
-  * one constructor, named fields
-  * points, complex numbers, algebraic structures
-*
-  * `inductive`
-  * several constructors
-  * `ℕ`, lists, trees, `Option`, `Bool`
-:::
-
-A `structure` is sugar for a one-constructor `inductive`, plus field names, projections with dot notation, defaults and `extends`.
 
 # Pairs and Σ-types
 
@@ -460,8 +343,6 @@ Chapter 1.4 states these steps as the rules of Lean's type theory.
 
 # Summary
 
-- `structure`: one constructor, named fields; values by `⟨…⟩`, `{ x := … }`, `where`; fields by projections.
-- A field may be a proof: data with a property.
 - `(x : α) × β x`: dependent pairs, a disjoint union. Subtypes: the second component is a proof.
 - Type families are functions into a universe; with `inductive`, the constructors fix the index.
 - The connectives are these type formers in `Prop`: `∧` a structure, `∨`, `∃`, `False` inductive types.

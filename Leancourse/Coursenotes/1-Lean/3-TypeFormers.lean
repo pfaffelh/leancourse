@@ -9,200 +9,15 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types and terms II: structures, pairs, subtypes, quotients" =>
+#doc (Manual) "Types and terms II: pairs, subtypes, families, quotients" =>
 %%%
 htmlSplit := .never
 tag := "type-formers"
 %%%
 
-The {ref "types"}[previous chapter] treated function types and inductive types. This chapter treats types whose terms bundle several components: structures, pairs and subtypes. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; the logical connectives, which are these type formers with values in `Prop`; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
+The {ref "types"}[previous chapter] treated function types, structures and inductive types. This chapter treats dependent pairs and subtypes, whose terms bundle a value with data or a proof about it. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; the logical connectives, which are these type formers with values in `Prop`; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
 
 The [slides](slides/1-3-type-formers/) for this chapter follow it section by section.
-
-# Structures
-%%%
-tag := "structures"
-%%%
-
-Many mathematical objects are best described as a *collection of named fields*. A point in the plane has an `x`-coordinate and a `y`-coordinate. In Lean, we use `structure` for this:
-
-```lean
-structure Point where
-  x : ℕ
-  y : ℕ
-```
-
-A `structure` is an inductive type with exactly one constructor, whose arguments are named fields.
-
-*Formation.* The declaration introduces the type `Point : Type`.
-
-*Construction.* There is a single constructor, `Point.mk`, so both fields must be supplied: `Point.mk 3 4` is a point.
-
-*Use.* A field is read off with its *projection*: `Point.x p` is the `x`-coordinate of `p : Point`. As for `MyNat.toNat` in the {ref "pattern-matching"}[previous chapter], this can also be written `p.x`.
-
-*Computation.* A projection applied to a point built by the constructor returns the field: `(Point.mk 3 4).x` reduces to `3`.
-
-```lean
-#check (Point.mk : ℕ → ℕ → Point)
-#check (Point.x : Point → ℕ)
-example : (Point.mk 3 4).x = 3 := rfl
-```
-
-Being an inductive type, `Point` also has a recursor, `Point.rec`. It takes a single case, a function of the fields, and the projections `Point.x` and `Point.y` are defined through it.
-
-A value of a structure is determined by its fields: `p` and `Point.mk p.x p.y` are *definitionally* equal, so `rfl` proves it. This is the η rule of the {ref "reduction-rules"}[reduction rules], here *for structures*. For a general inductive type there is no such rule: `n : ℕ` is not definitionally `0` or a successor, and to split on it you need `cases`.
-
-```lean
-example (p : Point) : p = Point.mk p.x p.y := rfl
-```
-
-## Building structure values
-%%%
-tag := "structure-values"
-%%%
-
-Besides `Point.mk`, Lean has three more ways to call the constructor:
-
-```lean
-def origin : Point := { x := 0, y := 0 }
-def p1 : Point := ⟨1, 2⟩
-def p2 : Point := Point.mk 3 4
-def p3 : Point where
-  x := 0
-  y := 0
-```
-
-They are the record form `{ x := …, y := … }`, the *anonymous constructor* `⟨...⟩` (typed `\<` and `\>`), the explicit `Point.mk`, and the *block* `where` form, one `field := value` line per field, with no braces or commas. The `where` form is just the record form spread over several lines; it has nothing to do with the `|`-branches of pattern matching (fields are `field := value`, not `| pattern => …`).
-
-Here the target type is fixed by the `: Point` on the left of `:=`, so Lean knows which constructor `{ … }` and `⟨…⟩` mean. When the type is *not* clear from the context, you can annotate the record itself:
-
-```lean
-#check ({ x := 0, y := 0 } : Point)
-#eval p1.x          -- 1
-#eval p1.y          -- 2
-```
-
-A new value can be built from an existing one, changing only some fields, with the `with` keyword:
-
-```lean
-def p4 : Point := { p1 with y := 10 }
--- p4.x = 1, p4.y = 10
-```
-
-Structures are immutable, so this creates a new `Point` rather than modifying `p1`.
-
-## Defaults and extensions
-
-Fields may be given *default values* as part of the declaration, and a value may then omit those fields:
-
-```lean
-structure MyConfig where
-  width : ℕ := 80
-  height : ℕ := 24
-  title : String := "Untitled"
-
-def myConfig : MyConfig := { title := "My Window" }
--- myConfig.width = 80, myConfig.height = 24
-```
-
-One structure can *extend* another, inheriting all of its fields. A value supplies all fields, inherited and new:
-
-```lean
-structure Point3D extends Point where
-  z : ℕ
-
-def q : Point3D := { x := 1, y := 2, z := 3 }
-
-#eval q.x    -- 1 (inherited from Point)
-#eval q.z    -- 3
-```
-
-Mathlib builds its algebraic structures in this way: a commutative ring extends a ring, which extends a semiring.
-
-## Operations
-
-Operations on a structure are ordinary functions. If their name begins with the name of the type, they can be called with a dot, as projections are:
-
-```lean
-def Point.normSq (p : Point) : ℕ :=
-  p.x * p.x + p.y * p.y
-
-#eval p2.normSq    -- 25
-```
-
-`p2.normSq` (the squared distance from the origin) works because Lean sees that `p2 : Point` and looks for `Point.normSq`. A *Gaussian integer* (a complex number with integer parts) gives a fuller example, data and its operations together:
-
-```lean
-structure MyComplex where
-  re : ℤ
-  im : ℤ
-
-def MyComplex.add (a b : MyComplex) : MyComplex :=
-  { re := a.re + b.re, im := a.im + b.im }
-
-def MyComplex.mul (a b : MyComplex) : MyComplex :=
-  { re := a.re * b.re - a.im * b.im,
-    im := a.re * b.im + a.im * b.re }
-
-def i : MyComplex := { re := 0, im := 1 }
-
-#eval (MyComplex.mul i i).re    -- -1
-```
-
-## Data with a property
-
-A field may be a proof. Then a structure bundles *data together with a property*, here a map `ℤ → ℤ` together with a proof that it respects addition:
-
-```lean
-structure IntAddMap where
-  toFun : ℤ → ℤ
-  map_add : ∀ x y, toFun (x + y) = toFun x + toFun y
-
-def triple : IntAddMap where
-  toFun x := 3 * x
-  map_add x y := mul_add 3 x y
-
-#eval triple.toFun 4    -- 12
-```
-
-To build a term, both the function and the proof must be supplied. This pattern of bundling data with properties is how Mathlib organizes mathematics: a linear map, a continuous function and a group homomorphism are all structures of this kind.
-
-`Fin n`, which appeared in the previous chapter, is a structure of this kind as well. An element consists of a natural number `val` together with a proof `isLt` that it is less than `n`, and the constructor `Fin.mk` takes both:
-
-```lean
-#check @Fin.mk
--- {n : ℕ} → (val : ℕ) → val < n → Fin n
-
-example : Fin 3 := ⟨2, by simp⟩
-example (n : ℕ) (h : 0 < n) : Fin n := ⟨0, h⟩
-```
-
-# Inductive types vs structures
-%%%
-tag := "inductive-vs-structure"
-%%%
-
-When should you use `inductive` and when `structure`?
-
-* Use `structure` when your type has a single constructor with named fields. Examples: points, complex numbers, algebraic structures.
-* Use `inductive` when your type has multiple constructors. Examples: natural numbers, lists, trees, `Option`, `Bool`.
-
-A `structure` is syntactic sugar for an inductive type with one constructor. The definition
-
-```
-structure Point where
-  x : ℕ
-  y : ℕ
-```
-
-is essentially equivalent to
-
-```
-inductive Point where
-  | mk : ℕ → ℕ → Point
-```
-
-but the `structure` version gives us named fields, the projections with dot notation, default values, and the `extends` mechanism.
 
 # Pairs and Σ-types
 %%%
@@ -463,32 +278,16 @@ example (C : Prop) (h : False) : C := h.elim
 tag := "conjunction-product"
 %%%
 
-`P ∧ Q` is notation for `And P Q`, a structure with two fields:
-
-```lean
-#print And
-```
+`P ∧ Q` is notation for `And P Q`, the {ref "structures"}[structure] with two proof fields from the previous chapter.
 
 *Formation.* `P ∧ Q`. *Construction.* `⟨hP, hQ⟩`, short for `And.intro hP hQ`. *Use.* The projections `h.1` and `h.2`, also `h.left` and `h.right`. *Computation.* `⟨hP, hQ⟩.1` reduces to `hP`. It is the product `α × β`, for propositions.
-
-```lean
-example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q :=
-  ⟨hP, hQ⟩
-
-example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
-  ⟨h.2, h.1⟩
-```
 
 ## Disjunction
 %%%
 tag := "disjunction-sum"
 %%%
 
-`P ∨ Q` is notation for `Or P Q`, an inductive type with two constructors:
-
-```lean
-#print Or
-```
+`P ∨ Q` is notation for `Or P Q`, the inductive type with two constructors from the {ref "inductive"}[previous chapter].
 
 *Formation.* `P ∨ Q`. *Construction.* `Or.inl hP` from `hP : P`, or `Or.inr hQ` from `hQ : Q`. *Use.* Pattern matching with one branch per constructor, also available as `Or.elim`; in tactic mode `obtain hP | hQ := h`. *Computation.* A match on a constructor takes its branch.
 

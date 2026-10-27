@@ -11,7 +11,7 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types and terms I: functions and inductive types" =>
+#doc (Manual) "Types and terms I: functions, structures, inductive types" =>
 %%%
 htmlSplit := .never
 tag := "types"
@@ -45,7 +45,7 @@ Types and terms cannot be treated separately: a type is known once we know how i
   + `(fun x => e) a` reduces to `e` with `a` for `x`
 :::
 
-The four steps are the four kinds of rule of Lean's type theory, stated formally in {ref "rules"}[chapter 1.4]. This chapter treats universes, function types and inductive types; the {ref "type-formers"}[next chapter] structures, pairs, subtypes, type families and quotients. In several of these types the type of one part depends on the value of another. Such types are called *dependent*, and they are what separates Lean from most programming languages.
+The four steps are the four kinds of rule of Lean's type theory, stated formally in {ref "rules"}[chapter 1.4]. This chapter treats universes, function types, structures and inductive types; the {ref "type-formers"}[next chapter] dependent pairs, subtypes, type families and quotients. In several of these types the type of one part depends on the value of another. Such types are called *dependent*, and they are what separates Lean from most programming languages.
 
 The [slides](slides/1-2-types/) for this chapter follow it section by section.
 
@@ -189,7 +189,7 @@ example : ((n : ℕ) → n < n + 1) =
     (∀ n : ℕ, n < n + 1) := rfl
 ```
 
-A dependent function whose values are data: `Fin n` is the type of the natural numbers less than `n`, and `Fin.last n` is the largest element of `Fin (n + 1)`. So each value of `lastOf` lies in a different type.
+A dependent function whose values are data: `Fin n` is the type of the natural numbers less than `n`. An element of `Fin n` is a pair `⟨i, h⟩` of a number `i : ℕ` and a proof `h : i < n`; its definition follows in {ref "structures"}[Structures] below. `Fin.last n` is the largest element of `Fin (n + 1)`. So each value of `lastOf` lies in a different type.
 
 ```lean
 def lastOf : (n : ℕ) → Fin (n + 1) :=
@@ -242,10 +242,10 @@ An argument may also be a proof. A division that demands a proof that the denomi
 ```lean
 def safeDiv (a b : ℤ) (_ : b ≠ 0) : ℤ := a / b
 
-#eval safeDiv 10 3 (by simp)   -- 3
+#eval safeDiv 10 3 (by decide)   -- 3
 ```
 
-The third argument is a proof of `3 ≠ 0`, here written as a tactic proof `by simp` in the place of a term. The type `(a b : ℤ) → b ≠ 0 → ℤ` of `safeDiv` is a Π-type, because the type of the proof depends on `b`.
+The third argument is a proof of `3 ≠ 0`, here written as a tactic proof `by decide` in the place of a term: `decide` proves a statement without variables by computing whether it holds. The type `(a b : ℤ) → b ≠ 0 → ℤ` of `safeDiv` is a Π-type, because the type of the proof depends on `b`.
 
 ## Proofs of implications
 %%%
@@ -290,6 +290,180 @@ example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
     exact hQR (hPQ hP)
 -- Try this: exact fun hP => hQR (hPQ hP)
 ```
+
+# Structures
+%%%
+tag := "structures"
+%%%
+
+Many mathematical objects are best described as a *collection of named fields*. A point in the plane has an `x`-coordinate and a `y`-coordinate. In Lean, we use `structure` for this:
+
+```lean
+structure Point where
+  x : ℕ
+  y : ℕ
+```
+
+A structure is a type with exactly one constructor, whose arguments are named fields.
+
+*Formation.* The declaration introduces the type `Point : Type`.
+
+*Construction.* There is a single constructor, `Point.mk`, so both fields must be supplied: `Point.mk 3 4` is a point.
+
+*Use.* A field is read off with its *projection*: `Point.x p` is the `x`-coordinate of `p : Point`. A name such as `Point.x`, which begins with the name of a type, can also be written after a term of that type, separated by a dot: `p.x` means `Point.x p`.
+
+*Computation.* A projection applied to a point built by the constructor returns the field: `(Point.mk 3 4).x` reduces to `3`.
+
+```lean
+#check (Point.mk : ℕ → ℕ → Point)
+#check (Point.x : Point → ℕ)
+example : (Point.mk 3 4).x = 3 := rfl
+```
+
+Like `Nat` in the {ref "nat-intro"}[previous chapter], `Point` has a recursor, `Point.rec`. It takes a single case, a function of the fields, and the projections `Point.x` and `Point.y` are defined through it.
+
+A value of a structure is determined by its fields: `p` and `Point.mk p.x p.y` are *definitionally* equal, so `rfl` proves it. This is the η rule of the {ref "reduction-rules"}[reduction rules], here *for structures*. For a general inductive type there is no such rule: `n : ℕ` is not definitionally `0` or a successor, and to split on it you need `cases`.
+
+```lean
+example (p : Point) : p = Point.mk p.x p.y := rfl
+```
+
+## Building structure values
+%%%
+tag := "structure-values"
+%%%
+
+Besides `Point.mk`, Lean has three more ways to call the constructor:
+
+```lean
+def origin : Point := { x := 0, y := 0 }
+def p1 : Point := ⟨1, 2⟩
+def p2 : Point := Point.mk 3 4
+def p3 : Point where
+  x := 0
+  y := 0
+```
+
+They are the record form `{ x := …, y := … }`, the *anonymous constructor* `⟨...⟩` (typed `\<` and `\>`), the explicit `Point.mk`, and the *block* `where` form, one `field := value` line per field, with no braces or commas. The `where` form is just the record form spread over several lines; it has nothing to do with the `|`-branches of {ref "pattern-matching"}[pattern matching] below (fields are `field := value`, not `| pattern => …`).
+
+Here the target type is fixed by the `: Point` on the left of `:=`, so Lean knows which constructor `{ … }` and `⟨…⟩` mean. When the type is *not* clear from the context, you can annotate the record itself:
+
+```lean
+#check ({ x := 0, y := 0 } : Point)
+#eval p1.x          -- 1
+#eval p1.y          -- 2
+```
+
+A new value can be built from an existing one, changing only some fields, with the `with` keyword:
+
+```lean
+def p4 : Point := { p1 with y := 10 }
+-- p4.x = 1, p4.y = 10
+```
+
+Structures are immutable, so this creates a new `Point` rather than modifying `p1`.
+
+## Defaults and extensions
+
+Fields may be given *default values* as part of the declaration, and a value may then omit those fields:
+
+```lean
+structure MyConfig where
+  width : ℕ := 80
+  height : ℕ := 24
+  title : String := "Untitled"
+
+def myConfig : MyConfig := { title := "My Window" }
+-- myConfig.width = 80, myConfig.height = 24
+```
+
+One structure can *extend* another, inheriting all of its fields. A value supplies all fields, inherited and new:
+
+```lean
+structure Point3D extends Point where
+  z : ℕ
+
+def q : Point3D := { x := 1, y := 2, z := 3 }
+
+#eval q.x    -- 1 (inherited from Point)
+#eval q.z    -- 3
+```
+
+Mathlib builds its algebraic structures in this way: a commutative ring extends a ring, which extends a semiring.
+
+## Operations
+
+Operations on a structure are ordinary functions. If their name begins with the name of the type, they can be called with a dot, as projections are:
+
+```lean
+def Point.normSq (p : Point) : ℕ :=
+  p.x * p.x + p.y * p.y
+
+#eval p2.normSq    -- 25
+```
+
+`p2.normSq` (the squared distance from the origin) works because Lean sees that `p2 : Point` and looks for `Point.normSq`. A *Gaussian integer* (a complex number with integer parts) gives a fuller example, data and its operations together:
+
+```lean
+structure MyComplex where
+  re : ℤ
+  im : ℤ
+
+def MyComplex.add (a b : MyComplex) : MyComplex :=
+  { re := a.re + b.re, im := a.im + b.im }
+
+def MyComplex.mul (a b : MyComplex) : MyComplex :=
+  { re := a.re * b.re - a.im * b.im,
+    im := a.re * b.im + a.im * b.re }
+
+def i : MyComplex := { re := 0, im := 1 }
+
+#eval (MyComplex.mul i i).re    -- -1
+```
+
+## Data with a property
+
+A field may be a proof. Then a structure bundles *data together with a property*, here a map `ℤ → ℤ` together with a proof that it respects addition:
+
+```lean
+structure IntAddMap where
+  toFun : ℤ → ℤ
+  map_add : ∀ x y, toFun (x + y) = toFun x + toFun y
+
+def triple : IntAddMap where
+  toFun x := 3 * x
+  map_add x y := mul_add 3 x y
+
+#eval triple.toFun 4    -- 12
+```
+
+To build a term, both the function and the proof must be supplied. This pattern of bundling data with properties is how Mathlib organizes mathematics: a linear map, a continuous function and a group homomorphism are all structures of this kind.
+
+`Fin n`, which appeared in {ref "pi-types"}[Dependent functions] above, is a structure of this kind as well. An element consists of a natural number `val` together with a proof `isLt` that it is less than `n`, and the constructor `Fin.mk` takes both:
+
+```lean
+#check @Fin.mk
+-- {n : ℕ} → (val : ℕ) → val < n → Fin n
+
+example : Fin 3 := ⟨2, by decide⟩
+example (n : ℕ) (h : 0 < n) : Fin n := ⟨0, h⟩
+```
+
+## Conjunction
+
+A proof of `P ∧ Q` consists of a proof of `P` and a proof of `Q`. Lean declares `And` as a structure with the two fields `left` and `right`, both proofs:
+
+```lean
+#print And
+-- structure And (a b : Prop) : Prop
+--   And.left : a
+--   And.right : b
+
+example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q := ⟨hP, hQ⟩
+example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := ⟨h.2, h.1⟩
+```
+
+`P ∧ Q` is the pair of two proofs, as `α × β` is the pair of two data. The constructor is `And.intro`, the projections are `h.1` and `h.2`, also written `h.left` and `h.right`.
 
 # Inductive types
 %%%
@@ -337,7 +511,79 @@ inductive MyOption (α : Type) where
 example : MyOption ℕ := .some 3
 ```
 
-Here `MyOption α` is a type for every type `α`. Inductive types are the main mechanism by which new data types enter Lean, and `Mathlib` uses them throughout.
+Here `MyOption α` is a type for every type `α`.
+
+Disjunction is an inductive type with two constructors: a proof of `P ∨ Q` is a proof of `P` or a proof of `Q`, marked by the constructor. Declared by hand:
+
+```lean
+inductive MyOr (a b : Prop) : Prop where
+  | inl : a → MyOr a b
+  | inr : b → MyOr a b
+
+example (P Q : Prop) (hP : P) : MyOr P Q := .inl hP
+```
+
+Lean's `∨` is `Or`, declared in the same way. Where `∧` is the pair, `∨` is the disjoint union, `α ⊕ β` for propositions.
+
+Inductive types are the main mechanism by which new data types enter Lean, and `Mathlib` uses them throughout.
+
+## Structures and inductive types
+%%%
+tag := "inductive-vs-structure"
+%%%
+
+A `structure` is a special inductive type, and the two keywords serve different purposes.
+
+* Use `structure` when your type has a single constructor with named fields. Examples: points, complex numbers, algebraic structures.
+* Use `inductive` when your type has multiple constructors. Examples: natural numbers, lists, trees, `Option`, `Bool`.
+
+A `structure` is syntactic sugar for an inductive type with one constructor. The definition
+
+```
+structure Point where
+  x : ℕ
+  y : ℕ
+```
+
+is essentially equivalent to
+
+```
+inductive Point where
+  | mk : ℕ → ℕ → Point
+```
+
+but the `structure` version gives us named fields, the projections with dot notation, default values, and the `extends` mechanism.
+
+The basic types of Lean all arise in this way, most of them twice: once in `Type` for data, once in `Prop` for propositions.
+
+:::table (align := left) +header
+* + constructors
+  + data (`Type`)
+  + proposition (`Prop`)
+* + none
+  + `Empty`
+  + `False`
+* + one, without arguments
+  + `Unit`
+  + `True`
+* + two, without arguments
+  + `Bool`
+  + —
+* + one, with two arguments (a structure)
+  + `α × β`
+  + `P ∧ Q`
+* + two, with one argument each
+  + `α ⊕ β`
+  + `P ∨ Q`
+* + one, with a value and a proof
+  + `{x : α // P x}`
+  + `∃ x, P x`
+* + recursive
+  + `ℕ`, `List α`
+  + `n ≤ m` on `ℕ`
+:::
+
+`∃`, subtypes and `≤` are the subject of the {ref "type-formers"}[next chapter].
 
 ## Pattern matching
 %%%
@@ -371,9 +617,17 @@ def MyNat.toNat : MyNat → ℕ
 #eval (MyNat.double (.succ .zero)).toNat   -- 2
 ```
 
-Writing plain `zero` in place of `.zero` would fail: there is no `zero` in scope, only `MyNat.zero`. A name such as `MyNat.toNat`, which begins with the name of a type, can also be written after a term of that type, separated by a dot: for `m : MyNat`, `m.toNat` means `MyNat.toNat m`.
+Writing plain `zero` in place of `.zero` would fail: there is no `zero` in scope, only `MyNat.zero`. As for `Point.x`, for `m : MyNat` the name `m.toNat` means `MyNat.toNat m`.
 
-Pattern matching works for any inductive type. A list `List α` has two constructors: the empty list `[]`, and `a :: l`, the list with first element `a` followed by the list `l`. The pattern `_` matches anything and names nothing.
+Pattern matching works for any inductive type. A list is empty, or a first element followed by a list. In Lean's library (`u` is a universe variable, {ref "polymorphic-functions"}[above]):
+
+```
+inductive List (α : Type u) where
+  | nil : List α                              -- written []
+  | cons (a : α) (l : List α) : List α        -- written a :: l
+```
+
+So `[1, 2, 3]` is notation for `1 :: 2 :: 3 :: []`, that is `List.cons 1 (List.cons 2 (List.cons 3 List.nil))`. A function on lists has a branch for `[]` and one for `a :: l`. The pattern `_` matches anything and names nothing.
 
 ```lean
 -- A function on Option α: extract or use a default
@@ -412,7 +666,14 @@ def fib : ℕ → ℕ
 #eval fib 10    -- 55
 ```
 
-Lean only accepts a recursive definition once it is convinced the recursion *terminates*. For *structural* recursion, where each call is on a part of the input, as in `factorial`, `length'` and `fib`, this is automatic.
+Lean only accepts a recursive definition once it is convinced the recursion *terminates*. For *structural* recursion, where each call is on a part of the input, as in `factorial`, `length'` and `fib`, this is automatic. In `fib (n + 2)` the calls are `fib n` and `fib (n + 1)`, both on arguments that are parts of `n + 2`. Lean checks this and translates the definition into the recursor `Nat.rec` of the {ref "nat-intro"}[previous chapter]. So `fib` computes by ι, and `rfl` checks values:
+
+```lean
+-- fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)
+example : fib 3 = 2 := rfl
+```
+
+A call that is not on a smaller argument is rejected. `def bad (n : ℕ) : ℕ := bad n + 1` fails to compile; were it accepted, `bad 0 = bad 0 + 1` would give `0 = 1`.
 
 When the recursive call is not on a part of the input, termination is justified by a *measure* that strictly decreases: `termination_by` names the measure, `decreasing_by` proves that it goes down. Euclid's algorithm recurses on `n % m`, the remainder of `n` divided by `m`, which is not a part of `m`, but the first argument strictly decreases. The definition uses a *dependent* `if`: in `if h : c then a else b`, the proof `h : c` is available in `a`, and a proof of `¬c` in `b`.
 

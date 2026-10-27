@@ -1,9 +1,30 @@
 import Mathlib
 
 /-!
-# (witness) 1.3-c -- The Curry-Howard correspondence
+# (witness) 1.3-c -- Proofs as terms
 
-*Notes chapter 1.3, week 7.*
+*Notes chapters 1.2 and 1.3, week 5.*
+
+A proof is a term, and most of the tactics from the logic sheets
+only build one step by step. On this sheet you write the terms
+yourself, without `by`. Read *Proofs of implications* in chapter 1.2
+and *Propositions as types* in chapter 1.3 first.
+
+## Introduced here
+
+| term                    | proves                     | tactic it replaces    |
+|-------------------------|----------------------------|-----------------------|
+| `fun hP => t`           | `P → Q`, given `t : Q`     | `intro hP`            |
+| `f hP`                  | `Q`, from `f : P → Q`      | `apply f`, `exact`    |
+| `⟨hP, hQ⟩`              | `P ∧ Q`                    | `constructor`         |
+| `h.1`, `h.2`            | `P`, `Q` from `h : P ∧ Q`  | `obtain ⟨hP, hQ⟩ := h` |
+| `Or.inl hP`, `Or.inr hQ` | `P ∨ Q`                   | `left`, `right`       |
+| `h.elim f g`            | `R`, from `h : P ∨ Q`      | `obtain hP \| hQ := h` |
+| `(h : False).elim`      | anything                   | `exfalso`             |
+| `⟨a, h⟩`                | `∃ x, P x`                 | `use a`               |
+
+`show_term` in front of tactics prints the term they build, which
+helps when you are stuck.
 -/
 
 variable (P Q R S : Prop)
@@ -66,7 +87,7 @@ example (h : ∀ (n : ℕ), n < n + 1) : ∃ (n : ℕ), n < n + 1 := ⟨0, h 0�
 
 example : (∀ (n : ℕ), P → n = n) := fun _ _ => rfl
 
-example : ∃ (n : ℕ), n > 10 ∧ n < 15 := ⟨11, by norm_num, by norm_num⟩
+example : ∃ (n : ℕ), n > 10 ∧ n < 15 := ⟨11, by omega, by omega⟩
 
 /- ## Part 5: Challenge problems -/
 

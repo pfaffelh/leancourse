@@ -1,173 +1,159 @@
 import Mathlib
 
-/-
-# 1.3-c -- The Curry-Howard correspondence
+/-!
+# 1.3-c -- Proofs as terms
 
-*Notes chapter 1.3, week 7.*
+*Notes chapters 1.2 and 1.3, week 5.*
 
-In these exercises, you will practice writing term-mode proofs (without tactics)
-and compare them with tactic proofs. The goal is to see the Curry-Howard
-correspondence in action: proofs are programs, propositions are types.
+A proof is a term, and most of the tactics from the logic sheets
+only build one step by step. On this sheet you write the terms
+yourself, without `by`. Read *Proofs of implications* in chapter 1.2
+and *Propositions as types* in chapter 1.3 first.
+
+## Introduced here
+
+| term                    | proves                     | tactic it replaces    |
+|-------------------------|----------------------------|-----------------------|
+| `fun hP => t`           | `P → Q`, given `t : Q`     | `intro hP`            |
+| `f hP`                  | `Q`, from `f : P → Q`      | `apply f`, `exact`    |
+| `⟨hP, hQ⟩`              | `P ∧ Q`                    | `constructor`         |
+| `h.1`, `h.2`            | `P`, `Q` from `h : P ∧ Q`  | `obtain ⟨hP, hQ⟩ := h` |
+| `Or.inl hP`, `Or.inr hQ` | `P ∨ Q`                   | `left`, `right`       |
+| `h.elim f g`            | `R`, from `h : P ∨ Q`      | `obtain hP \| hQ := h` |
+| `(h : False).elim`      | anything                   | `exfalso`             |
+| `⟨a, h⟩`                | `∃ x, P x`                 | `use a`               |
+
+`show_term` in front of tactics prints the term they build, which
+helps when you are stuck.
 -/
 
 variable (P Q R S : Prop)
 
-/-
-## Part 1: Term-mode proofs for basic logic
+/-! ## Part 1: Implication, conjunction, disjunction -/
 
-For each exercise, write a proof WITHOUT using `by` (i.e., a pure term-mode proof).
-Recall:
-  - Implication `P → Q` corresponds to function type
-  - `fun h => ...` constructs a function (= proves an implication)
-  - Function application `f x` applies a proof (= modus ponens)
-  - `⟨a, b⟩` constructs a pair (= proves a conjunction)
-  - `.1` and `.2` are projections (= eliminate a conjunction)
-  - `Or.inl` and `Or.inr` inject into a disjunction
--/
-
--- Exercise 1: Identity (the simplest function)
+-- Exercise 1) The identity function.
 example : P → P :=
   sorry
 
--- Exercise 2: Constant function (weakening)
+-- Exercise 2) A function that ignores its second argument.
 example : P → Q → P :=
   sorry
 
--- Exercise 3: Function composition (transitivity of implication)
+-- Exercise 3) Composition.
 example : (P → Q) → (Q → R) → P → R :=
   sorry
 
--- Exercise 4: Pair construction (conjunction introduction)
+-- Exercise 4)
 example (hP : P) (hQ : Q) : P ∧ Q :=
   sorry
 
--- Exercise 5: First projection (conjunction elimination)
+-- Exercise 5)
 example (h : P ∧ Q) : P :=
   sorry
 
--- Exercise 6: Flip a conjunction
+-- Exercise 6)
 example : P ∧ Q → Q ∧ P :=
   sorry
 
--- Exercise 7: Left injection (disjunction introduction)
+-- Exercise 7)
 example (hP : P) : P ∨ Q :=
   sorry
 
--- Exercise 8: Case analysis on a disjunction
--- Hint: use Or.elim or the .elim method
+-- Exercise 8) `h.elim` takes one function per case.
 example : P ∨ Q → (P → R) → (Q → R) → R :=
   sorry
 
--- Exercise 9: Flip a disjunction
+-- Exercise 9)
 example : P ∨ Q → Q ∨ P :=
   sorry
 
--- Exercise 10: Distribution of ∧ over ∨
+-- Exercise 10)
 example : P ∧ (Q ∨ R) → (P ∧ Q) ∨ (P ∧ R) :=
   sorry
 
-/-
-## Part 2: Negation as function to False
+/-! ## Part 2: Negation
 
-Recall that `¬P` is defined as `P → False`, and `False.elim` derives
-anything from `False`.
--/
+`¬P` is `P → False`, so a proof of `¬P` is a function, and applying
+it to a proof of `P` gives `False`. -/
 
--- Exercise 11: Modus tollens (term-mode)
+-- Exercise 11)
 example : (P → Q) → ¬Q → ¬P :=
   sorry
 
--- Exercise 12: Contradiction yields anything
+-- Exercise 12)
 example : P → ¬P → Q :=
   sorry
 
--- Exercise 13: A logical equivalence
+-- Exercise 13)
 example : ¬(P ∨ Q) → ¬P ∧ ¬Q :=
   sorry
 
-/-
-## Part 3: Side-by-side comparison
+/-! ## Part 3: The same proof twice
 
-For each exercise below, TWO proofs are requested: one in tactic mode and
-one in term mode. Fill in both.
--/
+Give a tactic proof and a term proof of each statement. Then put
+`show_term` in front of your tactics and compare. -/
 
--- Exercise 14a: Tactic proof
+-- Exercise 14a)
 example : (P → Q) → (P → R) → P → Q ∧ R := by
   sorry
 
--- Exercise 14b: Term proof (same statement)
+-- Exercise 14b)
 example : (P → Q) → (P → R) → P → Q ∧ R :=
   sorry
 
--- Exercise 15a: Tactic proof
+-- Exercise 15a)
 example : P ∧ (Q ∧ R) → (P ∧ Q) ∧ R := by
   sorry
 
--- Exercise 15b: Term proof
+-- Exercise 15b)
 example : P ∧ (Q ∧ R) → (P ∧ Q) ∧ R :=
   sorry
 
-/-
-## Part 4: Quantifiers as dependent types
+/-! ## Part 4: Quantifiers
 
-Recall:
-  - `∀ (x : α), P x` is a dependent function type (Pi type)
-  - A proof is a function: `fun x => ...`
-  - `∃ (x : α), P x` is an existential (proof-irrelevant Sigma)
-  - A proof is a pair: `⟨witness, proof⟩`
--/
+A proof of `∀ x, P x` is a function `fun x => …`, a proof of
+`∃ x, P x` a pair `⟨a, h⟩`. Inside a term, `by decide` or
+`by omega` may prove a numerical fact. -/
 
--- Exercise 16: A universal statement (term-mode)
--- Hint: fun n => ... where you provide a proof for each n
+-- Exercise 16)
 example : ∀ (n : ℕ), n + 0 = n :=
   sorry
 
--- Exercise 17: An existential statement (term-mode)
--- Hint: ⟨witness, proof⟩
+-- Exercise 17)
 example : ∃ (n : ℕ), n * n = 16 :=
   sorry
 
--- Exercise 18: From universal to existential (term-mode)
--- Hint: use the universal hypothesis at a specific point
+-- Exercise 18) Use `h` at one point.
 example (h : ∀ (n : ℕ), n < n + 1) : ∃ (n : ℕ), n < n + 1 :=
   sorry
 
--- Exercise 19: Combining quantifiers (term-mode)
-example : (∀ (n : ℕ), P → n = n) :=
+-- Exercise 19)
+example : ∀ (n : ℕ), P → n = n :=
   sorry
 
--- Exercise 20: A more complex existential
--- Prove that there exists a natural number that is both greater than 10
--- and less than 15.
+-- Exercise 20) The second component is itself a pair.
 example : ∃ (n : ℕ), n > 10 ∧ n < 15 :=
   sorry
 
-/-
-## Part 5: Challenge problems
+/-! ## Part 5: More -/
 
-These are harder. Use any proof style you like.
--/
-
--- Exercise 21: Curry-Howard for iff
--- `P ↔ Q` is `(P → Q) ∧ (Q → P)`, so a proof is a pair of functions
+-- Exercise 21) `P ↔ Q` is a structure with fields `mp : P → Q` and
+-- `mpr : Q → P`, so a proof is a pair of functions.
 example : (P ↔ Q) → (Q ↔ R) → (P ↔ R) :=
   sorry
 
--- Exercise 22: A dependent function
--- Define a function that takes a natural number n and returns a proof
--- that n + n is even (divisible by 2).
+-- Exercise 22) For each `n` a witness and a proof.
 example : ∀ (n : ℕ), ∃ (k : ℕ), n + n = 2 * k :=
   sorry
 
--- Exercise 23: The type of proofs is a function type
--- This exercise asks you to construct an element of a function type,
--- which IS a proof of an implication. Reflect on this duality.
+-- Exercise 23) `def` and `theorem` do the same thing: name a term.
+-- (The linter prefers `theorem` for proofs, hence the option.)
 set_option linter.defProp false in
 def modusPonens : (P → Q) → P → Q :=
   sorry
 
--- Exercise 24: Flip function = commutativity of conjunction in disguise
+-- Exercise 24) Swapping the arguments of a function is the
+-- commutativity of `∧` in another form.
 set_option linter.defProp false in
 def flip' (f : P → Q → R) : Q → P → R :=
   sorry

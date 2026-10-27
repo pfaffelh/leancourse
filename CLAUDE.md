@@ -2465,3 +2465,52 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   Die Kopfzeilen des Logikblocks verweisen jetzt auf 1.3 statt 1.6.
 - **Die Vorlesung am 30.11. (W7) ist frei**; in Organization und
   `plan.md` steht dort vorlaeufig nur Notation.
+
+## 2026-10-27 (7) -- Blaetter fuer 1.2 bis 1.4
+
+- Neu `1.2-b` (`2-b-Inductive`, Woche 4): eigener Aufzaehlungstyp
+  `Weekday`, Baum `MyTree` (`Tree` ist in Mathlib belegt) mit
+  `size`/`leaves`/`sum`/`mirror` und Induktion, `digits`/`digitSum`/
+  `binLength` mit `termination_by`/`decreasing_by omega`, Beweise mit
+  `rw [f]`/`simp [f]` (`rfl` scheitert bei wohlfundierter Rekursion,
+  getestet). Benutzt nur Taktiken bis Woche 4 (`simp`, `omega` aus
+  `1.1-c`); `simp_all` (erst `L-g`) bewusst vermieden.
+- Neu `1.3-d` (`3-d-Structures`, Woche 7): `NatInterval` (`Interval`
+  ist belegt) mit Beweisfeld, `with`, Gleichheit per `cases` auf den
+  Gleichungen; `MyEven` mit `cases`/`induction h`; ℤ als `Quot R` auf
+  ℕ × ℕ mit `Quot.sound rfl`, `Quot.lift`, `induction x using
+  Quot.ind`.
+- `1.3-b` -> `1.4-a` (Predicates and equality: `ext`, `choose`,
+  `change` sind Stoff von 1.4). `1.3-c` neu geschrieben (Tabelle
+  Term/Taktik, `show_term`), gleiche Aussagen, jetzt Woche 5.
+- Wochen: W4 `L-e`, `L-f`, `1.1-c`, `1.2-b`; W5 `L-g`, `1.3-a`,
+  `1.3-c` (+ `X-a`); W7 `1.3-d`, `1.4-a`, `1.6-a`. 34 Pflichtblaetter,
+  35 Zeugen, alle sorry-frei (`check_solvable.sh`).
+
+## 2026-10-27 (8) -- Deck 1-2 nach Durchsicht des Autors
+
+- Inline-Code auf allen Folien kleiner und mit engeren Leerzeichen
+  (`SlidesMain.lean`, `backLinkCss`): in Monospace in Textgroesse
+  wirkte `x : α` groesser als der Text, mit breiten Luecken um `:`.
+- Folie 2: `∀ n : ℕ, n < n + 1 : Prop` als Beispiel, `Fin n` als Paar
+  `⟨i, h⟩` erklaert (im Skript ebenso, mit Verweis auf 1.3).
+  Universen-Folie: Tabelle statt Lean-Kasten, `Prop : Type` steht da.
+  `safeDiv … (by simp)` -> `(by decide)` (simp kommt erst auf `1.1-c`).
+  Neue Folie/Absatz `MyAnd` als induktiver Typ; `List`-Definition vor
+  den Funktionen auf Listen; Rekursions-Folie erklaert strukturelle
+  Rekursion -> `Nat.rec` mit Rechnung `fib 3` und `bad`; die
+  Rekursor-Folie ist weg (stand ausfuehrlich in 1.1).
+
+## 2026-10-27 (9) -- Strukturen nach 1.2
+
+- *Structures* (tags `structures`, `structure-values`) steht jetzt in
+  1.2 vor *Inductive types*; dazu ein Unterabschnitt *Conjunction*
+  (`And` als Struktur). In *Inductive types* ersetzt `MyOr` das
+  vorige `MyAnd`; der alte Abschnitt *Inductive types vs structures*
+  (tag `inductive-vs-structure`) ist jetzt der Unterabschnitt
+  *Structures and inductive types* mit der Tabelle der Grundtypen
+  (Empty/False, Unit/True, Bool, ×/∧, ⊕/∨, Subtyp/∃, ℕ/≤).
+- Titel: 1.2 *Types and terms I: functions, structures, inductive
+  types*, 1.3 *Types and terms II: pairs, subtypes, families,
+  quotients*. In 1.3 verweisen ∧ und ∨ unter *Propositions as types*
+  zurueck. Decks entsprechend (1-2: 31 Folien, 1-3: 17).

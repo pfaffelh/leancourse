@@ -14,7 +14,10 @@ open VersoSlides
 Styling for the back-link that every deck carries in its upper right
 corner.  The link sits on `body`, outside `.reveal`, so `reveal.js`
 neither scales it with the slide nor moves it between slides; it is
-faint until hovered and is dropped from the PDF export.
+faint until hovered and is dropped from the PDF export.  Inline code
+in running text gets a smaller size and narrower spaces: at the size
+of the text a monospace font looks larger than the text, and its
+spaces leave wide gaps around `:`.
 -/
 def backLinkCss : String := "
 .course-back {
@@ -42,6 +45,11 @@ def backLinkCss : String := "
 }
 @media print {
   .course-back { display: none; }
+}
+.reveal section p code:not(.block),
+.reveal section td code:not(.block) {
+  font-size: 0.85em;
+  word-spacing: -0.25em;
 }
 "
 

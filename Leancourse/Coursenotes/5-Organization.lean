@@ -32,9 +32,9 @@ used without the other.
 * Lean and its type theory, one deck per chapter:
   * [The natural numbers and reduction rules](slides/1-1-nat/) —
     {ref "nat"}[chapter]
-  * [Types and terms I: functions and inductive types](slides/1-2-types/) —
+  * [Types and terms I: functions, structures, inductive types](slides/1-2-types/) —
     {ref "types"}[chapter]
-  * [Types and terms II: structures, pairs, subtypes, quotients](slides/1-3-type-formers/) —
+  * [Types and terms II: pairs, subtypes, families, quotients](slides/1-3-type-formers/) —
     {ref "type-formers"}[chapter]
   * [Types III: the rules](slides/1-4-rules/) —
     {ref "rules"}[chapter]
@@ -101,7 +101,7 @@ written at the start of the lab.
 * + 3
   + Mon 02.11.
   + Lecture
-  + Types and terms I: universes, functions, inductive types, pattern matching
+  + Types and terms I: universes, functions, structures, inductive types, pattern matching
   + {ref "types"}[1.2]
 * + 3
   + Wed 04.11.
@@ -111,13 +111,13 @@ written at the start of the lab.
 * + 4
   + Mon 09.11.
   + Lecture
-  + Types and terms II: structures, Σ, subtypes, quotients
+  + Types and terms II: Σ, subtypes, type families, quotients
   + {ref "type-formers"}[1.3]
 * + 4
   + Wed 11.11.
   + Lab
   + *Test 1*, then sheets
-  + `L-e`, `L-f`, `1.1-c`
+  + `L-e`, `L-f`, `1.1-c`, `1.2-b`
 * + 5
   + Mon 16.11.
   + Lecture
@@ -127,7 +127,7 @@ written at the start of the lab.
   + Wed 18.11.
   + Lab
   + Sheets
-  + `L-g`, `1.3-a`, extra `X-a`
+  + `L-g`, `1.3-a`, `1.3-c`, extra `X-a`
 * + 6
   + Mon 23.11.
   + Lecture
@@ -147,7 +147,7 @@ written at the start of the lab.
   + Wed 02.12.
   + Lab
   + *Test 2*, then sheets
-  + `1.3-b`, `1.3-c`, `1.6-a`
+  + `1.3-d`, `1.4-a`, `1.6-a`
 * + 8
   + Mon 07.12.
   + Lecture

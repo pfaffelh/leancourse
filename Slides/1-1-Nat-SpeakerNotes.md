@@ -265,14 +265,14 @@ file then checks instantly). Most demos below are one line to type.
   unfolding).
 - Weak head normal form: reduce only until the outermost constructor or
   binder is visible. Enough to compare two terms.
-- **Caution with the blue line ("decidable").** It is true for the
-  system on these slides. **If someone pushes:** for Lean's *full* type
-  theory, definitional equality is in fact **not decidable** and the
-  kernel's check is not even transitive — the culprit is the
-  interaction of impredicative `Prop` with subsingleton elimination
-  (`Acc.rec`), shown in Carneiro's thesis (2019). The kernel's
-  algorithm is sound but incomplete; in practice nobody hits the gap.
-  The course notes do not mention this yet — see the note at the end.
+- **The blue line ("undecidable").** For Lean's type theory,
+  definitional equality is **not decidable** and the kernel's check is
+  not even transitive — the culprit is the interaction of impredicative
+  `Prop` with subsingleton elimination (`Acc.rec`), shown in Carneiro's
+  thesis (2019). Reduction is not even strongly normalizing (Abel and
+  Coquand, 2020). The kernel's algorithm is sound but incomplete; in
+  practice nobody hits the gap. The course notes say the same (box in
+  1.1, *Conversion* in 1.2).
 - **[Hintergrund]** "Terminates" is also the theory. In practice `rfl`
   and `decide` can time out (`maximum recursion depth` /
   `deterministic timeout`) on terms that are large in unary form; the
@@ -402,11 +402,6 @@ file then checks instantly). Most demos below are one line to type.
 
 ## Notes beyond the deck
 
-- **The decidability claim** (slide 13, and the collapsible box
-  *Reducibility, weak head normal form, and decidability* in chapter
-  1.1) is stated without the caveat above. Strictly it holds for the
-  six-rule system on the slides, not for Lean's full theory. A
-  half-sentence in the chapter would fix it.
 - **Chapter title:** `1-Nat.lean` still has `#doc (Manual)
   "Introduction"`; the deck is titled *The natural numbers and
   reduction rules*.

@@ -188,7 +188,7 @@ Recognizing when a goal is "true by reduction" — and therefore closed by `rfl`
 
 ::::keepEnv
 :::example "Reducibility, weak head normal form, and decidability"
-How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[reducible]` definition is unfolded freely, an ordinary `def` is unfolded on demand, and an `@[irreducible]` one is left folded. And the kernel usually does not reduce all the way to a *normal form*; it stops at *weak head normal form* (WHNF) — just far enough to expose the outermost constructor or binder — which is all that comparing two terms requires. Because this reduction system is *confluent* and *strongly normalizing*, definitional equality is decidable, which is exactly what lets `rfl` and the type-checker terminate.
+How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[reducible]` definition is unfolded freely, an ordinary `def` is unfolded on demand, and an `@[irreducible]` one is left folded. And the kernel usually does not reduce all the way to a *normal form*; it stops at *weak head normal form* (WHNF) — just far enough to expose the outermost constructor or binder — which is all that comparing two terms requires. On the terms that occur in practice this terminates, so `rfl` and the type checker give an answer. In full generality definitional equality in Lean is undecidable, and the checker is sound but incomplete: there are equal terms on which it fails ({ref "type-rules"}[Conversion] in the next chapter). The counterexamples are constructed and need `Acc.rec`, the recursor of well-founded recursion, on proofs.
 :::
 ::::
 

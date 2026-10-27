@@ -318,14 +318,17 @@ one level down.
   `@[irreducible]`.
 - Reduction stops at *weak head normal form*: the outermost
   constructor or binder, no further.
-- Confluent and strongly normalizing, so `rfl` terminates.
+- On the terms that occur in practice this terminates, so `rfl`
+  gives an answer.
 
 :::class "key"
-Definitional equality is therefore decidable.
+In general definitional equality is undecidable: the checker is
+sound but incomplete.
 :::
 
 :::notes
-This is the justification that `rfl` always terminates. Keep it short.
+Keep it short. The counterexamples (Carneiro 2019) are constructed and
+need `Acc.rec` on proofs; ordinary mathematics never meets them.
 
 Cut this slide first if the hour is running out — nothing later depends
 on it.

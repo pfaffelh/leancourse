@@ -133,7 +133,7 @@ example (n : ℕ) (h : n + n = 4) : double' n = 4 := by
 * + Declared with
   + Unfolded
 * + `abbrev`, or `@[reducible] def`
-  + by almost every tactic, also by `simp` and instance search; behaves like notation
+  + also by `simp` and instance search, but not by `rw`, which matches the pattern as written
 * + `def`
   + by `rfl`, `exact`, `change`, and the kernel; by `rw` and `simp` only when asked
 * + `@[irreducible] def`, `irreducible_def`

@@ -59,7 +59,7 @@ Four commands recur in every chapter.
 * `#check t` prints the type of the term `t`.
 * `def name : T := t` gives the name `name` to the term `t`, after checking that `t` has type `T`. `theorem` does the same for proofs.
 * `example : T := t` checks that `t` has type `T`, without giving it a name.
-* `#eval t` computes the value of `t` and prints it. It uses the same reduction as `rfl` ({ref "defeq"}[Definitional equality]).
+* `#eval t` computes the value of `t` and prints it. It runs compiled code; `rfl` instead asks the kernel to reduce ({ref "defeq"}[Definitional equality]), and for the definitions of this chapter both give the same value.
 
 ```lean
 #check 2 + 2           -- 2 + 2 : ℕ

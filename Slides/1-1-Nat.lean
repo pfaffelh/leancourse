@@ -54,7 +54,7 @@ Write `Nat.succ (Nat.succ Nat.zero)` on the board and let them count
 it out. Numerals are notation, nothing more.
 
 `#print Nat` live is worth the twenty seconds. The general `inductive`
-keyword is chapter 1.3 — do not open it here.
+keyword is chapter 1.2 — do not open it here.
 :::
 
 # Peano, 1889
@@ -99,7 +99,7 @@ If currying has not come up yet, do it now: `α → β → γ` brackets to the
 right, application to the left, and the two fit together.
 
 The dependent form, where the result type varies with the number,
-needs universes and waits for chapter 1.3.
+needs universes and waits for chapter 1.2.
 :::
 
 # `Nat.rec` computes
@@ -261,7 +261,7 @@ The three rules Lean adds. δ and ι are the ones that will cost them
 time on the sheets.
 
 `motive` has to be given here because the goal does not determine it;
-wave at it and move on, the explanation is chapter 1.3.
+wave at it and move on, the explanation is chapter 1.2.
 
 One more worth running: `List.length [7, 8, 9] = 3` by `rfl`. Several
 rules at once, and it makes the blue line concrete.
@@ -373,7 +373,7 @@ def myNot : Bool → Bool
 
 :::notes
 Everything they will actually write looks like this, not like a call to
-the recursor. Details in chapter 1.3.
+the recursor. Details in chapter 1.2.
 :::
 
 # `True`
@@ -399,7 +399,7 @@ One case, so nothing to learn from a proof of `True`.
 :::notes
 `Prop` is the odd one out: no `inductive` declaration, no definition to
 unfold, `#print Prop` fails. It is `Sort 0`, baked into the kernel.
-Proof irrelevance and the rest come in chapter 2.2.
+Proof irrelevance and the rest come in chapter 1.4.
 
 One constructor means one case in the recursor, which is why a proof of
 `True` carries no information.

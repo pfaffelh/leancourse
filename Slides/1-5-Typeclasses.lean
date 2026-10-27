@@ -289,7 +289,7 @@ instance (n : Nat) : OfNat Countdown n where
 
 # Managing instances, practical tips
 
-- `instance (priority := 1000)`: overlaps are resolved by order
+- `instance (priority := 2000)`: tried before the default `1000`; Lean takes the first solution
 - `local instance`, `scoped instance`: e.g. `open scoped Classical`
 - `@[default_instance]`: a bare `2` defaults to `ℕ`
 - "failed to synthesize instance": an instance is missing

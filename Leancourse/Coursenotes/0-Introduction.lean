@@ -495,7 +495,7 @@ rechecked by a program sharing no code with the one that accepted it. Joachim Br
 [*Con-Leche*](https://github.com/leanprover/con-leche) goes further: an external checker,
 written in Lean, with a proof in Lean that it never accepts a proof of `False`. That is a
 statement about the checker, not about Lean's type theory, whose consistency it assumes
-({ref "prop-special"}[the chapter on types]).
+({ref "prop-special"}[Why `Prop` is special]).
 
 This account follows {citet hales2026}[].
 :::

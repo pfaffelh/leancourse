@@ -373,3 +373,11 @@ That related elements have the _same_ class does not follow from the four steps.
 :::class "key"
 Chapter 1.4 states these steps as the rules of Lean's type theory.
 :::
+
+# Summary
+
+- `structure`: one constructor, named fields; values by `⟨…⟩`, `{ x := … }`, `where`; fields by projections.
+- A field may be a proof: data with a property.
+- `(x : α) × β x`: dependent pairs, a disjoint union. Subtypes: the second component is a proof.
+- Type families are functions into a universe; with `inductive`, the constructors fix the index.
+- `Quot r`: a type up to a relation, with the axiom `Quot.sound`.

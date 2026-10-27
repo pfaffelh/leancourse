@@ -51,10 +51,13 @@ Kontext, ohne Lean.
 Drei Kapitelpaare teilen sich einen Termin: 1.6+1.7 (W7), 2.1+2.3
 (W8), 2.4+2.5 (W11). Notation (1.7) bekommt keine eigene Vorlesung:
 eigene Notation führen Studierende kaum ein. Die gewonnene Woche
-geht an die Grundlagen: die frühere 1.2 und 1.6 sind seit dem
-27.10.2026 zwei Kapitel *Typen I* (Typbildner: Π, induktive Typen, Strukturen, Σ,
-Subtypen, Quotienten, Universenhierarchie) und *Typen II* (die
-Regeln, `imax`, `Prop`): erst das Einfache, dann die Regeln dahinter.
+geht an die Grundlagen. Seit dem 27.10.2026 gibt es kein eigenes
+Kapitel *Terme* mehr: 1.2 *Typen und Terme I* (Universen,
+Funktionen, induktive Typen, Pattern Matching, Rekursion) und 1.3
+*Typen und Terme II* (Strukturen, Σ, Subtypen, Typfamilien,
+indizierte Familien, Quotienten) beschreiben jeden Typbildner in
+vier Schritten (Formation, Konstruktion, Benutzung, Berechnung);
+1.4 *Typen III* gibt die Regeln dahinter, `imax` und `Prop`.
 
 Skriptzeilen je Termin: Mittel 474, Spanne 330 (W2) bis 768 (W15).
 Woche 11 ist zugleich die schwerste Übungswoche (67 Aufgaben, `2.4-a`

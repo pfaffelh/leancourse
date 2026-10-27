@@ -41,7 +41,7 @@ file then checks instantly). Most demos below are one line to type.
   understands as that tower.
 - **Live:** `#print Nat`. Output is short: type `Nat : Type`, zero
   parameters, the two constructors. Twenty seconds.
-- Do **not** open the general `inductive` keyword — that is chapter 1.2/1.3.
+- Do **not** open the general `inductive` keyword — that is chapter 1.2.
 - **[Hintergrund]** The unary tower is the *meaning*, not the storage.
   The kernel has special support for number literals and computes
   `+`, `*`, `%`, … on them with big-integer arithmetic (GMP).
@@ -193,7 +193,7 @@ file then checks instantly). Most demos below are one line to type.
   does the rest (δ, ι).
 - η: the one people doubt. **Ask before showing:** should
   `fun x => f x` and `f` be equal? Opinions split. Lean says yes, by
-  definition — and `funext` (chapter 1.5) is the propositional
+  definition — and `funext` (chapter 1.4, *Axioms*) is the propositional
   version for functions that agree on every input.
 
 ---
@@ -299,7 +299,7 @@ file then checks instantly). Most demos below are one line to type.
     the code generator cannot compile a bare recursor. The chapter has
     it in a collapsible box.
   - `bif` takes a `Bool`; `if … then … else` takes a `Prop` together
-    with a `Decidable` instance. Typeclasses are chapter 1.4; just say
+    with a `Decidable` instance. Typeclasses are chapter 1.5; just say
     "two different ifs" if asked.
 
 ---
@@ -311,7 +311,7 @@ file then checks instantly). Most demos below are one line to type.
 - Everything they will actually write looks like this, not like a call
   to the recursor. The sheet `1.1-a` forbids it on purpose, so they see
   once what is underneath.
-- Details in chapter 1.3 (Terms).
+- Details in chapter 1.2 (*Pattern matching*).
 - Can be cut if short of time; slide 14 already makes the point.
 
 ---

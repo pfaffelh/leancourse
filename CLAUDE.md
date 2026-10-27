@@ -2426,3 +2426,18 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
 - Offen aus dem Abgleich: Koerzion gebuendelter Morphismen
   (`DFunLike`), `@[ext]` fuer Strukturen, `autoImplicit`, `#synth`,
   mutual/nested inductives, Modulsystem.
+
+## 2026-10-27 (5) -- Decks nachgezogen, Durchgang
+
+- Nat-Deck und seine Sprechernotizen, Einleitungs-Deck, Kapitel 0 und
+  2.2 nannten noch die alten Kapitelnummern bzw. "the Types chapter";
+  angepasst (inductive/Mustervergleich = 1.2, Regeln/`Prop` = 1.4,
+  Typklassen = 1.5, Quotienten = 1.3).
+- Deck 1-3 hat eine Summary-Folie; die Uebersichtstabelle dort braucht
+  `:::class "small"`, und die CSS-Regel muss **beide** Formen
+  abdecken (`.small table` und `table.small`): VersoSlides haengt die
+  Klasse hier an die Tabelle selbst.
+- `rw` sieht **nicht** durch ein `abbrev`, `simp` schon (getestet);
+  die Reduzierbarkeits-Tabelle im Pitfalls-Kapitel sagt das jetzt so.
+- `#eval` laeuft kompiliert, `rfl` im Kernel; bei wohlfundierter
+  Rekursion gehen die beiden auseinander (1.2 sagt das jetzt).

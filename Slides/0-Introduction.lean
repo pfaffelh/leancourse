@@ -319,7 +319,7 @@ predicative: the same shape climbs to the next universe. So Lean
 neither follows Zermelo nor Russell wholesale. It grants the circle
 for propositions and refuses it for data, which is why the supremum
 of a set of reals is unproblematic and `Type : Type` is not. That is
-the Types chapter; here just say that the third answer exists.
+chapter 1.4; here just say that the third answer exists.
 :::
 
 # Hilbert's programme, 1917
@@ -411,7 +411,7 @@ and `grind` terminate when there is something to find.
 
 Lean is not first-order — it quantifies over types and over
 propositions — so the completeness theorem does not apply to it. Say
-that; it matters again when the Types chapter builds a model by hand.
+that; it matters again in chapter 1.4, where a model is built by hand.
 
 Watch the word *complete*, which does two jobs. A *logic* is complete
 when everything valid is derivable; a *theory* is complete when it

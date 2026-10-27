@@ -380,4 +380,5 @@ Then the Calculus of Constructions (1985) and inductive types (1990).
 - Functions: `(x : α) → β x`, built with `fun`, used by application, computed by β.
 - `def`, currying, `fun x ↦ …`, `·`, implicit and universe-polymorphic arguments.
 - `inductive`: built with constructors, used by pattern matching, computed by ι.
-- Recursion must terminate; constructors must be strictly positive.
+- Recursion must terminate; well-founded recursion is used through its equation lemmas.
+- Constructors must be strictly positive.

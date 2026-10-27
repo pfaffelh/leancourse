@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "type-formers"
 %%%
 
-The {ref "types"}[previous chapter] treated function types and inductive types. This chapter treats types whose terms bundle several components: structures, pairs and subtypes. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
+The {ref "types"}[previous chapter] treated function types and inductive types. This chapter treats types whose terms bundle several components: structures, pairs and subtypes. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; the logical connectives, which are these type formers with values in `Prop`; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
 
 The [slides](slides/1-3-type-formers/) for this chapter follow it section by section.
 
@@ -259,7 +259,7 @@ If `β` does not depend on `x`, all pieces are equal, and the Σ-type is the pro
   + `∃ x, P x`
 :::
 
-The last column is the subject of {ref "curry-howard"}[the Curry-Howard correspondence]. `∃` is not literally a Σ-type: it forgets which witness was given.
+The last column is taken up in {ref "curry-howard"}[Propositions as types] below. `∃` is not literally a Σ-type: it forgets which witness was given.
 
 # Subtypes
 %%%
@@ -422,6 +422,167 @@ Mathlib defines `Even n` differently, as `∃ r, n = r + r`. But `≤` on `ℕ` 
 ```
 
 `Nat.le n` has the constructors `refl : n ≤ n` and `step : n ≤ m → n ≤ m + 1`. `Eq a` has the parameter `a`, one index, and the single constructor `Eq.refl a : a = a`. So for `h : a = b`, `cases h` leaves only the case in which the index `b` is `a`: it replaces `b` by `a` everywhere. That is what rewriting with an equation rests on.
+
+# Propositions as types
+%%%
+tag := "curry-howard"
+%%%
+
+A proposition `P : Prop` is a type, and a proof of `P` is a term `h : P`. A proposition is proved when a term of it has been built. The logical connectives are not added to Lean separately: they are the type formers of this chapter and the {ref "types"}[previous one], with values in `Prop`. This reading of propositions as types and proofs as terms is the *Curry-Howard correspondence* ({ref "types-history"}[Some history]).
+
+## Implication, negation, and `∀`
+%%%
+tag := "forall-pi"
+%%%
+
+`P → Q` and `∀ x : α, P x` are the function types of the previous chapter: a proof of `P → Q` takes proofs of `P` to proofs of `Q` ({ref "term"}[Proofs of implications]), and a proof of `∀ x : α, P x` takes each `x : α` to a proof of `P x` ({ref "pi-types"}[Function types and Π-types]). Negation is defined from them: `¬P` is `P → False`.
+
+```lean
+example (P : Prop) : (¬P) = (P → False) := rfl
+
+example (P : Prop) (hP : P) (hnP : ¬P) : False :=
+  hnP hP
+```
+
+## `True` and `False`
+%%%
+tag := "false-true-types"
+%%%
+
+Both are inductive types, {ref "true-false"}[met in chapter 1.1]: `True` has the one constructor `True.intro`, `False` has none. So no term of `False` can be built from nothing. A `match` on `h : False` needs no branch, since there is no constructor to cover; `nomatch h` is this empty match. The result may have any type, which is *ex falso quodlibet*, available as `False.elim`:
+
+```lean
+example : True := True.intro
+
+example (C : Prop) (h : False) : C := nomatch h
+example (C : Prop) (h : False) : C := h.elim
+```
+
+## Conjunction
+%%%
+tag := "conjunction-product"
+%%%
+
+`P ∧ Q` is notation for `And P Q`, a structure with two fields:
+
+```lean
+#print And
+```
+
+*Formation.* `P ∧ Q`. *Construction.* `⟨hP, hQ⟩`, short for `And.intro hP hQ`. *Use.* The projections `h.1` and `h.2`, also `h.left` and `h.right`. *Computation.* `⟨hP, hQ⟩.1` reduces to `hP`. It is the product `α × β`, for propositions.
+
+```lean
+example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q :=
+  ⟨hP, hQ⟩
+
+example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
+  ⟨h.2, h.1⟩
+```
+
+## Disjunction
+%%%
+tag := "disjunction-sum"
+%%%
+
+`P ∨ Q` is notation for `Or P Q`, an inductive type with two constructors:
+
+```lean
+#print Or
+```
+
+*Formation.* `P ∨ Q`. *Construction.* `Or.inl hP` from `hP : P`, or `Or.inr hQ` from `hQ : Q`. *Use.* Pattern matching with one branch per constructor, also available as `Or.elim`; in tactic mode `obtain hP | hQ := h`. *Computation.* A match on a constructor takes its branch.
+
+```lean
+example (P Q R : Prop) (h : P ∨ Q)
+    (hPR : P → R) (hQR : Q → R) : R :=
+  match h with
+  | Or.inl hP => hPR hP
+  | Or.inr hQ => hQR hQ
+
+example (P Q R : Prop) (h : P ∨ Q)
+    (hPR : P → R) (hQR : Q → R) : R :=
+  h.elim hPR hQR
+```
+
+This is the disjoint union of `P` and `Q`, with one difference: the match may only prove propositions. A function `P ∨ Q → Bool` that tells which side holds is rejected; {ref "prop-special"}[Why `Prop` is special] gives the reason.
+
+## The existential quantifier
+%%%
+tag := "exists-sigma"
+%%%
+
+`∃ x, P x` is notation for `Exists P`, an inductive type with one constructor that takes a witness and a proof:
+
+```lean
+#print Exists
+```
+
+*Formation.* `∃ x : α, P x`. *Construction.* `⟨a, h⟩` with `a : α` and `h : P a`. *Use.* Pattern matching, which gives a witness and a proof; in tactic mode `obtain ⟨x, hx⟩ := h`. *Computation.* A match on `⟨a, h⟩` takes its branch.
+
+```lean
+example : ∃ n : ℕ, n > 5 := ⟨7, by decide⟩
+
+example (P Q : ℕ → Prop) (h : ∃ n, P n ∧ Q n) :
+    ∃ n, Q n :=
+  match h with
+  | ⟨n, hn⟩ => ⟨n, hn.2⟩
+```
+
+A proof of `∃ x, P x` is a pair like an element of the {ref "sigma-types"}[Σ-type] or of the {ref "subtypes"}[subtype] `{x : α // P x}`. The difference is the universe. The subtype lives in `Type`, and its witness can be read off and computed with. `∃` lives in `Prop`, and as for `∨` the match may only prove propositions: the witness can be used inside proofs, but not to compute data.
+
+```lean
+def bigSeven : {n : ℕ // n > 5} := ⟨7, by decide⟩
+#eval bigSeven.val   -- 7
+```
+
+Counting makes the difference visible. Any two proofs of a proposition are equal, so a proposition counts as 0 if false and 1 if true. The Σ-type has $`\sum_x |P(x)|` elements, one for each witness. `∃ x, P x` keeps only whether this sum is positive, that is, whether *some* `P x` holds. In the same way $`\prod_x |P(x)|` is positive exactly if *every* `P x` holds, which is `∀`. `∃` is the *propositional truncation* of the Σ-type: it forgets which witness was given. Getting a witness back needs the axiom of choice ({ref "rules"}[chapter 1.4]).
+
+Use `∃` when only the existence matters, which is the usual case in mathematics, and a subtype when the witness is needed.
+
+## The dictionary
+%%%
+tag := "curry-howard-summary"
+%%%
+
+:::table (align := left) +header
+* + proposition
+  + type former
+  + a proof is
+* + `P → Q`
+  + function type
+  + a function from proofs of `P` to proofs of `Q`
+* + `∀ x : α, P x`
+  + Π-type
+  + a function taking each `x` to a proof of `P x`
+* + `P ∧ Q`
+  + structure, like `α × β`
+  + a pair `⟨hP, hQ⟩`
+* + `P ∨ Q`
+  + inductive, like a disjoint union
+  + `Or.inl hP` or `Or.inr hQ`
+* + `∃ x : α, P x`
+  + inductive, like a Σ-type
+  + a pair `⟨a, h⟩` with `h : P a`
+* + `True`
+  + inductive, one constructor
+  + `True.intro`
+* + `False`
+  + inductive, no constructor
+  + there is none
+* + `¬P`
+  + `P → False`
+  + a function from proofs of `P` to `False`
+:::
+
+A statement is a term of type `Prop` whether or not anyone has a proof. Goldbach's conjecture, with `Even` and `Nat.Prime` from Mathlib:
+
+```lean
+theorem goldbach : ∀ n : ℕ, n > 2 → Even n →
+    ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ n = p + q := by
+  sorry
+```
+
+A term that replaces the `sorry` is a proof of the conjecture.
 
 # Quotient types
 %%%

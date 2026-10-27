@@ -255,6 +255,20 @@ Beyond the rules, Lean has exactly three axioms:
 
 A theorem whose list is empty holds in the rules alone, and its proof is constructive.
 
+*`Nonempty` and choice.* `Nonempty α` is the proposition that `α` has an element. A proof is `⟨a⟩` for some `a : α`, but the proof does not give `a` back: by restricted elimination (*Inductive types* above), a proof can be used to prove things, not to compute data. `Classical.choice` is exactly the step from the proposition back to data. Its relative `Classical.choose` takes a proof of `∃ x, P x` to a witness. A definition that uses them cannot be computed and must be marked `noncomputable`:
+
+```lean
+example {α : Type} (a : α) : Nonempty α := ⟨a⟩
+
+noncomputable def pickOne {α : Type}
+    (h : Nonempty α) : α :=
+  Classical.choice h
+
+example (P : ℕ → Prop) (h : ∃ n, P n) :
+    P (Classical.choose h) :=
+  Classical.choose_spec h
+```
+
 ## How Lean implements the rules
 
 Lean has two programs that deal with terms. The *elaborator* turns what you write — notation, implicit arguments, type classes, tactic proofs — into a fully explicit term. It is large and complicated, and it is not trusted. The *kernel* then checks that term against the rules above, and only then is the declaration added to the environment. A tactic can therefore produce a wrong term, but it cannot get one past the kernel.

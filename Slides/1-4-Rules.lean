@@ -181,6 +181,22 @@ $$`\mathrm{Quot.lift}\ f\ h\ (\mathrm{Quot.mk}\ r\ a) \equiv f\ a`
 
 The third axiom is `Quot.sound`: related elements have the same class. `Classical.em` and `funext` are theorems.
 
+# `Nonempty` and choice
+
+```lean -panel -stretch
+example {α : Type} (a : α) : Nonempty α := ⟨a⟩
+
+noncomputable def pickOne {α : Type}
+    (h : Nonempty α) : α :=
+  Classical.choice h
+```
+
+`Nonempty α`: `α` has an element, but the proof does not give it back. A proof cannot be eliminated into data.
+
+:::class "key"
+`Classical.choice` is the step from `Prop` back to data. Definitions that use it are `noncomputable`.
+:::
+
 # How Lean checks the rules
 
 The _elaborator_ turns notation, implicit arguments and tactics into an explicit term; it is not trusted. The _kernel_ checks that term.

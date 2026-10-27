@@ -39,9 +39,7 @@ used without the other.
   * [Types III: the rules](slides/1-4-rules/) —
     {ref "rules"}[chapter]
   * [Typeclasses](slides/1-5-typeclasses/) — {ref "typeclasses"}[chapter]
-  * [Propositions and proofs](slides/1-6-curry-howard/) —
-    {ref "curry-howard"}[chapter]
-  * [Notation and abbreviations](slides/1-7-notation/) —
+  * [Notation and abbreviations](slides/1-6-notation/) —
     {ref "notation"}[chapter]
 * [Filters in Mathlib](slides/2-6-filters/) — accompanies the
   {ref "filters"}[chapter on filters].
@@ -143,13 +141,13 @@ written at the start of the lab.
 * + 7
   + Mon 30.11.
   + Lecture
-  + Curry-Howard and notation
-  + {ref "curry-howard"}[1.6], {ref "notation"}[1.7]
+  + Notation
+  + {ref "notation"}[1.6]
 * + 7
   + Wed 02.12.
   + Lab
   + *Test 2*, then sheets
-  + `1.6-a`, `1.6-b`, `1.7-a`
+  + `1.3-b`, `1.3-c`, `1.6-a`
 * + 8
   + Mon 07.12.
   + Lecture

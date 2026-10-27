@@ -20,7 +20,7 @@ A mathematician thinks in *sets*; Lean thinks in *types*. A set turns
 out to be a predicate on a type, its operations the logical
 connectives, and its equality an axiom — the four sections below.
 *Propositions* and their *proofs*, used freely from here on, were
-covered in {ref "curry-howard"}[the Curry-Howard chapter] of the
+covered in {ref "curry-howard"}[Propositions as types] in the
 {ref "lean"}[Lean part].
 
 # Sets versus types

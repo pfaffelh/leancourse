@@ -5,8 +5,7 @@ import Slides.«1-2-Types»
 import Slides.«1-3-TypeFormers»
 import Slides.«1-4-Rules»
 import Slides.«1-5-Typeclasses»
-import Slides.«1-6-CurryHoward»
-import Slides.«1-7-Notation»
+import Slides.«1-6-Notation»
 import Slides.«2-6-Filters»
 
 open VersoSlides
@@ -96,8 +95,7 @@ def main (args : List String) : IO UInt32 := do
       ("1-3-type-formers",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-3-TypeFormers»)),
       ("1-4-rules",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-4-Rules»)),
       ("1-5-typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-5-Typeclasses»)),
-      ("1-6-curry-howard",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-CurryHoward»)),
-      ("1-7-notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-7-Notation»)),
+      ("1-6-notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-Notation»)),
       ("2-6-filters",         fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-6-Filters»)) ]
   let mut code : UInt32 := 0
   for (name, run) in decks do

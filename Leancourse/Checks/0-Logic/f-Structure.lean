@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) L-f -- Structuring a proof
 
-*Logic block, week 4. No chapter of its own: the theory is Curry-Howard (1.6) and the axioms (2.2), both later.*
+*Logic block, week 4. No chapter of its own: the theory is propositions as types (1.3) and the axioms (2.2), both later.*
 
 No new logic on this sheet. The statements are the kind you can
 already do. What is new is how to write the proof down: name

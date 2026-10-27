@@ -3,7 +3,7 @@ import Mathlib -- load everything, in particular tactics
 /-!
 # L-a -- Propositions and implication
 
-*Logic block, week 1. No chapter of its own: the theory is Curry-Howard (1.6) and the axioms (2.2), both later.*
+*Logic block, week 1. No chapter of its own: the theory is propositions as types (1.3) and the axioms (2.2), both later.*
 
 Only propositions here: `P`, `Q`, `R`, ... No numbers, no sets, no
 functions. The only connective is `→`.

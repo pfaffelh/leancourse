@@ -10,7 +10,8 @@ set_option pp.rawOnError true
 Deck for the chapter "Types and terms I: functions and inductive
 types" of part 1 (Lean and its type theory). It follows the chapter
 section by section: commands for terms, the universe hierarchy,
-function types with their terms, inductive types with pattern
+function types with their terms, proofs of implications in tactic
+and term mode, inductive types with pattern
 matching and recursion, strict positivity, some history.
 -/
 
@@ -197,6 +198,40 @@ def safeDiv (a b : ℤ) (_ : b ≠ 0) : ℤ := a / b
 
 The third argument is a proof of `3 ≠ 0`. Its type depends on `b`, so the type of `safeDiv` is a Π-type.
 
+# Proofs of implications
+
+A proof of `P → Q` is a function from proofs of `P` to proofs of `Q`.
+
+```lean -panel -stretch
+example (P Q : Prop) (hP : P) (hPQ : P → Q) :
+    Q :=
+  hPQ hP
+
+example (P Q R : Prop) :
+    (P → Q) → (Q → R) → (P → R) :=
+  fun hPQ hQR hP => hQR (hPQ hP)
+```
+
+Modus ponens is application; chaining is composition.
+
+# Tactic mode and term mode
+
+```lean -panel -stretch
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := by
+  intro hP
+  exact hQR (hPQ hP)
+
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := fun hP ↦ hQR (hPQ hP)
+```
+
+After `by`, each tactic changes the proof state: hypotheses above `⊢`, the goal after it. `show_term` prints the term built.
+
+:::class "key"
+`intro` builds a `fun`; `exact` supplies a term.
+:::
+
 # Inductive types
 
 ```lean -panel -stretch
@@ -372,13 +407,14 @@ Russell's set $`R = \{x : x \notin x\}` broke Frege in 1902. Russell's repair (1
   * universe hierarchy
 :::
 
-Then the Calculus of Constructions (1985) and inductive types (1990).
+Curry (1934), Howard (1969): propositions are types, proofs are terms. Then the Calculus of Constructions (1985) and inductive types (1990).
 
 # Summary
 
 - Universes: `Prop`, `Type 0 : Type 1 : ...`; there is no `Type : Type`.
 - Functions: `(x : α) → β x`, built with `fun`, used by application, computed by β.
 - `def`, currying, `fun x ↦ …`, `·`, implicit and universe-polymorphic arguments.
+- A proof of `P → Q` is a function; `intro` builds it, `exact` supplies a term.
 - `inductive`: built with constructors, used by pattern matching, computed by ι.
 - Recursion must terminate; well-founded recursion is used through its equation lemmas.
 - Constructors must be strictly positive.

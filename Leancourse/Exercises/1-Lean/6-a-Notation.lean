@@ -1,9 +1,9 @@
 import Mathlib
 
 /-
-# 1.7-a -- Defining your own notation
+# 1.6-a -- Defining your own notation
 
-*Notes chapter 1.7, week 7.*
+*Notes chapter 1.6, week 7.*
 
 These exercises accompany the "Defining new notation" section in
 the Lean chapter. You will practice `notation`, `infixl`, `infixr`,

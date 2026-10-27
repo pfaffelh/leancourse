@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) L-b -- Conjunction and biconditional
 
-*Logic block, week 2. No chapter of its own: the theory is Curry-Howard (1.6) and the axioms (2.2), both later.*
+*Logic block, week 2. No chapter of its own: the theory is propositions as types (1.3) and the axioms (2.2), both later.*
 
 Two connectives: `∧` and `↔`. Still only propositions.
 

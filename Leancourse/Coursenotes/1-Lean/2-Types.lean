@@ -247,6 +247,50 @@ def safeDiv (a b : ℤ) (_ : b ≠ 0) : ℤ := a / b
 
 The third argument is a proof of `3 ≠ 0`, here written as a tactic proof `by simp` in the place of a term. The type `(a b : ℤ) → b ≠ 0 → ℤ` of `safeDiv` is a Π-type, because the type of the proof depends on `b`.
 
+## Proofs of implications
+%%%
+tag := "term"
+%%%
+
+For propositions `P` and `Q`, `P → Q` is a function type like any other, and a proof of `P → Q` is a function that takes a proof of `P` to a proof of `Q`. Modus ponens is function application, and chaining two implications is composition:
+
+```lean
+example (P Q : Prop) (hP : P) (hPQ : P → Q) : Q :=
+  hPQ hP
+
+example (P Q R : Prop) :
+    (P → Q) → (Q → R) → (P → R) :=
+  fun hPQ hQR hP => hQR (hPQ hP)
+```
+
+A proof written down as a term is in *term mode*. The exercise sheets mostly use *tactic mode*: after the keyword `by`, each tactic changes the *proof state* — the hypotheses above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)), the goal to its right — until no goal is left. Tactic mode builds a term as well. Two tactics correspond directly to the constructions of this section:
+
+* `intro h` builds a function `fun h => …`;
+* `exact t` supplies the term `t`, often a function application.
+
+So the tactic proof and the term below are the same object:
+
+```lean
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := by
+  intro hP
+  exact hQR (hPQ hP)
+
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := fun hP ↦ hQR (hPQ hP)
+```
+
+`show_term` in front of tactics prints the term they build:
+
+```lean
+example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
+    P → R := by
+  show_term
+    intro hP
+    exact hQR (hPQ hP)
+-- Try this: exact fun hP => hQR (hPQ hP)
+```
+
 # Inductive types
 %%%
 tag := "inductive"
@@ -489,4 +533,4 @@ tag := "types-history"
 
 Types were introduced to stop a contradiction. Russell's set $`R = \{x : x \notin x\}` broke Frege's *Grundgesetze der Arithmetik* in 1902 ({ref "prehistory"}[Introduction]). Russell's repair of 1908 gave every object a type and let a type apply only to objects of lower type, so that `x ∈ x` is not false but not a statement at all. Zermelo's repair of the same year instead restricts which sets exist and leaves `x ∈ x` a formula. Mathematics followed Zermelo; proof assistants follow Russell, because a type checker can decide before any question of truth whether an expression means anything.
 
-Alonzo Church turned the simple theory of types into a calculus in 1940, the simply typed lambda calculus on which *Isabelle/HOL* still rests. Dependent types, in which a type may mention a term, came with de Bruijn's Automath (1967) and Martin-Löf's type theory (1971). Coquand and Huet added impredicative quantification in the Calculus of Constructions (1985), and Paulin-Mohring added inductive types (1990). Lean's type theory is a variant of the result, the {ref "cic"}[Calculus of Inductive Constructions]. Three times the same thing happened: a system let an object be applied to itself, a contradiction followed, and types forbade it. In Lean the ban is visible as `Type 0 : Type 1 : Type 2 : ...`.
+*Principia Mathematica* (1910 to 1913) is written in Russell's theory. Leon Chwistek and Frank Ramsey simplified it in the 1920s to the simple theory of types, and Alonzo Church turned that into a calculus in 1940, the simply typed lambda calculus on which *Isabelle/HOL* still rests. That propositions can be read as types and proofs as terms is the *Curry-Howard correspondence*: Haskell Curry observed in 1934 that the types of the combinators of combinatory logic are the axioms of propositional logic, and William Howard extended this in 1969 (published 1980) to natural deduction and the simply typed lambda calculus. Dependent types, in which a type may mention a term, came with de Bruijn's Automath (1967) and Martin-Löf's type theory (1971). Coquand and Huet added impredicative quantification in the Calculus of Constructions (1985), and Paulin-Mohring added inductive types (1990). Lean's type theory is a variant of the result, the {ref "cic"}[Calculus of Inductive Constructions]. Three times the same thing happened: a system let an object be applied to itself, a contradiction followed, and types forbade it. In Lean the ban is visible as `Type 0 : Type 1 : Type 2 : ...`.

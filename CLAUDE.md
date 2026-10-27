@@ -2441,3 +2441,27 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   die Reduzierbarkeits-Tabelle im Pitfalls-Kapitel sagt das jetzt so.
 - `#eval` laeuft kompiliert, `rfl` im Kernel; bei wohlfundierter
   Rekursion gehen die beiden auseinander (1.2 sagt das jetzt).
+
+## 2026-10-27 (6) -- Curry-Howard-Kapitel aufgeloest
+
+- Das alte 1.6 *Propositions and proofs* war nach dem Umbau zu zwei
+  Dritteln doppelt (Π/∀ in 1.2, Σ/∃ in 1.3, `#print And/Or/Exists`
+  und eingeschraenkte Elimination in 1.4) und an zwei Stellen schief
+  ("∨ = Summentyp", "∃ = Σ" ohne den `Prop`-Vorbehalt). Aufgeteilt:
+  - 1.2, neuer Unterabschnitt *Proofs of implications* (tag `term`,
+    Name beibehalten wegen `Exact.lean` und Organization): Modus
+    ponens = Anwendung, Taktik- vs. Termmodus, `intro` = `fun`,
+    `exact`, `show_term`. Curry/Howard in *Some history*.
+  - 1.3, neuer Abschnitt *Propositions as types* (tag `curry-howard`,
+    damit die sechs Verweise bleiben) vor den Quotienten: `¬`,
+    `True`/`False` mit `nomatch`, `∧` als Struktur, `∨` und `∃` als
+    induktive Typen in den vier Schritten, Vergleich mit Subtyp und
+    Zaehlargument, Woerterbuch-Tabelle, Goldbach als `Prop`.
+  - 1.4 *Axioms*: Absatz `Nonempty`/`Classical.choice`/
+    `Classical.choose`/`noncomputable`. `Squash` und `PLift` sind weg.
+- `7-Notation` -> `6-Notation`, Deck `slides/1-6-notation/`.
+  Blaetter: `1.6-a` -> `1.3-b` (Predicates), `1.6-b` -> `1.3-c`
+  (CurryHoward), `1.7-a` -> `1.6-a` (Notation), alle weiter Woche 7.
+  Die Kopfzeilen des Logikblocks verweisen jetzt auf 1.3 statt 1.6.
+- **Die Vorlesung am 30.11. (W7) ist frei**; in Organization und
+  `plan.md` steht dort vorlaeufig nur Notation.

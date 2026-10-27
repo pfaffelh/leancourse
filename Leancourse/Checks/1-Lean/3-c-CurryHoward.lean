@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# (witness) 1.6-b -- The Curry-Howard correspondence
+# (witness) 1.3-c -- The Curry-Howard correspondence
 
-*Notes chapter 1.6, week 7.*
+*Notes chapter 1.3, week 7.*
 -/
 
 variable (P Q R S : Prop)

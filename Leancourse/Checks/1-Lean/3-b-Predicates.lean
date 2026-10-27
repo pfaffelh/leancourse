@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# (witness) 1.6-a -- Predicates and equality
+# (witness) 1.3-b -- Predicates and equality
 
-*Notes chapter 1.6, week 7.*
+*Notes chapter 1.3, week 7.*
 
 The setting is the one of sheet `1.2-a` (week 3): a type `α` and
 predicates on it. New here is equality — between terms, and between

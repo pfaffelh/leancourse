@@ -10,8 +10,9 @@ set_option pp.rawOnError true
 Deck for the chapter "Types and terms II: structures, pairs,
 subtypes, quotients" of part 1 (Lean and its type theory). It follows
 the chapter section by section: structures and their values, data
-with a property, Σ-types, subtypes, type families, quotient types,
-and the table of the four steps.
+with a property, Σ-types, subtypes, type families, indexed families,
+the logical connectives as types, quotient types, and the table of the
+four steps.
 -/
 
 namespace SlidesTypeFormers
@@ -293,6 +294,89 @@ The constructors are the only ways to prove `MyEven n`. `cases h` keeps the cons
 `≤` on `ℕ` and `=` are inductive predicates of this kind.
 :::
 
+# Propositions as types
+
+A proposition `P : Prop` is a type; a proof is a term `h : P`. The connectives are the type formers, with values in `Prop`.
+
+```lean -panel -stretch
+example (P : Prop) : (¬P) = (P → False) := rfl
+
+example : True := True.intro
+example (C : Prop) (h : False) : C := nomatch h
+```
+
+- `→`, `∀`: function types; `¬P` is `P → False`
+- `True`: one constructor; `False`: none, so `nomatch` needs no branch
+
+# Conjunction and disjunction
+
+```lean -panel -stretch
+example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
+  ⟨h.2, h.1⟩
+
+example (P Q R : Prop) (h : P ∨ Q)
+    (hPR : P → R) (hQR : Q → R) : R :=
+  match h with
+  | Or.inl hP => hPR hP
+  | Or.inr hQ => hQR hQ
+```
+
+`And`: a structure, like `α × β`. `Or`: an inductive type with `Or.inl`, `Or.inr`.
+
+:::class "key"
+A match on `P ∨ Q` may only prove propositions: which side holds cannot be turned into data.
+:::
+
+# The existential quantifier
+
+```lean -panel -stretch
+example : ∃ n : ℕ, n > 5 := ⟨7, by decide⟩
+
+example (P Q : ℕ → Prop) (h : ∃ n, P n ∧ Q n) :
+    ∃ n, Q n :=
+  match h with
+  | ⟨n, hn⟩ => ⟨n, hn.2⟩
+```
+
+`Exists`: one constructor, a witness and a proof. Like the subtype `{n : ℕ // n > 5}`, but in `Prop`: the witness can be used in proofs, not computed with.
+
+:::class "key"
+`∃` is the propositional truncation of `Σ`: it forgets which witness was given.
+:::
+
+# The dictionary
+
+:::table +colHeaders +rowSeps
+*
+  * proposition
+  * type former
+  * a proof is
+*
+  * `P → Q`, `∀ x, P x`
+  * Π-type
+  * a function
+*
+  * `P ∧ Q`
+  * structure, like `α × β`
+  * `⟨hP, hQ⟩`
+*
+  * `P ∨ Q`
+  * inductive, like a disjoint union
+  * `Or.inl hP`, `Or.inr hQ`
+*
+  * `∃ x, P x`
+  * inductive, like a Σ-type
+  * `⟨a, h⟩`
+*
+  * `True`, `False`
+  * one, no constructor
+  * `True.intro`; none
+*
+  * `¬P`
+  * `P → False`
+  * a function into `False`
+:::
+
 # Quotient types
 
 `Quot r`: the type `α` seen up to a relation `r`. Examples: `ℤ`, `ℚ`, `ℝ`, `Multiset α`, `ZMod n`.
@@ -380,4 +464,5 @@ Chapter 1.4 states these steps as the rules of Lean's type theory.
 - A field may be a proof: data with a property.
 - `(x : α) × β x`: dependent pairs, a disjoint union. Subtypes: the second component is a proof.
 - Type families are functions into a universe; with `inductive`, the constructors fix the index.
+- The connectives are these type formers in `Prop`: `∧` a structure, `∨`, `∃`, `False` inductive types.
 - `Quot r`: a type up to a relation, with the axiom `Quot.sound`.

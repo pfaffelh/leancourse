@@ -360,6 +360,14 @@ example (a b : ℕ) : a = b := rfl
 ```
 See also {ref "prop-vs-type"}[Prop vs Type].
 
+Proof irrelevance is the reason why Lean has `theorem` besides `def` ({ref "naming-terms"}[Commands for terms]). Since any two proofs of a statement are equal, only the statement of a theorem matters later, never its proof. Lean therefore generates no executable code for a theorem, and it requires that its type is a proposition:
+
+```lean +error
+theorem five : ℕ := 5
+```
+
+The error is "type of theorem `five` is not a proposition". The converse, `def` with a proposition, is accepted, but Mathlib warns "use `theorem` instead of `def`". Mathlib's `lemma` is the same as `theorem`.
+
 *`Prop` is impredicative*: `Prop` is the one universe that escapes the predicativity of the {ref "universe-determined"}[previous section]. As long as the body of a `∀` statement is a proposition, the whole `∀` is a `Prop` — even when we range over an arbitrarily large universe of types:
 
 ```lean

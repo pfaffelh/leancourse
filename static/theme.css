@@ -99,3 +99,13 @@ figcaption {
     font-family: var(--verso-code-font-family) !important;
 }
 
+
+/* Sidebar table of contents: show only chapters and their sections
+   (1.2 and 1.2.3), not subsections (1.2.3.4) and not the docstring
+   entries (Bool, True, ...) that Verso adds for {docstring}. Each part
+   is a single page, so head-1 is a chapter and head-2 a section. */
+.split-tocs li:has(> .header.head-3),
+.split-tocs li:has(> .header.head-4),
+.split-tocs li:has(> a) {
+  display: none;
+}

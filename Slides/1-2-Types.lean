@@ -86,12 +86,14 @@ Types and terms come together. Chapter 1.4 turns the four steps into rules.
 ```lean -panel -stretch
 #check 2 + 2           -- 2 + 2 : ℕ
 def four : ℕ := 2 + 2
+theorem four_eq : four = 4 := rfl
 example : four = 4 := rfl
 #eval four             -- 4
 ```
 
 - `#check t`: the type of `t`
-- `def name : T := t`: names `t`; `theorem` for proofs
+- `def name : T := t`: names `t`
+- `theorem name : P := p`: names a proof; Mathlib also accepts `lemma`
 - `example : T := t`: checks `t`, no name
 - `#eval t`: computes the value
 

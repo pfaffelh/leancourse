@@ -46,7 +46,7 @@ tag := "search-tactics"
 
 Lean provides several tactics that search Mathlib for applicable lemmas. These are invaluable when you know what you need but do not know its name.
 
-**`exact?`** searches for a single lemma (possibly with arguments) that closes the current goal. It will print a suggestion that you can copy into your proof.
+*`exact?`* searches for a single lemma (possibly with arguments) that closes the current goal. It will print a suggestion that you can copy into your proof.
 
 ```lean
 -- Suppose your goal is `0 < 1`. Try:
@@ -54,7 +54,7 @@ example : (0 : ℝ) < 1 := by exact?
 -- This might suggest: exact zero_lt_one
 ```
 
-**`apply?`** searches for a lemma whose conclusion matches the goal, possibly leaving its hypotheses as new subgoals.
+*`apply?`* searches for a lemma whose conclusion matches the goal, possibly leaving its hypotheses as new subgoals.
 
 ```
 -- Goal `a ≤ b`, with `h : a < b` in context. Try:
@@ -62,7 +62,7 @@ example (a b : ℝ) (h : a < b) : a ≤ b := by apply?
 -- suggests: exact le_of_lt h
 ```
 
-**`rw?`** searches for a lemma that can rewrite part of the goal.
+*`rw?`* searches for a lemma that can rewrite part of the goal.
 
 These tactics can be slow because they search through a large library. Use them during exploration, but replace them with the concrete result they find for your final proof.
 
@@ -71,7 +71,7 @@ These tactics can be slow because they search through a large library. Use them 
 tag := "moogle-loogle"
 %%%
 
-When you cannot guess a lemma's name, several search *services* help.  (For the `#check`/`#print`/`inferInstance` commands that inspect a known definition, see {ref "checkprint"}[Exploring definitions] earlier in this appendix.)  All of the services below are available both as web pages and, more conveniently, as commands inside Lean via the `LeanSearchClient` package (a Mathlib dependency).
+When you cannot guess a lemma's name, several search *services* help.  (For the `#check`/`#print`/`inferInstance` commands that inspect a known definition, see {ref "checkprint"}[Exploring definitions] in the small reference topics.)  All of the services below are available both as web pages and, more conveniently, as commands inside Lean via the `LeanSearchClient` package (a Mathlib dependency).
 
 - *Loogle* ([loogle.lean-lang.org](https://loogle.lean-lang.org/)) searches by *type shape*.  You write a pattern (using `_` for holes) and Loogle returns every lemma whose statement unifies with it.  Inside Lean:
   ```
@@ -82,11 +82,6 @@ When you cannot guess a lemma's name, several search *services* help.  (For the 
   ```
   #leansearch "the derivative of a product of functions"
   ```
-- *Moogle* ([moogle.ai](https://www.moogle.ai/)) is another natural-language search with a different ranking model:
-  ```
-  #moogle "bolzano-weierstrass"
-  ```
-  The two often surface different lemmas, so it is worth trying both.
 
 # The Mathlib documentation website
 %%%
@@ -108,14 +103,14 @@ tag := "naming-conventions"
 
 Mathlib follows systematic naming conventions that make lemma names predictable once you know the pattern. The general rule is:
 
-**The conclusion is described first, then hypotheses are listed after `_of_`.**
+*The conclusion is described first, then hypotheses are listed after `_of_`.*
 
 For example:
 - `continuous_add` : continuity of addition (goal: `Continuous ...`)
 - `isOpen_of_isOpen_inter` : a set is open given that some intersection is open
 - `le_of_lt` : `a ≤ b` follows from `a < b`
 
-**Common abbreviations:**
+*Common abbreviations:*
 
 :::table +header
 * + Full name
@@ -150,7 +145,7 @@ For example:
   + `gt`
 :::
 
-**Common patterns:**
+*Common patterns:*
 - `X_comm` : commutativity (`a * b = b * a`)
 - `X_assoc` : associativity (`(a * b) * c = a * (b * c)`)
 - `X_zero` / `zero_X` : interaction with zero (`a * 0 = 0`)
@@ -158,7 +153,7 @@ For example:
 - `X_self` : applied to itself (`a - a = 0`)
 - `X_left` / `X_right` : left/right variants
 
-**Examples:**
+*Examples:*
 ```lean
 #check mul_comm        -- a * b = b * a
 #check add_assoc       -- (a + b) + c = a + (b + c)
@@ -177,10 +172,10 @@ tag := "reading-source"
 
 When using a Mathlib lemma, it is often helpful to look at its source code to understand exactly what it says. Here are some tips:
 
-1. **Use `F12` in VS Code** to jump to the definition.
-2. **Read the type signature carefully.** Implicit arguments (in `{...}`) are inferred by Lean. Instance arguments (in `[...]`) are resolved by typeclass search.
-3. **Look at the namespace.** If a lemma is in `namespace Foo`, it can be used on terms of type `Foo` with dot notation: `h.foo` instead of `Foo.foo h`.
-4. **Check the imports.** The file header tells you what dependencies the file has.
+1. *Use `F12` in VS Code* to jump to the definition.
+2. *Read the type signature carefully.* Implicit arguments (in `{...}`) are inferred by Lean. Instance arguments (in `[...]`) are resolved by typeclass search.
+3. *Look at the namespace.* If a lemma is in `namespace Foo`, it can be used on terms of type `Foo` with dot notation: `h.foo` instead of `Foo.foo h`.
+4. *Check the imports.* The file header tells you what dependencies the file has.
 
 For example, consider:
 ```lean
@@ -234,35 +229,35 @@ tag := "common-patterns"
 
 Here are some patterns you will see frequently in Mathlib and should adopt:
 
-**Pattern 1: Dot notation for structure projections and namespace lemmas.**
+*Pattern 1: Dot notation for structure projections and namespace lemmas.*
 ```lean
 -- Instead of: And.left h
 -- Write: h.left or h.1
 example (h : P ∧ Q) : P := h.1
 ```
 
-**Pattern 2: Anonymous constructor notation.**
+*Pattern 2: Anonymous constructor notation.*
 ```lean
 -- Instead of: And.intro hP hQ
 -- Write: ⟨hP, hQ⟩
 example (hP : P) (hQ : Q) : P ∧ Q := ⟨hP, hQ⟩
 ```
 
-**Pattern 3: `calc` blocks for chains of equalities or inequalities.**
+*Pattern 3: `calc` blocks for chains of equalities or inequalities.*
 ```lean
 example (a b c : ℝ) (h1 : a ≤ b) (h2 : b ≤ c) : a ≤ c :=
   calc a ≤ b := h1
     _ ≤ c := h2
 ```
 
-**Pattern 4: `suffices` to restructure a proof by stating an intermediate goal.**
+*Pattern 4: `suffices` to restructure a proof by stating an intermediate goal.*
 ```lean
 example (n : ℕ) (h : n > 0) : n * n > 0 := by
   suffices n ≥ 1 by positivity
   omega
 ```
 
-**Pattern 5: `have` for local forward reasoning, `obtain` for destructuring.**
+*Pattern 5: `have` for local forward reasoning, `obtain` for destructuring.*
 ```lean
 example (h : ∃ n : ℕ, n > 5 ∧ n < 10) : ∃ n : ℕ, n > 3 := by
   obtain ⟨n, hn, _⟩ := h
@@ -279,4 +274,4 @@ Beyond automated search, two more resources are worth knowing.
 - *Zulip* (`leanprover.zulipchat.com`, the `#new members` and `#Mathlib4` streams) is the community chat.  For questions that no search answers, posting a minimal `example` together with the goal you are stuck on almost always gets a helpful reply within hours.
 - *AI assistants* (ChatGPT, Claude, Gemini, Copilot, and the Lean-focused tools built on them) suggest lemma names, explaining why a tactic fails, and translating informal arguments into Lean.  They are fallible — they will cheerfully invent lemmas that do not exist or quote outdated Mathlib 3 syntax — so use them critically: paste your goal state and the surrounding `example`, ask for a couple of candidate approaches, and *verify each suggestion in Lean* (via `exact?`, `#loogle`, or by compiling it).  Treat AI output like a confident but occasionally wrong colleague.
 
-As a rule of thumb: try `exact?` / `apply?` first (they know your exact proof state), then `#loogle` (precise, fast), then `#leansearch` / `#moogle` or an AI assistant (when you do not know the vocabulary Mathlib uses), and finally the docs or Zulip for open-ended questions.
+As a rule of thumb: try `exact?` / `apply?` first (they know your exact proof state), then `#loogle` (precise, fast), then `#leansearch` or an AI assistant (when you do not know the vocabulary Mathlib uses), and finally the docs or Zulip for open-ended questions.

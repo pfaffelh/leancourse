@@ -178,12 +178,11 @@ example : (P ∨ Q) ∧ (¬P) → Q := by
 
 /-! ## Searching outside Lean
 
-Three services find lemmas by shape or by words. They work from
+Two services find lemmas by shape or by words. They work from
 inside the file:
 
 * `#loogle` -- search by the shape of the statement,
-* `#leansearch` -- search in English,
-* `#moogle` -- likewise.
+* `#leansearch` -- search in English.
 
 Try `exact?` first. It is offline and exact. Use the services when
 you do not know what the lemma is called or whether it exists.

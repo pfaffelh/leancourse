@@ -45,6 +45,8 @@ Types and terms cannot be treated separately: a type is known once we know how i
   + `(fun x => e) a` reduces to `e` with `a` for `x`
 :::
 
+See {ref "four-steps"}[The four steps at a glance] at the end of chapter 1.3 for a table of all type formers in these four steps.
+
 The four steps are the four kinds of rule of Lean's type theory, stated formally in {ref "rules"}[chapter 1.4]. This chapter treats universes, function types, structures and inductive types; the {ref "type-formers"}[next chapter] dependent pairs, subtypes, type families and quotients. In several of these types the type of one part depends on the value of another. Such types are called *dependent*, and they are what separates Lean from most programming languages.
 
 The [slides](slides/1-2-types/) for this chapter follow it section by section.
@@ -54,21 +56,71 @@ The [slides](slides/1-2-types/) for this chapter follow it section by section.
 tag := "naming-terms"
 %%%
 
-Four commands recur in every chapter.
+Six commands recur in every chapter.
 
 * `#check t` prints the type of the term `t`.
-* `def name : T := t` gives the name `name` to the term `t`, after checking that `t` has type `T`. `theorem` does the same for proofs.
+* `def name : T := t` gives the name `name` to the term `t`, after checking that `t` has type `T`.
+* `theorem name : P := p` does the same for a proposition `P` and a proof `p` of it. Mathlib also accepts `lemma`, with the same meaning; Lean itself knows only `theorem`.
 * `example : T := t` checks that `t` has type `T`, without giving it a name.
 * `#eval t` computes the value of `t` and prints it. It runs compiled code; `rfl` instead asks the kernel to reduce ({ref "defeq"}[Definitional equality]), and for the definitions of this chapter both give the same value.
+* `#print name` prints the definition of `name`.
 
 ```lean
 #check 2 + 2           -- 2 + 2 : ℕ
 def four : ℕ := 2 + 2
+theorem four_eq : four = 4 := rfl
 example : four = 4 := rfl
 #eval four             -- 4
 ```
 
 The text after `--` is a comment; in the examples it shows what Lean prints.
+
+Why Lean keeps `theorem` apart from `def` is explained in {ref "prop-special"}[Why `Prop` is special].
+
+For a theorem, `#print` shows the proof as a term, also when tactics found it. The arguments before the colon become `∀` and `→` in the statement and `fun` in the proof:
+
+```lean
+theorem swap_of_and (P Q : Prop) (h : P ∧ Q) :
+    Q ∧ P := by
+  constructor
+  · exact h.2
+  · exact h.1
+
+#print swap_of_and
+-- theorem swap_of_and : ∀ (P Q : Prop), P ∧ Q → Q ∧ P :=
+-- fun P Q h => ⟨h.right, h.left⟩
+```
+
+## Finding theorems
+%%%
+tag := "finding-theorems"
+%%%
+
+Mathlib has about 189 000 theorems. Their names follow fixed conventions, such as `mul_comm` for `a * b = b * a` or `le_of_lt` for `a < b → a ≤ b` ({ref "naming-conventions"}[Naming conventions]), but more often one knows the statement and not the name. Then search:
+
+:::table (align := left) +header
+* + tool
+  + searches for
+* + `exact?`
+  + a theorem that closes the current goal
+* + `apply?`
+  + a theorem whose conclusion fits the goal; its hypotheses become new goals
+* + `rw?`
+  + an equation that rewrites the goal
+* + `#loogle pattern`
+  + theorems whose statement has the given form, e.g. `#loogle ?a * ?b = ?b * ?a`
+* + `#leansearch "text"`
+  + theorems matching a description in English
+:::
+
+The first three are tactics. They search with the current goal and hypotheses and print a suggestion, which replaces them in the finished proof:
+
+```lean
+example (a b : ℕ) : a * b = b * a := by
+  exact?
+```
+
+`#loogle` and `#leansearch` are commands. They send the query to the services [Loogle](https://loogle.lean-lang.org/) and [LeanSearch](https://leansearch.net/), which can also be used in the browser, and so need an internet connection. Loogle is exact when the form of the statement is known; LeanSearch helps when one does not know the words Mathlib uses. More on searching, the documentation of Mathlib and where to ask is in {ref "navigating-mathlib"}[Navigating Mathlib].
 
 # The universe hierarchy
 %%%

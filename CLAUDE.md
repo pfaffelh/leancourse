@@ -2534,3 +2534,25 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   `CauSeq.Completion.Cauchy abs` (`Quotient.sound`) -> Struktur
   `Real`; Addition per Repraesentanten (`mk_add`). Deck 1-3: zwei neue
   Folien ("The real numbers as a quotient", "Adding real numbers").
+
+## 2026-10-28 -- Befehle, Suche, Inhaltsverzeichnis
+
+- 1.2.1 *Commands for terms*: sechs Befehle, jetzt mit `theorem`
+  (Mathlib: `lemma`) und `#print` (zeigt bei Theoremen den
+  Beweisterm, auch nach Taktiken). *Warum* `theorem` getrennt von
+  `def` ist (Beweisirrelevanz, kein Code, Typ muss `Prop` sein),
+  steht in 1.4 *Why `Prop` is special*.
+- Neu 1.2.1.1 *Finding theorems* (tag `finding-theorems`):
+  `exact?`/`apply?`/`rw?`, `#loogle`, `#leansearch`; Details bleiben
+  im Anhang *Navigating Mathlib*.
+- **Moogle gibt es nicht mehr** (`moogle.ai` antwortet nicht), und
+  `#moogle` existiert in LeanSearchClient nicht (nur `#loogle`,
+  `#leansearch`, `#search`, `#statesearch`). Aus Anhang und `L-g`
+  entfernt.
+- **Seitenmenue nur bis 1.2.3.** Verso hat dafuer keine Option: jeder
+  Teil ist eine Seite (`htmlSplit := .never`), und dann listet die
+  lokale ToC alle Ebenen (`includeSubparts := .all`). Geloest per CSS
+  am Ende von `static/theme.css`: `li:has(> .header.head-3)` usw.
+  ausgeblendet, ebenso die `{docstring}`-Eintraege (`li:has(> a)`).
+  `head-1` ist ein Kapitel, `head-2` ein Abschnitt. Im Text bleiben
+  die Nummern 1.2.3.4 stehen.

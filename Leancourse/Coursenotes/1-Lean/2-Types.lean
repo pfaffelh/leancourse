@@ -94,6 +94,7 @@ theorem swap_of_and (P Q : Prop) (h : P ∧ Q) :
 ## Finding theorems
 %%%
 tag := "finding-theorems"
+number := false
 %%%
 
 Mathlib has about 189 000 theorems. Their names follow fixed conventions, such as `mul_comm` for `a * b = b * a` or `le_of_lt` for `a < b → a ≤ b` ({ref "naming-conventions"}[Naming conventions]), but more often one knows the statement and not the name. Then search:
@@ -185,6 +186,7 @@ example : (fun n : ℕ => n + 1) 4 = 5 := rfl
 ## Defining functions
 %%%
 tag := "pure-functions"
+number := false
 %%%
 
 A function is usually given a name with `def`, writing its arguments before the `:=`:
@@ -216,6 +218,7 @@ The type of `add` is `ℕ → ℕ → ℕ`, which reads as `ℕ → (ℕ → ℕ
 ## Anonymous functions
 %%%
 tag := "anonymous-functions"
+number := false
 %%%
 
 A function built with `fun` needs no name; it can be applied on the spot:
@@ -228,6 +231,9 @@ A function built with `fun` needs no name; it can be applied on the spot:
 Shorter still is the `·` placeholder (a centered dot, typed `\cdot`), which stands for an anonymous argument: `(· + 10)` is shorthand for `fun x ↦ x + 10`, and several `·` become successive arguments, so `(· + ·)` means `fun x y ↦ x + y`.
 
 ## Dependent functions
+%%%
+number := false
+%%%
 
 A proof of `∀ n : ℕ, n < n + 1` takes each `n : ℕ` to a proof of `n < n + 1`. It is a function as well, of the same kind as `fun n => n + 1`; the only difference is that the type of the value, `n < n + 1`, depends on `n`.
 
@@ -256,6 +262,7 @@ In terms of sets, a function `f : (x : α) → β x` chooses one element `f x �
 ## Polymorphic functions
 %%%
 tag := "polymorphic-functions"
+number := false
 %%%
 
 The argument of a function may itself be a type. The identity function takes a type `α` and returns the identity on `α`; its type `(α : Type) → α → α` is a Π-type, because the type of the rest depends on `α`:
@@ -288,6 +295,9 @@ def idStar {α : Type*} (a : α) : α := a
 This is why signatures throughout Mathlib read `{α : Type*}`: the same definition then applies whether `α` is small like `ℕ` or large like `Type` itself.
 
 ## Proofs as arguments
+%%%
+number := false
+%%%
 
 An argument may also be a proof. A division that demands a proof that the denominator is not zero cannot be called with zero:
 
@@ -339,6 +349,7 @@ example (p : Point) : p = Point.mk p.x p.y := rfl
 ## Building structure values
 %%%
 tag := "structure-values"
+number := false
 %%%
 
 Besides `Point.mk`, Lean has three more ways to call the constructor:
@@ -372,6 +383,9 @@ def p4 : Point := { p1 with y := 10 }
 Structures are immutable, so this creates a new `Point` rather than modifying `p1`.
 
 ## Defaults and extensions
+%%%
+number := false
+%%%
 
 Fields may be given *default values* as part of the declaration, and a value may then omit those fields:
 
@@ -400,6 +414,9 @@ def q : Point3D := { x := 1, y := 2, z := 3 }
 Mathlib builds its algebraic structures in this way: a commutative ring extends a ring, which extends a semiring.
 
 ## Operations
+%%%
+number := false
+%%%
 
 Operations on a structure are ordinary functions. If their name begins with the name of the type, they can be called with a dot, as projections are:
 
@@ -430,6 +447,9 @@ def i : MyComplex := { re := 0, im := 1 }
 ```
 
 ## Data with a property
+%%%
+number := false
+%%%
 
 A field may be a proof. Then a structure bundles *data together with a property*, here a map `ℤ → ℤ` together with a proof that it respects addition:
 
@@ -458,6 +478,9 @@ example (n : ℕ) (h : 0 < n) : Fin n := ⟨0, h⟩
 ```
 
 ## Conjunction
+%%%
+number := false
+%%%
 
 A proof of `P ∧ Q` consists of a proof of `P` and a proof of `Q`. Lean declares `And` as a structure with the two fields `left` and `right`, both proofs:
 
@@ -538,6 +561,7 @@ Inductive types are the main mechanism by which new data types enter Lean, and `
 ## Structures and inductive types
 %%%
 tag := "inductive-vs-structure"
+number := false
 %%%
 
 A `structure` is a special inductive type, and the two keywords serve different purposes.
@@ -596,6 +620,7 @@ The basic types of Lean all arise in this way, most of them twice: once in `Type
 ## Pattern matching
 %%%
 tag := "pattern-matching"
+number := false
 %%%
 
 A function on an inductive type is defined by *pattern matching* on the constructors of its argument: one branch per constructor, each prefixed by `|`. The function `myNot` on `Bool` in the {ref "bool"}[previous chapter] was of this kind. The factorial function on `ℕ` matches on whether the input is `0` or a successor `n + 1`:
@@ -682,6 +707,7 @@ example (n : ℕ) : ℕ :=
 ## Recursion and termination
 %%%
 tag := "recursion"
+number := false
 %%%
 
 The definitions above are *recursive*: they call themselves on smaller inputs. A classic example with two base cases is the Fibonacci sequence:
@@ -695,44 +721,86 @@ def fib : ℕ → ℕ
 #eval fib 10    -- 55
 ```
 
-Lean only accepts a recursive definition once it is convinced the recursion *terminates*. For *structural* recursion, where each call is on a part of the input, as in `factorial`, `length'` and `fib`, this is automatic. In `fib (n + 2)` the calls are `fib n` and `fib (n + 1)`, both on arguments that are parts of `n + 2`. Lean checks this and translates the definition into the recursor `Nat.rec` of the {ref "nat-intro"}[previous chapter]. So `fib` computes by ι, and `rfl` checks values:
+Lean checks that the three patterns cover every natural number. The numerals in the patterns stand for constructors: `0` is `Nat.zero`, `1` is `Nat.succ Nat.zero`, and `n + 2` is `Nat.succ (Nat.succ n)`. Lean splits the argument by its constructor, `zero` or `succ m`, and splits `m` again where a pattern requires it. Every branch of this case distinction must be reached by one of the patterns. With the line for `1` missing, the case `Nat.succ Nat.zero` is reached by none:
+
+```lean +error
+def fib' : ℕ → ℕ
+  | 0 => 0
+  | n + 2 => fib' n + fib' (n + 1)
+```
+
+The error is "Missing cases: (Nat.succ Nat.zero)". A pattern that can never be reached, because earlier patterns already cover it, is an error as well ("Redundant alternative").
+
+Lean only accepts a recursive definition once it is convinced the recursion *terminates*. There are two ways:
+
+* *Structural recursion.* Every recursive call is on a part of the input, that is, on an argument of the constructor that built it. Lean translates the definition into the recursor of the type (more precisely into `brecOn`, a packaging of the recursor), and there is nothing to prove.
+* *Well-founded recursion.* Every recursive call makes a *measure* smaller, a natural number computed from the arguments. Lean translates the definition into `WellFounded.fix` and needs a proof that the measure decreases.
+
+`factorial`, `length'` and `fib` are structural. In `fib (n + 2)` the calls are `fib n` and `fib (n + 1)`, both on parts of `n + 2`. So `fib` is translated into the recursor `Nat.rec` of the {ref "nat-intro"}[previous chapter], it computes by ι, and `rfl` checks values:
 
 ```lean
 -- fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)
 example : fib 3 = 2 := rfl
 ```
 
-A call that is not on a smaller argument is rejected. `def bad (n : ℕ) : ℕ := bad n + 1` fails to compile; were it accepted, `bad 0 = bad 0 + 1` would give `0 = 1`.
-
-When the recursive call is not on a part of the input, termination is justified by a *measure* that strictly decreases: `termination_by` names the measure, `decreasing_by` proves that it goes down. Euclid's algorithm recurses on `n % m`, the remainder of `n` divided by `m`, which is not a part of `m`, but the first argument strictly decreases. The definition uses a *dependent* `if`: in `if h : c then a else b`, the proof `h : c` is available in `a`, and a proof of `¬c` in `b`.
+Recursion on several parts works the same way. In a binary tree whose nodes carry a natural number, every node has two subtrees, and the height recurses on both:
 
 ```lean
-def euclidGcd (m n : Nat) : Nat :=
-  if _h : m = 0 then n
-  else euclidGcd (n % m) m
-termination_by m
-decreasing_by
-  exact Nat.mod_lt n (Nat.pos_of_ne_zero _h)
+inductive BinTree where
+  | leaf : BinTree
+  | node (l : BinTree) (a : ℕ) (r : BinTree) : BinTree
 
-#eval euclidGcd 48 36   -- 12
+def BinTree.height : BinTree → ℕ
+  | .leaf => 0
+  | .node l _ r => max l.height r.height + 1
+
+example : (BinTree.node .leaf 3
+    (.node .leaf 4 .leaf)).height = 2 := rfl
 ```
 
-`termination_by m` declares the measure (the first argument); for the recursive call Lean then asks you to show that it shrinks, i.e. `n % m < m`, which is the goal that `decreasing_by` proves (`Nat.mod_lt`, from `m ≠ 0`). When the decrease is routine, `decreasing_by` can often close it with `omega`, a tactic that proves linear inequalities over `ℕ` and `ℤ`:
+A call that is not on a smaller argument is rejected. `def bad (n : ℕ) : ℕ := bad n + 1` fails to compile; were it accepted, `bad 0 = bad 0 + 1` would give `0 = 1`.
+
+When a recursive call is not on a part of the input, Lean cannot translate the definition structurally and looks for a measure. Often it finds one on its own. In `log2` the argument shrinks from `n` to `n / 2`, and Lean proves `n / 2 < n` from `2 ≤ n`. The definition uses a *dependent* `if`: in `if h : c then a else b`, the proof `h : c` is available in `a`, and a proof of `¬c` in `b`.
 
 ```lean
 def log2 (n : Nat) : Nat :=
   if _h : 2 ≤ n then 1 + log2 (n / 2) else 0
-termination_by n
-decreasing_by omega
 
 #eval log2 16   -- 4
 ```
 
-Lean translates such a definition into *well-founded recursion* (`WellFounded.fix`). The theory behind it, what makes a relation well-founded and why `<` on `Nat` qualifies, is developed in the *Mathematics* part. If `decreasing_by` is left out, Lean tries a standard tactic, `decreasing_tactic`, which handles the simple cases on its own.
+Cantor's enumeration of `ℕ × ℕ` runs through the pairs diagonal by diagonal: `(0, 0)`; `(0, 1)`, `(1, 0)`; `(0, 2)`, `(1, 1)`, `(2, 0)`; and so on. `pairIndex m n` is the position of `(m, n)` in this list. Within a diagonal it steps back from `(m + 1, n)` to `(m, n + 1)`; from the first pair `(0, n + 1)` of a diagonal it steps back to the last pair `(n, 0)` of the previous one:
+
+```lean
+def pairIndex : ℕ → ℕ → ℕ
+  | 0, 0 => 0
+  | 0, n + 1 => pairIndex n 0 + 1
+  | m + 1, n => pairIndex m (n + 1) + 1
+termination_by m n => (m + n, m)
+decreasing_by all_goals (rw [Prod.lex_def]; omega)
+
+#eval pairIndex 2 1   -- 8
+```
+
+Here Lean needs help. No argument decreases in both recursive calls, and the sum `m + n` stays the same in the third line. Without the last two lines of the definition Lean reports "Could not find a decreasing measure". The measure is a pair: first the diagonal `m + n`, then the position `m` on it. Pairs are compared *lexicographically*: `(a, b)` is smaller than `(c, d)` if `a < c`, or if `a = c` and `b < d`. `termination_by` names the measure; `m n =>` names the two arguments, which the patterns leave unnamed. `decreasing_by` proves that the measure decreases. There is one goal for each recursive call, and `all_goals` applies the same tactics to both: `rw [Prod.lex_def]` replaces the lexicographic order by its definition, and `omega`, a tactic that proves linear arithmetic over `ℕ` and `ℤ`, finishes.
+
+Sometimes Lean finds the measure but cannot prove that it decreases. For the logarithm to base `b` it has to show `n / b < n`. For `b = 2` this is linear arithmetic, which Lean does by itself; for a variable `b` it is not, and Lean stops with this goal. `decreasing_by` supplies the proof, here with the library theorem `Nat.div_lt_self : 0 < n → 1 < k → n / k < n`:
+
+```lean
+def logb (b n : ℕ) : ℕ :=
+  if h : 2 ≤ b ∧ b ≤ n then 1 + logb b (n / b)
+  else 0
+decreasing_by exact Nat.div_lt_self (by omega) h.1
+
+#eval logb 10 1000   -- 3
+```
+
+The theory behind well-founded recursion, what makes a relation well-founded and why `<` on `Nat` qualifies, is in {ref "wf-acc"}[Accessibility and well-founded relations]. If `decreasing_by` is left out, Lean tries a standard tactic, `decreasing_tactic`, which handles the simple cases on its own.
 
 ## Proving things about recursive definitions
 %%%
 tag := "recursive-proofs"
+number := false
 %%%
 
 A structurally recursive definition is translated into the recursor, and the recursor computes by ι. So `rfl` and `#eval` see through it, even with a variable in the argument:
@@ -766,21 +834,71 @@ example (n : ℕ) (h : 2 ≤ n) :
 Proofs by induction that follow the recursion of a function, one case per branch, are done with `fun_induction` ({ref "induction"}[induction]).
 
 ## The recursor
+%%%
+number := false
+%%%
 
-The {ref "nat-intro"}[previous chapter] used the recursor `Nat.rec` in a *non-dependent* form, into a fixed result type. The true `MyNat.rec` lets that type *depend* on the value being consumed, a dependency recorded by a *motive* `MyNat → Sort u`. With universes and implicit arguments in hand, its full type can be read:
+The {ref "nat-intro"}[previous chapter] used the recursor `Nat.rec` in a *non-dependent* form, into a fixed result type. In general the result type may *depend* on the term being consumed. This dependency is recorded by a *motive* `T → Sort u`. The binary tree `BinTree` from {ref "recursion"}[Recursion and termination] shows the full form:
 
 ```lean
-#check @MyNat.rec
--- {motive : MyNat → Sort u} →
---   motive .zero →                      -- zero case
---   ((n : MyNat) → motive n →
---      motive n.succ) →                 -- succ case
---   (t : MyNat) → motive t
+#check @BinTree.rec
+-- {motive : BinTree → Sort u} →
+--   motive .leaf →                       -- leaf case
+--   ((l : BinTree) → (a : ℕ) → (r : BinTree) →
+--      motive l → motive r →
+--      motive (.node l a r)) →            -- node case
+--   (t : BinTree) → motive t
 ```
 
-With a data-valued `motive` this is *recursion*; with a `Prop`-valued one it is the *induction principle*. Recursion and induction are two readings of the single primitive `MyNat.rec`, which is why the `induction` tactic and recursive definitions feel so alike. The `induction` tactic applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.
+The case for `node` receives the three arguments of the constructor and, for the two subtrees `l` and `r`, the values `motive l` and `motive r` already computed for them. With the constant motive `fun _ => ℕ` this is recursion, for instance the sum of all numbers in a tree:
+
+```lean
+noncomputable def BinTree.sum : BinTree → ℕ :=
+  BinTree.rec 0 (fun _ a _ sl sr => sl + a + sr)
+
+example : (BinTree.node .leaf 3
+    (.node .leaf 4 .leaf)).sum = 7 := rfl
+```
+
+With a `Prop`-valued motive the same recursor is the *induction principle* for trees: to prove a statement for every tree, prove it for `leaf`, and prove it for `node l a r` assuming it for `l` and for `r`. Those are two induction hypotheses, one for each subtree. Recursion and induction are two readings of the single primitive `BinTree.rec`, which is why the `induction` tactic and recursive definitions feel so alike. The `induction` tactic applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.
+
+Lean generates `T.rec` for every `inductive` declaration from its constructors, always by the same recipe:
+
+1. The parameters of `T`, such as `α` in `MyOption α`, as implicit arguments.
+2. The *motive* `motive : T → Sort u`, the type of the result, which may depend on the term.
+3. One *case* per constructor, in the order of the declaration. For a constructor `c (a₁ : A₁) … (aₖ : Aₖ) : T` the case takes the arguments `a₁ … aₖ`, then, for every argument `aᵢ` of type `T` itself (a *recursive* argument), a value of `motive aᵢ`, and returns a value of `motive (c a₁ … aₖ)`.
+4. The term `t : T` to be consumed; the result has type `motive t`.
+
+With the recursor come its computation rules, one per constructor: applied to `c a₁ … aₖ`, the recursor takes the case for `c`, and passes it the arguments and, for each recursive argument `aᵢ`, the recursor applied to `aᵢ`. For `BinTree` the rule for `node` is `BinTree.rec z s (.node l a r) ⟶ s l a r (BinTree.rec z s l) (BinTree.rec z s r)`.
+
+```lean
+#check @Colour.rec
+-- {motive : Colour → Sort u} →
+--   motive .red → motive .green → motive .blue →
+--   (t : Colour) → motive t
+#check @MyOption.rec
+-- {α : Type} → {motive : MyOption α → Sort u} →
+--   motive .none →
+--   ((a : α) → motive (.some a)) →
+--   (t : MyOption α) → motive t
+#check @List.rec
+-- {α : Type v} → {motive : List α → Sort u} →
+--   motive [] →
+--   ((head : α) → (tail : List α) →
+--      motive tail → motive (head :: tail)) →
+--   (t : List α) → motive t
+#check @Point.rec
+-- {motive : Point → Sort u} →
+--   ((x y : ℕ) → motive { x := x, y := y }) →
+--   (t : Point) → motive t
+```
+
+The constructors of `Colour` have no arguments, so its cases are plain values and `Colour.rec` is a case distinction with three branches. `MyOption.some` has an argument `a : α` that is not recursive, so its case is a function of `a` and gets no value of the motive. `List.cons` has the recursive argument `tail`, and its case gets `motive tail`, the result for the rest of the list; read as a proof, this is the induction hypothesis. A structure has a single constructor, so `Point.rec` just unpacks the fields. For an inductive type in `Prop` with more than one constructor, such as `MyOr`, the motive may only take values in `Prop` ({ref "prop-special"}[Why `Prop` is special]).
 
 ## Strict positivity
+%%%
+number := false
+%%%
 
 Not every `inductive` declaration is accepted. A constructor may mention the type being defined, but only *positively*. The *arrow* here is the `→` of a function type: in `α → β` the type `α` of the inputs stands to the left of the arrow, the type `β` of the values to the right. Strictly positive means that in the type of an argument of a constructor, the type being defined never stands to the left of an arrow. The type of the constructor itself does not count: every constructor of a type `T` ends in `→ T`, and only the arguments before that last arrow are checked. An *infinitely-branching* tree, where a `node` carries one subtree for each natural number, is fine, because the argument of `node` has type `ℕ → MyTree`, and there `MyTree` stands to the *right* of `→`:
 

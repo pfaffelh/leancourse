@@ -248,6 +248,7 @@ A proposition `P : Prop` is a type, and a proof of `P` is a term `h : P`. A prop
 ## Implication, negation, and `∀`
 %%%
 tag := "forall-pi"
+number := false
 %%%
 
 For propositions `P` and `Q`, `P → Q` is a function type like any other, and a proof of `P → Q` is a function that takes a proof of `P` to a proof of `Q`. Modus ponens is function application, and chaining two implications is composition:
@@ -273,6 +274,7 @@ example (P : Prop) (hP : P) (hnP : ¬P) : False :=
 ## Tactic mode and term mode
 %%%
 tag := "term"
+number := false
 %%%
 
 A proof written down as a term is in *term mode*. The exercise sheets mostly use *tactic mode*: after the keyword `by`, each tactic changes the *proof state* — the hypotheses above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)), the goal to its right — until no goal is left. Tactic mode builds a term as well. Two tactics correspond directly to the constructions above:
@@ -306,6 +308,7 @@ example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
 ## `True` and `False`
 %%%
 tag := "false-true-types"
+number := false
 %%%
 
 Both are inductive types, {ref "true-false"}[met in chapter 1.1]: `True` has the one constructor `True.intro`, `False` has none. So no term of `False` can be built from nothing. A `match` on `h : False` needs no branch, since there is no constructor to cover; `nomatch h` is this empty match. The result may have any type, which is *ex falso quodlibet*, available as `False.elim`:
@@ -320,6 +323,7 @@ example (C : Prop) (h : False) : C := h.elim
 ## Conjunction
 %%%
 tag := "conjunction-product"
+number := false
 %%%
 
 `P ∧ Q` is notation for `And P Q`, the {ref "structures"}[structure] with two proof fields from the previous chapter.
@@ -329,6 +333,7 @@ tag := "conjunction-product"
 ## Disjunction
 %%%
 tag := "disjunction-sum"
+number := false
 %%%
 
 `P ∨ Q` is notation for `Or P Q`, the inductive type with two constructors from the {ref "inductive"}[previous chapter].
@@ -352,6 +357,7 @@ This is the disjoint union of `P` and `Q`, with one difference: the match may on
 ## The existential quantifier
 %%%
 tag := "exists-sigma"
+number := false
 %%%
 
 `∃ x, P x` is notation for `Exists P`, an inductive type with one constructor that takes a witness and a proof:
@@ -385,6 +391,7 @@ Use `∃` when only the existence matters, which is the usual case in mathematic
 ## The dictionary
 %%%
 tag := "curry-howard-summary"
+number := false
 %%%
 
 :::table (align := left) +header
@@ -466,6 +473,7 @@ One property is missing from the four steps: related elements should have the *s
 ## Example: the real numbers
 %%%
 tag := "reals-quotient"
+number := false
 %%%
 
 In analysis, `ℝ` is the completion of `ℚ`: a real number is given by a Cauchy sequence of rationals, and two Cauchy sequences give the same real number if their difference tends to `0`. Mathlib builds `ℝ` in exactly this way, in three steps, each a type former of this chapter or the previous one.

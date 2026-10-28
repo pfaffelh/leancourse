@@ -481,18 +481,25 @@ example : fib 3 = 2 := rfl
 
 # Termination by a measure
 
-`termination_by` names a measure, `decreasing_by` proves it drops.
+Cantor's diagonal enumeration of `ℕ × ℕ`. No argument shrinks in both calls; the pair (diagonal, position) does, lexicographically.
 
 ```lean -panel -stretch
-def euclidGcd (m n : Nat) : Nat :=
-  if _h : m = 0 then n
-  else euclidGcd (n % m) m
-termination_by m
-decreasing_by
-  exact Nat.mod_lt n (Nat.pos_of_ne_zero _h)
+def pairIndex : ℕ → ℕ → ℕ
+  | 0, 0 => 0
+  | 0, n + 1 => pairIndex n 0 + 1
+  | m + 1, n => pairIndex m (n + 1) + 1
+termination_by m n => (m + n, m)
+decreasing_by all_goals (rw [Prod.lex_def]; omega)
 ```
 
-Goal: `n % m < m`. The dependent `if` puts `_h : m ≠ 0` in scope. Routine cases: `decreasing_by omega`.
+Lean finds the measure `n`, but not the proof:
+
+```lean -panel -stretch
+def logb (b n : ℕ) : ℕ :=
+  if h : 2 ≤ b ∧ b ≤ n then 1 + logb b (n / b)
+  else 0
+decreasing_by exact Nat.div_lt_self (by omega) h.1
+```
 
 # Proving things about recursive definitions
 
@@ -506,6 +513,25 @@ example : log2 16 = 4 := by simp [log2]
 ```
 
 Structural recursion computes, so `rfl` works. Well-founded recursion does not: use the equation lemma `log2.eq_1`, via `rw [log2]`, `unfold log2` or `simp [log2]`.
+
+# How the recursor is built
+
+```
+List.rec : {motive : List α → Sort u} →
+  motive [] →                       -- case nil
+  ((head : α) → (tail : List α) →
+     motive tail →                  -- recursive argument
+     motive (head :: tail)) →       -- case cons
+  (t : List α) → motive t
+```
+
+- the motive `T → Sort u`: the type of the result
+- one case per constructor: its arguments, and `motive aᵢ` for every argument `aᵢ : T`
+- computation: `List.rec n c (a :: l) ⟶ c a l (List.rec n c l)`
+
+:::class "key"
+Read as a proof, `motive tail` is the induction hypothesis.
+:::
 
 # Strict positivity
 

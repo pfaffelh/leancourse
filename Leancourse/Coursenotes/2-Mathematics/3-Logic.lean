@@ -126,8 +126,8 @@ restatement of it.
 In practice you almost never prove well-foundedness yourself.  Mathlib
 already supplies it — the `Nat.lt_wfRel.wf` above is one of many
 `WellFoundedRelation` instances — and when you write a recursive
-definition with `termination_by` (see the *Function definitions*
-chapter in Part 1), Lean finds the well-founded relation automatically
+definition with `termination_by` ({ref "recursion"}[Recursion and termination] in chapter
+1.2), Lean finds the well-founded relation automatically
 and asks you only, via `decreasing_by`, to show that your *measure*
 decreases.  The induction
 argument just given is the one-time justification the library

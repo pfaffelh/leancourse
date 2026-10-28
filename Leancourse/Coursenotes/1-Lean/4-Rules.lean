@@ -29,6 +29,9 @@ tag := "type-rules"
 Lean accepts a term only if it can be built with a small, fixed set of rules. These rules are all of Lean's logic. There are no separate rules for $`\land`, $`\lor`, $`\forall`, $`\exists` or $`=`: $`\forall` is a function type, and the others are inductive types, defined with the rules below. Set theory is organized differently. ZFC is a theory in first-order logic, which brings its own rules of inference, and on top of it come ten axioms about $`\in` ({ref "comparison-zfc"}[Comparison with ZFC set theory]).
 
 ## Judgements and contexts
+%%%
+number := false
+%%%
 
 The rules derive statements of two kinds, called *judgements*:
 
@@ -96,6 +99,9 @@ The second kind of judgement is what `rfl` checks ({ref "defeq"}[Definitional eq
 *Where the first types come from.* A derivation has to start somewhere, and two rules have nothing above the line. The universe rule (*Universes* below) gives `Prop`, `Type`, `Type 1`, … without any premise. And every `inductive` declaration puts its type and constructors into the environment, for `ℕ` the judgements $`\vdash \mathbb N : \mathrm{Type}`, $`\vdash \mathrm{zero} : \mathbb N` and $`\vdash \mathrm{succ} : \mathbb N \to \mathbb N` (see *Inductive types* below). Every other type is built from these with the rules for functions. Lean has no built-in basic types: `Nat`, `Bool` and `Eq` are ordinary inductive declarations in `Prelude`, the first file Lean loads.
 
 ## Universes
+%%%
+number := false
+%%%
 
 With $`\mathrm{Prop} := \mathrm{Sort}\ 0` and $`\mathrm{Type}\ u := \mathrm{Sort}\ (u+1)`:
 
@@ -109,12 +115,18 @@ So `Prop : Type`, `Type : Type 1`, and so on. No universe is a member of itself.
 ```
 
 ## Variables
+%%%
+number := false
+%%%
 
 $$`\frac{(x : \alpha) \in \Gamma}{\Gamma \vdash x : \alpha}`
 
 A hypothesis may be used as it stands. In a proof this is `exact h` for `h` in the context, or the tactic `assumption`.
 
 ## Function types
+%%%
+number := false
+%%%
 
 $$`\frac{\Gamma \vdash \alpha : \mathrm{Sort}\ u \qquad \Gamma,\, x : \alpha \vdash \beta : \mathrm{Sort}\ v}{\Gamma \vdash (x : \alpha) \to \beta : \mathrm{Sort}\ (\mathrm{imax}\ u\ v)}`
 
@@ -137,6 +149,9 @@ The universe of the result is the larger of the two, except that a function type
 ```
 
 ## Abstraction and application
+%%%
+number := false
+%%%
 
 $$`\frac{\Gamma,\, x : \alpha \vdash e : \beta}{\Gamma \vdash (\mathrm{fun}\ x \Rightarrow e) : (x : \alpha) \to \beta} \qquad \frac{\Gamma \vdash f : (x : \alpha) \to \beta \qquad \Gamma \vdash a : \alpha}{\Gamma \vdash f\ a : \beta[x := a]}`
 
@@ -155,6 +170,9 @@ example (P Q : Prop) (hQ : Q) : P → Q := fun _ => hQ
 A local definition `let x := a; e` has its own rule, and the ζ-rule replaces it by $`e[x := a]`.
 
 ## Conversion
+%%%
+number := false
+%%%
 
 $$`\frac{\Gamma \vdash e : \alpha \qquad \Gamma \vdash \alpha \equiv \beta}{\Gamma \vdash e : \beta}`
 
@@ -193,6 +211,9 @@ example (n : ℕ) : 0 + n = n := rfl
 The type checker decides $`\equiv` by an algorithm. {citet carneiro2019}[] showed that $`\equiv` as defined here is undecidable, so the algorithm is incomplete: in rare, constructed cases it fails on terms that are definitionally equal. Ordinary mathematics does not meet these cases.
 
 ## Inductive types
+%%%
+number := false
+%%%
 
 Every `inductive` declaration adds new constants to the environment, one for each of the four steps: the type itself (formation), its constructors (construction), its *recursor* (use), and ι-rules that say how the recursor computes on constructors (computation) ({ref "inductive"}[Inductive types]). For `ℕ`:
 
@@ -229,6 +250,9 @@ The second condition is forced by proof irrelevance. For `h : P`, the terms `Or.
 ```
 
 ## Quotients
+%%%
+number := false
+%%%
 
 For a relation $`r : \alpha \to \alpha \to \mathrm{Prop}`, the type `Quot r` of equivalence classes is built in, with the constants `Quot.mk`, `Quot.lift` and `Quot.ind` and one computation rule:
 
@@ -237,6 +261,9 @@ $$`\mathrm{Quot.lift}\ f\ h\ (\mathrm{Quot.mk}\ r\ a) \equiv f\ a`
 Here $`h` is a proof that $`f` respects $`r`. That two related elements give the same class is not a rule but an axiom, `Quot.sound` ({ref "quotient-types"}[Quotient types] in the previous chapter).
 
 ## Axioms
+%%%
+number := false
+%%%
 
 Beyond the rules, Lean has exactly three axioms:
 
@@ -270,6 +297,9 @@ example (P : ℕ → Prop) (h : ∃ n, P n) :
 ```
 
 ## How Lean implements the rules
+%%%
+number := false
+%%%
 
 Lean has two programs that deal with terms. The *elaborator* turns what you write — notation, implicit arguments, type classes, tactic proofs — into a fully explicit term. It is large and complicated, and it is not trusted. The *kernel* then checks that term against the rules above, and only then is the declaration added to the environment. A tactic can therefore produce a wrong term, but it cannot get one past the kernel.
 

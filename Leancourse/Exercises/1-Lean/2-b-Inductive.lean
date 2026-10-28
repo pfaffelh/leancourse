@@ -134,11 +134,12 @@ example (t : MyTree) : t.mirror.mirror = t := by
 /-! ## Part 3: Recursion that is not structural
 
 `n / 10` is smaller than `n`, but it is not a part of `n` in the
-sense of a constructor. So Lean wants to be told on what the
-recursion runs (`termination_by n`) and why the argument decreases
-(`decreasing_by`). The dependent `if _h : …` puts the condition into
-the context, where `omega` finds it: here the goal is `n / 10 < n`
-with `_h : ¬n < 10`. -/
+sense of a constructor, so the recursion is well-founded. Lean would
+find the measure and the proof here on its own. We write both out,
+to see what is proved: the measure (`termination_by n`) and why it
+decreases (`decreasing_by`). The dependent `if _h : …` puts the
+condition into the context, where `omega` finds it: here the goal is
+`n / 10 < n` with `_h : ¬n < 10`. -/
 
 def digits (n : ℕ) : ℕ :=
   if _h : n < 10 then 1 else 1 + digits (n / 10)
@@ -158,6 +159,19 @@ decreasing_by sorry
 def binLength (n : ℕ) : ℕ :=
   sorry
 
+/-! Euclid's algorithm needs the help: `n % m < m` is not linear
+arithmetic in `m`, so `omega` cannot prove it, and without
+`decreasing_by` Lean rejects the definition. Two library theorems
+help: `Nat.mod_lt (x : ℕ) : y > 0 → x % y < y` and
+`Nat.pos_of_ne_zero : n ≠ 0 → 0 < n`. -/
+
+-- Exercise 10) Replace the `sorry` after `decreasing_by`. Why does
+-- the recursion stop?
+def myGcd (m n : ℕ) : ℕ :=
+  if _h : m = 0 then n else myGcd (n % m) m
+termination_by m
+decreasing_by sorry
+
 /-! ## Part 4: Proving things about such functions
 
 A function defined by well-founded recursion does not compute in
@@ -172,15 +186,23 @@ example (n : ℕ) (h : n < 10) : digits n = 1 := by
   rw [digits]
   simp [h]
 
--- Exercise 10)
+-- Exercise 11)
 example : digitSum 1234 = 10 := by
   sorry
 
--- Exercise 11)
+-- Exercise 12)
 example : binLength 37 = 6 := by
   sorry
 
--- Exercise 12) Start with `rw [binLength]`. Then prove
+-- Exercise 13)
+example : myGcd 48 36 = 12 := by
+  sorry
+
+-- Exercise 14) `rw [myGcd]` unfolds once; then `simp`.
+example (n : ℕ) : myGcd 0 n = n := by
+  sorry
+
+-- Exercise 15) Start with `rw [binLength]`. Then prove
 -- `2 * n ≠ 0` and `2 * n / 2 = n` with `have` and `omega`, and give
 -- both to `simp`.
 example (n : ℕ) (h : 0 < n) :

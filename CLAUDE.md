@@ -2556,3 +2556,29 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   ausgeblendet, ebenso die `{docstring}`-Eintraege (`li:has(> a)`).
   `head-1` ist ein Kapitel, `head-2` ein Abschnitt. Im Text bleiben
   die Nummern 1.2.3.4 stehen.
+
+## 2026-10-28 (2) -- Rekursion in 1.2, Rekursor am Baum, Nummerierung
+
+- *Recursion and termination* definiert jetzt strukturelle und
+  wohlfundierte Rekursion. Strukturell: `fib`, `BinTree.height`
+  (`BinTree` ist hier deklariert). Wohlfundiert: `log2` (Lean findet
+  alles selbst), Cantors `pairIndex` (braucht `termination_by m n =>
+  (m + n, m)` und `decreasing_by all_goals (rw [Prod.lex_def];
+  omega)`), `logb` (braucht `decreasing_by` mit `Nat.div_lt_self`).
+  `euclidGcd` ist raus (Autor mag es nicht) und steht als Aufgabe 10
+  auf `1.2-b`.
+- **Lean findet Terminierung inzwischen fast immer selbst** (v4.34):
+  `n / 2`, `n / 10`, Hochzaehlen `i + 1` bis `n` (es raet `n - i`),
+  `m - n`. Hilfe braucht es nur bei vertauschten/umverteilten
+  Argumenten (`gcd`, Cantor) oder nichtlinearen Zielen (`n / b < n`,
+  `n % m < m`). Vor einem neuen Beispiel testen.
+- Struktur vs. wohlfundiert ist eine Eigenschaft der *Definition*:
+  mit einem Zaehlerargument geht `log2` strukturell (`rfl` geht dann).
+- Vollstaendigkeit der Muster bei `fib` erklaert ("Missing cases",
+  "Redundant alternative").
+- *The recursor*: Beispiel `BinTree.rec` statt `MyNat.rec`, dazu die
+  Bauanleitung (Parameter, Motiv, ein Fall je Konstruktor mit
+  `motive aᵢ` fuer rekursive Argumente, ι-Regeln) mit `Colour`,
+  `MyOption`, `List`, `Point`. Folie "How the recursor is built".
+- Ueberschriften der vierten Ebene (`##` in Kapiteldateien) tragen
+  `number := false`; im Text also "Finding theorems" ohne 1.2.1.1.

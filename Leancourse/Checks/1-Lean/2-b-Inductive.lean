@@ -127,6 +127,11 @@ def binLength (n : ℕ) : ℕ :=
 termination_by n
 decreasing_by omega
 
+def myGcd (m n : ℕ) : ℕ :=
+  if _h : m = 0 then n else myGcd (n % m) m
+termination_by m
+decreasing_by exact Nat.mod_lt n (Nat.pos_of_ne_zero _h)
+
 /-! ## Part 4: Proving things about such functions -/
 
 example : digits 1234 = 4 := by
@@ -141,6 +146,13 @@ example : digitSum 1234 = 10 := by
 
 example : binLength 37 = 6 := by
   simp [binLength]
+
+example : myGcd 48 36 = 12 := by
+  simp [myGcd]
+
+example (n : ℕ) : myGcd 0 n = n := by
+  rw [myGcd]
+  simp
 
 example (n : ℕ) (h : 0 < n) :
     binLength (2 * n) = binLength n + 1 := by

@@ -241,8 +241,8 @@ tag := "short-tests"
 
 Five tests, 20 minutes each, at the start of the lab, on paper.
 **Three of the five must be passed** for the _Studienleistung_.
-A test is passed when 50% of all points are achieved. A test not
-taken counts as not passed.
+A test has six tasks, each either right or wrong, and is passed with
+three of them. A test not taken counts as not passed.
 
 Dates: **11.11., 02.12., 16.12., 27.01., 10.02.**
 

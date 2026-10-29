@@ -131,15 +131,17 @@ Fünf Tests, jeweils zu Beginn des Labors, 20 Minuten, auf Papier.
 Termine: **11.11., 02.12., 16.12., 27.01., 10.02.**
 
 > Es gibt fünf Kurztests. Zur Prüfung zugelassen wird, wer mindestens
-> drei besteht. Ein Test gilt als bestanden, wenn zwei der drei Fragen
-> richtig sind. Nicht mitgeschriebene Tests gelten als nicht bestanden;
+> drei besteht. Ein Test hat sechs Aufgaben und gilt als bestanden,
+> wenn drei davon richtig sind. Nicht mitgeschriebene Tests gelten als nicht bestanden;
 > Fehlzeiten werden nicht gesondert behandelt.
 
 Keine Teilpunkte. Die Regel steht ab Woche 1 fest.
 
 Geprüft werden Beweiszustände und Verständnis, keine Lemmanamen und
-keine Syntax. Format und Fragebank:
-`Coursenotes/4-Appendix/Tactics/Cheatsheet.lean`.
+keine Syntax. Aufgabentypen: Beweiszustand nach einer Taktik,
+Multiple Choice, Antwort mit einem Wort oder Satz. Die Tests liegen
+in `tests/` (gitignored, nie veröffentlicht), Test 1 vom 29.10.
+mit Lösungsschlüssel.
 
 ## Hausaufgaben und KI
 

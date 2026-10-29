@@ -5,8 +5,9 @@ import Mathlib
 
 *Notes chapter 2.7, week 13.*
 
-These exercises cover continuity, open/closed sets, metric spaces,
-and compactness. Replace each `sorry` with a proof.
+These exercises cover continuity, open and closed sets, closure and
+interior, metric spaces, compactness and connectedness. Replace each
+`sorry` with a proof.
 -/
 
 open Filter
@@ -87,54 +88,130 @@ example (s t : Set ℝ) (hs : IsOpen s) (ht : IsOpen t) : IsOpen (s ∪ t) := by
 example (s t : Set ℝ) (hs : IsOpen s) (ht : IsOpen t) : IsOpen (s ∩ t) := by
   sorry
 
-/- ## Part 3: Metric Spaces -/
+/- ## Part 3: Closure, interior, frontier
 
--- Exercise 16: dist x x = 0
+See the section *Closure, interior, and frontier* of chapter 2.7. -/
+
+-- Exercise 16: A set is contained in its closure.
+example {X : Type*} [TopologicalSpace X] (s : Set X) :
+    s ⊆ closure s := by
+  sorry
+
+-- Exercise 17: The interior is contained in the set.
+example {X : Type*} [TopologicalSpace X] (s : Set X) :
+    interior s ⊆ s := by
+  sorry
+
+-- Exercise 18: Closure is monotone.
+example {X : Type*} [TopologicalSpace X] (s t : Set X)
+    (h : s ⊆ t) : closure s ⊆ closure t := by
+  sorry
+
+-- Exercise 19: An open set is its own interior.
+example {X : Type*} [TopologicalSpace X] (s : Set X)
+    (hs : IsOpen s) : interior s = s := by
+  sorry
+
+-- Exercise 20: The complement of the closure is the interior of the
+-- complement. Search with `exact?`.
+example {X : Type*} [TopologicalSpace X] (s : Set X) :
+    (closure s)ᶜ = interior sᶜ := by
+  sorry
+
+-- Exercise 21: The closure of an open interval.
+example : closure (Set.Ioo (0 : ℝ) 1) = Set.Icc 0 1 := by
+  sorry
+
+-- Exercise 22: The interior of a closed interval.
+example : interior (Set.Icc (0 : ℝ) 1) = Set.Ioo 0 1 := by
+  sorry
+
+-- Exercise 23: The frontier of `[0, 1]` consists of the two endpoints.
+example : frontier (Set.Icc (0 : ℝ) 1) = {0, 1} := by
+  sorry
+
+-- Exercise 24: In ℝ, `x` is in the closure of `s` iff `s` comes
+-- arbitrarily close to `x`. Hint: `Metric.mem_closure_iff`.
+example (s : Set ℝ) (x : ℝ) :
+    x ∈ closure s ↔ ∀ ε > 0, ∃ y ∈ s, dist x y < ε := by
+  sorry
+
+/- ## Part 4: Metric Spaces -/
+
+-- Exercise 25: dist x x = 0
 example (x : ℝ) : dist x x = 0 := by
   sorry
 
--- Exercise 17: dist is symmetric
+-- Exercise 26: dist is symmetric
 example (x y : ℝ) : dist x y = dist y x := by
   sorry
 
--- Exercise 18: Triangle inequality
+-- Exercise 27: Triangle inequality
 example (x y z : ℝ) : dist x z ≤ dist x y + dist y z := by
   sorry
 
--- Exercise 19: dist is nonneg
+-- Exercise 28: dist is nonneg
 example (x y : ℝ) : 0 ≤ dist x y := by
   sorry
 
--- Exercise 20: In a metric space, open balls are open.
+-- Exercise 29: In a metric space, open balls are open.
 example {X : Type*} [MetricSpace X] (x : X) (r : ℝ) :
     IsOpen (Metric.ball x r) := by
   sorry
 
-/- ## Part 4: Compact Sets -/
+/- ## Part 5: Compact Sets -/
 
--- Exercise 21: A closed interval is compact
+-- Exercise 30: A closed interval is compact
 example (a b : ℝ) : IsCompact (Set.Icc a b) := by
   sorry
 
--- Exercise 22: The image of a compact set under a continuous function is compact
+-- Exercise 31: The image of a compact set under a continuous function is compact
 example (f : ℝ → ℝ) (hf : Continuous f) (K : Set ℝ) (hK : IsCompact K) :
     IsCompact (f '' K) := by
   sorry
 
--- Exercise 23: A continuous function on a compact set attains its maximum.
+-- Exercise 32: A continuous function on a compact set attains its maximum.
 -- Hint: IsCompact.exists_isMaxOn, or bounded/closed arguments.
 example (f : ℝ → ℝ) (hf : Continuous f) (a b : ℝ) (hab : a ≤ b) :
     ∃ x ∈ Set.Icc a b, ∀ y ∈ Set.Icc a b, f y ≤ f x := by
   sorry
 
-/- ## Part 5: Filters and Topology -/
+/- ## Part 6: Connected Sets -/
 
--- Exercise 24: f is continuous iff it is continuous at every point.
+-- Exercise 33: A closed interval is connected.
+example (a b : ℝ) (hab : a ≤ b) : IsConnected (Set.Icc a b) := by
+  sorry
+
+-- Exercise 34: The continuous image of a connected set is connected.
+-- Hint: `IsConnected.image` wants `ContinuousOn`.
+example (f : ℝ → ℝ) (hf : Continuous f) (s : Set ℝ)
+    (hs : IsConnected s) : IsConnected (f '' s) := by
+  sorry
+
+/- ## Part 7: Filters and Topology -/
+
+-- Exercise 35: f is continuous iff it is continuous at every point.
 example {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (f : X → Y) :
     Continuous f ↔ ∀ x, ContinuousAt f x := by
   sorry
 
--- Exercise 25: f is continuous at x iff Tendsto f (nhds x) (nhds (f x)).
+-- Exercise 36: f is continuous at x iff Tendsto f (nhds x) (nhds (f x)).
 example {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (f : X → Y)
     (x : X) : ContinuousAt f x ↔ Tendsto f (nhds x) (nhds (f x)) := by
   sorry
+
+-- Exercise 37: If `a → l` and `f` is continuous at `l`, then
+-- `f ∘ a → f l`.
+example {f : ℝ → ℝ} {a : ℕ → ℝ} {l : ℝ}
+    (ha : Tendsto a atTop (nhds l)) (hf : ContinuousAt f l) :
+    Tendsto (f ∘ a) atTop (nhds (f l)) := by
+  sorry
+
+-- Exercise 38: Construct the neighborhood filter by hand (compare
+-- sheet 2.6-b, part 6). A set is a neighborhood of `x` if it
+-- contains an open set containing `x`.
+example {X : Type*} [TopologicalSpace X] (x : X) : Filter X where
+  sets := {s : Set X | ∃ U : Set X, x ∈ U ∧ IsOpen U ∧ U ⊆ s}
+  univ_sets := by sorry
+  sets_of_superset := by sorry
+  inter_sets := by sorry

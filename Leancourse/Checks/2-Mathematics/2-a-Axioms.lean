@@ -76,3 +76,10 @@ theorem two_plus_two : (2 : ℕ) + 2 = 4 := by
   rfl
 
 #print axioms two_plus_two        -- does not depend on any axioms
+
+-- Exercise 13
+example (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
+
+-- Exercise 14
+example (n : ℕ) (h1 h2 : 0 < n) :
+    (⟨n, h1⟩ : {m : ℕ // 0 < m}) = ⟨n, h2⟩ := rfl

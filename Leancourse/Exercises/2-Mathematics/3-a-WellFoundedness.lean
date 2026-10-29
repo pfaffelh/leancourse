@@ -1,93 +1,101 @@
 import Mathlib
 
 /-
-# 2.3-a -- Well-foundedness and the axioms
+# 2.3-a -- Well-foundedness and paradoxes
 
 *Notes chapter 2.3, week 9.*
 
-Companion sheet to the *Well-Foundedness and Paradoxes* chapter.
+Read the chapter *Well-Foundedness and Paradoxes* first. It separates
+two mechanisms: `Acc` and `WellFounded` rule out infinite descent
+*inside* a type, and typing rules out `s ∈ s`. This sheet has a part
+for each.
 
-A relation is *well-founded* when there are no infinite descending
-chains; equivalently, every element is *accessible* (`Acc`).  Lean
-uses this to justify recursion that is not structural, through the
-`termination_by` / `decreasing_by` clauses.
-
-Replace every `sorry` with a proof, and every `decreasing_by sorry`
-with a terminating tactic.
+| name / tactic                         | use it when                         |
+|---------------------------------------|-------------------------------------|
+| `constructor` on `Acc r x`            | show all predecessors accessible    |
+| `WellFounded.has_min`                 | a nonempty set has a minimal element|
+| `induction n using Nat.strong_induction_on` | induct along `<` on `ℕ`       |
+| `split_ifs with h`                    | split an `if` in the goal           |
+| `#check_failure t`                    | `t` should not elaborate            |
 -/
 
-/- ## Part 1: Well-founded relations -/
+/- ## Part 1: Accessibility
 
--- `<` on `ℕ` is well-founded.  Mathlib already knows this; find the
--- right term (hint: `Nat.lt_wfRel`).
-example : WellFounded (· < · : ℕ → ℕ → Prop) := by
+`Acc r x` has one constructor: `x` is accessible once every `y` with
+`r y x` is. `constructor` reduces `Acc r x` to that goal. -/
+
+-- Exercise 1: `0` has no predecessor under `<`, so this is vacuous.
+-- After `constructor` and `intro y hy`, `omega` sees `hy : y < 0`.
+example : Acc (· < ·) (0 : ℕ) := by
   sorry
 
--- Every natural number is accessible under `<`.
--- (Hint: a `WellFounded` proof can be `.apply`-ed to an element.)
+-- Exercise 2: One step further. The only `y < 1` is `0`.
+example : Acc (· < ·) (1 : ℕ) := by
+  sorry
+
+-- Exercise 3: Mathlib proves it for every `n`: `Nat.lt_wfRel.wf` is
+-- a `WellFounded` proof, and `.apply n` gives `Acc (· < ·) n`.
 example (n : ℕ) : Acc (· < ·) n := by
   sorry
 
-/- ## Part 2: Well-founded recursion
+-- Exercise 4: `>` on `ℕ` is not well-founded. A well-founded relation
+-- gives every nonempty set a minimal element:
+-- `WellFounded.has_min : WellFounded r → ∀ s, s.Nonempty →
+--    ∃ a ∈ s, ∀ x ∈ s, ¬ r x a`.
+-- Apply it to `Set.univ`; then `a + 1` contradicts minimality.
+example : ¬ WellFounded (· > · : ℕ → ℕ → Prop) := by
+  sorry
 
-Each definition recurses on an argument that is *not* a structural
-subterm, so Lean needs a termination proof.  The measure is given by
-`termination_by`; supply the `decreasing_by` proof.  The goal is a
-simple inequality about `ℕ` -- `omega` will close it. -/
+/- ## Part 2: Well-founded induction
 
--- How often can you subtract 2 before dropping below 2?
+A function defined by well-founded recursion is reasoned about by
+well-founded induction: to prove `P n`, assume `P m` for all `m < n`.
+On `ℕ` this is `induction n using Nat.strong_induction_on`. After
+`rw [steps2]` the goal contains an `if`; `split_ifs with h` gives one
+goal per branch. -/
+
 def steps2 (n : Nat) : Nat :=
   if h : 2 ≤ n then 1 + steps2 (n - 2) else 0
-termination_by n
-decreasing_by sorry
 
--- How often can you halve `n` before reaching 1 (roughly its number
--- of binary digits)?
-def bits (n : Nat) : Nat :=
-  if h : 2 ≤ n then 1 + bits (n / 2) else 1
-termination_by n
-decreasing_by sorry
+example (n : ℕ) : steps2 n ≤ n := by
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    rw [steps2]
+    split_ifs with h
+    · have := ih (n - 2) (by omega)
+      omega
+    · omega
 
--- Once both definitions go through, these should evaluate to 5 and 7:
--- #eval steps2 10
--- #eval bits 100
-
-/- ## Part 3: The axiom footprint (exploration, no proof needed)
-
-While a `sorry` is still present, `#print axioms steps2` lists
-`sorryAx`.  After you have filled in the `decreasing_by` proofs,
-uncomment the lines below: `sorryAx` should be gone, and you will see
-`propext` and `Quot.sound` but *not* `Classical.choice` -- so these
-functions are fully constructive. -/
-
--- #print axioms steps2
--- #print axioms bits
-
-/- ## Part 4: Proof irrelevance
-
-`Prop` has a defining feature that the `Type` universes lack: any two
-proofs of the same proposition are *equal* -- and equal *by
-definition*, so `rfl` proves it.  This is *proof irrelevance*: for a
-proposition we care only *that* it holds, never *which* proof we
-have. -/
-
--- Any two proofs of the same proposition are equal.
-example (p : Prop) (h1 h2 : p) : h1 = h2 := by
+-- Exercise 5: The same pattern.
+example (n : ℕ) : 2 * steps2 n ≤ n := by
   sorry
 
--- Consequently, two elements of a subtype are equal as soon as their
--- underlying values agree -- the embedded proof is irrelevant.
-example (n : ℕ) (h1 h2 : 0 < n) :
-    (⟨n, h1⟩ : {m : ℕ // 0 < m}) = ⟨n, h2⟩ := by
+/- ## Part 3: Self-membership and the diagonal
+
+`∈` is typed: `x ∈ s` needs `x : α` and `s : Set α`. So `s ∈ s` is
+not false but ill-formed. Uncomment and look at the message: -/
+
+def mySet : Set ℕ := {0}
+-- #check_failure (mySet ∈ mySet)
+
+-- Exercise 6: Membership one level up is fine. `{0}` is a `Set ℕ`,
+-- the right side a `Set (Set ℕ)`. Which tactic proves it?
+example : ({0} : Set ℕ) ∈ ({{0}} : Set (Set ℕ)) := by
   sorry
 
--- Proof irrelevance is baked into the kernel and costs no axiom.
--- After filling in the first proof, uncomment to confirm it reports
--- "does not depend on any axioms":
--- theorem proof_irrel_ex (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
--- #print axioms proof_irrel_ex
+-- Exercise 7: Russell's argument, typed. No relation `r` on `α` has an
+-- element `a` whose `r`-predecessors are exactly the `x` with
+-- `¬ r x x`. (The barber who shaves exactly those who do not shave
+-- themselves.) Hint: specialise to `x = a`, then `by_cases`.
+example {α : Type*} (r : α → α → Prop) :
+    ¬ ∃ a, ∀ x, r x a ↔ ¬ r x x := by
+  sorry
 
--- Contrast: `Type` is NOT proof-irrelevant.  Two natural numbers are
--- not equal merely because they share a type, so this `rfl` fails
--- (uncomment to see the error):
--- example (a b : ℕ) : a = b := rfl
+-- Exercise 8: Cantor's theorem. There is no surjection `α → Set α`.
+-- Take the diagonal set `{x | x ∉ f x}` and a preimage `a` of it.
+-- `Set.ext_iff.mp ha a : a ∈ f a ↔ a ∈ {x | x ∉ f x}`, and the
+-- right side is `a ∉ f a` by definition. Then argue as in exercise 7.
+-- (Mathlib: `Function.cantor_surjective`. Do not use it.)
+example {α : Type*} (f : α → Set α) :
+    ¬ Function.Surjective f := by
+  sorry

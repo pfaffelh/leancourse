@@ -2638,3 +2638,42 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
 - `1.1-c`: `cases'` ersetzt durch `cases n with | zero | succ k` und
   `obtain (h | h)`. `A-a` D1: Addition rekursiert im *zweiten*
   Argument (war falsch).
+
+## 2026-10-29 (3) -- Teil 2: Kapitel 2.1 ergaenzt, vier Blaetter umgebaut
+
+- 2.1 hat zwei neue Abschnitte vor *From a set back to a type*:
+  *Image and preimage* (tag `image-preimage`: Mitgliedschaft im Bild
+  ist ein `∃`, im Urbild `f x ∈ t`; `obtain ⟨x, hx, rfl⟩`;
+  `f '' s ⊆ t ↔ s ⊆ f ⁻¹' t`; Urbild vertraegt sich per `rfl` mit
+  allen Operationen, Bild mit `∩` nur `⊆`) und *Injective and
+  surjective functions* (tag `injective-surjective`: Definitionen per
+  `Iff.rfl`, `n + 1` injektiv und nicht surjektiv, Komposition,
+  `Set.range_eq_univ`, `Set.image_inter`, `Bijective`, `≃`,
+  `Equiv.ofBijective` noncomputable). Notationstabelle um `''` und
+  `⁻¹'`. Vorher standen beide Begriffe in keinem Kapitel.
+- `2.1-b`: Kopf neu, Musterbeispiele mit `rintro ⟨x, hx, rfl⟩`, die
+  schon geloeste Aufgabe 1 ersetzt durch
+  `f '' (f ⁻¹' t) = t ∩ Set.range f`. `2.1-c`: Leseverweis.
+- `2.6-b`: keine Topologie mehr. Aufgabe 20 ist jetzt `a (n + 1) → l`
+  per `Tendsto.comp` und `tendsto_add_atTop_nat`; `nhds'` von Hand
+  ist raus, 30 Aufgaben.
+- `2.7-a`, 38 Aufgaben: neue Teile *Closure, interior, frontier* (9,
+  u.a. `closure_Ioo`, `interior_Icc`, `frontier_Icc`,
+  `Metric.mem_closure_iff`) und *Connected sets* (2); in Teil 7 die
+  beiden Aufgaben aus `2.6-b` (`ContinuousAt` mit Folgen, `nhds` von
+  Hand).
+- `2.8-a`, 33 Aufgaben: Teile *Integration* (8, `∫ x in a..b`,
+  `integral_add`/`_mono`/`_nonneg`, `lintegral_indicator_one`,
+  `integral_congr_ae`) und *Convergence theorems* (monotone Konvergenz,
+  Fatou, dominierte Konvergenz -- Hypothesen lesen).
+- `2.3-a` neu: *Well-foundedness and paradoxes*. `Acc` von Hand fuer 0
+  und 1, `>` auf ℕ nicht fundiert (`WellFounded.has_min`),
+  wohlfundierte Induktion mit `Nat.strong_induction_on`/`split_ifs`,
+  `#check_failure (s ∈ s)`, Russell als Barbier-Relation, Cantor von
+  Hand. Die Rekursionsaufgaben (Doppel zu `1.2-b`) und
+  `#print axioms` (steht auf `2.2-a`) sind raus; Beweisirrelevanz ist
+  jetzt `2.2-a` Aufgaben 13-14.
+- Offen in den Kapiteln: `xxx`-Notizen in 2.7 (nontrivial filter,
+  cluster point, connected vs. preconnected) und 2.8 (Konstruktion
+  des Integrals, `SigmaFinite`).
+

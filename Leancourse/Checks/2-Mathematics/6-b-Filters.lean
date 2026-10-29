@@ -134,12 +134,12 @@ example (a : ℕ → ℝ) (ha : Tendsto a atTop (nhds 0)) (ε : ℝ) (hε : ε >
   filter_upwards [Filter.eventually_ge_atTop N] with n hn
   simpa using hN n hn
 
--- Exercise 20: Composition of Tendsto
--- If a → l along atTop and f is continuous at l, then f ∘ a → f l
-example {f : ℝ → ℝ} {a : ℕ → ℝ} {l : ℝ}
-    (ha : Tendsto a atTop (nhds l)) (hf : ContinuousAt f l) :
-    Tendsto (f ∘ a) atTop (nhds (f l)) := by
-  exact hf.tendsto.comp ha
+-- Exercise 20: Composition of Tendsto. A sequence shifted by one has
+-- the same limit. `tendsto_add_atTop_nat 1` says that `n ↦ n + 1`
+-- tends to `atTop`; compose it with `ha` using `Tendsto.comp`.
+example {a : ℕ → ℝ} {l : ℝ} (ha : Tendsto a atTop (nhds l)) :
+    Tendsto (fun n ↦ a (n + 1)) atTop (nhds l) := by
+  exact ha.comp (tendsto_add_atTop_nat 1)
 
 -- Exercise 21: The squeeze theorem for filters
 -- If a ≤ b ≤ c eventually and a → l and c → l, then b → l
@@ -201,22 +201,7 @@ example (L : Type*) [LinearOrder L] (e : L) : Filter L where
     · exact (le_max_left x y).trans hz
     · exact (le_max_right x y).trans hz
 
--- Exercise 25: Construct the neighborhood filter nhds' x by hand.
--- A set is a neighborhood of x if it contains an open set
--- containing x.
-example {X : Type*} [TopologicalSpace X] (x : X) : Filter X where
-  sets := {s : Set X | ∃ U : Set X, x ∈ U ∧ IsOpen U ∧ U ⊆ s}
-  univ_sets := by
-    exact ⟨Set.univ, Set.mem_univ x, isOpen_univ, Set.subset_univ _⟩
-  sets_of_superset := by
-    rintro s t ⟨U, hxU, hU, hUs⟩ hst
-    exact ⟨U, hxU, hU, hUs.trans hst⟩
-  inter_sets := by
-    rintro s t ⟨U, hxU, hU, hUs⟩ ⟨V, hxV, hV, hVt⟩
-    exact ⟨U ∩ V, ⟨hxU, hxV⟩, hU.inter hV,
-      Set.inter_subset_inter hUs hVt⟩
-
--- Exercise 26: Construct the pushforward map' by hand.
+-- Exercise 25: Construct the pushforward map' by hand.
 -- Hint: a set s : Set β is in (map' m F) iff m ⁻¹' s ∈ F.
 example {α β : Type*} (F : Filter α) (m : α → β) : Filter β where
   sets := {s | m ⁻¹' s ∈ F}
@@ -236,24 +221,24 @@ Filters carry a partial order: F ≤ G means G.sets ⊆ F.sets, i.e.
 intuition: F ≤ G means F is contained in G as a generalized subset.
 -/
 
--- Exercise 27: 𝓟 s ≤ 𝓟 t ↔ s ⊆ t.
+-- Exercise 26: 𝓟 s ≤ 𝓟 t ↔ s ⊆ t.
 example {α : Type*} (s t : Set α) : 𝓟 s ≤ 𝓟 t ↔ s ⊆ t := by
   exact Filter.principal_mono
 
--- Exercise 28: F ≤ 𝓟 s ↔ s ∈ F.
+-- Exercise 27: F ≤ 𝓟 s ↔ s ∈ F.
 example {α : Type*} (F : Filter α) (s : Set α) :
     F ≤ 𝓟 s ↔ s ∈ F := by
   exact Filter.le_principal_iff
 
--- Exercise 29: ⊥ ≤ F for every filter F.
+-- Exercise 28: ⊥ ≤ F for every filter F.
 example {α : Type*} (F : Filter α) : ⊥ ≤ F := by
   exact bot_le
 
--- Exercise 30: F ≤ ⊤ for every filter F.
+-- Exercise 29: F ≤ ⊤ for every filter F.
 example {α : Type*} (F : Filter α) : F ≤ ⊤ := by
   exact le_top
 
--- Exercise 31: On ℕ, the cofinite filter is ≤ atTop.
+-- Exercise 30: On ℕ, the cofinite filter is ≤ atTop.
 -- (Every set in atTop has finite complement.)
 example : (cofinite : Filter ℕ) ≤ atTop := by
   exact Nat.cofinite_eq_atTop ▸ le_rfl

@@ -113,7 +113,9 @@ Elimination werden gelesen, nicht geübt; die Universen stehen auf
 Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
 `1.1-b`, `2.9-a`).
 
-`2.3-a` liegt in Woche 9, nicht 8: Teile 3 und 4 sind Kapitel 2.2.
+`2.3-a` (Kapitel 2.3, gelesen in Woche 8) liegt in Woche 9, damit
+Woche 8 nicht vier Blätter hat. Beweisirrelevanz steht seit 29.10.
+auf `2.2-a`.
 `1.6-a` hat nur eine Aufgabe und ist eher ein Leseblatt.
 
 ## Kurztests

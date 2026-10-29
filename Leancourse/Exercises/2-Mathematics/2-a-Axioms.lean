@@ -140,7 +140,7 @@ theorem contrapositive_conv (P Q : Prop) (h : ¬Q → ¬P) : P → Q := by
 
 Not everything that looks like an axiom is one. Proof irrelevance
 and the computation rules are built into the kernel itself and cost
-nothing -- sheet `2.3-a` looks at proof irrelevance in detail.
+nothing.
 -/
 
 -- Exercise 12: `rfl` proves this, so it needs no axiom at all.
@@ -149,3 +149,18 @@ theorem two_plus_two : (2 : ℕ) + 2 = 4 := by
   sorry
 
 -- #print axioms two_plus_two
+
+-- Exercise 13: Any two proofs of the same proposition are equal, by
+-- definition. This is *proof irrelevance*; it costs no axiom.
+example (p : Prop) (h1 h2 : p) : h1 = h2 := by
+  sorry
+
+-- Exercise 14: Hence two elements of a subtype are equal as soon as
+-- their values agree.
+example (n : ℕ) (h1 h2 : 0 < n) :
+    (⟨n, h1⟩ : {m : ℕ // 0 < m}) = ⟨n, h2⟩ := by
+  sorry
+
+-- Contrast: `Type` is not proof-irrelevant. Two natural numbers are
+-- not equal because they share a type (uncomment to see the error):
+-- example (a b : ℕ) : a = b := rfl

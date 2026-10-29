@@ -6,7 +6,7 @@ import Mathlib
 *Notes chapter 2.8, week 14.*
 
 These exercises cover measurable spaces, measurable functions, measures,
-and probability measures. Replace each `sorry` with a proof.
+probability measures, integration and the convergence theorems. Replace each `sorry` with a proof.
 -/
 
 open MeasureTheory
@@ -140,3 +140,90 @@ example {α : Type*} [MeasurableSpace α] (μ : Measure α) (p q : α → Prop)
     (hp : ∀ᵐ x ∂μ, p x) (hq : ∀ᵐ x ∂μ, q x) :
     ∀ᵐ x ∂μ, p x ∧ q x := by
   exact hp.and hq
+
+/- ## Part 6: Integration
+
+See the sections *Integration* and *Convergence theorems* of chapter
+2.8. `∫ x, f x ∂μ` is the integral of `f : α → ℝ`, `∫⁻ x, f x ∂μ` the
+integral of `f : α → ℝ≥0∞`, and `∫ x in a..b, f x` the integral over
+the interval from `a` to `b` with respect to Lebesgue measure. Most
+statements about `∫` need `Integrable f μ`: without it, Mathlib sets
+the integral to `0`. -/
+
+-- Exercise 23: The integral of the identity. `simp` knows `integral_id`.
+example : ∫ x in (0 : ℝ)..1, x = 1 / 2 := by
+  simp [integral_id]
+
+-- Exercise 24: Use `integral_pow`, then compute.
+example : ∫ x in (0 : ℝ)..2, x ^ 2 = 8 / 3 := by
+  simp [integral_pow]
+  norm_num
+
+-- Exercise 25: The integral of a constant against a probability measure.
+example {α : Type*} [MeasurableSpace α] (μ : Measure α)
+    [IsProbabilityMeasure μ] (c : ℝ) : ∫ _x, c ∂μ = c := by
+  simp
+
+-- Exercise 26: Linearity. Hint: `integral_add`.
+example {α : Type*} [MeasurableSpace α] (μ : Measure α)
+    (f g : α → ℝ) (hf : Integrable f μ) (hg : Integrable g μ) :
+    ∫ x, (f x + g x) ∂μ = ∫ x, f x ∂μ + ∫ x, g x ∂μ := by
+  exact integral_add hf hg
+
+-- Exercise 27: Monotonicity.
+example {α : Type*} [MeasurableSpace α] (μ : Measure α)
+    (f g : α → ℝ) (hf : Integrable f μ) (hg : Integrable g μ)
+    (h : ∀ x, f x ≤ g x) : ∫ x, f x ∂μ ≤ ∫ x, g x ∂μ := by
+  exact integral_mono hf hg h
+
+-- Exercise 28: A nonnegative function has a nonnegative integral. No
+-- integrability is needed here. Why?
+example {α : Type*} [MeasurableSpace α] (μ : Measure α)
+    (f : α → ℝ) (h : ∀ x, 0 ≤ f x) : 0 ≤ ∫ x, f x ∂μ := by
+  exact integral_nonneg h
+
+-- Exercise 29: The integral of an indicator function is the measure of
+-- the set.
+example {α : Type*} [MeasurableSpace α] (μ : Measure α)
+    (s : Set α) (hs : MeasurableSet s) :
+    ∫⁻ x, s.indicator 1 x ∂μ = μ s := by
+  exact lintegral_indicator_one hs
+
+-- Exercise 30: Functions that agree almost everywhere have the same
+-- integral.
+example {α : Type*} [MeasurableSpace α] (μ : Measure α)
+    (f g : α → ℝ) (h : f =ᵐ[μ] g) :
+    ∫ x, f x ∂μ = ∫ x, g x ∂μ := by
+  exact integral_congr_ae h
+
+/- ## Part 7: Convergence theorems
+
+Each theorem is one lemma in Mathlib. The point of the exercises is
+to read the hypotheses: which ones are there, and in which form. -/
+
+-- Exercise 31: Monotone convergence.
+example {α : Type*} [MeasurableSpace α] (μ : Measure α)
+    (f : ℕ → α → ENNReal) (hf : ∀ n, Measurable (f n))
+    (hmono : Monotone f) :
+    ∫⁻ x, ⨆ n, f n x ∂μ = ⨆ n, ∫⁻ x, f n x ∂μ := by
+  exact lintegral_iSup hf hmono
+
+-- Exercise 32: Fatou's lemma. Hint: `lintegral_liminf_le`.
+example {α : Type*} [MeasurableSpace α] (μ : Measure α)
+    (f : ℕ → α → ENNReal) (hf : ∀ n, Measurable (f n)) :
+    ∫⁻ x, Filter.liminf (fun n ↦ f n x) Filter.atTop ∂μ
+      ≤ Filter.liminf (fun n ↦ ∫⁻ x, f n x ∂μ) Filter.atTop := by
+  exact lintegral_liminf_le hf
+
+-- Exercise 33: Dominated convergence. `AEStronglyMeasurable` is the
+-- measurability condition the Bochner integral uses.
+example {α : Type*} [MeasurableSpace α] (μ : Measure α)
+    (f : ℕ → α → ℝ) (F g : α → ℝ)
+    (hf : ∀ n, AEStronglyMeasurable (f n) μ)
+    (hg : Integrable g μ)
+    (hbound : ∀ n, ∀ᵐ x ∂μ, ‖f n x‖ ≤ g x)
+    (hlim : ∀ᵐ x ∂μ,
+      Filter.Tendsto (fun n ↦ f n x) Filter.atTop (nhds (F x))) :
+    Filter.Tendsto (fun n ↦ ∫ x, f n x ∂μ) Filter.atTop
+      (nhds (∫ x, F x ∂μ)) := by
+  exact tendsto_integral_of_dominated_convergence g hf hg hbound hlim

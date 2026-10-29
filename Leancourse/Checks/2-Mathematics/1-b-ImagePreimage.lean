@@ -20,13 +20,13 @@ example : s ⊆ f ⁻¹' (f '' s) := by
   use x
 
 -- Exercise 1
-example : f '' s ⊆ t ↔ s ⊆ f ⁻¹' t := by
-  refine ⟨fun h x hx ↦ ?_, fun h y hy ↦ ?_⟩
-  · apply h
-    use x
-  · obtain ⟨x, ⟨hs1, hx2⟩⟩ := hy
-    rw [← hx2]
-    apply h hs1
+example : f '' (f ⁻¹' t) = t ∩ Set.range f := by
+  ext y
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    exact ⟨hx, x, rfl⟩
+  · rintro ⟨hy, x, rfl⟩
+    exact ⟨x, hy, rfl⟩
 
 -- Exercise 2
 example : id ⁻¹' s = s := by

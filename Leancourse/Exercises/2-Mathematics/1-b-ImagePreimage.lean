@@ -6,41 +6,36 @@ import Mathlib.Tactic -- imports all the Lean tactics
 *Notes chapter 2.1, week 8.*
 -/
 
-/- Let us now combine the last two topics, functions and sets: You know both, the image (or push-forward) of a set under a function/map, and the pre-image (or pull-back) of a set under some function/map.
+/- Read the section *Image and preimage* of chapter 2.1 first.
 
-In Lean, consider `f : α → β` and `s : Set α`, and write
- `f '' s := { y : β | ∃ x : α, x ∈ s ∧ f x = y}`, and call it the push-forward of `s` along `f`.
+For `f : α → β`, `s : Set α` and `t : Set β`:
 
-In addition, for `f : α → β` and `t : Set β`, write `f⁻¹' t := { x : α | f x ∈ t}`, and call it the pull-back of `t` along `f`.
+* `f '' s = {y | ∃ x, x ∈ s ∧ f x = y}`, the image of `s`;
+* `f ⁻¹' t = {x | f x ∈ t}`, the preimage of `t`.
 
-**Important note**: If we write `y ∈ f '' s`, we actually have a triple `⟨x, ⟨h₀, h₁⟩⟩`, where `x` is such that `x ∈ s` and `f x = y`.
-However, if we write `x ∈ f⁻¹' t`, this is equivalent to `f x ∈ t`.
-Both cases will be important below.
-
--/
+A hypothesis `hy : y ∈ f '' s` is a triple: `obtain ⟨x, hx, rfl⟩ := hy`
+gives `x`, `hx : x ∈ s`, and replaces `y` by `f x`. A hypothesis
+`hx : x ∈ f ⁻¹' t` *is* `f x ∈ t`; `change f x ∈ t at hx` makes this
+visible, but is not needed. -/
 
 variable (α β : Type) (f : α → β) (s : Set α) (t : Set β)
 
 example : f '' (f ⁻¹' t) ⊆ t := by
-  intro x hx
-  obtain ⟨y, ⟨hy1, hy2⟩⟩ := hx -- this is the triple from above
-  rw [← hy2]
-  exact hy1
+  rintro y ⟨x, hx, rfl⟩
+  -- `hx : x ∈ f ⁻¹' t`, which is `f x ∈ t`, and the goal is `f x ∈ t`
+  exact hx
 
 example : s ⊆ f ⁻¹' (f '' s) := by
   intro x hx
-  change f x ∈ f '' s -- this is the same by definition, see above
-  use x
+  -- the goal is `f x ∈ f '' s`; name the point
+  exact ⟨x, hx, rfl⟩
 
 -- Exercise 1:
--- `exact?` will do this but see if you can do it yourself.
-example : f '' s ⊆ t ↔ s ⊆ f ⁻¹' t := by
-  refine ⟨fun h x hx ↦ ?_, fun h y hy ↦ ?_⟩
-  · apply h
-    use x
-  · obtain ⟨x, ⟨hs1, hx2⟩⟩ := hy
-    rw [← hx2]
-    apply h hs1
+-- `Set.range f` is the image of all of `α`, and
+-- `y ∈ Set.range f` means `∃ x, f x = y`. Start with `ext y` and
+-- `constructor`.
+example : f '' (f ⁻¹' t) = t ∩ Set.range f := by
+  sorry
 
 -- Exercise 2:
 -- Pushforward and pullback along the identity map don't change
@@ -74,6 +69,7 @@ example (U V : Set β) : f ⁻¹' (U ∪ V) = f ⁻¹' U ∪ f ⁻¹' V := by
 
 -- Exercise 7:
 -- The preimage of an intersection is the intersection of preimages.
+-- Try `rfl`. Why does it work here, and not in exercise 8?
 example (U V : Set β) : f ⁻¹' (U ∩ V) = f ⁻¹' U ∩ f ⁻¹' V := by
   sorry
 
@@ -84,7 +80,8 @@ example (s₁ s₂ : Set α) : f '' (s₁ ∪ s₂) = f '' s₁ ∪ f '' s₂ :=
 
 -- Exercise 9:
 -- The image of an intersection is contained in the intersection of
--- images, but equality requires injectivity (not asked here).
+-- images; equality needs injectivity (sheet 2.1-c). The notes cite
+-- `Set.image_inter_subset`; prove it by hand.
 example (s₁ s₂ : Set α) : f '' (s₁ ∩ s₂) ⊆ f '' s₁ ∩ f '' s₂ := by
   sorry
 

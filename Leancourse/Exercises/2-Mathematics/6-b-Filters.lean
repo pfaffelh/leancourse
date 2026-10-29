@@ -127,11 +127,11 @@ example (a : ℕ → ℝ) (ha : Tendsto a atTop (nhds 0)) (ε : ℝ) (hε : ε >
     ∀ᶠ n in atTop, |a n| < ε := by
   sorry
 
--- Exercise 20: Composition of Tendsto
--- If a → l along atTop and f is continuous at l, then f ∘ a → f l
-example {f : ℝ → ℝ} {a : ℕ → ℝ} {l : ℝ}
-    (ha : Tendsto a atTop (nhds l)) (hf : ContinuousAt f l) :
-    Tendsto (f ∘ a) atTop (nhds (f l)) := by
+-- Exercise 20: Composition of Tendsto. A sequence shifted by one has
+-- the same limit. `tendsto_add_atTop_nat 1` says that `n ↦ n + 1`
+-- tends to `atTop`; compose it with `ha` using `Tendsto.comp`.
+example {a : ℕ → ℝ} {l : ℝ} (ha : Tendsto a atTop (nhds l)) :
+    Tendsto (fun n ↦ a (n + 1)) atTop (nhds l) := by
   sorry
 
 -- Exercise 21: The squeeze theorem for filters
@@ -178,16 +178,7 @@ example (L : Type*) [LinearOrder L] (e : L) : Filter L where
   sets_of_superset := by sorry
   inter_sets := by sorry
 
--- Exercise 25: Construct the neighborhood filter nhds' x by hand.
--- A set is a neighborhood of x if it contains an open set
--- containing x.
-example {X : Type*} [TopologicalSpace X] (x : X) : Filter X where
-  sets := {s : Set X | ∃ U : Set X, x ∈ U ∧ IsOpen U ∧ U ⊆ s}
-  univ_sets := by sorry
-  sets_of_superset := by sorry
-  inter_sets := by sorry
-
--- Exercise 26: Construct the pushforward map' by hand.
+-- Exercise 25: Construct the pushforward map' by hand.
 -- Hint: a set s : Set β is in (map' m F) iff m ⁻¹' s ∈ F.
 example {α β : Type*} (F : Filter α) (m : α → β) : Filter β where
   sets := {s | m ⁻¹' s ∈ F}
@@ -202,24 +193,24 @@ Filters carry a partial order: F ≤ G means G.sets ⊆ F.sets, i.e.
 intuition: F ≤ G means F is contained in G as a generalized subset.
 -/
 
--- Exercise 27: 𝓟 s ≤ 𝓟 t ↔ s ⊆ t.
+-- Exercise 26: 𝓟 s ≤ 𝓟 t ↔ s ⊆ t.
 example {α : Type*} (s t : Set α) : 𝓟 s ≤ 𝓟 t ↔ s ⊆ t := by
   sorry
 
--- Exercise 28: F ≤ 𝓟 s ↔ s ∈ F.
+-- Exercise 27: F ≤ 𝓟 s ↔ s ∈ F.
 example {α : Type*} (F : Filter α) (s : Set α) :
     F ≤ 𝓟 s ↔ s ∈ F := by
   sorry
 
--- Exercise 29: ⊥ ≤ F for every filter F.
+-- Exercise 28: ⊥ ≤ F for every filter F.
 example {α : Type*} (F : Filter α) : ⊥ ≤ F := by
   sorry
 
--- Exercise 30: F ≤ ⊤ for every filter F.
+-- Exercise 29: F ≤ ⊤ for every filter F.
 example {α : Type*} (F : Filter α) : F ≤ ⊤ := by
   sorry
 
--- Exercise 31: On ℕ, the cofinite filter is ≤ atTop.
+-- Exercise 30: On ℕ, the cofinite filter is ≤ atTop.
 -- (Every set in atTop has finite complement.)
 example : (cofinite : Filter ℕ) ≤ atTop := by
   sorry

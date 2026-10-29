@@ -18,7 +18,9 @@ tag := "sets-and-types"
 
 A mathematician thinks in *sets*; Lean thinks in *types*. A set turns
 out to be a predicate on a type, its operations the logical
-connectives, and its equality an axiom — the four sections below.
+connectives, and its equality an axiom. Functions act on sets by
+image and preimage, and injectivity and surjectivity are again
+formulas with quantifiers.
 *Propositions* and their *proofs*, used freely from here on, were
 covered in {ref "curry-howard"}[Propositions as types] in the
 {ref "lean"}[Lean part].
@@ -100,6 +102,14 @@ its input sequence.
   + `setOf`
   + "the set of `x` with `p x`"
   + (literal braces)
+* + `f '' s`
+  + `Set.image`
+  + "the image of `s` under `f`"
+  + (two apostrophes)
+* + `f ⁻¹' t`
+  + `Set.preimage`
+  + "the preimage of `t` under `f`"
+  + `\inv'`
 :::
 
 # Sets are predicates
@@ -236,6 +246,125 @@ example : { n : ℕ | n % 2 = 0 } = { n | 2 ∣ n } := by
   simp only [Set.mem_setOf_eq]
   constructor <;> intro h <;> omega
 ```
+
+# Image and preimage
+%%%
+tag := "image-preimage"
+%%%
+
+For `f : α → β`, `s : Set α` and `t : Set β`, the *image* `f '' s`
+is the set of all `f x` with `x ∈ s`, and the *preimage* `f ⁻¹' t` is
+the set of all `x` with `f x ∈ t`. Membership unfolds differently in
+the two cases: in the image it is an existential, in the preimage a
+statement about the value `f x`.
+
+```lean
+example (f : ℕ → ℕ) (s : Set ℕ) (y : ℕ) :
+    y ∈ f '' s ↔ ∃ x, x ∈ s ∧ f x = y := Iff.rfl
+
+example (f : ℕ → ℕ) (t : Set ℕ) (x : ℕ) :
+    x ∈ f ⁻¹' t ↔ f x ∈ t := Iff.rfl
+
+example : (fun n : ℕ => n % 2) ⁻¹' {0}
+    = {n | n % 2 = 0} := rfl
+```
+
+So a hypothesis `h : y ∈ f '' s` is a triple: `obtain ⟨x, hx, rfl⟩ :=
+h` gives a point `x`, a proof of `x ∈ s`, and replaces `y` by `f x`.
+To prove `y ∈ f '' s` you name the point: `⟨x, hx, rfl⟩`, or `use x`.
+A hypothesis `x ∈ f ⁻¹' t` needs no unpacking, it already *is*
+`f x ∈ t`. The image of the whole type has its own name, `Set.range f`.
+
+The basic fact relating the two: `f '' s ⊆ t` holds exactly when
+`s ⊆ f ⁻¹' t`.
+
+```lean
+example {α β : Type*} (f : α → β) (s : Set α)
+    (t : Set β) : f '' s ⊆ t ↔ s ⊆ f ⁻¹' t := by
+  constructor
+  · intro h x hx
+    exact h ⟨x, hx, rfl⟩
+  · rintro h y ⟨x, hx, rfl⟩
+    exact h hx
+```
+
+The preimage commutes with all set operations, and the equalities are
+`rfl`, because both sides unfold to the same predicate. The image
+commutes with unions, but for intersections only `⊆` holds in general:
+
+```lean
+example {α β : Type*} (f : α → β) (t₁ t₂ : Set β) :
+    f ⁻¹' (t₁ ∩ t₂) = f ⁻¹' t₁ ∩ f ⁻¹' t₂ := rfl
+
+example {α β : Type*} (f : α → β) (s₁ s₂ : Set α) :
+    f '' (s₁ ∩ s₂) ⊆ f '' s₁ ∩ f '' s₂ :=
+  Set.image_inter_subset f s₁ s₂
+```
+
+# Injective and surjective functions
+%%%
+tag := "injective-surjective"
+%%%
+
+`Function.Injective f` and `Function.Surjective f` are the formulas
+from the first semester. They are definitions, so `Iff.rfl` proves
+that they say what they say; `intro` unfolds them in a proof.
+
+```lean
+open Function
+
+example {α β : Type*} (f : α → β) :
+    Injective f ↔ ∀ a b, f a = f b → a = b :=
+  Iff.rfl
+
+example {α β : Type*} (f : α → β) :
+    Surjective f ↔ ∀ b, ∃ a, f a = b := Iff.rfl
+
+example : Injective (fun n : ℕ => n + 1) := by
+  intro a b h
+  simpa using h
+
+example : ¬ Surjective (fun n : ℕ => n + 1) := by
+  intro h
+  obtain ⟨a, ha⟩ := h 0
+  simp at ha
+```
+
+In `Injective` the two points are implicit (`∀ ⦃a₁ a₂⦄`), so for
+`hf : Injective f` and `h : f a = f b` one writes `hf h : a = b`. The
+composition of injective maps is injective, and the proof is just
+that:
+
+```lean
+open Function in
+example {α β γ : Type*} {f : α → β} {g : β → γ}
+    (hf : Injective f) (hg : Injective g) :
+    Injective (g ∘ f) :=
+  fun _ _ h => hf (hg h)
+```
+
+Both notions connect to images. `f` is surjective exactly when its
+range is everything, and an injective map commutes with intersections:
+
+```lean
+open Function in
+example {α β : Type*} (f : α → β) :
+    Surjective f ↔ Set.range f = Set.univ :=
+  Set.range_eq_univ.symm
+
+open Function in
+example {α β : Type*} {f : α → β}
+    (hf : Injective f) (s₁ s₂ : Set α) :
+    f '' (s₁ ∩ s₂) = f '' s₁ ∩ f '' s₂ :=
+  Set.image_inter hf
+```
+
+`Bijective f` is `Injective f ∧ Surjective f`. A bijection is a
+property of `f`; the inverse map is data. Mathlib packages a map
+together with its inverse as `α ≃ β` (an *equivalence*), and
+`Equiv.ofBijective f hf` turns a bijective `f` into one. The inverse
+is then chosen by `Classical.choice`, so `Equiv.ofBijective` is
+`noncomputable`.
 
 # From a set back to a type: subtypes and coercion
 %%%

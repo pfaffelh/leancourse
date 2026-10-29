@@ -1,7 +1,7 @@
 import Mathlib
 
 /-!
-# 1.3-c -- Proofs as terms
+# 1.3-b -- Proofs as terms
 
 *Notes chapter 1.3, week 5.*
 

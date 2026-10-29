@@ -145,7 +145,8 @@ The comment above each exercise describes what went wrong.
 -/
 
 -- Exercise D1: The tactic `rfl` does not work here because `0 + n` is not
--- definitionally equal to `n` (addition on ℕ recurses on the first argument).
+-- definitionally equal to `n`: addition on ℕ recurses on the second
+-- argument, and here the second argument is the variable `n`.
 -- Fix the proof by using an appropriate tactic.
 example (n : ℕ) : 0 + n = n := by
   sorry

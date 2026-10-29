@@ -69,9 +69,10 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `1-Lean/1-c-Naturals` | 1.1 | 4 | yes |
 | `1-Lean/2-a-Quantifiers` | 1.2 | 3 | yes |
 | `1-Lean/2-b-Inductive` | 1.2 | 4 | yes |
+| `1-Lean/2-c-Structures` | 1.2 | 5 | yes |
 | `1-Lean/3-a-DependentTypes` | 1.3 | 5 | yes |
-| `1-Lean/3-c-CurryHoward` | 1.3 | 5 | yes |
-| `1-Lean/3-d-Structures` | 1.3 | 7 | yes |
+| `1-Lean/3-b-CurryHoward` | 1.3 | 5 | yes |
+| `1-Lean/3-c-Predicates` | 1.3 | 7 | yes |
 | `1-Lean/4-a-Predicates` | 1.4 | 7 | yes |
 | `1-Lean/5-a-Typeclasses` | 1.5 | 6 | yes |
 | `1-Lean/5-b-Coercions` | 1.5 | 6 | yes |

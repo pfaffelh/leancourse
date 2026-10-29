@@ -127,7 +127,7 @@ written at the start of the lab.
   + Wed 18.11.
   + Lab
   + Sheets
-  + `L-g`, `1.3-a`, `1.3-c`, extra `X-a`
+  + `L-g`, `1.2-c`, `1.3-a`, `1.3-b`, extra `X-a`
 * + 6
   + Mon 23.11.
   + Lecture
@@ -147,7 +147,7 @@ written at the start of the lab.
   + Wed 02.12.
   + Lab
   + *Test 2*, then sheets
-  + `1.3-d`, `1.4-a`, `1.6-a`
+  + `1.3-c`, `1.4-a`, `1.6-a`
 * + 8
   + Mon 07.12.
   + Lecture

@@ -32,9 +32,9 @@ Kontext, ohne Lean.
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | L-b, L-c, 1.1-a | |
 | 3 | 02.11. | 04.11. | Typen und Terme I: Universen, Funktionen, induktive Typen, Strukturen, Pattern Matching | 1.2 | L-d, 1.2-a, 1.1-b | |
 | 4 | 09.11. | 11.11. | Typen und Terme II: Σ, Subtypen, Typfamilien, Quotienten | 1.3 | L-e, L-f, 1.1-c, 1.2-b | **Test 1** |
-| 5 | 16.11. | 18.11. | Typen III: die Regeln, `Prop` | 1.4 | L-g, 1.3-a, 1.3-c · *extra:* X-a | |
+| 5 | 16.11. | 18.11. | Typen III: die Regeln, `Prop` | 1.4 | L-g, 1.2-c, 1.3-a, 1.3-b · *extra:* X-a | |
 | 6 | 23.11. | 25.11. | Typklassen | 1.5 | 1.5-a, 1.5-b | |
-| 7 | 30.11. | 02.12. | Notation *(Vorlesung offen)* | 1.6 | 1.3-d, 1.4-a, 1.6-a | **Test 2** |
+| 7 | 30.11. | 02.12. | Notation *(Vorlesung offen)* | 1.6 | 1.3-c, 1.4-a, 1.6-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen und Typen; Fundiertheit | 2.1, 2.3 | 2.1-a, 2.1-b, 2.1-c | |
 | 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.2-a, 2.3-a | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Anhang | A-a, A-b | |
@@ -45,7 +45,7 @@ Kontext, ohne Lean.
 | 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 2.8-a | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 2.9-a, 2.9-b | **Test 5** |
 
-34 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. `A-a` und
+35 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. `A-a` und
 `A-b` laufen als Ferienaufgabe über die Pause.
 
 Zwei Kapitelpaare teilen sich einen Termin: 2.1+2.3 (W8), 2.4+2.5
@@ -101,8 +101,10 @@ Vorgetragen werden die Abschnitte, die `A-a` verlangt:
 
 Seit dem 27.10.2026 hat jedes Kapitel von Teil 1 ein Blatt. Eigene
 induktive Typen, Mustervergleich und `termination_by` stehen auf
-`1.2-b`, Strukturen, induktive Prädikate und ein Quotient (ℤ aus
-ℕ × ℕ) auf `1.3-d`, Termmodus und Junktoren auf `1.3-c`. Kapitel 1.4
+`1.2-b` (dazu der Rekursor eines eigenen Typs), Strukturen mit
+`extends`, `Fin` und `ZMod` auf `1.2-c`, induktive Prädikate und ein
+Quotient (ℤ aus ℕ × ℕ) auf `1.3-c`, Termmodus und Junktoren auf
+`1.3-b`. Kapitel 1.4
 hat `1.4-a` (Gleichheit, `ext`, `choose`, `change`; vorher `1.3-b`
 bzw. `1.6-a`). Die Regeln selbst, `imax` und die eingeschränkte
 Elimination werden gelesen, nicht geübt; die Universen stehen auf

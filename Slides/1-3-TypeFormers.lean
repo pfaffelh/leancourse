@@ -11,7 +11,7 @@ Deck for the chapter "Types and terms II: pairs, subtypes, families,
 quotients" of part 1 (Lean and its type theory). It follows the
 chapter section by section: Σ-types, subtypes, type families, indexed
 families, the logical connectives as types with tactic and term mode, quotient
-types, the table of the four steps, and some history.
+types (integers mod n, reals), the table of the four steps, and some history.
 -/
 
 namespace SlidesTypeFormers
@@ -296,7 +296,7 @@ example (P Q : ℕ → Prop) (h : ∃ n, P n ∧ Q n) :
 
 # Quotient types
 
-`Quot r`: the type `α` seen up to a relation `r`. Examples: `ℤ`, `ℚ`, `ℝ`, `Multiset α`, `ZMod n`.
+`Quot r`: the type `α` seen up to a relation `r`. In Mathlib: `ℝ`, `Multiset α`. `ℤ`, `ℚ`, `ZMod n` are defined by normal forms instead.
 
 - _Formation_: `Quot r`
 - _Construction_: `Quot.mk r a`, the class of `a`
@@ -315,6 +315,29 @@ example (P Q : ℕ → Prop) (h : ∃ n, P n ∧ Q n) :
 ```
 
 That related elements have the _same_ class does not follow from the four steps. Lean assumes it as an _axiom_.
+
+# The integers mod n
+
+```lean -panel -stretch
+def ModRel (n a b : ℤ) : Prop := a % n = b % n
+def IntMod (n : ℤ) : Type := Quot (ModRel n)
+def IntMod.mk (n a : ℤ) : IntMod n :=
+  Quot.mk (ModRel n) a
+
+example : IntMod.mk 5 7 = IntMod.mk 5 2 :=
+  Quot.sound rfl
+
+def IntMod.rem (n : ℤ) : IntMod n → ℤ :=
+  Quot.lift (fun a => a % n) (fun _ _ h => h)
+
+example : IntMod.rem 5 (IntMod.mk 5 17) = 2 := rfl
+```
+
+For the remainder, the proof of well-definedness is the relation itself.
+
+:::class "key"
+Mathlib's `ZMod n` is not this quotient: it is `ℤ` for `n = 0` and `Fin n` otherwise, so `#eval` and `decide` work.
+:::
 
 # The real numbers as a quotient
 
@@ -451,4 +474,4 @@ Curry (1934), Howard (1969): propositions are types, proofs are terms. Then the 
 - Type families are functions into a universe; with `inductive`, the constructors fix the index.
 - A proof of `P → Q` is a function; `intro` builds it, `exact` supplies a term.
 - The connectives are these type formers in `Prop`: `∧` a structure, `∨`, `∃`, `False` inductive types.
-- `Quot r`: a type up to a relation, with the axiom `Quot.sound`. `ℝ`: Cauchy sequences up to null sequences.
+- `Quot r`: a type up to a relation, with the axiom `Quot.sound`. ℤ/nℤ by hand; `ℝ`: Cauchy sequences up to null sequences.

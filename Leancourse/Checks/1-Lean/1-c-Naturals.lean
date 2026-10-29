@@ -22,14 +22,18 @@ already proves about `ℕ`.
 A hint we will use often: put the cursor on any name and press `F12`.
 That takes you to its definition.
 
-New here is `cases'`. It splits a variable into its constructors, like
-`induction`, but without an induction hypothesis: -/
+`cases n` splits a variable `n : ℕ` into its constructors, as
+`cases b` did for `b : Bool` on sheet `1.1-b`. With `with`, each case
+gets its branch and names its variables. It is like `induction`, but
+without an induction hypothesis: -/
 
 example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) := by
-  cases' n with k
-  · left
+  cases n with
+  | zero =>
+    left
     rfl
-  · right
+  | succ k =>
+    right
     use k
 
 /- Note that a similar result is implemented in Mathlib: -/
@@ -185,7 +189,7 @@ example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k^2 ≤ n^3 := by
   ## Induction
 
   Up to here we have calculated. The rest of this sheet is about
-  complete induction, which is close to the `cases'` at the top: the
+  complete induction, which is close to the `cases` at the top: the
   same case distinction, but with the induction hypothesis in hand.
 -/
 
@@ -198,7 +202,7 @@ example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) := by
     right
     use n
 
--- Exercise 1) Here is the first task. Remember that a hypothesis `h : P ∨ Q` can be resolved into two goals using `cases' h with hP hQ`. Alternatively you ocan use `rcases`.
+-- Exercise 1) Here is the first task. Remember that a hypothesis `h : P ∨ Q` can be resolved into two goals using `obtain (hP | hQ) := h` (sheet `L-c`).
 
 example (n : ℕ) : (∃ (k : ℕ), n = 2 * k) ∨ (∃ (k : ℕ), n = 2 * k + 1) := by
   induction n with
@@ -206,7 +210,7 @@ example (n : ℕ) : (∃ (k : ℕ), n = 2 * k) ∨ (∃ (k : ℕ), n = 2 * k + 1
     left
     use 0
   | succ n hn =>
-    cases' hn with hk hk
+    obtain (hk | hk) := hn
     · right
       obtain ⟨k, hk⟩ := hk
       use k

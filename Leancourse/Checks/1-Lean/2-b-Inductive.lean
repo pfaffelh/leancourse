@@ -8,9 +8,9 @@ import Mathlib
 Sheet `1.1-a` defined functions on `ℕ` through the recursor. Here
 you declare types of your own and define functions on them by
 pattern matching: one branch for each constructor. Read the sections
-*Inductive types*, *Structures*, *Pattern matching*, *Recursion
-and termination* and *Proving things about recursive definitions*
-of chapter 1.2 first.
+*Inductive types*, *Pattern matching*, *Recursion and termination*,
+*Proving things about recursive definitions* and *The recursor* of
+chapter 1.2 first.
 
 ## Introduced here
 
@@ -24,8 +24,7 @@ of chapter 1.2 first.
 | `decreasing_by omega`      | prove that it decreases                      |
 | `rw [f]`                   | unfold `f` once, by its defining equation    |
 | `simp [f]`                 | unfold `f` as often as needed and simplify   |
-| `⟨i, h⟩ : Fin n`           | build an element from `i` and `h : i < n`    |
-| `Fin.ext`                  | prove `a = b` from `a.val = b.val`           |
+| `T.rec`                    | the recursor of an inductive type `T`        |
 
 `cases`, `<;>` and `rfl` are known from `1.1-b`, `omega` and `simp`
 from `1.1-c`.
@@ -112,6 +111,17 @@ example (t : MyTree) : t.mirror.mirror = t := by
   | node l a r ihl ihr =>
     simp only [MyTree.mirror, ihl, ihr]
 
+noncomputable def MyTree.size' (t : MyTree) : ℕ :=
+  MyTree.rec 0 (fun _ _ _ sl sr => sl + 1 + sr) t
+
+example (t : MyTree) : t.size' = t.size := by
+  induction t with
+  | leaf => rfl
+  | node l a r ihl ihr =>
+    simp only [MyTree.size]
+    rw [← ihl, ← ihr]
+    rfl
+
 /-! ## Part 3: Recursion that is not structural -/
 
 def digits (n : ℕ) : ℕ :=
@@ -163,57 +173,3 @@ example (n : ℕ) (h : 0 < n) :
   have h2 : 2 * n / 2 = n := by omega
   simp [h1, h2]
   omega
-
-/-! ## Part 5: `Fin n`, a structure with a proof
-
-An element of `Fin n` is a pair `⟨i, h⟩` of a number `i : ℕ` and a
-proof `h : i < n`. The fields are `val` and `isLt`. Two elements are
-equal when their values are: `Fin.ext : a.val = b.val → a = b`.
-`omega` knows that `i.val < n` for `i : Fin n`. Read *Data with a
-property* in chapter 1.2.
-
-Fill in each definition. The `example` below it should then be
-provable by `rfl` (by `decide` for Exercise 19). -/
-
-example : Fin 3 := ⟨2, by decide⟩
-
--- Exercise 16)
-def two : Fin 5 := ⟨2, by decide⟩
-
-example : two.val = 2 := rfl
-
--- Exercise 17) The largest element of `Fin (n + 1)`.
-def myLast (n : ℕ) : Fin (n + 1) := ⟨n, by omega⟩
-
-example (n : ℕ) : myLast n = Fin.last n := rfl
-
--- Exercise 18) `Fin n` sits inside `Fin (n + 1)`.
-def embed {n : ℕ} (i : Fin n) : Fin (n + 1) := ⟨i.val, by omega⟩
-
-example : (embed (2 : Fin 3)).val = 2 := rfl
-
--- Exercise 19) Counting from the other end: `0 ↦ n - 1`,
--- `1 ↦ n - 2`, and so on.
-def rev {n : ℕ} (i : Fin n) : Fin n := ⟨n - 1 - i.val, by omega⟩
-
-example : rev (1 : Fin 5) = 3 := by decide
-
--- Exercise 20) Start with `apply Fin.ext`, then `simp only [rev]`
--- and `omega`.
-example {n : ℕ} (i : Fin n) : rev (rev i) = i := by
-  apply Fin.ext
-  simp only [rev]
-  omega
-
-/-! ## Part 6: A dependent function
-
-`ZMod n` is ℤ/nℤ. The function `natSelf` sends `n` to the class of
-`n` in ℤ/nℤ. -/
-
-def natSelf : (n : ℕ) → ZMod n := fun n => n
-
--- Exercise 21) Compute `natSelf 6`, then prove it. What is
--- `natSelf n` for every `n`, and why does that not make `natSelf`
--- a constant function?
-example : natSelf 6 = 0 := by
-  decide

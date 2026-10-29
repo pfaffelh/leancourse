@@ -2618,3 +2618,23 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   (nach der Vier-Schritte-Tabelle), die Folie entsprechend in Deck 1-3
   vor *Summary*. Sie erzaehlt auch Curry-Howard, das in 1.3 behandelt
   wird. 1.4 hat keinen eigenen Geschichtsabschnitt.
+
+## 2026-10-29 (2) -- Blaetter nach dem Audit umgebaut
+
+- Audit aller Blaetter: Taktik-Reihenfolge stimmt ueberall (Skript im
+  Scratchpad `audit/tac.py`). Inhaltliche Luecken in Teil 2 (Bild/
+  Urbild und injektiv/surjektiv stehen in keinem Kapitel, 2.6-b
+  benutzt Topologie vor 2.7, 2.8 ohne Integration/Konvergenzsaetze,
+  2.7 ohne Abschluss/Inneres) sind **noch offen**.
+- Neues Blatt `1.2-c` (`2-c-Structures`, Woche 5): `NatInterval` aus
+  dem alten `1.3-d`, dazu `NatInterval.Contains` (Punktnotation) und
+  `PointedInterval extends NatInterval` (`mid.length`, `I.Contains
+  I.pt` gehen ueber die Elternstruktur); `Fin` und `ZMod` aus `1.2-b`.
+- `1.2-b` hat jetzt eine Rekursor-Aufgabe (`MyTree.size'` mit
+  `MyTree.rec`, `noncomputable`, Gleichheit per Induktion), 17 Aufgaben.
+- Umbenannt (`git mv`): `1.3-c` -> `1.3-b` (`3-b-CurryHoward`),
+  `1.3-d` -> `1.3-c` (`3-c-Predicates`, nur noch induktive Praedikate
+  und Quotient). 35 Pflichtblaetter.
+- `1.1-c`: `cases'` ersetzt durch `cases n with | zero | succ k` und
+  `obtain (h | h)`. `A-a` D1: Addition rekursiert im *zweiten*
+  Argument (war falsch).

@@ -253,6 +253,20 @@ example : MyOption ℕ := .some 3
 
 `MyOption α` is a type for every type `α`.
 
+# `ℕ∞` is `Option ℕ`
+
+```lean -panel -stretch
+example : ℕ∞ = Option ℕ := rfl
+example : (⊤ : ℕ∞) = Option.none := rfl
+example : (3 : ℕ∞) = Option.some 3 := rfl
+```
+
+`WithTop α` is `Option α` with `none` read as a new largest element `⊤`; `ℕ∞` is `WithTop ℕ`.
+
+:::class "key"
+Measures take values in `ℝ≥0∞ = WithTop ℝ≥0`, built the same way.
+:::
+
 # Disjunction is an inductive type
 
 ```lean -panel -stretch
@@ -303,10 +317,11 @@ Structures are immutable: `with` builds a new `Point`.
 # Defaults and extensions
 
 ```lean -panel -stretch
-structure MyConfig where
-  width : ℕ := 80
-  title : String := "Untitled"
-def myConfig : MyConfig := { title := "Win" }
+-- a, a + d, a + 2d, ...
+structure ArithProg where
+  start : ℕ := 0
+  step : ℕ := 1
+def evens : ArithProg := { step := 2 }
 
 structure Point3D extends Point where
   z : ℕ
@@ -419,19 +434,6 @@ def MyNat.toNat : MyNat → ℕ
 
 `m.toNat` means `MyNat.toNat m`.
 
-# Or with the recursor
-
-```lean -panel -stretch
-noncomputable def MyNat.double' (n : MyNat) :
-    MyNat :=
-  MyNat.rec .zero (fun _ d => .succ (.succ d)) n
-
-example : MyNat.double' (.succ .zero) =
-    .succ (.succ .zero) := rfl
-```
-
-As with `Nat.rec` in 1.1: one argument per constructor. Lean's compiler does not run the recursor of your own type, hence `noncomputable`: `rfl` works, `#eval` does not.
-
 :::class "key"
 Pattern matching is translated into the recursor for the kernel, and into running code for `#eval`.
 :::
@@ -480,7 +482,7 @@ example : fib 3 = 2 := rfl
 - `fib (n + 2)` calls `fib n` and `fib (n + 1)`: smaller arguments. This is *structural recursion*.
 - Lean checks this and translates `fib` into the recursor `Nat.rec` of 1.1. So `fib` computes by ι:
   `fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)`.
-- `def bad (n : ℕ) : ℕ := bad n + 1` is rejected. It would give `bad 0 = bad 0 + 1`, so `0 = 1`.
+- `def loop (n : ℕ) : ℕ := loop n + 1` is rejected. It would give `loop 0 = loop 0 + 1`; subtract `loop 0`: `0 = 1`.
 
 # Termination by a measure
 
@@ -508,7 +510,7 @@ decreasing_by exact Nat.div_lt_self (by omega) h.1
 
 ```lean -panel -stretch
 def log2 (n : Nat) : Nat :=
-  if _h : 2 ≤ n then 1 + log2 (n / 2) else 0
+  if 2 ≤ n then 1 + log2 (n / 2) else 0
 
 example (n : ℕ) : fib (n + 2) = fib n + fib (n + 1) :=
   rfl

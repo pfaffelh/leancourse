@@ -32,9 +32,9 @@ used without the other.
 * Lean and its type theory, one deck per chapter:
   * [The natural numbers and reduction rules](slides/1-1-nat/) —
     {ref "nat"}[chapter]
-  * [Types and terms I: functions, inductive types, structures](slides/1-2-types/) —
+  * [Types and terms I: functions, inductive types, structures](slides/1-2-functions-inductive-structures/) —
     {ref "types"}[chapter]
-  * [Types and terms II: pairs, subtypes, families, quotients](slides/1-3-type-formers/) —
+  * [Types and terms II: pairs, subtypes, families, quotients](slides/1-3-pairs-subtypes-quotients/) —
     {ref "type-formers"}[chapter]
   * [Types III: the rules](slides/1-4-rules/) —
     {ref "rules"}[chapter]

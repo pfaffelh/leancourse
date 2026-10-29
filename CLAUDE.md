@@ -2700,3 +2700,26 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   `exact?` scheitert an `0 < x ^ 2 + 1` und am Zwischenwertsatz.
 - Ueberschneidung: `A-a` Teil B (Lemmata finden) deckt sich jetzt
   teilweise mit `2.0-a`; nicht angefasst.
+
+## 2026-10-29 (4) -- 1.2/1.3 umbenannt, Taktik-/Termmodus nach 1.4
+
+- **Dateinamen nach Titeln** (`git mv`): `1-Lean/2-Types` ->
+  `2-FunctionsInductiveStructures`, `3-TypeFormers` ->
+  `3-PairsSubtypesQuotients`, Decks gleich. **Deck-URLs geaendert**:
+  `slides/1-2-functions-inductive-structures/`,
+  `slides/1-3-pairs-subtypes-quotients/`; alte Links brechen.
+- *Tactic mode and term mode* (tag `term`) steht jetzt am Ende von
+  1.4 *Why `Prop` is special*: Beweise im Taktikmodus wegen
+  Beweisirrelevanz, Daten im Termmodus (geht per `by`, ist unueblich).
+  Folie ins Deck 1-4. In 1.2 und 1.3 nur Verweise.
+- 1.2: `ℕ∞ = WithTop ℕ = Option ℕ` nach `MyOption` (alles `rfl`),
+  `ArithProg` statt `MyConfig`, `Fin.ext` ohne Axiom erklaert,
+  `MyNat.double'` raus (doppelt zu `1.1-a`/`1.2-b`; `noncomputable`
+  jetzt bei `BinTree.sum`), `bad` -> `loop` (Kollision mit `Bad`),
+  `log2` mit gewoehnlichem `if` (Lean nutzt die Bedingung selbst;
+  abhaengiges `if` erst bei `logb`), Grafik `cantor_pairing`
+  (`scripts/figures/cantor_pairing.py`) zu `pairIndex`.
+- 1.5: `(7 : ZMod 5) = 2` als Beispiel fuer `OfNat` -> `Nat.cast` ->
+  `Fin.ofNat`.
+- **Abbildungen in zurueckgehaltenen Kapiteln ohne `tag`**: sonst
+  bricht `strip_unreleased.py --check` ab ("would lose tags").

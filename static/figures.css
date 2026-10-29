@@ -82,3 +82,6 @@ figure:has(img[src*="/logos/"]) > figcaption {
 
 @media (max-width: 760px) { :root { --fig-h: 10rem; } }
 @media (max-width: 480px) { :root { --fig-h: 7.5rem; } }
+
+/* Small square diagrams in the chapters, e.g. Cantor's pairing. */
+figure img[src*="cantor_pairing"] { max-width: 18rem; height: auto; }

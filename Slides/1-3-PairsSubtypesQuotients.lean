@@ -10,7 +10,7 @@ set_option pp.rawOnError true
 Deck for the chapter "Types and terms II: pairs, subtypes, families,
 quotients" of part 1 (Lean and its type theory). It follows the
 chapter section by section: Σ-types, subtypes, type families, indexed
-families, the logical connectives as types with tactic and term mode, quotient
+families, the logical connectives as types, quotient
 types (integers mod n, reals), the table of the four steps, and some history.
 -/
 
@@ -205,25 +205,7 @@ example (P Q R : Prop) :
   fun hPQ hQR hP => hQR (hPQ hP)
 ```
 
-Modus ponens is application; chaining is composition.
-
-# Tactic mode and term mode
-
-```lean -panel -stretch
-example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
-    P → R := by
-  intro hP
-  exact hQR (hPQ hP)
-
-example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
-    P → R := fun hP ↦ hQR (hPQ hP)
-```
-
-After `by`, each tactic changes the proof state: hypotheses above `⊢`, the goal after it. `show_term` prints the term built.
-
-:::class "key"
-`intro` builds a `fun`; `exact` supplies a term.
-:::
+Modus ponens is application; chaining is composition. In tactic mode: `intro hP`, then `exact …`.
 
 # Conjunction and disjunction
 

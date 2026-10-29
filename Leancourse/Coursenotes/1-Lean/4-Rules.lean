@@ -398,6 +398,8 @@ theorem five : ℕ := 5
 
 The error is "type of theorem `five` is not a proposition". The converse, `def` with a proposition, is accepted, but Mathlib warns "use `theorem` instead of `def`". Mathlib's `lemma` is the same as `theorem`.
 
+Proof irrelevance is also why proofs are usually written in tactic mode and data in term mode; see {ref "term"}[Tactic mode and term mode] at the end of this section.
+
 *`Prop` is impredicative*: `Prop` is the one universe that escapes the predicativity of the {ref "universe-determined"}[previous section]. As long as the body of a `∀` statement is a proposition, the whole `∀` is a `Prop` — even when we range over an arbitrarily large universe of types:
 
 ```lean
@@ -499,3 +501,49 @@ Because `Decidable p` is in `Type`, it *may* eliminate into `Type` — which is 
 :::
 
 Classically, `Classical.em : a ∨ ¬a` is always available (it is a `Prop`), but its data-carrying counterpart `Classical.propDecidable : Decidable a` goes through the axiom `Classical.choice` (*Axioms* above) and is therefore `noncomputable` — a keyword marking a definition Lean cannot turn into runnable code, needed here because `Classical.choice` has no computational content to execute (this is the usual trigger for `noncomputable`, though not the only one). So the two halves — `∃`/`Σ` for the *witness*, `∨`/`Decidable`/`em` for the *tag* — are really the same story: computationally relevant information can leave the `Prop` world only if we put it in `Type` from the start, or pay for it noncomputably with the axiom of choice.
+
+## Tactic mode and term mode
+%%%
+tag := "term"
+number := false
+%%%
+
+A proof written down as a term is in *term mode*, like the proof of `∀ n : ℕ, n < n + 1` in {ref "pi-types"}[Dependent functions]. The exercise sheets mostly use *tactic mode*: after the keyword `by`, each tactic changes the *proof state* — the hypotheses above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)), the goal to its right — until no goal is left. Tactic mode builds a term as well. Two tactics correspond directly to the constructions of function types:
+
+* `intro n` builds a function `fun n => …`;
+* `exact t` supplies the term `t`, often a function application.
+
+So the tactic proof and the term below are the same object:
+
+```lean
+example : ∀ n : ℕ, n < n + 1 := by
+  intro n
+  exact Nat.lt_succ_self n
+
+example : ∀ n : ℕ, n < n + 1 :=
+  fun n => Nat.lt_succ_self n
+```
+
+`show_term` in front of tactics prints the term they build. `#print` in {ref "naming-terms"}[Commands for terms] showed the same for a finished theorem.
+
+```lean
+example : ∀ n : ℕ, n < n + 1 := by
+  show_term
+    intro n
+    exact Nat.lt_succ_self n
+-- Try this: exact fun n => Nat.lt_succ_self n
+```
+
+Proofs are usually written in tactic mode because of proof irrelevance. The term that tactics build can be long and hard to read, but since no later step looks at it, that does not matter. Tactic mode works for data as well, since every type has terms:
+
+```lean
+def three : ℕ := by exact 3
+def pair : ℕ × Bool := by
+  constructor
+  · exact 3
+  · exact true
+
+#eval pair    -- (3, true)
+```
+
+For data this is unusual. Here the term *is* what matters: `#eval` runs it, and `rfl`, `unfold` and `simp` work with it. So definitions of data are written in term mode, where the term is what you see.

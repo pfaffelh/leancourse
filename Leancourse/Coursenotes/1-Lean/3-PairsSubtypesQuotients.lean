@@ -17,7 +17,7 @@ tag := "type-formers"
 
 The {ref "types"}[previous chapter] treated function types, inductive types and structures. This chapter treats dependent pairs and subtypes, whose terms bundle a value with data or a proof about it. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; the logical connectives, which are these type formers with values in `Prop`; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
 
-The [slides](slides/1-3-type-formers/) for this chapter follow it section by section.
+The [slides](slides/1-3-pairs-subtypes-quotients/) for this chapter follow it section by section.
 
 # Pairs and Σ-types
 %%%
@@ -251,7 +251,7 @@ tag := "forall-pi"
 number := false
 %%%
 
-For propositions `P` and `Q`, `P → Q` is a function type like any other, and a proof of `P → Q` is a function that takes a proof of `P` to a proof of `Q`. Modus ponens is function application, and chaining two implications is composition:
+For propositions `P` and `Q`, `P → Q` is a function type like any other, and a proof of `P → Q` is a function that takes a proof of `P` to a proof of `Q`. Modus ponens is function application, and chaining two implications is composition. In tactic mode, `intro` builds the `fun` and `exact` supplies the application ({ref "term"}[Tactic mode and term mode]):
 
 ```lean
 example (P Q : Prop) (hP : P) (hPQ : P → Q) : Q :=
@@ -269,40 +269,6 @@ example (P : Prop) : (¬P) = (P → False) := rfl
 
 example (P : Prop) (hP : P) (hnP : ¬P) : False :=
   hnP hP
-```
-
-## Tactic mode and term mode
-%%%
-tag := "term"
-number := false
-%%%
-
-A proof written down as a term is in *term mode*. The exercise sheets mostly use *tactic mode*: after the keyword `by`, each tactic changes the *proof state* — the hypotheses above the `⊢` ([turnstile](https://en.wikipedia.org/wiki/Logical_consequence)), the goal to its right — until no goal is left. Tactic mode builds a term as well. Two tactics correspond directly to the constructions above:
-
-* `intro h` builds a function `fun h => …`;
-* `exact t` supplies the term `t`, often a function application.
-
-So the tactic proof and the term below are the same object:
-
-```lean
-example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
-    P → R := by
-  intro hP
-  exact hQR (hPQ hP)
-
-example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
-    P → R := fun hP ↦ hQR (hPQ hP)
-```
-
-`show_term` in front of tactics prints the term they build:
-
-```lean
-example (P Q R : Prop) (hQR : Q → R) (hPQ : P → Q) :
-    P → R := by
-  show_term
-    intro hP
-    exact hQR (hPQ hP)
--- Try this: exact fun hP => hQR (hPQ hP)
 ```
 
 ## `True` and `False`

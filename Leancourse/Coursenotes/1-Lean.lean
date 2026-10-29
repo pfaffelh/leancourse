@@ -1,8 +1,8 @@
 import VersoManual
 
 import «Leancourse».Coursenotes.«1-Lean».«1-Nat»
-import «Leancourse».Coursenotes.«1-Lean».«2-Types»
-import «Leancourse».Coursenotes.«1-Lean».«3-TypeFormers»
+import «Leancourse».Coursenotes.«1-Lean».«2-FunctionsInductiveStructures»
+import «Leancourse».Coursenotes.«1-Lean».«3-PairsSubtypesQuotients»
 import «Leancourse».Coursenotes.«1-Lean».«4-Rules»
 import «Leancourse».Coursenotes.«1-Lean».«5-Typeclasses»
 import «Leancourse».Coursenotes.«1-Lean».«6-Notation»
@@ -32,9 +32,9 @@ and well-foundedness, are treated in the *Mathematics* part.)
 
 {include 0  «Leancourse».Coursenotes.«1-Lean».«1-Nat»}
 
-{include 0  «Leancourse».Coursenotes.«1-Lean».«2-Types»}
+{include 0  «Leancourse».Coursenotes.«1-Lean».«2-FunctionsInductiveStructures»}
 
-{include 0  «Leancourse».Coursenotes.«1-Lean».«3-TypeFormers»}
+{include 0  «Leancourse».Coursenotes.«1-Lean».«3-PairsSubtypesQuotients»}
 
 {include 0  «Leancourse».Coursenotes.«1-Lean».«4-Rules»}
 

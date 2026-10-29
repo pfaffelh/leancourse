@@ -318,6 +318,23 @@ A `which : a ∨ b → Bool` would give `true ≡ false`.
   * the tag
 :::
 
+# Tactic mode and term mode
+
+```lean -panel -stretch
+example : ∀ n : ℕ, n < n + 1 := by
+  intro n
+  exact Nat.lt_succ_self n
+
+example : ∀ n : ℕ, n < n + 1 :=
+  fun n => Nat.lt_succ_self n
+```
+
+After `by`, each tactic changes the proof state: hypotheses above `⊢`, the goal after it. `show_term` prints the term built, like `#print` for a finished theorem. For data, tactic mode works too, but one writes terms: `#eval` and `rfl` use them.
+
+:::class "key"
+`intro` builds a `fun`; `exact` supplies a term.
+:::
+
 # Summary
 
 - A few rules (context, universes, functions, conversion, inductive types) are all of Lean's logic.

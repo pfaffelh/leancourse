@@ -17,6 +17,8 @@ htmlSplit := .never
 tag := "types"
 %%%
 
+Here are the [slides](slides/1-2-functions-inductive-structures/) for this chapter.
+
 Lean has the data types every programming language has — `int`, `string`, `float` — and you can define your own, as you will in this course. Throughout, `x : α` means that `x` is a term of type `α`: `false : Bool`, `42 : ℕ`, `f : ℕ → ℝ` for a function from ℕ to ℝ (itself a type), and `0 ≠ 1 : Prop` for the proposition that 0 and 1 differ. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → ZMod n`, a function whose value at `n` lies in ℤ/nℤ (the type `ZMod n` of the value depends on `n : ℕ`).
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` is a *universe level*, see {ref "type-universes"}[The universe hierarchy] below) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it.
@@ -25,31 +27,22 @@ These data types are abstract: Lean treats `ℕ` as genuinely infinite, not as a
 
 In Lean every object is a term, and every term has a type. A type is itself a term, so it has a type as well.
 
-Types and terms cannot be treated separately: a type is known once we know how its terms are built and how they are used. This chapter and the next therefore describe every way of forming a type in the same four steps.
+This chapter describes every way of forming and using a type in the same four steps.
 
 :::table (align := left) +header
 * + step
   + question
-  + for functions
 * + Formation
   + How is the type written?
-  + `α → β`
 * + Construction
   + How is a term of the type built?
-  + `fun x => e`
 * + Use
   + How is a term of the type used?
-  + `f a`
 * + Computation
   + What happens when a term that was just built is used?
-  + `(fun x => e) a` reduces to `e` with `a` for `x`
 :::
 
 See {ref "four-steps"}[The four steps at a glance] at the end of chapter 1.3 for a table of all type formers in these four steps.
-
-The four steps are the four kinds of rule of Lean's type theory, stated formally in {ref "rules"}[chapter 1.4]. This chapter treats universes, function types, inductive types and structures; the {ref "type-formers"}[next chapter] dependent pairs, subtypes, type families and quotients. In several of these types the type of one part depends on the value of another. Such types are called *dependent*, and they are what separates Lean from most programming languages.
-
-The [slides](slides/1-2-types/) for this chapter follow it section by section.
 
 # Commands for terms
 %%%
@@ -128,7 +121,7 @@ example : Type = Type 0 := rfl
 
 So `Sort` covers `Prop` and all the `Type u`, and the one rule governing the hierarchy is `Sort u : Sort (u+1)`; in particular `Prop : Type`. In signatures you will often see `{α : Type*}`: `α` is a type in some universe `Type u`, and Lean introduces the universe variable `u` itself ({ref "polymorphic-functions"}[Polymorphic functions] below). Of the four steps, universes have only the first: `Sort u` is a type, and its terms are the types built in the rest of this chapter and the next.
 
-There is deliberately no `Type : Type`. A universe that contains itself admits a version of Russell's paradox for types, *Girard's paradox*, and with it a proof of `False`.
+There is deliberately no `Type : Type`. A universe that contains itself admits a version of Russell's paradox for types, [*Girard's paradox*](https://en.wikipedia.org/wiki/System_U), and with it a proof of `False`.
 
 # Function types and Π-types
 %%%
@@ -196,7 +189,7 @@ A function built with `fun` needs no name; it can be applied on the spot:
 #eval (fun x y : ℕ ↦ x * y) 3 4   -- 12
 ```
 
-Shorter still is the `·` placeholder (a centered dot, typed `\cdot`), which stands for an anonymous argument: `(· + 10)` is shorthand for `fun x ↦ x + 10`, and several `·` become successive arguments, so `(· + ·)` means `fun x y ↦ x + y`.
+Shorter still is the `·` placeholder (a centered dot, typed `\cdot`), which stands for an anonymous argument: `(· + 10)` is shorthand for `fun x ↦ x + 10`, and several `·· ` become successive arguments, so `(· + ·)` means `fun x y ↦ x + y`.
 
 ## Dependent functions
 %%%
@@ -215,6 +208,8 @@ example : ((n : ℕ) → n < n + 1) =
     (∀ n : ℕ, n < n + 1) := rfl
 ```
 
+The first proof is written down directly as a term. A proof with `by` builds such a term as well ({ref "term"}[Tactic mode and term mode]).
+
 A dependent function whose values are data: Mathlib's `ZMod n` is the type ℤ/nℤ of integers modulo `n` (with `ZMod 0 = ℤ`). The function `sevenMod` takes `n` to the residue class of `7` in ℤ/nℤ. Its definition reads `7` for every `n`, but each value lies in a different type and is a different element there:
 
 ```lean
@@ -225,6 +220,8 @@ def sevenMod : (n : ℕ) → ZMod n :=
 #eval sevenMod 5    -- 2
 #eval sevenMod 0    -- 7
 ```
+
+The numeral `7` in `ZMod 5` is read modulo 5, so `#eval` shows the representative `2`. How a numeral gets its meaning in a type is explained in {ref "ofnat"}[Where numerals come from].
 
 In terms of sets, a function `f : (x : α) → β x` chooses one element `f x ∈ β x` for every `x`. It is an element of the product $`\prod_{x \in \alpha} \beta(x)`. This is where the name Π comes from.
 
@@ -326,6 +323,16 @@ example : MyOption ℕ := .some 3
 
 Here `MyOption α` is a type for every type `α`.
 
+Lean's `Option` is declared in the same way, and Mathlib builds on it. `WithTop α` is `Option α` with `none` read as a new largest element `⊤`, and `ℕ∞`, the natural numbers with `∞` (typed `\bN\infty`), is `WithTop ℕ`. So `ℕ∞` is `Option ℕ`, and `rfl` sees it:
+
+```lean
+example : ℕ∞ = Option ℕ := rfl
+example : (⊤ : ℕ∞) = Option.none := rfl
+example : (3 : ℕ∞) = Option.some 3 := rfl
+```
+
+The extended non-negative reals `ℝ≥0∞`, the values of a measure in {ref "measure-theory"}[Measure theory], are built the same way, as `WithTop ℝ≥0`.
+
 Disjunction is an inductive type with two constructors: a proof of `P ∨ Q` is a proof of `P` or a proof of `Q`, marked by the constructor. Declared by hand:
 
 ```lean
@@ -360,7 +367,7 @@ inductive Point where
   | mk : ℕ → ℕ → Point
 ```
 
-but the `structure` version also gives the fields names, projections with dot notation, default values and the `extends` mechanism. Use `structure` for a type with a single constructor with named fields (points, complex numbers, algebraic structures), and `inductive` for a type with several constructors (natural numbers, lists, trees, `Option`, `Bool`).
+Use `structure` for a type with a single constructor with named fields (points, complex numbers, algebraic structures), and `inductive` for a type with several constructors (natural numbers, lists, trees, `Option`, `Bool`).
 
 *Formation.* The declaration introduces the type `Point : Type`.
 
@@ -428,14 +435,18 @@ number := false
 Fields may be given *default values* as part of the declaration, and a value may then omit those fields:
 
 ```lean
-structure MyConfig where
-  width : ℕ := 80
-  height : ℕ := 24
-  title : String := "Untitled"
+-- the arithmetic progression a, a + d, a + 2d, ...
+structure ArithProg where
+  start : ℕ := 0
+  step : ℕ := 1
 
-def myConfig : MyConfig := { title := "My Window" }
--- myConfig.width = 80, myConfig.height = 24
+def evens : ArithProg := { step := 2 }
+
+#eval evens.start    -- 0 (the default)
+#eval evens.step     -- 2
 ```
+
+With both defaults, `{}` is the progression 0, 1, 2, … of all natural numbers.
 
 One structure can *extend* another, inheriting all of its fields. A value supplies all fields, inherited and new:
 
@@ -506,7 +517,7 @@ def triple : IntAddMap where
 To build a term, both the function and the proof must be supplied. This pattern of bundling data with properties is how Mathlib organizes mathematics: a linear map, a continuous function and a group homomorphism are all structures of this kind.
 
 `Fin n`, the type of the natural numbers less than `n`, is a structure of this kind as well. An element consists of a natural number `val` together with a proof `isLt` that it is less than `n`, and the constructor `Fin.mk` takes both:
-
+v
 ```lean
 #check @Fin.mk
 -- {n : ℕ} → (val : ℕ) → val < n → Fin n
@@ -523,6 +534,16 @@ Two elements of `Fin n` are equal when their values are, which is `Fin.ext`. `Fi
 example (a b : Fin 3) (h : a.val = b.val) : a = b :=
   Fin.ext h
 ```
+
+`Fin.ext` needs no axiom. `cases` splits `a` and `b` into their fields; once the values agree, two proofs of `val < n` remain, and these are equal by `rfl`, because Lean does not distinguish proofs of the same proposition ({ref "prop-special"}[Why `Prop` is special]):
+
+```lean
+example {n : ℕ} (a b : Fin n) (h : a.val = b.val) :
+    a = b := by
+  cases a; cases b; cases h; rfl
+```
+
+Mathlib calls every lemma of the form "equal if the parts are equal" `.ext`: `Fin.ext`, `Prod.ext`, `Subtype.ext`. For functions the analogous statement, `funext`, does not follow from splitting into fields; it is discussed in {ref "axiom-funext"}[Function extensionality is a theorem].
 
 ## Conjunction
 %%%
@@ -593,7 +614,7 @@ tag := "pattern-matching"
 number := false
 %%%
 
-A function on an inductive type is defined by *pattern matching* on the constructors of its argument: one branch per constructor, each prefixed by `|`. The function `myNot` on `Bool` in the {ref "bool"}[previous chapter] was of this kind. The factorial function on `ℕ` matches on whether the input is `0` or a successor `n + 1`:
+In the {ref "nat-intro"}[previous chapter], `myDouble` was defined with the recursor `Nat.rec`, one argument per constructor. *Pattern matching* is another way to define a function on an inductive type, and the usual one: the cases are written as equations, one branch per constructor, each prefixed by `|`. Lean translates them into the recursor ({ref "recursor"}[The recursor]). The function `myNot` on `Bool` in the {ref "bool"}[previous chapter] was of this kind. The factorial function on `ℕ` matches on whether the input is `0` or a successor `n + 1`:
 
 ```lean
 def factorial : ℕ → ℕ
@@ -622,26 +643,7 @@ def MyNat.toNat : MyNat → ℕ
 
 Writing plain `zero` in place of `.zero` would fail: there is no `zero` in scope, only `MyNat.zero`. As for `Point.x`, for `m : MyNat` the name `m.toNat` means `MyNat.toNat m`.
 
-A function can also be defined with the recursor directly, as `myDouble` was defined with `Nat.rec` in the {ref "nat-intro"}[previous chapter]: one argument for each constructor, and for `succ` the value on the predecessor is handed over as `d`. Lean's compiler, which runs `#eval`, does not support the recursors of your own types (for `Nat` it has special support), so the definition has to be marked `noncomputable`. The kernel reduces it all the same, so `rfl` works, and induction shows that it agrees with the version by pattern matching:
-
-```lean
-noncomputable def MyNat.double' (n : MyNat) : MyNat :=
-  MyNat.rec .zero (fun _ d => .succ (.succ d)) n
-
-example :
-    MyNat.double' (.succ .zero) = .succ (.succ .zero) :=
-  rfl
-
-example (n : MyNat) : n.double' = n.double := by
-  induction n with
-  | zero => rfl
-  | succ n ih =>
-    show MyNat.succ (MyNat.succ n.double') = _
-    rw [ih]
-    rfl
-```
-
-Pattern matching is translated into the recursor for the kernel and into running code for `#eval`. That is why functions are usually written by pattern matching.
+Pattern matching is translated into the recursor for the kernel and into running code for `#eval`. A definition with the recursor of your own type, as in {ref "recursor"}[The recursor], cannot be run by `#eval`. That is why functions are usually written by pattern matching.
 
 Pattern matching works for any inductive type. A list is empty, or a first element followed by a list. In Lean's library (`u` is a universe variable, {ref "polymorphic-functions"}[above]):
 
@@ -713,7 +715,13 @@ Lean only accepts a recursive definition once it is convinced the recursion *ter
 example : fib 3 = 2 := rfl
 ```
 
-Recursion on several parts works the same way. In a binary tree whose nodes carry a natural number, every node has two subtrees, and the height recurses on both:
+Recursion on several parts works the same way. In a binary tree whose nodes carry a natural number, every node has two subtrees, and the height recurses on both. A tree is either empty, `leaf`, or a node `node l a r` that carries the number `a` and has a *left subtree* `l` and a *right subtree* `r`, both again trees. The example below is the tree with root `3`, an empty left subtree, and as right subtree a single node carrying `4`:
+
+```
+    3
+     \
+      4
+```
 
 ```lean
 inductive BinTree where
@@ -728,18 +736,37 @@ example : (BinTree.node .leaf 3
     (.node .leaf 4 .leaf)).height = 2 := rfl
 ```
 
-A call that is not on a smaller argument is rejected. `def bad (n : ℕ) : ℕ := bad n + 1` fails to compile; were it accepted, `bad 0 = bad 0 + 1` would give `0 = 1`.
+A call that is not on a smaller argument is rejected:
 
-When a recursive call is not on a part of the input, Lean cannot translate the definition structurally and looks for a measure. Often it finds one on its own. In `log2` the argument shrinks from `n` to `n / 2`, and Lean proves `n / 2 < n` from `2 ≤ n`. The definition uses a *dependent* `if`: in `if h : c then a else b`, the proof `h : c` is available in `a`, and a proof of `¬c` in `b`.
+```lean +error
+def loop (n : ℕ) : ℕ := loop n + 1
+```
+
+Lean reports that the argument `n` is unchanged in the recursive call. Were the definition accepted, it would give `loop 0 = loop 0 + 1`, and subtracting `loop 0` on both sides gives `0 = 1`.
+
+When a recursive call is not on a part of the input, Lean cannot translate the definition structurally and looks for a measure. Often it finds one on its own. In `log2` the argument shrinks from `n` to `n / 2`. This holds only for `n ≥ 1`; for `n = 0` the call would be `log2 0` again. The `if` excludes this case: the recursive call stands in the branch where `2 ≤ n`, and Lean uses this condition to prove `n / 2 < n`.
 
 ```lean
 def log2 (n : Nat) : Nat :=
-  if _h : 2 ≤ n then 1 + log2 (n / 2) else 0
+  if 2 ≤ n then 1 + log2 (n / 2) else 0
 
 #eval log2 16   -- 4
 ```
 
-Cantor's enumeration of `ℕ × ℕ` runs through the pairs diagonal by diagonal: `(0, 0)`; `(0, 1)`, `(1, 0)`; `(0, 2)`, `(1, 1)`, `(2, 0)`; and so on. `pairIndex m n` is the position of `(m, n)` in this list. Within a diagonal it steps back from `(m + 1, n)` to `(m, n + 1)`; from the first pair `(0, n + 1)` of a diagonal it steps back to the last pair `(n, 0)` of the previous one:
+Without the `if`, Lean is left with the goal `n / 2 < n` for an arbitrary `n`, which is false for `n = 0`, and rejects the definition:
+
+```lean +error
+def log2' (n : Nat) : Nat :=
+  1 + log2' (n / 2)
+```
+
+Cantor's enumeration of `ℕ × ℕ` runs through the pairs diagonal by diagonal: `(0, 0)`; `(0, 1)`, `(1, 0)`; `(0, 2)`, `(1, 1)`, `(2, 0)`; and so on. `pairIndex m n` is the position of `(m, n)` in this list. Within a diagonal it steps back from `(m + 1, n)` to `(m, n + 1)`; from the first pair `(0, n + 1)` of a diagonal it steps back to the last pair `(n, 0)` of the previous one.
+
+:::figure "Cantor's enumeration of ℕ × ℕ. The point (m, n) carries pairIndex m n; the arrows run along a diagonal."
+![Grid of the points (m, n) with m + n at most 4, each labelled with its position in Cantor's enumeration: 0 at (0, 0); 1, 2 on the next diagonal; 3, 4, 5; 6 to 9; 10 to 14. Arrows run down each diagonal from (0, n) to (n, 0)](/static/figures/cantor_pairing.png)
+:::
+
+In Lean, read backwards from `(m, n)`:
 
 ```lean
 def pairIndex : ℕ → ℕ → ℕ
@@ -754,7 +781,7 @@ decreasing_by all_goals (rw [Prod.lex_def]; omega)
 
 Here Lean needs help. No argument decreases in both recursive calls, and the sum `m + n` stays the same in the third line. Without the last two lines of the definition Lean reports "Could not find a decreasing measure". The measure is a pair: first the diagonal `m + n`, then the position `m` on it. Pairs are compared *lexicographically*: `(a, b)` is smaller than `(c, d)` if `a < c`, or if `a = c` and `b < d`. `termination_by` names the measure; `m n =>` names the two arguments, which the patterns leave unnamed. `decreasing_by` proves that the measure decreases. There is one goal for each recursive call, and `all_goals` applies the same tactics to both: `rw [Prod.lex_def]` replaces the lexicographic order by its definition, and `omega`, a tactic that proves linear arithmetic over `ℕ` and `ℤ`, finishes.
 
-Sometimes Lean finds the measure but cannot prove that it decreases. For the logarithm to base `b` it has to show `n / b < n`. For `b = 2` this is linear arithmetic, which Lean does by itself; for a variable `b` it is not, and Lean stops with this goal. `decreasing_by` supplies the proof, here with the library theorem `Nat.div_lt_self : 0 < n → 1 < k → n / k < n`:
+Sometimes Lean finds the measure but cannot prove that it decreases. For the logarithm to base `b` it has to show `n / b < n`. For `b = 2` this is linear arithmetic, which Lean does by itself; for a variable `b` it is not, and Lean stops with this goal. `decreasing_by` supplies the proof, here with the library theorem `Nat.div_lt_self : 0 < n → 1 < k → n / k < n`. The proof needs the condition of the `if` by name, so the `if` is *dependent*: in `if h : c then a else b`, the proof `h : c` is available in `a`, and a proof of `¬c` in `b`. Here `h.1 : 2 ≤ b` gives `1 < b`, and `0 < n` follows from `h` by `omega`:
 
 ```lean
 def logb (b n : ℕ) : ℕ :=
@@ -791,7 +818,7 @@ Instead Lean proves an *equation lemma* for every definition, here `log2.eq_1`, 
 ```lean
 #check log2.eq_1
 -- log2.eq_1 (n : ℕ) : log2 n =
---   if _h : 2 ≤ n then 1 + log2 (n / 2) else 0
+--   if 2 ≤ n then 1 + log2 (n / 2) else 0
 
 example : log2 16 = 4 := by simp [log2]
 
@@ -805,6 +832,7 @@ Proofs by induction that follow the recursion of a function, one case per branch
 
 ## The recursor
 %%%
+tag := "recursor"
 number := false
 %%%
 
@@ -829,6 +857,8 @@ noncomputable def BinTree.sum : BinTree → ℕ :=
 example : (BinTree.node .leaf 3
     (.node .leaf 4 .leaf)).sum = 7 := rfl
 ```
+
+Lean's compiler, which runs `#eval`, does not support the recursors of your own types (for `Nat` it has special support), so the definition has to be marked `noncomputable`. The kernel reduces it all the same, so `rfl` works.
 
 With a `Prop`-valued motive the same recursor is the *induction principle* for trees: to prove a statement for every tree, prove it for `leaf`, and prove it for `node l a r` assuming it for `l` and for `r`. Those are two induction hypotheses, one for each subtree. Recursion and induction are two readings of the single primitive `BinTree.rec`, which is why the `induction` tactic and recursive definitions feel so alike. The `induction` tactic applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.
 

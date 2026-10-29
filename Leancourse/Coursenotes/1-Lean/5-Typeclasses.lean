@@ -452,6 +452,18 @@ instance (n : Nat) : OfNat Countdown n where
 #eval (5 : Countdown).val    -- 5
 ```
 
+The instance decides what a numeral means. In {ref "pi-types"}[Dependent functions], `#eval` printed `2` for `(7 : ZMod 5)`. `#synth` names the instance Lean finds:
+
+```lean
+#synth OfNat (ZMod 5) 7   -- instOfNatAtLeastTwo
+```
+
+This instance exists for every type with a cast from ℕ and turns the numeral `7` into `Nat.cast 7`. Mathlib defines the cast into `ZMod (n + 1)` as the cast into `Fin (n + 1)`, and that takes the remainder: `Fin.ofNat n i` is `⟨i % n, _⟩`. So `(7 : ZMod 5)` is `⟨7 % 5, _⟩`, and `rfl` sees it:
+
+```lean
+example : (7 : ZMod 5) = 2 := rfl
+```
+
 # Managing instances
 %%%
 tag := "managing-instances"

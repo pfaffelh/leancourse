@@ -5,7 +5,7 @@ import Mathlib.Tactic
 
 # 2.1-c -- Injective and surjective functions
 
-*Notes chapter 2.1, week 8.* Read the section *Injective and surjective
+*Notes chapter 2.1, week 9.* Read the section *Injective and surjective
 functions* there first.
 
 We already know that we write `f : α → β` for a function `f` with domain `α` and co-domain `β`. Using the usual terminology in Lean, this means that `α → β` is the type of all such functions and `f` is one representative. Please keep in mind that `f : α → β` can be evaluated at `x : α` using `f x : β`. Moreover, if `g : β → γ`, we can write `g (f x) : γ`, or `(g ∘ f) x` for their composition. (Since brackets are left-associative, the brackets must not be left out here.)

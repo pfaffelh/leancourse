@@ -66,7 +66,8 @@ tag := "schedule"
 Sheets are named after the chapter they belong to, so `2.6-b` is the
 second sheet on chapter 2.6. `L-a` to `L-g` are the logic block, which
 belongs to no chapter and runs alongside the first five weeks; `A-a`
-and `A-b` are the appendix, `X-a` an extra sheet.
+and `A-b` are the appendix, `X-a` an extra sheet. `2.0-a`, on finding
+theorems in Mathlib, opens the mathematics part and has no chapter.
 
 Each week has two rows: the lecture on Monday presents a chapter, the
 lab on Wednesday works on the sheets of that week. The short tests are
@@ -157,7 +158,7 @@ written at the start of the lab.
   + Wed 09.12.
   + Lab
   + Sheets
-  + `2.1-a`, `2.1-b`, `2.1-c`
+  + `2.0-a`, `2.1-a`, `2.1-b`
 * + 9
   + Mon 14.12.
   + Lecture
@@ -167,7 +168,7 @@ written at the start of the lab.
   + Wed 16.12.
   + Lab
   + *Test 3*, then sheets
-  + `2.2-a`, `2.3-a`
+  + `2.1-c`, `2.2-a`, `2.3-a`
 * + 10
   + Mon 21.12.
   + Lecture

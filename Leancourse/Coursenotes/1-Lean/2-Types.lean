@@ -91,38 +91,6 @@ theorem swap_of_and (P Q : Prop) (h : P ∧ Q) :
 -- fun P Q h => ⟨h.right, h.left⟩
 ```
 
-## Finding theorems
-%%%
-tag := "finding-theorems"
-number := false
-%%%
-
-Mathlib has about 189 000 theorems. Their names follow fixed conventions, such as `mul_comm` for `a * b = b * a` or `le_of_lt` for `a < b → a ≤ b` ({ref "naming-conventions"}[Naming conventions]), but more often one knows the statement and not the name. Then search:
-
-:::table (align := left) +header
-* + tool
-  + searches for
-* + `exact?`
-  + a theorem that closes the current goal
-* + `apply?`
-  + a theorem whose conclusion fits the goal; its hypotheses become new goals
-* + `rw?`
-  + an equation that rewrites the goal
-* + `#loogle pattern`
-  + theorems whose statement has the given form, e.g. `#loogle ?a * ?b = ?b * ?a`
-* + `#leansearch "text"`
-  + theorems matching a description in English
-:::
-
-The first three are tactics. They search with the current goal and hypotheses and print a suggestion, which replaces them in the finished proof:
-
-```lean
-example (a b : ℕ) : a * b = b * a := by
-  exact?
-```
-
-`#loogle` and `#leansearch` are commands. They send the query to the services [Loogle](https://loogle.lean-lang.org/) and [LeanSearch](https://leansearch.net/), which can also be used in the browser, and so need an internet connection. Loogle is exact when the form of the statement is known; LeanSearch helps when one does not know the words Mathlib uses. More on searching, the documentation of Mathlib and where to ask is in {ref "navigating-mathlib"}[Navigating Mathlib].
-
 # The universe hierarchy
 %%%
 tag := "type-universes"

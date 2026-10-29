@@ -77,9 +77,10 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `1-Lean/5-a-Typeclasses` | 1.5 | 6 | yes |
 | `1-Lean/5-b-Coercions` | 1.5 | 6 | yes |
 | `1-Lean/6-a-Notation` | 1.6 | 7 | yes |
+| `2-Mathematics/0-a-Search` | — | 8 | yes |
 | `2-Mathematics/1-a-Sets` | 2.1 | 8 | yes |
 | `2-Mathematics/1-b-ImagePreimage` | 2.1 | 8 | yes |
-| `2-Mathematics/1-c-Functions` | 2.1 | 8 | yes |
+| `2-Mathematics/1-c-Functions` | 2.1 | 9 | yes |
 | `2-Mathematics/2-a-Axioms` | 2.2 | 9 | yes |
 | `2-Mathematics/3-a-WellFoundedness` | 2.3 | 9 | yes |
 | `2-Mathematics/4-a-Orders` | 2.4 | 11 | yes |
@@ -94,7 +95,7 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `4-Appendix/b-Conv` | Appendix | 10 | yes |
 | `9-Extra/a-Puzzles` | — | 5 | yes |
 
-Every sheet has a witness: 35 of 35, all sorry-free apart from the
+Every sheet has a witness: 36 of 36, all sorry-free apart from the
 one deliberate `sorry` on `L-a`, where finding the unprovable
 statement is the exercise.
 

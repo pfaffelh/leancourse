@@ -35,8 +35,8 @@ Kontext, ohne Lean.
 | 5 | 16.11. | 18.11. | Typen III: die Regeln, `Prop` | 1.4 | L-g, 1.2-c, 1.3-a, 1.3-b · *extra:* X-a | |
 | 6 | 23.11. | 25.11. | Typklassen | 1.5 | 1.5-a, 1.5-b | |
 | 7 | 30.11. | 02.12. | Notation *(Vorlesung offen)* | 1.6 | 1.3-c, 1.4-a, 1.6-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Mengen und Typen; Fundiertheit | 2.1, 2.3 | 2.1-a, 2.1-b, 2.1-c | |
-| 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.2-a, 2.3-a | **Test 3** |
+| 8 | 07.12. | 09.12. | Mengen und Typen; Fundiertheit | 2.1, 2.3 | 2.0-a, 2.1-a, 2.1-b | |
+| 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.1-c, 2.2-a, 2.3-a | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Anhang | A-a, A-b | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
 | 11 | 11.01. | 13.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 2.4-a, 2.5-a | |
@@ -45,7 +45,7 @@ Kontext, ohne Lean.
 | 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 2.8-a | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 2.9-a, 2.9-b | **Test 5** |
 
-35 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. `A-a` und
+36 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. `A-a` und
 `A-b` laufen als Ferienaufgabe über die Pause.
 
 Zwei Kapitelpaare teilen sich einen Termin: 2.1+2.3 (W8), 2.4+2.5
@@ -77,6 +77,9 @@ Ein Blatt heißt nach seinem Kapitel: `1.1-a` bis `1.1-c` zu Kapitel
 `Exercises/1-Lean/1-a-NatRec.lean`,
 `Exercises/2-Mathematics/6-b-Filters.lean`. `L-a` bis `L-g` ist der
 Logikblock ohne Kapitel, `A-a`/`A-b` der Anhang, `X-a` das Extrablatt.
+`2.0-a` (Suchen in Mathlib: `exact?`, `rw?`, `apply?`, Namen,
+`#loogle`) eröffnet den Mathematikteil und hat kein Kapitel; der
+Abschnitt *Finding theorems* in 1.2 ist dafür am 29.10. entfallen.
 
 Kein Blatt läuft vor seinem Kapitel. Der Logikblock `L-b` bis `L-g`
 läuft in den Wochen 2 bis 5 und damit vor seiner Theorie (1.3 und
@@ -113,8 +116,8 @@ Elimination werden gelesen, nicht geübt; die Universen stehen auf
 Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
 `1.1-b`, `2.9-a`).
 
-`2.3-a` (Kapitel 2.3, gelesen in Woche 8) liegt in Woche 9, damit
-Woche 8 nicht vier Blätter hat. Beweisirrelevanz steht seit 29.10.
+`2.1-c` und `2.3-a` (Kapitel 2.1 und 2.3, gelesen in Woche 8)
+liegen in Woche 9, damit Woche 8 nicht vier Blätter hat. Beweisirrelevanz steht seit 29.10.
 auf `2.2-a`.
 `1.6-a` hat nur eine Aufgabe und ist eher ein Leseblatt.
 

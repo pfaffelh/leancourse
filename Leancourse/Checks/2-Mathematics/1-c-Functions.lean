@@ -3,7 +3,7 @@ import Mathlib.Tactic
 /-!
 # (witness) 2.1-c -- Injective and surjective functions
 
-*Notes chapter 2.1, week 8.*
+*Notes chapter 2.1, week 9.*
 -/
 
 open Function

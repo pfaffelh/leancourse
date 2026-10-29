@@ -2677,3 +2677,26 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   cluster point, connected vs. preconnected) und 2.8 (Konstruktion
   des Integrals, `SigmaFinite`).
 
+
+## 2026-10-29 (4) -- Suchen gehoert ins Blatt: `2.0-a`, *Finding theorems* aus 1.2 raus
+
+- Der Abschnitt *Finding theorems* (tag `finding-theorems`) in 1.2 ist
+  geloescht; niemand verwies darauf. Die Referenz bleibt der Anhang
+  *Navigating Mathlib*.
+- Neu `2.0-a` (`Exercises/2-Mathematics/0-a-Search.lean`, Woche 8,
+  Zeuge in `Checks/`), 20 Aufgaben. Kein Kapitel, eroeffnet den
+  Mathematikteil. Teile: `exact?` und seine Antwort lesen; wenn
+  `exact?` scheitert (zwei Schritte, falsche Aussage
+  `√x ^ 2 = x` ohne `0 ≤ x`); `rw?` (fuehrt den *ersten* Treffer aus,
+  der oft falsch ist -- bei `exp (2x) = exp x ^ 2` ist es
+  `Real.exp_mul`); Namen raten; `apply?` (Liste lang, `mul_pos` steht
+  etwa an 20. Stelle); `#loogle`/`#leansearch` (auskommentiert, brauchen
+  Netz), Zwischenwertsatz ueber `intermediate_value_Icc`.
+- Damit Woche 8 bei drei Blaettern bleibt, liegt `2.1-c` jetzt in
+  Woche 9 (`2.1-c`, `2.2-a`, `2.3-a`). 36 Pflichtblaetter.
+- Gemessen (v4.34): `add_pos` ist verallgemeinert zu
+  `b < c → 0 < a → b < c + a` -- als Namensbeispiel ungeeignet. Der
+  alte Name `abs_add` existiert nicht mehr (`abs_add_le`).
+  `exact?` scheitert an `0 < x ^ 2 + 1` und am Zwischenwertsatz.
+- Ueberschneidung: `A-a` Teil B (Lemmata finden) deckt sich jetzt
+  teilweise mit `2.0-a`; nicht angefasst.

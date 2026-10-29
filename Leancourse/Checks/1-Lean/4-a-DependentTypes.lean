@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) 1.4-a -- Dependent types
 
-*Notes chapters 1.2 and 1.4, week 5.*
+*Notes chapters 1.2 and 1.4, week 6.*
 -/
 
 /- ## Part 1: Sigma types -/

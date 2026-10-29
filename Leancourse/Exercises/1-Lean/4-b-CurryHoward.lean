@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # 1.4-b -- Proofs as terms
 
-*Notes chapter 1.4, week 5.*
+*Notes chapter 1.4, week 6.*
 
 A proof is a term, and most of the tactics from the logic sheets
 only build one step by step. On this sheet you write the terms

@@ -31,10 +31,10 @@ Kontext, ohne Lean.
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | L-a | |
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | L-b, L-c, 1.1-a | |
 | 3 | 02.11. | 04.11. | Typen und Terme I: Universen, Funktionen, induktive Typen, Strukturen | 1.2 | L-d, 1.2-a, 1.1-b | |
-| 4 | 09.11. | 11.11. | Pattern Matching und Rekursion | 1.3 | L-e, L-f, 1.1-c, 1.3-a | **Test 1** |
-| 5 | 16.11. | 18.11. | Typen und Terme II: Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-g, 1.2-b, 1.4-a, 1.4-b · *extra:* X-a | |
-| 6 | 23.11. | 25.11. | Typen III: die Regeln, `Prop` | 1.5 | 1.4-c, 1.5-a | |
-| 7 | 30.11. | 02.12. | Typklassen; Notation | 1.6, 1.7 | 1.6-a, 1.6-b, 1.7-a | **Test 2** |
+| 4 | 09.11. | 11.11. | Pattern Matching und Rekursion | 1.3 | L-e, L-f, 1.1-c | **Test 1** |
+| 5 | 16.11. | 18.11. | Typen und Terme II: Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-g, 1.2-b, 1.3-a · *extra:* X-a | |
+| 6 | 23.11. | 25.11. | Typen III: die Regeln, `Prop` | 1.5 | 1.4-a, 1.4-b, 1.5-a | |
+| 7 | 30.11. | 02.12. | Typklassen; Notation | 1.6, 1.7 | 1.4-c, 1.6-a, 1.6-b, 1.7-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen und Typen; Fundiertheit | 2.1, 2.3 | 2.0-a, 2.1-a, 2.1-b | |
 | 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.1-c, 2.2-a, 2.3-a | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Anhang | A-a, A-b | |
@@ -64,7 +64,10 @@ die Junktoren als Typen und Taktik-/Termmodus stehen in 1.4
 Seit dem 29.10.2026 ist *Pattern Matching und Rekursion* ein eigenes
 Kapitel 1.3 (vorher der letzte Teil von 1.2, der damit auf 922
 Skriptzeilen kam). Es nimmt die Vorlesung, die am 30.11. frei war;
-alle späteren Kapitel von Teil 1 rücken eine Woche nach.
+alle späteren Kapitel von Teil 1 rücken eine Woche nach. Die Blätter
+der Wochen 4 bis 6 sind danach so verteilt, dass keine Übung mehr als
+rund 50 Aufgaben hat (W4 vorher 54 plus Test 1, W5 vorher 70): `1.3-a`
+läuft in W5, `1.4-a`/`1.4-b` in W6, `1.4-c` in W7.
 
 Skriptzeilen je Termin: Mittel 474, Spanne 330 (W2) bis 768 (W15).
 Woche 11 ist zugleich die schwerste Übungswoche (67 Aufgaben, `2.4-a`

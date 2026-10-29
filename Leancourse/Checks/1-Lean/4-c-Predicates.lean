@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) 1.4-c -- Inductive predicates and a quotient
 
-*Notes chapter 1.4, week 6.*
+*Notes chapter 1.4, week 7.*
 
 Two type formers in practice: a predicate defined by rules, and the
 integers as a quotient of `ℕ × ℕ`. Read *Indexed families and

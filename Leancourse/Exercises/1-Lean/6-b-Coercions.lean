@@ -1,14 +1,14 @@
 import Mathlib
 
 /-!
-# 1.5-b -- Coercions and casts
+# 1.6-b -- Coercions and casts
 
-*Notes chapter 1.5, week 6.*
+*Notes chapter 1.6, week 7.*
 
 In mathematics a natural number *is* an integer. In Lean `ℕ` and `ℤ`
 are different types, and moving between them is a *coercion*, written
 `↑`. Coercions are instances, so instance resolution inserts them --
-this is the same machinery as on sheet `1.5-a`, applied to the thing
+this is the same machinery as on sheet `1.6-a`, applied to the thing
 you will trip over most often.
 
 Three classes do three different jobs, and the chapter calls them
@@ -46,7 +46,7 @@ example (n : ℕ) : ℤ := (n : ℤ)  -- and again, as an ascription
 The ordinary case. A subtype `{n : ℕ // n > 0}` is the type of
 natural numbers carrying a proof that they are positive; it coerces
 to `ℕ` by forgetting that proof. Subtypes in their own right are
-chapter 1.3 and sheet `1.3-a` -- here they are only the most
+chapter 1.4 and sheet `1.4-a` -- here they are only the most
 convenient example of a coercion.
 -/
 

@@ -31,7 +31,7 @@ namespace SlidesTypeFormers
 
 # Types and terms II
 
-Lean and its type theory — chapter 3: pairs, subtypes, families, quotients
+Lean and its type theory — chapter 4: pairs, subtypes, families, quotients
 
 :::class "key"
 Each type former again in four steps: formation, construction, use, computation.
@@ -422,7 +422,7 @@ This equation is the computation rule `Quot.lift f h (Quot.mk r a) ⟶ f a`.
 ::::
 
 :::class "key"
-Chapter 1.4 states these steps as the rules of Lean's type theory.
+Chapter 1.5 states these steps as the rules of Lean's type theory.
 :::
 
 # Some history

@@ -1,7 +1,7 @@
 import Mathlib
 
 /-!
-# 1.2-c -- Structures and `Fin`
+# 1.2-b -- Structures and `Fin`
 
 *Notes chapter 1.2, week 5.*
 

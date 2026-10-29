@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# 1.5-a -- Typeclasses
+# (witness) 1.6-a -- Typeclasses
 
-*Notes chapter 1.5, week 6.*
+*Notes chapter 1.6, week 7.*
 
 A `class` is a `structure` that Lean finds for you. You never pass an
 instance by hand: you write `[Add α]` in the signature, and *instance
@@ -42,14 +42,12 @@ instance : MyAdd ℕ where
 
 -- Exercise 1) Register `||` as the `MyAdd` of `Bool`.
 instance : MyAdd Bool where
-  myAdd a b := sorry
+  myAdd a b := a || b
 
 -- Exercise 2) Both of these hold by reduction.
-example : MyAdd.myAdd (2 : ℕ) 3 = 5 := by
-  sorry
+example : MyAdd.myAdd (2 : ℕ) 3 = 5 := rfl
 
-example : MyAdd.myAdd true false = true := by
-  sorry
+example : MyAdd.myAdd true false = true := rfl
 
 /-! ## `Inhabited`
 
@@ -61,11 +59,9 @@ sheets: without it, `∃ x, P x` has no witness to offer. -/
 
 -- Exercise 3) What is the chosen natural number, and the chosen
 -- Boolean? Guess first, then prove it.
-example : (default : ℕ) = 0 := by
-  sorry
+example : (default : ℕ) = 0 := rfl
 
-example : (default : Bool) = false := by
-  sorry
+example : (default : Bool) = false := rfl
 
 structure Point where
   x : ℤ
@@ -73,19 +69,17 @@ structure Point where
 deriving Repr, DecidableEq
 
 -- Exercise 4) Make the origin the default point.
-instance : Inhabited Point := sorry
+instance : Inhabited Point := ⟨⟨0, 0⟩⟩
 
-example : (default : Point) = ⟨0, 0⟩ := by
-  sorry
+example : (default : Point) = ⟨0, 0⟩ := rfl
 
 -- Exercise 5) Apply `f` twice to the default element. The instance
 -- argument `[Inhabited α]` is what makes `default` available.
 def twice (f : α → α) [Inhabited α] : α :=
-  sorry
+  f (f default)
 
--- Once it works, `twice (fun n => n + 3)` is `6`, because the
--- default `ℕ` is `0`.
--- #eval twice (fun n : ℕ => n + 3)
+-- `twice (fun n => n + 3) = 6`, because the default `ℕ` is `0`.
+#eval twice (fun n : ℕ => n + 3)
 
 /-! ## Instances that need other instances
 
@@ -101,23 +95,22 @@ instance : MyPointed ℕ := ⟨0⟩
 
 -- Exercise 6) A pair is pointed if both components are.
 instance [MyPointed α] [MyPointed β] : MyPointed (α × β) :=
-  sorry
+  ⟨(MyPointed.pt, MyPointed.pt)⟩
 
 -- Exercise 7) `Option α` is pointed for *every* `α`, with no
 -- hypothesis at all. Which element do you take?
-instance : MyPointed (Option α) := sorry
+instance : MyPointed (Option α) := ⟨none⟩
 
 -- Exercise 8) A function type `α → β` is pointed as soon as `β` is.
 -- Why is nothing needed about `α`?
 instance [MyPointed β] : MyPointed (α → β) :=
-  sorry
+  ⟨fun _ => MyPointed.pt⟩
 
 -- Exercise 9) Lean now assembles three instances into one. Run
 -- `#synth` and read off which ones.
 #synth MyPointed (ℕ × Option ℕ)
 
-example : (MyPointed.pt : ℕ × ℕ) = (0, 0) := by
-  sorry
+example : (MyPointed.pt : ℕ × ℕ) = (0, 0) := rfl
 
 /-! ## `Decidable`
 
@@ -129,12 +122,10 @@ the answer is `isTrue`. -/
 #check (inferInstance : Decidable (2 + 3 = 5))
 
 -- Exercise 10)
-example : (2 : ℕ) ∣ 10 := by
-  sorry
+example : (2 : ℕ) ∣ 10 := by decide
 
 -- Exercise 11) `decide` also proves negations.
-example : ¬ ((3 : ℕ) ∣ 10) := by
-  sorry
+example : ¬ ((3 : ℕ) ∣ 10) := by decide
 
 /-! A `Decidable P` instance returns one of two constructors:
 `isTrue h` with a proof `h : P`, or `isFalse h` with a proof
@@ -144,7 +135,9 @@ example : ¬ ((3 : ℕ) ∣ 10) := by
 -- has to supply the proof: `rfl` in one, `Nat.succ_ne_zero` in the
 -- other.
 def decZero (n : ℕ) : Decidable (n = 0) :=
-  sorry
+  match n with
+  | 0     => isTrue rfl
+  | m + 1 => isFalse (Nat.succ_ne_zero m)
 
 /-! ## `DecidableEq` and `if`
 
@@ -154,17 +147,15 @@ the program knows which branch to take. For your own type, the
 
 -- Exercise 13) Halve a number, but map `0` to `0`.
 def half (n : ℕ) : ℕ :=
-  sorry
+  if n = 0 then 0 else n / 2
 
 -- Exercise 14) Two different points. `decide` runs the derived
 -- equality test.
-example : (⟨1, 2⟩ : Point) ≠ ⟨2, 1⟩ := by
-  sorry
+example : (⟨1, 2⟩ : Point) ≠ ⟨2, 1⟩ := by decide
 
 -- Exercise 15) Why does `decide` *not* work on the next goal,
 -- although it is obviously true? Prove it with one word instead.
-example (n : ℕ) : n = n := by
-  sorry
+example (n : ℕ) : n = n := rfl
 
 /-! ## When there is no algorithm
 
@@ -175,10 +166,12 @@ excluded middle and therefore proves, rather than computes. -/
 -- Exercise 16)
 example (n : ℕ) : n = 0 ∨ n ≠ 0 := by
   by_cases h : n = 0
-  · sorry
-  · sorry
+  · exact Or.inl h
+  · exact Or.inr h
 
 -- Exercise 17) The same for an arbitrary proposition. Note that no
 -- `Decidable P` is in sight.
 example (P : Prop) : P ∨ ¬ P := by
-  sorry
+  by_cases h : P
+  · exact Or.inl h
+  · exact Or.inr h

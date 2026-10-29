@@ -19,7 +19,7 @@ tag := "rules"
 
 The two previous chapters built types and their terms: {ref "types"}[functions, structures and inductive types], then {ref "type-formers"}[pairs, subtypes, families and quotients]. Each type former came in four steps: formation, construction, use and computation ({ref "four-steps"}[The four steps at a glance]). This chapter states these steps as the rules that decide which terms Lean accepts. In the language of type theory they are the *formation*, *introduction*, *elimination* and *computation* rules.
 
-The [slides](slides/1-4-rules/) for this chapter follow it section by section.
+The [slides](slides/1-5-rules/) for this chapter follow it section by section.
 
 # The rules of Lean's type theory
 %%%

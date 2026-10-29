@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "notation"
 %%%
 
-The [slides](slides/1-6-notation/) for this chapter follow it section by section.
+The [slides](slides/1-7-notation/) for this chapter follow it section by section.
 
 # Defining new notation
 %%%

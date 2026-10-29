@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# 1.4-a -- Predicates and equality
+# 1.5-a -- Predicates and equality
 
-*Notes chapter 1.4, week 7.*
+*Notes chapter 1.5, week 6.*
 
 The setting is the one of sheet `1.2-a` (week 3): a type `α` and
 predicates on it. New here is equality — between terms, and between
@@ -137,7 +137,7 @@ example : ∃ (f g : α → Bool), ∀ x, xor (f x) (g x) := by
   sorry
 
 -- Exercise 6) Turning a `∀ x, ∃ y` into a function is exactly what
--- `choose` does; it uses the axiom of choice (chapters 1.4, 2.2).
+-- `choose` does; it uses the axiom of choice (chapters 1.5, 2.2).
 example : (∀ (x : α), ∃ (y : α), R x y) →
     ∃ (f : α → α), ∀ (x : α), R x (f x) := by
   sorry

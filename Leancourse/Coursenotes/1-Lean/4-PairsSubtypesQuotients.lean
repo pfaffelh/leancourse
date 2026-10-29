@@ -15,9 +15,9 @@ htmlSplit := .never
 tag := "type-formers"
 %%%
 
-The {ref "types"}[previous chapter] treated function types, inductive types and structures. This chapter treats dependent pairs and subtypes, whose terms bundle a value with data or a proof about it. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; the logical connectives, which are these type formers with values in `Prop`; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
+{ref "types"}[Chapter 1.2] treated function types, inductive types and structures. This chapter treats dependent pairs and subtypes, whose terms bundle a value with data or a proof about it. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; the logical connectives, which are these type formers with values in `Prop`; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
 
-The [slides](slides/1-3-pairs-subtypes-quotients/) for this chapter follow it section by section.
+The [slides](slides/1-4-pairs-subtypes-quotients/) for this chapter follow it section by section.
 
 # Pairs and Σ-types
 %%%
@@ -123,7 +123,7 @@ A subtype is closely related to, but distinct from, a *set* `s : Set α`: a set 
 tag := "type-families"
 %%%
 
-A *type family* is a function that returns a type, such as `Fin : ℕ → Type`. It is not a type former of its own but a function in the sense of the {ref "pi-types"}[previous chapter], whose values are types. The codomain of a Π-type and the second component of a Σ-type are type families:
+A *type family* is a function that returns a type, such as `Fin : ℕ → Type`. It is not a type former of its own but a function in the sense of {ref "pi-types"}[chapter 1.2], whose values are types. The codomain of a Π-type and the second component of a Σ-type are type families:
 
 ```lean
 -- A simple type family indexed by Bool
@@ -188,7 +188,7 @@ inductive Vec (α : Type) : ℕ → Type where
   | cons {n : ℕ} (a : α) (v : Vec α n) : Vec α (n + 1)
 ```
 
-The two arguments play different roles. `α`, written before the colon, is a *parameter*: it is the same in every constructor, and every constructor returns a `Vec α _`. The `ℕ` after the colon is an *index*: each constructor chooses its value, `nil` the index `0` and `cons` the index `n + 1`. `MyOption α` in the {ref "inductive"}[previous chapter] had a parameter and no index.
+The two arguments play different roles. `α`, written before the colon, is a *parameter*: it is the same in every constructor, and every constructor returns a `Vec α _`. The `ℕ` after the colon is an *index*: each constructor chooses its value, `nil` the index `0` and `cons` the index `n + 1`. `MyOption α` in {ref "inductive"}[chapter 1.2] had a parameter and no index.
 
 *Formation.* `Vec α n` is a type for every `α` and `n`; `Vec α : ℕ → Type` is a type family.
 
@@ -243,7 +243,7 @@ Mathlib defines `Even n` differently, as `∃ r, n = r + r`. But `≤` on `ℕ` 
 tag := "curry-howard"
 %%%
 
-A proposition `P : Prop` is a type, and a proof of `P` is a term `h : P`. A proposition is proved when a term of it has been built. The logical connectives are not added to Lean separately: they are the type formers of this chapter and the {ref "types"}[previous one], with values in `Prop`. This reading of propositions as types and proofs as terms is the *Curry-Howard correspondence* ({ref "types-history"}[Some history]).
+A proposition `P : Prop` is a type, and a proof of `P` is a term `h : P`. A proposition is proved when a term of it has been built. The logical connectives are not added to Lean separately: they are the type formers of this chapter and of {ref "types"}[chapter 1.2], with values in `Prop`. This reading of propositions as types and proofs as terms is the *Curry-Howard correspondence* ({ref "types-history"}[Some history]).
 
 ## Implication, negation, and `∀`
 %%%
@@ -292,7 +292,7 @@ tag := "conjunction-product"
 number := false
 %%%
 
-`P ∧ Q` is notation for `And P Q`, the {ref "structures"}[structure] with two proof fields from the previous chapter.
+`P ∧ Q` is notation for `And P Q`, the {ref "structures"}[structure] with two proof fields from chapter 1.2.
 
 *Formation.* `P ∧ Q`. *Construction.* `⟨hP, hQ⟩`, short for `And.intro hP hQ`. *Use.* The projections `h.1` and `h.2`, also `h.left` and `h.right`. *Computation.* `⟨hP, hQ⟩.1` reduces to `hP`. It is the product `α × β`, for propositions.
 
@@ -302,7 +302,7 @@ tag := "disjunction-sum"
 number := false
 %%%
 
-`P ∨ Q` is notation for `Or P Q`, the inductive type with two constructors from the {ref "inductive"}[previous chapter].
+`P ∨ Q` is notation for `Or P Q`, the inductive type with two constructors from {ref "inductive"}[chapter 1.2].
 
 *Formation.* `P ∨ Q`. *Construction.* `Or.inl hP` from `hP : P`, or `Or.inr hQ` from `hQ : Q`. *Use.* Pattern matching with one branch per constructor, also available as `Or.elim`; in tactic mode `obtain hP | hQ := h`. *Computation.* A match on a constructor takes its branch.
 
@@ -350,7 +350,7 @@ def bigSeven : {n : ℕ // n > 5} := ⟨7, by decide⟩
 #eval bigSeven.val   -- 7
 ```
 
-Counting makes the difference visible. Any two proofs of a proposition are equal, so a proposition counts as 0 if false and 1 if true. The Σ-type has $`\sum_x |P(x)|` elements, one for each witness. `∃ x, P x` keeps only whether this sum is positive, that is, whether *some* `P x` holds. In the same way $`\prod_x |P(x)|` is positive exactly if *every* `P x` holds, which is `∀`. `∃` is the *propositional truncation* of the Σ-type: it forgets which witness was given. Getting a witness back needs the axiom of choice ({ref "rules"}[chapter 1.4]).
+Counting makes the difference visible. Any two proofs of a proposition are equal, so a proposition counts as 0 if false and 1 if true. The Σ-type has $`\sum_x |P(x)|` elements, one for each witness. `∃ x, P x` keeps only whether this sum is positive, that is, whether *some* `P x` holds. In the same way $`\prod_x |P(x)|` is positive exactly if *every* `P x` holds, which is `∀`. `∃` is the *propositional truncation* of the Σ-type: it forgets which witness was given. Getting a witness back needs the axiom of choice ({ref "rules"}[chapter 1.5]).
 
 Use `∃` when only the existence matters, which is the usual case in mathematics, and a subtype when the witness is needed.
 
@@ -483,7 +483,7 @@ tag := "reals-quotient"
 number := false
 %%%
 
-In analysis, `ℝ` is the completion of `ℚ`: a real number is given by a Cauchy sequence of rationals, and two Cauchy sequences give the same real number if their difference tends to `0`. Mathlib builds `ℝ` in exactly this way, in three steps, each a type former of this chapter or the previous one.
+In analysis, `ℝ` is the completion of `ℚ`: a real number is given by a Cauchy sequence of rationals, and two Cauchy sequences give the same real number if their difference tends to `0`. Mathlib builds `ℝ` in exactly this way, in three steps, each a type former of this chapter or of chapter 1.2.
 
 *Cauchy sequences: a subtype.* `CauSeq ℚ abs` is `{f : ℕ → ℚ // IsCauSeq abs f}`, a sequence of rationals together with a proof that it is Cauchy for the absolute value `abs`.
 

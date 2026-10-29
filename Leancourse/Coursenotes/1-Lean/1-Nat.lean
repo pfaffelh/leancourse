@@ -188,7 +188,7 @@ Recognizing when a goal is "true by reduction" — and therefore closed by `rfl`
 
 ::::keepEnv
 :::example "Reducibility, weak head normal form, and decidability"
-How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[reducible]` definition is unfolded freely, an ordinary `def` is unfolded on demand, and an `@[irreducible]` one is left folded. And the kernel usually does not reduce all the way to a *normal form*; it stops at *weak head normal form* (WHNF) — just far enough to expose the outermost constructor or binder — which is all that comparing two terms requires. On the terms that occur in practice this terminates, so `rfl` and the type checker give an answer. In full generality definitional equality in Lean is undecidable, and the checker is sound but incomplete: there are equal terms on which it fails ({ref "type-rules"}[Conversion] in the next chapter). The counterexamples are constructed and need `Acc.rec`, the recursor of well-founded recursion, on proofs.
+How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[reducible]` definition is unfolded freely, an ordinary `def` is unfolded on demand, and an `@[irreducible]` one is left folded. And the kernel usually does not reduce all the way to a *normal form*; it stops at *weak head normal form* (WHNF) — just far enough to expose the outermost constructor or binder — which is all that comparing two terms requires. On the terms that occur in practice this terminates, so `rfl` and the type checker give an answer. In full generality definitional equality in Lean is undecidable, and the checker is sound but incomplete: there are equal terms on which it fails ({ref "type-rules"}[Conversion] in chapter 1.5). The counterexamples are constructed and need `Acc.rec`, the recursor of well-founded recursion, on proofs.
 :::
 ::::
 
@@ -246,11 +246,11 @@ def myNot : Bool → Bool
 example : myNot false = true := rfl
 ```
 
-Lean translates such a definition into the recursor, so on constructors it reduces just as `Bool.rec` does. Pattern matching works for every inductive type, including recursive ones like `Nat`; it is treated in detail in {ref "pattern-matching"}[the next chapter].
+Lean translates such a definition into the recursor, so on constructors it reduces just as `Bool.rec` does. Pattern matching works for every inductive type, including recursive ones like `Nat`; it is treated in detail in {ref "pattern-matching"}[chapter 1.3].
 
 ::::keepEnv
 :::example "How `bif` is defined under the hood"
-Internally, Lean does not build runnable definitions from `Bool.rec` directly — the code generator cannot compile a bare recursor, whereas it *can* compile a `match`. So `bif` is not primitive: it is notation for a function `cond`, which does the actual branching with a `match` (the inline form of pattern matching, see {ref "pattern-matching"}[the next chapter]):
+Internally, Lean does not build runnable definitions from `Bool.rec` directly — the code generator cannot compile a bare recursor, whereas it *can* compile a `match`. So `bif` is not primitive: it is notation for a function `cond`, which does the actual branching with a `match` (the inline form of pattern matching, see {ref "pattern-matching"}[chapter 1.3]):
 
 ```
 -- the underlying function, defined by matching on `c`:

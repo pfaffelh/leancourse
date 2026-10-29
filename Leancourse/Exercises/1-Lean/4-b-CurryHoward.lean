@@ -1,13 +1,13 @@
 import Mathlib
 
 /-!
-# 1.3-b -- Proofs as terms
+# 1.4-b -- Proofs as terms
 
-*Notes chapter 1.3, week 5.*
+*Notes chapter 1.4, week 5.*
 
 A proof is a term, and most of the tactics from the logic sheets
 only build one step by step. On this sheet you write the terms
-yourself, without `by`. Read *Propositions as types* in chapter 1.3
+yourself, without `by`. Read *Propositions as types* in chapter 1.4
 first.
 
 ## Introduced here

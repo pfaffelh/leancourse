@@ -35,7 +35,7 @@ proposition `P x`.
 For `∃` to say anything we need `α` to have at least one element.
 `[Inhabited α]` above guarantees that, and names the element
 `default`. The square brackets are a *typeclass* argument, chapter
-1.5 and sheet `1.5-a`; here you need nothing beyond the name. -/
+1.6 and sheet `1.6-a`; here you need nothing beyond the name. -/
 
 /-! ## `∀` in the goal
 

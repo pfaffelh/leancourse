@@ -1,14 +1,14 @@
 import Mathlib
 
 /-!
-# 1.3-c -- Inductive predicates and a quotient
+# 1.4-c -- Inductive predicates and a quotient
 
-*Notes chapter 1.3, week 7.*
+*Notes chapter 1.4, week 6.*
 
 Two type formers in practice: a predicate defined by rules, and the
 integers as a quotient of `ℕ × ℕ`. Read *Indexed families and
-inductive predicates* and *Quotient types* in chapter 1.3 first.
-Structures are on sheet `1.2-c`.
+inductive predicates* and *Quotient types* in chapter 1.4 first.
+Structures are on sheet `1.2-b`.
 
 ## Introduced here
 

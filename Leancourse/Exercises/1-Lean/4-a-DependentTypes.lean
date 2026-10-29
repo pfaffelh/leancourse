@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# 1.3-a -- Dependent types
+# 1.4-a -- Dependent types
 
-*Notes chapters 1.2 and 1.3, week 5.*
+*Notes chapters 1.2 and 1.4, week 5.*
 
 A type may depend on a value. `Σ (x : α), β x` pairs a value with
 data whose type depends on it, `(x : α) → β x` is the function
@@ -12,7 +12,7 @@ component is a proof.
 
 Universes appear here too; they were introduced in chapter 1.2.
 The axioms `propext` and `Classical.choice` are listed in chapter
-1.4 and treated in chapter 2.2, with their own sheet `2.2-a` in
+1.5 and treated in chapter 2.2, with their own sheet `2.2-a` in
 week 9; `funext` is a theorem. One exercise below needs choice; it is marked.
 
 ## Notation introduced here

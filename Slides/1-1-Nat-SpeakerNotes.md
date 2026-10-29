@@ -103,7 +103,7 @@ file then checks instantly). Most demos below are one line to type.
 - Pattern matching, `cases`, `induction` all compile down to `Nat.rec`.
 - The general form lets the result *type* depend on `n`
   (`motive : Nat → Sort u`) — that is what makes it the induction
-  principle. Needs universes, comes in 1.2. Today: fixed `C`.
+  principle. Needs universes, comes in 1.3. Today: fixed `C`.
 - **[Hintergrund]** The full signature, if someone runs `#check @Nat.rec`:
   `{motive : Nat → Sort u} → motive zero → ((n : Nat) → motive n → motive (n+1)) → (t : Nat) → motive t`.
   With `motive := fun _ => C` this is the slide's version; with
@@ -193,7 +193,7 @@ file then checks instantly). Most demos below are one line to type.
   does the rest (δ, ι).
 - η: the one people doubt. **Ask before showing:** should
   `fun x => f x` and `f` be equal? Opinions split. Lean says yes, by
-  definition — and `funext` (chapter 1.4, *Axioms*) is the propositional
+  definition — and `funext` (chapter 1.5, *Axioms*) is the propositional
   version for functions that agree on every input.
 
 ---
@@ -203,7 +203,7 @@ file then checks instantly). Most demos below are one line to type.
 - The three rules Lean adds on top of the lambda calculus.
 - δ: `twice 3` unfolds to `2 * 3`, then computes.
 - ι: `motive` has to be given explicitly here because nothing in the
-  goal determines it. Wave at it and move on — explanation in 1.2.
+  goal determines it. Wave at it and move on — explanation in 1.3.
 - ζ: `let` substitutes.
 - **Blue line:** `rfl` is far stronger than "syntactically identical".
 - One more worth running: `example : List.length [7, 8, 9] = 3 := rfl`.
@@ -272,7 +272,7 @@ file then checks instantly). Most demos below are one line to type.
   thesis (2019). Reduction is not even strongly normalizing (Abel and
   Coquand, 2020). The kernel's algorithm is sound but incomplete; in
   practice nobody hits the gap. The course notes say the same (box in
-  1.1, *Conversion* in 1.2).
+  1.1, *Conversion* in 1.5).
 - **[Hintergrund]** "Terminates" is also the theory. In practice `rfl`
   and `decide` can time out (`maximum recursion depth` /
   `deterministic timeout`) on terms that are large in unary form; the
@@ -299,7 +299,7 @@ file then checks instantly). Most demos below are one line to type.
     the code generator cannot compile a bare recursor. The chapter has
     it in a collapsible box.
   - `bif` takes a `Bool`; `if … then … else` takes a `Prop` together
-    with a `Decidable` instance. Typeclasses are chapter 1.5; just say
+    with a `Decidable` instance. Typeclasses are chapter 1.6; just say
     "two different ifs" if asked.
 
 ---
@@ -311,7 +311,7 @@ file then checks instantly). Most demos below are one line to type.
 - Everything they will actually write looks like this, not like a call
   to the recursor. The sheet `1.1-a` forbids it on purpose, so they see
   once what is underneath.
-- Details in chapter 1.2 (*Pattern matching*).
+- Details in chapter 1.3 (*Pattern matching*).
 - Can be cut if short of time; slide 14 already makes the point.
 
 ---
@@ -321,7 +321,7 @@ file then checks instantly). Most demos below are one line to type.
 - First: `Prop` itself is **not** an inductive type. No declaration, no
   definition to unfold — `#print Prop` fails. It is `Sort 0`, a
   primitive of the kernel. The rules it carries (proof irrelevance and
-  the rest) come in 1.2.
+  the rest) come in 1.5.
 - `True` *is* inductive, in `Prop`: one constructor `True.intro`, no
   argument. So `True.intro` is a proof of `True`.
 - Three proofs on the slide:

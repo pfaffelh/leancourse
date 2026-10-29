@@ -2723,3 +2723,35 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   `Fin.ofNat`.
 - **Abbildungen in zurueckgehaltenen Kapiteln ohne `tag`**: sonst
   bricht `strip_unreleased.py --check` ab ("would lose tags").
+
+## 2026-10-29 (5) -- Rekursion als eigenes Kapitel 1.3
+
+- 1.2 war auf 922 Skriptzeilen (5 856 Woerter, 31 Folien) gewachsen,
+  44 % davon *Pattern matching and recursion*. Der Block ist jetzt
+  Kapitel 1.3 `3-PatternMatchingRecursion.lean` (tag
+  `pattern-matching-and-recursion`, vorher Abschnitts-Tag), mit den
+  Abschnitten Pattern matching / Recursion and termination / Proving
+  things about recursive definitions / The recursor / Strict
+  positivity (Tags unveraendert). Es importiert das 1.2-Modul
+  (`MyNat`, `BinTree`, `Colour`, `MyOption`, `Point`).
+- Ein Satz zu `mutual` mit Link ins Reference Manual, sonst nichts
+  (Mathlib: 4 Mathematik-Dateien von 8 529 benutzen es).
+- Umnummeriert (`git mv`): Kapitel 1.3-1.6 -> 1.4-1.7, Decks gleich,
+  URLs `slides/1-3-pattern-matching-recursion/` (neu),
+  `1-4-pairs-subtypes-quotients/`, `1-5-rules/`, `1-6-typeclasses/`,
+  `1-7-notation/`. Das neue Deck importiert das Deck 1-2 und oeffnet
+  dessen Namespace `SlidesTypes` wieder (wegen `MyNat`).
+- Blaetter: `1.2-b` (Inductive) -> `1.3-a` (`3-a-Recursion`),
+  `1.2-c` -> `1.2-b`, `1.3-a/b/c` -> `1.4-a/b/c`, `1.4-a` -> `1.5-a`,
+  `1.5-a/b` -> `1.6-a/b`, `1.6-a` -> `1.7-a`; Zeugen in Lockstep.
+- Wochen: W4 Rekursion (1.3), W5 Paare/Subtypen (1.4), W6 Regeln
+  (1.5), W7 Typklassen und Notation (1.6, 1.7). Die freie Vorlesung
+  am 30.11. ist damit belegt. Blaetter W6: `1.4-c`, `1.5-a`; W7:
+  `1.6-a`, `1.6-b`, `1.7-a`. Test 2 (02.12.) liegt jetzt nach den
+  Typklassen statt nach den Regeln.
+- Relative Verweise ("previous chapter", "next chapter") in 1.1, 1.2
+  und 1.4 auf Nummern umgestellt, wo sich ihr Ziel verschoben hat.
+  Vorher schon falsch und mitkorrigiert: 1.1 verwies fuer
+  *Conversion* auf "the next chapter" (steht in den Regeln, jetzt
+  1.5); Folie 1-2 und die Nat-Sprechernotizen nannten 1.4 statt der
+  Regeln usw.

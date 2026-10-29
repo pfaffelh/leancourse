@@ -28,11 +28,11 @@ namespace SlidesRules
 
 # Types III: the rules
 
-Lean and its type theory — chapter 4
+Lean and its type theory — chapter 5
 
 # Four steps, four kinds of rule
 
-Chapters 1.2 and 1.3 described each type former in four steps. Type theory calls them:
+Chapters 1.2 and 1.4 described each type former in four steps. Type theory calls them:
 
 :::table +colHeaders +rowSeps
 *

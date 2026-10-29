@@ -1,16 +1,14 @@
 import Mathlib
 
 /-!
-# (witness) 1.2-b -- Inductive types, pattern matching, recursion
+# (witness) 1.3-a -- Pattern matching and recursion
 
-*Notes chapter 1.2, week 4.*
+*Notes chapter 1.3, week 4.*
 
 Sheet `1.1-a` defined functions on `ℕ` through the recursor. Here
 you declare types of your own and define functions on them by
-pattern matching: one branch for each constructor. Read the sections
-*Inductive types*, *Pattern matching*, *Recursion and termination*,
-*Proving things about recursive definitions* and *The recursor* of
-chapter 1.2 first.
+pattern matching: one branch for each constructor. Read *Inductive types*
+in chapter 1.2 and chapter 1.3 first.
 
 ## Introduced here
 

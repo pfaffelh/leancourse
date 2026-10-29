@@ -34,12 +34,14 @@ used without the other.
     {ref "nat"}[chapter]
   * [Types and terms I: functions, inductive types, structures](slides/1-2-functions-inductive-structures/) —
     {ref "types"}[chapter]
-  * [Types and terms II: pairs, subtypes, families, quotients](slides/1-3-pairs-subtypes-quotients/) —
+  * [Pattern matching and recursion](slides/1-3-pattern-matching-recursion/) —
+    {ref "pattern-matching-and-recursion"}[chapter]
+  * [Types and terms II: pairs, subtypes, families, quotients](slides/1-4-pairs-subtypes-quotients/) —
     {ref "type-formers"}[chapter]
-  * [Types III: the rules](slides/1-4-rules/) —
+  * [Types III: the rules](slides/1-5-rules/) —
     {ref "rules"}[chapter]
-  * [Typeclasses](slides/1-5-typeclasses/) — {ref "typeclasses"}[chapter]
-  * [Notation and abbreviations](slides/1-6-notation/) —
+  * [Typeclasses](slides/1-6-typeclasses/) — {ref "typeclasses"}[chapter]
+  * [Notation and abbreviations](slides/1-7-notation/) —
     {ref "notation"}[chapter]
 * [Filters in Mathlib](slides/2-6-filters/) — accompanies the
   {ref "filters"}[chapter on filters].
@@ -102,7 +104,7 @@ written at the start of the lab.
 * + 3
   + Mon 02.11.
   + Lecture
-  + Types and terms I: universes, functions, inductive types, structures, pattern matching
+  + Types and terms I: universes, functions, inductive types, structures
   + {ref "types"}[1.2]
 * + 3
   + Wed 04.11.
@@ -112,43 +114,43 @@ written at the start of the lab.
 * + 4
   + Mon 09.11.
   + Lecture
-  + Types and terms II: Σ, subtypes, type families, quotients
-  + {ref "type-formers"}[1.3]
+  + Pattern matching and recursion
+  + {ref "pattern-matching-and-recursion"}[1.3]
 * + 4
   + Wed 11.11.
   + Lab
   + *Test 1*, then sheets
-  + `L-e`, `L-f`, `1.1-c`, `1.2-b`
+  + `L-e`, `L-f`, `1.1-c`, `1.3-a`
 * + 5
   + Mon 16.11.
   + Lecture
-  + Types III: the rules, `Prop`
-  + {ref "rules"}[1.4]
+  + Types and terms II: Σ, subtypes, type families, quotients
+  + {ref "type-formers"}[1.4]
 * + 5
   + Wed 18.11.
   + Lab
   + Sheets
-  + `L-g`, `1.2-c`, `1.3-a`, `1.3-b`, extra `X-a`
+  + `L-g`, `1.2-b`, `1.4-a`, `1.4-b`, extra `X-a`
 * + 6
   + Mon 23.11.
   + Lecture
-  + Typeclasses
-  + {ref "typeclasses"}[1.5]
+  + Types III: the rules, `Prop`
+  + {ref "rules"}[1.5]
 * + 6
   + Wed 25.11.
   + Lab
   + Sheets
-  + `1.5-a`, `1.5-b`
+  + `1.4-c`, `1.5-a`
 * + 7
   + Mon 30.11.
   + Lecture
-  + Notation
-  + {ref "notation"}[1.6]
+  + Typeclasses; notation
+  + {ref "typeclasses"}[1.6], {ref "notation"}[1.7]
 * + 7
   + Wed 02.12.
   + Lab
   + *Test 2*, then sheets
-  + `1.3-c`, `1.4-a`, `1.6-a`
+  + `1.6-a`, `1.6-b`, `1.7-a`
 * + 8
   + Mon 07.12.
   + Lecture
@@ -325,7 +327,7 @@ tag := "notes-layout"
 
 The notes have six parts.
 
-* *Lean and its type theory*: the natural numbers and reduction, types, terms, typeclasses, propositions as types, dependent types and notation.
+* *Lean and its type theory*: the natural numbers and reduction; functions, inductive types and structures; pattern matching and recursion; pairs, subtypes, propositions as types and quotients; the rules of the type theory; typeclasses; notation.
 * *Mathematics*: sets and types, universes and axioms, well-foundedness, then the areas of *Mathlib* listed above. Pointers into the API, not full formalizations.
 * *Appendix*: the glossary of tactics (a longer list is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)), the structure of a Lean file, navigating *Mathlib*, common pitfalls, and small reference topics such as the diagnostic commands (`#print axioms`, `#find_home`, `#lint`).
 * *Projects*: five topics for the individual formalization projects, each with a description, a sketch of an implementation and references.

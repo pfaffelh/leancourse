@@ -2,10 +2,11 @@ import VersoSlides
 import Slides.«0-Introduction»
 import Slides.«1-1-Nat»
 import Slides.«1-2-FunctionsInductiveStructures»
-import Slides.«1-3-PairsSubtypesQuotients»
-import Slides.«1-4-Rules»
-import Slides.«1-5-Typeclasses»
-import Slides.«1-6-Notation»
+import Slides.«1-3-PatternMatchingRecursion»
+import Slides.«1-4-PairsSubtypesQuotients»
+import Slides.«1-5-Rules»
+import Slides.«1-6-Typeclasses»
+import Slides.«1-7-Notation»
 import Slides.«2-6-Filters»
 
 open VersoSlides
@@ -100,10 +101,11 @@ def main (args : List String) : IO UInt32 := do
     [ ("0-introduction",      fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«0-Introduction»)),
       ("1-1-nat",             fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-1-Nat»)),
       ("1-2-functions-inductive-structures", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-2-FunctionsInductiveStructures»)),
-      ("1-3-pairs-subtypes-quotients", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-3-PairsSubtypesQuotients»)),
-      ("1-4-rules",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-4-Rules»)),
-      ("1-5-typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-5-Typeclasses»)),
-      ("1-6-notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-Notation»)),
+      ("1-3-pattern-matching-recursion", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-3-PatternMatchingRecursion»)),
+      ("1-4-pairs-subtypes-quotients", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-4-PairsSubtypesQuotients»)),
+      ("1-5-rules",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-5-Rules»)),
+      ("1-6-typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-Typeclasses»)),
+      ("1-7-notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-7-Notation»)),
       ("2-6-filters",         fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-6-Filters»)) ]
   let mut code : UInt32 := 0
   for (name, run) in decks do

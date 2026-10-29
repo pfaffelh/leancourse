@@ -30,11 +30,11 @@ Kontext, ohne Lean.
 |---|---|---|---|---|---|---|
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | L-a | |
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | L-b, L-c, 1.1-a | |
-| 3 | 02.11. | 04.11. | Typen und Terme I: Universen, Funktionen, induktive Typen, Strukturen, Pattern Matching | 1.2 | L-d, 1.2-a, 1.1-b | |
-| 4 | 09.11. | 11.11. | Typen und Terme II: Σ, Subtypen, Typfamilien, Quotienten | 1.3 | L-e, L-f, 1.1-c, 1.2-b | **Test 1** |
-| 5 | 16.11. | 18.11. | Typen III: die Regeln, `Prop` | 1.4 | L-g, 1.2-c, 1.3-a, 1.3-b · *extra:* X-a | |
-| 6 | 23.11. | 25.11. | Typklassen | 1.5 | 1.5-a, 1.5-b | |
-| 7 | 30.11. | 02.12. | Notation *(Vorlesung offen)* | 1.6 | 1.3-c, 1.4-a, 1.6-a | **Test 2** |
+| 3 | 02.11. | 04.11. | Typen und Terme I: Universen, Funktionen, induktive Typen, Strukturen | 1.2 | L-d, 1.2-a, 1.1-b | |
+| 4 | 09.11. | 11.11. | Pattern Matching und Rekursion | 1.3 | L-e, L-f, 1.1-c, 1.3-a | **Test 1** |
+| 5 | 16.11. | 18.11. | Typen und Terme II: Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-g, 1.2-b, 1.4-a, 1.4-b · *extra:* X-a | |
+| 6 | 23.11. | 25.11. | Typen III: die Regeln, `Prop` | 1.5 | 1.4-c, 1.5-a | |
+| 7 | 30.11. | 02.12. | Typklassen; Notation | 1.6, 1.7 | 1.6-a, 1.6-b, 1.7-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Mengen und Typen; Fundiertheit | 2.1, 2.3 | 2.0-a, 2.1-a, 2.1-b | |
 | 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.1-c, 2.2-a, 2.3-a | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Anhang | A-a, A-b | |
@@ -48,21 +48,23 @@ Kontext, ohne Lean.
 36 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. `A-a` und
 `A-b` laufen als Ferienaufgabe über die Pause.
 
-Zwei Kapitelpaare teilen sich einen Termin: 2.1+2.3 (W8), 2.4+2.5
-(W11). Notation (1.6) bekommt keine eigene Vorlesung:
-eigene Notation führen Studierende kaum ein. Die gewonnene Woche
-geht an die Grundlagen. Seit dem 27.10.2026 gibt es kein eigenes
-Kapitel *Terme* mehr: 1.2 *Typen und Terme I* (Universen,
-Funktionen, induktive Typen, Strukturen, Pattern Matching, Rekursion)
-und 1.3 *Typen und Terme II* (Σ, Subtypen, Typfamilien,
-indizierte Familien, Junktoren als Typen, Quotienten) beschreiben
-jeden Typbildner in vier Schritten (Formation, Konstruktion,
-Benutzung, Berechnung); 1.4 *Typen III* gibt die Regeln dahinter,
-`imax` und `Prop`. Seit demselben Tag gibt es auch kein eigenes
-Kapitel *Curry-Howard* mehr: Taktik- und Termmodus stehen in 1.2,
-die Junktoren als Typen in 1.3 (*Propositions as types*),
-`Nonempty` und `Classical.choice` in 1.4. Die Vorlesung am 30.11.
-ist damit frei.
+Drei Kapitelpaare teilen sich einen Termin: 1.6+1.7 (W7), 2.1+2.3
+(W8), 2.4+2.5 (W11). Notation (1.7) bekommt keine eigene Vorlesung:
+eigene Notation führen Studierende kaum ein. Seit dem 27.10.2026 gibt
+es kein eigenes Kapitel *Terme* mehr: 1.2 *Typen und Terme I*
+(Universen, Funktionen, induktive Typen, Strukturen) und 1.4 *Typen
+und Terme II* (Σ, Subtypen, Typfamilien, indizierte Familien,
+Junktoren als Typen, Quotienten) beschreiben jeden Typbildner in vier
+Schritten (Formation, Konstruktion, Benutzung, Berechnung); 1.5
+*Typen III* gibt die Regeln dahinter, `imax` und `Prop`. Seit
+demselben Tag gibt es auch kein eigenes Kapitel *Curry-Howard* mehr:
+die Junktoren als Typen und Taktik-/Termmodus stehen in 1.4
+(*Propositions as types*), `Nonempty` und `Classical.choice` in 1.5.
+
+Seit dem 29.10.2026 ist *Pattern Matching und Rekursion* ein eigenes
+Kapitel 1.3 (vorher der letzte Teil von 1.2, der damit auf 922
+Skriptzeilen kam). Es nimmt die Vorlesung, die am 30.11. frei war;
+alle späteren Kapitel von Teil 1 rücken eine Woche nach.
 
 Skriptzeilen je Termin: Mittel 474, Spanne 330 (W2) bis 768 (W15).
 Woche 11 ist zugleich die schwerste Übungswoche (67 Aufgaben, `2.4-a`
@@ -82,7 +84,7 @@ Logikblock ohne Kapitel, `A-a`/`A-b` der Anhang, `X-a` das Extrablatt.
 Abschnitt *Finding theorems* in 1.2 ist dafür am 29.10. entfallen.
 
 Kein Blatt läuft vor seinem Kapitel. Der Logikblock `L-b` bis `L-g`
-läuft in den Wochen 2 bis 5 und damit vor seiner Theorie (1.3 und
+läuft in den Wochen 2 bis 5 und damit vor seiner Theorie (1.4 und
 2.2).
 
 Die Logik ist nach Woche 5 abgeschlossen.
@@ -104,14 +106,13 @@ Vorgetragen werden die Abschnitte, die `A-a` verlangt:
 
 Seit dem 27.10.2026 hat jedes Kapitel von Teil 1 ein Blatt. Eigene
 induktive Typen, Mustervergleich und `termination_by` stehen auf
-`1.2-b` (dazu der Rekursor eines eigenen Typs), Strukturen mit
-`extends`, `Fin` und `ZMod` auf `1.2-c`, induktive Prädikate und ein
-Quotient (ℤ aus ℕ × ℕ) auf `1.3-c`, Termmodus und Junktoren auf
-`1.3-b`. Kapitel 1.4
-hat `1.4-a` (Gleichheit, `ext`, `choose`, `change`; vorher `1.3-b`
-bzw. `1.6-a`). Die Regeln selbst, `imax` und die eingeschränkte
+`1.3-a` (dazu der Rekursor eines eigenen Typs), Strukturen mit
+`extends`, `Fin` und `ZMod` auf `1.2-b`, induktive Prädikate und ein
+Quotient (ℤ aus ℕ × ℕ) auf `1.4-c`, Termmodus und Junktoren auf
+`1.4-b`. Kapitel 1.5 hat `1.5-a` (Gleichheit, `ext`, `choose`,
+`change`). Die Regeln selbst, `imax` und die eingeschränkte
 Elimination werden gelesen, nicht geübt; die Universen stehen auf
-`1.3-a`.
+`1.4-a`.
 
 Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
 `1.1-b`, `2.9-a`).
@@ -119,7 +120,7 @@ Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
 `2.1-c` und `2.3-a` (Kapitel 2.1 und 2.3, gelesen in Woche 8)
 liegen in Woche 9, damit Woche 8 nicht vier Blätter hat. Beweisirrelevanz steht seit 29.10.
 auf `2.2-a`.
-`1.6-a` hat nur eine Aufgabe und ist eher ein Leseblatt.
+`1.7-a` hat nur eine Aufgabe und ist eher ein Leseblatt.
 
 ## Kurztests
 

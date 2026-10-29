@@ -186,6 +186,19 @@ example (a : ℝ) (ha : a ≠ 0) : a * a⁻¹ = 1 :=
   mul_inv_cancel₀ ha
 ```
 
+`ZMod n`, the type ℤ/nℤ from {ref "pi-types"}[Dependent functions] in chapter 1.2, is a commutative ring for every `n`. So `CommRing (ZMod n)` is again a type that depends on `n`, and the instance is a function of `n`. A field it is only when `n` is prime. The field instance takes this fact as an instance argument `[Fact p.Prime]`, because instance search cannot prove primality on its own:
+
+```lean
+example (n : ℕ) : CommRing (ZMod n) := inferInstance
+example (p : ℕ) [Fact p.Prime] : Field (ZMod p) :=
+  inferInstance
+
+-- 5 is the inverse of 3 in ℤ/7ℤ
+example : (3 : ZMod 7) * 5 = 1 := by decide
+-- ℤ/4ℤ has zero divisors, so it is no field
+example : (2 : ZMod 4) * 2 = 0 := by decide
+```
+
 Mathlib also provides ordered variants:
 - `OrderedRing α` : a ring with a compatible order.
 - `LinearOrderedField α` : a linearly ordered field (like `ℝ` or `ℚ`).
@@ -270,6 +283,13 @@ ring.
 -- The quotient of a commutative ring by an ideal
 example (R : Type*) [CommRing R] (I : Ideal R) : CommRing (R ⧸ I) :=
   inferInstance
+```
+
+`ZMod n` is not defined as a quotient (see {ref "zmod-quotient"}[The integers mod n] for the construction by hand), but it is one up to isomorphism. `≃+*` denotes a ring isomorphism, a bijective ring homomorphism:
+
+```lean
+#check (Int.quotientSpanNatEquivZMod 6 :
+  ℤ ⧸ Ideal.span {(6 : ℤ)} ≃+* ZMod 6)
 ```
 
 The quotient map is a ring homomorphism:

@@ -32,7 +32,7 @@ used without the other.
 * Lean and its type theory, one deck per chapter:
   * [The natural numbers and reduction rules](slides/1-1-nat/) —
     {ref "nat"}[chapter]
-  * [Types and terms I: functions, structures, inductive types](slides/1-2-types/) —
+  * [Types and terms I: functions, inductive types, structures](slides/1-2-types/) —
     {ref "types"}[chapter]
   * [Types and terms II: pairs, subtypes, families, quotients](slides/1-3-type-formers/) —
     {ref "type-formers"}[chapter]
@@ -101,7 +101,7 @@ written at the start of the lab.
 * + 3
   + Mon 02.11.
   + Lecture
-  + Types and terms I: universes, functions, structures, inductive types, pattern matching
+  + Types and terms I: universes, functions, inductive types, structures, pattern matching
   + {ref "types"}[1.2]
 * + 3
   + Wed 04.11.

@@ -2582,3 +2582,39 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   `MyOption`, `List`, `Point`. Folie "How the recursor is built".
 - Ueberschriften der vierten Ebene (`##` in Kapiteldateien) tragen
   `number := false`; im Text also "Finding theorems" ohne 1.2.1.1.
+
+## 2026-10-29 -- 1.2 umsortiert: induktiv vor Struktur, `ZMod` statt `Fin` bei Π
+
+- 1.2 heisst jetzt *Types and terms I: functions, inductive types,
+  structures*. Reihenfolge: Π -> `# Inductive types` -> `# Structures`
+  ("ein induktiver Typ mit genau einem Konstruktor"; die Gleichsetzung
+  `structure Point` = `inductive Point | mk …` steht jetzt am Anfang)
+  -> neuer `# Pattern matching and recursion` (tag
+  `pattern-matching-and-recursion`) mit den alten `##`-Unterabschnitten
+  Pattern matching ... Strict positivity. Tags unveraendert.
+- Σ und Subtypen bleiben am Anfang von 1.3: sie haengen von den
+  Strukturen ab, nicht von Π, und stehen so direkt dahinter.
+- Abhaengige Funktion mit Daten in Π ist jetzt `sevenMod : (n : ℕ) →
+  ZMod n := fun _ => 7` statt `Fin.last` (kein Vorgriff auf Strukturen;
+  der Autor mag, dass man nicht meint, die Werte seien "dieselben").
+  `Fin n` und `Fin.last`, `Fin.ext` kommen unter *Data with a property*.
+- `ZMod` wieder aufgenommen: 1.3 *Example: the integers mod n* (tag
+  `zmod-quotient`, `Quot` von Hand, `Quot.lift` mit dem Relationsbeweis
+  als Wohldefiniertheit, Abbildung nach `ZMod`), 2.5 Ringe/Koerper
+  (`CommRing (ZMod n)`, `Field` mit `[Fact p.Prime]`) und Quotienten
+  (`Int.quotientSpanNatEquivZMod`). `decide` scheitert an `(3 : ZMod 7)⁻¹`.
+- **Falsch war:** "ℤ, ℚ und `ZMod n` are quotients too" in 1.3. In Lean
+  ist `Int` induktiv (`ofNat`/`negSucc`), `Rat` eine Struktur mit
+  `reduced`, `ZMod` per Mustervergleich `ℤ`/`Fin n`. Nur `Multiset` ist
+  ein Quotient.
+- `{ref "x"}` braucht immer einen Linktext `[...]`, sonst Parsefehler
+  "'['; expected ...".
+- Blatt `1.2-b`: Teil 5 `Fin n` (Aufgaben 16-20: `two`, `myLast`,
+  `embed`, `rev`, `rev (rev i) = i` mit `Fin.ext`/`omega`), Teil 6
+  `natSelf : (n : ℕ) → ZMod n` (Aufgabe 21, ueberall `0`). `omega` kennt
+  `i.val < n` von selbst. Pruef-`example`s unter einer `sorry`-Definition
+  muessen selbst `sorry` sein, sonst Fehler beim Export-Check.
+- *Some history* (tag `types-history`) steht jetzt am Ende von 1.3
+  (nach der Vier-Schritte-Tabelle), die Folie entsprechend in Deck 1-3
+  vor *Summary*. Sie erzaehlt auch Curry-Howard, das in 1.3 behandelt
+  wird. 1.4 hat keinen eigenen Geschichtsabschnitt.

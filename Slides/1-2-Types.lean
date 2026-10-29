@@ -7,15 +7,15 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the chapter "Types and terms I: functions and inductive
-types" of part 1 (Lean and its type theory). It follows the chapter
-section by section: commands for terms, the universe hierarchy,
-function types with their terms, structures, inductive types with pattern
-matching and recursion, strict positivity, some history.
+Deck for the chapter "Types and terms I: functions, inductive types,
+structures" of part 1 (Lean and its type theory). It follows the
+chapter section by section: commands for terms, the universe
+hierarchy, function types with their terms, inductive types,
+structures, pattern matching and recursion, strict positivity.
 -/
 
 namespace SlidesTypes
-#doc (Slides) "Types and terms I: functions, structures, inductive types" =>
+#doc (Slides) "Types and terms I: functions, inductive types, structures" =>
 
 ```css
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
@@ -31,7 +31,7 @@ namespace SlidesTypes
 
 # Types and terms I
 
-Lean and its type theory — chapter 2: functions, structures, inductive types
+Lean and its type theory — chapter 2: functions, inductive types, structures
 
 :::class "key"
 In Lean, types can depend on values.
@@ -175,9 +175,9 @@ Functions are _curried_: `ℕ → ℕ → ℕ` is `ℕ → (ℕ → ℕ)`.
 example : ∀ n : ℕ, n < n + 1 :=
   fun n => Nat.lt_succ_self n
 
-def lastOf : (n : ℕ) → Fin (n + 1) :=
-  fun n => Fin.last n
-#check lastOf 3   -- Fin (3 + 1)
+-- ZMod n is ℤ/nℤ
+def sevenMod : (n : ℕ) → ZMod n := fun _ => 7
+#eval sevenMod 5    -- 2
 ```
 
 :::table +colHeaders
@@ -223,6 +223,48 @@ def safeDiv (a b : ℤ) (_ : b ≠ 0) : ℤ := a / b
 
 The third argument is a proof of `3 ≠ 0`; `decide` finds it by computing. Its type depends on `b`, so the type of `safeDiv` is a Π-type.
 
+# Inductive types
+
+```lean -panel -stretch
+inductive MyNat where
+  | zero : MyNat
+  | succ : MyNat → MyNat
+
+example : MyNat := .succ (.succ .zero)
+```
+
+- _Formation_: `MyNat : Type`
+- _Construction_: the constructors `MyNat.zero`, `MyNat.succ`; `.succ` if the type is known
+- _Use_: pattern matching, translated into the recursor `MyNat.rec`
+- _Computation_: a match on a constructor takes its branch (ι)
+
+# More inductive types
+
+```lean -panel -stretch
+inductive Colour where
+  | red | green | blue
+
+inductive MyOption (α : Type) where
+  | none : MyOption α
+  | some : α → MyOption α
+
+example : MyOption ℕ := .some 3
+```
+
+`MyOption α` is a type for every type `α`.
+
+# Disjunction is an inductive type
+
+```lean -panel -stretch
+inductive MyOr (a b : Prop) : Prop where
+  | inl : a → MyOr a b
+  | inr : b → MyOr a b
+
+example (P Q : Prop) (hP : P) : MyOr P Q := .inl hP
+```
+
+Two constructors: a proof of `P ∨ Q` is a proof of `P` or one of `Q`, marked by the constructor. Lean's `∨` is `Or`, declared in this way.
+
 # Structures
 
 ```lean -panel -stretch
@@ -233,6 +275,8 @@ structure Point where
 example : (Point.mk 3 4).x = 3 := rfl
 example (p : Point) : p = Point.mk p.x p.y := rfl
 ```
+
+An inductive type with one constructor `Point.mk` and named fields.
 
 - _Formation_: `Point : Type`
 - _Construction_: the one constructor `Point.mk`
@@ -292,6 +336,7 @@ A field may be a proof. Linear maps, continuous functions, homomorphisms: all of
 ```lean -panel -stretch
 #check @Fin.mk
 example : Fin 3 := ⟨2, by decide⟩
+#check @Fin.last  -- (n : ℕ) → Fin (n + 1)
 
 example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
   ⟨h.2, h.1⟩
@@ -299,48 +344,6 @@ example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
 
 - `Fin n`: a number `val` and a proof `isLt : val < n`
 - `P ∧ Q`: two proofs, fields `left` and `right`; `h.1`, `h.2`
-
-# Inductive types
-
-```lean -panel -stretch
-inductive MyNat where
-  | zero : MyNat
-  | succ : MyNat → MyNat
-
-example : MyNat := .succ (.succ .zero)
-```
-
-- _Formation_: `MyNat : Type`
-- _Construction_: the constructors `MyNat.zero`, `MyNat.succ`; `.succ` if the type is known
-- _Use_: pattern matching, translated into the recursor `MyNat.rec`
-- _Computation_: a match on a constructor takes its branch (ι)
-
-# More inductive types
-
-```lean -panel -stretch
-inductive Colour where
-  | red | green | blue
-
-inductive MyOption (α : Type) where
-  | none : MyOption α
-  | some : α → MyOption α
-
-example : MyOption ℕ := .some 3
-```
-
-`MyOption α` is a type for every type `α`.
-
-# Disjunction is an inductive type
-
-```lean -panel -stretch
-inductive MyOr (a b : Prop) : Prop where
-  | inl : a → MyOr a b
-  | inr : b → MyOr a b
-
-example (P Q : Prop) (hP : P) : MyOr P Q := .inl hP
-```
-
-Two constructors: a proof of `P ∨ Q` is a proof of `P` or one of `Q`, marked by the constructor. Lean's `∨` is `Or`, declared in this way.
 
 # Structures and inductive types
 
@@ -552,37 +555,12 @@ The argument of `node` has type `ℕ → MyTree`: `MyTree` right of `→`. The a
 In the argument types of a constructor, the type may occur only to the right of an arrow.
 :::
 
-# Some history
-
-Russell's set $`R = \{x : x \notin x\}` broke Frege in 1902. Russell's repair (1908): `x ∈ x` is not a statement at all.
-
-:::table +colHeaders +rowSeps
-*
-  * system
-  * broken by
-  * repaired by
-*
-  * Frege, _Grundgesetze_
-  * Russell, 1902
-  * types, 1908
-*
-  * Church's lambda calculus, 1932
-  * Kleene, Rosser, 1935
-  * simple types, 1940
-*
-  * Martin-Löf, 1971
-  * Girard
-  * universe hierarchy
-:::
-
-Curry (1934), Howard (1969): propositions are types, proofs are terms. Then the Calculus of Constructions (1985) and inductive types (1990).
-
 # Summary
 
 - Universes: `Prop`, `Type 0 : Type 1 : ...`; there is no `Type : Type`.
 - Functions: `(x : α) → β x`, built with `fun`, used by application, computed by β.
 - `def`, currying, `fun x ↦ …`, `·`, implicit and universe-polymorphic arguments.
-- `structure`: one constructor, named fields, projections; a field may be a proof. `Fin n` and `∧` are structures.
 - `inductive`: built with constructors, used by pattern matching, computed by ι. `∨` is one of them.
+- `structure`: an inductive type with one constructor, named fields, projections; a field may be a proof. `Fin n` and `∧` are structures.
 - Recursion must terminate. Structural recursion becomes the recursor; well-founded recursion is used through its equation lemmas.
 - Constructors must be strictly positive.

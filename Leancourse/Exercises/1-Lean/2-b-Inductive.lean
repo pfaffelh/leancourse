@@ -1,16 +1,16 @@
 import Mathlib
 
 /-!
-# 1.2-b -- Inductive types, pattern matching, recursion
+# 1.2-b -- Inductive types, pattern matching, recursion, `Fin`
 
 *Notes chapter 1.2, week 4.*
 
 Sheet `1.1-a` defined functions on `ℕ` through the recursor. Here
 you declare types of your own and define functions on them by
 pattern matching: one branch for each constructor. Read the sections
-*Inductive types*, *Pattern matching*, *Recursion and termination*
-and *Proving things about recursive definitions* of chapter 1.2
-first.
+*Inductive types*, *Structures*, *Pattern matching*, *Recursion
+and termination* and *Proving things about recursive definitions*
+of chapter 1.2 first.
 
 ## Introduced here
 
@@ -24,6 +24,8 @@ first.
 | `decreasing_by omega`      | prove that it decreases                      |
 | `rw [f]`                   | unfold `f` once, by its defining equation    |
 | `simp [f]`                 | unfold `f` as often as needed and simplify   |
+| `⟨i, h⟩ : Fin n`           | build an element from `i` and `h : i < n`    |
+| `Fin.ext`                  | prove `a = b` from `a.val = b.val`           |
 
 `cases`, `<;>` and `rfl` are known from `1.1-b`, `omega` and `simp`
 from `1.1-c`.
@@ -207,4 +209,60 @@ example (n : ℕ) : myGcd 0 n = n := by
 -- both to `simp`.
 example (n : ℕ) (h : 0 < n) :
     binLength (2 * n) = binLength n + 1 := by
+  sorry
+
+/-! ## Part 5: `Fin n`, a structure with a proof
+
+An element of `Fin n` is a pair `⟨i, h⟩` of a number `i : ℕ` and a
+proof `h : i < n`. The fields are `val` and `isLt`. Two elements are
+equal when their values are: `Fin.ext : a.val = b.val → a = b`.
+`omega` knows that `i.val < n` for `i : Fin n`. Read *Data with a
+property* in chapter 1.2.
+
+Fill in each definition. The `example` below it should then be
+provable by `rfl` (by `decide` for Exercise 19). -/
+
+example : Fin 3 := ⟨2, by decide⟩
+
+-- Exercise 16)
+def two : Fin 5 := sorry
+
+example : two.val = 2 := by
+  sorry
+
+-- Exercise 17) The largest element of `Fin (n + 1)`.
+def myLast (n : ℕ) : Fin (n + 1) := sorry
+
+example (n : ℕ) : myLast n = Fin.last n := by
+  sorry
+
+-- Exercise 18) `Fin n` sits inside `Fin (n + 1)`.
+def embed {n : ℕ} (i : Fin n) : Fin (n + 1) := sorry
+
+example : (embed (2 : Fin 3)).val = 2 := by
+  sorry
+
+-- Exercise 19) Counting from the other end: `0 ↦ n - 1`,
+-- `1 ↦ n - 2`, and so on.
+def rev {n : ℕ} (i : Fin n) : Fin n := sorry
+
+example : rev (1 : Fin 5) = 3 := by
+  sorry
+
+-- Exercise 20) Start with `apply Fin.ext`, then `simp only [rev]`
+-- and `omega`.
+example {n : ℕ} (i : Fin n) : rev (rev i) = i := by
+  sorry
+
+/-! ## Part 6: A dependent function
+
+`ZMod n` is ℤ/nℤ. The function `natSelf` sends `n` to the class of
+`n` in ℤ/nℤ. -/
+
+def natSelf : (n : ℕ) → ZMod n := fun n => n
+
+-- Exercise 21) Compute `natSelf 6`, then prove it. What is
+-- `natSelf n` for every `n`, and why does that not make `natSelf`
+-- a constant function?
+example : natSelf 6 = 0 := by
   sorry

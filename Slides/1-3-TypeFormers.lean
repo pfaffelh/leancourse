@@ -11,8 +11,7 @@ Deck for the chapter "Types and terms II: pairs, subtypes, families,
 quotients" of part 1 (Lean and its type theory). It follows the
 chapter section by section: Σ-types, subtypes, type families, indexed
 families, the logical connectives as types with tactic and term mode, quotient
-types, and the
-table of the four steps.
+types, the table of the four steps, and some history.
 -/
 
 namespace SlidesTypeFormers
@@ -89,7 +88,7 @@ example : Fintype.card
 ```lean -panel -stretch
 def BigNat : Type := {n : ℕ // n > 5}
 
-def seven : BigNat := ⟨7, by simp⟩
+def seven : BigNat := ⟨7, by decide⟩
 #eval seven.val  -- 7
 ```
 
@@ -420,6 +419,31 @@ This equation is the computation rule `Quot.lift f h (Quot.mk r a) ⟶ f a`.
 :::class "key"
 Chapter 1.4 states these steps as the rules of Lean's type theory.
 :::
+
+# Some history
+
+Russell's set $`R = \{x : x \notin x\}` broke Frege in 1902. Russell's repair (1908): `x ∈ x` is not a statement at all.
+
+:::table +colHeaders +rowSeps
+*
+  * system
+  * broken by
+  * repaired by
+*
+  * Frege, _Grundgesetze_
+  * Russell, 1902
+  * types, 1908
+*
+  * Church's lambda calculus, 1932
+  * Kleene, Rosser, 1935
+  * simple types, 1940
+*
+  * Martin-Löf, 1971
+  * Girard
+  * universe hierarchy
+:::
+
+Curry (1934), Howard (1969): propositions are types, proofs are terms. Then the Calculus of Constructions (1985) and inductive types (1990).
 
 # Summary
 

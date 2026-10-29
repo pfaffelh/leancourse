@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "type-formers"
 %%%
 
-The {ref "types"}[previous chapter] treated function types, structures and inductive types. This chapter treats dependent pairs and subtypes, whose terms bundle a value with data or a proof about it. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; the logical connectives, which are these type formers with values in `Prop`; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
+The {ref "types"}[previous chapter] treated function types, inductive types and structures. This chapter treats dependent pairs and subtypes, whose terms bundle a value with data or a proof about it. Then come type families, functions whose values are types; indexed families and inductive predicates, type families defined by constructors; the logical connectives, which are these type formers with values in `Prop`; and quotients, types of equivalence classes. Each type former is again described in the four steps *Formation*, *Construction*, *Use* and *Computation*; a table at the end collects them.
 
 The [slides](slides/1-3-type-formers/) for this chapter follow it section by section.
 
@@ -97,7 +97,7 @@ structure Subtype {α : Sort u} (p : α → Prop) where
 
 *Computation.* `⟨a, h⟩.val` reduces to `a`.
 
-A subtype is the analogue of the Σ-type in which the second component is a proof rather than data. In Lean any two proofs of the same proposition are equal (*proof irrelevance*, built into the type theory). So two elements of a subtype are equal as soon as their first components are, which is `Subtype.ext`:
+A subtype is the analogue of the Σ-type in which the second component is a proof rather than data. In Lean any two proofs of the same proposition are equal (*proof irrelevance*, built into the type theory; see {ref "prop-special"}[Why `Prop` is special] for reference). So two elements of a subtype are equal as soon as their first components are, which is `Subtype.ext`:
 
 ```lean
 example (a b : {n : ℕ // 0 < n}) (h : a.val = b.val) :
@@ -107,12 +107,12 @@ example (a b : {n : ℕ // 0 < n}) (h : a.val = b.val) :
 -- The type of natural numbers greater than 5
 def BigNat : Type := {n : ℕ // n > 5}
 
-def seven : BigNat := ⟨7, by simp⟩
+def seven : BigNat := ⟨7, by decide⟩
 
 #eval seven.val  -- 7
 ```
 
-`Subtype` is one structure for all predicates, so its functions, such as `Subtype.ext`, apply to every subtype at once, and Lean converts an element of `{x : α // P x}` to an element of `α` by itself wherever one is expected. A structure of your own with the same two fields is a new type. `Fin n` is of this kind: it carries the same data as `{i : ℕ // i < n}`, and Mathlib has a bijection with inverse between the two, `Fin.equivSubtype : Fin n ≃ {i // i < n}`, but the two types are different. The separate type lets `Fin n` have operations of its own, such as arithmetic mod `n`.
+`Subtype` is one structure for all predicates, so its functions, such as `Subtype.ext`, apply to every subtype at once, and Lean converts an element of `{x : α // P x}` to an element of `α` by itself wherever one is expected (a *coercion*; see {ref "coercions"}[Coercions] for reference). A structure of your own with the same two fields is a new type. `Fin n` is of this kind: it carries the same data as `{i : ℕ // i < n}`, and Mathlib has a bijection between the two, but the two types are different. The separate type lets `Fin n` have operations of its own, such as arithmetic mod `n`.
 
 This is how many mathematical objects are defined in Mathlib. For example, the type of prime numbers could be defined as `{n : ℕ // Nat.Prime n}`.
 
@@ -439,7 +439,7 @@ A term that replaces the `sorry` is a proof of the conjecture.
 tag := "quotient-types"
 %%%
 
-The last way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction ({ref "reals-quotient"}[below]). `ℤ`, `ℚ`, `Multiset α` (lists up to reordering) and `ZMod n` (the integers mod `n`) are quotients too.
+The last way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction ({ref "reals-quotient"}[below]). `Multiset α` (lists up to reordering) is a quotient in Mathlib. ℤ, ℚ and ℤ/nℤ are quotients in mathematics, but Lean defines them through normal forms instead: `Int` is an inductive type with the constructors `ofNat n` and `negSucc n` (for `-(n + 1)`), `Rat` is a structure of a numerator and a denominator with proofs that the fraction is reduced, and `ZMod n` is `Fin n` for `n > 0`.
 
 *Formation.* `Quot r` is a type.
 
@@ -469,6 +469,47 @@ One property is missing from the four steps: related elements should have the *s
 ```
 
 `#print axioms name` lists the axioms that a constant depends on. In practice one usually goes through `Quotient`, a thin wrapper of `Quot` for a relation that is an equivalence relation; such a relation, bundled with the proof that it is one, is called a `Setoid`.
+
+## Example: the integers mod n
+%%%
+tag := "zmod-quotient"
+number := false
+%%%
+
+ℤ/nℤ, which appeared as `ZMod n` in {ref "pi-types"}[Dependent functions], is the quotient of ℤ by the relation "same remainder mod `n`". Built by hand:
+
+```lean
+-- a and b have the same remainder mod n
+def ModRel (n a b : ℤ) : Prop := a % n = b % n
+
+def IntMod (n : ℤ) : Type := Quot (ModRel n)
+
+def IntMod.mk (n a : ℤ) : IntMod n :=
+  Quot.mk (ModRel n) a
+
+example : IntMod.mk 5 7 = IntMod.mk 5 2 :=
+  Quot.sound rfl
+```
+
+`Quot.sound` turns the proof `7 % 5 = 2 % 5`, which is `rfl`, into the equality of the two classes. A function out of `IntMod n` needs a proof that it is well defined. For the remainder of a class this proof is the relation itself:
+
+```lean
+def IntMod.rem (n : ℤ) : IntMod n → ℤ :=
+  Quot.lift (fun a => a % n) (fun _ _ h => h)
+
+example : IntMod.rem 5 (IntMod.mk 5 17) = 2 := rfl
+```
+
+The map to Mathlib's `ZMod n` sends the class of `a` to `a` read in `ZMod n`. It is well defined by the library theorem `ZMod.intCast_eq_intCast_iff'`, which says that two integers are equal in `ZMod n` exactly when they have the same remainder:
+
+```lean
+def IntMod.toZMod (n : ℕ) : IntMod n → ZMod n :=
+  Quot.lift (fun a => (a : ZMod n))
+    (fun a b h =>
+      (ZMod.intCast_eq_intCast_iff' a b n).mpr h)
+```
+
+Mathlib itself does not define `ZMod n` as a quotient. It defines it by pattern matching on `n`, as `ℤ` for `n = 0` and as `Fin n` otherwise, which makes it computable: `#eval` and `decide` work on it. `ZMod n` is still isomorphic to the quotient of ℤ by the ideal `nℤ`; see {ref "quotients"}[Quotient structures] in chapter 2.5 for reference.
 
 ## Example: the real numbers
 %%%
@@ -567,3 +608,12 @@ tag := "four-steps"
 :::
 
 Here `e[x := a]` is `e` with `a` in place of `x`. Universes have only a formation step, `Sort u`. The {ref "rules"}[next chapter] states these steps as the rules of Lean's type theory.
+
+# Some history
+%%%
+tag := "types-history"
+%%%
+
+Types were introduced to stop a contradiction. Russell's set $`R = \{x : x \notin x\}` broke Frege's *Grundgesetze der Arithmetik* in 1902 ({ref "prehistory"}[Introduction]). Russell's repair of 1908 gave every object a type and let a type apply only to objects of lower type, so that `x ∈ x` is not false but not a statement at all. Zermelo's repair of the same year instead restricts which sets exist and leaves `x ∈ x` a formula. Mathematics followed Zermelo; proof assistants follow Russell, because a type checker can decide before any question of truth whether an expression means anything.
+
+*Principia Mathematica* (1910 to 1913) is written in Russell's theory. Leon Chwistek and Frank Ramsey simplified it in the 1920s to the simple theory of types, and Alonzo Church turned that into a calculus in 1940, the simply typed lambda calculus on which *Isabelle/HOL* still rests. That propositions can be read as types and proofs as terms is the *Curry-Howard correspondence*: Haskell Curry observed in 1934 that the types of the combinators of combinatory logic are the axioms of propositional logic, and William Howard extended this in 1969 (published 1980) to natural deduction and the simply typed lambda calculus. Dependent types, in which a type may mention a term, came with de Bruijn's Automath (1967) and Martin-Löf's type theory (1971). Coquand and Huet added impredicative quantification in the Calculus of Constructions (1985), and Paulin-Mohring added inductive types (1990). Lean's type theory is a variant of the result, the {ref "cic"}[Calculus of Inductive Constructions]. Three times the same thing happened: a system let an object be applied to itself, a contradiction followed, and types forbade it. In Lean the ban is visible as `Type 0 : Type 1 : Type 2 : ...`.

@@ -11,13 +11,13 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types and terms I: functions, structures, inductive types" =>
+#doc (Manual) "Types and terms I: functions, inductive types, structures" =>
 %%%
 htmlSplit := .never
 tag := "types"
 %%%
 
-Lean has the data types every programming language has — `int`, `string`, `float` — and you can define your own, as you will in this course. Throughout, `x : α` means that `x` is a term of type `α`: `false : Bool`, `42 : ℕ`, `f : ℕ → ℝ` for a function from ℕ to ℝ (itself a type), and `0 ≠ 1 : Prop` for the proposition that 0 and 1 differ. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → (Fin n → ℝ)` where `Fin n` is the type which carries `{0, ..., n-1}` (here, the type `Fin n → ℝ` depends on `n : ℕ`), which is a function `f` with domain `ℕ` such that `f n ∈ ℝ^n`.
+Lean has the data types every programming language has — `int`, `string`, `float` — and you can define your own, as you will in this course. Throughout, `x : α` means that `x` is a term of type `α`: `false : Bool`, `42 : ℕ`, `f : ℕ → ℝ` for a function from ℕ to ℝ (itself a type), and `0 ≠ 1 : Prop` for the proposition that 0 and 1 differ. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → ZMod n`, a function whose value at `n` lies in ℤ/nℤ (the type `ZMod n` of the value depends on `n : ℕ`).
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` is a *universe level*, see {ref "type-universes"}[The universe hierarchy] below) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it.
 
@@ -47,7 +47,7 @@ Types and terms cannot be treated separately: a type is known once we know how i
 
 See {ref "four-steps"}[The four steps at a glance] at the end of chapter 1.3 for a table of all type formers in these four steps.
 
-The four steps are the four kinds of rule of Lean's type theory, stated formally in {ref "rules"}[chapter 1.4]. This chapter treats universes, function types, structures and inductive types; the {ref "type-formers"}[next chapter] dependent pairs, subtypes, type families and quotients. In several of these types the type of one part depends on the value of another. Such types are called *dependent*, and they are what separates Lean from most programming languages.
+The four steps are the four kinds of rule of Lean's type theory, stated formally in {ref "rules"}[chapter 1.4]. This chapter treats universes, function types, inductive types and structures; the {ref "type-formers"}[next chapter] dependent pairs, subtypes, type families and quotients. In several of these types the type of one part depends on the value of another. Such types are called *dependent*, and they are what separates Lean from most programming languages.
 
 The [slides](slides/1-2-types/) for this chapter follow it section by section.
 
@@ -247,14 +247,15 @@ example : ((n : ℕ) → n < n + 1) =
     (∀ n : ℕ, n < n + 1) := rfl
 ```
 
-A dependent function whose values are data: `Fin n` is the type of the natural numbers less than `n`. An element of `Fin n` is a pair `⟨i, h⟩` of a number `i : ℕ` and a proof `h : i < n`; its definition follows in {ref "structures"}[Structures] below. `Fin.last n` is the largest element of `Fin (n + 1)`. So each value of `lastOf` lies in a different type.
+A dependent function whose values are data: Mathlib's `ZMod n` is the type ℤ/nℤ of integers modulo `n` (with `ZMod 0 = ℤ`). The function `sevenMod` takes `n` to the residue class of `7` in ℤ/nℤ. Its definition reads `7` for every `n`, but each value lies in a different type and is a different element there:
 
 ```lean
-def lastOf : (n : ℕ) → Fin (n + 1) :=
-  fun n => Fin.last n
+def sevenMod : (n : ℕ) → ZMod n :=
+  fun _ => 7
 
-#check lastOf 3   -- lastOf 3 : Fin (3 + 1)
-#eval lastOf 3    -- 3
+#check sevenMod 5   -- sevenMod 5 : ZMod 5
+#eval sevenMod 5    -- 2
+#eval sevenMod 0    -- 7
 ```
 
 In terms of sets, a function `f : (x : α) → β x` chooses one element `f x ∈ β x` for every `x`. It is an element of the product $`\prod_{x \in \alpha} \beta(x)`. This is where the name Π comes from.
@@ -309,12 +310,74 @@ def safeDiv (a b : ℤ) (_ : b ≠ 0) : ℤ := a / b
 
 The third argument is a proof of `3 ≠ 0`, here written as a tactic proof `by decide` in the place of a term: `decide` proves a statement without variables by computing whether it holds. The type `(a b : ℤ) → b ≠ 0 → ℤ` of `safeDiv` is a Π-type, because the type of the proof depends on `b`.
 
+# Inductive types
+%%%
+tag := "inductive"
+%%%
+
+`Nat`, `List`, `Option`, `Bool` and `Empty` are all *inductive* types; `Nat` and `Bool` were dissected in the {ref "nat-intro"}[previous chapter]. An inductive type is given by a list of *constructors*, each saying how to build a new element out of existing pieces. Declaring the natural numbers by hand reproduces exactly the structure of `Nat`:
+
+```lean
+inductive MyNat where
+  | zero : MyNat
+  | succ (n : MyNat) : MyNat
+```
+
+*Formation.* The declaration introduces the type `MyNat : Type`. The universe of an inductive type must be large enough to hold the arguments of all its constructors.
+
+*Construction.* The terms of `MyNat` are built with the two constructors `MyNat.zero` and `MyNat.succ`, and every element is either `zero` or `succ n`. Where Lean already knows that a `MyNat` is expected, the type name can be dropped and a leading dot written instead: `.succ .zero` for `MyNat.succ MyNat.zero`.
+
+*Use.* A term of an inductive type is used by distinguishing which constructor built it: *pattern matching*, below. Lean translates every pattern match into the type's *recursor* `MyNat.rec`, which the declaration also introduces.
+
+*Computation.* Applied to a term built by a constructor, a pattern match takes the branch for that constructor. For the recursor this is the ι-rule of {ref "reduction-rules"}[the reduction rules], `MyNat.rec z s (.succ n) ⟶ s n (MyNat.rec z s n)`, the firing we watched for `Nat`.
+
+```lean
+#check (MyNat.succ MyNat.zero : MyNat)
+example : MyNat := .succ (.succ .zero)
+```
+
+Inductive types also cover non-recursive data:
+
+```lean
+inductive Colour where
+  | red | green | blue
+
+example : Colour := .green
+```
+
+and types with a parameter:
+
+```lean
+-- `MyOption α` is `none` or `some a` with `a : α`
+inductive MyOption (α : Type) where
+  | none : MyOption α
+  | some (a : α) : MyOption α
+
+example : MyOption ℕ := .some 3
+```
+
+Here `MyOption α` is a type for every type `α`.
+
+Disjunction is an inductive type with two constructors: a proof of `P ∨ Q` is a proof of `P` or a proof of `Q`, marked by the constructor. Declared by hand:
+
+```lean
+inductive MyOr (a b : Prop) : Prop where
+  | inl : a → MyOr a b
+  | inr : b → MyOr a b
+
+example (P Q : Prop) (hP : P) : MyOr P Q := .inl hP
+```
+
+Lean's `∨` is `Or`, declared in the same way. It is the disjoint union for propositions: the constructor records which side the proof came from.
+
+Inductive types are the main mechanism by which new data types enter Lean, and `Mathlib` uses them throughout.
+
 # Structures
 %%%
 tag := "structures"
 %%%
 
-Many mathematical objects are best described as a *collection of named fields*. A point in the plane has an `x`-coordinate and a `y`-coordinate. In Lean, we use `structure` for this:
+A *structure* is an inductive type with exactly one constructor, whose arguments are named fields. Many mathematical objects are of this kind. A point in the plane has an `x`-coordinate and a `y`-coordinate:
 
 ```lean
 structure Point where
@@ -322,7 +385,14 @@ structure Point where
   y : ℕ
 ```
 
-A structure is a type with exactly one constructor, whose arguments are named fields.
+The declaration is essentially the same as
+
+```
+inductive Point where
+  | mk : ℕ → ℕ → Point
+```
+
+but the `structure` version also gives the fields names, projections with dot notation, default values and the `extends` mechanism. Use `structure` for a type with a single constructor with named fields (points, complex numbers, algebraic structures), and `inductive` for a type with several constructors (natural numbers, lists, trees, `Option`, `Bool`).
 
 *Formation.* The declaration introduces the type `Point : Type`.
 
@@ -338,7 +408,7 @@ A structure is a type with exactly one constructor, whose arguments are named fi
 example : (Point.mk 3 4).x = 3 := rfl
 ```
 
-Like `Nat` in the {ref "nat-intro"}[previous chapter], `Point` has a recursor, `Point.rec`. It takes a single case, a function of the fields, and the projections `Point.x` and `Point.y` are defined through it.
+Like every inductive type, `Point` has a recursor, `Point.rec`. It takes a single case, a function of the fields, and the projections `Point.x` and `Point.y` are defined through it.
 
 A value of a structure is determined by its fields: `p` and `Point.mk p.x p.y` are *definitionally* equal, so `rfl` proves it. This is the η rule of the {ref "reduction-rules"}[reduction rules], here *for structures*. For a general inductive type there is no such rule: `n : ℕ` is not definitionally `0` or a successor, and to split on it you need `cases`.
 
@@ -467,7 +537,7 @@ def triple : IntAddMap where
 
 To build a term, both the function and the proof must be supplied. This pattern of bundling data with properties is how Mathlib organizes mathematics: a linear map, a continuous function and a group homomorphism are all structures of this kind.
 
-`Fin n`, which appeared in {ref "pi-types"}[Dependent functions] above, is a structure of this kind as well. An element consists of a natural number `val` together with a proof `isLt` that it is less than `n`, and the constructor `Fin.mk` takes both:
+`Fin n`, the type of the natural numbers less than `n`, is a structure of this kind as well. An element consists of a natural number `val` together with a proof `isLt` that it is less than `n`, and the constructor `Fin.mk` takes both:
 
 ```lean
 #check @Fin.mk
@@ -475,6 +545,15 @@ To build a term, both the function and the proof must be supplied. This pattern 
 
 example : Fin 3 := ⟨2, by decide⟩
 example (n : ℕ) (h : 0 < n) : Fin n := ⟨0, h⟩
+#eval (⟨2, by decide⟩ : Fin 3).val   -- 2
+```
+
+Two elements of `Fin n` are equal when their values are, which is `Fin.ext`. `Fin.last n` is the largest element of `Fin (n + 1)`, the pair of `n` and a proof of `n < n + 1`. Its type depends on `n`, so `Fin.last` is a dependent function in the sense of {ref "pi-types"}[Dependent functions] above:
+
+```lean
+#check @Fin.last   -- (n : ℕ) → Fin (n + 1)
+example (a b : Fin 3) (h : a.val = b.val) : a = b :=
+  Fin.ext h
 ```
 
 ## Conjunction
@@ -494,69 +573,7 @@ example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q := ⟨hP, hQ⟩
 example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := ⟨h.2, h.1⟩
 ```
 
-`P ∧ Q` is the pair of two proofs, as `α × β` is the pair of two data. The constructor is `And.intro`, the projections are `h.1` and `h.2`, also written `h.left` and `h.right`.
-
-# Inductive types
-%%%
-tag := "inductive"
-%%%
-
-`Nat`, `List`, `Option`, `Bool` and `Empty` are all *inductive* types; `Nat` and `Bool` were dissected in the {ref "nat-intro"}[previous chapter]. An inductive type is given by a list of *constructors*, each saying how to build a new element out of existing pieces. Declaring the natural numbers by hand reproduces exactly the structure of `Nat`:
-
-```lean
-inductive MyNat where
-  | zero : MyNat
-  | succ (n : MyNat) : MyNat
-```
-
-*Formation.* The declaration introduces the type `MyNat : Type`. The universe of an inductive type must be large enough to hold the arguments of all its constructors.
-
-*Construction.* The terms of `MyNat` are built with the two constructors `MyNat.zero` and `MyNat.succ`, and every element is either `zero` or `succ n`. Where Lean already knows that a `MyNat` is expected, the type name can be dropped and a leading dot written instead: `.succ .zero` for `MyNat.succ MyNat.zero`.
-
-*Use.* A term of an inductive type is used by distinguishing which constructor built it: *pattern matching*, below. Lean translates every pattern match into the type's *recursor* `MyNat.rec`, which the declaration also introduces.
-
-*Computation.* Applied to a term built by a constructor, a pattern match takes the branch for that constructor. For the recursor this is the ι-rule of {ref "reduction-rules"}[the reduction rules], `MyNat.rec z s (.succ n) ⟶ s n (MyNat.rec z s n)`, the firing we watched for `Nat`.
-
-```lean
-#check (MyNat.succ MyNat.zero : MyNat)
-example : MyNat := .succ (.succ .zero)
-```
-
-Inductive types also cover non-recursive data:
-
-```lean
-inductive Colour where
-  | red | green | blue
-
-example : Colour := .green
-```
-
-and types with a parameter:
-
-```lean
--- `MyOption α` is `none` or `some a` with `a : α`
-inductive MyOption (α : Type) where
-  | none : MyOption α
-  | some (a : α) : MyOption α
-
-example : MyOption ℕ := .some 3
-```
-
-Here `MyOption α` is a type for every type `α`.
-
-Disjunction is an inductive type with two constructors: a proof of `P ∨ Q` is a proof of `P` or a proof of `Q`, marked by the constructor. Declared by hand:
-
-```lean
-inductive MyOr (a b : Prop) : Prop where
-  | inl : a → MyOr a b
-  | inr : b → MyOr a b
-
-example (P Q : Prop) (hP : P) : MyOr P Q := .inl hP
-```
-
-Lean's `∨` is `Or`, declared in the same way. Where `∧` is the pair, `∨` is the disjoint union, `α ⊕ β` for propositions.
-
-Inductive types are the main mechanism by which new data types enter Lean, and `Mathlib` uses them throughout.
+`P ∧ Q` is the pair of two proofs, as `α × β` is the pair of two data. The constructor is `And.intro`, the projections are `h.1` and `h.2`, also written `h.left` and `h.right`. Where `∧` is the pair, `∨` from {ref "inductive"}[Inductive types] is the disjoint union.
 
 ## Structures and inductive types
 %%%
@@ -564,29 +581,7 @@ tag := "inductive-vs-structure"
 number := false
 %%%
 
-A `structure` is a special inductive type, and the two keywords serve different purposes.
-
-* Use `structure` when your type has a single constructor with named fields. Examples: points, complex numbers, algebraic structures.
-* Use `inductive` when your type has multiple constructors. Examples: natural numbers, lists, trees, `Option`, `Bool`.
-
-A `structure` is syntactic sugar for an inductive type with one constructor. The definition
-
-```
-structure Point where
-  x : ℕ
-  y : ℕ
-```
-
-is essentially equivalent to
-
-```
-inductive Point where
-  | mk : ℕ → ℕ → Point
-```
-
-but the `structure` version gives us named fields, the projections with dot notation, default values, and the `extends` mechanism.
-
-The basic types of Lean all arise in this way, most of them twice: once in `Type` for data, once in `Prop` for propositions.
+The basic types of Lean are all inductive types, most of them twice: once in `Type` for data, once in `Prop` for propositions.
 
 :::table (align := left) +header
 * + constructors
@@ -616,6 +611,13 @@ The basic types of Lean all arise in this way, most of them twice: once in `Type
 :::
 
 `∃`, subtypes and `≤` are the subject of the {ref "type-formers"}[next chapter].
+
+# Pattern matching and recursion
+%%%
+tag := "pattern-matching-and-recursion"
+%%%
+
+A term of an inductive type is used by asking which constructor built it. This section is about the functions defined in this way: by pattern matching, by recursion, and by the recursor itself. Structures are included, as inductive types with a single constructor.
 
 ## Pattern matching
 %%%
@@ -933,12 +935,3 @@ def neg (b : Bad) : False := app b b
 ```
 
 so `neg : Bad → False`. Then `Bad.mk neg : Bad`, and `neg (Bad.mk neg) : False` is a closed proof of `False`; it even loops, `neg (Bad.mk neg) ⟶ neg (Bad.mk neg)`. Strict positivity outlaws exactly the negative occurrence that ties this self-applying knot, the same concern that rules out `Type : Type`. (That positivity is also *sufficient* for consistency is a deep metatheorem, not something Lean proves about itself.)
-
-# Some history
-%%%
-tag := "types-history"
-%%%
-
-Types were introduced to stop a contradiction. Russell's set $`R = \{x : x \notin x\}` broke Frege's *Grundgesetze der Arithmetik* in 1902 ({ref "prehistory"}[Introduction]). Russell's repair of 1908 gave every object a type and let a type apply only to objects of lower type, so that `x ∈ x` is not false but not a statement at all. Zermelo's repair of the same year instead restricts which sets exist and leaves `x ∈ x` a formula. Mathematics followed Zermelo; proof assistants follow Russell, because a type checker can decide before any question of truth whether an expression means anything.
-
-*Principia Mathematica* (1910 to 1913) is written in Russell's theory. Leon Chwistek and Frank Ramsey simplified it in the 1920s to the simple theory of types, and Alonzo Church turned that into a calculus in 1940, the simply typed lambda calculus on which *Isabelle/HOL* still rests. That propositions can be read as types and proofs as terms is the *Curry-Howard correspondence*: Haskell Curry observed in 1934 that the types of the combinators of combinatory logic are the axioms of propositional logic, and William Howard extended this in 1969 (published 1980) to natural deduction and the simply typed lambda calculus. Dependent types, in which a type may mention a term, came with de Bruijn's Automath (1967) and Martin-Löf's type theory (1971). Coquand and Huet added impredicative quantification in the Calculus of Constructions (1985), and Paulin-Mohring added inductive types (1990). Lean's type theory is a variant of the result, the {ref "cic"}[Calculus of Inductive Constructions]. Three times the same thing happened: a system let an object be applied to itself, a contradiction followed, and types forbade it. In Lean the ban is visible as `Type 0 : Type 1 : Type 2 : ...`.

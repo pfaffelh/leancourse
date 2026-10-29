@@ -30,7 +30,7 @@ Kontext, ohne Lean.
 |---|---|---|---|---|---|---|
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | L-a | |
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | L-b, L-c, 1.1-a | |
-| 3 | 02.11. | 04.11. | Typen und Terme I: Universen, Funktionen, Strukturen, induktive Typen, Pattern Matching | 1.2 | L-d, 1.2-a, 1.1-b | |
+| 3 | 02.11. | 04.11. | Typen und Terme I: Universen, Funktionen, induktive Typen, Strukturen, Pattern Matching | 1.2 | L-d, 1.2-a, 1.1-b | |
 | 4 | 09.11. | 11.11. | Typen und Terme II: Σ, Subtypen, Typfamilien, Quotienten | 1.3 | L-e, L-f, 1.1-c, 1.2-b | **Test 1** |
 | 5 | 16.11. | 18.11. | Typen III: die Regeln, `Prop` | 1.4 | L-g, 1.3-a, 1.3-c · *extra:* X-a | |
 | 6 | 23.11. | 25.11. | Typklassen | 1.5 | 1.5-a, 1.5-b | |
@@ -53,7 +53,7 @@ Zwei Kapitelpaare teilen sich einen Termin: 2.1+2.3 (W8), 2.4+2.5
 eigene Notation führen Studierende kaum ein. Die gewonnene Woche
 geht an die Grundlagen. Seit dem 27.10.2026 gibt es kein eigenes
 Kapitel *Terme* mehr: 1.2 *Typen und Terme I* (Universen,
-Funktionen, Strukturen, induktive Typen, Pattern Matching, Rekursion)
+Funktionen, induktive Typen, Strukturen, Pattern Matching, Rekursion)
 und 1.3 *Typen und Terme II* (Σ, Subtypen, Typfamilien,
 indizierte Familien, Junktoren als Typen, Quotienten) beschreiben
 jeden Typbildner in vier Schritten (Formation, Konstruktion,

@@ -2858,3 +2858,30 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   Keine Axiome, keine Inkonsistenz moeglich; aber die Instanz bestimmt,
   was ein Satz *bedeutet*: `(1, 5) ≤ (2, 0)` ist auf `ℕ × ℕ` falsch
   (komponentenweise), auf `Lex (ℕ × ℕ)` wahr.
+- **Kern und Elaborator: 1.5 ist die Hauptstelle.** Der Unterabschnitt
+  heisst *The kernel and the elaborator* (tag `kernel-elaborator`,
+  vorher *How Lean implements the rules* ohne Tag): was der Elaborator
+  tut (Notation, Unifikation, Instanzen, Koerzionen, `match`, Taktiken),
+  `#print` eines Taktikbeweises, Fehler vom Elaborator vs. `(kernel)`,
+  der Compiler als drittes Programm. 1.1 fuehrt die beiden Woerter in
+  drei Saetzen ein (vorher nur Link in den Anhang); dort war auch
+  "`#eval` runs the same reduction" falsch -- `#eval` laeuft kompiliert.
+  Anhang *The kernel and the elaborator* (tag `elaborator`, bleibt) ist
+  auf einen Verweis geschrumpft; er behauptete, lean4lean sei "formally
+  verified" -- laut README ist es aus dem C++-Kern abgeleitet ("not
+  really an independent implementation"), der Korrektheitsbeweis ist
+  ein Teilprojekt. Strikte Positivitaet in 1.3 hat jetzt den Tag
+  `positivity-rule` (`strict-positivity` ist der Abschnitt in 2.3).
+  Neue Folie im Deck 1-5, Zeile im Deck 1-1 und in dessen Notizen.
+- **`Decidable` praezisiert** (1.6, Nutzerfrage "ist P mit Beweis
+  entscheidbar?"): fuer eine *einzelne* Aussage ist `Decidable P` nur
+  ein Beweis von `P` oder `¬P` (`isTrue h`, ohne Axiom); Entscheidbarkeit
+  sagt erst etwas fuer *Familien* (`DecidablePred`, `DecidableEq`).
+  Beispiel: `x = 0` auf ℝ; Mathlibs `Real.decidableEq` haengt an
+  `Classical.choice`, `def realIsZero` scheitert als nicht kompilierbar.
+  Die Formulierung in 2.3 ist mitgezogen.
+- Offen, nur besprochen: `{_ : Decidable p}` statt `[Decidable p]` in
+  `@[simp]`-Lemmas (Docstring von `Decidable`). In v4.34 greift `simp
+  [lemma]` auch mit `[…]` bei nicht-kanonischen Instanzen; scheitern
+  tut erst `simp only [lemma h]`, weil der Term vor dem Matchen
+  elaboriert wird. Kandidat fuer *Common pitfalls*.

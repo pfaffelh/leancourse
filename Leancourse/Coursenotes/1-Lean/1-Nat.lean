@@ -77,6 +77,8 @@ example : myDouble 2 = 4 := rfl
 tag := "defeq"
 %%%
 
+Lean consists of two parts. The *elaborator* reads what you write, such as the notation `2 + 2`, omitted arguments and tactic proofs, and translates it into a fully explicit term. The *kernel* checks that term against a small, fixed set of rules, and only a term that passes is accepted. The elaborator is large and may contain bugs; the kernel is small, and it is the only part that has to be trusted. Chapter {ref "kernel-elaborator"}[1.5] describes both in detail.
+
 Terms in Lean *reduce*, by a fixed set of steps, toward a simpler form — `(fun x => x + 1) 4` becomes `5`, and `2 + 2` becomes `4`. Each such step is called a *reduction* and is written `term ⟶ simpler term`. Two terms are *definitionally equal* — also *judgmentally equal*, written `a ≡ b` — when they reduce to a common form, and Lean's kernel then treats them as fully *interchangeable*, in particular when it compares types during type-checking. That comparison test is called *conversion* (or *defeq checking*). Definitional equality must be kept apart from *propositional equality* `a = b`, which is itself a `Prop` and may require a genuine proof; the full three-way distinction — syntactic, definitional, propositional — is laid out in {ref "equality"}[the appendix on equality].
 
 The tactic `rfl` proves exactly a definitional equality. That is why goals whose two sides are written differently but *reduce* to the same thing close by `rfl`:
@@ -86,7 +88,7 @@ example : 2 + 2 = 4 := rfl
 example : Nat.succ 0 = 1 := rfl
 ```
 
-The `#eval` command (introduced with the other {ref "naming-terms"}[commands for terms] in the next chapter) runs the same reduction and prints the value. `rfl`, `#eval` and every "reduces to" below are the same phenomenon. The steps are the kernel's *reduction rules*; they recur whenever a later step is claimed to hold "by definition".
+The `#eval` command (introduced with the other {ref "naming-terms"}[commands for terms] in the next chapter) computes the value as well and prints it, though by running compiled code rather than by reduction; for the terms of this chapter both give the same result. The steps are the kernel's *reduction rules*; they recur whenever a later step is claimed to hold "by definition".
 
 ## The reduction rules
 %%%
@@ -94,7 +96,7 @@ number := false
 tag := "reduction-rules"
 %%%
 
-Definitional equality is *generated* by a fixed list of reduction rules that the {ref "elaborator"}[kernel] applies to compute terms. Most of the names come from the *lambda calculus* of Alonzo Church in the 1930s, where functions are written `fun x => e` and each rewriting rule carries a Greek letter. Lean's kernel uses six of them:
+Definitional equality is *generated* by a fixed list of reduction rules that the kernel applies to compute terms. Most of the names come from the *lambda calculus* of Alonzo Church in the 1930s, where functions are written `fun x => e` and each rewriting rule carries a Greek letter. Lean's kernel uses six of them:
 
 :::table (align := left) +header
 * + Rule

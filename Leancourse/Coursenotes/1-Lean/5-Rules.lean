@@ -296,12 +296,38 @@ example (P : ℕ → Prop) (h : ∃ n, P n) :
   Classical.choose_spec h
 ```
 
-## How Lean implements the rules
+## The kernel and the elaborator
 %%%
 number := false
+tag := "kernel-elaborator"
 %%%
 
-Lean has two programs that deal with terms. The *elaborator* turns what you write — notation, implicit arguments, type classes, tactic proofs — into a fully explicit term. It is large and complicated, and it is not trusted. The *kernel* then checks that term against the rules above, and only then is the declaration added to the environment. A tactic can therefore produce a wrong term, but it cannot get one past the kernel.
+Lean has two programs that deal with terms. The *elaborator* turns what you write into a fully explicit term. It is large and complicated, and it is not trusted. The *kernel* then checks that term against the rules above, and only then is the declaration added to the environment. A tactic can therefore produce a wrong term, but it cannot get one past the kernel.
+
+The elaborator does everything that makes Lean convenient to write:
+
+* it resolves notation: `a + b` becomes `HAdd.hAdd a b`, and the numeral `2` becomes `OfNat.ofNat 2`;
+* it fills in implicit arguments `{α}` by *unification*, that is, by solving equations between types, and instance arguments `[C α]` by instance search;
+* it inserts coercions `↑`;
+* it translates `match` and recursive definitions into recursors or `WellFounded.fix` ({ref "pattern-matching-and-recursion"}[chapter 1.3]);
+* it runs tactics. A `by` block is a program that builds a term step by step; the proof state is the part of the term that is still missing.
+
+The kernel knows none of this: no notation, no implicit arguments, no classes, no tactics, no `match`. It sees only terms built from the few constructors below. `#print` shows such a term, here for a theorem proved by tactics:
+
+```lean
+theorem rulesDemo (p q : Prop) (hp : p) (hq : q) :
+    p ∧ q := by
+  constructor
+  · exact hp
+  · exact hq
+
+#print rulesDemo
+-- fun p q hp hq => ⟨hp, hq⟩
+```
+
+Almost every error message you will see comes from the elaborator: `type mismatch`, `failed to synthesize`, `unknown identifier`, an unsolved goal. An error that begins with `(kernel)` comes from the kernel. It is rare, because the elaborator runs most of the kernel's checks itself before handing the term on; strict positivity ({ref "positivity-rule"}[chapter 1.3]) is one of the few that only the kernel performs.
+
+A third program is the *compiler*. It translates a definition into machine code, and `#eval` runs that code. Neither the compiler nor `#eval` is involved in checking a proof, which is why a definition can be `noncomputable` without any effect on the logic.
 
 *Terms.* In the kernel, a term is a value of the type `Lean.Expr`. Its constructors are the term formers of the rules: `sort` for $`\mathrm{Sort}\ u`, `const` for a constant of the environment, `bvar` and `fvar` for variables, `lam` for `fun`, `forallE` for $`(x : \alpha) \to \beta`, `app` for application, `letE` for `let`, and three more for efficiency: `lit` for numerals and strings, `proj` for structure fields, and `mdata` for annotations. Here is `id`, as the kernel stores it. The code below is a small program in Lean's language for writing Lean itself (*metaprogramming*); only its output matters here:
 
@@ -336,7 +362,7 @@ return instantiate(binding_body(f_type), app_arg(e));
 
 This is the application rule. The type of $`f` must be a function type $`(x : \alpha) \to \beta`, the type of the argument must be $`\alpha`, and the result is $`\beta[x := a]`, which `instantiate` computes. The conversion rule does not appear as a step of its own: it is the call `is_def_eq`, which accepts the argument if its type is definitionally equal to $`\alpha` rather than identical. `is_def_eq` reduces both sides with the rules β, δ, ζ, η, ι as far as needed and compares them. The elaborator runs the same test before the kernel does, and its error `Application type mismatch`, which you will see often, is a failure of exactly this check.
 
-*Size.* The whole kernel is about 350 kB of C++ in `src/kernel`, of which `type_checker.cpp` has about 1 400 lines and the checking of inductive declarations (`inductive.cpp`) a similar amount. That is small enough to be read. The tool `lean4checker` runs the kernel once more over the compiled files of a project, which catches proofs that reached the environment by some other route than the kernel. And there are independent reimplementations that check the same terms: *lean4lean* in Lean, *nanoda* in Rust, and *Con-Leche*, mentioned in {ref "prop-special"}[Why `Prop` is special].
+*Size.* The whole kernel is about 350 kB of C++ in `src/kernel`, of which `type_checker.cpp` has about 1 400 lines and the checking of inductive declarations (`inductive.cpp`) a similar amount. That is small enough to be read. The tool `lean4checker` runs the kernel once more over the compiled files of a project, which catches proofs that reached the environment by some other route than the kernel. And there are reimplementations that check the same terms: [*lean4lean*](https://github.com/digama0/lean4lean), written in Lean and derived from the C++ kernel, with a proof in progress that it meets a formal specification of the type theory; *nanoda*, written in Rust; and *Con-Leche*, mentioned in {ref "prop-special"}[Why `Prop` is special]. A proof accepted by one kernel can be checked again by another.
 
 The rest of this chapter treats the universe of a type and `Prop`. A complete account is in Mario Carneiro's [*The Type Theory of Lean*](https://github.com/digama0/lean-type-theory).
 

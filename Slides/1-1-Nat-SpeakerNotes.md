@@ -155,8 +155,12 @@ file then checks instantly). Most demos below are one line to type.
 - The kernel treats definitionally equal terms as interchangeable,
   in particular when it compares types (*conversion*).
 - **Blue line:** `rfl` proves exactly a definitional equality.
-- `#eval` runs the same reduction and prints the result. `rfl`, `#eval`
-  and every "reduces to" are one phenomenon.
+- Two parts of Lean, named here for the first time: the *elaborator*
+  turns what we write (notation, omitted arguments, tactics) into an
+  explicit term; the *kernel* checks that term against fixed rules.
+  Only the kernel has to be trusted. Details in chapter 1.5.
+- `#eval` computes the value too, but by running compiled code, not by
+  reduction. For the terms of this chapter both agree.
 - The appendix *Equality* has the full three-way comparison.
 - **[Hintergrund]** Why it matters beyond `rfl`: if `h : P (2 + 2)`,
   then `h` *is* a proof of `P 4` — no rewriting needed, because the two

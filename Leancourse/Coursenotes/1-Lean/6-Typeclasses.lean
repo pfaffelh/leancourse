@@ -95,7 +95,7 @@ The parallel holds at the term level: `class` is a `structure` marked for instan
   + `instance`
 :::
 
-*Typeclasses add nothing to the logic.* The {ref "rules"}[kernel] knows neither `class` nor `instance`: a class is a structure, an instance is a definition, and `[C α]` is an ordinary argument of a function type. Instance resolution runs in the elaborator, which writes the instance it finds into the term, and the kernel checks that term like any other. The option `pp.explicit` shows the filled-in term:
+*Typeclasses add nothing to the logic.* The {ref "kernel-elaborator"}[kernel] knows neither `class` nor `instance`: a class is a structure, an instance is a definition, and `[C α]` is an ordinary argument of a function type. Instance resolution runs in the elaborator, which writes the instance it finds into the term, and the kernel checks that term like any other. The option `pp.explicit` shows the filled-in term:
 
 ```lean
 set_option pp.explicit true in
@@ -311,7 +311,7 @@ When Lean encounters an expression like `a + b` where `a b : α`, it needs to fi
 3. If an instance itself requires other instances (e.g., `Add (Prod α β)` might require `Add α` and `Add β`), Lean recursively resolves those.
 4. Lean uses the first chain of instances that leads to a solution, trying instances of higher priority first and, among equal priorities, the more recently declared ones first. If no chain exists, it reports an error. Several solutions are no error, so different instances for the same type had better agree ({ref "typeclass-diamonds"}[Typeclass diamonds]).
 
-This process is deterministic and happens at {ref "elaborator"}[elaboration time] (when Lean checks your code), not at runtime. So there is no performance penalty.
+This process is deterministic and happens at {ref "kernel-elaborator"}[elaboration time] (when Lean checks your code), not at runtime. So there is no performance penalty.
 
 You can trigger instance resolution yourself with the term
 `inferInstance`, which asks Lean to synthesize an instance of a stated
@@ -443,10 +443,12 @@ example : (7 : ZMod 5) = 2 := rfl
 tag := "decidable-typeclass"
 %%%
 
-`Decidable` sits at the border between *programs* and *proofs*. A
-proposition `P` is `Decidable` when an algorithm determines whether `P`
-holds — so the class carries genuine computational content, and lives
-in `Type`, not `Prop`:
+`Decidable` sits at the border between *programs* and *proofs*. It has
+two constructors, `isTrue h` with a proof `h : P` and `isFalse h` with
+a proof `h : ¬P`. An element of `Decidable P` is therefore the
+information *which* of the two cases holds, together with a proof.
+Programs branch on that information, so the class lives in `Type`, not
+`Prop`:
 
 ```lean
 #check @Decidable
@@ -473,7 +475,7 @@ example : 2 + 3 = 5 := by decide
 example : ¬(2 + 3 = 6) := by decide
 ```
 
-A `Decidable P` instance is a term returning one of the class's two constructors: `isTrue h` carrying a proof `h : P`, or `isFalse h` carrying a proof `h : ¬P`. You can write one by hand. Decidability of "is `n` zero?", by cases on `n`:
+An instance can be written by hand. Decidability of "is `n` zero?", by cases on `n`:
 
 ```lean
 def decZero (n : Nat) : Decidable (n = 0) :=
@@ -484,7 +486,22 @@ def decZero (n : Nat) : Decidable (n = 0) :=
 
 Each branch supplies a proof, which is why `Decidable` lives in `Type` and carries content. Registered as an `instance`, `decZero` is what `decide` runs and what `if n = 0 then … else …` consults. `deriving DecidableEq` generates such a definition for you.
 
-Decidability is the *constructive* half: it works without axioms, and that is why the resulting code is executable. Many propositions have no such algorithm: whether a real number is `0`, or a proposition `P` you know nothing about.
+*A single proposition or a family.* For a single proposition, `Decidable P` asks for no more than a proof of `P` or a proof of `¬P`, and this needs no axiom:
+
+```lean
+def decOfProof {P : Prop} (h : P) : Decidable P := isTrue h
+```
+
+Decidability says something only for a *family* of propositions. `decZero` above is one function that, for every `n`, computes which case holds. The classes `DecidablePred p` (a `Decidable (p a)` for every `a`) and `DecidableEq α` (a `Decidable (a = b)` for all `a b : α`) ask for such a function. `n % 2 = 0` is decidable in this sense: compute the remainder. Equality of real numbers is not. A real number is given by a Cauchy sequence, and no finite part of the sequence settles whether its limit is `0`. For each single `x` one of `x = 0` and `x ≠ 0` holds, but no algorithm finds out which.
+
+Mathlib nevertheless has an instance of `DecidableEq ℝ`. It is built from the axiom of choice and computes nothing, so a definition that branches on `x = 0` cannot be compiled:
+
+```lean +error
+def realIsZero (x : ℝ) : Bool :=
+  if x = 0 then true else false
+```
+
+The error is `failed to compile definition, consider marking it as 'noncomputable'`. Decidability by an algorithm is the *constructive* half: it works without axioms, and the resulting code is executable. Where no algorithm exists, the instance comes from the axiom of choice.
 
 ## The `classical` tactic
 %%%

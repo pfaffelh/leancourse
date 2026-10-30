@@ -634,8 +634,8 @@ number := false
 tag := "decidable-classically"
 %%%
 
-A proposition is {ref "decidable-typeclass"}[`Decidable`] when an
-algorithm computes whether it holds, which is what makes
+A family of propositions is {ref "decidable-typeclass"}[`Decidable`] when an
+algorithm computes, for each argument, which case holds, which is what makes
 `if P then _ else _` and the `decide` tactic run *without any axioms*.
 `Classical.propDecidable` makes every `Prop` decidable, but via
 `Classical.choice`, so the instance carries no algorithm and code that

@@ -197,9 +197,19 @@ noncomputable def pickOne {α : Type}
 `Classical.choice` is the step from `Prop` back to data. Definitions that use it are `noncomputable`.
 :::
 
-# How Lean checks the rules
+# The kernel and the elaborator
 
-The _elaborator_ turns notation, implicit arguments and tactics into an explicit term; it is not trusted. The _kernel_ checks that term.
+```lean -panel -stretch
+theorem rulesDemo (p q : Prop) (hp : p) (hq : q) :
+    p ∧ q := by constructor <;> assumption
+#print rulesDemo
+```
+
+- _elaborator_: notation, `{α}`, `[C α]`, `↑`, `match`, tactics; not trusted
+- _kernel_: checks the explicit term; small, trusted
+- errors come from the elaborator; `(kernel) …` is rare
+
+# How Lean checks the rules
 
 From `src/kernel/type_checker.cpp`, the application rule:
 

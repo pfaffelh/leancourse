@@ -154,7 +154,7 @@ Then run it in the editor: `rfl` accepts because the chain ends at `4`.
 
 - Terms *reduce*: `(fun x => x + 1) 4` becomes `5`.
 - `a ≡ b`, *definitionally equal*: both reduce to a common form.
-- The kernel treats them as interchangeable (*conversion*).
+- The _kernel_, the small part of Lean that checks every term, treats them as interchangeable (*conversion*).
 - Propositional equality `a = b` is a `Prop` and may need a proof.
 
 :::class "key"

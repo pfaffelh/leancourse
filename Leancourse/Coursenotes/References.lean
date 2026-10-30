@@ -114,6 +114,19 @@ def mathlib2020 : InProceedings where
   booktitle := inlines!"CPP 2020: Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs"
   url := some "https://doi.org/10.1145/3372885.3373824"
 
+def aczel1977 : InProceedings where
+  title := inlines!"An Introduction to Inductive Definitions"
+  authors := #[inlines!"Peter Aczel"]
+  year := 1977
+  booktitle := inlines!"Handbook of Mathematical Logic (J. Barwise, ed.), North-Holland, 739–782"
+
+def dybjer1991 : InProceedings where
+  title := inlines!"Inductive Sets and Families in Martin-Löf's Type Theory and Their Set-Theoretic Semantics"
+  authors := #[inlines!"Peter Dybjer"]
+  year := 1991
+  booktitle := inlines!"Logical Frameworks (G. Huet, G. Plotkin, eds.), Cambridge University Press, 280–306"
+  url := some "https://doi.org/10.1017/CBO9780511569807.012"
+
 def werner1997 : InProceedings where
   title := inlines!"Sets in Types, Types in Sets"
   authors := #[inlines!"Benjamin Werner"]

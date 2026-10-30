@@ -406,4 +406,32 @@ example (Bad : Type) (mk : (Bad → False) → Bad)
   neg (mk neg)
 ```
 
-Strict positivity outlaws exactly the negative occurrence that ties this self-applying knot, the same concern that rules out `Type : Type`. (That positivity is also *sufficient* for consistency is a deep metatheorem, not something Lean proves about itself.)
+Strict positivity outlaws exactly the negative occurrence that ties this self-applying knot, the same concern that rules out `Type : Type`.
+
+## Why positivity is enough
+%%%
+tag := "positivity-sufficient"
+number := false
+%%%
+
+Read in sets, a declaration is an equation for a set `X`: an element of the type is exactly one of the things the constructors build. `False` is the empty set.
+
+:::table (align := left) +header
+* + declaration
+  + equation
+* + `ℕ`
+  + `X = {0} ⊔ X`
+* + `MyTree`
+  + `X = ℕ ⊔ (ℕ → X)`
+* + `Bad`
+  + `X = (X → ∅)`
+:::
+
+The type exists if the equation has a solution, a fixed point `X = F(X)`. Whether it has one depends on where `X` stands. `ℕ → X` grows with `X`: a function into a smaller set is also a function into a larger one. `X → ∅` shrinks when `X` grows. So if `X` occurs only to the right of `→`, the map `F` is *monotone*: `X ⊆ Y` gives `F(X) ⊆ F(Y)`.
+
+A monotone `F` has a fixed point, reached by the stages described for `MyTree` above. Put `X₀ = ∅`, `X₁ = F(X₀)`, `X₂ = F(X₁)`, …, and take unions at limit stages. By monotonicity the sets grow, and the stages continue transfinitely until nothing new is added; for `MyTree` this happens at the first uncountable ordinal, because each node has only countably many subtrees. The result is a set with `X = F(X)`. The constructors are maps into it, and the recursor is recursion over the stage at which an element first appears. A strictly positive declaration therefore adds only something that already exists in set theory, and cannot produce a contradiction. This is the set-theoretic semantics of inductive definitions: {citet aczel1977}[] for monotone inductive definitions in general, {citet dybjer1991}[] for inductive types in Martin-Löf's type theory, and {citet werner1997}[] for the Calculus of Inductive Constructions, with a model in ZFC plus inaccessible cardinals. For the type theory Lean implements, the same construction is part of the model of {citet carneiro2019}[], with the gap described in {ref "prop-special"}[Why `Prop` is special].
+
+For `Bad` there is no solution. `X → ∅` has one element (the empty function) if `X` is empty, and none otherwise, so `X = (X → ∅)` fails either way: this is `Bad ↔ ¬Bad`. The stages do not help, because `F` is not monotone; they alternate between `∅` and a one-element set. For a negative occurrence with values in `Bool`, `mk (f : Bad' → Bool) : Bad'`, the set `X` would contain a copy of `X → Bool`, its power set, which Cantor's theorem rules out. The self-application `unmk b b` is Cantor's diagonal.
+
+The word *strictly* matters. In `mk (f : (X → Bool) → Bool) : X` the type `X` stands to the left of two arrows, and the two reversals cancel, so `F` is monotone. But `F(X)` is then a double power set, again too large to fit into `X`, and together with the impredicative `Prop` such a declaration yields a proof of `False` {citep coquandPaulin1990}[]. Lean therefore requires that `X` stand to the left of no arrow at all.
+

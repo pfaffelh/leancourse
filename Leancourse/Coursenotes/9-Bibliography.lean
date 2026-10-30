@@ -27,6 +27,8 @@ the source.
 * {citehere girard1972}[]
 * {citehere hurkens1995}[]
 * {citehere martinLof1975}[]
+* {citehere aczel1977}[]
+* {citehere dybjer1991}[]
 * {citehere werner1997}[]
 * {citehere mathlib2020}[]
 * {citehere mathematicsInLean}[]

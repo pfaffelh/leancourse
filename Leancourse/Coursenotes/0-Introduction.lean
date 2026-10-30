@@ -493,9 +493,9 @@ proof uses, and the proof of `False` from #14576 used none. Second, the remedy i
 redundancy rather than trust: about 25 independent Lean kernels exist, so a proof can be
 rechecked by a program sharing no code with the one that accepted it. Joachim Breitner's
 [*Con-Leche*](https://github.com/leanprover/con-leche) goes further: an external checker,
-written in Lean, with a proof in Lean that it never accepts a proof of `False`. That is a
-statement about the checker, not about Lean's type theory, whose consistency it assumes
-({ref "prop-special"}[Why `Prop` is special]).
+written in Lean, with a proof in Lean that every environment it accepts has a model in set
+theory, so it never accepts a proof of `False`. That is a statement about this checker, not
+about the kernel Lean itself runs ({ref "prop-special"}[Why `Prop` is special]).
 
 This account follows {citet hales2026}[].
 :::

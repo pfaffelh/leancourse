@@ -2915,3 +2915,27 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
 - **Neues Deck `Slides/2-1-Numbers.lean`** (`slides/2-1-numbers/`,
   namespace `SlidesNumbers`), 14 Folien, in `SlidesMain` und Organization
   (neue Unterliste *Mathematics*) eingetragen.
+
+## 2026-10-31 -- Con-Leche zum zweiten Mal richtiggestellt
+
+Der Eintrag vom 18.10. ("laeuft innerhalb von Carneiros Rahmen, zeigt
+nicht, dass das Modell existiert") ist **falsch** nach dem Stand von
+README und Begleitpapier (*The con-leche proof idea*, 23.10.2026):
+`model_exists` beweist, dass jede akzeptierte Umgebung ein Modell hat
+(ZF ohne Unendlichkeit/Auswahl + ω-Kette von Grothendieck-Universen,
+gewonnen aus Carneiros "ω Unerreichbare" via `carneiro_implies_conleche`).
+Der Beweis braucht ausdruecklich weder Subjektreduktion noch Konfluenz,
+Π-Injektivitaet oder eindeutige Typisierung; der Checker macht dafuer
+zusaetzliche Typvergleiche. Von Carneiro kommt nur die
+Mengenlehre-Annahme. Grenze: Satz ueber diesen Checker, nicht ueber
+Leans C++-Kern. Korrigiert in 1.5 (*Why `Prop` is special*), in der
+Bug-Box von Kapitel 0 und in `Slides/0-Introduction-SpeakerNotes.md`.
+Das Papier zitiert Werner 1997 als verwandte Arbeit (Werners Kalkuel hat
+keine induktiven Propositionen) sowie Dybjer 1994 und Barras 2010.
+
+Neu in 1.3: Abschnitt *Why positivity is enough* (tag
+`positivity-sufficient`): Deklaration als Mengengleichung `X = F(X)`,
+strikt positiv = `F` monoton, Fixpunkt ueber die Stufen, `Bad` ohne
+Loesung, Cantor; Belege Aczel 1977, Dybjer 1991 (neu in
+`References.lean`), Werner 1997, Coquand/Paulin-Mohring 1990. Folie
+gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.

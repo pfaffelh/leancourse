@@ -284,6 +284,33 @@ example (Bad : Type) (mk : (Bad → False) → Bad)
 It loops: `neg (mk neg) ⟶ unmk (mk neg) (mk neg) ⟶ neg (mk neg)`.
 :::
 
+# Why positivity is enough
+
+Read in sets, a declaration is an equation `X = F(X)`:
+
+:::table +colHeaders +rowSeps
+*
+  * declaration
+  * equation
+*
+  * `ℕ`
+  * `X = {0} ⊔ X`
+*
+  * `MyTree`
+  * `X = ℕ ⊔ (ℕ → X)`
+*
+  * `Bad`
+  * `X = (X → ∅)`
+:::
+
+- `X` only right of `→`: `F` is monotone. The stages `∅ ⊆ F(∅) ⊆ F(F(∅)) ⊆ …`, continued transfinitely, reach a fixed point: a set that is the type.
+- `X → ∅` has one element if `X = ∅`, none otherwise: no solution, `Bad ↔ ¬Bad`.
+- With `X → Bool` instead: `X` would contain its power set. Cantor.
+
+:::class "key"
+Proved for inductive types: Aczel 1977, Dybjer 1991; for the CIC: Werner 1997; for Lean, checked in Lean: Con-Leche (Breitner).
+:::
+
 # Summary
 
 - Pattern matching: one branch per constructor; Lean checks that every case is covered.

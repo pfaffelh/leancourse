@@ -1,33 +1,42 @@
 import Mathlib
 
 /-!
-# 1.1-c -- Arithmetic and induction on `Nat`
+# 1.1-c -- Arithmetic and induction on `ℕ`
 
 *Notes chapter 1.1, week 4.*
+
+On sheet `1.1-a` everything about `ℕ` was built by hand. Here we use
+what Mathlib already proves about `ℕ`, and the tactics that do the
+arithmetic for us.
+
+## Tactics introduced here
+
+| tactic                 | use it when                                         |
+|------------------------|-----------------------------------------------------|
+| `cases n with`         | split `n : ℕ` into `zero` and `succ k`              |
+| `rw [lemma]`           | rewrite with an equation from Mathlib               |
+| `nth_rw k [lemma]`     | rewrite only the `k`-th occurrence                  |
+| `calc`                 | a chain of steps `a = b`, `b = c`, ... or with `≤`  |
+| `ring`                 | an equation that holds in every commutative ring    |
+| `norm_num`             | numerals: `123 * 321 = 39483`, `1 / 2 < 1`          |
+| `linarith`             | a linear (in)equality that follows from hypotheses  |
+| `simp`, `simp?`        | simplify with Mathlib's `@[simp]` lemmas            |
+| `induction n with`     | induction on `n : ℕ`                                |
+| `omega`                | linear arithmetic on `ℕ` and `ℤ`                    |
 -/
 
 open Nat
 
-/-
-In Mathlib, results on the natural numbers live in a `namespace` and
-start with `Nat.???`. We do not want to type `Nat.` all the time,
-which is what `open Nat` above is for.
--/
+/-! `open Nat` lets us write `succ` instead of `Nat.succ`. Put the cursor
+on a name and press `F12` to see its definition. -/
 
-/-
-`Nat`, its constructors `zero` and `succ` and the recursor were sheet
-`1.1-a`. There everything was built by hand. Here we use what Mathlib
-already proves about `ℕ`.
+/-! ## Part 1: Cases on `ℕ`
 
-A hint we will use often: put the cursor on any name and press `F12`.
-That takes you to its definition.
+`cases n` splits `n : ℕ` into its two constructors, as `cases b` did
+for `b : Bool` on sheet `1.1-b`. Each case gets its branch and names
+its variables. -/
 
-`cases n` splits a variable `n : ℕ` into its constructors, as
-`cases b` did for `b : Bool` on sheet `1.1-b`. With `with`, each case
-gets its branch and names its variables. It is like `induction`, but
-without an induction hypothesis: -/
-
-example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) := by
+example (n : ℕ) : n = 0 ∨ ∃ k : ℕ, n = succ k := by
   cases n with
   | zero =>
     left
@@ -36,148 +45,150 @@ example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) := by
     right
     use k
 
-/- Note that a similar result is implemented in Mathlib: -/
+/-! Mathlib has this as a lemma: -/
 
-example (n : ℕ) (hn : n ≠ 0) : ∃ (k : ℕ), n = succ k := by
-  exact exists_eq_succ_of_ne_zero hn
+example (n : ℕ) (hn : n ≠ 0) : ∃ k : ℕ, n = succ k :=
+  exists_eq_succ_of_ne_zero hn
 
-/-
-Exercise 1: Try to follow this example a little further.
-
-Here I needed two lemmas (to apply `rw` to it; for the first one, lean knows that `α = ℕ` has the property `LT` (which stands for _less than_, i.e., `ℕ` is ordered)):-/
-
-#check gt_iff_lt
-#check Nat.succ_lt_succ_iff
-
-/-
-These and many more statements can also be found here, for example: https://leanprover-community.github.io/. See also below for further examples.-/
-
-example (n : ℕ) (h : n > 1) : ∃ (k : ℕ), n = k + 2 := by
+-- Exercise 1) There are two routes. Either work with
+-- `exists_eq_succ_of_ne_zero` twice, or name the witness with `use`
+-- and let `omega` check the arithmetic.
+example (n : ℕ) (h : n > 1) : ∃ k : ℕ, n = k + 2 := by
   sorry
-/-
-  Now let's move on to some concrete calculations. We have already learned how `rw` works. This, together with the many statements in mathlib, will now help us solve arithmetic problems. We will first work in the set of natural numbers. The lemmas we will use in the following are, for example, the proofs stored in mathlib that ℕ has the properties `add_zero_class`, `mul_one_class`, `add_semigroup`, `add_comm_semigroup`, as well as the lemmas: (for the parentheses, see script)
--/
 
-#check zero_add
-#check add_zero
-#check one_mul
-#check mul_one
-#check add_assoc
-#check add_comm
-#check mul_assoc
-#check mul_comm
+/-! ## Part 2: Rewriting and `calc`
 
--- Here is an example: if you move the mouse over `add_zero`, vscode will show you the corresponding statement.
+`rw [h]` with `h : a = b` replaces `a` by `b`; `rw [← h]` replaces `b`
+by `a`. Mathlib's lemmas about `+`, `*` and `^` are equations of this
+kind. These are the ones used below: -/
+
+#check add_zero   -- a + 0 = a
+#check zero_add   -- 0 + a = a
+#check add_comm   -- a + b = b + a
+#check add_assoc  -- a + b + c = a + (b + c)
+#check mul_one    -- a * 1 = a
+#check one_mul    -- 1 * a = a
+#check mul_comm   -- a * b = b * a
+#check mul_add    -- a * (b + c) = a * b + a * c
+#check add_mul    -- (a + b) * c = a * c + b * c
+#check pow_two    -- a ^ 2 = a * a
+
 example (m n : ℕ) : m + n = n + m + 0 := by
   rw [add_zero, add_comm]
 
--- The `calc` mode is available to help you keep track of longer calculations. It works as follows in the example above:
+/-! `calc` writes the same proof as a chain. Each step is a goal of
+its own, with its own `by`. -/
 
 example (m n : ℕ) : m + n = n + m + 0 := by
   calc m + n = n + m := by rw [add_comm]
     _ = n + m + 0 := by rw [add_zero]
 
-/-
-It is best to read the description of `calc` in the course notes.
-In addition, we sometimes need the `nth_rw` tactic (see also the notes) when we want to specify where we want to rewrite something. See the next example.-/
+/-! `nth_rw k [h]` rewrites only the `k`-th place where `h` matches.
+Here `rw [← one_mul n]` would turn both `n` into `1 * n` at once. -/
 
-lemma double (n : ℕ) : n + n = 2*n := by
-  calc
-  n + n = 1 * n + n := by nth_rw 1 [← one_mul n]
-  _ = 1 * n + 1 * n := by nth_rw 2 [← one_mul n]
-  _ = (1 + 1) * n := by rw [add_mul]
-  _ = 2 * n := by rfl
+lemma double (n : ℕ) : n + n = 2 * n := by
+  calc n + n = 1 * n + n := by nth_rw 1 [← one_mul n]
+    _ = 1 * n + 1 * n := by nth_rw 2 [← one_mul n]
+    _ = (1 + 1) * n := by rw [add_mul]
+    _ = 2 * n := by rfl
 
-/-
-  Before we move on to the next tasks, let's prove a binomial formula: Note that each `by` functions as its own proof block.-/
+lemma binom1 (n : ℕ) : (n + 1) ^ 2 = n ^ 2 + 2 * n + 1 := by
+  calc (n + 1) ^ 2 = (n + 1) * (n + 1) := by rw [pow_two]
+    _ = (n + 1) * n + (n + 1) * 1 := by rw [mul_add]
+    _ = n * n + 1 * n + (n + 1) := by rw [add_mul, mul_one (n + 1)]
+    _ = n ^ 2 + n + (n + 1) := by rw [one_mul, ← pow_two]
+    _ = n ^ 2 + (n + n + 1) := by rw [add_assoc, ← add_assoc n n 1]
+    _ = n ^ 2 + 2 * n + 1 := by rw [← add_assoc, ← double]
 
-lemma binom1 (n : ℕ) : (n+1)^2 = n^2 + 2*n + 1 :=
-   calc (n+1)^2 = (n+1) * (n+1) := by rw [pow_two]
-  _ = (n+1)*n + (n+1) * 1 := by rw [mul_add]
-  _ = n*n + 1*n + (n+1) := by rw [add_mul, mul_one (n+1)]
-  _ = n^2 + n + (n+1) := by rw [one_mul, ← pow_two]
-  _ = n^2 + (n + n+1) := by rw [add_assoc, ← add_assoc n n 1]
-  _ = n^2 + 2*n + 1 := by rw [← add_assoc, ← double]
+-- Exercise 2) With `rw` only.
+example (a b c : ℕ) : (a + b) * c = c * a + b * c := by
+  sorry
 
-/-
-  Here is an alternative, but less readable proof:-/
+-- Exercise 3) With `calc`, one lemma per step.
+example (m n : ℕ) : m * (n + 1) + 0 = m + m * n := by
+  sorry
 
-example (n : ℕ): (n+1)^2 = n^2 + 2*n + 1 := by
-  rw [pow_two, mul_add, add_mul, mul_one (n+1), one_mul, ← pow_two,  add_assoc, ← add_assoc n n 1, ← add_assoc, ← double]
+/-! ## Part 3: Four automatic tactics
 
-/-
-By the way: Rewriting every little calculation rule with rw can become tedious. There are four tactics that are much more powerful here:
-- `ring`: knows all arithmetic rules in (semi) rings, e.g., natural numbers; however, it cannot use hypotheses; directly solves the binomial theorem;
-- `norm_num`: can calculate with numbers (but not variables);
-- `linarith`: can prove linear equations and inequalities with the help of hypotheses;
-- `simp`: in Mathlib there are many lemmas that are intended to simplify things, such as `n + 0 = n`. These are always `=` or `↔` statements and are marked with @simp. The simp tactic can access these.-/
+Rewriting each rule by hand is slow. Four tactics do it for us:
 
-example (m n : ℕ) : (m + n)^3 = m^3 + 3*m*n^2 + 3*m^2*n + n^3 := by
+* `ring` proves equations that hold in every commutative ring, such as
+  the binomial formula. It does not use hypotheses.
+* `norm_num` computes with numerals.
+* `linarith` proves linear equations and inequalities from the
+  hypotheses.
+* `simp` rewrites with the lemmas Mathlib marks `@[simp]`, such as
+  `n + 0 = n`. `simp?` shows which lemmas it used, `simp at h` works on
+  a hypothesis. -/
+
+example (n : ℕ) : (n + 1) ^ 2 = n ^ 2 + 2 * n + 1 := by
   ring
 
 example : 123 * 321 = 39483 := by
   norm_num
 
-example (k m n : ℕ) (h1 : k ≤ m+n) (h2 : m < n) : k < 2*n := by
+example (k m n : ℕ) (h₁ : k ≤ m + n) (h₂ : m < n) : k < 2 * n := by
   linarith
 
--- For `simp`, note that there are versions `simp?`, which shows swhich lemmas were used, and `simp at h` applies the simplifications to the hypothesis `h`.
 example (n : ℕ) : n + 0 + 0 = 0 + 0 + n := by
   simp
 
-/-
-  Here are a few tasks that can be solved with a single line of code:-/
-
--- Exercise 2a
+-- Exercises 4 to 8) One tactic each. Which one?
 example : 0 < 1 := by
   sorry
 
--- Exercise 2b
-example (n : ℕ): n * (n + 1) * (n + 2) = n^3 + 3 * n^2 + 2 * n := by
+example (n : ℕ) : n * (n + 1) * (n + 2) = n ^ 3 + 3 * n ^ 2 + 2 * n := by
   sorry
 
--- Exercise 2c
-example : 1^100 = 100/100 := by
+example : 1 ^ 100 = 100 / 100 := by
   sorry
 
-/-
-  Exercise 3: a non-linear inequality; note that `calc` also works for inequalities, i.e.
-  ```
-  calc n = 1 * n := by sorry
-   _ ≤ 2 * n := by sorry,
-  ```
--/
-example (n : ℕ) : n ≤ n^2 := by
+example (k m n : ℕ) (h₁ : k + 2 ≤ m) (h₂ : m < n) : k + 3 ≤ n := by
   sorry
 
-/-
-  Now follow two tasks with less help. Part of each task is to find the corresponding result that makes the proof easier!
-
-  Exercise 4:
--/
-
-example (x y : ℕ): x^(y + 1) = x * x^y := by
-  exact Nat.pow_succ'
-
-example (m n : ℕ) : m^(n+2) = m * m^n * m := by
+example (n : ℕ) : 0 * n + n * 1 + 0 = n := by
   sorry
 
-/-
-  Exercise 5:
--/
+/-! ## Part 4: Finding the lemma
 
-example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k^2 ≤ n^3 := by
+Part of each task is to find the lemma that does the work, with
+`exact?` or by guessing its name. -/
+
+example (x y : ℕ) : x ^ (y + 1) = x * x ^ y :=
+  Nat.pow_succ'
+
+-- Exercise 9)
+example (m n : ℕ) : m ^ (n + 2) = m * m ^ n * m := by
   sorry
 
-/-
-  ## Induction
+-- Exercise 10) A lemma saying `a ≤ a ^ n` for `n ≠ 0` exists.
+example (n : ℕ) : n ≤ n ^ 2 := by
+  sorry
 
-  Up to here we have calculated. The rest of this sheet is about
-  complete induction, which is close to the `cases` at the top: the
-  same case distinction, but with the induction hypothesis in hand.
--/
+-- Exercise 11) Three inequalities in a row: `have` each of them, then
+-- `le_trans`. For `n ^ 2 ≤ n ^ 3`, the case `n = 0` is separate.
+#check Nat.pow_le_pow_left   -- m ≤ n → m ^ i ≤ n ^ i
+#check Nat.pow_le_pow_right  -- n > 0 → i ≤ j → n ^ i ≤ n ^ j
+#check le_trans              -- a ≤ b → b ≤ c → a ≤ c
 
-example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) := by
+example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k ^ 2 ≤ n ^ 3 := by
+  sorry
+
+-- Exercise 12) For `0 ≤ x`, a power is at most `1` exactly when `x`
+-- is. One direction is a lemma; for the other, assume `1 < x` with
+-- `by_contra` and `push Not`.
+#check pow_le_one₀   -- 0 ≤ a → a ≤ 1 → a ^ n ≤ 1
+#check one_lt_pow₀   -- 1 < a → n ≠ 0 → 1 < a ^ n
+
+example (x : ℝ) (n : ℕ) (h : 0 ≤ x) : x ^ (n + 1) ≤ 1 ↔ x ≤ 1 := by
+  sorry
+
+/-! ## Part 5: Induction
+
+`induction n with` is `cases n with` plus an induction hypothesis in
+the `succ` case. -/
+
+example (n : ℕ) : n = 0 ∨ ∃ k : ℕ, n = succ k := by
   induction n with
   | zero =>
     left
@@ -186,68 +197,45 @@ example (n : ℕ) : n = 0 ∨ (∃ (k : ℕ), n = succ k) := by
     right
     use n
 
--- Exercise 1) Here is the first task. Remember that a hypothesis `h : P ∨ Q` can be resolved into two goals using `obtain (hP | hQ) := h` (sheet `L-c`).
-
-example (n : ℕ) : (∃ (k : ℕ), n = 2 * k) ∨ (∃ (k : ℕ), n = 2 * k + 1) := by
+-- Exercise 13) In the `succ` case, split the induction hypothesis with
+-- `obtain (hk | hk) := hn`.
+example (n : ℕ) : (∃ k : ℕ, n = 2 * k) ∨ (∃ k : ℕ, n = 2 * k + 1) := by
   induction n with
   | zero =>
     sorry
   | succ n hn =>
     sorry
 
--- Exercise 2: A non-negative real number `x` has `x ≤ 1` if `x^n ≤ 1`. This can be proven by induction.
-/-
-  You will probably need the following in the proof:-/
+/-! In the next exercise `n : ℕ` appears inside a statement about `ℝ`.
+Lean inserts the map `ℕ → ℝ` and shows it as `↑n`. `push_cast` turns
+`↑(n + 1)` into `↑n + 1`. -/
 
-#check pow_succ
-#check not_iff_not
-#check one_lt_mul
-#check le_of_lt
-#check pow_nonneg
-#check mul_le_one₀
+example (x : ℝ) (d : ℕ) : 0 ≤ (d : ℝ) * x ^ 2 := by
+  have h₀ : 0 ≤ (d : ℝ) := Nat.cast_nonneg d
+  exact mul_nonneg h₀ (sq_nonneg x)
 
--- `refine` is `exact` with holes: write the term you mean and put
--- `?_` where you do not know the argument yet, and each `?_` becomes
--- a new goal. The alphabetical entry is in the Tactics appendix.
-example (x : ℝ) (n : ℕ) (h : 0 ≤ x) : x^(n+1) ≤ 1 ↔ x ≤ 1 := by
-  refine pow_le_one_iff_of_nonneg h ?_
-  exact Ne.symm (zero_ne_add_one n)
+-- Exercise 14) Bernoulli's inequality for `0 ≤ x`. In the `succ` case,
+-- first show `1 ≤ (1 + x) ^ n` (lemma `one_le_pow₀`), then a `calc`.
+#check one_le_pow₀                  -- 1 ≤ a → 1 ≤ a ^ n
+#check mul_le_mul_of_nonneg_right   -- b ≤ c → 0 ≤ a → b * a ≤ c * a
 
-example (x : ℝ) (n : ℕ) (h : 0 ≤ x) : x^(n+1) ≤ 1 ↔ x ≤ 1 := by
+example (n : ℕ) (x : ℝ) (h : 0 ≤ x) : (1 : ℝ) + n * x ≤ (1 + x) ^ n := by
   sorry
 
--- Exercise 3: Here is a problem from Calculus 1: `1 + n * x ≤ (1 + x)^n`. This applies if `-1 ≤ x`. If this is too difficult, change the assumption `h` to `0 ≤ x`.
--- Here are a few statements that may be helpful (go to the end of each line to see the statement on the right):
-
-#check @ add_mul
-#check @ add_assoc
-#check @ mul_le_mul_of_nonneg_left
-#check @ mul_nonneg
-#check @ Nat.mul_le_mul_left
-#check @ le_trans
-
--- Note that in the next exercise we must transform `d : ℕ` to `d : ℝ`. Lean does this using a function `ℕ → ℝ`, which one usually does not talk about in mathematics. Lean displays `d : ℝ` by `↑d`.
-example (x : ℝ) (d : ℕ) : 0 ≤ (d : ℝ) * x^2 := by
-  have h₀ : 0 ≤ (d : ℝ):= by exact cast_nonneg' d
+-- Exercise 15)
+example (n : ℕ) : n + 1 ≤ 2 ^ n := by
   sorry
 
-/-- Note that `ring` also works on `ℝ`: -/
-example (x y : ℝ) : (x + y) ^ 2 = x ^ 2 + 2 * x * y + y ^ 2 := by
-  ring
+/-! ## Part 6: Sums
 
--- Exercise 4:
-example (n : ℕ) (x : ℝ) (h : 0 ≤ x) : (1 : ℝ) + n * x ≤ (1 + x)^n := by
-  sorry
+`∑ k ∈ Finset.range n, f k` is the sum of `f k` for `k < n`, typed
+`\sum`; `Finset.range n` is `{0, …, n - 1}`. Finite sets are in chapter
+2.2; here the notation is enough, together with
+`Finset.sum_range_succ`, which splits off the last summand. -/
 
--- The next two exercises use the sum notation. Read
--- `∑ k ∈ Finset.range n, f k` as "the sum of `f k` for `k < n`";
--- `Finset.range n` is the finite set `{0, ..., n-1}`. Finite sets in
--- their own right are chapter 2.9 -- here the notation is all you
--- need, together with `Finset.sum_range_succ`, which peels off the
--- last summand and is what makes the induction step work.
+#check Finset.sum_range_succ
 
--- Exercise 5: Sum of the first n natural numbers is n*(n+1)/2.
--- Use induction on n.
+-- Exercise 16)
 example (n : ℕ) : 2 * (∑ k ∈ Finset.range (n + 1), k) = n * (n + 1) := by
   induction n with
   | zero =>
@@ -255,27 +243,20 @@ example (n : ℕ) : 2 * (∑ k ∈ Finset.range (n + 1), k) = n * (n + 1) := by
   | succ n hn =>
     sorry
 
--- Exercise 6: Sum of the first n odd numbers is n^2.
+-- Exercise 17) The sum of the first `n` odd numbers.
 example (n : ℕ) :
     (∑ k ∈ Finset.range n, (2 * k + 1)) = n ^ 2 := by
-  induction n with
-  | zero =>
-    sorry
-  | succ n hn =>
-    sorry
+  sorry
 
--- Exercise 7: For all n, 2^n ≥ n + 1 (true by induction).
-example (n : ℕ) : n + 1 ≤ 2 ^ n := by
-  induction n with
-  | zero =>
-    sorry
-  | succ n hn =>
-    sorry
+/-! ## Part 7: `omega`
 
--- Exercise 8: Euclidean division: every n is 2*q + r with r ∈ {0, 1}.
+`omega` decides linear arithmetic over `ℕ` and `ℤ`, including
+subtraction on `ℕ` and division and remainder by numerals. -/
+
+-- Exercise 18) Division with remainder: name `q` and `r` with `use`.
 example (n : ℕ) : ∃ q r : ℕ, n = 2 * q + r ∧ r < 2 := by
   sorry
 
--- Exercise 9: A direct application of `omega`: if 0 < n, then n - 1 < n.
+-- Exercise 19)
 example (n : ℕ) (h : 0 < n) : n - 1 < n := by
   sorry

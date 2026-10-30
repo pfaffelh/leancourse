@@ -2796,3 +2796,52 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   *Functions, inductive types, structures*, 1.4 *Pairs, subtypes,
   families, quotients*, 1.5 *Rules for building types* (vorher
   "Types III: the rules"). Tags, Dateinamen und Deck-URLs unveraendert.
+
+## 2026-10-30 (2) -- Typklassen in zwei Vorlesungen, Monaden nach 1.6, Masstheorie nur Lesestoff
+
+- **1.6 *Typeclasses* wird in zwei Vorlesungen gelesen** (Wunsch des
+  Autors: "nicht an den Grundlagen sparen"). W7: bis `Decidable` und
+  die Taktik `classical`; W8 ab `# Classes over type constructors`
+  (tag `type-constructor-classes`): `Functor`, `Monad`, `do`,
+  Listenmonade, Gesetze (`id_map`, `comp_map`, `pure_bind`,
+  `bind_pure`, `bind_assoc`), Kategorientheorie in einem Satz; dann
+  Koerzionen mit `DFunLike`, Hierarchie mit `extends`/`#synth`,
+  Instanzen verwalten. Notation (1.7) laeuft in W8 mit. Ein Kapitel,
+  zwei Decks: `slides/1-6-typeclasses/` und
+  `slides/1-6b-functors-monads/` (`Slides/1-6b-FunctorsMonads.lean`).
+- **Die Masstheorie-Vorlesung entfaellt.** Kapitel 2.8 bleibt als
+  Lesestoff, `2.8-a` ist Extrablatt. Alles ab W8 rueckt eine Woche
+  nach (Grundlagen am 21.12., Proof Engineering am 11.01.).
+- **2.9 ohne `IO`/`StateM`/`Except`.** Der Monadenteil heisst
+  *Monads in mathematics* (tag `monads`): Tabelle `pure`/`map`/`bind`
+  fuer `Set`, `Finset`, `Filter`, `PMF`, dann Sets (`Set.monad` nur
+  lokal), Finsets (brauchen `DecidableEq`; `Monad Finset` nur unter
+  `[∀ P, Decidable P]`), Filter (`Filter.monad` ist kein Instance, weil
+  sein `seq` nicht `Filter.seq` ist). Rueckverweise auf 1.6 in 2.2
+  (Bild = `map`, `Finset.image`) und 2.6 (`Filter.map`).
+- **`classical` erklaert**: Abschnitt `classical-tactic` in 1.6, Glossar
+  `Tactics/Classical.lean` (tag `classical`), Cheatsheet-Zeile. Regeln:
+  im Beweis `classical`; braucht schon die *Aussage* die Instanz, gehoert
+  `[DecidableEq β]` in die Hypothesen; fuer Definitionen
+  `open Classical in`. `by_cases` braucht nichts davon. 2.3 behauptete,
+  Mathlib benutze `open Classical` -- korrigiert.
+- **`noncomputable` erklaert**: in 1.3 beim Rekursor (Compiler gegen
+  Kern, nur `#eval` faellt weg), in 2.1 mit dem Fehler fuer
+  `def recip (x : ℝ) : ℝ := 1 / x` (`Real.instDivInvMonoid`) und
+  `noncomputable section`. `x + 1` auf ℝ ist berechenbar.
+- Blaetter: neu `1.6-c` (`6-c-Monads`, 17 Aufgaben, W8); `2.9-a` neu
+  als *Monads in mathematics* (17 Aufgaben); die alten Typklassen-
+  Aufgaben (`Day`, `IntVec`, `Describable`) und `StateM`/`Except` sind
+  weg. `1.6-a` Aufgabe 18 uebt `classical`. 37 Pflichtblaetter,
+  39 Zeugen.
+- **`Fact` erklaert und geuebt** (Wunsch des Autors): Abschnitt
+  *Propositions as instances: `Fact`* (tag `fact`) in 1.6 vor `OfNat`,
+  mit `{docstring Fact}`; drei Verwendungen (fordern `[Fact p.Prime]`
+  + `Fact.out`, global `instance : Fact (Nat.Prime 7)`, lokal per
+  `have : Fact p.Prime := ⟨hp⟩`). Ohne Instanz meldet
+  `mul_inv_cancel₀ ha` auf `ZMod p` einen *type mismatch* zwischen
+  `ZMod.instInv` und dem Koerper-`⁻¹`, nicht "failed to synthesize
+  Fact" -- steht als `+error`-Block im Text. `1.6-a` Aufgaben 19-23,
+  Folie *Propositions as instances* im Deck 1-6, Rueckverweis aus 2.5.
+  Mathlib benutzt `Fact` vor allem fuer `1 ≤ p` (Lᵖ, 129 Stellen),
+  Dimensionen und Primalitaet.

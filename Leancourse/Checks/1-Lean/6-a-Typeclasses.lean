@@ -175,3 +175,55 @@ example (P : Prop) : P ∨ ¬ P := by
   by_cases h : P
   · exact Or.inl h
   · exact Or.inr h
+
+/-! `Finset.filter P` keeps the elements of a finite set that satisfy
+`P`, and it needs `DecidablePred P` to do so. For an arbitrary `P`
+there is no such instance. The tactic `classical` provides one, by
+the axiom of choice, for the rest of the proof. Instances that exist
+are still found first. `Finset.filter_subset` and `Finset.mem_filter`
+are the two lemmas you need. -/
+
+-- Exercise 18) Start with `classical`, then give `s.filter P` as the
+-- witness. Delete the line `classical` afterwards and read the error.
+example (P : ℕ → Prop) (s : Finset ℕ) :
+    ∃ t : Finset ℕ, t ⊆ s ∧ ∀ x ∈ t, P x := by
+  classical
+  refine ⟨s.filter P, Finset.filter_subset P s, ?_⟩
+  intro x hx
+  exact (Finset.mem_filter.mp hx).2
+
+/-! ## `Fact`
+
+`Nat.Prime` is not a class, so instance search cannot see a hypothesis
+`hp : p.Prime`. `Fact p` is a class with one field `out : p`. `ZMod p`
+is a field exactly when `Fact p.Prime` is an instance. Read the section
+*Propositions as instances: `Fact`* of chapter 1.6 first. -/
+
+-- Exercise 19) Read the proof out of the instance with `Fact.out`,
+-- then use `Nat.Prime.two_le`.
+example (p : ℕ) [Fact p.Prime] : 2 ≤ p :=
+  (Fact.out : p.Prime).two_le
+
+-- Exercise 20) Register the instance. `norm_num` proves that `7` is
+-- prime.
+instance : Fact (Nat.Prime 7) :=
+  ⟨by norm_num⟩
+
+-- Exercise 21) With the instance of Exercise 20, `ZMod 7` is a field.
+-- Find the lemma with `exact?`.
+example (a : ZMod 7) (ha : a ≠ 0) : a * a⁻¹ = 1 := by
+  exact mul_inv_cancel₀ ha
+
+-- Exercise 22) The same for any prime, given as a hypothesis. Turn the
+-- hypothesis into a local instance with `have`. Then delete the `have`
+-- and read the error: it does not mention `Fact`.
+example (p : ℕ) (hp : p.Prime) (a : ZMod p) (ha : a ≠ 0) :
+    a * a⁻¹ = 1 := by
+  have : Fact p.Prime := ⟨hp⟩
+  exact mul_inv_cancel₀ ha
+
+-- Exercise 23) The inverse of `3` in `ZMod 7`. Rewrite with
+-- `inv_eq_of_mul_eq_one_right`; what is left, `decide` computes.
+example : (3 : ZMod 7)⁻¹ = 5 := by
+  rw [inv_eq_of_mul_eq_one_right]
+  decide

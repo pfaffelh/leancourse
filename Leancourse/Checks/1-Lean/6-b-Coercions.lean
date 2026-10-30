@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) 1.6-b -- Coercions and casts
 
-*Notes chapter 1.6, week 7.*
+*Notes chapter 1.6, week 8.*
 -/
 
 /- ## Part 1: The silent arrow -/

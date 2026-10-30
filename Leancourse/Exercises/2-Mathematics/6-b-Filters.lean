@@ -3,7 +3,7 @@ import Mathlib
 /-
 # 2.6-b -- Filters
 
-*Notes chapter 2.6, week 12.*
+*Notes chapter 2.6, week 13.*
 
 These exercises cover the construction and use of filters in Mathlib,
 including Filter.Tendsto, Filter.Eventually, and Filter.atTop.

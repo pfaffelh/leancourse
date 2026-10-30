@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # 1.6-b -- Coercions and casts
 
-*Notes chapter 1.6, week 7.*
+*Notes chapter 1.6, week 8.*
 
 In mathematics a natural number *is* an integer. In Lean `ℕ` and `ℤ`
 are different types, and moving between them is a *coercion*, written

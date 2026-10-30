@@ -14,6 +14,7 @@ import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Calc»
 import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Cases»
 import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Change»
 import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Choose»
+import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Classical»
 import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Clear»
 import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Congr»
 import «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Constructor»
@@ -205,6 +206,8 @@ switch to `simp only` for a robust proof.
 {include 0  «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Change»}
 
 {include 0  «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Choose»}
+
+{include 0  «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Classical»}
 
 {include 0  «Leancourse».Coursenotes.«4-Appendix».«Tactics».«Clear»}
 

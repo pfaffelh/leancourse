@@ -1,151 +1,126 @@
 import Mathlib
 
-/-
-# 2.9-a -- Monads
+/-!
+# 2.9-a -- Monads in mathematics
 
 *Notes chapter 2.9, week 15.*
 
-These exercises cover the Option type, do-notation, typeclass instances,
-and monadic programming. Replace each `sorry` with a correct implementation.
+`map`, `pure` and `bind` from chapter 1.6 (sheet `1.6-c`) occur in
+mathematics under other names: the image of a set, the union over a
+family, the pushforward of a filter. Read the section *Monads in
+mathematics* of chapter 2.9 first.
+
+| type       | `pure a`  | `map f`          | `bind s f`          |
+|------------|-----------|------------------|---------------------|
+| `Set α`    | `{a}`     | `f '' s`         | `⋃ a ∈ s, f a`      |
+| `Finset α` | `{a}`     | `s.image f`      | `s.biUnion f`       |
+| `Filter α` | `𝓟 {a}`   | `Filter.map f F` | `Filter.bind F f`   |
+
+Nothing new is introduced. Most exercises are one lemma or `rfl`; find
+the lemma with `exact?` where you do not know it.
 -/
 
-/- ## Part 1: Option and safe computations -/
+open Filter
 
--- Exercise 1) Define a safe head function that returns none for an empty list.
-def safeHead {α : Type} (xs : List α) : Option α :=
+/-! ## Part 1: Sets
+
+`Set` is a `Functor`, and `map` is the image. The monad structure
+`Set.monad` is not an instance; `attribute [local instance]` switches
+it on until the end of the section. -/
+
+-- Exercise 1) `map` is the image, by definition.
+example (f : ℕ → ℕ) (s : Set ℕ) : f <$> s = f '' s := by
   sorry
 
--- Exercise 2) Define a safe function that returns the element at index n,
--- or none if the index is out of bounds.
-def safeGet {α : Type} (xs : List α) (n : ℕ) : Option α :=
+-- Exercise 2) `simp` with the lemma `Set.image_insert_eq`.
+example : (· * 2) '' ({1, 2, 3} : Set ℕ) = {2, 4, 6} := by
   sorry
 
--- Exercise 3) Define safe division that returns none when dividing by zero.
-def safeDiv (a b : ℕ) : Option ℕ :=
+-- Exercise 3) The first functor law, for sets.
+example {α : Type} (s : Set α) : id '' s = s := by
   sorry
 
--- Exercise 4) Using do-notation, define a function that takes a list of
--- natural numbers and an index, gets the element at that index,
--- and then safely divides 100 by that element.
--- Return none if the index is out of bounds or the element is zero.
-def divByElement (xs : List ℕ) (i : ℕ) : Option ℕ := do
+-- Exercise 4) The second functor law, for sets.
+example {α β γ : Type} (f : α → β) (g : β → γ) (s : Set α) :
+    (g ∘ f) '' s = g '' (f '' s) := by
   sorry
 
--- Exercise 5) Define a function that takes two lists and an index,
--- gets the element at that index from each list, and returns their sum.
--- Use do-notation.
-def addAtIndex (xs ys : List ℕ) (i : ℕ) : Option ℕ := do
+section SetMonad
+attribute [local instance] Set.monad
+
+-- Exercise 5) `bind` is the union, by definition.
+example {α β : Type} (s : Set α) (f : α → Set β) :
+    (s >>= f) = ⋃ a ∈ s, f a := by
   sorry
 
--- Exercise 6) Define a function that finds the first element in a list
--- satisfying a predicate. Return none if no element satisfies it.
-def findFirst {α : Type} (p : α → Bool) : List α → Option α :=
+-- Exercise 6) `simp` with the lemma `Set.bind_def`.
+example {α β : Type} (s : Set α) (f : α → Set β) (b : β) :
+    b ∈ (s >>= f) ↔ ∃ a ∈ s, b ∈ f a := by
   sorry
 
--- Exercise 7) Chain three Option computations using do-notation:
--- Given a list of lists, get the i-th list, then get the j-th element of that list,
--- then safely divide 1000 by that element.
-def nestedLookupAndDivide (xss : List (List ℕ)) (i j : ℕ) : Option ℕ := do
+end SetMonad
+
+/-! ## Part 2: Finite sets
+
+`Finset.image` and `Finset.biUnion` need `DecidableEq β`. For `ℕ` the
+instance exists, and `decide` computes. -/
+
+-- Exercise 7)
+example : ({1, 2, 3} : Finset ℕ).image (· * 2) = {2, 4, 6} := by
   sorry
 
-/- ## Part 2: Typeclass instances -/
-
--- Here is a type representing days of the week.
-inductive Day where
-  | monday | tuesday | wednesday | thursday | friday | saturday | sunday
-  deriving Repr, BEq
-
--- Exercise 8) Define a ToString instance for Day.
-instance : ToString Day where
-  toString := sorry
-
--- Exercise 9) Define a function that returns the next day.
-def Day.next : Day → Day :=
+-- Exercise 8) The instance is a hypothesis, because the statement
+-- needs it.
+example {α β : Type} [DecidableEq β] (f : α → β) (s : Finset α) :
+    (s.image f).card ≤ s.card := by
   sorry
 
--- Here is a structure for 2D vectors with integer coordinates.
-structure IntVec where
-  x : ℤ
-  y : ℤ
-  deriving Repr, BEq
-
--- Exercise 10) Define an Add instance for IntVec.
-instance : Add IntVec where
-  add := sorry
-
--- Exercise 11) Define a Neg instance for IntVec (negating both components).
-instance : Neg IntVec where
-  neg := sorry
-
--- Exercise 12) Define a ToString instance for IntVec.
--- Format: "(x, y)"
-instance : ToString IntVec where
-  toString := sorry
-
--- Exercise 13) Define an HMul instance so that an integer can scale a vector:
--- (n : ℤ) * (v : IntVec) = IntVec (n * v.x) (n * v.y)
-instance : HMul ℤ IntVec IntVec where
-  hMul := sorry
-
--- Exercise 14) Prove that vector addition is commutative.
-theorem intVec_add_comm (u v : IntVec) : u + v = v + u := by
+-- Exercise 9) Here only the proof needs the instance. Start with
+-- `classical`, then use `s.image f` as the witness.
+-- `Finset.mem_image_of_mem` is the second lemma you need.
+example {α β : Type} (f : α → β) (s : Finset α) :
+    ∃ t : Finset β, t.card ≤ s.card ∧ ∀ a ∈ s, f a ∈ t := by
   sorry
 
--- Exercise 15) Define a Zero instance for IntVec.
-instance : Zero IntVec where
-  zero := sorry
-
--- Exercise 16) Prove that adding zero on the right gives back the same vector.
-theorem intVec_add_zero (v : IntVec) : v + 0 = v := by
+-- Exercise 10)
+example : ({1, 2} : Finset ℕ).biUnion (fun n => {n, 10 * n})
+    = {1, 2, 10, 20} := by
   sorry
 
-/- ## Part 3: Defining and using a custom typeclass -/
+/-! ## Part 3: Filters
 
--- Exercise 17) Define a typeclass `Describable` that provides a `describe` method
--- returning a String description of a value.
-class Describable (α : Type) where
-  describe : α → String
+`Filter` is a `Functor`, and `map` is the pushforward. -/
 
--- Exercise 18) Create a Describable instance for ℕ.
-instance : Describable ℕ where
-  describe := sorry
-
--- Exercise 19) Create a Describable instance for Bool.
-instance : Describable Bool where
-  describe := sorry
-
--- Exercise 20) Create a Describable instance for Option α
--- (when α is itself Describable).
-instance [Describable α] : Describable (Option α) where
-  describe := sorry
-
-/- ## Part 4: Monadic computations with lists and state -/
-
--- Exercise 21) Using the list monad (do-notation with lists), generate all
--- pairs (x, y) where x ∈ [1,2,3] and y ∈ [1,2,3] and x + y = 4.
-def sumToFour : List (ℕ × ℕ) := do
+-- Exercise 11)
+example {α β : Type} (m : α → β) (F : Filter α) :
+    m <$> F = Filter.map m F := by
   sorry
 
--- Exercise 22) Using the list monad, generate all Pythagorean triples
--- (a, b, c) with 1 ≤ a ≤ b ≤ c ≤ 20 and a*a + b*b = c*c.
-def pythagoreanTriples : List (ℕ × ℕ × ℕ) := do
+-- Exercise 12) Membership in the pushforward is membership of the
+-- preimage, by definition.
+example {α β : Type} (m : α → β) (F : Filter α) (t : Set β) :
+    t ∈ Filter.map m F ↔ m ⁻¹' t ∈ F := by
   sorry
 
--- Exercise 23) Define a stateful computation that takes a list of natural numbers
--- and adds each one to an accumulator state, returning the final sum.
--- Use StateM ℕ.
-def statefulSum (xs : List ℕ) : StateM ℕ ℕ := do
+-- Exercises 13 and 14) The two functor laws, for filters.
+example {α : Type} (F : Filter α) : Filter.map id F = F := by
   sorry
 
--- Exercise 24) Define a stateful computation that processes a list of integers
--- and keeps track of both the running sum and the count of elements.
--- Use StateM (ℤ × ℕ).
-def statefulSumAndCount (xs : List ℤ) : StateM (ℤ × ℕ) Unit := do
+example {α β γ : Type} (f : α → β) (g : β → γ) (F : Filter α) :
+    Filter.map g (Filter.map f F) = Filter.map (g ∘ f) F := by
   sorry
 
--- Exercise 25) Use Except to define a function that parses a simple
--- expression. Given a list like ["3", "+", "5"], return 8.
--- Given a list like ["7", "-", "2"], return 5.
--- Return an error message for anything else.
-def simpleCalc (tokens : List String) : Except String ℤ :=
+-- Exercise 15) `pure a` is the filter of all sets containing `a`.
+example {α : Type} (a : α) (s : Set α) :
+    s ∈ (pure a : Filter α) ↔ a ∈ s := by
+  sorry
+
+-- Exercise 16)
+example {α β : Type} (f : α → β) (a : α) :
+    Filter.map f (pure a) = pure (f a) := by
+  sorry
+
+-- Exercise 17) A limit is a statement about `map`, by definition.
+example {α β : Type} (f : α → β) (F : Filter α) (G : Filter β) :
+    Tendsto f F G ↔ Filter.map f F ≤ G := by
   sorry

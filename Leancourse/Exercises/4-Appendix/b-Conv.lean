@@ -3,7 +3,7 @@ import Mathlib
 /-
 # A-b -- `conv`
 
-*Appendix, week 10.*
+*Appendix, week 11.*
 
 `conv` (conversion mode) lets you rewrite a *specific* subterm instead
 of the first match, and reach *under* binders where plain `rw` fails.

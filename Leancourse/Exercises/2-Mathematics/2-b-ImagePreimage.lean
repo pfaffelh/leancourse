@@ -3,7 +3,7 @@ import Mathlib.Tactic -- imports all the Lean tactics
 /-!
 # 2.2-b -- Image and preimage
 
-*Notes chapter 2.2, week 9.*
+*Notes chapter 2.2, week 10.*
 -/
 
 /- Read the section *Image and preimage* of chapter 2.2 first.

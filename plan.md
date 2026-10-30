@@ -30,27 +30,38 @@ Kontext, ohne Lean.
 |---|---|---|---|---|---|---|
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | L-a | |
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | L-b, L-c, 1.1-a | |
-| 3 | 02.11. | 04.11. | Typen und Terme I: Universen, Funktionen, induktive Typen, Strukturen | 1.2 | L-d, 1.2-a, 1.1-b | |
+| 3 | 02.11. | 04.11. | Universen, Funktionen, induktive Typen, Strukturen | 1.2 | L-d, 1.2-a, 1.1-b | |
 | 4 | 09.11. | 11.11. | Pattern Matching und Rekursion | 1.3 | L-e, L-f, 1.1-c | **Test 1** |
-| 5 | 16.11. | 18.11. | Typen und Terme II: Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-g, 1.2-b, 1.3-a · *extra:* X-a | |
-| 6 | 23.11. | 25.11. | Typen III: die Regeln, `Prop` | 1.5 | 1.4-a, 1.4-b, 1.5-a | |
-| 7 | 30.11. | 02.12. | Typklassen; Notation | 1.6, 1.7 | 1.4-c, 1.6-a, 1.6-b, 1.7-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Zahlen; Mengen und Typen | 2.1, 2.2 | 2.0-a, 2.1-a, 2.2-a | |
-| 9 | 14.12. | 16.12. | Grundlagen: Universen, Axiome, Fundiertheit | 2.3 | 2.2-b, 2.2-c, 2.3-a, 2.3-b | **Test 3** |
-| 10 | 21.12. | -- | Proof Engineering; `conv` | Anhang | A-a, A-b | |
+| 5 | 16.11. | 18.11. | Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-g, 1.2-b, 1.3-a · *extra:* X-a | |
+| 6 | 23.11. | 25.11. | Regeln zum Bau von Typen, `Prop` | 1.5 | 1.4-a, 1.4-b, 1.5-a | |
+| 7 | 30.11. | 02.12. | Typklassen: Instanzen, Suche, `Decidable`, `classical` | 1.6 | 1.4-c, 1.6-a | **Test 2** |
+| 8 | 07.12. | 09.12. | Typklassen: Funktoren und Monaden, Koerzionen, Hierarchien; Notation | 1.6, 1.7 | 1.6-b, 1.6-c, 1.7-a | |
+| 9 | 14.12. | 16.12. | Zahlen; Mengen und Typen | 2.1, 2.2 | 2.0-a, 2.1-a, 2.2-a | **Test 3** |
+| 10 | 21.12. | -- | Grundlagen: Universen, Axiome, Fundiertheit | 2.3 | 2.2-b, 2.2-c, 2.3-a, 2.3-b | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
-| 11 | 11.01. | 13.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 2.4-a, 2.5-a | |
-| 12 | 18.01. | 20.01. | Filter | 2.6 | 2.6-a, 2.6-b | |
-| 13 | 25.01. | 27.01. | Topologie | 2.7 | 2.7-a | **Test 4** |
-| 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 2.8-a | |
+| 11 | 11.01. | 13.01. | Proof Engineering; `conv` | Anhang | A-a, A-b | |
+| 12 | 18.01. | 20.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 2.4-a, 2.5-a | |
+| 13 | 25.01. | 27.01. | Filter | 2.6 | 2.6-a, 2.6-b | **Test 4** |
+| 14 | 01.02. | 03.02. | Topologie | 2.7 | 2.7-a | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 2.9-a, 2.9-b | **Test 5** |
 
-37 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. `A-a` und
-`A-b` laufen als Ferienaufgabe über die Pause.
+37 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5 und `2.8-a`
+(Maßtheorie) als Extrablatt ohne Woche. Über die Pause laufen die
+vier Blätter zu 2.2 und 2.3.
 
-Drei Kapitelpaare teilen sich einen Termin: 1.6+1.7 (W7), 2.1+2.2
-(W8), 2.4+2.5 (W11). Notation (1.7) bekommt keine eigene Vorlesung:
-eigene Notation führen Studierende kaum ein. Seit dem 27.10.2026 gibt
+Seit dem 30.10.2026 bekommen die Typklassen (1.6) zwei Vorlesungen:
+W7 Instanzen, Instanzsuche, `Decidable` und die Taktik `classical`;
+W8 Klassen über Typkonstruktoren (`Functor`, `Monad` mit `Option` und
+`List`, die Gesetze), Koerzionen mit `DFunLike`, `extends` und
+Hierarchien, dazu Notation (1.7). Die Monaden kehren in 2.2 (Bild als
+`map`), 2.6 (`Filter.map`) und 2.9 (`PMF`) als Rückverweis wieder;
+`IO`, `StateM` und `Except` sind aus 2.9 gestrichen. Dafür entfällt
+die Vorlesung zur Maßtheorie: Kapitel 2.8 bleibt als Lesestoff,
+`2.8-a` als Extrablatt. Alles ab W8 rückt eine Woche nach.
+
+Zwei Kapitelpaare teilen sich einen Termin: 2.1+2.2 (W9), 2.4+2.5
+(W12). Notation (1.7) läuft mit der zweiten Typklassen-Vorlesung. Notation bekommt keine eigene Vorlesung, weil Studierende kaum eigene
+Notation einführen. Seit dem 27.10.2026 gibt
 es kein eigenes Kapitel *Terme* mehr: 1.2 *Typen und Terme I*
 (Universen, Funktionen, induktive Typen, Strukturen) und 1.4 *Typen
 und Terme II* (Σ, Subtypen, Typfamilien, indizierte Familien,
@@ -69,9 +80,10 @@ der Wochen 4 bis 6 sind danach so verteilt, dass keine Übung mehr als
 rund 50 Aufgaben hat (W4 vorher 54 plus Test 1, W5 vorher 70): `1.3-a`
 läuft in W5, `1.4-a`/`1.4-b` in W6, `1.4-c` in W7.
 
-Skriptzeilen je Termin: Mittel 474, Spanne 330 (W2) bis 768 (W15).
-Woche 11 ist zugleich die schwerste Übungswoche (67 Aufgaben, `2.4-a`
-allein 38). Wenn gekürzt werden muss, dann in W11 und W15.
+Skriptzeilen je Termin (Stand 29.10.2026): Mittel 474, Spanne 330
+(W2) bis 768 (damals W15, seitdem um `IO`/`StateM`/`Except` gekürzt).
+Die schwerste Übungswoche ist W12 (67 Aufgaben, `2.4-a` allein 38).
+Wenn gekürzt werden muss, dann dort.
 
 Wenn drei Blätter zu viel sind, rutscht `1.1-b`.
 
@@ -118,7 +130,9 @@ Elimination werden gelesen, nicht geübt; die Universen stehen auf
 `1.4-a`.
 
 Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
-`1.1-b`, `2.9-a`).
+`1.1-b`, `1.6-c`). `1.6-c` (Funktoren und Monaden) übernimmt die
+`Option`- und Listen-Aufgaben des alten `2.9-a`; `2.9-a` ist jetzt
+*Monads in mathematics* (`Set`, `Finset`, `Filter`).
 
 Seit dem 30.10.2026 beginnt Teil 2 mit dem Kapitel 2.1 *Numbers*
 (Zahlbereiche als Typbildner aus Teil 1, Müllwerte, drei Potenzen,
@@ -126,8 +140,8 @@ Seit dem 30.10.2026 beginnt Teil 2 mit dem Kapitel 2.1 *Numbers*
 Kapiteln bleibt, sind die früheren 2.2 (Universen und Axiome) und 2.3
 (Fundiertheit) zu 2.3 *Foundations* zusammengelegt; Mengen ist jetzt
 2.2. Blätter: `2.1-a/b/c` -> `2.2-a/b/c`, `2.2-a` -> `2.3-a`,
-`2.3-a` -> `2.3-b`. `2.2-b`, `2.2-c` (Kapitel 2.2, gelesen in Woche 8)
-liegen in Woche 9, damit Woche 8 nicht vier Blätter hat.
+`2.3-a` -> `2.3-b`. `2.2-b`, `2.2-c` (Kapitel 2.2, gelesen in Woche 9)
+liegen in Woche 10, damit Woche 9 nicht vier Blätter hat.
 Beweisirrelevanz steht auf `2.3-a`.
 `1.7-a` hat nur eine Aufgabe und ist eher ein Leseblatt.
 

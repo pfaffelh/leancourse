@@ -3,7 +3,7 @@ import Mathlib
 /-
 # (witness) 2.3-b -- Well-foundedness and paradoxes
 
-*Notes chapter 2.3, week 9.*
+*Notes chapter 2.3, week 10.*
 -/
 
 /- ## Part 1: Accessibility -/

@@ -318,6 +318,14 @@ example {α β : Type*} (m : α → β) (F : Filter α)
     s ∈ Filter.map m F ↔ m ⁻¹' s ∈ F := Iff.rfl
 ```
 
+`Filter` is a {ref "functor-typeclass"}[functor] with this `map`, as
+`Set` is with the image:
+
+```lean
+example {α β : Type} (m : α → β) (F : Filter α) :
+    m <$> F = Filter.map m F := rfl
+```
+
 There is also a pullback:
 
 {docstring Filter.comap}

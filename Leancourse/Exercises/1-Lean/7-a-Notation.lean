@@ -3,7 +3,7 @@ import Mathlib
 /-
 # 1.7-a -- Defining your own notation
 
-*Notes chapter 1.7, week 7.*
+*Notes chapter 1.7, week 8.*
 
 These exercises accompany chapter 1.7, *Notation and
 abbreviations*. You will practice `notation`, `infixl`, `infixr`,

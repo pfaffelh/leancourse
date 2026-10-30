@@ -40,7 +40,9 @@ used without the other.
     {ref "type-formers"}[chapter]
   * [Rules for building types](slides/1-5-rules/) —
     {ref "rules"}[chapter]
-  * [Typeclasses](slides/1-6-typeclasses/) — {ref "typeclasses"}[chapter]
+  * [Typeclasses](slides/1-6-typeclasses/) and
+    [Functors, monads, coercions, hierarchies](slides/1-6b-functors-monads/),
+    two lectures — {ref "typeclasses"}[chapter]
   * [Notation and abbreviations](slides/1-7-notation/) —
     {ref "notation"}[chapter]
 * [Filters in Mathlib](slides/2-6-filters/) — accompanies the
@@ -144,83 +146,83 @@ written at the start of the lab.
 * + 7
   + Mon 30.11.
   + Lecture
-  + Typeclasses; notation
-  + {ref "typeclasses"}[1.6], {ref "notation"}[1.7]
+  + Typeclasses: instances, resolution, `Decidable`, `classical`
+  + {ref "typeclasses"}[1.6]
 * + 7
   + Wed 02.12.
   + Lab
   + *Test 2*, then sheets
-  + `1.4-c`, `1.6-a`, `1.6-b`, `1.7-a`
+  + `1.4-c`, `1.6-a`
 * + 8
   + Mon 07.12.
   + Lecture
-  + Numbers; sets and types
-  + {ref "numbers"}[2.1], {ref "sets-and-types"}[2.2]
+  + Typeclasses: functors and monads, coercions, hierarchies; notation
+  + {ref "type-constructor-classes"}[1.6], {ref "notation"}[1.7]
 * + 8
   + Wed 09.12.
   + Lab
   + Sheets
-  + `2.0-a`, `2.1-a`, `2.2-a`
+  + `1.6-b`, `1.6-c`, `1.7-a`
 * + 9
   + Mon 14.12.
   + Lecture
-  + Foundations: universes, axioms, well-foundedness
-  + {ref "universes-axioms"}[2.3]
+  + Numbers; sets and types
+  + {ref "numbers"}[2.1], {ref "sets-and-types"}[2.2]
 * + 9
   + Wed 16.12.
   + Lab
   + *Test 3*, then sheets
-  + `2.2-b`, `2.2-c`, `2.3-a`, `2.3-b`
+  + `2.0-a`, `2.1-a`, `2.2-a`
 * + 10
   + Mon 21.12.
   + Lecture
-  + Proof engineering; `conv`
-  + {ref "tactics"}[Appendix]
+  + Foundations: universes, axioms, well-foundedness
+  + {ref "universes-axioms"}[2.3]
 * + 10
   + —
   + Lab
   + No lab; sheets over the break
-  + `A-a`, `A-b`
+  + `2.2-b`, `2.2-c`, `2.3-a`, `2.3-b`
 * + 11
   + Mon 11.01.
   + Lecture
-  + Orders, the algebraic hierarchy
-  + {ref "orders-and-lattices"}[2.4], {ref "algebraic-hierarchy-mathlib"}[2.5]
+  + Proof engineering; `conv`
+  + {ref "tactics"}[Appendix]
 * + 11
   + Wed 13.01.
   + Lab
   + Sheets
-  + `2.4-a`, `2.5-a`
+  + `A-a`, `A-b`
 * + 12
   + Mon 18.01.
   + Lecture
-  + Filters
-  + {ref "filters"}[2.6]
+  + Orders, the algebraic hierarchy
+  + {ref "orders-and-lattices"}[2.4], {ref "algebraic-hierarchy-mathlib"}[2.5]
 * + 12
   + Wed 20.01.
   + Lab
   + Sheets
-  + `2.6-a`, `2.6-b`
+  + `2.4-a`, `2.5-a`
 * + 13
   + Mon 25.01.
   + Lecture
-  + Topology
-  + {ref "topology"}[2.7]
+  + Filters
+  + {ref "filters"}[2.6]
 * + 13
   + Wed 27.01.
   + Lab
   + *Test 4*, then sheets
-  + `2.7-a`
+  + `2.6-a`, `2.6-b`
 * + 14
   + Mon 01.02.
   + Lecture
-  + Measure theory
-  + {ref "measure-theory"}[2.8]
+  + Topology
+  + {ref "topology"}[2.7]
 * + 14
   + Wed 03.02.
   + Lab
   + Sheets
-  + `2.8-a`
+  + `2.7-a`
 * + 15
   + Mon 08.02.
   + Lecture
@@ -232,6 +234,8 @@ written at the start of the lab.
   + *Test 5*, then sheets
   + `2.9-a`, `2.9-b`
 :::
+
+Chapter {ref "measure-theory"}[2.8] on measure theory is not lectured. It is there to read, and `2.8-a` is an extra sheet.
 
 
 # The short tests
@@ -265,9 +269,9 @@ The course is for mathematics students.
 * *Reading formal statements.* Judging whether a formal statement says what the informal one claims ({ref "why-formalize"}[see above]).
 * *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write ({ref "term"}[the proof state]). This is not the older use of computers in mathematics, which was to work through many cases ({ref "four-colour-episode"}[the four colour theorem]).
 * *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — {ref "tactics"}[*tactics*] — fit together. The second half goes deeper into the mathematics.
-* *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "monads"}[monads], needed both to use Lean and to read *Mathlib*.
+* *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "type-constructor-classes"}[monads], needed both to use Lean and to read *Mathlib*.
 * *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "types"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
-* *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
+* *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] (to read) and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
 * *Proof engineering.* Automation tactics, {ref "navigating-mathlib"}[searching *Mathlib*], and the {ref "common-pitfalls"}[common pitfalls] of a large formal library.
 
 # Getting Lean running

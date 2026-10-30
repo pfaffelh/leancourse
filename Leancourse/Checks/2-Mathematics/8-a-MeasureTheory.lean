@@ -3,7 +3,7 @@ import Mathlib
 /-
 # (witness) 2.8-a -- Measure theory
 
-*Notes chapter 2.8, week 14.*
+*Notes chapter 2.8, extra sheet, not lectured.*
 
 These exercises cover measurable spaces, measurable functions, measures,
 probability measures, integration and the convergence theorems. Replace each `sorry` with a proof.

@@ -75,28 +75,29 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `1-Lean/4-c-Predicates` | 1.4 | 7 | yes |
 | `1-Lean/5-a-Predicates` | 1.5 | 6 | yes |
 | `1-Lean/6-a-Typeclasses` | 1.6 | 7 | yes |
-| `1-Lean/6-b-Coercions` | 1.6 | 7 | yes |
-| `1-Lean/7-a-Notation` | 1.7 | 7 | yes |
-| `2-Mathematics/0-a-Search` | — | 8 | yes |
-| `2-Mathematics/1-a-Numbers` | 2.1 | 8 | yes |
-| `2-Mathematics/2-a-Sets` | 2.2 | 8 | yes |
-| `2-Mathematics/2-b-ImagePreimage` | 2.2 | 9 | yes |
-| `2-Mathematics/2-c-Functions` | 2.2 | 9 | yes |
-| `2-Mathematics/3-a-Axioms` | 2.3 | 9 | yes |
-| `2-Mathematics/3-b-WellFoundedness` | 2.3 | 9 | yes |
-| `2-Mathematics/4-a-Orders` | 2.4 | 11 | yes |
-| `2-Mathematics/5-a-Algebra` | 2.5 | 11 | yes |
-| `2-Mathematics/6-a-Limits` | 2.6 | 12 | yes |
-| `2-Mathematics/6-b-Filters` | 2.6 | 12 | yes |
-| `2-Mathematics/7-a-Topology` | 2.7 | 13 | yes |
-| `2-Mathematics/8-a-MeasureTheory` | 2.8 | 14 | yes |
+| `1-Lean/6-b-Coercions` | 1.6 | 8 | yes |
+| `1-Lean/6-c-Monads` | 1.6 | 8 | yes |
+| `1-Lean/7-a-Notation` | 1.7 | 8 | yes |
+| `2-Mathematics/0-a-Search` | — | 9 | yes |
+| `2-Mathematics/1-a-Numbers` | 2.1 | 9 | yes |
+| `2-Mathematics/2-a-Sets` | 2.2 | 9 | yes |
+| `2-Mathematics/2-b-ImagePreimage` | 2.2 | 10 | yes |
+| `2-Mathematics/2-c-Functions` | 2.2 | 10 | yes |
+| `2-Mathematics/3-a-Axioms` | 2.3 | 10 | yes |
+| `2-Mathematics/3-b-WellFoundedness` | 2.3 | 10 | yes |
+| `2-Mathematics/4-a-Orders` | 2.4 | 12 | yes |
+| `2-Mathematics/5-a-Algebra` | 2.5 | 12 | yes |
+| `2-Mathematics/6-a-Limits` | 2.6 | 13 | yes |
+| `2-Mathematics/6-b-Filters` | 2.6 | 13 | yes |
+| `2-Mathematics/7-a-Topology` | 2.7 | 14 | yes |
+| `2-Mathematics/8-a-MeasureTheory` | 2.8 | extra | yes |
 | `2-Mathematics/9-a-Monads` | 2.9 | 15 | yes |
 | `2-Mathematics/9-b-Probability` | 2.9 | 15 | yes |
-| `4-Appendix/a-ProofEngineering` | Appendix | 10 | yes |
-| `4-Appendix/b-Conv` | Appendix | 10 | yes |
+| `4-Appendix/a-ProofEngineering` | Appendix | 11 | yes |
+| `4-Appendix/b-Conv` | Appendix | 11 | yes |
 | `9-Extra/a-Puzzles` | — | 5 | yes |
 
-Every sheet has a witness: 37 of 37, all sorry-free apart from the
+Every sheet has a witness: 39 of 39, all sorry-free apart from the
 one deliberate `sorry` on `L-a`, where finding the unprovable
 statement is the exercise.
 

@@ -636,13 +636,14 @@ tag := "decidable-classically"
 
 A proposition is {ref "decidable-typeclass"}[`Decidable`] when an
 algorithm computes whether it holds, which is what makes
-`if P then _ else _` and the `decide` tactic run *without any axioms*. Classical logic extends this
-reach. When you `open Classical`, every `Prop` becomes
-`Decidable` — but *non-constructively*, via `Classical.choice`, so the
-instance carries no algorithm. This is convenient in proofs (you may
-`by_cases` on any proposition), but code that relies on it is no longer
-executable. Decidability is thus the exact dividing line between the
-constructive core and the classical extension.
+`if P then _ else _` and the `decide` tactic run *without any axioms*.
+`Classical.propDecidable` makes every `Prop` decidable, but via
+`Classical.choice`, so the instance carries no algorithm and code that
+relies on it is not executable. In a proof the
+{ref "classical-tactic"}[`classical` tactic] switches it on.
+`by_cases` needs no such step: it uses the excluded middle directly.
+Decidability is the dividing line between the constructive core and
+the classical extension.
 
 ## When do you need Classical.choice?
 %%%
@@ -660,7 +661,7 @@ You do *not* need classical axioms when:
 - Constructing specific terms (defining functions, data structures)
 - Proving things by direct construction or induction
 
-In Mathlib, most proofs use classical logic freely (via `open Classical`), since the focus is on mathematical truth rather than computational content.
+Mathlib uses classical logic freely, since its subject is mathematical truth rather than computation: `by_cases` and `by_contra` everywhere, and the `classical` tactic where a proof needs a `Decidable` instance.
 
 # Comparison with ZFC set theory
 %%%

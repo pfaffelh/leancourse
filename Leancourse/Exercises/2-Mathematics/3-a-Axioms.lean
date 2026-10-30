@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # 2.3-a -- The axioms of Lean
 
-*Notes chapter 2.3, week 9.*
+*Notes chapter 2.3, week 10.*
 
 Lean's kernel is small. On top of it sit exactly three declared
 axioms -- `propext`, `Quot.sound` and `Classical.choice` -- and

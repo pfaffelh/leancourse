@@ -4,7 +4,7 @@ import Mathlib.Tactic -- imports all the Lean tactics
 /-!
 # 2.2-a -- Sets
 
-*Notes chapter 2.2, week 8.*
+*Notes chapter 2.2, week 9.*
 -/
 
 variable (α β : Type)

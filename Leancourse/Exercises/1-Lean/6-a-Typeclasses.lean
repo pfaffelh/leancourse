@@ -25,6 +25,10 @@ and `if` need an algorithm.
 | `deriving DecidableEq` | generate the equality test for your own type  |
 | `decide`               | close a goal whose proposition is `Decidable` |
 | `by_cases h : P`       | split on `P`, classically                     |
+| `classical`            | make every proposition decidable in a proof   |
+| `[Fact p]`             | a proposition as an instance argument         |
+| `Fact.out`             | the proof inside a `Fact`                     |
+| `have : C := ...`      | a local instance for the rest of the proof    |
 -/
 
 variable {α β : Type}
@@ -181,4 +185,51 @@ example (n : ℕ) : n = 0 ∨ n ≠ 0 := by
 -- Exercise 17) The same for an arbitrary proposition. Note that no
 -- `Decidable P` is in sight.
 example (P : Prop) : P ∨ ¬ P := by
+  sorry
+
+/-! `Finset.filter P` keeps the elements of a finite set that satisfy
+`P`, and it needs `DecidablePred P` to do so. For an arbitrary `P`
+there is no such instance. The tactic `classical` provides one, by
+the axiom of choice, for the rest of the proof. Instances that exist
+are still found first. `Finset.filter_subset` and `Finset.mem_filter`
+are the two lemmas you need. -/
+
+-- Exercise 18) Start with `classical`, then give `s.filter P` as the
+-- witness. Delete the line `classical` afterwards and read the error.
+example (P : ℕ → Prop) (s : Finset ℕ) :
+    ∃ t : Finset ℕ, t ⊆ s ∧ ∀ x ∈ t, P x := by
+  sorry
+
+/-! ## `Fact`
+
+`Nat.Prime` is not a class, so instance search cannot see a hypothesis
+`hp : p.Prime`. `Fact p` is a class with one field `out : p`. `ZMod p`
+is a field exactly when `Fact p.Prime` is an instance. Read the section
+*Propositions as instances: `Fact`* of chapter 1.6 first. -/
+
+-- Exercise 19) Read the proof out of the instance with `Fact.out`,
+-- then use `Nat.Prime.two_le`.
+example (p : ℕ) [Fact p.Prime] : 2 ≤ p :=
+  sorry
+
+-- Exercise 20) Register the instance. `norm_num` proves that `7` is
+-- prime.
+instance : Fact (Nat.Prime 7) :=
+  sorry
+
+-- Exercise 21) With the instance of Exercise 20, `ZMod 7` is a field.
+-- Find the lemma with `exact?`.
+example (a : ZMod 7) (ha : a ≠ 0) : a * a⁻¹ = 1 := by
+  sorry
+
+-- Exercise 22) The same for any prime, given as a hypothesis. Turn the
+-- hypothesis into a local instance with `have`. Then delete the `have`
+-- and read the error: it does not mention `Fact`.
+example (p : ℕ) (hp : p.Prime) (a : ZMod p) (ha : a ≠ 0) :
+    a * a⁻¹ = 1 := by
+  sorry
+
+-- Exercise 23) The inverse of `3` in `ZMod 7`. Rewrite with
+-- `inv_eq_of_mul_eq_one_right`; what is left, `decide` computes.
+example : (3 : ZMod 7)⁻¹ = 5 := by
   sorry

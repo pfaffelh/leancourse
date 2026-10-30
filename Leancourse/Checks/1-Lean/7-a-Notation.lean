@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) 1.7-a -- Defining your own notation
 
-*Notes chapter 1.7, week 7.*
+*Notes chapter 1.7, week 8.*
 -/
 
 /- ## Part 1: Simple `notation` -/

@@ -186,7 +186,7 @@ example (a : ℝ) (ha : a ≠ 0) : a * a⁻¹ = 1 :=
   mul_inv_cancel₀ ha
 ```
 
-`ZMod n`, the type ℤ/nℤ from {ref "pi-types"}[Dependent functions] in chapter 1.2, is a commutative ring for every `n`. So `CommRing (ZMod n)` is again a type that depends on `n`, and the instance is a function of `n`. A field it is only when `n` is prime. The field instance takes this fact as an instance argument `[Fact p.Prime]`, because instance search cannot prove primality on its own:
+`ZMod n`, the type ℤ/nℤ from {ref "pi-types"}[Dependent functions] in chapter 1.2, is a commutative ring for every `n`. So `CommRing (ZMod n)` is again a type that depends on `n`, and the instance is a function of `n`. A field it is only when `n` is prime. The field instance takes this fact as an instance argument `[Fact p.Prime]` ({ref "fact"}[Propositions as instances: `Fact`] in chapter 1.6), because instance search cannot prove primality on its own:
 
 ```lean
 example (n : ℕ) : CommRing (ZMod n) := inferInstance

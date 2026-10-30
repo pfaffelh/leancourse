@@ -3,7 +3,7 @@ import Mathlib
 /-
 # (witness) 2.4-a -- Orders and lattices
 
-*Notes chapter 2.4, week 11.*
+*Notes chapter 2.4, week 12.*
 
 These exercises cover partial orders, lattices, and complete lattices.
 You will work with ≤, ⊔, ⊓, sSup, and monotone functions.

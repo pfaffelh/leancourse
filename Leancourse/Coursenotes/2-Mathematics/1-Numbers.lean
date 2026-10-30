@@ -99,6 +99,22 @@ example : (1 : ℝ) + 1 = 2 := by norm_num
 example : (1 : ℝ) < 2 := by norm_num
 ```
 
+Division, the inverse and the square root on `ℝ` are not given by an algorithm: their definitions use `Classical.choice`. They are `noncomputable` ({ref "pattern-matching-and-recursion"}[chapter 1.3] says what the keyword means). A definition that uses them must be marked as well. Lean says so:
+
+```lean +error
+def recip (x : ℝ) : ℝ := 1 / x
+```
+
+The error is `failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid'`. With the keyword the definition is accepted, and proofs about it work as usual:
+
+```lean
+noncomputable def reciprocal (x : ℝ) : ℝ := 1 / x
+
+example : reciprocal 2 = 1 / 2 := rfl
+```
+
+A file with many such definitions starts with `noncomputable section` and ends the section with `end`; inside, Lean marks every definition that needs it. Addition and multiplication are computable, so `def addOne (x : ℝ) : ℝ := x + 1` needs no keyword.
+
 `ℂ` is a structure with fields `re` and `im`. Two complex numbers are equal when real and imaginary parts are equal, `Complex.ext_iff`.
 
 ```lean

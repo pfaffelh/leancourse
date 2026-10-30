@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) 2.1-a -- Numbers
 
-*Notes chapter 2.1, week 8.* Exercises 1, 2, 5, 8 and 11 change the
+*Notes chapter 2.1, week 9.* Exercises 1, 2, 5, 8 and 11 change the
 statement as the sheet asks.
 -/
 

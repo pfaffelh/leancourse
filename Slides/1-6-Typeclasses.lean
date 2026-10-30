@@ -8,8 +8,9 @@ set_option pp.rawOnError true
 
 /-
 Deck for the chapter "Typeclasses" (part "Lean and its type theory").
-It follows the chapter section by section; small sections are merged
-(square brackets with `@`, managing instances with the practical tips).
+This deck is the first of the two lectures, up to `Decidable` and the
+`classical` tactic; the second is `1-6b-FunctorsMonads`. Small sections
+are merged (square brackets with `@`).
 -/
 
 namespace SlidesTypeclasses
@@ -26,7 +27,7 @@ namespace SlidesTypeclasses
 
 # Typeclasses
 
-Lean and its type theory — chapter 6
+Lean and its type theory — chapter 6, first lecture
 
 # The problem typeclasses solve
 
@@ -159,22 +160,6 @@ def doubleIt [Add α] (x : α) : α := x + x
 - `#check @mul_comm` makes every argument explicit,
   including the instance `CommMonoid M`
 
-# The algebraic hierarchy in Mathlib
-
-- `Add`, `Mul`, `AddMonoid`, `Monoid`
-- `Group`, `AddCommGroup`, `Ring`, `CommRing`, `Field`
-- `LinearOrder`
-
-```
-class Group (α : Type) extends Monoid α where
-  inv : α → α
-  inv_mul_cancel : ∀ a : α, inv a * a = 1
-```
-
-:::class "key"
-`mul_comm` holds for every `CommMonoid`: `ℕ`, `ℤ`, `ℚ`, `ℝ`, `ℂ`, polynomial rings, ...
-:::
-
 # Defining multiple instances
 
 ```lean -panel -stretch
@@ -195,7 +180,7 @@ then `Mod3.two + Mod3.two` evaluates to `Mod3.one`.
 1. look through all registered instances
 2. unify the goal `Add α` with each instance's type
 3. resolve required instances recursively
-4. exactly one chain: use it; none or several: error
+4. the first chain found is used; none: error
 
 ```lean -panel -stretch
 #check (inferInstance : AddCommMonoid ℕ)
@@ -216,6 +201,38 @@ This happens at elaboration time, not at runtime.
 - an `outParam` is _read off_ the instance found
 - `HMul α β ?γ` is resolved from `α` and `β`; `γ` is learned
 - same for `a ∈ s`: `Membership` has the element type as `outParam`
+
+# Propositions as instances
+
+```lean -panel -stretch
+example (p : ℕ) (hp : p.Prime) (a : ZMod p)
+    (ha : a ≠ 0) : a * a⁻¹ = 1 := by
+  have : Fact p.Prime := ⟨hp⟩
+  exact mul_inv_cancel₀ ha
+```
+
+- `Fact p`: a class with one field `out : p`
+- `Field (ZMod p)` needs `[Fact (Nat.Prime p)]`
+- require: `[Fact p.Prime]`; read back: `Fact.out`
+- provide: `instance : Fact (Nat.Prime 7) := ⟨by norm_num⟩`, or `have` in a proof
+
+:::class "key"
+Instance search does not reason: each `Fact` is supplied as asked.
+:::
+
+# Where numerals come from
+
+`2` is sugar for `OfNat.ofNat 2`; it works for every `α` with an `OfNat α 2` instance.
+
+```lean -panel -stretch
+structure Countdown where
+  val : Nat
+
+instance (n : Nat) : OfNat Countdown n where
+  ofNat := ⟨n⟩
+
+#eval (5 : Countdown).val    -- 5
+```
 
 # The `Decidable` typeclass
 
@@ -245,60 +262,27 @@ Each branch carries a proof, so `Decidable` lives in `Type`.
 Decidability is the constructive half; the code is executable.
 :::
 
-# Coercions
-
-:::table +colHeaders
-*
-  * Class
-  * Converts a term into ...
-  * Example
-*
-  * `Coe`
-  * a term of another type
-  * `ℕ → ℤ`; subtype into base type
-*
-  * `CoeSort`
-  * a type
-  * a set as a type; `Bool → Prop`
-*
-  * `CoeFun`
-  * a function
-  * a bundled morphism applied as `f x`
-:::
+# The `classical` tactic
 
 ```lean -panel -stretch
-example (n : ℕ) : ℤ := n     -- written ↑n
-example (b : Bool) : Prop := b
-example (s : Set ℕ) : Type := s
-example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
+example (P : ℕ → Prop) (s : Finset ℕ) :
+    ∃ t : Finset ℕ, t ⊆ s ∧ ∀ x ∈ t, P x := by
+  classical
+  refine ⟨s.filter P, Finset.filter_subset P s, ?_⟩
+  intro x hx
+  exact (Finset.mem_filter.mp hx).2
 ```
 
-# Where numerals come from
-
-`2` is sugar for `OfNat.ofNat 2`; it works for every `α` with an `OfNat α 2` instance.
-
-```lean -panel -stretch
-structure Countdown where
-  val : Nat
-
-instance (n : Nat) : OfNat Countdown n where
-  ofNat := ⟨n⟩
-
-#eval (5 : Countdown).val    -- 5
-```
-
-# Managing instances, practical tips
-
-- `instance (priority := 2000)`: tried before the default `1000`; Lean takes the first solution
-- `local instance`, `scoped instance`: e.g. `open scoped Classical`
-- `@[default_instance]`: a bare `2` defaults to `ℕ`
-- "failed to synthesize instance": an instance is missing
-- own types: start with `Repr`, then `Add`, `Mul`, ...
+- `Classical.propDecidable P : Decidable P` for every `P`, by choice, `noncomputable`
+- `classical`: a local instance for the rest of the proof, low priority
+- needed in the _statement_: `[DecidableEq β]` as a hypothesis
+- `by_cases` needs none of this
 
 # Summary
 
 - a class is a structure, an instance is a term, both marked for search
 - data classes live in `Type`, Prop classes in `Prop`
 - `[C α]` arguments are filled by instance resolution at elaboration time
-- Mathlib's algebraic hierarchy is a chain of `extends`
-- `Decidable`, coercions and numerals all run through instances
+- numerals and `Decidable` run through instances
+- `Fact` makes a proposition an instance argument
+- `classical` makes every proposition decidable inside a proof

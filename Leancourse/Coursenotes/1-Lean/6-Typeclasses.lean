@@ -17,7 +17,7 @@ tag := "typeclasses"
 
 A typeclass associates operations and properties with a type and lets Lean find the right implementation on its own. It is the mechanism by which Lean knows that the integers form a ring and the reals a field, and it is how Mathlib organizes mathematics.
 
-The [slides](slides/1-6-typeclasses/) for this chapter follow it section by section.
+The chapter is read in two lectures. The second begins at {ref "type-constructor-classes"}[Classes over type constructors]. Each lecture has its slides: [first lecture](slides/1-6-typeclasses/), [second lecture](slides/1-6b-functors-monads/).
 
 # The problem typeclasses solve
 %%%
@@ -65,7 +65,7 @@ Because a `class` is a `structure`, the applied class `C α` is an ordinary *typ
 
 (`inferInstance` stands for the instance that Lean finds by itself.)
 
-*Prop classes* have only propositional fields, so they live in `Prop`, and their instances are *proofs*. Mathlib's `Fact` is the standard example — it merely packages a proof of `p` as a searchable instance.
+*Prop classes* have only propositional fields, so they live in `Prop`, and their instances are *proofs*. Mathlib's `Fact` is the standard example: it packages a proof of `p` as an instance that instance search can find ({ref "fact"}[Propositions as instances] below).
 
 ```lean
 #check @Fact                          -- Prop → Prop
@@ -220,23 +220,6 @@ When working with Mathlib, it is often useful to see all the implicit and typecl
 
 The first form shows `[inst : CommMonoid M]` in brackets, meaning it is found automatically. The `@` version shows all arguments explicitly, which helps understand exactly what typeclass constraints are required.
 
-# The algebraic hierarchy in Mathlib
-%%%
-tag := "algebraic-hierarchy"
-%%%
-
-Mathlib's algebraic structures are typeclasses, and each one `extends` the weaker structures below it. Simplified:
-
-```
-class Group (α : Type) extends Monoid α where
-  inv : α → α
-  inv_mul_cancel : ∀ a : α, inv a * a = 1
-```
-
-A lemma stated for `CommRing α` therefore also has `Add α`, `Mul α` and `AddCommGroup α` in scope, because instance resolution walks the `extends` chain. That is what lets `mul_comm` be stated once, for `CommMonoid`, and hold for `ℕ`, `ℝ`, polynomial rings and matrix rings alike.
-
-Which structures there are and how to move between them is {ref "algebraic-hierarchy-mathlib"}[a chapter of its own] in the Mathematics part.
-
 # Defining multiple instances
 %%%
 tag := "multiple-instances"
@@ -319,6 +302,102 @@ The standard example is heterogeneous multiplication `a * b`, whose result type 
 
 Because the result `γ` is an `outParam`, Lean resolves `HMul α β ?γ` from `α` and `β` alone and *learns* `γ` from the chosen instance. The same device lets `a ∈ s` infer the element type from the collection — `Membership`'s element type is an `outParam` too. This is why you often see it in Mathlib signatures.
 
+# Propositions as instances: `Fact`
+%%%
+tag := "fact"
+%%%
+
+Instance search finds terms of classes, and nothing else. A hypothesis `hp : p.Prime` is invisible to it, because `Nat.Prime` is a definition and not a class. Sometimes an instance needs such a proposition all the same, and Mathlib's `Fact` turns the proposition into a class:
+
+{docstring Fact}
+
+`Fact p` is a structure with the single field `out : p`, so an instance of `Fact p` is a proof of `p` that instance search can find. The standard case is the one in the docstring. `ZMod p` is a field only for prime `p`, and the field instance asks for primality as an instance argument:
+
+```lean
+#check @ZMod.instField
+-- (p : ℕ) → [hp : Fact (Nat.Prime p)] → Field (ZMod p)
+```
+
+There are three things to do with a `Fact`.
+
+*Require it*, as a hypothesis in square brackets, and read the proof back with `Fact.out`:
+
+```lean
+example (p : ℕ) [Fact p.Prime] : 2 ≤ p :=
+  (Fact.out : p.Prime).two_le
+```
+
+*Provide it for a concrete value*, as an instance. Then `ZMod 7` is a field, and field lemmas such as `mul_inv_cancel₀` apply:
+
+```lean
+instance : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+
+example (a : ZMod 7) (ha : a ≠ 0) : a * a⁻¹ = 1 :=
+  mul_inv_cancel₀ ha
+```
+
+*Provide it inside a proof*, from a hypothesis. A `have` whose type is a class adds a local instance, which instance search uses for the rest of the proof:
+
+```lean
+example (p : ℕ) (hp : p.Prime) (a : ZMod p)
+    (ha : a ≠ 0) : a * a⁻¹ = 1 := by
+  have : Fact p.Prime := ⟨hp⟩
+  exact mul_inv_cancel₀ ha
+```
+
+Without the `have`, the proof fails, and the error does not name the missing `Fact`. Lean finds no `Field (ZMod p)` and reports a type mismatch between the `⁻¹` of `ZMod p` and the `⁻¹` of a field:
+
+```lean +error
+example (p : ℕ) (hp : p.Prime) (a : ZMod p)
+    (ha : a ≠ 0) : a * a⁻¹ = 1 :=
+  mul_inv_cancel₀ ha
+```
+
+The warning at the end of the docstring means: instance search does not reason. From `Fact (p = 7)` it does not conclude `Fact p.Prime`; every `Fact` that is needed has to be supplied in exactly the form the instance asks for. Mathlib uses `Fact` for a few such side conditions: besides primality mostly `Fact (1 ≤ p)` for the `Lᵖ` spaces, and the dimension of a Euclidean space in geometry.
+
+# Where numerals come from (`OfNat`)
+%%%
+tag := "ofnat"
+%%%
+
+Even a plain numeral is resolved through a typeclass. Writing `2` is sugar for `OfNat.ofNat 2`:
+
+```lean
+#check @OfNat.ofNat
+-- {α : Type} → (n : ℕ) → [OfNat α n] → α
+```
+
+So `(2 : α)` means "the element of `α` denoted by the numeral `2`", available for any `α` that has an `OfNat α 2` instance. That is why the same `2` works across types,
+
+```lean
+#check (2 : ℤ)
+#check (2 : ℝ)
+```
+
+and why you can give a numeral to your own type simply by providing the instance:
+
+```lean
+structure Countdown where
+  val : Nat
+
+instance (n : Nat) : OfNat Countdown n where
+  ofNat := ⟨n⟩
+
+#eval (5 : Countdown).val    -- 5
+```
+
+The instance decides what a numeral means. In {ref "pi-types"}[Dependent functions], `#eval` printed `2` for `(7 : ZMod 5)`. `#synth` names the instance Lean finds:
+
+```lean
+#synth OfNat (ZMod 5) 7   -- instOfNatAtLeastTwo
+```
+
+This instance exists for every type with a cast from ℕ and turns the numeral `7` into `Nat.cast 7`. Mathlib defines the cast into `ZMod (n + 1)` as the cast into `Fin (n + 1)`, and that takes the remainder: `Fin.ofNat n i` is `⟨i % n, _⟩`. So `(7 : ZMod 5)` is `⟨7 % 5, _⟩`, and `rfl` sees it:
+
+```lean
+example : (7 : ZMod 5) = 2 := rfl
+```
+
 # The `Decidable` typeclass
 %%%
 tag := "decidable-typeclass"
@@ -365,11 +444,196 @@ def decZero (n : Nat) : Decidable (n = 0) :=
 
 Each branch supplies a proof, which is why `Decidable` lives in `Type` and carries content. Registered as an `instance`, `decZero` is what `decide` runs and what `if n = 0 then … else …` consults. `deriving DecidableEq` generates such a definition for you.
 
-Decidability is the *constructive* half: it works without axioms, and
-that is why the resulting code is executable. The *classical*
-counterpart makes *every* proposition decidable non-constructively and
-not executable; it belongs to the
-axioms of Lean and is discussed in the {ref "constructive-classical"}[Mathematics part].
+Decidability is the *constructive* half: it works without axioms, and that is why the resulting code is executable. Many propositions have no such algorithm: whether a real number is `0`, or a proposition `P` you know nothing about.
+
+## The `classical` tactic
+%%%
+number := false
+tag := "classical-tactic"
+%%%
+
+The axiom `Classical.choice` (chapter {ref "rules"}[1.5]) gives a `Decidable` instance for every proposition:
+
+```lean
+#check @Classical.propDecidable
+-- Classical.propDecidable : (a : Prop) → Decidable a
+```
+
+It is not an algorithm, only a choice of `isTrue` or `isFalse` that exists by the axiom. It is therefore `noncomputable`, and it is not a global instance. The tactic `classical` makes it a local instance, with low priority, for the rest of the proof. Instances that exist, such as decidable equality on `ℕ`, are still found first.
+
+```lean
+example (P : ℕ → Prop) (s : Finset ℕ) :
+    ∃ t : Finset ℕ, t ⊆ s ∧ ∀ x ∈ t, P x := by
+  classical
+  refine ⟨s.filter P, Finset.filter_subset P s, ?_⟩
+  intro x hx
+  exact (Finset.mem_filter.mp hx).2
+```
+
+`s.filter P` needs `DecidablePred P`. Without the line `classical`, the `refine` fails with `failed to synthesize DecidablePred P`.
+
+Three rules decide where the instance comes from:
+
+* *In a proof*, write `classical`.
+* *In a statement*, `classical` comes too late: the statement is elaborated before the proof starts. `(s.image f).card ≤ s.card` needs `DecidableEq β` already in the statement, so the instance is a hypothesis: `[DecidableEq β]`. Whoever uses the result supplies the instance they have.
+* *In a definition*, write `open Classical in` in front of it. The definition is then `noncomputable`.
+
+`by_cases h : P` needs none of this: it falls back to the excluded middle by itself.
+
+Mathlib avoids `open Classical` for a whole file. With it, a term may carry the classical instance where a lemma carries the real one. The two are equal, since any two terms of `Decidable P` are, but not syntactically equal, and `rw` and `simp` then fail to match.
+
+# Classes over type constructors
+%%%
+tag := "type-constructor-classes"
+%%%
+
+The classes so far take a type: `Add ℕ`, `Decidable (2 + 3 = 5)`. A class can also take a *type constructor*, a function `Type → Type` such as `Option` or `List`. The two most important are `Functor` and `Monad`.
+
+```lean
+#check (Functor : (Type → Type) → Type 1)
+#check (Monad : (Type → Type) → Type 1)
+```
+
+## Functor
+%%%
+number := false
+tag := "functor-typeclass"
+%%%
+
+A `Functor f` provides
+
+* `map : (α → β) → f α → f β`, written `g <$> x`.
+
+It applies a function to what is inside, without changing the shape around it:
+
+```lean
+#eval (· + 10) <$> (some 5 : Option ℕ)   -- some 15
+#eval (· + 10) <$> (none : Option ℕ)     -- none
+#eval (· * 2) <$> [1, 2, 3]              -- [2, 4, 6]
+```
+
+`map` cannot turn `none` into `some`, and it cannot shorten a list. Two laws say so: mapping the identity changes nothing, and mapping a composition is mapping twice. They are fields of the class `LawfulFunctor`:
+
+```lean
+example (x : Option ℕ) : id <$> x = x := id_map x
+
+example (g h : ℕ → ℕ) (xs : List ℕ) :
+    (h ∘ g) <$> xs = h <$> g <$> xs :=
+  comp_map g h xs
+```
+
+## Monad
+%%%
+number := false
+tag := "monad-typeclass"
+%%%
+
+`Option α` is the type of a computation that may fail. Division by zero is the standard case:
+
+```lean
+def safeDivide (a b : ℕ) : Option ℕ :=
+  if b = 0 then none else some (a / b)
+```
+
+To divide twice, the second division must run on the result of the first, and only if there is one. A `Monad m` provides exactly this:
+
+* `pure : α → m α` turns a value into a computation that returns it;
+* `bind : m α → (α → m β) → m β`, written `x >>= f`, runs `x` and passes its result to `f`.
+
+For `Option`, `pure` is `some`, and `bind` passes the failure on:
+
+```lean
+def optionBind (x : Option α) (f : α → Option β) :
+    Option β :=
+  match x with
+  | none => none
+  | some a => f a
+
+def divideTwice (a b c : ℕ) : Option ℕ :=
+  safeDivide a b >>= fun r => safeDivide r c
+
+#eval divideTwice 100 5 4    -- some 5
+#eval divideTwice 100 0 4    -- none
+```
+
+Every monad is a functor, with `g <$> x = x >>= (pure ∘ g)`.
+
+## The `do`-notation
+%%%
+number := false
+tag := "do-notation"
+%%%
+
+A chain of `>>=` and `fun` is hard to read. The `do`-notation writes it as a sequence of steps:
+
+```lean
+def divideThrice (a b c d : ℕ) : Option ℕ := do
+  let r ← safeDivide a b
+  let s ← safeDivide r c
+  safeDivide s d
+
+#eval divideThrice 1000 10 5 4    -- some 5
+#eval divideThrice 1000 10 0 4    -- none
+```
+
+`let r ← e` runs `e` and names its result `r`; Lean translates each such line into a `>>=`. `return a` is `pure a`.
+
+## Lists as a monad
+%%%
+number := false
+tag := "list-monad"
+%%%
+
+A list is a computation with several results. `pure a` is `[a]`, and `xs >>= f` applies `f` to each element and concatenates the lists:
+
+```lean
+#eval [1, 2] >>= fun x => [x, x * 10]   -- [1, 10, 2, 20]
+
+def pairs : List (ℕ × ℕ) := do
+  let x ← [1, 2, 3]
+  let y ← [10, 20]
+  return (x, y)
+
+#eval pairs
+-- [(1, 10), (1, 20), (2, 10), (2, 20), (3, 10), (3, 20)]
+```
+
+`let x ← [1, 2, 3]` reads "for each `x` in `[1, 2, 3]`". The result is the list version of `{(x, y) | x ∈ {1, 2, 3}, y ∈ {10, 20}}`. The instance comes from Mathlib (`#synth Monad List` names it).
+
+## The monad laws
+%%%
+number := false
+tag := "monad-laws"
+%%%
+
+Three laws make the `do`-notation behave as expected. They are fields of `LawfulMonad`:
+
+:::table (align := left) +header
+* + law
+  + statement
+  + Lean
+* + left identity
+  + `pure a >>= f = f a`
+  + `pure_bind`
+* + right identity
+  + `x >>= pure = x`
+  + `bind_pure`
+* + associativity
+  + `x >>= f >>= g = x >>= fun a => f a >>= g`
+  + `bind_assoc`
+:::
+
+For `Option` each law is a computation, by cases on `x`:
+
+```lean
+example (a : ℕ) (f : ℕ → Option ℕ) :
+    (pure a >>= f) = f a := rfl
+
+example (x : Option ℕ) : (x >>= pure) = x := by
+  cases x <;> rfl
+```
+
+The name comes from category theory. A monad there is a functor `T` with natural transformations `η : Id → T` (here `pure`) and `μ : T ∘ T → T` (here `join`, which is `bind` with the identity), and the three laws are its coherence conditions, for the category of types and functions.
 
 # Coercions
 %%%
@@ -419,50 +683,35 @@ example (s : Set ℕ) : Type := s   -- the subtype ↥s of its members
 example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
 ```
 
+Mathlib does not write a `CoeFun` instance for each kind of morphism. A structure type whose elements are functions registers this once, through the class `DFunLike`, and the coercion to functions follows from it ({ref "representation-pitfalls"}[How an object is represented]).
+
 Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean reads it as `↑n + r`. A goal can also fill with `↑`s that block tactics like `ring` or `linarith`; the {ref "coercion-headaches"}[appendix] covers the numeric chain `ℕ → ℤ → ℚ → ℝ` and the `norm_cast` / `push_cast` tactics that tidy them up.
 
-# Where numerals come from (`OfNat`)
+# The algebraic hierarchy in Mathlib
 %%%
-tag := "ofnat"
+tag := "algebraic-hierarchy"
 %%%
 
-Even a plain numeral is resolved through a typeclass. Writing `2` is sugar for `OfNat.ofNat 2`:
+Mathlib's algebraic structures are typeclasses, and each one `extends` the weaker structures below it. Simplified:
 
-```lean
-#check @OfNat.ofNat
--- {α : Type} → (n : ℕ) → [OfNat α n] → α
+```
+class Group (α : Type) extends Monoid α where
+  inv : α → α
+  inv_mul_cancel : ∀ a : α, inv a * a = 1
 ```
 
-So `(2 : α)` means "the element of `α` denoted by the numeral `2`", available for any `α` that has an `OfNat α 2` instance. That is why the same `2` works across types,
+`extends` makes `Monoid α` a field of `Group α`, and the projection `Group.toMonoid` is registered as an instance. So from `[CommRing α]`, instance resolution reaches `Add α`, `Mul α` and `AddCommGroup α` by walking the `extends` chain:
 
 ```lean
-#check (2 : ℤ)
-#check (2 : ℝ)
+example (α : Type) [CommRing α] : AddCommGroup α :=
+  inferInstance
+
+#synth AddCommGroup ℤ
 ```
 
-and why you can give a numeral to your own type simply by providing the instance:
+That is what lets `mul_comm` be stated once, for `CommMonoid`, and hold for `ℕ`, `ℝ`, polynomial rings and matrix rings alike. When two paths lead to the same class, they must give the same instance; when they do not, the result is a *diamond* ({ref "typeclass-diamonds"}[Typeclass diamonds] in the appendix).
 
-```lean
-structure Countdown where
-  val : Nat
-
-instance (n : Nat) : OfNat Countdown n where
-  ofNat := ⟨n⟩
-
-#eval (5 : Countdown).val    -- 5
-```
-
-The instance decides what a numeral means. In {ref "pi-types"}[Dependent functions], `#eval` printed `2` for `(7 : ZMod 5)`. `#synth` names the instance Lean finds:
-
-```lean
-#synth OfNat (ZMod 5) 7   -- instOfNatAtLeastTwo
-```
-
-This instance exists for every type with a cast from ℕ and turns the numeral `7` into `Nat.cast 7`. Mathlib defines the cast into `ZMod (n + 1)` as the cast into `Fin (n + 1)`, and that takes the remainder: `Fin.ofNat n i` is `⟨i % n, _⟩`. So `(7 : ZMod 5)` is `⟨7 % 5, _⟩`, and `rfl` sees it:
-
-```lean
-example : (7 : ZMod 5) = 2 := rfl
-```
+Which structures there are and how to move between them is {ref "algebraic-hierarchy-mathlib"}[a chapter of its own] in the Mathematics part.
 
 # Managing instances
 %%%
@@ -472,7 +721,7 @@ tag := "managing-instances"
 A few further knobs control *which* instance is found. You rarely need them at first, but they show up when reading Mathlib:
 
 * *Priorities.* Every instance has a priority, by default `1000`; `instance (priority := 2000) : …` is tried before the others, `instance (priority := 100) : …` after them. Since Lean takes the first solution it finds, priorities resolve overlaps.
-* *`local` and `scoped` instances.* A `local instance` is active only until the end of the current section, namespace, or file; a `scoped instance` is active only inside its namespace or once you `open` it. Mathlib uses `scoped` heavily — `open scoped Classical`, for instance, switches on classical decidability exactly where you want it.
+* *`local` and `scoped` instances.* A `local instance` is active only until the end of the current section, namespace, or file; a `scoped instance` is active only inside its namespace or once you `open` it. Mathlib uses `scoped` heavily. `open scoped Classical` switches on classical decidability for a whole section; inside a proof the {ref "classical-tactic"}[`classical` tactic] does the same for that proof alone.
 * *Default instances.* `@[default_instance]` supplies a fallback when synthesis would otherwise be ambiguous — it is how a bare numeral like `2` defaults to `ℕ` when nothing else pins down its type.
 
 # Practical tips

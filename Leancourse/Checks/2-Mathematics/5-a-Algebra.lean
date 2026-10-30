@@ -3,7 +3,7 @@ import Mathlib
 /-
 # (witness) 2.5-a -- The algebraic hierarchy
 
-*Notes chapter 2.5, week 11.*
+*Notes chapter 2.5, week 12.*
 
 These exercises cover monoids, groups, rings, fields, morphisms,
 substructures, and quotients. One worked proof for each exercise.

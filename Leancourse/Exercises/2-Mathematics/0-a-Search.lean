@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # 2.0-a -- Finding theorems
 
-*Opens the mathematics part, week 8. No chapter of its own; the
+*Opens the mathematics part, week 9. No chapter of its own; the
 reference is the appendix* Navigating Mathlib.
 
 Mathlib has about 189 000 theorems. From here on most steps of a

@@ -354,7 +354,13 @@ inductive MyTree where
 -- leaves now carry data, and trees can be built:
 example : MyTree := .leaf 7
 example : MyTree := .node (fun n => .leaf n)
+example : MyTree :=
+  .node (fun n => if n = 0 then .node .leaf else .leaf n)
 ```
+
+:::figure "The last tree above. Circles are nodes, squares are leaves with their number; the edge to the subtree f n is labelled n."
+![A root node with edges labelled 0, 1, 2, 3 and dots. Edge 0 leads to a node whose edges 0, 1, 2, 3 lead to the leaves 0, 1, 2, 3; edges 1, 2, 3 lead to the leaves 1, 2, 3.](/static/figures/mytree.png)
+:::
 
 The `leaf` case is what gets the type off the ground. Positivity constrains only *where* `MyTree` may occur, not whether the type has any elements: drop `leaf`, and the declaration is *still accepted*, but no closed `MyTree` can ever be built — every `node` already demands a whole family `ℕ → MyTree` of subtrees, with nothing to start from, so the type is *empty* (like `Empty`; one can even prove `MyTree → False`). With `leaf` present you build upward — `leaf 7`, then `node (fun n => leaf n)`, then trees over those. Note that `leaf` here *carries* a `ℕ`, so different leaves are genuinely different; a bare `leaf : MyTree` would give a single, featureless leaf, indistinguishable from every other.
 

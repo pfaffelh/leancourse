@@ -28,6 +28,7 @@ namespace SlidesTypes
 .reveal section .math.display { font-size: 0.7em; }
 .reveal section .small table, .reveal section table.small { font-size: 0.52em; }
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.8em; }
+.reveal section img.tree { height: 190px; margin: 0.2em auto; }
 ```
 
 # Pattern matching and recursion
@@ -222,13 +223,23 @@ List.rec : {motive : List α → Sort u} →
 Read as a proof, `motive tail` is the induction hypothesis.
 :::
 
-# Strict positivity
+# An infinitely branching tree
+
+A tree in which a node has one subtree for every natural number.
 
 ```lean -panel -stretch
 inductive MyTree where
   | leaf : ℕ → MyTree
   | node : (ℕ → MyTree) → MyTree
 ```
+
+{image "../static/figures/mytree.png" (class := "tree")}[The tree .node (fun n => if n = 0 then .node .leaf else .leaf n): a root node with subtrees labelled 0, 1, 2, 3, and so on; subtree 0 is a node whose subtrees are the leaves 0, 1, 2, 3, ...; subtrees 1, 2, 3 are the leaves 1, 2, 3]
+
+- `leaf a`: a single leaf, carrying the number `a`; `leaf 7` is a tree.
+- `node f`: a node with the subtrees `f 0`, `f 1`, `f 2`, …
+- In `ℕ → MyTree`, the argument type of `node`, `MyTree` stands _right_ of `→`. Accepted.
+
+# A negative occurrence
 
 ```
 inductive Bad where
@@ -237,19 +248,28 @@ inductive Bad where
 --        occurrence of the datatypes being declared
 ```
 
-`node` takes `ℕ → MyTree`: `MyTree` right of `→`, accepted. `Bad.mk` takes `Bad → False`: `Bad` left of `→`, rejected.
+Strict positivity: in argument types of constructors, the type occurs only _right_ of `→`. In `Bad → False`, `Bad` stands _left_ of `→`.
+
+Suppose Lean accepted it. Every `b : Bad` is `mk f` for some `f : Bad → False`, so pattern matching takes `f` out again:
+
+```
+def unmk : Bad → (Bad → False)
+  | .mk f => f          -- unmk (mk f) = f
+```
 
 :::class "key"
-In the argument types of a constructor, the type may occur only to the right of an arrow.
+`mk : (Bad → False) → Bad` and `unmk : Bad → (Bad → False)`: so `Bad ↔ ¬Bad`.
 :::
 
-# Why `Bad` must be rejected
+# False from nothing
 
-Suppose `Bad` were accepted, with `mk : (Bad → False) → Bad`.
+```
+def neg (b : Bad) : False := unmk b b
+def boom : False := neg (Bad.mk neg)
+```
 
-1. Every `b : Bad` is `mk f`. Pattern matching gives `unmk : Bad → (Bad → False)`, `unmk (mk f) = f`. So `Bad ↔ ¬Bad`.
-2. `neg b := unmk b b`: apply the function stored in `b` to `b` itself. `neg : Bad → False`.
-3. `mk neg : Bad`, so `neg (mk neg) : False`.
+- `neg b`: take the function stored in `b`, apply it to `b` itself. So `neg : Bad → False`.
+- `Bad.mk neg : Bad`, and `neg` applied to it is a proof of `False`: no hypothesis, no axiom.
 
 Lean checks the argument, with `mk` and `unmk` as hypotheses:
 

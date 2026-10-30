@@ -78,11 +78,12 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `1-Lean/6-b-Coercions` | 1.6 | 7 | yes |
 | `1-Lean/7-a-Notation` | 1.7 | 7 | yes |
 | `2-Mathematics/0-a-Search` | — | 8 | yes |
-| `2-Mathematics/1-a-Sets` | 2.1 | 8 | yes |
-| `2-Mathematics/1-b-ImagePreimage` | 2.1 | 8 | yes |
-| `2-Mathematics/1-c-Functions` | 2.1 | 9 | yes |
-| `2-Mathematics/2-a-Axioms` | 2.2 | 9 | yes |
-| `2-Mathematics/3-a-WellFoundedness` | 2.3 | 9 | yes |
+| `2-Mathematics/1-a-Numbers` | 2.1 | 8 | yes |
+| `2-Mathematics/2-a-Sets` | 2.2 | 8 | yes |
+| `2-Mathematics/2-b-ImagePreimage` | 2.2 | 9 | yes |
+| `2-Mathematics/2-c-Functions` | 2.2 | 9 | yes |
+| `2-Mathematics/3-a-Axioms` | 2.3 | 9 | yes |
+| `2-Mathematics/3-b-WellFoundedness` | 2.3 | 9 | yes |
 | `2-Mathematics/4-a-Orders` | 2.4 | 11 | yes |
 | `2-Mathematics/5-a-Algebra` | 2.5 | 11 | yes |
 | `2-Mathematics/6-a-Limits` | 2.6 | 12 | yes |
@@ -95,7 +96,7 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `4-Appendix/b-Conv` | Appendix | 10 | yes |
 | `9-Extra/a-Puzzles` | — | 5 | yes |
 
-Every sheet has a witness: 36 of 36, all sorry-free apart from the
+Every sheet has a witness: 37 of 37, all sorry-free apart from the
 one deliberate `sorry` on `L-a`, where finding the unprovable
 statement is the exercise.
 
@@ -109,7 +110,7 @@ comments or were simply false:
 * `1.7-a` exercise 2 checked itself with `example : sq 5 = 25 := rfl`,
   which parses as `sq (5 = 25)` and fails to elaborate. The check line
   now carries the type ascription, with a note on precedence.
-* `2.1-b` exercise 2 asked for `g ⁻¹' s = s` for an *arbitrary*
+* `2.2-b` exercise 2 asked for `g ⁻¹' s = s` for an *arbitrary*
   `g : α → α`. That is false -- take `g` constant. It now reads
   `id ⁻¹' s = s`, which is what the surrounding text promises.
 

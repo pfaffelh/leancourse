@@ -9,7 +9,7 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types and terms II: pairs, subtypes, families, quotients" =>
+#doc (Manual) "Pairs, subtypes, families, quotients" =>
 %%%
 htmlSplit := .never
 tag := "type-formers"

@@ -12,7 +12,7 @@ component is a proof.
 
 Universes appear here too; they were introduced in chapter 1.2.
 The axioms `propext` and `Classical.choice` are listed in chapter
-1.5 and treated in chapter 2.2, with their own sheet `2.2-a` in
+1.5 and treated in chapter 2.3, with their own sheet `2.3-a` in
 week 9; `funext` is a theorem. One exercise below needs choice; it is marked.
 
 ## Notation introduced here
@@ -166,7 +166,7 @@ def squareRootOf25 : {n : ℕ // n * n = 25} :=
 
 -- Exercise 13: Exists gives only a proof.
 -- You can prove existence but cannot extract the witness without
--- classical choice -- that direction is on sheet `2.2-a`.
+-- classical choice -- that direction is on sheet `2.3-a`.
 example : ∃ (n : ℕ), n * n = 25 :=
   sorry
 

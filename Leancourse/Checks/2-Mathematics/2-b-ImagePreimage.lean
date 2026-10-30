@@ -1,9 +1,9 @@
 import Mathlib.Tactic
 
 /-!
-# (witness) 2.1-b -- Image and preimage
+# (witness) 2.2-b -- Image and preimage
 
-*Notes chapter 2.1, week 8.*
+*Notes chapter 2.2, week 9.*
 -/
 
 variable (α β : Type) (f : α → β) (s : Set α) (t : Set β)

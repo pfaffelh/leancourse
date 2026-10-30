@@ -1,9 +1,9 @@
 import Mathlib.Tactic
 
 /-!
-# (witness) 2.1-c -- Injective and surjective functions
+# (witness) 2.2-c -- Injective and surjective functions
 
-*Notes chapter 2.1, week 9.*
+*Notes chapter 2.2, week 9.*
 -/
 
 open Function

@@ -7,15 +7,14 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the chapter "Types and terms I: functions, inductive types,
-structures" of part 1 (Lean and its type theory). It follows the
-chapter section by section: commands for terms, the universe
-hierarchy, function types with their terms, inductive types,
-structures.
+Deck for the chapter "Functions, inductive types, structures" of part
+1 (Lean and its type theory). It follows the chapter section by
+section: commands for terms, the universe hierarchy, function types
+with their terms, inductive types, structures.
 -/
 
 namespace SlidesTypes
-#doc (Slides) "Types and terms I: functions, inductive types, structures" =>
+#doc (Slides) "Functions, inductive types, structures" =>
 
 ```css
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
@@ -29,9 +28,9 @@ namespace SlidesTypes
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.8em; }
 ```
 
-# Types and terms I
+# Functions, inductive types, structures
 
-Lean and its type theory — chapter 2: functions, inductive types, structures
+Lean and its type theory — chapter 2
 
 :::class "key"
 In Lean, types can depend on values.
@@ -54,28 +53,40 @@ A type is itself a term, so it has a type as well.
 
 # Four steps for every type
 
+::::class "small"
 :::table +colHeaders +rowSeps
 *
   * step
   * question
-  * for functions
+  * function
+  * inductive type
+  * structure
 *
   * formation
   * how is the type written?
   * `α → β`
+  * `ℕ`, `inductive T`
+  * `Point`, `structure S`
 *
   * construction
   * how is a term built?
   * `fun x => e`
+  * `0`, `n + 1`
+  * `⟨1, 2⟩`, `Point.mk 1 2`
 *
   * use
   * how is a term used?
   * `f a`
+  * `match n with` …
+  * `p.x`, `p.y`
 *
   * computation
-  * what happens when a term just built is used?
+  * what if a term just built is used?
   * `(fun x => e) a ⟶ e[x := a]`
+  * a match on `0` takes the `0` branch
+  * `⟨1, 2⟩.x ⟶ 1`
 :::
+::::
 
 :::class "key"
 Types and terms come together. Chapter 1.5 turns the four steps into rules.

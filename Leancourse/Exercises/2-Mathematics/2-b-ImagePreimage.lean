@@ -1,12 +1,12 @@
 import Mathlib.Tactic -- imports all the Lean tactics
 
 /-!
-# 2.1-b -- Image and preimage
+# 2.2-b -- Image and preimage
 
-*Notes chapter 2.1, week 8.*
+*Notes chapter 2.2, week 9.*
 -/
 
-/- Read the section *Image and preimage* of chapter 2.1 first.
+/- Read the section *Image and preimage* of chapter 2.2 first.
 
 For `f : α → β`, `s : Set α` and `t : Set β`:
 
@@ -80,7 +80,7 @@ example (s₁ s₂ : Set α) : f '' (s₁ ∪ s₂) = f '' s₁ ∪ f '' s₂ :=
 
 -- Exercise 9:
 -- The image of an intersection is contained in the intersection of
--- images; equality needs injectivity (sheet 2.1-c). The notes cite
+-- images; equality needs injectivity (sheet 2.2-c). The notes cite
 -- `Set.image_inter_subset`; prove it by hand.
 example (s₁ s₂ : Set α) : f '' (s₁ ∩ s₂) ⊆ f '' s₁ ∩ f '' s₂ := by
   sorry

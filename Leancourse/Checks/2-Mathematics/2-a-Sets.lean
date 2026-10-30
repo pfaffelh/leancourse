@@ -1,9 +1,9 @@
 import Mathlib.Tactic
 
 /-!
-# (witness) 2.1-a -- Sets
+# (witness) 2.2-a -- Sets
 
-*Notes chapter 2.1, week 8.*
+*Notes chapter 2.2, week 8.*
 -/
 
 variable (α β : Type)

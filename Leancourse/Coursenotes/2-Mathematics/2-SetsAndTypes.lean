@@ -20,7 +20,8 @@ A mathematician thinks in *sets*; Lean thinks in *types*. A set turns
 out to be a predicate on a type, its operations the logical
 connectives, and its equality an axiom. Functions act on sets by
 image and preimage, and injectivity and surjectivity are again
-formulas with quantifiers.
+formulas with quantifiers. Finite sets, sums and counting use
+`Finset`, a finite set given as data.
 *Propositions* and their *proofs*, used freely from here on, were
 covered in {ref "curry-howard"}[Propositions as types] in the
 {ref "lean"}[Lean part].
@@ -365,6 +366,73 @@ together with its inverse as `α ≃ β` (an *equivalence*), and
 `Equiv.ofBijective f hf` turns a bijective `f` into one. The inverse
 is then chosen by `Classical.choice`, so `Equiv.ofBijective` is
 `noncomputable`.
+
+# Finite sets and sums
+%%%
+tag := "finite-sets"
+%%%
+
+A `Set α` is a predicate and may be infinite. For sums, products and counting, Mathlib uses `Finset α`, a finite set given as data. It is built from the type formers of the {ref "lean"}[Lean part]: a `Multiset α` is the {ref "quotient-types"}[quotient] of `List α` by permutation, and a `Finset α` is a structure of a multiset and a proof that it has no duplicates.
+
+```lean
+#print Finset
+-- fields:
+--   Finset.val : Multiset α
+--   Finset.nodup : self.val.Nodup
+```
+
+Because a `Finset` of numbers is data, `decide` can compute with it. `Finset.range n` is `{0, …, n - 1}`, and `Finset.Icc a b` is `{a, …, b}`. A `Finset` coerces to a `Set` where one is expected.
+
+```lean
+example : Finset.range 4 = {0, 1, 2, 3} := by decide
+example : ({1, 2, 3} : Finset ℕ).card = 3 := by decide
+example : ∑ i ∈ Finset.range 4, i = 6 := by decide
+example : ∏ i ∈ Finset.Icc 1 4, i = 24 := by decide
+```
+
+`∑ i ∈ s, f i` is the sum of `f` over `s`, typed `\sum`; `∏` (`\prod`) is the product. The sum over `Finset.range` starts at `0`. Statements about `∑ i ∈ Finset.range n` are proved by induction on `n`, with `Finset.sum_range_succ` splitting off the last term:
+
+```lean
+example (n : ℕ) :
+    ∑ i ∈ Finset.range n, (2 * i + 1) = n ^ 2 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih]
+    ring
+```
+
+A type with finitely many elements is an instance of the class `Fintype`, which provides `Finset.univ`, the finset of all elements. There are several ways to count, and they differ in what they do with infinite sets:
+
+:::table (align := left) +header
+* + count
+  + of
+  + infinite case
+* + `s.card`, also `#s`
+  + `s : Finset α`
+  + does not occur
+* + `Fintype.card α`
+  + `α` with `[Fintype α]`
+  + does not occur
+* + `Nat.card α`
+  + any type `α`
+  + `0`
+* + `s.ncard`
+  + `s : Set α`
+  + `0`
+* + `s.encard`
+  + `s : Set α`, value in `ℕ∞`
+  + `⊤`
+:::
+
+```lean
+example : Fintype.card (Fin 5) = 5 := by simp
+example : Nat.card ℕ = 0 := by simp
+example : (Set.univ : Set ℕ).ncard = 0 := by simp
+example : (Set.univ : Set ℕ).encard = ⊤ := by simp
+```
+
+The `0` for an infinite set is a junk value as in {ref "junk-values"}[Total functions and junk values]; theorems about `ncard` assume `s.Finite`.
 
 # From a set back to a type: subtypes and coercion
 %%%

@@ -7,15 +7,15 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the chapter "Types and terms II: pairs, subtypes, families,
-quotients" of part 1 (Lean and its type theory). It follows the
-chapter section by section: Σ-types, subtypes, type families, indexed
-families, the logical connectives as types, quotient
-types (integers mod n, reals), the table of the four steps, and some history.
+Deck for the chapter "Pairs, subtypes, families, quotients" of part 1
+(Lean and its type theory). It follows the chapter section by section:
+Σ-types, subtypes, type families, indexed families, the logical
+connectives as types, quotient types (integers mod n, reals), the
+table of the four steps, and some history.
 -/
 
 namespace SlidesTypeFormers
-#doc (Slides) "Types and terms II: pairs, subtypes, families, quotients" =>
+#doc (Slides) "Pairs, subtypes, families, quotients" =>
 
 ```css
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
@@ -29,9 +29,9 @@ namespace SlidesTypeFormers
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.6em; }
 ```
 
-# Types and terms II
+# Pairs, subtypes, families, quotients
 
-Lean and its type theory — chapter 4: pairs, subtypes, families, quotients
+Lean and its type theory — chapter 4
 
 :::class "key"
 Each type former again in four steps: formation, construction, use, computation.

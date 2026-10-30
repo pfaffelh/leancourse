@@ -7,14 +7,14 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the chapter "Types III: the rules" of part 1 (Lean and its
-type theory). It follows the chapter section by section: the rules of
-Lean's type theory, how the universe of a type is determined, and why
-`Prop` is special.
+Deck for the chapter "Rules for building types" of part 1 (Lean and
+its type theory). It follows the chapter section by section: the rules
+of Lean's type theory, how the universe of a type is determined, and
+why `Prop` is special.
 -/
 
 namespace SlidesRules
-#doc (Slides) "Types III: the rules" =>
+#doc (Slides) "Rules for building types" =>
 
 ```css
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
@@ -26,7 +26,7 @@ namespace SlidesRules
 .reveal section .math.display { font-size: 0.7em; }
 ```
 
-# Types III: the rules
+# Rules for building types
 
 Lean and its type theory — chapter 5
 

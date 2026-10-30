@@ -3,7 +3,7 @@ import Mathlib -- load everything, in particular tactics
 /-!
 # (witness) L-a -- Propositions and implication
 
-*Logic block, week 1. No chapter of its own: the theory is propositions as types (1.4) and the axioms (2.2), both later.*
+*Logic block, week 1. No chapter of its own: the theory is propositions as types (1.4) and the axioms (2.3), both later.*
 
 Everything on this sheet is about *propositions*: statements that are
 either true or false. We never talk about numbers, sets or functions

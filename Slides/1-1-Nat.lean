@@ -466,7 +466,7 @@ In practice students write `h.elim`, `exfalso`, or `cases h`, never
 One term of type `False` makes every statement a theorem. That is the
 whole reason the empty type matters.
 
-Picked up again in chapter 2.2 with Lean's axioms, and in the Girard
+Picked up again in chapter 2.3 with Lean's axioms, and in the Girard
 project.
 :::
 

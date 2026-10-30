@@ -137,7 +137,7 @@ example : ∃ (f g : α → Bool), ∀ x, xor (f x) (g x) := by
   sorry
 
 -- Exercise 6) Turning a `∀ x, ∃ y` into a function is exactly what
--- `choose` does; it uses the axiom of choice (chapters 1.5, 2.2).
+-- `choose` does; it uses the axiom of choice (chapters 1.5, 2.3).
 example : (∀ (x : α), ∃ (y : α), R x y) →
     ∃ (f : α → α), ∀ (x : α), R x (f x) := by
   sorry

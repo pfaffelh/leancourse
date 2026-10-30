@@ -11,7 +11,7 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types III: the rules" =>
+#doc (Manual) "Rules for building types" =>
 %%%
 htmlSplit := .never
 tag := "rules"

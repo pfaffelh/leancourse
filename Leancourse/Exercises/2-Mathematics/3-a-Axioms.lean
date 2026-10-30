@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# 2.2-a -- The axioms of Lean
+# 2.3-a -- The axioms of Lean
 
-*Notes chapter 2.2, week 9.*
+*Notes chapter 2.3, week 9.*
 
 Lean's kernel is small. On top of it sit exactly three declared
 axioms -- `propext`, `Quot.sound` and `Classical.choice` -- and
@@ -65,7 +65,7 @@ example (P : Prop) (hP : P) : (P ∧ True) := by
 /-
 ## Part 3: Excluded middle
 
-`Classical.em P : P ∨ ¬P` holds for every `P`. Chapter 2.2 explains
+`Classical.em P : P ∨ ¬P` holds for every `P`. Chapter 2.3 explains
 that this is a *theorem*, not an axiom -- Diaconescu's argument
 derives it from choice. Sheet `L-e` used it through `by_cases` and
 `by_contra`; here it appears by name.

@@ -3,7 +3,7 @@ import Mathlib -- load everything, in particular tactics
 /-!
 # L-a -- Propositions and implication
 
-*Logic block, week 1. No chapter of its own: the theory is propositions as types (1.4) and the axioms (2.2), both later.*
+*Logic block, week 1. No chapter of its own: the theory is propositions as types (1.4) and the axioms (2.3), both later.*
 
 Only propositions here: `P`, `Q`, `R`, ... No numbers, no sets, no
 functions. The only connective is `→`.

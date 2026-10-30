@@ -11,7 +11,7 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types and terms I: functions, inductive types, structures" =>
+#doc (Manual) "Functions, inductive types, structures" =>
 %%%
 htmlSplit := .never
 tag := "types"

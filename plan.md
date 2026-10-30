@@ -35,8 +35,8 @@ Kontext, ohne Lean.
 | 5 | 16.11. | 18.11. | Typen und Terme II: Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-g, 1.2-b, 1.3-a · *extra:* X-a | |
 | 6 | 23.11. | 25.11. | Typen III: die Regeln, `Prop` | 1.5 | 1.4-a, 1.4-b, 1.5-a | |
 | 7 | 30.11. | 02.12. | Typklassen; Notation | 1.6, 1.7 | 1.4-c, 1.6-a, 1.6-b, 1.7-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Mengen und Typen; Fundiertheit | 2.1, 2.3 | 2.0-a, 2.1-a, 2.1-b | |
-| 9 | 14.12. | 16.12. | Universen und Axiome | 2.2 | 2.1-c, 2.2-a, 2.3-a | **Test 3** |
+| 8 | 07.12. | 09.12. | Zahlen; Mengen und Typen | 2.1, 2.2 | 2.0-a, 2.1-a, 2.2-a | |
+| 9 | 14.12. | 16.12. | Grundlagen: Universen, Axiome, Fundiertheit | 2.3 | 2.2-b, 2.2-c, 2.3-a, 2.3-b | **Test 3** |
 | 10 | 21.12. | -- | Proof Engineering; `conv` | Anhang | A-a, A-b | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
 | 11 | 11.01. | 13.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 2.4-a, 2.5-a | |
@@ -45,10 +45,10 @@ Kontext, ohne Lean.
 | 14 | 01.02. | 03.02. | Maßtheorie | 2.8 | 2.8-a | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 2.9-a, 2.9-b | **Test 5** |
 
-36 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. `A-a` und
+37 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. `A-a` und
 `A-b` laufen als Ferienaufgabe über die Pause.
 
-Drei Kapitelpaare teilen sich einen Termin: 1.6+1.7 (W7), 2.1+2.3
+Drei Kapitelpaare teilen sich einen Termin: 1.6+1.7 (W7), 2.1+2.2
 (W8), 2.4+2.5 (W11). Notation (1.7) bekommt keine eigene Vorlesung:
 eigene Notation führen Studierende kaum ein. Seit dem 27.10.2026 gibt
 es kein eigenes Kapitel *Terme* mehr: 1.2 *Typen und Terme I*
@@ -88,7 +88,7 @@ Abschnitt *Finding theorems* in 1.2 ist dafür am 29.10. entfallen.
 
 Kein Blatt läuft vor seinem Kapitel. Der Logikblock `L-b` bis `L-g`
 läuft in den Wochen 2 bis 5 und damit vor seiner Theorie (1.4 und
-2.2).
+2.3).
 
 Die Logik ist nach Woche 5 abgeschlossen.
 
@@ -120,9 +120,15 @@ Elimination werden gelesen, nicht geübt; die Universen stehen auf
 Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
 `1.1-b`, `2.9-a`).
 
-`2.1-c` und `2.3-a` (Kapitel 2.1 und 2.3, gelesen in Woche 8)
-liegen in Woche 9, damit Woche 8 nicht vier Blätter hat. Beweisirrelevanz steht seit 29.10.
-auf `2.2-a`.
+Seit dem 30.10.2026 beginnt Teil 2 mit dem Kapitel 2.1 *Numbers*
+(Zahlbereiche als Typbildner aus Teil 1, Müllwerte, drei Potenzen,
+`ℝ≥0`/`ℝ≥0∞`, Casts) und dem Blatt `2.1-a`. Damit Teil 2 bei neun
+Kapiteln bleibt, sind die früheren 2.2 (Universen und Axiome) und 2.3
+(Fundiertheit) zu 2.3 *Foundations* zusammengelegt; Mengen ist jetzt
+2.2. Blätter: `2.1-a/b/c` -> `2.2-a/b/c`, `2.2-a` -> `2.3-a`,
+`2.3-a` -> `2.3-b`. `2.2-b`, `2.2-c` (Kapitel 2.2, gelesen in Woche 8)
+liegen in Woche 9, damit Woche 8 nicht vier Blätter hat.
+Beweisirrelevanz steht auf `2.3-a`.
 `1.7-a` hat nur eine Aufgabe und ist eher ein Leseblatt.
 
 ## Kurztests

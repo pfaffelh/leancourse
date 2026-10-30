@@ -383,7 +383,7 @@ file then checks instantly). Most demos below are one line to type.
 - Link back to week 1: this is exactly what the summer-2026 soundness
   bugs were about — one of them (lean4 issue #14576) produced a term of
   `False` **without any axiom**. Fixed, but it shows what is at stake.
-- Picked up again in chapter 2.2 (Lean's axioms) and in the Girard
+- Picked up again in chapter 2.3 (Lean's axioms) and in the Girard
   project (*Type : Type* makes `False` inhabited).
 
 ---

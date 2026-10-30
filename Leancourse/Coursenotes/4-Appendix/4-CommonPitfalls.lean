@@ -234,6 +234,51 @@ set_option trace.Meta.synthInstance true in
 set_option profiler true in
 ```
 
+# How an object is represented
+%%%
+tag := "representation-pitfalls"
+%%%
+
+Some mathematical objects have a representation in Mathlib whose details show up in proofs. The number systems and their junk values are treated in {ref "numbers"}[Numbers], finite sets and the different cardinalities in {ref "finite-sets"}[Finite sets and sums]. Four more:
+
+*`Fin n` computes modulo `n`.* Addition on `Fin n` wraps around:
+
+```lean
+example : (2 : Fin 3) + 1 = 0 := rfl
+```
+
+*Vectors.* On `Fin n → ℝ` the norm is the maximum norm. The Euclidean norm lives on `EuclideanSpace ℝ (Fin n)`, a different type with the same elements:
+
+```lean
+example : ‖(![3, -4] : Fin 2 → ℝ)‖ = 4 := by
+  simp [Pi.norm_def, Fin.univ_succ, Finset.sup_insert]
+  norm_num
+example : ‖(WithLp.toLp 2 ![3, -4] :
+    EuclideanSpace ℝ (Fin 2))‖ = 5 := by
+  rw [EuclideanSpace.norm_eq]
+  simp [Fin.sum_univ_two]
+  norm_num
+```
+
+*Polynomials.* `Polynomial.degree` takes values in `WithBot ℕ`, and the zero polynomial has degree `⊥`. `Polynomial.natDegree` takes values in `ℕ` and gives `0` for the zero polynomial, the same as for a nonzero constant; theorems about `natDegree` therefore often assume `p ≠ 0`.
+
+```lean
+example : (0 : Polynomial ℚ).degree = ⊥ :=
+  Polynomial.degree_zero
+example : (0 : Polynomial ℚ).natDegree = 0 :=
+  Polynomial.natDegree_zero
+example : (1 : Polynomial ℚ).natDegree = 0 :=
+  Polynomial.natDegree_one
+```
+
+*Morphisms are structures.* A ring homomorphism `f : ℤ →+* ℚ` is a structure that contains the function and the proofs that it respects `0`, `1`, `+` and `*`. It is applied like a function through a coercion (the class `DFunLike`), and the laws are general theorems such as `map_add` and `map_zero`, which work for every kind of morphism:
+
+```lean
+example (f : ℤ →+* ℚ) (a b : ℤ) :
+    f (a + b) = f a + f b := map_add f a b
+example (f : ℤ →+* ℚ) : f 0 = 0 := map_zero f
+```
+
 # Practical debugging tips
 %%%
 tag := "debugging-tips"

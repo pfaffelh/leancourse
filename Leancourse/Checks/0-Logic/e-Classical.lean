@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) L-e -- Classical logic
 
-*Logic block, week 4. No chapter of its own: the theory is propositions as types (1.4) and the axioms (2.2), both later.*
+*Logic block, week 4. No chapter of its own: the theory is propositions as types (1.4) and the axioms (2.3), both later.*
 
 Up to here every statement was provable *constructively*: the proof
 built the thing it claimed.

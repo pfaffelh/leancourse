@@ -2755,3 +2755,44 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   *Conversion* auf "the next chapter" (steht in den Regeln, jetzt
   1.5); Folie 1-2 und die Nat-Sprechernotizen nannten 1.4 statt der
   Regeln usw.
+
+## 2026-10-30 -- Kapitel 2.1 *Numbers*, 2.2 und 2.3 zusammengelegt
+
+- Neu `2-Mathematics/1-Numbers.lean` (tag `numbers`): wie die
+  Zahlbereiche gebaut sind (ℤ induktiv `ofNat`/`negSucc`, ℚ Struktur
+  mit `den_nz`/`reduced`, ℝ Struktur um den Quotienten, ℂ Struktur,
+  `ℝ≥0` Subtyp, `ℝ≥0∞ = WithTop ℝ≥0 = Option`), Arithmetik in ℕ/ℤ
+  (`(-7)/2 = -4`, `%` nie negativ), *Total functions and junk values*
+  (tag `junk-values`, Tabelle `deriv`/`∑'`/`∫`/`sSup`/`Nat.card`),
+  drei Potenzen (tag `powers`; `x ^ (1 / 2) = 1`, weil `1 / 2 : ℕ`),
+  `ℝ≥0∞`-Arithmetik, Casts (verweist auf `1.6-b`, das unveraendert
+  bleibt). `#eval (1 : ℝ) + 1` scheitert *nicht*, es zeigt
+  `Real.ofCauchy (sorry /- 2, 2, ... -/)`; `decide` scheitert.
+- Teil 2 bleibt bei neun Kapiteln: `1-SetsAndTypes` -> `2-SetsAndTypes`,
+  `2-UniversesAndAxioms` + `3-Logic` -> `3-Foundations.lean` (Titel
+  *Foundations: universes, axioms, well-foundedness*; der alte
+  Logic-Teil ist der Abschnitt `logic-wf` vor *Constructive vs
+  classical logic*, alle Tags unveraendert). 2.4-2.9 und das
+  Filter-Deck unveraendert.
+- 2.2 hat einen Abschnitt *Finite sets and sums* (tag `finite-sets`:
+  `Finset` = Struktur aus `Multiset` (Quotient von `List`) und
+  `nodup`, `Finset.range`, `∑`/`∏`, Induktion mit
+  `Finset.sum_range_succ`, Tabelle der Kardinalitaeten).
+- Anhang *Common pitfalls*, neuer Abschnitt *How an object is
+  represented* (tag `representation-pitfalls`): `Fin n` modulo,
+  Maximumsnorm auf `Fin n → ℝ` gegen `EuclideanSpace` (4 gegen 5 fuer
+  `![3, -4]`), `degree 0 = ⊥` gegen `natDegree 0 = 0`, Morphismen als
+  Strukturen mit `DFunLike`.
+- Blaetter: neu `2.1-a` (`1-a-Numbers`, 22 Aufgaben, Woche 8);
+  `2.1-a/b/c` -> `2.2-a/b/c`, `2.2-a` -> `2.3-a`, `2.3-a` -> `2.3-b`.
+  W8: `2.0-a`, `2.1-a`, `2.2-a`; W9: `2.2-b`, `2.2-c`, `2.3-a`,
+  `2.3-b`. 37 Pflichtblaetter.
+- Ueberschneidung, nicht bereinigt: *Why the kernel has no loops* in
+  2.3 (Rekursoren, strikte Positivitaet, `partial def`) doppelt sich
+  teilweise mit dem neuen Kapitel 1.3.
+- Deck 1-2, Folie 3: die Vier-Schritte-Tabelle hat jetzt Spalten fuer
+  Funktion, induktiven Typ und Struktur (467 px).
+- Kapiteltitel in Teil 1 ohne "Types and terms I/II": 1.2
+  *Functions, inductive types, structures*, 1.4 *Pairs, subtypes,
+  families, quotients*, 1.5 *Rules for building types* (vorher
+  "Types III: the rules"). Tags, Dateinamen und Deck-URLs unveraendert.

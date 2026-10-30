@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # L-g -- Search and automation
 
-*Logic block, week 5. No chapter of its own: the theory is propositions as types (1.4) and the axioms (2.2), both later.*
+*Logic block, week 5. No chapter of its own: the theory is propositions as types (1.4) and the axioms (2.3), both later.*
 
 Everything on sheets a to f can also be done by machine. This sheet
 shows how, and where the limits are.

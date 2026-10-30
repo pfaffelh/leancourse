@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# (witness) 2.2-a -- The axioms of Lean
+# (witness) 2.3-a -- The axioms of Lean
 
-*Notes chapter 2.2, week 9.*
+*Notes chapter 2.3, week 9.*
 -/
 
 /- ## Part 1: Function extensionality -/

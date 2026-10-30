@@ -1,7 +1,7 @@
 import Mathlib
 
 /-
-# (witness) 2.3-a -- Well-foundedness and paradoxes
+# (witness) 2.3-b -- Well-foundedness and paradoxes
 
 *Notes chapter 2.3, week 9.*
 -/

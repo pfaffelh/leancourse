@@ -205,7 +205,7 @@ example (a b : ℝ) : (a + b) ^ 2 = a ^ 2 + 2 * a * b + b ^ 2 := by
 -- `intermediate_value_Icc` with `#leansearch`, read its statement
 -- with `#check`, and use it. It wants `ContinuousOn f (Set.Icc 0 1)`;
 -- `hf.continuousOn` gives that. Its conclusion is about an image
--- `f '' s`, as in chapter 2.1.
+-- `f '' s`, as in chapter 2.2.
 -- #leansearch "a continuous function takes every value in between"
 example (f : ℝ → ℝ) (hf : Continuous f) (h0 : f 0 < 0) (h1 : 0 < f 1) :
     ∃ x, f x = 0 := by

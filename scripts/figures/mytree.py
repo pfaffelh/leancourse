@@ -5,7 +5,7 @@ Draws the term
     .node (fun n => if n = 0 then .node .leaf else .leaf n)
 A node (filled circle) has one subtree for every natural number; the
 edge to the subtree `f n` is labelled `n`. Leaves (squares) carry their
-number. Only the first subtrees are drawn, the dots stand for the rest.
+number and are labelled `leaf n`. Only the first subtrees are drawn, the dots stand for the rest.
 """
 from pathlib import Path
 import matplotlib; matplotlib.use("Agg")
@@ -28,6 +28,7 @@ def leaf(x, y, a):
     ax.add_patch(plt.Rectangle((x - 0.2, y - 0.2), 0.4, 0.4, facecolor="white",
                                edgecolor=INK, lw=1.1, zorder=3))
     ax.text(x, y, str(a), ha="center", va="center", fontsize=12, color=INK, zorder=4)
+    ax.text(x, y - 0.33, f"leaf {a}", ha="center", va="center", fontsize=8, color=MUTED)
 
 def dots(x, y):
     ax.text(x, y, "…", ha="center", va="center", fontsize=16, color=MUTED)
@@ -39,6 +40,7 @@ for n, x in enumerate(xs):
     edge(*root, x, 1.0, str(n))
     if n == 0:
         node(x, 1.0)
+        ax.text(x - 0.3, 1.05, "node", ha="right", va="center", fontsize=11, color=MUTED)
         for k in range(K):
             xk = x - 1.5 + k * 0.8
             edge(x, 1.0, xk, 0.0, str(k))
@@ -48,10 +50,10 @@ for n, x in enumerate(xs):
         leaf(x, 1.0, n)
 dots(xs[-1] + 1.0, 1.0)
 
-ax.text(root[0] + 0.3, root[1] + 0.05, "node f", fontsize=11, color=MUTED, va="center")
-ax.text(4.0, -0.7, ".node (fun n => if n = 0 then .node .leaf else .leaf n)",
+ax.text(root[0] + 0.3, root[1] + 0.05, "node", fontsize=11, color=MUTED, va="center")
+ax.text(4.0, -0.85, ".node (fun n => if n = 0 then .node .leaf else .leaf n)",
         ha="center", va="center", fontsize=10, color="#898781", family="monospace")
-ax.set_xlim(-0.3, 8.2); ax.set_ylim(-0.9, 2.35); ax.set_aspect("equal"); ax.axis("off")
+ax.set_xlim(-0.3, 8.2); ax.set_ylim(-1.05, 2.35); ax.set_aspect("equal"); ax.axis("off")
 out = Path(__file__).resolve().parents[2] / "static" / "figures" / "mytree"
 fig.savefig(f"{out}.png", dpi=200, bbox_inches="tight", facecolor="white")
 fig.savefig(f"{out}.pdf", bbox_inches="tight", facecolor="white"); print("wrote", out)

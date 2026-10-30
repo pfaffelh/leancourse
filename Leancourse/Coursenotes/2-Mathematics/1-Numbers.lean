@@ -16,6 +16,8 @@ htmlSplit := .never
 tag := "numbers"
 %%%
 
+Here are the [slides](slides/2-1-numbers/) for this chapter.
+
 Mathlib has a type for each number system. Each of them is built with one of the type formers of the {ref "lean"}[Lean part], and how it is built explains most of what is surprising about it: why `5 - 7 = 0` in `ℕ`, why `1 / 0 = 0` in `ℝ`, and why a natural number in a real computation carries an arrow `↑`.
 
 # Notation
@@ -60,6 +62,40 @@ tag := "numbers-notation"
 tag := "number-types"
 %%%
 
+Each number type is built with a type former of the {ref "lean"}[Lean part]:
+
+:::table (align := left) +header
+* + type
+  + built as
+  + see
+* + `ℕ`
+  + inductive: `zero`, `succ`
+  + {ref "nat"}[1.1]
+* + `ℤ`
+  + inductive: `ofNat`, `negSucc`
+  + {ref "inductive"}[1.2]
+* + `ℚ`
+  + structure with proof fields
+  + {ref "structures"}[1.2]
+* + `ℝ`
+  + structure around a quotient
+  + {ref "reals-quotient"}[below]
+* + `ℂ`
+  + structure: `re`, `im`
+  + {ref "structures"}[1.2]
+* + `ℝ≥0`
+  + subtype of `ℝ`
+  + {ref "subtypes"}[1.4]
+* + `ℝ≥0∞`
+  + `Option ℝ≥0`
+  + {ref "inductive"}[1.2]
+:::
+
+## The integers and the rationals
+%%%
+number := false
+%%%
+
 `ℕ` is the inductive type with constructors `zero` and `succ` of {ref "nat"}[chapter 1.1]. `ℤ` is an inductive type with two constructors as well: `ofNat n` is the integer `n`, and `negSucc n` is `-(n + 1)`. The shift by one makes every integer have exactly one representation; there is no second zero.
 
 ```lean
@@ -83,7 +119,55 @@ example : Int.negSucc 2 = -3 := rfl
 #eval (6 / 4 : ℚ).den   -- 2
 ```
 
-`ℝ` is a structure with one field, an element of the quotient of the Cauchy sequences of rationals, as described in {ref "reals-quotient"}[Example: the real numbers]. A real number is not a finite object. `#eval` shows the first terms of a Cauchy sequence that represents it, and equality of real numbers is not decidable, so `decide` and `rfl` fail even on `1 + 1 = 2`. Concrete computations with real numbers are proved with `norm_num`.
+## The real numbers
+%%%
+tag := "reals-quotient"
+number := false
+%%%
+
+In analysis, `ℝ` is the completion of `ℚ`: a real number is given by a Cauchy sequence of rationals, and two Cauchy sequences give the same real number if their difference tends to `0`. Mathlib builds `ℝ` in exactly this way, in three steps: a {ref "subtypes"}[subtype], a {ref "quotient-types"}[quotient] and a {ref "structures"}[structure].
+
+*Cauchy sequences: a subtype.* `CauSeq ℚ abs` is `{f : ℕ → ℚ // IsCauSeq abs f}`, a sequence of rationals together with a proof that it is Cauchy for the absolute value `abs`.
+
+```lean
+#check (CauSeq ℚ abs)
+example (f : CauSeq ℚ abs) : ℕ → ℚ := f.1
+```
+
+*Classes of sequences: a quotient.* Two Cauchy sequences are related, `f ≈ g`, if `f - g` tends to `0`. The quotient by this relation is `CauSeq.Completion.Cauchy abs`, and `CauSeq.Completion.mk` is its `Quot.mk`. Related sequences give the same class by `Quotient.sound`, the form of `Quot.sound` for an equivalence relation:
+
+```lean
+example (f g : CauSeq ℚ abs) :
+    f ≈ g ↔ (f - g).LimZero := Iff.rfl
+
+example : CauSeq.Completion.Cauchy (abs : ℚ → ℚ) =
+    Quotient (CauSeq.equiv (abv := (abs : ℚ → ℚ))) := rfl
+
+example (f g : CauSeq ℚ abs) (h : f ≈ g) :
+    CauSeq.Completion.mk f = CauSeq.Completion.mk g :=
+  Quotient.sound h
+```
+
+*The real numbers: a structure.* `ℝ` is a {ref "structures"}[structure] with one field, an element of this quotient. The wrapper makes Lean treat `ℝ` as a type of its own instead of unfolding it to the quotient.
+
+```lean
+#print Real
+-- structure Real : Type
+--   Real.cauchy : CauSeq.Completion.Cauchy abs
+```
+
+*Operations: well-definedness.* Two real numbers are added by adding representative sequences termwise. This is well defined because addition respects the relation: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`. With that proved, `Quot.lift` gives addition on the classes, and its computation rule says that `mk` turns the sum of sequences into the sum of reals:
+
+```lean
+example (f g : CauSeq ℚ abs) :
+    CauSeq.Completion.mk f + CauSeq.Completion.mk g
+      = CauSeq.Completion.mk (f + g) :=
+  CauSeq.Completion.mk_add f g
+```
+
+This equation is the computation step `Quot.lift f h (Quot.mk r a) ⟶ f a`, for an operation with two arguments. Multiplication, the order and the limits of `ℝ` are defined in the same way: on representatives, with a proof that the result does not depend on the choice.
+
+A real number is not a finite object. `#eval` shows the first terms of a Cauchy sequence that represents it, and equality of real numbers is not decidable, so `decide` and `rfl` fail even on `1 + 1 = 2`. Concrete computations with real numbers are proved with `norm_num`.
 
 ```lean
 #eval (1 : ℝ) + 1
@@ -115,6 +199,11 @@ example : reciprocal 2 = 1 / 2 := rfl
 
 A file with many such definitions starts with `noncomputable section` and ends the section with `end`; inside, Lean marks every definition that needs it. Addition and multiplication are computable, so `def addOne (x : ℝ) : ℝ := x + 1` needs no keyword.
 
+## Complex, nonnegative and extended numbers
+%%%
+number := false
+%%%
+
 `ℂ` is a structure with fields `re` and `im`. Two complex numbers are equal when real and imaginary parts are equal, `Complex.ext_iff`.
 
 ```lean
@@ -133,33 +222,6 @@ The nonnegative reals `ℝ≥0` are a {ref "subtypes"}[subtype] of `ℝ`, and `�
 #print WithTop   -- fun α => Option α
 example (x : ℝ≥0) : 0 ≤ (x : ℝ) := x.2
 ```
-
-:::table (align := left) +header
-* + type
-  + built as
-  + see
-* + `ℕ`
-  + inductive: `zero`, `succ`
-  + {ref "nat"}[1.1]
-* + `ℤ`
-  + inductive: `ofNat`, `negSucc`
-  + {ref "inductive"}[1.2]
-* + `ℚ`
-  + structure with proof fields
-  + {ref "structures"}[1.2]
-* + `ℝ`
-  + structure around a quotient
-  + {ref "reals-quotient"}[1.4]
-* + `ℂ`
-  + structure: `re`, `im`
-  + {ref "structures"}[1.2]
-* + `ℝ≥0`
-  + subtype of `ℝ`
-  + {ref "subtypes"}[1.4]
-* + `ℝ≥0∞`
-  + `Option ℝ≥0`
-  + {ref "inductive"}[1.2]
-:::
 
 # Arithmetic in ℕ and ℤ
 %%%

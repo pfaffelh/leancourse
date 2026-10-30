@@ -2885,3 +2885,33 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   [lemma]` auch mit `[…]` bei nicht-kanonischen Instanzen; scheitern
   tut erst `simp only [lemma h]`, weil der Term vor dem Matchen
   elaboriert wird. Kandidat fuer *Common pitfalls*.
+
+## 2026-10-30 (3) -- Decks 1-2 bis 1-4 nach Durchsicht, ℝ nach 2.1, Deck 2-1
+
+- **Deck und Kapitel 1.2**: Beispiele als Definitionen (`RVec n := Fin n → ℝ`
+  als Typ, der von einem Term abhaengt); Befehle sortiert (`def`/`theorem`/
+  `example`, dann `#check`/`#eval`/`#print`), neue Folie *`#print` shows the
+  proof term*; Folie *Function types and Π-types* fuehrt den Begriff ein
+  (`α → β` ist der Π-Typ mit konstantem `β`, `rfl`); `id` aus der Prelude
+  (`Sort u`); `def MyENat : Type := Option ℕ` mit `ℕ∞ = MyENat := rfl`;
+  `structure Fin`/`And` als Quelltext abgedruckt (`intro ::`).
+- **Folien: Lean-Bloecke zeigen ihre Ausgabe als Panel.** Ein `#print`
+  mit langer Ausgabe sprengt die Folie; dort lieber die Definition als
+  ungeprueften Block abdrucken. Kommentare mit der Ausgabe sind doppelt.
+- **Deck und Kapitel 1.3**: *Structural recursion* definiert; *Are all
+  cases covered?* (Muster -> verschachtelte `Nat.casesOn`); *The recursor
+  behind `fib`*: `#print fib` = `Nat.brecOn x fib._f`, `Nat.brecOn` reicht
+  alle kleineren Werte durch (`Nat.below`), von Hand `fibPair` mit
+  `Nat.rec`. Lexikografisch, weil die Ordnung per Instanzsuche aus dem Typ
+  des Masses kommt (`#synth WellFoundedRelation (ℕ × ℕ)` =
+  `Prod.instWellFoundedRelation` = `Prod.lex`). `termination_by?` zeigt
+  bei `logb` das Mass `n`. `Bad`: `app` heisst `unmk`, zwei Folien, das
+  Argument als geprueftes `example` mit `mk`/`unmk` als Hypothesen.
+- **Deck 1-4**: Subtyp-Folie mit `structure Subtype` (zweite Komponente ein
+  Beweis), geteilt; Geschichtsfolie als Zeitleiste (Klasse `timeline`).
+- **ℝ als Quotient steht jetzt in 2.1** (`## The real numbers`, tag
+  `reals-quotient` unveraendert), *How the number types are built* hat drei
+  Unterabschnitte und die Tabelle vorn. 1.4 verweist nur noch dorthin.
+- **Neues Deck `Slides/2-1-Numbers.lean`** (`slides/2-1-numbers/`,
+  namespace `SlidesNumbers`), 14 Folien, in `SlidesMain` und Organization
+  (neue Unterliste *Mathematics*) eingetragen.

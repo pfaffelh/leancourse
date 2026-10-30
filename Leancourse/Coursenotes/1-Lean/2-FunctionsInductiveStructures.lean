@@ -19,7 +19,26 @@ tag := "types"
 
 Here are the [slides](slides/1-2-functions-inductive-structures/) for this chapter.
 
-Lean has the data types every programming language has — `int`, `string`, `float` — and you can define your own, as you will in this course. Throughout, `x : α` means that `x` is a term of type `α`: `false : Bool`, `42 : ℕ`, `f : ℕ → ℝ` for a function from ℕ to ℝ (itself a type), and `0 ≠ 1 : Prop` for the proposition that 0 and 1 differ. Terms and types can depend on variables, e.g. in `∀ (n : ℕ), n < n + 1 : Prop` (the term `n < n + 1` depends on `n : ℕ`) and `f : (n : ℕ) → ZMod n`, a function whose value at `n` lies in ℤ/nℤ (the type `ZMod n` of the value depends on `n : ℕ`).
+Lean has the data types every programming language has — `int`, `string`, `float` — and you can define your own, as you will in this course. Throughout, `x : α` means that `x` is a term of type `α`, and `def name : α := x` gives the term `x` a name ({ref "naming-terms"}[Commands for terms] below):
+
+```lean
+def aBool : Bool := false
+def answer : ℕ := 42
+def square : ℕ → ℕ := fun n => n * n
+def zeroNeOne : Prop := 0 ≠ 1
+```
+
+Here `square` is a function from ℕ to ℕ, and `ℕ → ℕ` is itself a type; `zeroNeOne` is the proposition that 0 and 1 differ. Propositions and types can depend on terms:
+
+```lean
+-- the proposition n < n + 1 depends on n
+def ltSucc : Prop := ∀ n : ℕ, n < n + 1
+-- the type of vectors in ℝⁿ depends on n
+def RVec (n : ℕ) : Type := Fin n → ℝ
+def zeroVec (n : ℕ) : RVec n := fun _ => 0
+```
+
+`Fin n` is the type of the natural numbers less than `n`; its definition is in {ref "structures"}[Structures] below. `zeroVec` is a function whose value at `n` lies in the type `RVec n`, which depends on `n`.
 
 Two words for terms recur throughout, depending on their type: a term `h : P` whose type `P` is a `Prop` is called a *proof* (of `P`), while a term `a : α` whose type `α` is a `Type u` (where `u` is a *universe level*, see {ref "type-universes"}[The universe hierarchy] below) is called *data*. So `42 : ℕ` and `true : Bool` are data, whereas any term of the proposition `0 ≠ 1` is a proof of it.
 
@@ -42,7 +61,7 @@ This chapter describes every way of forming and using a type in the same four st
   + What happens when a term that was just built is used?
 :::
 
-See {ref "four-steps"}[The four steps at a glance] at the end of chapter 1.4 for a table of all type formers in these four steps.
+This chapter treats functions, inductive types and structures. Chapter 1.4 adds pairs and Σ-types `(x : α) × β x`, subtypes `{x : α // P x}`, indexed families and quotients `Quot r`; {ref "four-steps"}[The four steps at a glance] at its end has all type formers in one table.
 
 # Commands for terms
 %%%
@@ -51,19 +70,26 @@ tag := "naming-terms"
 
 Six commands recur in every chapter.
 
-* `#check t` prints the type of the term `t`.
+Three of them make a term known:
+
 * `def name : T := t` gives the name `name` to the term `t`, after checking that `t` has type `T`.
 * `theorem name : P := p` does the same for a proposition `P` and a proof `p` of it. Mathlib also accepts `lemma`, with the same meaning; Lean itself knows only `theorem`.
 * `example : T := t` checks that `t` has type `T`, without giving it a name.
+
+Three of them show something about a term:
+
+* `#check t` prints the type of the term `t`.
 * `#eval t` computes the value of `t` and prints it. It runs compiled code; `rfl` instead asks the kernel to reduce ({ref "defeq"}[Definitional equality]), and for the definitions of this chapter both give the same value.
 * `#print name` prints the definition of `name`.
 
 ```lean
-#check 2 + 2           -- 2 + 2 : ℕ
 def four : ℕ := 2 + 2
 theorem four_eq : four = 4 := rfl
 example : four = 4 := rfl
-#eval four             -- 4
+
+#check four      -- four : ℕ
+#eval four       -- 4
+#print four      -- def four : ℕ := 2 + 2
 ```
 
 The text after `--` is a comment; in the examples it shows what Lean prints.
@@ -128,7 +154,11 @@ There is deliberately no `Type : Type`. A universe that contains itself admits a
 tag := "pi-types"
 %%%
 
-A function from `ℕ` to `ℕ` is a term of the type `ℕ → ℕ`. In Lean the type of the value may depend on the argument; the function type is then called a *dependent function type*, or *Π-type*.
+A function from `ℕ` to `ℕ` is a term of the type `ℕ → ℕ`. In Lean the type of the value may depend on the argument; the function type is then called a *dependent function type*, or *Π-type*. The ordinary function type `α → β` is the Π-type `(x : α) → β` whose `β` does not depend on `x`; Lean treats the two as the same type:
+
+```lean
+example : (ℕ → ℕ) = ((n : ℕ) → ℕ) := rfl
+```
 
 *Formation.* For types `α` and `β`, `α → β` is the type of functions from `α` to `β`. More generally, if `β x` is a type for every `x : α`, then `(x : α) → β x` is the type of functions `f` with `f x : β x` for every `x`.
 
@@ -185,7 +215,11 @@ number := false
 A function built with `fun` needs no name; it can be applied on the spot:
 
 ```lean
+#check (fun x : ℕ ↦ x + 1)
+-- fun x => x + 1 : ℕ → ℕ
 #eval (fun x : ℕ ↦ x + 1) 5       -- 6
+#check (fun x y : ℕ ↦ x * y)
+-- fun x y => x * y : ℕ → ℕ → ℕ
 #eval (fun x y : ℕ ↦ x * y) 3 4   -- 12
 ```
 
@@ -260,6 +294,18 @@ def idStar {α : Type*} (a : α) : α := a
 
 This is why signatures throughout Mathlib read `{α : Type*}`: the same definition then applies whether `α` is small like `ℕ` or large like `Type` itself.
 
+Lean's own identity function is defined in its Prelude as
+
+```
+def id {α : Sort u} (a : α) : α := a
+```
+
+With `Sort u` instead of `Type u` it covers `Prop` as well, so `id h : P` for a proof `h : P`:
+
+```lean
+#check id (rfl : 1 = 1)   -- id rfl : 1 = 1
+```
+
 ## Proofs as arguments
 %%%
 number := false
@@ -323,10 +369,16 @@ example : MyOption ℕ := .some 3
 
 Here `MyOption α` is a type for every type `α`.
 
-Lean's `Option` is declared in the same way, and Mathlib builds on it. `WithTop α` is `Option α` with `none` read as a new largest element `⊤`, and `ℕ∞`, the natural numbers with `∞` (typed `\bN\infty`), is `WithTop ℕ`. So `ℕ∞` is `Option ℕ`, and `rfl` sees it:
+Lean's `Option` is declared in the same way, and Mathlib builds on it. The natural numbers with `∞` are `ℕ` with one new element added, which `Option` does:
 
 ```lean
-example : ℕ∞ = Option ℕ := rfl
+def MyENat : Type := Option ℕ
+```
+
+Here `none` plays the role of `∞`. Mathlib's `ℕ∞` (typed `\bN\infty`) is notation for `ENat`, defined as `WithTop ℕ`, and `WithTop α` is `Option α` with `none` read as a new largest element `⊤` (`#print ENat`, `#print WithTop`). So `ℕ∞` is `MyENat`, and `rfl` sees it:
+
+```lean
+example : ℕ∞ = MyENat := rfl
 example : (⊤ : ℕ∞) = Option.none := rfl
 example : (3 : ℕ∞) = Option.some 3 := rfl
 ```
@@ -343,7 +395,7 @@ inductive MyOr (a b : Prop) : Prop where
 example (P Q : Prop) (hP : P) : MyOr P Q := .inl hP
 ```
 
-Lean's `∨` is `Or`, declared in the same way. It is the disjoint union for propositions: the constructor records which side the proof came from.
+Lean's `∨` is `Or`, declared in the same way. It is the disjoint union for propositions: the constructor records which side the proof came from. Conjunction `∧` has one constructor with two arguments; it is a structure, and comes in {ref "structures"}[Structures] below.
 
 Inductive types are the main mechanism by which new data types enter Lean, and `Mathlib` uses them throughout.
 
@@ -516,8 +568,16 @@ def triple : IntAddMap where
 
 To build a term, both the function and the proof must be supplied. This pattern of bundling data with properties is how Mathlib organizes mathematics: a linear map, a continuous function and a group homomorphism are all structures of this kind.
 
-`Fin n`, the type of the natural numbers less than `n`, is a structure of this kind as well. An element consists of a natural number `val` together with a proof `isLt` that it is less than `n`, and the constructor `Fin.mk` takes both:
-v
+`Fin n`, the type of the natural numbers less than `n`, is a structure of this kind as well. An element consists of a natural number `val` together with a proof `isLt` that it is less than `n`. Lean's Prelude declares
+
+```
+structure Fin (n : ℕ) where
+  val : ℕ
+  isLt : val < n
+```
+
+and the constructor `Fin.mk` takes both fields:
+
 ```lean
 #check @Fin.mk
 -- {n : ℕ} → (val : ℕ) → val < n → Fin n
@@ -550,19 +610,23 @@ Mathlib calls every lemma of the form "equal if the parts are equal" `.ext`: `Fi
 number := false
 %%%
 
-A proof of `P ∧ Q` consists of a proof of `P` and a proof of `Q`. Lean declares `And` as a structure with the two fields `left` and `right`, both proofs:
+A proof of `P ∧ Q` consists of a proof of `P` and a proof of `Q`. Lean's Prelude declares `And` as a structure with the two fields `left` and `right`, both proofs:
+
+```
+structure And (a b : Prop) : Prop where
+  intro ::
+  left : a
+  right : b
+```
+
+The line `intro ::` names the constructor `And.intro` instead of the default `And.mk`.
 
 ```lean
-#print And
--- structure And (a b : Prop) : Prop
---   And.left : a
---   And.right : b
-
 example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q := ⟨hP, hQ⟩
 example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := ⟨h.2, h.1⟩
 ```
 
-`P ∧ Q` is the pair of two proofs, as `α × β` is the pair of two data. The constructor is `And.intro`, the projections are `h.1` and `h.2`, also written `h.left` and `h.right`. Where `∧` is the pair, `∨` from {ref "inductive"}[Inductive types] is the disjoint union.
+`P ∧ Q` is the pair of two proofs, as `α × β` is the pair of two data. The projections are `h.1` and `h.2`, also written `h.left` and `h.right`. Where `∧` is the pair, `∨` from {ref "inductive"}[Inductive types] is the disjoint union.
 
 ## Structures and inductive types
 %%%

@@ -27,6 +27,7 @@ namespace SlidesTypeFormers
 .reveal section .small table, .reveal section table.small { font-size: 0.5em; }
 .reveal section .small table code, .reveal section table.small code { font-size: 0.95em; }
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.6em; }
+.reveal section .timeline p, .reveal section p.timeline { font-size: 0.66em; margin: 0.18em 0; text-align: left; }
 ```
 
 # Pairs, subtypes, families, quotients
@@ -85,17 +86,30 @@ example : Fintype.card
 
 # Subtypes
 
-```lean -panel -stretch
-def BigNat : Type := {n : ℕ // n > 5}
+Like a Σ-type, but the second component is a proof: `P x : Prop`. In Lean's Prelude:
 
-def seven : BigNat := ⟨7, by decide⟩
-#eval seven.val  -- 7
+```
+structure Subtype {α : Sort u} (p : α → Prop) where
+  val : α
+  property : p val
 ```
 
 - _Formation_: `{x : α // P x}`, i.e. `Subtype P`
 - _Construction_: `⟨a, h⟩` with `h : P a`
 - _Use_: `.val`, `.property`
 - _Computation_: `⟨a, h⟩.val ⟶ a`
+
+# Elements of a subtype
+
+```lean -panel -stretch
+def BigNat : Type := {n : ℕ // n > 5}
+
+def seven : BigNat := ⟨7, by decide⟩
+#eval seven.val  -- 7
+
+example (a b : BigNat) (h : a.val = b.val) : a = b :=
+  Subtype.ext h
+```
 
 :::class "key"
 Proof irrelevance: two elements are equal iff their values are (`Subtype.ext`).
@@ -278,7 +292,7 @@ example (P Q : ℕ → Prop) (h : ∃ n, P n ∧ Q n) :
 
 # Quotient types
 
-`Quot r`: the type `α` seen up to a relation `r`. In Mathlib: `ℝ`, `Multiset α`. `ℤ`, `ℚ`, `ZMod n` are defined by normal forms instead.
+`Quot r`: the type `α` seen up to a relation `r`. In Mathlib: `ℝ` (chapter 2.1), `Multiset α`. `ℤ`, `ℚ`, `ZMod n` are defined by normal forms instead.
 
 - _Formation_: `Quot r`
 - _Construction_: `Quot.mk r a`, the class of `a`
@@ -319,51 +333,6 @@ For the remainder, the proof of well-definedness is the relation itself.
 
 :::class "key"
 Mathlib's `ZMod n` is not this quotient: it is `ℤ` for `n = 0` and `Fin n` otherwise, so `#eval` and `decide` work.
-:::
-
-# The real numbers as a quotient
-
-A real number: a Cauchy sequence of rationals; sequences whose difference tends to `0` give the same number.
-
-::::class "small"
-:::table +colHeaders +rowSeps
-*
-  * step
-  * in Mathlib
-  * type former
-*
-  * Cauchy sequences
-  * `CauSeq ℚ abs` = `{f : ℕ → ℚ // IsCauSeq abs f}`
-  * subtype
-*
-  * their classes
-  * `CauSeq.Completion.Cauchy abs`, by `f ≈ g ↔ f - g → 0`
-  * quotient
-*
-  * `ℝ`
-  * `structure Real` with one field `cauchy`
-  * structure
-:::
-::::
-
-```lean -panel -stretch
-example (f g : CauSeq ℚ abs) :
-    f ≈ g ↔ (f - g).LimZero := Iff.rfl
-```
-
-# Adding real numbers
-
-```lean -panel -stretch
-example (f g : CauSeq ℚ abs) :
-    CauSeq.Completion.mk f + CauSeq.Completion.mk g
-      = CauSeq.Completion.mk (f + g) :=
-  CauSeq.Completion.mk_add f g
-```
-
-Add representatives termwise. Well defined: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`; then `Quot.lift` gives `+` on the classes.
-
-:::class "key"
-This equation is the computation rule `Quot.lift f h (Quot.mk r a) ⟶ f a`.
 :::
 
 # The four steps at a glance
@@ -427,28 +396,29 @@ Chapter 1.5 states these steps as the rules of Lean's type theory.
 
 # Some history
 
-Russell's set $`R = \{x : x \notin x\}` broke Frege in 1902. Russell's repair (1908): `x ∈ x` is not a statement at all.
+:::class "timeline"
+*1902* — Russell's set $`R = \{x : x \notin x\}` breaks Frege's _Grundgesetze_.
 
-:::table +colHeaders +rowSeps
-*
-  * system
-  * broken by
-  * repaired by
-*
-  * Frege, _Grundgesetze_
-  * Russell, 1902
-  * types, 1908
-*
-  * Church's lambda calculus, 1932
-  * Kleene, Rosser, 1935
-  * simple types, 1940
-*
-  * Martin-Löf, 1971
-  * Girard
-  * universe hierarchy
+*1908* — Russell's repair: types. `x ∈ x` is not false, it is not a statement.
+
+*1932* — Church's lambda calculus. Kleene and Rosser derive a contradiction (1935).
+
+*1934* — Curry: the types of the combinators are the axioms of propositional logic.
+
+*1940* — Church's repair: the simply typed lambda calculus.
+
+*1967* — de Bruijn's Automath: types that depend on terms.
+
+*1969* — Howard: propositions are types, proofs are terms.
+
+*1971* — Martin-Löf's type theory has `Type : Type`. Girard derives a contradiction (1972); repair: a hierarchy of universes.
+
+*1985* — Coquand, Huet: the Calculus of Constructions. *1990* — Paulin-Mohring: inductive types. Lean's type theory is a variant.
 :::
 
-Curry (1934), Howard (1969): propositions are types, proofs are terms. Then the Calculus of Constructions (1985) and inductive types (1990).
+:::class "key"
+Three times: a system allows self-application, a contradiction follows, types forbid it.
+:::
 
 # Summary
 
@@ -456,4 +426,4 @@ Curry (1934), Howard (1969): propositions are types, proofs are terms. Then the 
 - Type families are functions into a universe; with `inductive`, the constructors fix the index.
 - A proof of `P → Q` is a function; `intro` builds it, `exact` supplies a term.
 - The connectives are these type formers in `Prop`: `∧` a structure, `∨`, `∃`, `False` inductive types.
-- `Quot r`: a type up to a relation, with the axiom `Quot.sound`. ℤ/nℤ by hand; `ℝ`: Cauchy sequences up to null sequences.
+- `Quot r`: a type up to a relation, with the axiom `Quot.sound`. ℤ/nℤ by hand.

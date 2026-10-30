@@ -45,8 +45,11 @@ used without the other.
     two lectures — {ref "typeclasses"}[chapter]
   * [Notation and abbreviations](slides/1-7-notation/) —
     {ref "notation"}[chapter]
-* [Filters in Mathlib](slides/2-6-filters/) — accompanies the
-  {ref "filters"}[chapter on filters].
+* Mathematics:
+  * [Numbers](slides/2-1-numbers/) —
+    {ref "numbers"}[chapter]
+  * [Filters in Mathlib](slides/2-6-filters/) —
+    {ref "filters"}[chapter]
 
 Press `s` in a deck for the speaker notes, `o` for an overview of all
 slides, and `?` for the remaining keys.  Every slide carries a link in

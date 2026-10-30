@@ -8,6 +8,7 @@ import Slides.«1-5-Rules»
 import Slides.«1-6-Typeclasses»
 import Slides.«1-6b-FunctorsMonads»
 import Slides.«1-7-Notation»
+import Slides.«2-1-Numbers»
 import Slides.«2-6-Filters»
 
 open VersoSlides
@@ -108,6 +109,7 @@ def main (args : List String) : IO UInt32 := do
       ("1-6-typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-Typeclasses»)),
       ("1-6b-functors-monads", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6b-FunctorsMonads»)),
       ("1-7-notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-7-Notation»)),
+      ("2-1-numbers",         fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-1-Numbers»)),
       ("2-6-filters",         fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-6-Filters»)) ]
   let mut code : UInt32 := 0
   for (name, run) in decks do

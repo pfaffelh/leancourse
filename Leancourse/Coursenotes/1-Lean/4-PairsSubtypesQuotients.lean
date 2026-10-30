@@ -405,7 +405,7 @@ A term that replaces the `sorry` is a proof of the conjecture.
 tag := "quotient-types"
 %%%
 
-The last way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction ({ref "reals-quotient"}[below]). `Multiset α` (lists up to reordering) is a quotient in Mathlib. ℤ, ℚ and ℤ/nℤ are quotients in mathematics, but Lean defines them through normal forms instead: `Int` is an inductive type with the constructors `ofNat n` and `negSucc n` (for `-(n + 1)`), `Rat` is a structure of a numerator and a denominator with proofs that the fraction is reduced, and `ZMod n` is `Fin n` for `n > 0`.
+The last way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction ({ref "reals-quotient"}[chapter 2.1]). `Multiset α` (lists up to reordering) is a quotient in Mathlib. ℤ, ℚ and ℤ/nℤ are quotients in mathematics, but Lean defines them through normal forms instead: `Int` is an inductive type with the constructors `ofNat n` and `negSucc n` (for `-(n + 1)`), `Rat` is a structure of a numerator and a denominator with proofs that the fraction is reduced, and `ZMod n` is `Fin n` for `n > 0`.
 
 *Formation.* `Quot r` is a type.
 
@@ -476,54 +476,6 @@ def IntMod.toZMod (n : ℕ) : IntMod n → ZMod n :=
 ```
 
 Mathlib itself does not define `ZMod n` as a quotient. It defines it by pattern matching on `n`, as `ℤ` for `n = 0` and as `Fin n` otherwise, which makes it computable: `#eval` and `decide` work on it. `ZMod n` is still isomorphic to the quotient of ℤ by the ideal `nℤ`; see {ref "quotients"}[Quotient structures] in chapter 2.5 for reference.
-
-## Example: the real numbers
-%%%
-tag := "reals-quotient"
-number := false
-%%%
-
-In analysis, `ℝ` is the completion of `ℚ`: a real number is given by a Cauchy sequence of rationals, and two Cauchy sequences give the same real number if their difference tends to `0`. Mathlib builds `ℝ` in exactly this way, in three steps, each a type former of this chapter or of chapter 1.2.
-
-*Cauchy sequences: a subtype.* `CauSeq ℚ abs` is `{f : ℕ → ℚ // IsCauSeq abs f}`, a sequence of rationals together with a proof that it is Cauchy for the absolute value `abs`.
-
-```lean
-#check (CauSeq ℚ abs)
-example (f : CauSeq ℚ abs) : ℕ → ℚ := f.1
-```
-
-*Classes of sequences: a quotient.* Two Cauchy sequences are related, `f ≈ g`, if `f - g` tends to `0`. The quotient by this relation is `CauSeq.Completion.Cauchy abs`, and `CauSeq.Completion.mk` is its `Quot.mk`. Related sequences give the same class by `Quotient.sound`, the form of `Quot.sound` for an equivalence relation:
-
-```lean
-example (f g : CauSeq ℚ abs) :
-    f ≈ g ↔ (f - g).LimZero := Iff.rfl
-
-example : CauSeq.Completion.Cauchy (abs : ℚ → ℚ) =
-    Quotient (CauSeq.equiv (abv := (abs : ℚ → ℚ))) := rfl
-
-example (f g : CauSeq ℚ abs) (h : f ≈ g) :
-    CauSeq.Completion.mk f = CauSeq.Completion.mk g :=
-  Quotient.sound h
-```
-
-*The real numbers: a structure.* `ℝ` is a {ref "structures"}[structure] with one field, an element of this quotient. The wrapper makes Lean treat `ℝ` as a type of its own instead of unfolding it to the quotient.
-
-```lean
-#print Real
--- structure Real : Type
---   Real.cauchy : CauSeq.Completion.Cauchy abs
-```
-
-*Operations: well-definedness.* Two real numbers are added by adding representative sequences termwise. This is well defined because addition respects the relation: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`. With that proved, `Quot.lift` gives addition on the classes, and its computation rule says that `mk` turns the sum of sequences into the sum of reals:
-
-```lean
-example (f g : CauSeq ℚ abs) :
-    CauSeq.Completion.mk f + CauSeq.Completion.mk g
-      = CauSeq.Completion.mk (f + g) :=
-  CauSeq.Completion.mk_add f g
-```
-
-This equation is the computation step `Quot.lift f h (Quot.mk r a) ⟶ f a`, for an operation with two arguments. Multiplication, the order and the limits of `ℝ` are defined in the same way: on representatives, with a proof that the result does not depend on the choice.
 
 # The four steps at a glance
 %%%

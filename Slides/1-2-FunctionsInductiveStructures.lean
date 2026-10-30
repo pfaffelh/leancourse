@@ -38,14 +38,21 @@ In Lean, types can depend on values.
 
 # Every term has a type
 
-`x : α` means: `x` is a term of type `α`.
+`x : α` means: `x` is a term of type `α`. `def name : α := x` gives `x` a name.
 
-- `42 : ℕ`, `f : ℕ → ℝ`, `0 ≠ 1 : Prop`
-- propositions may depend on terms: `∀ n : ℕ, n < n + 1 : Prop`
-- types may depend on terms: `f : (n : ℕ) → (Fin n → ℝ)`, so `f n` is a vector in $`\mathbb{R}^n`
-- `Fin n`: the numbers `i < n`; an element is a pair `⟨i, h⟩` with `h : i < n`
-- `h : P` with `P : Prop` is a _proof_
-- `a : α` with `α : Type u` is _data_
+```lean -panel -stretch
+def answer : ℕ := 42
+def square : ℕ → ℕ := fun n => n * n
+def zeroNeOne : Prop := 0 ≠ 1
+-- a proposition that depends on n
+def ltSucc : Prop := ∀ n : ℕ, n < n + 1
+-- a type that depends on n: vectors in ℝⁿ
+def RVec (n : ℕ) : Type := Fin n → ℝ
+def zeroVec (n : ℕ) : RVec n := fun _ => 0
+```
+
+- `Fin n`: the numbers `i < n`; its definition is on the slide on `Fin n` and `∧`
+- `h : P` with `P : Prop` is a _proof_; `a : α` with `α : Type u` is _data_
 
 :::class "key"
 A type is itself a term, so it has a type as well.
@@ -88,6 +95,8 @@ A type is itself a term, so it has a type as well.
 :::
 ::::
 
+More type formers in chapter 1.4: pairs and Σ-types `(x : α) × β x`, subtypes `{x : α // P x}`, indexed families, quotients `Quot r`.
+
 :::class "key"
 Types and terms come together. Chapter 1.5 turns the four steps into rules.
 :::
@@ -95,18 +104,33 @@ Types and terms come together. Chapter 1.5 turns the four steps into rules.
 # Commands for terms
 
 ```lean -panel -stretch
-#check 2 + 2           -- 2 + 2 : ℕ
-def four : ℕ := 2 + 2
-theorem four_eq : four = 4 := rfl
-example : four = 4 := rfl
-#eval four             -- 4
+def four : ℕ := 2 + 2               -- names a term
+theorem four_eq : four = 4 := rfl   -- names a proof
+example : four = 4 := rfl           -- checks, no name
+#check four    -- the type
+#eval four     -- the value
+#print four    -- the definition
 ```
 
-- `#check t`: the type of `t`
-- `def name : T := t`: names `t`
-- `theorem name : P := p`: names a proof; Mathlib also accepts `lemma`
-- `example : T := t`: checks `t`, no name
-- `#eval t`: computes the value
+Mathlib also accepts `lemma` for `theorem`.
+
+# `#print` shows the proof term
+
+```lean -panel -stretch
+theorem swap_of_and (P Q : Prop) (h : P ∧ Q) :
+    Q ∧ P := by
+  constructor
+  · exact h.2
+  · exact h.1
+
+#print swap_of_and
+-- theorem swap_of_and : ∀ (P Q : Prop), P ∧ Q → Q ∧ P :=
+-- fun P Q h => ⟨h.right, h.left⟩
+```
+
+:::class "key"
+Tactics build a term.
+:::
 
 # The universe hierarchy
 
@@ -139,19 +163,17 @@ One rule: `Sort u : Sort (u + 1)`. So `Prop : Type`.
 
 `{α : Type*}` in a signature: `α` lies in some universe `Type u`, and Lean introduces the variable `u` itself.
 
-:::class "key"
-There is no `Type : Type`: it would give Girard's paradox, a proof of `False`.
-:::
+# Function types and Π-types
 
-# Function types
+_Π-type_ `(x : α) → β x`: the type of the value depends on `x`. `α → β` is the case where it does not.
 
-- _Formation_: `α → β`, or `(x : α) → β x`
+- _Formation_: `(x : α) → β x`, or `α → β`
 - _Construction_: `fun x => e`, also `fun x ↦ e`
 - _Use_: application `f a`, no parentheses
 - _Computation_: `(fun x => e) a` reduces to `e[x := a]` (β)
 
 ```lean -panel -stretch
-#check (fun n => n + 1 : ℕ → ℕ)
+example : (ℕ → ℕ) = ((n : ℕ) → ℕ) := rfl
 #eval (fun n : ℕ => n + 1) 4        -- 5
 ```
 
@@ -172,7 +194,9 @@ Functions are _curried_: `ℕ → ℕ → ℕ` is `ℕ → (ℕ → ℕ)`.
 # Anonymous functions
 
 ```lean -panel -stretch
+#check (fun x : ℕ ↦ x + 1)        -- ℕ → ℕ
 #eval (fun x : ℕ ↦ x + 1) 5       -- 6
+#check (fun x y : ℕ ↦ x * y)      -- ℕ → ℕ → ℕ
 #eval (fun x y : ℕ ↦ x * y) 3 4   -- 12
 ```
 
@@ -188,20 +212,11 @@ example : ∀ n : ℕ, n < n + 1 :=
 
 -- ZMod n is ℤ/nℤ
 def sevenMod : (n : ℕ) → ZMod n := fun _ => 7
+#check sevenMod 5   -- sevenMod 5 : ZMod 5
 #eval sevenMod 5    -- 2
 ```
 
-:::table +colHeaders
-*
-  * `β x` is
-  * we write
-*
-  * data
-  * `(x : α) → β x`, or `α → β`
-*
-  * a proposition
-  * `∀ x : α, β x`
-:::
+For data we write `(x : α) → β x`, for a proposition `∀ x : α, β x`.
 
 :::class "key"
 `f : (x : α) → β x` picks `f x ∈ β x` for every `x`: an element of $`\prod_x \beta(x)`.
@@ -212,16 +227,17 @@ def sevenMod : (n : ℕ) → ZMod n := fun _ => 7
 ```lean -panel -stretch
 def myId (α : Type) (a : α) : α := a
 #check myId ℕ 42          -- ℕ
-
 def myId' {α : Type} (a : α) : α := a
 #check myId' 42           -- ℕ, inferred
 #check @myId'             -- {α : Type} → α → α
+```
 
-def idStar {α : Type*} (a : α) : α := a
+```
+def id {α : Sort u} (a : α) : α := a   -- Lean's Prelude
 ```
 
 :::class "key"
-Braces make an argument implicit; `@` shows it again. `Type*`: any universe.
+Braces: implicit argument; `@` shows it. `Sort u`: every universe, `Prop` included.
 :::
 
 # Proofs as arguments
@@ -267,12 +283,18 @@ example : MyOption ℕ := .some 3
 # `ℕ∞` is `Option ℕ`
 
 ```lean -panel -stretch
-example : ℕ∞ = Option ℕ := rfl
+def MyENat : Type := Option ℕ
+```
+
+Mathlib's `ℕ∞` is notation for `ENat`, which is `WithTop ℕ`, which is `Option ℕ`:
+
+```lean -panel -stretch
+example : ℕ∞ = MyENat := rfl
 example : (⊤ : ℕ∞) = Option.none := rfl
 example : (3 : ℕ∞) = Option.some 3 := rfl
 ```
 
-`WithTop α` is `Option α` with `none` read as a new largest element `⊤`; `ℕ∞` is `WithTop ℕ`.
+`WithTop α` is `Option α` with `none` read as a new largest element `⊤`.
 
 :::class "key"
 Measures take values in `ℝ≥0∞ = WithTop ℝ≥0`, built the same way.
@@ -289,6 +311,10 @@ example (P Q : Prop) (hP : P) : MyOr P Q := .inl hP
 ```
 
 Two constructors: a proof of `P ∨ Q` is a proof of `P` or one of `Q`, marked by the constructor. Lean's `∨` is `Or`, declared in this way.
+
+:::class "key"
+`∧` has one constructor with two fields: a structure, coming next.
+:::
 
 # Structures
 
@@ -359,17 +385,26 @@ A field may be a proof. Linear maps, continuous functions, homomorphisms: all of
 
 # `Fin n` and `∧` are structures
 
-```lean -panel -stretch
-#check @Fin.mk
-example : Fin 3 := ⟨2, by decide⟩
-#check @Fin.last  -- (n : ℕ) → Fin (n + 1)
+In Lean's Prelude:
 
+```
+structure Fin (n : ℕ) where
+  val : ℕ
+  isLt : val < n
+
+structure And (a b : Prop) : Prop where
+  intro ::
+  left : a
+  right : b
+```
+
+```lean -panel -stretch
+example : Fin 3 := ⟨2, by decide⟩
 example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
   ⟨h.2, h.1⟩
 ```
 
-- `Fin n`: a number `val` and a proof `isLt : val < n`
-- `P ∧ Q`: two proofs, fields `left` and `right`; `h.1`, `h.2`
+`intro ::` names the constructor `And.intro` instead of `And.mk`; `h.1`, `h.2` are `h.left`, `h.right`.
 
 # Structures and inductive types
 

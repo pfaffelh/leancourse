@@ -97,13 +97,15 @@ def length' {α : Type*} : List α → ℕ
   | []      => 0
   | _ :: xs => 1 + length' xs
 
-example (n : ℕ) : ℕ :=
-  match n with
-  | 0     => 42
-  | _ + 1 => 0
+def isEmpty' {α : Type*} (l : List α) : Bool :=
+  match l with
+  | []     => true
+  | _ :: _ => false
 ```
 
-# Recursion
+# Structural recursion
+
+A recursive call is _structural_ if its argument is a part of the input: an argument of the constructor that built it.
 
 ```lean -panel -stretch
 def fib : ℕ → ℕ
@@ -114,10 +116,46 @@ def fib : ℕ → ℕ
 example : fib 3 = 2 := rfl
 ```
 
-- `fib (n + 2)` calls `fib n` and `fib (n + 1)`: smaller arguments. This is *structural recursion*.
-- Lean checks this and translates `fib` into the recursor `Nat.rec` of 1.1. So `fib` computes by ι:
-  `fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)`.
+- `n + 2` is `succ (succ n)`; its parts are `succ n = n + 1` and `n`. Both calls are structural.
+- `fib` computes by ι: `fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)`.
 - `def loop (n : ℕ) : ℕ := loop n + 1` is rejected. It would give `loop 0 = loop 0 + 1`; subtract `loop 0`: `0 = 1`.
+
+# Are all cases covered?
+
+`0` is `zero`, `1` is `succ zero`, `n + 2` is `succ (succ n)`. Lean turns the three patterns into two nested case splits:
+
+```
+fun x => Nat.casesOn x  (case 0)
+  (fun m => Nat.casesOn m  (case 1)
+    (fun n => (case n + 2)))
+```
+
+Every leaf of this tree must be reached by a pattern. Without the line for `1`:
+
+```lean +error -panel -stretch
+def fib' : ℕ → ℕ
+  | 0 => 0
+  | n + 2 => fib' n + fib' (n + 1)
+```
+
+:::class "key"
+Lean reports "Missing cases: (Nat.succ Nat.zero)".
+:::
+
+# The recursor behind `fib`
+
+```lean -panel -stretch
+#print fib    -- fun x => Nat.brecOn x fib._f
+```
+
+`fib (n + 2)` needs two earlier values, `Nat.rec` hands over only one. `Nat.brecOn` is built from `Nat.rec` and hands over the values at _all_ smaller arguments. By hand, with `Nat.rec`: carry the pair `(fib n, fib (n + 1))`.
+
+```lean -panel -stretch
+def fibPair (n : ℕ) : ℕ × ℕ :=
+  Nat.rec (0, 1) (fun _ p => (p.2, p.1 + p.2)) n
+
+example : fibPair 10 = (55, 89) := rfl
+```
 
 # Termination by a measure
 
@@ -132,14 +170,25 @@ termination_by m n => (m + n, m)
 decreasing_by all_goals (rw [Prod.lex_def]; omega)
 ```
 
-Lean finds the measure `n`, but not the proof:
+The order comes from the type of the measure, by instance search:
+
+```lean -panel -stretch
+#synth WellFoundedRelation (ℕ × ℕ)
+-- Prod.instWellFoundedRelation, defined as Prod.lex:
+-- (a, b) < (c, d) iff a < c, or a = c and b < d
+```
+
+# Lean finds the measure
 
 ```lean -panel -stretch
 def logb (b n : ℕ) : ℕ :=
   if h : 2 ≤ b ∧ b ≤ n then 1 + logb b (n / b)
   else 0
+termination_by?
 decreasing_by exact Nat.div_lt_self (by omega) h.1
 ```
+
+`termination_by?` prints the measure Lean found: `n`. On `ℕ` the order is `<`. Lean cannot prove `n / b < n` by itself; `decreasing_by` gives the proof.
 
 # Proving things about recursive definitions
 
@@ -183,13 +232,36 @@ inductive MyTree where
 
 ```
 inductive Bad where
-  | mk : (Bad → False) → Bad   -- rejected
+  | mk : (Bad → False) → Bad
+-- error: (kernel) arg #1 of 'Bad.mk' has a non positive
+--        occurrence of the datatypes being declared
 ```
 
-The argument of `node` has type `ℕ → MyTree`: `MyTree` right of `→`. The argument of `Bad.mk` has type `Bad → False`: `Bad` left of `→`. With `Bad`, `neg b := app b b` gives `neg (Bad.mk neg) : False`.
+`node` takes `ℕ → MyTree`: `MyTree` right of `→`, accepted. `Bad.mk` takes `Bad → False`: `Bad` left of `→`, rejected.
 
 :::class "key"
 In the argument types of a constructor, the type may occur only to the right of an arrow.
+:::
+
+# Why `Bad` must be rejected
+
+Suppose `Bad` were accepted, with `mk : (Bad → False) → Bad`.
+
+1. Every `b : Bad` is `mk f`. Pattern matching gives `unmk : Bad → (Bad → False)`, `unmk (mk f) = f`. So `Bad ↔ ¬Bad`.
+2. `neg b := unmk b b`: apply the function stored in `b` to `b` itself. `neg : Bad → False`.
+3. `mk neg : Bad`, so `neg (mk neg) : False`.
+
+Lean checks the argument, with `mk` and `unmk` as hypotheses:
+
+```lean -panel -stretch
+example (Bad : Type) (mk : (Bad → False) → Bad)
+    (unmk : Bad → (Bad → False)) : False :=
+  let neg : Bad → False := fun b => unmk b b
+  neg (mk neg)
+```
+
+:::class "key"
+It loops: `neg (mk neg) ⟶ unmk (mk neg) (mk neg) ⟶ neg (mk neg)`.
 :::
 
 # Summary

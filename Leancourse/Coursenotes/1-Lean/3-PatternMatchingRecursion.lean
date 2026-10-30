@@ -83,10 +83,10 @@ def length' {α : Type*} : List α → ℕ
 The same syntax can be used inside a term with `match`:
 
 ```lean
-example (n : ℕ) : ℕ :=
-  match n with
-  | 0     => 42
-  | _ + 1 => 0
+def isEmpty' {α : Type*} (l : List α) : Bool :=
+  match l with
+  | []     => true
+  | _ :: _ => false
 ```
 
 # Recursion and termination
@@ -105,7 +105,15 @@ def fib : ℕ → ℕ
 #eval fib 10    -- 55
 ```
 
-Lean checks that the three patterns cover every natural number. The numerals in the patterns stand for constructors: `0` is `Nat.zero`, `1` is `Nat.succ Nat.zero`, and `n + 2` is `Nat.succ (Nat.succ n)`. Lean splits the argument by its constructor, `zero` or `succ m`, and splits `m` again where a pattern requires it. Every branch of this case distinction must be reached by one of the patterns. With the line for `1` missing, the case `Nat.succ Nat.zero` is reached by none:
+Lean checks that the three patterns cover every natural number. The numerals in the patterns stand for constructors: `0` is `Nat.zero`, `1` is `Nat.succ Nat.zero`, and `n + 2` is `Nat.succ (Nat.succ n)`. Lean splits the argument by its constructor, `zero` or `succ m`, and splits `m` again where a pattern requires it. For `fib` this gives two nested case splits, with `Nat.casesOn`, the recursor without recursive values:
+
+```
+fun x => Nat.casesOn x  (case 0)
+  (fun m => Nat.casesOn m  (case 1)
+    (fun n => (case n + 2)))
+```
+
+Every leaf of this tree must be reached by one of the patterns. With the line for `1` missing, the case `Nat.succ Nat.zero` is reached by none:
 
 ```lean +error
 def fib' : ℕ → ℕ
@@ -120,11 +128,27 @@ Lean only accepts a recursive definition once it is convinced the recursion *ter
 * *Structural recursion.* Every recursive call is on a part of the input, that is, on an argument of the constructor that built it. Lean translates the definition into the recursor of the type (more precisely into `brecOn`, a packaging of the recursor), and there is nothing to prove.
 * *Well-founded recursion.* Every recursive call makes a *measure* smaller, a natural number computed from the arguments. Lean translates the definition into `WellFounded.fix` and needs a proof that the measure decreases.
 
-`factorial`, `length'` and `fib` are structural. In `fib (n + 2)` the calls are `fib n` and `fib (n + 1)`, both on parts of `n + 2`. So `fib` is translated into the recursor `Nat.rec` of {ref "nat-intro"}[chapter 1.1], it computes by ι, and `rfl` checks values:
+`factorial`, `length'` and `fib` are structural. In `fib (n + 2)` the calls are `fib n` and `fib (n + 1)`, both on parts of `n + 2 = succ (succ n)`. So `fib` is translated into the recursor, it computes by ι, and `rfl` checks values:
 
 ```lean
 -- fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)
 example : fib 3 = 2 := rfl
+```
+
+The recursor `Nat.rec` of {ref "nat-intro"}[chapter 1.1] hands the step only the value at `n`, but `fib (n + 2)` needs the values at `n` and at `n + 1`. Lean therefore uses `Nat.brecOn`, which is built from `Nat.rec` and hands the step the values at *all* smaller arguments:
+
+```lean
+#print fib
+-- def fib : ℕ → ℕ := fun x => Nat.brecOn x fib._f
+```
+
+By hand, with `Nat.rec` alone, one carries the pair `(fib n, fib (n + 1))` along:
+
+```lean
+def fibPair (n : ℕ) : ℕ × ℕ :=
+  Nat.rec (0, 1) (fun _ p => (p.2, p.1 + p.2)) n
+
+example : fibPair 10 = (55, 89) := rfl
 ```
 
 Recursion on several parts works the same way. In a binary tree whose nodes carry a natural number, every node has two subtrees, and the height recurses on both. A tree is either empty, `leaf`, or a node `node l a r` that carries the number `a` and has a *left subtree* `l` and a *right subtree* `r`, both again trees. The example below is the tree with root `3`, an empty left subtree, and as right subtree a single node carrying `4`:
@@ -193,12 +217,20 @@ decreasing_by all_goals (rw [Prod.lex_def]; omega)
 
 Here Lean needs help. No argument decreases in both recursive calls, and the sum `m + n` stays the same in the third line. Without the last two lines of the definition Lean reports "Could not find a decreasing measure". The measure is a pair: first the diagonal `m + n`, then the position `m` on it. Pairs are compared *lexicographically*: `(a, b)` is smaller than `(c, d)` if `a < c`, or if `a = c` and `b < d`. `termination_by` names the measure; `m n =>` names the two arguments, which the patterns leave unnamed. `decreasing_by` proves that the measure decreases. There is one goal for each recursive call, and `all_goals` applies the same tactics to both: `rw [Prod.lex_def]` replaces the lexicographic order by its definition, and `omega`, a tactic that proves linear arithmetic over `ℕ` and `ℤ`, finishes.
 
-Sometimes Lean finds the measure but cannot prove that it decreases. For the logarithm to base `b` it has to show `n / b < n`. For `b = 2` this is linear arithmetic, which Lean does by itself; for a variable `b` it is not, and Lean stops with this goal. `decreasing_by` supplies the proof, here with the library theorem `Nat.div_lt_self : 0 < n → 1 < k → n / k < n`. The proof needs the condition of the `if` by name, so the `if` is *dependent*: in `if h : c then a else b`, the proof `h : c` is available in `a`, and a proof of `¬c` in `b`. Here `h.1 : 2 ≤ b` gives `1 < b`, and `0 < n` follows from `h` by `omega`:
+That pairs are compared lexicographically is not written in the definition. Lean takes the order from the type of the measure, by instance search for the class `WellFoundedRelation` (typeclasses are the subject of {ref "typeclasses"}[chapter 1.6]). On `ℕ` the order is `<`; on a product it is `Prod.lex`, built from the orders on the two factors:
+
+```lean
+#synth WellFoundedRelation (ℕ × ℕ)
+-- Prod.instWellFoundedRelation, defined as Prod.lex
+```
+
+Sometimes Lean finds the measure but cannot prove that it decreases. Which measure it found, `termination_by?` prints; for the logarithm to base `b` below it is `termination_by n`. Lean then has to show `n / b < n`. For `b = 2` this is linear arithmetic, which Lean does by itself; for a variable `b` it is not, and Lean stops with this goal. `decreasing_by` supplies the proof, here with the library theorem `Nat.div_lt_self : 0 < n → 1 < k → n / k < n`. The proof needs the condition of the `if` by name, so the `if` is *dependent*: in `if h : c then a else b`, the proof `h : c` is available in `a`, and a proof of `¬c` in `b`. Here `h.1 : 2 ≤ b` gives `1 < b`, and `0 < n` follows from `h` by `omega`:
 
 ```lean
 def logb (b n : ℕ) : ℕ :=
   if h : 2 ≤ b ∧ b ≤ n then 1 + logb b (n / b)
   else 0
+termination_by n
 decreasing_by exact Nat.div_lt_self (by omega) h.1
 
 #eval logb 10 1000   -- 3
@@ -337,11 +369,20 @@ inductive Bad where
 --        occurrence of the datatypes being declared
 ```
 
-The rejection is not pedantry: were `Bad` allowed, one could prove `False`. Project the stored function out of a `b : Bad` by pattern matching and apply it to `b` itself,
+The rejection is not pedantry: were `Bad` allowed, one could prove `False`. Every `b : Bad` has the form `Bad.mk f`, so pattern matching gives a function `unmk` that undoes `mk`: it takes `Bad.mk f` apart and returns `f`. Such a function exists for every type with a single constructor; it is just a `match`, and `match` comes with every inductive type. So nothing can be forbidden after the fact, only the declaration itself. Apply the stored function to `b` itself:
 
 ```
-def app : Bad → (Bad → False) | .mk f => f
-def neg (b : Bad) : False := app b b
+def unmk : Bad → (Bad → False) | .mk f => f
+def neg (b : Bad) : False := unmk b b
 ```
 
-so `neg : Bad → False`. Then `Bad.mk neg : Bad`, and `neg (Bad.mk neg) : False` is a closed proof of `False`; it even loops, `neg (Bad.mk neg) ⟶ neg (Bad.mk neg)`. Strict positivity outlaws exactly the negative occurrence that ties this self-applying knot, the same concern that rules out `Type : Type`. (That positivity is also *sufficient* for consistency is a deep metatheorem, not something Lean proves about itself.)
+so `neg : Bad → False`. Then `Bad.mk neg : Bad`, and `neg (Bad.mk neg) : False` is a closed proof of `False`; it even loops, `neg (Bad.mk neg) ⟶ unmk (Bad.mk neg) (Bad.mk neg) ⟶ neg (Bad.mk neg)`. Read as logic: `mk` and `unmk` together say `Bad ↔ ¬Bad`, and the two definitions above are the propositional proof that `P ↔ ¬P` implies `False`. Lean checks the argument once `mk` and `unmk` are given as hypotheses instead of being declared:
+
+```lean
+example (Bad : Type) (mk : (Bad → False) → Bad)
+    (unmk : Bad → (Bad → False)) : False :=
+  let neg : Bad → False := fun b => unmk b b
+  neg (mk neg)
+```
+
+Strict positivity outlaws exactly the negative occurrence that ties this self-applying knot, the same concern that rules out `Type : Type`. (That positivity is also *sufficient* for consistency is a deep metatheorem, not something Lean proves about itself.)

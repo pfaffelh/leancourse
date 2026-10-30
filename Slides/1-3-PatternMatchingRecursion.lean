@@ -28,7 +28,7 @@ namespace SlidesTypes
 .reveal section .math.display { font-size: 0.7em; }
 .reveal section .small table, .reveal section table.small { font-size: 0.52em; }
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.8em; }
-.reveal section img.tree { height: 190px; margin: 0.2em auto; }
+.reveal section img.tree { height: 185px; margin: 0 auto; }
 ```
 
 # Pattern matching and recursion
@@ -225,30 +225,30 @@ Read as a proof, `motive tail` is the induction hypothesis.
 
 # An infinitely branching tree
 
-A tree in which a node has one subtree for every natural number.
+`MyTree` is a type; its elements are trees. Every path ends in a leaf.
 
 ```lean -panel -stretch
 inductive MyTree where
-  | leaf : ℕ → MyTree
-  | node : (ℕ → MyTree) → MyTree
+  | leaf (a : ℕ) : MyTree
+  | node (f : ℕ → MyTree) : MyTree
 ```
 
 {image "../static/figures/mytree.png" (class := "tree")}[The tree .node (fun n => if n = 0 then .node .leaf else .leaf n): a root node with subtrees labelled 0, 1, 2, 3, and so on; subtree 0 is a node whose subtrees are the leaves 0, 1, 2, 3, ...; subtrees 1, 2, 3 are the leaves 1, 2, 3]
 
-- `leaf a`: a single leaf, carrying the number `a`; `leaf 7` is a tree.
-- `node f`: a node with the subtrees `f 0`, `f 1`, `f 2`, …
-- In `ℕ → MyTree`, the argument type of `node`, `MyTree` stands _right_ of `→`. Accepted.
+- `leaf a`: the tree that is a single leaf, carrying the number `a`.
+- `node f`: the tree whose root has the subtrees `f 0`, `f 1`, `f 2`, …
+- In the type `ℕ → MyTree` of `f`, `MyTree` stands _right_ of `→`. Accepted.
 
 # A negative occurrence
 
 ```
 inductive Bad where
-  | mk : (Bad → False) → Bad
+  | mk (f : Bad → False) : Bad
 -- error: (kernel) arg #1 of 'Bad.mk' has a non positive
 --        occurrence of the datatypes being declared
 ```
 
-Strict positivity: in argument types of constructors, the type occurs only _right_ of `→`. In `Bad → False`, `Bad` stands _left_ of `→`.
+Strict positivity: in argument types of constructors, the type occurs only _right_ of `→`. In the type `Bad → False` of `f`, `Bad` stands _left_ of `→`.
 
 Suppose Lean accepted it. Every `b : Bad` is `mk f` for some `f : Bad → False`, so pattern matching takes `f` out again:
 

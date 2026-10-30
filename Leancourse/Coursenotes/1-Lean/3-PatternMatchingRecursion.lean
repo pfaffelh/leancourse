@@ -344,33 +344,48 @@ The constructors of `Colour` have no arguments, so its cases are plain values an
 tag := "positivity-rule"
 %%%
 
-Not every `inductive` declaration is accepted. A constructor may mention the type being defined, but only *positively*. The *arrow* here is the `→` of a function type: in `α → β` the type `α` of the inputs stands to the left of the arrow, the type `β` of the values to the right. Strictly positive means that in the type of an argument of a constructor, the type being defined never stands to the left of an arrow. The type of the constructor itself does not count: every constructor of a type `T` ends in `→ T`, and only the arguments before that last arrow are checked. An *infinitely-branching* tree, where a `node` carries one subtree for each natural number, is fine, because the argument of `node` has type `ℕ → MyTree`, and there `MyTree` stands to the *right* of `→`:
+Not every `inductive` declaration is accepted. A constructor may mention the type being defined, but only *positively*. The *arrow* here is the `→` of a function type: in `α → β` the type `α` of the inputs stands to the left of the arrow, the type `β` of the values to the right. Strictly positive means that in the type of an argument of a constructor, the type being defined never stands to the left of an arrow. The type of the constructor itself does not count: every constructor of a type `T` ends in `→ T`, and only the arguments before that last arrow are checked. An example that is accepted is a type of infinitely branching trees:
 
 ```lean
 inductive MyTree where
-  | leaf : ℕ → MyTree              -- a leaf holds a value
-  | node : (ℕ → MyTree) → MyTree   -- positive occurrence
+  | leaf (a : ℕ) : MyTree
+  | node (f : ℕ → MyTree) : MyTree
+```
 
--- leaves now carry data, and trees can be built:
+`MyTree` is a type, and each of its elements is a tree. The constructors say what stands at the root. `leaf a` is the tree that consists of a single leaf, carrying the number `a`. `node f` is the tree whose root is a node with one subtree `f n` for every `n : ℕ`. Each `f n` is again a whole tree; where it is `leaf n`, it is a leaf of the big tree. The argument `f` of `node` has type `ℕ → MyTree`, and there `MyTree` stands to the *right* of `→`, so the declaration is accepted.
+
+```lean
 example : MyTree := .leaf 7
 example : MyTree := .node (fun n => .leaf n)
 example : MyTree :=
   .node (fun n => if n = 0 then .node .leaf else .leaf n)
 ```
 
-:::figure "The last tree above. Circles are nodes, squares are leaves with their number; the edge to the subtree f n is labelled n."
+:::figure "One element of MyTree, the last tree above. Circles are nodes, squares are leaves; the edge to the subtree f n is labelled n."
 ![A root node with edges labelled 0, 1, 2, 3 and dots. Edge 0 leads to a node whose edges 0, 1, 2, 3 lead to the leaves 0, 1, 2, 3; edges 1, 2, 3 lead to the leaves 1, 2, 3.](/static/figures/mytree.png)
 :::
 
-The `leaf` case is what gets the type off the ground. Positivity constrains only *where* `MyTree` may occur, not whether the type has any elements: drop `leaf`, and the declaration is *still accepted*, but no closed `MyTree` can ever be built — every `node` already demands a whole family `ℕ → MyTree` of subtrees, with nothing to start from, so the type is *empty* (like `Empty`; one can even prove `MyTree → False`). With `leaf` present you build upward — `leaf 7`, then `node (fun n => leaf n)`, then trees over those. Note that `leaf` here *carries* a `ℕ`, so different leaves are genuinely different; a bare `leaf : MyTree` would give a single, featureless leaf, indistinguishable from every other.
+Every tree has a root, and every path from the root downwards ends in a leaf after finitely many steps: an element of an inductive type is built by constructors, from the bottom up. A tree that goes on downwards forever is not an element of `MyTree`. This is what makes structural recursion work, for instance for the function that descends into the subtree `f 0` until it meets a leaf. Only the width is infinite. The trees can be built in stages: first all `leaf a`, then all `node f` whose subtrees are leaves, then all `node f` whose subtrees come from the first two stages, and so on. The finite stages do not exhaust `MyTree`. The depth can be unbounded: in `MyTree.unbounded` the path through the subtree `n` has length `n + 1`, so every path ends, but there is no largest depth. This tree uses subtrees from every finite stage and lies on none of them, and a height with values in `ℕ` cannot be defined.
 
-Because `node` takes a *function* `ℕ → MyTree`, every node has one child per natural number — it branches *infinitely*. It is not that *every* `MyTree` is infinite: a leaf is finite (`leaf 7` is a complete tree), so only trees that actually use `node` are. The infinite branching comes from the function-typed argument. A finitely-branching tree would be `node : MyTree → MyTree → MyTree`, where `MyTree` occurs directly rather than inside a function, so the right-of-`→` case would not arise.
+```lean
+def MyTree.leftmost : MyTree → ℕ
+  | .leaf a => a
+  | .node f => (f 0).leftmost
 
-But a constructor that stores a *function out of* the type is rejected. The argument of `Bad.mk` has type `Bad → False`, and there `Bad` stands to the *left* of `→`:
+def MyTree.chain : ℕ → MyTree
+  | 0 => .leaf 0
+  | n + 1 => .node (fun _ => MyTree.chain n)
+
+def MyTree.unbounded : MyTree := .node MyTree.chain
+```
+
+The `leaf` case is what gets the type off the ground. Positivity constrains only *where* `MyTree` may occur, not whether the type has any elements: drop `leaf`, and the declaration is still accepted, but no tree can ever be built, because every `node` already demands a whole family `ℕ → MyTree` of subtrees. The type is then empty, like `Empty`. A finitely branching tree would be `node (l r : MyTree) : MyTree`, where `MyTree` occurs directly rather than inside a function.
+
+But a constructor that stores a *function out of* the type is rejected. The argument `f` of `Bad.mk` has type `Bad → False`, and there `Bad` stands to the *left* of `→`:
 
 ```
 inductive Bad where
-  | mk : (Bad → False) → Bad
+  | mk (f : Bad → False) : Bad
 -- error: (kernel) arg #1 of 'Bad.mk' has a non positive
 --        occurrence of the datatypes being declared
 ```

@@ -2845,3 +2845,16 @@ Abgleich des Inhaltsverzeichnisses des Reference Manual mit dem Skript
   Folie *Propositions as instances* im Deck 1-6, Rueckverweis aus 2.5.
   Mathlib benutzt `Fact` vor allem fuer `1 ≤ p` (Lᵖ, 129 Stellen),
   Dimensionen und Primalitaet.
+- **`deriving` intern** (1.6, nach dem `Pair`-Beispiel): pro Klasse ein
+  *deriving handler*, ein Lean-Programm, das die Konstruktoren liest und
+  den Quelltext einer `instance` schreibt; der wird normal elaboriert und
+  vom Kern geprueft. `trace.Elab.Deriving.repr`/`.decEq` zeigen den
+  Code. **Achtung:** Mathlibs `deriving Fintype` ist in v4.34 kaputt
+  (Typfehler `Suit.enumList_nodup`) -- deshalb im Text nicht als
+  Beispiel genannt.
+- **Typklassen und Logik** (1.6, nach der Tabelle *Instances are
+  terms*): der Kern kennt weder `class` noch `instance`; Instanzsuche
+  laeuft im Elaborator (`pp.explicit` zeigt `@instHAdd ℕ instAddNat`).
+  Keine Axiome, keine Inkonsistenz moeglich; aber die Instanz bestimmt,
+  was ein Satz *bedeutet*: `(1, 5) ≤ (2, 0)` ist auf `ℕ × ℕ` falsch
+  (komponentenweise), auf `Lex (ℕ × ℕ)` wahr.

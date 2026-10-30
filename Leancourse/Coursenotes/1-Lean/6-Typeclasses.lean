@@ -95,6 +95,25 @@ The parallel holds at the term level: `class` is a `structure` marked for instan
   + `instance`
 :::
 
+*Typeclasses add nothing to the logic.* The {ref "rules"}[kernel] knows neither `class` nor `instance`: a class is a structure, an instance is a definition, and `[C α]` is an ordinary argument of a function type. Instance resolution runs in the elaborator, which writes the instance it finds into the term, and the kernel checks that term like any other. The option `pp.explicit` shows the filled-in term:
+
+```lean
+set_option pp.explicit true in
+#check fun (n : ℕ) => n + 1
+-- fun n => @HAdd.hAdd ℕ ℕ ℕ (@instHAdd ℕ instAddNat) n
+--   (@OfNat.ofNat ℕ 1 (instOfNatNat 1))
+```
+
+So typeclasses cannot make Lean inconsistent, and they use no axiom. What an instance does decide is what a statement *means*: `≤` and `+` stand for whatever instance is found. On `ℕ × ℕ` the order found is the componentwise one, so `(1, 5) ≤ (2, 0)` is false. The lexicographic order lives on the type `Lex (ℕ × ℕ)`, which has the same elements and a different instance:
+
+```lean
+example : ¬ ((1, 5) ≤ ((2, 0) : ℕ × ℕ)) := by decide
+example : toLex (1, 5) ≤ (toLex (2, 0) : Lex (ℕ × ℕ)) := by
+  decide
+```
+
+Reading a formal statement therefore includes knowing which instance its notation refers to.
+
 # Creating instances
 %%%
 tag := "creating-instances"
@@ -174,6 +193,27 @@ structure Pair (α β : Type) where
   snd : β
   deriving Repr, BEq, Hashable
 ```
+
+`deriving` is not part of the type theory. For each class that supports it, Lean has a *deriving handler*: a program, written in Lean, that runs when the type is declared. It reads the declaration of the type from the environment, its constructors and their fields, and writes the source code of an `instance`. That code is then elaborated and checked like an instance written by hand. The option `trace.Elab.Deriving.repr` prints what the handler writes for `Student`; slightly simplified:
+
+```
+def instReprStudent.repr (x : Student) (prec : Nat) : Format :=
+  Format.bracket "{ "
+    ("name" ++ " := " ++ repr x.name ++ "," ++ Format.line ++
+     "age" ++ " := " ++ repr x.age)
+    " }"
+
+instance instReprStudent : Repr Student :=
+  ⟨instReprStudent.repr⟩
+```
+
+The handler for `Repr` writes one line per field. The handler for `DecidableEq` writes a function that compares the constructors of the two arguments and then their fields, with a proof of equality or of inequality in each branch. The result is an ordinary definition with an ordinary name:
+
+```lean
+#print instReprStudent
+```
+
+Nothing in a handler has to be trusted. If it wrote wrong code, the elaborator or the kernel would reject it, as they reject any wrong definition. The instance appears as a definition in the environment, and `#print axioms` shows which axioms it uses; for a derived `DecidableEq` there are none. Lean has handlers for the classes in the table above and a few more, and libraries can register their own. For a type that is already declared, `deriving instance Repr for Student` does the same afterwards.
 
 # The square bracket notation
 %%%

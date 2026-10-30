@@ -89,8 +89,10 @@ Two instances of a Prop class are definitionally equal: they never conflict.
 
 `instance foo : C := …` is sugar for `@[instance] def foo : C := …`.
 
+The kernel knows neither `class` nor `instance`: the elaborator writes the instance into the term.
+
 :::class "key"
-The term is there; its construction is delegated to instance resolution.
+Typeclasses add nothing to the logic.
 :::
 
 # Creating instances
@@ -121,6 +123,8 @@ def alice : Student := { name := "Alice", age := 22 }
 ```
 
 Without `deriving Repr`, `#eval` cannot print a `Student`.
+
+A _deriving handler_ reads the constructors and writes the `instance`; the kernel checks it like any other.
 
 # Commonly derived classes
 

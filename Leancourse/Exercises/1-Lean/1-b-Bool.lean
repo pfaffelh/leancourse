@@ -16,12 +16,19 @@ Read the section *Bool* in the chapter on the natural numbers first.
 
 | tactic        | use it when                                        |
 |---------------|----------------------------------------------------|
-| `rfl`         | both sides reduce to the same term                 |
 | `decide`      | the statement has no variables and can be computed |
 | `cases b`     | `b : Bool` is a variable that blocks reduction     |
 | `t <;> s`     | run `s` on every goal that `t` produces            |
 | `cases h : e` | split on the value of an expression `e`            |
-| `exfalso`     | prove `False` instead of the goal                  |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics         |
+|---------|-----------------|
+| `L-a`   | `exact`         |
+| `L-c`   | `left`, `right` |
+| `1.1-a` | `rfl`, `show`   |
+| `L-d`   | `exfalso`       |
 -/
 
 /-! ## Constructors and the recursor -/
@@ -189,11 +196,16 @@ example (f : Bool → Bool) : f true = true ∨ f true = false := by
   · right; rfl
   · left; rfl
 
--- Exercise 16) There are only four functions `Bool → Bool`. Hence
--- applying one three times is the same as applying it once. Split on
--- `b`, on `f true` and on `f false`; then `simp [h1, h2]` closes all
--- eight goals.
-example (f : Bool → Bool) (b : Bool) : f (f (f b)) = f b := by
+/-! Sheet `1.1-a` defined `myEven` with the recursor. There,
+`myEven (n + 2) = myEven n` was not `rfl`: it reduces to
+`!!myEven n = myEven n`, and `!` is stuck on the expression
+`myEven n`. -/
+
+def myEven (n : ℕ) : Bool := Nat.rec true (fun _ b => !b) n
+
+-- Exercise 16) After `show !!myEven n = myEven n`, split on the
+-- expression `myEven n` and close both goals with `rfl`.
+example (n : ℕ) : myEven (n + 2) = myEven n := by
   sorry
 
 /-! ## `True` and `False` as types

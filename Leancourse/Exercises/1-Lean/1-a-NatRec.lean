@@ -17,9 +17,14 @@ and `rfl`* in the chapter on the natural numbers first.
 
 | tactic                 | use it when                                    |
 |------------------------|------------------------------------------------|
+| `rfl`                  | both sides reduce to the same term             |
 | `show t`               | replace the goal by a definitionally equal `t` |
 | `induction n with ...` | `n : ℕ` is a variable that blocks reduction    |
 | `rw [h]`               | rewrite the goal with an equation `h`          |
+
+## Tactics from earlier sheets
+
+None.
 -/
 
 /-! ## The recursor -/
@@ -109,7 +114,7 @@ constructor. `myAdd m (n + 1)` reduces, because `n + 1` is
 
 -- Exercise 7) Each of the following is `rfl` or not. Decide first,
 -- then prove the `rfl` ones with `rfl`. The others come back in
--- the next section.
+-- the next section, the last one on sheet `1.1-b`.
 example (m : ℕ) : myAdd m 0 = m := by
   sorry
 
@@ -155,25 +160,18 @@ theorem myAdd_comm (m n : ℕ) : myAdd m n = myAdd n m := by
 example (n : ℕ) : myDouble n = myAdd n n := by
   sorry
 
--- Exercise 11) `!!b = b` is not `rfl` for a variable `b`: `!` has
--- to see `true` or `false`. After `show`, `cases (myEven n)` puts in
--- `false` and `true` in turn, and `<;> rfl` closes both goals.
--- (`cases` is the subject of the next sheet.)
-example (n : ℕ) : myEven (n + 2) = myEven n := by
-  sorry
-
 /-! ## Associativity by reduction
 
 Lean's own `+` on `ℕ` is also defined by recursion on the second
 argument. The chapter proves `0 + n = n` by induction, using
 `Nat.add_succ`. -/
 
--- Exercise 12) Here associativity is just reduction: both sides
+-- Exercise 11) Here associativity is just reduction: both sides
 -- reduce to `Nat.succ (m + k)`.
 example (m k : ℕ) : m + (k + 1) = (m + k) + 1 := by
   sorry
 
--- Exercise 13) Prove `0 + n = n` as in the chapter, but without
--- `Nat.add_succ`: use `show` and Exercise 12.
+-- Exercise 12) Prove `0 + n = n` as in the chapter, but without
+-- `Nat.add_succ`: use `show` and Exercise 11.
 example (n : ℕ) : 0 + n = n := by
   sorry

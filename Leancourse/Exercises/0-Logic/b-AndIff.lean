@@ -16,6 +16,12 @@ Two connectives: `∧` and `↔`. Still only propositions.
 | `h.1`, `h.2`      | `h : P ∧ Q`: take the parts               |
 | `h.mp`, `h.mpr`   | `h : P ↔ Q`: take one direction           |
 | `obtain ⟨hP, hQ⟩` | `h : P ∧ Q`: split it into two hypotheses |
+
+## Tactics from earlier sheets
+
+| sheet | tactics          |
+|-------|------------------|
+| `L-a` | `intro`, `exact` |
 -/
 
 variable (P Q R S T : Prop)

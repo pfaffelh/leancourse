@@ -19,6 +19,14 @@ one line.
 | `refine ⟨?_, ?_⟩`   | build a term and leave holes       |
 | `rintro ⟨hP, hQ⟩`   | `intro` and take apart in one step |
 | `rcases h with ...` | the flexible form of `obtain`      |
+
+## Tactics from earlier sheets
+
+| sheet | tactics                   |
+|-------|---------------------------|
+| `L-a` | `intro`, `exact`, `apply` |
+| `L-b` | `obtain`                  |
+| `L-c` | `left`, `right`           |
 -/
 
 variable (P Q R S T : Prop)

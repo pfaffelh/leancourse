@@ -14,12 +14,26 @@ functions.
 | tactic                | use it when                                    |
 |-----------------------|------------------------------------------------|
 | `ext x`               | goal `f = g`: prove `f x = g x` for every `x`  |
-| `change t`            | replace the goal by a definitionally equal `t` |
-| `fun x ↦ e`           | the function sending `x` to `e`                |
+| `change t at h`       | `show`, but also for a hypothesis `h`          |
 | `let f := e`          | give a term a name inside a proof              |
 | `choose f hf using h` | `h : ∀ x, ∃ y, R x y`: get the function `f`    |
 
-`rfl`, `rw`, `exact?` and `apply?` are known from `1.1-a` and `L-g`.
+## Tactics from earlier sheets
+
+| sheet   | tactics                 |
+|---------|-------------------------|
+| `L-a`   | `intro`, `exact`        |
+| `L-b`   | `constructor`, `obtain` |
+| `L-c`   | `left`, `right`         |
+| `1.1-a` | `rfl`, `rw`             |
+| `1.2-a` | `use`                   |
+| `L-e`   | `by_cases`              |
+| `L-f`   | `have`, `rintro`        |
+| `1.1-c` | `simp`                  |
+| `L-g`   | `tauto`                 |
+
+
+`fun x ↦ e` is known from `1.4-b`.
 -/
 
 variable (α β : Type) [Inhabited α]
@@ -107,7 +121,7 @@ lemma l2 (P Q : Prop) : (P → Q) ↔ (¬Q → ¬P) := by
 
 /-! ## Functions
 
-`fun x ↦ e` is the function sending `x` to `e`; `f x` is what the
+`fun x ↦ e` (sheet `1.4-b`) is the function sending `x` to `e`; `f x` is what the
 rest of mathematics writes `f(x)`. -/
 
 example : ∃ (f : α → α), f = f := by
@@ -159,13 +173,17 @@ example (f g : α → β) : (∀ x, ((f x) = (g x))) ↔ f = g := by
 
 /-! ## `change`
 
-`change t` replaces the goal by `t`, provided the two are
-definitionally equal. It changes nothing for the kernel and
-everything for the reader. -/
+`change t` is `show t` from sheet `1.1-a`: it replaces the goal by
+`t`, provided the two are definitionally equal. `change t at h` does
+the same for a hypothesis `h`. -/
 
 example (x : α) (f : α → Prop) : (¬(f x)) ↔ ((f x) → False) := by
   change (¬(f x)) ↔ (¬(f x))
   rfl
+
+example (x : α) (f : α → Prop) (h : ¬(f x)) : f x → False := by
+  change f x → False at h
+  exact h
 
 -- Exercise 8) The right-hand side says that `β` has at most one
 -- element. Apply the hypothesis to two constant functions.

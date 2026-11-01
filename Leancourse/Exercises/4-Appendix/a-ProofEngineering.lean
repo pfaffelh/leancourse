@@ -15,6 +15,18 @@ In this exercise sheet, you will practice:
 
 Prerequisites: You should be familiar with basic Lean tactics (intro, apply, exact,
 rw, simp, ring, linarith, omega) from earlier chapters.
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                                                              |
+|---------|----------------------------------------------------------------------|
+| `L-a`   | `exact`                                                              |
+| `1.1-a` | `rw`                                                                 |
+| `1.1-b` | `decide`                                                             |
+| `1.1-c` | `calc`, `ring`, `norm_num`, `linarith`, `simp`, `omega`, `push_cast` |
+| `1.6-a` | `infer_instance`                                                     |
+| `1.6-b` | `exact_mod_cast`                                                     |
+| `1.7-a` | `positivity`                                                         |
 -/
 
 /-

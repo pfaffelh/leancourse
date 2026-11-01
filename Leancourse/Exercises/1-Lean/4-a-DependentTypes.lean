@@ -25,6 +25,14 @@ week 9; `funext` is a theorem. One exercise below needs choice; it is marked.
 | `p.1`, `p.2`     | the two components of a pair or subtype       |
 | `Subtype.ext`    | two subtype elements agree if their values do |
 | `universe u`     | declare a universe variable                   |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                     |
+|---------|-----------------------------|
+| `1.1-a` | `rfl`                       |
+| `L-f`   | `have`                      |
+| `1.1-c` | `norm_num`, `simp`, `omega` |
 -/
 
 /-

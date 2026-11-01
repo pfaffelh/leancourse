@@ -15,6 +15,16 @@ A bonus sheet. Nothing later depends on it.
 The first two puzzles are the last two levels of the Incredible Proof
 Machine (Joachim Breitner, <https://incredible.pm>, MIT licence); the
 third is Raymond Smullyan's.
+
+## Tactics from earlier sheets
+
+| sheet | tactics                             |
+|-------|-------------------------------------|
+| `L-a` | `exact`                             |
+| `L-b` | `obtain`                            |
+| `L-d` | `absurd`                            |
+| `L-e` | `by_cases`, `by_contra`, `push Not` |
+| `L-f` | `have`, `refine`                    |
 -/
 
 /-! ## The drinker paradox

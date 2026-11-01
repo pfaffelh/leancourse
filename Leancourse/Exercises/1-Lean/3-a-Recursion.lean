@@ -18,14 +18,21 @@ in chapter 1.2 and chapter 1.3 first.
 | `def f : T → β` + branches | define `f` by one branch per constructor     |
 | `induction t with`         | prove a statement for all `t : T`            |
 | `simp only [f, h]`         | rewrite with the equations of `f` and `h`    |
+| `dsimp only [f]`           | unfold `f`, apply `fun`s; nothing else       |
 | `termination_by e`         | the recursion is on `e`, which must decrease |
 | `decreasing_by omega`      | prove that it decreases                      |
 | `rw [f]`                   | unfold `f` once, by its defining equation    |
 | `simp [f]`                 | unfold `f` as often as needed and simplify   |
 | `T.rec`                    | the recursor of an inductive type `T`        |
 
-`cases`, `<;>` and `rfl` are known from `1.1-b`, `omega` and `simp`
-from `1.1-c`.
+## Tactics from earlier sheets
+
+| sheet   | tactics        |
+|---------|----------------|
+| `1.1-a` | `rfl`          |
+| `1.1-b` | `cases`, `<;>` |
+| `L-f`   | `have`         |
+| `1.1-c` | `omega`        |
 -/
 
 /-! ## Part 1: A type with finitely many elements
@@ -74,6 +81,13 @@ example (d : Weekday) (h : d.isWeekend = true) :
     d = sat ∨ d = sun := by
   sorry
 
+-- Exercise 4) Back to `Bool`. There are only four functions
+-- `Bool → Bool`, so applying one three times is the same as applying
+-- it once. Split on `b`, on `f true` (with `cases h1 : f true`) and
+-- on `f false`; then `simp [h1, h2]` closes all eight goals.
+example (f : Bool → Bool) (b : Bool) : f (f (f b)) = f b := by
+  sorry
+
 /-! ## Part 2: Binary trees
 
 A tree is a leaf, or a node with a left tree, a label and a right
@@ -109,24 +123,34 @@ example (t : MyTree) : t.leaves = t.size + 1 := by
     simp only [MyTree.leaves, MyTree.size, ihl, ihr]
     omega
 
--- Exercise 4) The sum of all labels.
+/-! `dsimp only [MyTree.size]` unfolds with the same equations, and it
+applies a `fun` to its argument. It uses only equations that hold by
+definition, and it leaves the goal for you to look at instead of
+trying to finish it. -/
+
+example (l r : MyTree) (a : ℕ) :
+    (node l a r).size = (fun n => n + 1) (l.size + r.size) := by
+  dsimp only [MyTree.size]
+  omega
+
+-- Exercise 5) The sum of all labels.
 def MyTree.sum : MyTree → ℕ
   | _ => sorry
 
--- Once exercise 4 is solved, uncomment:
+-- Once exercise 5 is solved, uncomment:
 -- example : (node (node leaf 1 leaf) 2 (node leaf 3 leaf)).sum = 6 :=
 --   rfl
 
--- Exercise 5) The mirror image: left and right swapped, at every
+-- Exercise 6) The mirror image: left and right swapped, at every
 -- node.
 def MyTree.mirror : MyTree → MyTree
   | _ => sorry
 
--- Exercise 6) Like the worked example above.
+-- Exercise 7) Like the worked example above.
 example (t : MyTree) : t.mirror.size = t.size := by
   sorry
 
--- Exercise 7) Here `simp only` closes the goal by itself.
+-- Exercise 8) Here `simp only` closes the goal by itself.
 example (t : MyTree) : t.mirror.mirror = t := by
   sorry
 
@@ -138,12 +162,12 @@ type, so it is marked `noncomputable`; `rfl` and `induction` work. -/
 
 #check @MyTree.rec
 
--- Exercise 8) The size once more, now with the recursor. `sl` and
+-- Exercise 9) The size once more, now with the recursor. `sl` and
 -- `sr` are the sizes of the two subtrees.
 noncomputable def MyTree.size' (t : MyTree) : ℕ :=
   MyTree.rec sorry (fun _ _ _ sl sr => sorry) t
 
--- Exercise 9) By induction. In the `node` case, `simp only
+-- Exercise 10) By induction. In the `node` case, `simp only
 -- [MyTree.size]`, then `rw [← ihl, ← ihr]`; what is left is `rfl`.
 example (t : MyTree) : t.size' = t.size := by
   sorry
@@ -163,14 +187,14 @@ def digits (n : ℕ) : ℕ :=
 termination_by n
 decreasing_by omega
 
--- Exercise 10) The sum of the decimal digits. Replace the `sorry`
+-- Exercise 11) The sum of the decimal digits. Replace the `sorry`
 -- after `decreasing_by`. What is the goal there?
 def digitSum (n : ℕ) : ℕ :=
   if _h : n = 0 then 0 else n % 10 + digitSum (n / 10)
 termination_by n
 decreasing_by sorry
 
--- Exercise 11) The number of binary digits: `0` for `n = 0`,
+-- Exercise 12) The number of binary digits: `0` for `n = 0`,
 -- otherwise one more than for `n / 2`. Write the whole definition,
 -- with `termination_by` and `decreasing_by`.
 def binLength (n : ℕ) : ℕ :=
@@ -182,7 +206,7 @@ arithmetic in `m`, so `omega` cannot prove it, and without
 help: `Nat.mod_lt (x : ℕ) : y > 0 → x % y < y` and
 `Nat.pos_of_ne_zero : n ≠ 0 → 0 < n`. -/
 
--- Exercise 12) Replace the `sorry` after `decreasing_by`. Why does
+-- Exercise 13) Replace the `sorry` after `decreasing_by`. Why does
 -- the recursion stop?
 def myGcd (m n : ℕ) : ℕ :=
   if _h : m = 0 then n else myGcd (n % m) m
@@ -203,23 +227,23 @@ example (n : ℕ) (h : n < 10) : digits n = 1 := by
   rw [digits]
   simp [h]
 
--- Exercise 13)
+-- Exercise 14)
 example : digitSum 1234 = 10 := by
   sorry
 
--- Exercise 14)
+-- Exercise 15)
 example : binLength 37 = 6 := by
   sorry
 
--- Exercise 15)
+-- Exercise 16)
 example : myGcd 48 36 = 12 := by
   sorry
 
--- Exercise 16) `rw [myGcd]` unfolds once; then `simp`.
+-- Exercise 17) `rw [myGcd]` unfolds once; then `simp`.
 example (n : ℕ) : myGcd 0 n = n := by
   sorry
 
--- Exercise 17) Start with `rw [binLength]`. Then prove
+-- Exercise 18) Start with `rw [binLength]`. Then prove
 -- `2 * n ≠ 0` and `2 * n / 2 = n` with `have` and `omega`, and give
 -- both to `simp`.
 example (n : ℕ) (h : 0 < n) :

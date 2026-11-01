@@ -11,6 +11,15 @@ measurability is needed -- everything works at the level of the
 discrete distribution itself.
 
 Replace each `sorry` with a proof.
+
+## Tactics from earlier sheets
+
+| sheet   | tactics            |
+|---------|--------------------|
+| `L-a`   | `exact`            |
+| `1.1-a` | `rw`               |
+| `1.1-c` | `norm_num`, `simp` |
+| `1.5-a` | `ext`              |
 -/
 
 open PMF

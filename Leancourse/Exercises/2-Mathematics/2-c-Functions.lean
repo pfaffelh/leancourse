@@ -1,4 +1,16 @@
-/- This time, we only import the tactics, i.e. you will not have access to the whole Mathlib! -/
+/- This time, we only import the tactics, i.e. you will not have access to the whole Mathlib! 
+
+## Tactics from earlier sheets
+
+| sheet   | tactics          |
+|---------|------------------|
+| `L-a`   | `intro`, `exact` |
+| `L-b`   | `obtain`         |
+| `1.1-a` | `rfl`, `rw`      |
+| `1.2-a` | `use`            |
+| `1.1-c` | `simp`           |
+| `L-g`   | `simpa`          |
+-/
 import Mathlib.Tactic
 
 /-!

@@ -191,13 +191,18 @@ example (f : Bool → Bool) : f true = true ∨ f true = false := by
   · right; rfl
   · left; rfl
 
--- Exercise 16) There are only four functions `Bool → Bool`. Hence
--- applying one three times is the same as applying it once. Split on
--- `b`, on `f true` and on `f false`; then `simp [h1, h2]` closes all
--- eight goals.
-example (f : Bool → Bool) (b : Bool) : f (f (f b)) = f b := by
-  cases b <;> cases h1 : f true <;> cases h2 : f false <;>
-    simp [h1, h2]
+/-! Sheet `1.1-a` defined `myEven` with the recursor. There,
+`myEven (n + 2) = myEven n` was not `rfl`: it reduces to
+`!!myEven n = myEven n`, and `!` is stuck on the expression
+`myEven n`. -/
+
+def myEven (n : ℕ) : Bool := Nat.rec true (fun _ b => !b) n
+
+-- Exercise 16) After `show !!myEven n = myEven n`, split on the
+-- expression `myEven n` and close both goals with `rfl`.
+example (n : ℕ) : myEven (n + 2) = myEven n := by
+  show (!!myEven n) = myEven n
+  cases h : myEven n <;> rfl
 
 -- Exercise 17)
 example (h : False) : 0 = 1 :=

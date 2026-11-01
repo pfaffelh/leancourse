@@ -16,6 +16,10 @@ verify that your declaration has the intended effect.
 Because notation declarations are *commands* (not tactics), you
 cannot leave them as `sorry`; instead, replace the template with a
 real declaration.
+
+## Tactics from earlier sheets
+
+None.
 -/
 
 /- ## Part 1: Simple `notation` -/

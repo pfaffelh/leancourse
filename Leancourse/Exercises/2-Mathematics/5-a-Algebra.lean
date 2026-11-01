@@ -7,6 +7,14 @@ import Mathlib
 
 These exercises cover monoids, groups, rings, fields, morphisms,
 substructures, and quotients. Replace each `sorry` with a proof.
+
+## Tactics from earlier sheets
+
+| sheet   | tactics |
+|---------|---------|
+| `L-a`   | `exact` |
+| `1.1-c` | `ring`  |
+| `L-g`   | `simpa` |
 -/
 
 /- ## Part 1: Monoids and additive monoids -/

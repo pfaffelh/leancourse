@@ -22,11 +22,25 @@ neither is excluded middle (Diaconescu derives it from choice,
 |--------------------|--------------------------------------------|
 | `funext`           | two functions agreeing pointwise are equal |
 | `propext`          | two equivalent propositions are equal      |
-| `Classical.em`     | `P ∨ ¬P`, for every `P`                    |
 | `Classical.choice` | turns `Nonempty α` into a term of `α`      |
 | `Classical.choose` | picks a witness out of an `∃`              |
 | `noncomputable`    | marks a definition that cannot be run      |
 | `#print axioms f`  | lists the axioms `f` depends on            |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                     |
+|---------|-----------------------------|
+| `L-a`   | `trivial`, `intro`, `exact` |
+| `L-c`   | `left`, `right`             |
+| `1.1-a` | `rfl`, `rw`                 |
+| `L-e`   | `by_cases`, `by_contra`     |
+| `L-f`   | `have`                      |
+| `1.1-c` | `simp`, `omega`             |
+| `1.5-a` | `choose`                    |
+
+
+`Classical.em` is known from `L-e`; here it is derived.
 -/
 
 /-

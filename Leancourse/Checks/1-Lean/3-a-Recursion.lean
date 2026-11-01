@@ -62,6 +62,14 @@ example (d : Weekday) (h : d.isWeekend = true) :
     d = sat ∨ d = sun := by
   cases d <;> simp [Weekday.isWeekend] at h ⊢
 
+-- Exercise 4) Back to `Bool`. There are only four functions
+-- `Bool → Bool`, so applying one three times is the same as applying
+-- it once. Split on `b`, on `f true` (with `cases h1 : f true`) and
+-- on `f false`; then `simp [h1, h2]` closes all eight goals.
+example (f : Bool → Bool) (b : Bool) : f (f (f b)) = f b := by
+  cases b <;> cases h1 : f true <;> cases h2 : f false <;>
+    simp [h1, h2]
+
 /-! ## Part 2: Binary trees -/
 
 inductive MyTree where

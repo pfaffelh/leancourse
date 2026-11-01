@@ -23,6 +23,14 @@ constructors* of chapter 1.6 first.
 | `id_map`         | the law `id <$> x = x`                           |
 | `comp_map`       | the law `(g ∘ f) <$> x = g <$> f <$> x`          |
 
+## Tactics from earlier sheets
+
+| sheet   | tactics           |
+|---------|-------------------|
+| `1.1-a` | `rfl`             |
+| `1.1-b` | `cases`, `decide` |
+
+
 The definitions below come with `#eval` lines. Uncomment them once your
 definition is in place and compare with the expected output.
 -/

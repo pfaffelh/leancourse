@@ -10,7 +10,7 @@ only build one step by step. On this sheet you write the terms
 yourself, without `by`. Read *Propositions as types* in chapter 1.4
 first.
 
-## Introduced here
+## Terms and the tactics they replace
 
 | term                    | proves                     | tactic it replaces    |
 |-------------------------|----------------------------|-----------------------|
@@ -23,8 +23,19 @@ first.
 | `(h : False).elim`      | anything                   | `exfalso`             |
 | `⟨a, h⟩`                | `∃ x, P x`                 | `use a`               |
 
+New are `fun` and `h.elim`; the other terms are from `L-b`, `L-c`,
+`L-d` and `1.2-a`.
+
 `show_term` in front of tactics prints the term they build, which
 helps when you are stuck.
+
+## Tactics from earlier sheets
+
+| sheet   | tactics          |
+|---------|------------------|
+| `L-a`   | `intro`, `exact` |
+| `1.1-a` | `rfl`            |
+| `1.1-c` | `omega`          |
 -/
 
 variable (P Q R S : Prop)

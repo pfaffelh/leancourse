@@ -17,6 +17,13 @@ on "`P` or not `P`" is needed anywhere. That changes in L-e.
 | `left`, `right`     | goal `P ∨ Q`: choose which side to prove |
 | `Or.inl`, `Or.inr`  | the same, as terms                       |
 | `obtain (h1 \| h2)` | `h : P ∨ Q`: split into two cases        |
+
+## Tactics from earlier sheets
+
+| sheet | tactics                 |
+|-------|-------------------------|
+| `L-a` | `intro`, `exact`        |
+| `L-b` | `constructor`, `obtain` |
 -/
 
 variable (P Q R S T : Prop)

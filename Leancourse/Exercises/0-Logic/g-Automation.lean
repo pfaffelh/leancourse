@@ -13,15 +13,22 @@ to know what it was trying to do.
 
 ## Tactics introduced here
 
-| tactic     | use it when                                                |
-|------------|------------------------------------------------------------|
-| `exact?`   | some lemma in Mathlib closes the goal                      |
-| `apply?`   | some lemma reduces the goal                                |
-| `tauto`    | the goal is a tautology of propositional logic             |
-| `itauto`   | the same, but *constructively*                             |
-| `simp`     | rewrite with the simp set until nothing changes            |
-| `simp_all` | the same, on the goal and all hypotheses at once           |
-| `grind`    | the goal is "obvious" and mixes several kinds of reasoning |
+| tactic          | use it when                                                |
+|-----------------|------------------------------------------------------------|
+| `exact?`        | some lemma in Mathlib closes the goal                      |
+| `apply?`        | some lemma reduces the goal                                |
+| `tauto`         | the goal is a tautology of propositional logic             |
+| `itauto`        | the same, but *constructively*                             |
+| `simp only [h]` | `simp` with only the lemmas named                          |
+| `simp_all`      | `simp` on the goal and all hypotheses at once              |
+| `simpa using h` | `simp` on the goal and on `h`, then close the goal by `h`  |
+| `grind`         | the goal is "obvious" and mixes several kinds of reasoning |
+
+## Tactics from earlier sheets
+
+| sheet | tactics |
+|-------|---------|
+| `L-a` | `exact` |
 -/
 
 variable (P Q R S T : Prop)
@@ -106,8 +113,8 @@ example : (¬Q → ¬P) → (P → Q) := by
 
 /-! ## `simp`
 
-`simp` rewrites with a large set of lemmas marked `@[simp]`, over and
-over, until nothing changes. -/
+`simp` (sheet `1.1-c`) rewrites with a large set of lemmas marked
+`@[simp]`, over and over, until nothing changes. -/
 
 example : (P ∧ True) ↔ P := by
   simp
@@ -136,6 +143,19 @@ example (h1 : P ∧ True) (h2 : P → Q) : Q ∧ True := by
 
 -- Exercise 7) `simp` alone does not close this; `simp_all` does.
 example (h1 : P ∨ False) (h2 : ¬Q → ¬P) : Q ∨ False := by
+  sorry
+
+/-! ## `simpa`
+
+`simpa using h` simplifies the goal and the hypothesis `h` with the
+same lemmas, then closes the goal with `h`. It is the usual last line
+when `h` says the same as the goal, up to `simp`. -/
+
+example (h : P ∧ True) : True ∧ P := by
+  simpa using h
+
+-- Exercise 8) One line.
+example (h : True ∧ (P ∨ False)) : P := by
   sorry
 
 /-! ## `grind`
@@ -167,12 +187,12 @@ without comment. A tactic that always succeeds teaches nothing.
 
 Use it. But know what you handed over. -/
 
--- Exercise 8) Prove this with `grind`, then prove it again by hand
+-- Exercise 9) Prove this with `grind`, then prove it again by hand
 -- with the tactics of sheets a to f. Which proof tells you more?
 example : (P ∨ Q) ∧ (¬P) → Q := by
   sorry
 
--- Exercise 9) `grind` fails on exactly one statement of sheet L-a.
+-- Exercise 10) `grind` fails on exactly one statement of sheet L-a.
 -- Which, and why? Write the answer as a comment.
 -- (No Lean code required.)
 
@@ -189,10 +209,10 @@ you do not know what the lemma is called or whether it exists.
 
 Lean's own documentation and the Zulip chat are the next step. -/
 
--- Exercise 10) Find the Mathlib name of this law, by any means.
+-- Exercise 11) Find the Mathlib name of this law, by any means.
 example : ((P ∨ Q) ∨ R) ↔ (P ∨ (Q ∨ R)) := by
   sorry
 
--- Exercise 11) And of this one.
+-- Exercise 12) And of this one.
 example : (P → (Q → R)) ↔ ((P ∧ Q) → R) := by
   sorry

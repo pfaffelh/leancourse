@@ -15,11 +15,18 @@ that do are in L-e.
 
 | tactic          | use it when                                    |
 |-----------------|------------------------------------------------|
-| `show`          | replace the goal by a definitionally equal one |
 | `exfalso`       | give up on the goal, prove `False` instead     |
 | `False.elim h`  | the same, as a term                            |
 | `contradiction` | the hypotheses are already contradictory       |
-| `absurd hP hnP` | `hP : P` and `hnP : ¬P` prove anything         |
+| `absurd hP hnP` | a term: `hP : P` and `hnP : ¬P` prove anything |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                     |
+|---------|-----------------------------|
+| `L-a`   | `trivial`, `intro`, `exact` |
+| `L-b`   | `constructor`, `obtain`     |
+| `1.1-a` | `rfl`, `show`               |
 -/
 
 variable (P Q R S T : Prop)
@@ -33,8 +40,8 @@ example (h : P → False) : ¬P := by
   intro hP
   exact h hP
 
-/-! `show` makes the identification visible. It replaces the goal by
-one that is equal *by definition*. It changes nothing, but it
+/-! `show` (sheet `1.1-a`) makes the identification visible. It
+replaces the goal by one that is equal *by definition*. It changes nothing, but it
 documents what you are doing. -/
 
 example (h : P → False) : ¬P := by

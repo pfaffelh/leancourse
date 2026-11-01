@@ -2939,3 +2939,25 @@ strikt positiv = `F` monoton, Fixpunkt ueber die Stufen, `Bad` ohne
 Loesung, Cantor; Belege Aczel 1977, Dybjer 1991 (neu in
 `References.lean`), Werner 1997, Coquand/Paulin-Mohring 1990. Folie
 gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
+
+## 2026-11-01 -- Jede Taktik genau einmal eingefuehrt
+
+- Wochen aus `plan.md`, innerhalb einer Woche die Reihenfolge der
+  Plan-Zeile. Doppelt eingefuehrt waren `rfl`, `show`, `exfalso`,
+  `rw`, `induction`, `simp`, `push_cast`, `decide`, `by_cases`, `fun`;
+  jetzt nur noch auf dem ersten Blatt, das spaetere setzt sie voraus.
+  `change` (1.5-a) ist jetzt `change … at h`, 1.4-b ist eine
+  Uebersicht Term/Taktik, keine Einfuehrung.
+- **Jedes Blatt hat "Tactics from earlier sheets"**: Tabelle Blatt ->
+  Taktiken, berechnet aus Blatt *und* Zeuge in `Checks/`. Erzeugt mit
+  `prereq.py` (Scratchpad; `-v` zeigt, `-w` schreibt). Nach dem
+  Aendern eines Blatts neu erzeugen, sonst veraltet die Tabelle.
+- Neu eingefuehrt, weil die Zeugen sie benutzten: `simpa` (L-g),
+  `infer_instance` (1.6-a), `dsimp only` (1.3-a). `zify` aus dem Zeugen
+  von A-a entfernt. Offen: `subst` im Zeugen von 2.3-b, `by_contra` in
+  der Extra-Aufgabe 8 von 1.2-a.
+- Verschoben: `myEven (n + 2) = myEven n` von 1.1-a (brauchte `cases`)
+  nach 1.1-b Aufgabe 16; `f (f (f b)) = f b` von 1.1-b (brauchte
+  `simp`) nach 1.3-a Aufgabe 4.
+- `absurd` ist ein Theorem (Kern) *und* eine Taktik (Batteries,
+  `absurd h` macht das Ziel zu `¬P`); L-d benutzt das Theorem.

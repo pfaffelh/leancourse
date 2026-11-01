@@ -138,6 +138,19 @@ example (h1 : P ∧ True) (h2 : P → Q) : Q ∧ True := by
 example (h1 : P ∨ False) (h2 : ¬Q → ¬P) : Q ∨ False := by
   simp_all
 
+/-! ## `simpa`
+
+`simpa using h` simplifies the goal and the hypothesis `h` with the
+same lemmas, then closes the goal with `h`. It is the usual last line
+when `h` says the same as the goal, up to `simp`. -/
+
+example (h : P ∧ True) : True ∧ P := by
+  simpa using h
+
+-- Exercise 8) One line.
+example (h : True ∧ (P ∨ False)) : P := by
+  simpa using h
+
 /-! ## `grind`
 
 `grind` is Lean's general-purpose automation. It runs several
@@ -167,12 +180,12 @@ without comment. A tactic that always succeeds teaches nothing.
 
 Use it. But know what you handed over. -/
 
--- Exercise 8) Prove this with `grind`, then prove it again by hand
+-- Exercise 9) Prove this with `grind`, then prove it again by hand
 -- with the tactics of sheets a to f. Which proof tells you more?
 example : (P ∨ Q) ∧ (¬P) → Q := by
   grind
 
--- Exercise 9) `grind` fails on exactly one statement of sheet L-a.
+-- Exercise 10) `grind` fails on exactly one statement of sheet L-a.
 -- Which, and why? Write the answer as a comment.
 -- (No Lean code required.)
 
@@ -189,10 +202,10 @@ you do not know what the lemma is called or whether it exists.
 
 Lean's own documentation and the Zulip chat are the next step. -/
 
--- Exercise 10) Find the Mathlib name of this law, by any means.
+-- Exercise 11) Find the Mathlib name of this law, by any means.
 example : ((P ∨ Q) ∨ R) ↔ (P ∨ (Q ∨ R)) := by
   exact or_assoc
 
--- Exercise 11) And of this one.
+-- Exercise 12) And of this one.
 example : (P → (Q → R)) ↔ ((P ∧ Q) → R) := by
   exact and_imp.symm

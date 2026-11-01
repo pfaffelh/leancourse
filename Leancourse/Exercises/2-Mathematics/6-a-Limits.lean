@@ -4,6 +4,23 @@ import Mathlib -- import all the tactics
 # 2.6-a -- Limits of sequences
 
 *Notes chapter 2.6, week 13.*
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                            |
+|---------|------------------------------------|
+| `L-a`   | `intro`, `exact`                   |
+| `L-b`   | `obtain`                           |
+| `1.1-a` | `rfl`, `show`, `rw`                |
+| `1.2-a` | `use`                              |
+| `1.1-b` | `<;>`                              |
+| `L-e`   | `by_contra`                        |
+| `L-f`   | `have`, `refine`                   |
+| `1.1-c` | `calc`, `ring`, `linarith`, `simp` |
+| `L-g`   | `set`                              |
+| `1.6-b` | `norm_cast`, `exact_mod_cast`      |
+| `1.7-a` | `positivity`                       |
+| `A-a`   | `field_simp`                       |
 -/
 
 /-

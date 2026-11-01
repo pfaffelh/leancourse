@@ -8,6 +8,15 @@ import Mathlib
 These exercises cover measurable spaces, measurable functions, measures,
 probability measures, integration and the convergence theorems.
 Replace each `sorry` with a proof.
+
+## Tactics from earlier sheets
+
+| sheet   | tactics            |
+|---------|--------------------|
+| `L-a`   | `exact`            |
+| `1.1-a` | `rw`               |
+| `1.1-c` | `norm_num`, `simp` |
+| `2.7-a` | `fun_prop`         |
 -/
 
 open MeasureTheory

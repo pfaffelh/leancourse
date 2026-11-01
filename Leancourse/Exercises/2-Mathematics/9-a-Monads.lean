@@ -18,6 +18,15 @@ mathematics* of chapter 2.9 first.
 
 Nothing new is introduced. Most exercises are one lemma or `rfl`; find
 the lemma with `exact?` where you do not know it.
+
+## Tactics from earlier sheets
+
+| sheet   | tactics     |
+|---------|-------------|
+| `L-a`   | `exact`     |
+| `1.1-b` | `decide`    |
+| `1.1-c` | `simp`      |
+| `1.6-a` | `classical` |
 -/
 
 open Filter

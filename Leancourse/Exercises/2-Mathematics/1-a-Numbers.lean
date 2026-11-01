@@ -12,8 +12,16 @@ is `Option ℝ≥0`. Read chapter 2.1 first.
 `ℝ≥0` and `ℝ≥0∞` need the line `open scoped NNReal ENNReal` below.
 `∞` is typed `\infty`.
 
-`omega`, `simp`, `norm_num`, `decide` and the casts tactics are
-known from part 1; `exact?` and `rw?` from `2.0-a`.
+## Tactics from earlier sheets
+
+| sheet   | tactics                     |
+|---------|-----------------------------|
+| `L-a`   | `intro`, `exact`            |
+| `L-b`   | `constructor`               |
+| `1.1-a` | `rfl`, `rw`                 |
+| `1.1-b` | `decide`, `<;>`             |
+| `L-f`   | `have`                      |
+| `1.1-c` | `norm_num`, `simp`, `omega` |
 -/
 
 open scoped NNReal ENNReal

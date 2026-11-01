@@ -24,7 +24,16 @@ structure of a number together with a proof that it is less than
 | `⟨i, h⟩ : Fin n`           | build an element from `i` and `h : i < n`     |
 | `Fin.ext`                  | prove `a = b` from `a.val = b.val`            |
 
-`decide` is known from `1.1-b`, `omega` from `1.1-c`.
+## Tactics from earlier sheets
+
+| sheet   | tactics          |
+|---------|------------------|
+| `L-a`   | `exact`, `apply` |
+| `L-b`   | `constructor`    |
+| `1.1-a` | `rfl`            |
+| `1.1-b` | `decide`, `<;>`  |
+| `L-f`   | `have`           |
+| `1.1-c` | `simp`, `omega`  |
 -/
 
 /-! ## Part 1: Structures

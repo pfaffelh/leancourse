@@ -20,6 +20,15 @@ Structures are on sheet `1.2-b`.
 | `Quot.sound h`             | related elements have the same class          |
 | `Quot.lift f h`            | a function on classes; `h`: `f` respects `r`  |
 | `induction x using Quot.ind` | prove a statement for every class           |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics          |
+|---------|------------------|
+| `L-a`   | `intro`, `exact` |
+| `L-b`   | `obtain`         |
+| `1.1-a` | `rfl`, `show`    |
+| `1.1-c` | `simp`, `omega`  |
 -/
 
 /-! ## Part 1: Inductive predicates

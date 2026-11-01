@@ -11,6 +11,15 @@ Replace each `sorry` with a proof.
 
 Explanations and worked examples are in the course notes:
 https://pfaffelh.github.io/leancourse/Mathematics/#orders-and-lattices
+
+## Tactics from earlier sheets
+
+| sheet   | tactics           |
+|---------|-------------------|
+| `L-a`   | `intro`, `exact`  |
+| `1.1-a` | `induction`, `rw` |
+| `1.1-c` | `simp`, `omega`   |
+| `1.3-a` | `dsimp`           |
 -/
 
 variable {α : Type*}

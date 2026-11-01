@@ -17,6 +17,17 @@ for each.
 | `induction n using Nat.strong_induction_on` | induct along `<` on `ℕ`       |
 | `split_ifs with h`                    | split an `if` in the goal           |
 | `#check_failure t`                    | `t` should not elaborate            |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                  |
+|---------|--------------------------|
+| `L-a`   | `intro`, `exact`         |
+| `L-b`   | `constructor`, `obtain`  |
+| `1.1-a` | `rfl`, `induction`, `rw` |
+| `L-e`   | `by_cases`               |
+| `L-f`   | `have`, `rintro`         |
+| `1.1-c` | `omega`                  |
 -/
 
 /- ## Part 1: Accessibility

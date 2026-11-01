@@ -23,8 +23,16 @@ search does not succeed.
 | `#loogle ?a + _`   | you know the form of the statement                  |
 | `#loogle A, B`     | you know constants that occur in the statement      |
 
-`have`, `obtain`, `rw … at h` and `absurd` are known from the logic
-block, `simp` and `norm_num` from `1.1-c`.
+## Tactics from earlier sheets
+
+| sheet   | tactics            |
+|---------|--------------------|
+| `L-a`   | `exact`, `apply`   |
+| `L-b`   | `obtain`           |
+| `1.1-a` | `rw`               |
+| `L-f`   | `have`             |
+| `1.1-c` | `norm_num`, `simp` |
+
 
 Replace every search by its result before you go on. A search left
 in the file runs again each time the file is checked, and that takes

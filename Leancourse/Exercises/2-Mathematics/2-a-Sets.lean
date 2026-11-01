@@ -5,6 +5,18 @@ import Mathlib.Tactic -- imports all the Lean tactics
 # 2.2-a -- Sets
 
 *Notes chapter 2.2, week 9.*
+
+## Tactics from earlier sheets
+
+| sheet   | tactics          |
+|---------|------------------|
+| `L-a`   | `intro`, `exact` |
+| `L-b`   | `constructor`    |
+| `1.1-a` | `rfl`, `rw`      |
+| `L-e`   | `by_contra`      |
+| `L-f`   | `rintro`         |
+| `1.1-c` | `simp`           |
+| `1.5-a` | `ext`            |
 -/
 
 variable (α β : Type)

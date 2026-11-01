@@ -4,6 +4,17 @@ import Mathlib.Tactic -- imports all the Lean tactics
 # 2.2-b -- Image and preimage
 
 *Notes chapter 2.2, week 10.*
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                 |
+|---------|-------------------------|
+| `L-a`   | `intro`, `exact`        |
+| `L-b`   | `constructor`, `obtain` |
+| `1.1-a` | `rfl`, `rw`             |
+| `1.2-a` | `use`                   |
+| `L-f`   | `rintro`                |
+| `1.5-a` | `ext`, `change`         |
 -/
 
 /- Read the section *Image and preimage* of chapter 2.2 first.

@@ -22,13 +22,27 @@ and `if` need an algorithm.
 | `instance : C τ where` | register an instance                          |
 | `[C α]`                | an argument filled in by instance resolution  |
 | `#synth C τ`           | show which instance Lean finds                |
+| `infer_instance`       | close a goal `C τ` by instance resolution     |
 | `deriving DecidableEq` | generate the equality test for your own type  |
-| `decide`               | close a goal whose proposition is `Decidable` |
-| `by_cases h : P`       | split on `P`, classically                     |
 | `classical`            | make every proposition decidable in a proof   |
 | `[Fact p]`             | a proposition as an instance argument         |
 | `Fact.out`             | the proof inside a `Fact`                     |
 | `have : C := ...`      | a local instance for the rest of the proof    |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics          |
+|---------|------------------|
+| `L-a`   | `intro`, `exact` |
+| `1.1-a` | `rw`             |
+| `1.1-b` | `decide`         |
+| `L-e`   | `by_cases`       |
+| `L-f`   | `refine`         |
+| `1.1-c` | `norm_num`       |
+
+
+`decide` (`1.1-b`) and `by_cases` (`L-e`) come back: here you see
+what they need.
 -/
 
 variable {α β : Type}
@@ -131,6 +145,12 @@ the answer is `isTrue`. -/
 
 #check @Decidable
 #check (inferInstance : Decidable (2 + 3 = 5))
+
+/-! `inferInstance` is the term that instance resolution fills in.
+In a proof, the tactic `infer_instance` does the same: -/
+
+example : Decidable (2 + 3 = 5) := by
+  infer_instance
 
 -- Exercise 10)
 example : (2 : ℕ) ∣ 10 := by

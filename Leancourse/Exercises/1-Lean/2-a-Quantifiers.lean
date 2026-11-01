@@ -20,6 +20,13 @@ a statement about terms of some type `α`.
 | `use a`               | goal `∃ x, P x`: offer `a` as the witness      |
 | `⟨a, h⟩`              | the same, as a term                            |
 | `obtain ⟨x, hx⟩ := h` | `h : ∃ x, P x`: name the witness and its proof |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics          |
+|---------|------------------|
+| `L-a`   | `exact`, `apply` |
+| `1.1-a` | `rfl`            |
 -/
 
 variable (α : Type) [Inhabited α]

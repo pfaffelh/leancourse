@@ -8,6 +8,16 @@ import Mathlib
 These exercises cover the construction and use of filters in Mathlib,
 including Filter.Tendsto, Filter.Eventually, and Filter.atTop.
 Replace each `sorry` with a proof.
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                                 |
+|---------|-----------------------------------------|
+| `L-a`   | `trivial`, `intro`, `exact`             |
+| `L-b`   | `obtain`                                |
+| `L-f`   | `have`, `refine`, `rintro`              |
+| `1.1-c` | `norm_num`, `linarith`, `simp`, `omega` |
+| `L-g`   | `simpa`                                 |
 -/
 
 open Filter

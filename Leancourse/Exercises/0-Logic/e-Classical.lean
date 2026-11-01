@@ -26,6 +26,14 @@ logic is needed.
 | `by_contra h`    | goal `⊢ P`: assume `h : ¬P`, derive `False` |
 | `push Not`       | push `¬` inwards through `∧`, `∨`, `→`      |
 | `contrapose`     | goal `P → Q`: prove `¬Q → ¬P` instead       |
+
+## Tactics from earlier sheets
+
+| sheet | tactics                   |
+|-------|---------------------------|
+| `L-a` | `intro`, `exact`, `apply` |
+| `L-b` | `constructor`, `obtain`   |
+| `L-c` | `left`, `right`           |
 -/
 
 variable (P Q R S T : Prop)

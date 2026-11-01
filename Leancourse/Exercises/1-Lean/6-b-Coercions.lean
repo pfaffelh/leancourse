@@ -23,10 +23,16 @@ numerals, which are also resolved through a class.
 | `Coe`             | a value becomes a value of another type      |
 | `CoeSort`         | a value becomes a *type*                     |
 | `CoeFun`          | a bundled object is applied like a function  |
-| `push_cast`       | push `↑` inwards: `↑(a+b)` becomes `↑a + ↑b` |
 | `norm_cast`       | normalise casts, often closing the goal      |
 | `exact_mod_cast`  | `exact`, up to casts                         |
 | `OfNat`           | the class behind the numeral `2`             |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                      |
+|---------|------------------------------|
+| `L-a`   | `exact`                      |
+| `1.1-c` | `ring`, `omega`, `push_cast` |
 -/
 
 /-

@@ -14,15 +14,27 @@ arithmetic for us.
 | tactic                 | use it when                                         |
 |------------------------|-----------------------------------------------------|
 | `cases n with`         | split `n : ℕ` into `zero` and `succ k`              |
-| `rw [lemma]`           | rewrite with an equation from Mathlib               |
+| `rw [← lemma]`         | rewrite with an equation from right to left         |
 | `nth_rw k [lemma]`     | rewrite only the `k`-th occurrence                  |
 | `calc`                 | a chain of steps `a = b`, `b = c`, ... or with `≤`  |
 | `ring`                 | an equation that holds in every commutative ring    |
 | `norm_num`             | numerals: `123 * 321 = 39483`, `1 / 2 < 1`          |
 | `linarith`             | a linear (in)equality that follows from hypotheses  |
 | `simp`, `simp?`        | simplify with Mathlib's `@[simp]` lemmas            |
-| `induction n with`     | induction on `n : ℕ`                                |
 | `omega`                | linear arithmetic on `ℕ` and `ℤ`                    |
+| `push_cast`            | move the map `ℕ → ℝ` inwards: `↑(n + 1) = ↑n + 1`   |
+
+## Tactics from earlier sheets
+
+| sheet   | tactics                             |
+|---------|-------------------------------------|
+| `L-a`   | `intro`, `exact`                    |
+| `L-b`   | `constructor`, `obtain`             |
+| `L-c`   | `left`, `right`                     |
+| `1.1-a` | `rfl`, `induction`                  |
+| `1.2-a` | `use`                               |
+| `L-e`   | `by_cases`, `by_contra`, `push Not` |
+| `L-f`   | `have`                              |
 -/
 
 open Nat
@@ -58,8 +70,8 @@ example (n : ℕ) (h : n > 1) : ∃ k : ℕ, n = k + 2 := by
 
 /-! ## Part 2: Rewriting and `calc`
 
-`rw [h]` with `h : a = b` replaces `a` by `b`; `rw [← h]` replaces `b`
-by `a`. Mathlib's lemmas about `+`, `*` and `^` are equations of this
+`rw [h]` (sheet `1.1-a`) with `h : a = b` replaces `a` by `b`; new is
+`rw [← h]`, which replaces `b` by `a`. Mathlib's lemmas about `+`, `*` and `^` are equations of this
 kind. These are the ones used below: -/
 
 #check add_zero   -- a + 0 = a
@@ -185,8 +197,8 @@ example (x : ℝ) (n : ℕ) (h : 0 ≤ x) : x ^ (n + 1) ≤ 1 ↔ x ≤ 1 := by
 
 /-! ## Part 5: Induction
 
-`induction n with` is `cases n with` plus an induction hypothesis in
-the `succ` case. -/
+`induction n with` (sheet `1.1-a`) is `cases n with` plus an induction
+hypothesis in the `succ` case. -/
 
 example (n : ℕ) : n = 0 ∨ ∃ k : ℕ, n = succ k := by
   induction n with

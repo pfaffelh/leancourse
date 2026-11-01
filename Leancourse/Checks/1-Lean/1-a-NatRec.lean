@@ -102,15 +102,10 @@ example (n : ℕ) : myDouble n = myAdd n n := by
       rw [myAdd_succ_left, ih]
 
 -- Exercise 11)
-example (n : ℕ) : myEven (n + 2) = myEven n := by
-  show (!!myEven n) = myEven n
-  cases (myEven n) <;> rfl
-
--- Exercise 12)
 example (m k : ℕ) : m + (k + 1) = (m + k) + 1 := by
   rfl
 
--- Exercise 13)
+-- Exercise 12)
 example (n : ℕ) : 0 + n = n := by
   induction n with
   | zero => rfl

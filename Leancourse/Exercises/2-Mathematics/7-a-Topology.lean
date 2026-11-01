@@ -8,6 +8,15 @@ import Mathlib
 These exercises cover continuity, open and closed sets, closure and
 interior, metric spaces, compactness and connectedness. Replace each
 `sorry` with a proof.
+
+## Tactics from earlier sheets
+
+| sheet   | tactics  |
+|---------|----------|
+| `L-a`   | `exact`  |
+| `L-b`   | `obtain` |
+| `1.1-a` | `rw`     |
+| `L-f`   | `rintro` |
 -/
 
 open Filter

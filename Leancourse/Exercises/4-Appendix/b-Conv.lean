@@ -18,6 +18,15 @@ and then `rw` / `simp` acts only on the focused subterm. The shorthands
 `conv at h => …` works inside a hypothesis.
 
 Replace each `sorry` with a proof that uses `conv`.
+
+## Tactics from earlier sheets
+
+| sheet   | tactics |
+|---------|---------|
+| `L-a`   | `exact` |
+| `1.1-a` | `rw`    |
+| `1.5-a` | `ext`   |
+| `A-a`   | `conv`  |
 -/
 
 -- 1. Plain `rw [h]` would rewrite BOTH `a`s. Rewrite only the first,

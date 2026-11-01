@@ -262,7 +262,6 @@ These require combining multiple techniques from the chapter.
 -- Show that for natural numbers, the arithmetic-geometric mean inequality
 -- holds in a special case.
 example (a b : ℕ) : 4 * a * b ≤ (a + b)^2 := by
-  zify
   nlinarith [sq_nonneg ((a : ℤ) - b)]
 
 -- Exercise F2: Find the right Mathlib lemma and apply it.

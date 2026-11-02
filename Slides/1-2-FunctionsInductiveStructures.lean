@@ -1,0 +1,458 @@
+import VersoSlides
+import Verso.Doc.Concrete
+import Mathlib
+
+open VersoSlides
+
+set_option pp.rawOnError true
+
+/-
+Deck for the chapter "Functions, inductive types, structures" of part
+1 (Lean and its type theory). It follows the chapter section by
+section: commands for terms, the universe hierarchy, function types
+with their terms, inductive types, structures.
+-/
+
+namespace SlidesTypes
+#doc (Slides) "Functions, inductive types, structures" =>
+
+```css
+.reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
+.reveal section p.key, .reveal section .key p { color: #1b91ff; }
+.reveal section table { font-size: 0.62em; margin: 0.2em auto 0.4em; }
+.reveal section table th,
+.reveal section table td { padding: 0.18em 0.9em; }
+.reveal section li { font-size: 0.8em; }
+.reveal section .math.display { font-size: 0.7em; }
+.reveal section .small table, .reveal section table.small { font-size: 0.52em; }
+.reveal section .small td, .reveal section table.small td { padding: 0.1em 0.8em; }
+```
+
+# Functions, inductive types, structures
+
+Lean and its type theory — chapter 2
+
+:::class "key"
+In Lean, types can depend on values.
+:::
+
+# Every term has a type
+
+`x : α` means: `x` is a term of type `α`. `def name : α := x` gives `x` a name.
+
+```lean -panel -stretch
+def answer : ℕ := 42
+def square : ℕ → ℕ := fun n => n * n
+def zeroNeOne : Prop := 0 ≠ 1
+-- a proposition that depends on n
+def ltSucc : Prop := ∀ n : ℕ, n < n + 1
+-- a type that depends on n: vectors in ℝⁿ
+def RVec (n : ℕ) : Type := Fin n → ℝ
+def zeroVec (n : ℕ) : RVec n := fun _ => 0
+```
+
+- `Fin n`: the numbers `i < n`; its definition is on the slide on `Fin n` and `∧`
+- `h : P` with `P : Prop` is a _proof_; `a : α` with `α : Type u` is _data_
+
+:::class "key"
+A type is itself a term, so it has a type as well.
+:::
+
+# Four steps for every type
+
+::::class "small"
+:::table +colHeaders +rowSeps
+*
+  * step
+  * question
+  * function
+  * inductive type
+  * structure
+*
+  * formation
+  * how is the type written?
+  * `α → β`
+  * `ℕ`, `inductive T`
+  * `Point`, `structure S`
+*
+  * construction
+  * how is a term built?
+  * `fun x => e`
+  * `0`, `n + 1`
+  * `⟨1, 2⟩`, `Point.mk 1 2`
+*
+  * use
+  * how is a term used?
+  * `f a`
+  * `match n with` …
+  * `p.x`, `p.y`
+*
+  * computation
+  * what if a term just built is used?
+  * `(fun x => e) a ⟶ e[x := a]`
+  * a match on `0` takes the `0` branch
+  * `⟨1, 2⟩.x ⟶ 1`
+:::
+::::
+
+More type formers in chapter 1.4: pairs and Σ-types `(x : α) × β x`, subtypes `{x : α // P x}`, indexed families, quotients `Quot r`.
+
+:::class "key"
+Types and terms come together. Chapter 1.5 turns the four steps into rules.
+:::
+
+# Commands for terms
+
+```lean -panel -stretch
+def four : ℕ := 2 + 2               -- names a term
+theorem four_eq : four = 4 := rfl   -- names a proof
+example : four = 4 := rfl           -- checks, no name
+#check four    -- the type
+#eval four     -- the value
+#print four    -- the definition
+```
+
+Mathlib also accepts `lemma` for `theorem`.
+
+# `#print` shows the proof term
+
+```lean -panel -stretch
+theorem swap_of_and (P Q : Prop) (h : P ∧ Q) :
+    Q ∧ P := by
+  constructor
+  · exact h.2
+  · exact h.1
+
+#print swap_of_and
+-- theorem swap_of_and : ∀ (P Q : Prop), P ∧ Q → Q ∧ P :=
+-- fun P Q h => ⟨h.right, h.left⟩
+```
+
+:::class "key"
+Tactics build a term.
+:::
+
+# The universe hierarchy
+
+:::table +colHeaders +rowSeps
+*
+  * universe
+  * its terms, for example
+  * lives in
+*
+  * `Prop` = `Sort 0`
+  * `2 = 2`, `∀ n : ℕ, n < n + 1`
+  * `Type`
+*
+  * `Type` = `Type 0` = `Sort 1`
+  * `ℕ`, `ℝ`, `Bool`, `ℕ → ℝ`, `Prop`
+  * `Type 1`
+*
+  * `Type 1` = `Sort 2`
+  * `Type`, `ℕ → Type`
+  * `Type 2`
+*
+  * `Type u` = `Sort (u + 1)`
+  * …
+  * `Type (u + 1)`
+:::
+
+:::class "key"
+One rule: `Sort u : Sort (u + 1)`. So `Prop : Type`.
+:::
+
+`{α : Type*}` in a signature: `α` lies in some universe `Type u`, and Lean introduces the variable `u` itself.
+
+# Function types and Π-types
+
+_Π-type_ `(x : α) → β x`: the type of the value depends on `x`. `α → β` is the case where it does not.
+
+- _Formation_: `(x : α) → β x`, or `α → β`
+- _Construction_: `fun x => e`, also `fun x ↦ e`
+- _Use_: application `f a`, no parentheses
+- _Computation_: `(fun x => e) a` reduces to `e[x := a]` (β)
+
+```lean -panel -stretch
+example : (ℕ → ℕ) = ((n : ℕ) → ℕ) := rfl
+#eval (fun n : ℕ => n + 1) 4        -- 5
+```
+
+# Defining functions
+
+`def name (arguments) : resultType := body` is short for `def name : (arguments) → resultType := fun arguments => body`.
+
+```lean -panel -stretch
+def double (n : ℕ) : ℕ := 2 * n
+example : double = fun n => 2 * n := rfl
+
+def add (a b : ℕ) : ℕ := a + b
+#check add 3     -- add 3 : ℕ → ℕ
+```
+
+Functions are _curried_: `ℕ → ℕ → ℕ` is `ℕ → (ℕ → ℕ)`.
+
+# Anonymous functions
+
+```lean -panel -stretch
+#check (fun x : ℕ ↦ x + 1)        -- ℕ → ℕ
+#eval (fun x : ℕ ↦ x + 1) 5       -- 6
+#check (fun x y : ℕ ↦ x * y)      -- ℕ → ℕ → ℕ
+#eval (fun x y : ℕ ↦ x * y) 3 4   -- 12
+```
+
+- `↦` is typed `\mapsto`; math `x ↦ x^2` is `fun x ↦ x ^ 2`
+- `(· + 10)` is `fun x ↦ x + 10`
+- `(· + ·)` is `fun x y ↦ x + y`
+
+# Dependent functions
+
+```lean -panel -stretch
+example : ∀ n : ℕ, n < n + 1 :=
+  fun n => Nat.lt_succ_self n
+
+-- ZMod n is ℤ/nℤ
+def sevenMod : (n : ℕ) → ZMod n := fun _ => 7
+#check sevenMod 5   -- sevenMod 5 : ZMod 5
+#eval sevenMod 5    -- 2
+```
+
+For data we write `(x : α) → β x`, for a proposition `∀ x : α, β x`.
+
+:::class "key"
+`f : (x : α) → β x` picks `f x ∈ β x` for every `x`: an element of $`\prod_x \beta(x)`.
+:::
+
+# Polymorphic functions
+
+```lean -panel -stretch
+def myId (α : Type) (a : α) : α := a
+#check myId ℕ 42          -- ℕ
+def myId' {α : Type} (a : α) : α := a
+#check myId' 42           -- ℕ, inferred
+#check @myId'             -- {α : Type} → α → α
+```
+
+```
+def id {α : Sort u} (a : α) : α := a   -- Lean's Prelude
+```
+
+:::class "key"
+Braces: implicit argument; `@` shows it. `Sort u`: every universe, `Prop` included.
+:::
+
+# Proofs as arguments
+
+```lean -panel -stretch
+def safeDiv (a b : ℤ) (_ : b ≠ 0) : ℤ := a / b
+
+#eval safeDiv 10 3 (by decide)   -- 3
+```
+
+The third argument is a proof of `3 ≠ 0`; `decide` finds it by computing. Its type depends on `b`, so the type of `safeDiv` is a Π-type.
+
+# Inductive types
+
+```lean -panel -stretch
+inductive MyNat where
+  | zero : MyNat
+  | succ : MyNat → MyNat
+
+example : MyNat := .succ (.succ .zero)
+```
+
+- _Formation_: `MyNat : Type`
+- _Construction_: the constructors `MyNat.zero`, `MyNat.succ`; `.succ` if the type is known
+- _Use_: pattern matching, translated into the recursor `MyNat.rec`
+- _Computation_: a match on a constructor takes its branch (ι)
+
+# More inductive types
+
+```lean -panel -stretch
+inductive Colour where
+  | red | green | blue
+
+inductive MyOption (α : Type) where
+  | none : MyOption α
+  | some : α → MyOption α
+
+example : MyOption ℕ := .some 3
+```
+
+`MyOption α` is a type for every type `α`.
+
+# `ℕ∞` is `Option ℕ`
+
+```lean -panel -stretch
+def MyENat : Type := Option ℕ
+```
+
+Mathlib's `ℕ∞` is notation for `ENat`, which is `WithTop ℕ`, which is `Option ℕ`:
+
+```lean -panel -stretch
+example : ℕ∞ = MyENat := rfl
+example : (⊤ : ℕ∞) = Option.none := rfl
+example : (3 : ℕ∞) = Option.some 3 := rfl
+```
+
+`WithTop α` is `Option α` with `none` read as a new largest element `⊤`.
+
+:::class "key"
+Measures take values in `ℝ≥0∞ = WithTop ℝ≥0`, built the same way.
+:::
+
+# Disjunction is an inductive type
+
+```lean -panel -stretch
+inductive MyOr (a b : Prop) : Prop where
+  | inl : a → MyOr a b
+  | inr : b → MyOr a b
+
+example (P Q : Prop) (hP : P) : MyOr P Q := .inl hP
+```
+
+Two constructors: a proof of `P ∨ Q` is a proof of `P` or one of `Q`, marked by the constructor. Lean's `∨` is `Or`, declared in this way.
+
+:::class "key"
+`∧` has one constructor with two fields: a structure, coming next.
+:::
+
+# Structures
+
+```lean -panel -stretch
+structure Point where
+  x : ℕ
+  y : ℕ
+
+example : (Point.mk 3 4).x = 3 := rfl
+example (p : Point) : p = Point.mk p.x p.y := rfl
+```
+
+An inductive type with one constructor `Point.mk` and named fields.
+
+- _Formation_: `Point : Type`
+- _Construction_: the one constructor `Point.mk`
+- _Use_: projections `Point.x p`, written `p.x`
+- _Computation_: `(Point.mk 3 4).x` reduces to `3`; η: `p ≡ Point.mk p.x p.y`
+
+# Building values
+
+```lean -panel -stretch
+def p1 : Point := ⟨1, 2⟩
+def p2 : Point := { x := 3, y := 4 }
+def p3 : Point where
+  x := 0
+  y := 0
+def p4 : Point := { p1 with y := 10 }
+```
+
+Anonymous constructor, record, `where` form: all call `Point.mk`.
+
+:::class "key"
+Structures are immutable: `with` builds a new `Point`.
+:::
+
+# Defaults and extensions
+
+```lean -panel -stretch
+-- a, a + d, a + 2d, ...
+structure ArithProg where
+  start : ℕ := 0
+  step : ℕ := 1
+def evens : ArithProg := { step := 2 }
+
+structure Point3D extends Point where
+  z : ℕ
+def q : Point3D := { x := 1, y := 2, z := 3 }
+#eval q.x    -- 1 (inherited)
+```
+
+# Data with a property
+
+```lean -panel -stretch
+structure IntAddMap where
+  toFun : ℤ → ℤ
+  map_add : ∀ x y,
+    toFun (x + y) = toFun x + toFun y
+
+def triple : IntAddMap where
+  toFun x := 3 * x
+  map_add x y := mul_add 3 x y
+```
+
+:::class "key"
+A field may be a proof. Linear maps, continuous functions, homomorphisms: all of this kind.
+:::
+
+# `Fin n` and `∧` are structures
+
+In Lean's Prelude:
+
+```
+structure Fin (n : ℕ) where
+  val : ℕ
+  isLt : val < n
+
+structure And (a b : Prop) : Prop where
+  intro ::
+  left : a
+  right : b
+```
+
+```lean -panel -stretch
+example : Fin 3 := ⟨2, by decide⟩
+example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
+  ⟨h.2, h.1⟩
+```
+
+`intro ::` names the constructor `And.intro` instead of `And.mk`; `h.1`, `h.2` are `h.left`, `h.right`.
+
+# Structures and inductive types
+
+::::class "small"
+:::table +colHeaders +rowSeps
+*
+  * constructors
+  * data
+  * proposition
+*
+  * none
+  * `Empty`
+  * `False`
+*
+  * one, no arguments
+  * `Unit`
+  * `True`
+*
+  * two, no arguments
+  * `Bool`
+  * —
+*
+  * one, two arguments
+  * `α × β`
+  * `P ∧ Q`
+*
+  * two, one argument each
+  * `α ⊕ β`
+  * `P ∨ Q`
+*
+  * one, value and proof
+  * `{x : α // P x}`
+  * `∃ x, P x`
+*
+  * recursive
+  * `ℕ`, `List α`
+  * `n ≤ m`
+:::
+::::
+
+:::class "key"
+A `structure` is an inductive type with one constructor, plus field names, projections, defaults and `extends`.
+:::
+
+# Summary
+
+- Universes: `Prop`, `Type 0 : Type 1 : ...`; there is no `Type : Type`.
+- Functions: `(x : α) → β x`, built with `fun`, used by application, computed by β.
+- `def`, currying, `fun x ↦ …`, `·`, implicit and universe-polymorphic arguments.
+- `inductive`: built with constructors, used by pattern matching (chapter 1.3), computed by ι. `∨` is one of them.
+- `structure`: an inductive type with one constructor, named fields, projections; a field may be a proof. `Fin n` and `∧` are structures.

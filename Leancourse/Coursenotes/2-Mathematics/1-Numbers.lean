@@ -1,76 +1,90 @@
 import VersoManual
 import Manual.Meta
 import Leancourse.Markup
-import Leancourse.Coursenotes.References
 import Mathlib
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
-open Leancourse.Refs
 open MyDef
+open scoped NNReal ENNReal
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Types" =>
+#doc (Manual) "Numbers" =>
 %%%
 htmlSplit := .never
-tag := "types"
+tag := "numbers"
 %%%
 
 This section is published right before the chapter is taught.
 
-# Where types come from
+# Notation
 %%%
-tag := "types-history"
-%%%
-
-This section is published right before the chapter is taught.
-
-# The universe hierarchy
-%%%
-tag := "type-universes"
+tag := "numbers-notation"
 %%%
 
 This section is published right before the chapter is taught.
 
-# How the universe of a type is determined
+# How the number types are built
 %%%
-tag := "universe-determined"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Why `Prop` is special
-%%%
-tag := "prop-special"
+tag := "number-types"
 %%%
 
 This section is published right before the chapter is taught.
 
-# Inductive types
+## The integers and the rationals
 %%%
-tag := "inductive"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Structures
-%%%
-tag := "structures"
+number := false
 %%%
 
 This section is published right before the chapter is taught.
 
-# Inductive types vs structures
+## The real numbers
 %%%
-tag := "inductive-vs-structure"
+tag := "reals-quotient"
+number := false
 %%%
 
 This section is published right before the chapter is taught.
 
-# Quotient types
+## Complex, nonnegative and extended numbers
 %%%
-tag := "quotient-types"
+number := false
+%%%
+
+This section is published right before the chapter is taught.
+
+# Arithmetic in ℕ and ℤ
+%%%
+tag := "nat-int-arithmetic"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Total functions and junk values
+%%%
+tag := "junk-values"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Three kinds of power
+%%%
+tag := "powers"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Nonnegative and extended reals
+%%%
+tag := "nnreal-ennreal"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Casts
+%%%
+tag := "number-casts"
 %%%
 
 This section is published right before the chapter is taught.

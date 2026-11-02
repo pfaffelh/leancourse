@@ -1,187 +1,192 @@
 import VersoManual
 import Manual.Meta
 import Leancourse.Markup
-import Leancourse.Coursenotes.References
 import Mathlib
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
-open Leancourse.Refs
 open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Universes, Axioms, and Foundations" =>
+#doc (Manual) "Typeclasses" =>
 %%%
 htmlSplit := .never
-tag := "universes-axioms"
+tag := "typeclasses"
 %%%
 
 This section is published right before the chapter is taught.
 
-# Prop vs Type: proof irrelevance
+# The problem typeclasses solve
 %%%
-tag := "prop-vs-type"
-%%%
-
-This section is published right before the chapter is taught.
-
-# The Calculus of Inductive Constructions
-%%%
-tag := "cic"
+tag := "typeclass-motivation"
 %%%
 
 This section is published right before the chapter is taught.
 
-# The axioms of Lean
+# Defining typeclasses
 %%%
-tag := "lean-axioms"
+tag := "defining-typeclasses"
 %%%
 
 This section is published right before the chapter is taught.
 
-## Propositional extensionality (`propext`)
+# Data classes and Prop classes
+%%%
+tag := "class-universe"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Creating instances
+%%%
+tag := "creating-instances"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Using `deriving`
+%%%
+tag := "deriving"
+%%%
+
+This section is published right before the chapter is taught.
+
+# The square bracket notation
+%%%
+tag := "square-bracket-notation"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Inspecting typeclass arguments with `@`
+%%%
+tag := "inspecting-typeclasses"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Defining multiple instances
+%%%
+tag := "multiple-instances"
+%%%
+
+This section is published right before the chapter is taught.
+
+# How instance resolution works
+%%%
+tag := "instance-resolution"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Output parameters
+%%%
+tag := "outparam"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Propositions as instances: `Fact`
+%%%
+tag := "fact"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Where numerals come from (`OfNat`)
+%%%
+tag := "ofnat"
+%%%
+
+This section is published right before the chapter is taught.
+
+# The `Decidable` typeclass
+%%%
+tag := "decidable-typeclass"
+%%%
+
+This section is published right before the chapter is taught.
+
+## The `classical` tactic
 %%%
 number := false
-tag := "axiom-propext"
+tag := "classical-tactic"
 %%%
 
 This section is published right before the chapter is taught.
 
-## The axiom of quotients
+# Classes over type constructors
+%%%
+tag := "type-constructor-classes"
+%%%
+
+This section is published right before the chapter is taught.
+
+## Functor
 %%%
 number := false
-tag := "axiom-quot"
+tag := "functor-typeclass"
 %%%
 
 This section is published right before the chapter is taught.
 
-## The axiom of choice (`Classical.choice`)
+## Monad
 %%%
 number := false
-tag := "axiom-choice"
+tag := "monad-typeclass"
 %%%
 
 This section is published right before the chapter is taught.
 
-# What is *not* an axiom: `funext` and excluded middle
-%%%
-tag := "derived-not-axioms"
-%%%
-
-This section is published right before the chapter is taught.
-
-## Function extensionality is a theorem
+## The `do`-notation
 %%%
 number := false
-tag := "axiom-funext"
+tag := "do-notation"
 %%%
 
 This section is published right before the chapter is taught.
 
-## Excluded middle is a theorem (Diaconescu)
+## Lists as a monad
 %%%
 number := false
-tag := "em-derived"
+tag := "list-monad"
 %%%
 
 This section is published right before the chapter is taught.
 
-# Declared axioms vs. what the kernel bakes in
-%%%
-tag := "baked-in"
-%%%
-
-This section is published right before the chapter is taught.
-
-## More that the kernel bakes in
+## The monad laws
 %%%
 number := false
-tag := "baked-in-more"
+tag := "monad-laws"
 %%%
 
 This section is published right before the chapter is taught.
 
-## What this means
+# Coercions
 %%%
-number := false
-tag := "baked-in-meaning"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Why the kernel has no loops
-%%%
-tag := "termination"
+tag := "coercions"
 %%%
 
 This section is published right before the chapter is taught.
 
-## Recursors instead of recursion
+# The algebraic hierarchy in Mathlib
 %%%
-number := false
-tag := "recursors-not-recursion"
-%%%
-
-This section is published right before the chapter is taught.
-
-## The second door: strict positivity
-%%%
-number := false
-tag := "strict-positivity"
+tag := "algebraic-hierarchy"
 %%%
 
 This section is published right before the chapter is taught.
 
-## Non-termination is allowed, just not in proofs
+# Managing instances
 %%%
-number := false
-tag := "partial-def"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Constructive vs classical logic
-%%%
-tag := "constructive-classical"
+tag := "managing-instances"
 %%%
 
 This section is published right before the chapter is taught.
 
-## Excluded middle in use
+# Practical tips
 %%%
-number := false
-tag := "excluded-middle"
-%%%
-
-This section is published right before the chapter is taught.
-
-## Decidability, classically
-%%%
-number := false
-tag := "decidable-classically"
-%%%
-
-This section is published right before the chapter is taught.
-
-## When do you need Classical.choice?
-%%%
-number := false
-tag := "when-classical"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Comparison with ZFC set theory
-%%%
-tag := "comparison-zfc"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Brief mention of other type theories
-%%%
-tag := "other-type-theories"
+tag := "typeclass-tips"
 %%%
 
 This section is published right before the chapter is taught.

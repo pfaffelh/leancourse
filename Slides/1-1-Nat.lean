@@ -54,7 +54,7 @@ Write `Nat.succ (Nat.succ Nat.zero)` on the board and let them count
 it out. Numerals are notation, nothing more.
 
 `#print Nat` live is worth the twenty seconds. The general `inductive`
-keyword is chapter 1.3 — do not open it here.
+keyword is chapter 1.2 — do not open it here.
 :::
 
 # Peano, 1889
@@ -154,7 +154,7 @@ Then run it in the editor: `rfl` accepts because the chain ends at `4`.
 
 - Terms *reduce*: `(fun x => x + 1) 4` becomes `5`.
 - `a ≡ b`, *definitionally equal*: both reduce to a common form.
-- The kernel treats them as interchangeable (*conversion*).
+- The _kernel_, the small part of Lean that checks every term, treats them as interchangeable (*conversion*).
 - Propositional equality `a = b` is a `Prop` and may need a proof.
 
 :::class "key"
@@ -399,7 +399,7 @@ One case, so nothing to learn from a proof of `True`.
 :::notes
 `Prop` is the odd one out: no `inductive` declaration, no definition to
 unfold, `#print Prop` fails. It is `Sort 0`, baked into the kernel.
-Proof irrelevance and the rest come in chapter 2.2.
+Proof irrelevance and the rest come in chapter 1.5.
 
 One constructor means one case in the recursor, which is why a proof of
 `True` carries no information.
@@ -466,7 +466,7 @@ In practice students write `h.elim`, `exfalso`, or `cases h`, never
 One term of type `False` makes every statement a theorem. That is the
 whole reason the empty type matters.
 
-Picked up again in chapter 2.2 with Lean's axioms, and in the Girard
+Picked up again in chapter 2.3 with Lean's axioms, and in the Girard
 project.
 :::
 

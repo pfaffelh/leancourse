@@ -41,7 +41,7 @@ file then checks instantly). Most demos below are one line to type.
   understands as that tower.
 - **Live:** `#print Nat`. Output is short: type `Nat : Type`, zero
   parameters, the two constructors. Twenty seconds.
-- Do **not** open the general `inductive` keyword — that is chapter 1.2/1.3.
+- Do **not** open the general `inductive` keyword — that is chapter 1.2.
 - **[Hintergrund]** The unary tower is the *meaning*, not the storage.
   The kernel has special support for number literals and computes
   `+`, `*`, `%`, … on them with big-integer arithmetic (GMP).
@@ -103,7 +103,7 @@ file then checks instantly). Most demos below are one line to type.
 - Pattern matching, `cases`, `induction` all compile down to `Nat.rec`.
 - The general form lets the result *type* depend on `n`
   (`motive : Nat → Sort u`) — that is what makes it the induction
-  principle. Needs universes, comes in 1.2. Today: fixed `C`.
+  principle. Needs universes, comes in 1.3. Today: fixed `C`.
 - **[Hintergrund]** The full signature, if someone runs `#check @Nat.rec`:
   `{motive : Nat → Sort u} → motive zero → ((n : Nat) → motive n → motive (n+1)) → (t : Nat) → motive t`.
   With `motive := fun _ => C` this is the slide's version; with
@@ -155,8 +155,12 @@ file then checks instantly). Most demos below are one line to type.
 - The kernel treats definitionally equal terms as interchangeable,
   in particular when it compares types (*conversion*).
 - **Blue line:** `rfl` proves exactly a definitional equality.
-- `#eval` runs the same reduction and prints the result. `rfl`, `#eval`
-  and every "reduces to" are one phenomenon.
+- Two parts of Lean, named here for the first time: the *elaborator*
+  turns what we write (notation, omitted arguments, tactics) into an
+  explicit term; the *kernel* checks that term against fixed rules.
+  Only the kernel has to be trusted. Details in chapter 1.5.
+- `#eval` computes the value too, but by running compiled code, not by
+  reduction. For the terms of this chapter both agree.
 - The appendix *Equality* has the full three-way comparison.
 - **[Hintergrund]** Why it matters beyond `rfl`: if `h : P (2 + 2)`,
   then `h` *is* a proof of `P 4` — no rewriting needed, because the two
@@ -193,7 +197,7 @@ file then checks instantly). Most demos below are one line to type.
   does the rest (δ, ι).
 - η: the one people doubt. **Ask before showing:** should
   `fun x => f x` and `f` be equal? Opinions split. Lean says yes, by
-  definition — and `funext` (chapter 1.5) is the propositional
+  definition — and `funext` (chapter 1.5, *Axioms*) is the propositional
   version for functions that agree on every input.
 
 ---
@@ -203,7 +207,7 @@ file then checks instantly). Most demos below are one line to type.
 - The three rules Lean adds on top of the lambda calculus.
 - δ: `twice 3` unfolds to `2 * 3`, then computes.
 - ι: `motive` has to be given explicitly here because nothing in the
-  goal determines it. Wave at it and move on — explanation in 1.2.
+  goal determines it. Wave at it and move on — explanation in 1.3.
 - ζ: `let` substitutes.
 - **Blue line:** `rfl` is far stronger than "syntactically identical".
 - One more worth running: `example : List.length [7, 8, 9] = 3 := rfl`.
@@ -272,7 +276,7 @@ file then checks instantly). Most demos below are one line to type.
   thesis (2019). Reduction is not even strongly normalizing (Abel and
   Coquand, 2020). The kernel's algorithm is sound but incomplete; in
   practice nobody hits the gap. The course notes say the same (box in
-  1.1, *Conversion* in 1.2).
+  1.1, *Conversion* in 1.5).
 - **[Hintergrund]** "Terminates" is also the theory. In practice `rfl`
   and `decide` can time out (`maximum recursion depth` /
   `deterministic timeout`) on terms that are large in unary form; the
@@ -299,7 +303,7 @@ file then checks instantly). Most demos below are one line to type.
     the code generator cannot compile a bare recursor. The chapter has
     it in a collapsible box.
   - `bif` takes a `Bool`; `if … then … else` takes a `Prop` together
-    with a `Decidable` instance. Typeclasses are chapter 1.4; just say
+    with a `Decidable` instance. Typeclasses are chapter 1.6; just say
     "two different ifs" if asked.
 
 ---
@@ -311,7 +315,7 @@ file then checks instantly). Most demos below are one line to type.
 - Everything they will actually write looks like this, not like a call
   to the recursor. The sheet `1.1-a` forbids it on purpose, so they see
   once what is underneath.
-- Details in chapter 1.3 (Terms).
+- Details in chapter 1.3 (*Pattern matching*).
 - Can be cut if short of time; slide 14 already makes the point.
 
 ---
@@ -321,7 +325,7 @@ file then checks instantly). Most demos below are one line to type.
 - First: `Prop` itself is **not** an inductive type. No declaration, no
   definition to unfold — `#print Prop` fails. It is `Sort 0`, a
   primitive of the kernel. The rules it carries (proof irrelevance and
-  the rest) come in 1.2.
+  the rest) come in 1.5.
 - `True` *is* inductive, in `Prop`: one constructor `True.intro`, no
   argument. So `True.intro` is a proof of `True`.
 - Three proofs on the slide:
@@ -383,7 +387,7 @@ file then checks instantly). Most demos below are one line to type.
 - Link back to week 1: this is exactly what the summer-2026 soundness
   bugs were about — one of them (lean4 issue #14576) produced a term of
   `False` **without any axiom**. Fixed, but it shows what is at stake.
-- Picked up again in chapter 2.2 (Lean's axioms) and in the Girard
+- Picked up again in chapter 2.3 (Lean's axioms) and in the Girard
   project (*Type : Type* makes `False` inhabited).
 
 ---

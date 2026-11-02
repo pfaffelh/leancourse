@@ -1,55 +1,21 @@
 import VersoManual
 import Manual.Meta
 import Leancourse.Markup
+import Leancourse.Coursenotes.References
 import Mathlib
--- reuse the types (`Point`, `MyNat`, `MyComplex`, ...) declared there
-import «Leancourse».Coursenotes.«1-Lean».«2-Types»
+import «Leancourse».Coursenotes.«1-Lean».«2-FunctionsInductiveStructures»
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
+open Leancourse.Refs
 open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Terms" =>
+#doc (Manual) "Pattern matching and recursion" =>
 %%%
 htmlSplit := .never
-tag := "terms"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Naming terms with `def`
-%%%
-tag := "naming-terms"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Constructing and using structure values
-%%%
-tag := "structure-values"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Defining and evaluating functions
-%%%
-tag := "pure-functions"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Polymorphic functions
-%%%
-tag := "polymorphic-functions"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Anonymous functions
-%%%
-tag := "anonymous-functions"
+tag := "pattern-matching-and-recursion"
 %%%
 
 This section is published right before the chapter is taught.
@@ -64,6 +30,35 @@ This section is published right before the chapter is taught.
 # Recursion and termination
 %%%
 tag := "recursion"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Proving things about recursive definitions
+%%%
+tag := "recursive-proofs"
+%%%
+
+This section is published right before the chapter is taught.
+
+# The recursor
+%%%
+tag := "recursor"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Strict positivity
+%%%
+tag := "positivity-rule"
+%%%
+
+This section is published right before the chapter is taught.
+
+## Why positivity is enough
+%%%
+tag := "positivity-sufficient"
+number := false
 %%%
 
 This section is published right before the chapter is taught.

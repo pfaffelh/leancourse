@@ -6,3 +6,6 @@
 # Die eigene Arbeitskopie der Blaetter, auf welcher Ebene auch immer
 # sie liegt.
 MyExercises/
+
+# Short tests (pen and paper), never published
+/tests

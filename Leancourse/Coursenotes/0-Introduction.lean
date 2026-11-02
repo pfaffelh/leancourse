@@ -107,7 +107,7 @@ Two answers appeared in 1908, and both are still in use. They differ in what the
 * + 1908
   + restricts
   + `x ∈ x` is
-  + the stratification is
+  + the hierarchy is
 * + Ernst Zermelo
   + which sets *exist*
   + well-formed, and false
@@ -120,11 +120,11 @@ Two answers appeared in 1908, and both are still in use. They differ in what the
 
 Zermelo replaced unrestricted comprehension, which forms $`\{x : \varphi(x)\}` for any property, by separation, which forms only $`\{x \in A : \varphi(x)\}` out of a set $`A` already given. Then $`R` is never formed, and Russell's argument turns into a theorem instead of a contradiction: there is no set of all sets. That `x ∈ x` holds for no set is a later and separate axiom, foundation.
 
-Russell stratified the language itself, so that `x ∈ x` is not false but ungrammatical. Well-formedness is then a question about syntax, settled before any question of truth arises.
+Russell restricted the language itself, so that `x ∈ x` is not false but ungrammatical. Well-formedness is then a question about syntax, settled before any question of truth arises.
 
 However, Russell's ban was wider than the paradox. It forbids *every* definition that quantifies over a totality containing the object being defined, and ordinary mathematics is full of those. The supremum of a bounded set of reals is defined by quantifying over reals, so under the ban it is not itself a real number, and analysis stops. Russell recovered it by adding an axiom, reducibility, which grants that every forbidden definition agrees with a permitted one — an axiom that returns most of what the ban had taken. Lean draws the line differently for propositions and for data: definitions that quantify over all propositions are allowed in `Prop`, but not over all types in `Type`; see {ref "prop-special"}[Why `Prop` is special].
 
-Mathematics went with Zermelo, proof assistants with Russell ({ref "types-history"}[Where types come from]).
+Mathematics went with Zermelo, proof assistants with Russell ({ref "type-rules"}[The rules of Lean's type theory]).
 
 Whitehead and Russell spent *Principia Mathematica* rebuilding the rest; their proof that `1 + 1 = 2` arrives in the second volume with the note that *the above proposition is occasionally useful*. Done by hand, formalization is unbearable, and for most of a century little came of it.
 
@@ -242,7 +242,7 @@ number := false
 tag := "first-assistants"
 %%%
 
-Nicolaas Govert de Bruijn started *[Automath](https://en.wikipedia.org/wiki/Automath)* at Eindhoven in 1967 and published it in 1968, the first language in which a machine checked proofs. The move is a retreat from the second question to the first. The field that follows is named after what the human keeps doing, *interactive* theorem proving. Its foundation is a typed lambda calculus with dependent types, that is, types that may mention terms, as `Vec α n` ({ref "vectors-indexed"}[lists of length `n`]) mentions `n`. It was the first system in which a proof is a term and checking it is type-checking, the {ref "entscheidungsproblem"}[Curry-Howard correspondence]; de Bruijn found that correspondence himself, not knowing Howard's work. In 1977 L. S. van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it, the first mathematics book verified end to end.
+Nicolaas Govert de Bruijn started *[Automath](https://en.wikipedia.org/wiki/Automath)* at Eindhoven in 1967 and published it in 1968, the first language in which a machine checked proofs. The move is a retreat from the second question to the first. The field that follows is named after what the human keeps doing, *interactive* theorem proving. Its foundation is a typed lambda calculus with dependent types, that is, types that may mention terms, as `Vec α n` ({ref "indexed-families"}[lists of length `n`]) mentions `n`. It was the first system in which a proof is a term and checking it is type-checking, the {ref "entscheidungsproblem"}[Curry-Howard correspondence]; de Bruijn found that correspondence himself, not knowing Howard's work. In 1977 L. S. van Benthem Jutting pushed Landau's *Grundlagen der Analysis* through it, the first mathematics book verified end to end.
 
 :::figure "Nicolaas Govert de Bruijn, who built Automath" (tag := "debruijn")
 ![Nicolaas Govert de Bruijn](/static/figures/portraits/debruijn.jpg)
@@ -493,9 +493,9 @@ proof uses, and the proof of `False` from #14576 used none. Second, the remedy i
 redundancy rather than trust: about 25 independent Lean kernels exist, so a proof can be
 rechecked by a program sharing no code with the one that accepted it. Joachim Breitner's
 [*Con-Leche*](https://github.com/leanprover/con-leche) goes further: an external checker,
-written in Lean, with a proof in Lean that it never accepts a proof of `False`. That is a
-statement about the checker, not about Lean's type theory, whose consistency it assumes
-({ref "prop-special"}[the chapter on types]).
+written in Lean, with a proof in Lean that every environment it accepts has a model in set
+theory, so it never accepts a proof of `False`. That is a statement about this checker, not
+about the kernel Lean itself runs ({ref "prop-special"}[Why `Prop` is special]).
 
 This account follows {citet hales2026}[].
 :::

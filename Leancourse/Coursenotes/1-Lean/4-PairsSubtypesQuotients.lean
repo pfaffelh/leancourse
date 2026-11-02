@@ -9,122 +9,122 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Typeclasses" =>
+#doc (Manual) "Pairs, subtypes, families, quotients" =>
 %%%
 htmlSplit := .never
-tag := "typeclasses"
+tag := "type-formers"
 %%%
 
 This section is published right before the chapter is taught.
 
-# The problem typeclasses solve
+# Pairs and Σ-types
 %%%
-tag := "typeclass-motivation"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Defining typeclasses
-%%%
-tag := "defining-typeclasses"
+tag := "sigma-types"
 %%%
 
 This section is published right before the chapter is taught.
 
-# Data classes and Prop classes
+# Subtypes
 %%%
-tag := "class-universe"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Creating instances
-%%%
-tag := "creating-instances"
+tag := "subtypes"
 %%%
 
 This section is published right before the chapter is taught.
 
-# Using `deriving`
+# Type families
 %%%
-tag := "deriving"
-%%%
-
-This section is published right before the chapter is taught.
-
-# The square bracket notation
-%%%
-tag := "square-bracket-notation"
+tag := "type-families"
 %%%
 
 This section is published right before the chapter is taught.
 
-# Inspecting typeclass arguments with `@`
+# Indexed families and inductive predicates
 %%%
-tag := "inspecting-typeclasses"
-%%%
-
-This section is published right before the chapter is taught.
-
-# The algebraic hierarchy in Mathlib
-%%%
-tag := "algebraic-hierarchy"
+tag := "indexed-families"
 %%%
 
 This section is published right before the chapter is taught.
 
-# Defining multiple instances
+# Propositions as types
 %%%
-tag := "multiple-instances"
-%%%
-
-This section is published right before the chapter is taught.
-
-# How instance resolution works
-%%%
-tag := "instance-resolution"
+tag := "curry-howard"
 %%%
 
 This section is published right before the chapter is taught.
 
-# Output parameters
+## Implication, negation, and `∀`
 %%%
-tag := "outparam"
-%%%
-
-This section is published right before the chapter is taught.
-
-# The `Decidable` typeclass
-%%%
-tag := "decidable-typeclass"
+tag := "forall-pi"
+number := false
 %%%
 
 This section is published right before the chapter is taught.
 
-# Coercions
+## `True` and `False`
 %%%
-tag := "coercions"
-%%%
-
-This section is published right before the chapter is taught.
-
-# Where numerals come from (`OfNat`)
-%%%
-tag := "ofnat"
+tag := "false-true-types"
+number := false
 %%%
 
 This section is published right before the chapter is taught.
 
-# Managing instances
+## Conjunction
 %%%
-tag := "managing-instances"
+tag := "conjunction-product"
+number := false
 %%%
 
 This section is published right before the chapter is taught.
 
-# Practical tips
+## Disjunction
 %%%
-tag := "typeclass-tips"
+tag := "disjunction-sum"
+number := false
+%%%
+
+This section is published right before the chapter is taught.
+
+## The existential quantifier
+%%%
+tag := "exists-sigma"
+number := false
+%%%
+
+This section is published right before the chapter is taught.
+
+## The dictionary
+%%%
+tag := "curry-howard-summary"
+number := false
+%%%
+
+This section is published right before the chapter is taught.
+
+# Quotient types
+%%%
+tag := "quotient-types"
+%%%
+
+This section is published right before the chapter is taught.
+
+## Example: the integers mod n
+%%%
+tag := "zmod-quotient"
+number := false
+%%%
+
+This section is published right before the chapter is taught.
+
+# The four steps at a glance
+%%%
+tag := "four-steps"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Some history
+%%%
+tag := "types-history"
 %%%
 
 This section is published right before the chapter is taught.

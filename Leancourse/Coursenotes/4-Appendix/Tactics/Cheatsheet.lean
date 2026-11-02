@@ -191,6 +191,9 @@ tag := "cheatsheet"
 * + `⊢ (2 + 2 : ℕ) = 4`
   + `decide`
   + `no goals 🎉`
+* + `⊢ ∃ t ⊆ s, ∀ x ∈ t, P x`
+  + `classical`
+  + same goal; `s.filter P` now type-checks
 * + `⊢ True`
   + `trivial`
   + `no goals 🎉`

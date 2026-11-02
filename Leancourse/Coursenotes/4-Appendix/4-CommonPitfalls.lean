@@ -76,18 +76,18 @@ tag := "definitional-equality"
 
 In Lean, some equalities hold _by definition_ ({ref "defeq"}[definitional equality]), while others require a proof (propositional equality). The distinction can be surprising.
 
-**When `rfl` works:** `rfl` closes a goal `a = b` when `a` and `b` are definitionally equal. For example:
+*When `rfl` works.* `rfl` closes a goal `a = b` when `a` and `b` are definitionally equal. For example:
 ```lean
 example : 2 + 3 = 5 := by rfl        -- Lean computes this
 example (n : ℕ) : n + 0 = n := by rfl -- by definition of Nat.add
 ```
 
-**When `rfl` fails:**
+*When `rfl` fails.*
 ```
 -- This does NOT work:
 -- example (n : ℕ) : 0 + n = n := by rfl
--- Because Nat.add is defined by recursion on the first argument,
--- 0 + n is not definitionally equal to n.
+-- Because Nat.add is defined by recursion on the second
+-- argument, 0 + n is not definitionally equal to n.
 ```
 
 The {ref "change"}[`change`] tactic lets you replace the goal with a definitionally equal one:
@@ -104,7 +104,45 @@ example (n : ℕ) : Nat.succ n = n + 1 := by
   rfl
 ```
 
-**Tip:** If a tactic unexpectedly fails, try using `change` to rewrite the goal into an equivalent form. Sometimes the goal looks right in the Infoview but contains hidden definitional mismatches.
+*Tip.* If a tactic unexpectedly fails, try using `change` to rewrite the goal into an equivalent form. Sometimes the goal looks right in the Infoview but contains hidden definitional mismatches.
+
+*`rw` and `simp` do not unfold definitions.* Definitional equality is checked by `rfl`, `exact` and `change`, which unfold definitions as far as needed. `rw` and `simp` instead look for the pattern *syntactically*, as it is written. So a hypothesis about `n + n` does not rewrite a goal about `double' n`, although the two are definitionally equal:
+
+```lean
+def double' (n : ℕ) : ℕ := n + n
+
+example (n : ℕ) (h : n + n = 4) : double' n = 4 := h
+```
+
+```lean +error
+example (n : ℕ) (h : n + n = 4) : double' n = 4 := by
+  rw [h]
+```
+
+The remedy is to unfold first, with `unfold double'`, `rw [double']` or `simp [double']`:
+
+```lean
+example (n : ℕ) (h : n + n = 4) : double' n = 4 := by
+  unfold double'
+  rw [h]
+```
+
+*How far definitions unfold.* Every definition carries a *reducibility*, which says how readily tactics unfold it:
+
+:::table (align := left) +header
+* + Declared with
+  + Unfolded
+* + `abbrev`, or `@[reducible] def`
+  + also by `simp` and instance search, but not by `rw`, which matches the pattern as written
+* + `def`
+  + by `rfl`, `exact`, `change`, and the kernel; by `rw` and `simp` only when asked
+* + `@[irreducible] def`, `irreducible_def`
+  + only on explicit request (`unfold`, `rw [f]`, or the equation lemma)
+* + `theorem`
+  + in practice never: by proof irrelevance, the value of a proof is not needed
+:::
+
+This is also why a statement is a `theorem` and a construction a `def`; a `def` whose type is a proposition is accepted, but Lean warns. Mathlib uses `irreducible_def` for objects whose definition should be reached only through the lemmas proved about it, for instance `Asymptotics.IsBigOWith` and the composition `ProbabilityTheory.Kernel.compProd` of kernels.
 
 # Typeclass diamonds
 %%%
@@ -194,6 +232,51 @@ set_option trace.Meta.synthInstance true in
 
 -- Profile a tactic:
 set_option profiler true in
+```
+
+# How an object is represented
+%%%
+tag := "representation-pitfalls"
+%%%
+
+Some mathematical objects have a representation in Mathlib whose details show up in proofs. The number systems and their junk values are treated in {ref "numbers"}[Numbers], finite sets and the different cardinalities in {ref "finite-sets"}[Finite sets and sums]. Four more:
+
+*`Fin n` computes modulo `n`.* Addition on `Fin n` wraps around:
+
+```lean
+example : (2 : Fin 3) + 1 = 0 := rfl
+```
+
+*Vectors.* On `Fin n → ℝ` the norm is the maximum norm. The Euclidean norm lives on `EuclideanSpace ℝ (Fin n)`, a different type with the same elements:
+
+```lean
+example : ‖(![3, -4] : Fin 2 → ℝ)‖ = 4 := by
+  simp [Pi.norm_def, Fin.univ_succ, Finset.sup_insert]
+  norm_num
+example : ‖(WithLp.toLp 2 ![3, -4] :
+    EuclideanSpace ℝ (Fin 2))‖ = 5 := by
+  rw [EuclideanSpace.norm_eq]
+  simp [Fin.sum_univ_two]
+  norm_num
+```
+
+*Polynomials.* `Polynomial.degree` takes values in `WithBot ℕ`, and the zero polynomial has degree `⊥`. `Polynomial.natDegree` takes values in `ℕ` and gives `0` for the zero polynomial, the same as for a nonzero constant; theorems about `natDegree` therefore often assume `p ≠ 0`.
+
+```lean
+example : (0 : Polynomial ℚ).degree = ⊥ :=
+  Polynomial.degree_zero
+example : (0 : Polynomial ℚ).natDegree = 0 :=
+  Polynomial.natDegree_zero
+example : (1 : Polynomial ℚ).natDegree = 0 :=
+  Polynomial.natDegree_one
+```
+
+*Morphisms are structures.* A ring homomorphism `f : ℤ →+* ℚ` is a structure that contains the function and the proofs that it respects `0`, `1`, `+` and `*`. It is applied like a function through a coercion (the class `DFunLike`), and the laws are general theorems such as `map_add` and `map_zero`, which work for every kind of morphism:
+
+```lean
+example (f : ℤ →+* ℚ) (a b : ℤ) :
+    f (a + b) = f a + f b := map_add f a b
+example (f : ℤ →+* ℚ) : f 0 = 0 := map_zero f
 ```
 
 # Practical debugging tips

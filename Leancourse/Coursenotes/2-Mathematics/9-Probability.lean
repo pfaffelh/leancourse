@@ -18,86 +18,14 @@ tag := "probability-pmf"
 
 This section is published right before the chapter is taught.
 
-# Monads: the general pattern
+# Monads in mathematics
 %%%
 tag := "monads"
 %%%
 
 This section is published right before the chapter is taught.
 
-## The problem: chaining computations that may fail
-%%%
-number := false
-tag := "option-type"
-%%%
-
-This section is published right before the chapter is taught.
-
-## The `Bind` operation
-%%%
-number := false
-tag := "bind-operation"
-%%%
-
-This section is published right before the chapter is taught.
-
-## The `do`-notation
-%%%
-number := false
-tag := "do-notation"
-%%%
-
-This section is published right before the chapter is taught.
-
-## The `Functor` typeclass
-%%%
-number := false
-tag := "functor-typeclass"
-%%%
-
-This section is published right before the chapter is taught.
-
-## The `Monad` typeclass
-%%%
-number := false
-tag := "monad-typeclass"
-%%%
-
-This section is published right before the chapter is taught.
-
-## Lists as a monad
-%%%
-number := false
-tag := "list-monad"
-%%%
-
-This section is published right before the chapter is taught.
-
-## The `IO` monad
-%%%
-number := false
-tag := "io-monad"
-%%%
-
-This section is published right before the chapter is taught.
-
-## Stateful computation with `StateM`
-%%%
-number := false
-tag := "state-monad"
-%%%
-
-This section is published right before the chapter is taught.
-
-## Error handling with `Except`
-%%%
-number := false
-tag := "except-monad"
-%%%
-
-This section is published right before the chapter is taught.
-
-## Sets as a monad
+## Sets
 %%%
 number := false
 tag := "set-monad"
@@ -105,15 +33,7 @@ tag := "set-monad"
 
 This section is published right before the chapter is taught.
 
-## Filters as a monad
-%%%
-number := false
-tag := "filter-monad"
-%%%
-
-This section is published right before the chapter is taught.
-
-## Finite sets and `Finset`
+## Finite sets
 %%%
 number := false
 tag := "finset-monad"
@@ -121,18 +41,10 @@ tag := "finset-monad"
 
 This section is published right before the chapter is taught.
 
-## Connection to category theory
+## Filters
 %%%
 number := false
-tag := "monads-category-theory"
-%%%
-
-This section is published right before the chapter is taught.
-
-## Summary of monads seen so far
-%%%
-number := false
-tag := "monads-summary"
+tag := "filter-monad"
 %%%
 
 This section is published right before the chapter is taught.

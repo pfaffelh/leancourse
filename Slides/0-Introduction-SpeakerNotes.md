@@ -224,7 +224,7 @@ is not chronological, so say February first.
     set of all sets. Nothing was forbidden; something was proved.
   - Foundation came later (von Neumann 1925, Zermelo 1930) and is *not*
     the repair.
-- **Russell** restricts what may be *said*: he stratifies the grammar, so
+- **Russell** restricts what may be *said*: he restricts the grammar, so
   `x ∈ x` is not a false statement but no statement at all.
   - Well-formedness becomes a question about syntax — and therefore
     decidable. **That is exactly what a type checker decides.**
@@ -1014,11 +1014,14 @@ before *Lean today*:
   - Assumptions: ZF without infinity or choice, plus an ω-chain of
     Grothendieck universes, instantiated on Mathlib's `ZFSet` under ω many
     inaccessibles. `Nat` arithmetic is trusted to the Lean runtime.
-  - **Say the limit, it is the interesting part.** The proof runs *inside*
-    Mario Carneiro's set-theoretic framework — the same framework in which
-    an error was found and which has no complete relative-consistency
-    proof. So Con-Leche shows the checker is faithful to the model; it does
-    not show the model is there.
+  - **What is proved.** Every environment the checker accepts has a model
+    in that set theory (`model_exists`). The proof needs none of the open
+    metatheory (subject reduction, confluence, Π-injectivity, unique
+    typing): the checker does extra type comparisons instead. From
+    Carneiro it takes only the set-theory assumption.
+  - **Say the limit.** It is a theorem about *this* checker, not about
+    the C++ kernel Lean runs; it trusts Lean as meta-logic and the `Nat`
+    runtime.
   - Speed: usually faster than the official kernel, ~0.69× the
     instructions on Mathlib.
   - **[Hintergrund]** Built in his spare time after the soundness issue,

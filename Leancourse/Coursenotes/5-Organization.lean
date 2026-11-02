@@ -29,8 +29,11 @@ used without the other.
 * [Why formalize?](slides/0-introduction/) — the first lecture: what
   formalizing means, where things stand in 2026, the four episodes and
   the landmark formalizations.
-* [The natural numbers and reduction rules](slides/1-1-nat/) —
-  {ref "nat"}[chapter 1.1]
+* Lean and its type theory, one deck per chapter:
+  * [The natural numbers and reduction rules](slides/1-1-nat/) —
+    {ref "nat"}[chapter]
+  * [Functions, inductive types, structures](slides/1-2-functions-inductive-structures/) —
+    {ref "types"}[chapter]
 
 A deck appears here when its chapter is taught.
 
@@ -56,7 +59,8 @@ tag := "schedule"
 Sheets are named after the chapter they belong to, so `2.6-b` is the
 second sheet on chapter 2.6. `L-a` to `L-g` are the logic block, which
 belongs to no chapter and runs alongside the first five weeks; `A-a`
-and `A-b` are the appendix, `X-a` an extra sheet.
+and `A-b` are the appendix, `X-a` an extra sheet. `2.0-a`, on finding
+theorems in Mathlib, opens the mathematics part and has no chapter.
 
 Each week has two rows: the lecture on Monday presents a chapter, the
 lab on Wednesday works on the sheets of that week. The short tests are
@@ -91,7 +95,7 @@ written at the start of the lab.
 * + 3
   + Mon 02.11.
   + Lecture
-  + Types, inductive types, quotients
+  + Universes, functions, inductive types, structures
   + {ref "types"}[1.2]
 * + 3
   + Wed 04.11.
@@ -101,8 +105,8 @@ written at the start of the lab.
 * + 4
   + Mon 09.11.
   + Lecture
-  + Terms and pattern matching
-  + {ref "terms"}[1.3]
+  + Pattern matching and recursion
+  + {ref "pattern-matching-and-recursion"}[1.3]
 * + 4
   + Wed 11.11.
   + Lab
@@ -111,103 +115,103 @@ written at the start of the lab.
 * + 5
   + Mon 16.11.
   + Lecture
-  + Typeclasses
-  + {ref "typeclasses"}[1.4]
+  + Σ, subtypes, type families, quotients
+  + {ref "type-formers"}[1.4]
 * + 5
   + Wed 18.11.
   + Lab
   + Sheets
-  + `L-g`, `1.4-a`, `1.4-b`, extra `X-a`
+  + `L-g`, `1.2-b`, `1.3-a`, extra `X-a`
 * + 6
   + Mon 23.11.
   + Lecture
-  + Curry-Howard
-  + {ref "curry-howard"}[1.5]
+  + Rules for building types, `Prop`
+  + {ref "rules"}[1.5]
 * + 6
   + Wed 25.11.
   + Lab
   + Sheets
-  + `1.5-a`, `1.5-b`
+  + `1.4-a`, `1.4-b`, `1.5-a`
 * + 7
   + Mon 30.11.
   + Lecture
-  + Dependent types and notation
-  + {ref "dependent-types"}[1.6], {ref "notation"}[1.7]
+  + Typeclasses: instances, resolution, `Decidable`, `classical`
+  + {ref "typeclasses"}[1.6]
 * + 7
   + Wed 02.12.
   + Lab
   + *Test 2*, then sheets
-  + `1.6-a`, `1.7-a`
+  + `1.4-c`, `1.6-a`
 * + 8
   + Mon 07.12.
   + Lecture
-  + Sets and types; well-foundedness
-  + {ref "sets-and-types"}[2.1], {ref "logic-wf"}[2.3]
+  + Typeclasses: functors and monads, coercions, hierarchies; notation
+  + {ref "type-constructor-classes"}[1.6], {ref "notation"}[1.7]
 * + 8
   + Wed 09.12.
   + Lab
   + Sheets
-  + `2.1-a`, `2.1-b`, `2.1-c`
+  + `1.6-b`, `1.6-c`, `1.7-a`
 * + 9
   + Mon 14.12.
   + Lecture
-  + Universes and axioms
-  + {ref "universes-axioms"}[2.2]
+  + Numbers; sets and types
+  + {ref "numbers"}[2.1], {ref "sets-and-types"}[2.2]
 * + 9
   + Wed 16.12.
   + Lab
   + *Test 3*, then sheets
-  + `2.2-a`, `2.3-a`
+  + `2.0-a`, `2.1-a`, `2.2-a`
 * + 10
   + Mon 21.12.
   + Lecture
-  + Proof engineering; `conv`
-  + {ref "tactics"}[Appendix]
+  + Foundations: universes, axioms, well-foundedness
+  + {ref "universes-axioms"}[2.3]
 * + 10
   + —
   + Lab
   + No lab; sheets over the break
-  + `A-a`, `A-b`
+  + `2.2-b`, `2.2-c`, `2.3-a`, `2.3-b`
 * + 11
   + Mon 11.01.
   + Lecture
-  + Orders, the algebraic hierarchy
-  + {ref "orders-and-lattices"}[2.4], {ref "algebraic-hierarchy-mathlib"}[2.5]
+  + Proof engineering; `conv`
+  + {ref "tactics"}[Appendix]
 * + 11
   + Wed 13.01.
   + Lab
   + Sheets
-  + `2.4-a`, `2.5-a`
+  + `A-a`, `A-b`
 * + 12
   + Mon 18.01.
   + Lecture
-  + Filters
-  + {ref "filters"}[2.6]
+  + Orders, the algebraic hierarchy
+  + {ref "orders-and-lattices"}[2.4], {ref "algebraic-hierarchy-mathlib"}[2.5]
 * + 12
   + Wed 20.01.
   + Lab
   + Sheets
-  + `2.6-a`, `2.6-b`
+  + `2.4-a`, `2.5-a`
 * + 13
   + Mon 25.01.
   + Lecture
-  + Topology
-  + {ref "topology"}[2.7]
+  + Filters
+  + {ref "filters"}[2.6]
 * + 13
   + Wed 27.01.
   + Lab
   + *Test 4*, then sheets
-  + `2.7-a`
+  + `2.6-a`, `2.6-b`
 * + 14
   + Mon 01.02.
   + Lecture
-  + Measure theory
-  + {ref "measure-theory"}[2.8]
+  + Topology
+  + {ref "topology"}[2.7]
 * + 14
   + Wed 03.02.
   + Lab
   + Sheets
-  + `2.8-a`
+  + `2.7-a`
 * + 15
   + Mon 08.02.
   + Lecture
@@ -220,6 +224,8 @@ written at the start of the lab.
   + `2.9-a`, `2.9-b`
 :::
 
+Chapter {ref "measure-theory"}[2.8] on measure theory is not lectured. It is there to read, and `2.8-a` is an extra sheet.
+
 
 # The short tests
 %%%
@@ -228,8 +234,8 @@ tag := "short-tests"
 
 Five tests, 20 minutes each, at the start of the lab, on paper.
 **Three of the five must be passed** for the _Studienleistung_.
-A test is passed when 50% of all points are achieved. A test not
-taken counts as not passed.
+A test has six tasks, each either right or wrong, and is passed with
+three of them. A test not taken counts as not passed.
 
 Dates: **11.11., 02.12., 16.12., 27.01., 10.02.**
 
@@ -252,9 +258,9 @@ The course is for mathematics students.
 * *Reading formal statements.* Judging whether a formal statement says what the informal one claims ({ref "why-formalize"}[see above]).
 * *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write ({ref "term"}[the proof state]). This is not the older use of computers in mathematics, which was to work through many cases ({ref "four-colour-episode"}[the four colour theorem]).
 * *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — {ref "tactics"}[*tactics*] — fit together. The second half goes deeper into the mathematics.
-* *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "monads"}[monads], needed both to use Lean and to read *Mathlib*.
-* *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "dependent-types"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
-* *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
+* *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "type-constructor-classes"}[monads], needed both to use Lean and to read *Mathlib*.
+* *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "types"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
+* *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] (to read) and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
 * *Proof engineering.* Automation tactics, {ref "navigating-mathlib"}[searching *Mathlib*], and the {ref "common-pitfalls"}[common pitfalls] of a large formal library.
 
 # Getting Lean running
@@ -314,8 +320,8 @@ tag := "notes-layout"
 
 The notes have six parts.
 
-* *Lean and its type theory*: the natural numbers and reduction, types, terms, typeclasses, propositions as types, dependent types and notation.
-* *Mathematics*: sets and types, universes and axioms, well-foundedness, then the areas of *Mathlib* listed above. Pointers into the API, not full formalizations.
+* *Lean and its type theory*: the natural numbers and reduction; functions, inductive types and structures; pattern matching and recursion; pairs, subtypes, propositions as types and quotients; the rules of the type theory; typeclasses; notation.
+* *Mathematics*: numbers, sets and types, the foundations (universes, axioms, well-foundedness), then the areas of *Mathlib* listed above. Pointers into the API, not full formalizations.
 * *Appendix*: the glossary of tactics (a longer list is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)), the structure of a Lean file, navigating *Mathlib*, common pitfalls, and small reference topics such as the diagnostic commands (`#print axioms`, `#find_home`, `#lint`).
 * *Projects*: five topics for the individual formalization projects, each with a description, a sketch of an implementation and references.
 * *Bibliography*: the works cited throughout, with links.

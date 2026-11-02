@@ -1,12 +1,14 @@
 import VersoSlides
 import Slides.«0-Introduction»
 import Slides.«1-1-Nat»
-import Slides.«1-2-Types»
-import Slides.«1-3-Terms»
-import Slides.«1-4-Typeclasses»
-import Slides.«1-5-CurryHoward»
-import Slides.«1-6-DependentTypes»
+import Slides.«1-2-FunctionsInductiveStructures»
+import Slides.«1-3-PatternMatchingRecursion»
+import Slides.«1-4-PairsSubtypesQuotients»
+import Slides.«1-5-Rules»
+import Slides.«1-6-Typeclasses»
+import Slides.«1-6b-FunctorsMonads»
 import Slides.«1-7-Notation»
+import Slides.«2-1-Numbers»
 import Slides.«2-6-Filters»
 
 open VersoSlides
@@ -15,7 +17,10 @@ open VersoSlides
 Styling for the back-link that every deck carries in its upper right
 corner.  The link sits on `body`, outside `.reveal`, so `reveal.js`
 neither scales it with the slide nor moves it between slides; it is
-faint until hovered and is dropped from the PDF export.
+faint until hovered and is dropped from the PDF export.  Inline code
+in running text gets a smaller size and narrower spaces: at the size
+of the text a monospace font looks larger than the text, and its
+spaces leave wide gaps around `:`.
 -/
 def backLinkCss : String := "
 .course-back {
@@ -43,6 +48,11 @@ def backLinkCss : String := "
 }
 @media print {
   .course-back { display: none; }
+}
+.reveal section p code:not(.block),
+.reveal section td code:not(.block) {
+  font-size: 0.85em;
+  word-spacing: -0.25em;
 }
 "
 
@@ -90,8 +100,9 @@ so the decks end up next to the rendered manual.
 def main (args : List String) : IO UInt32 := do
   let base := args.head?.getD "_slides"
   let decks : List (String × (String → IO UInt32)) :=
-    [ ("0-introduction", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«0-Introduction»)),
-      ("1-1-nat",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-1-Nat»)) ]
+    [ ("0-introduction",      fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«0-Introduction»)),
+      ("1-1-nat",             fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-1-Nat»)),
+      ("1-2-functions-inductive-structures", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-2-FunctionsInductiveStructures»)) ]
   let mut code : UInt32 := 0
   for (name, run) in decks do
     IO.println s!"slides: {name}"

@@ -60,6 +60,27 @@ tag := "foundations-set-eq"
 
 This section is published right before the chapter is taught.
 
+# Image and preimage
+%%%
+tag := "image-preimage"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Injective and surjective functions
+%%%
+tag := "injective-surjective"
+%%%
+
+This section is published right before the chapter is taught.
+
+# Finite sets and sums
+%%%
+tag := "finite-sets"
+%%%
+
+This section is published right before the chapter is taught.
+
 # From a set back to a type: subtypes and coercion
 %%%
 tag := "foundations-sets-subtypes"

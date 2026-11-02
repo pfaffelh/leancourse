@@ -77,6 +77,8 @@ example : myDouble 2 = 4 := rfl
 tag := "defeq"
 %%%
 
+Lean consists of two parts. The *elaborator* reads what you write, such as the notation `2 + 2`, omitted arguments and tactic proofs, and translates it into a fully explicit term. The *kernel* checks that term against a small, fixed set of rules, and only a term that passes is accepted. The elaborator is large and may contain bugs; the kernel is small, and it is the only part that has to be trusted. Chapter {ref "kernel-elaborator"}[1.5] describes both in detail.
+
 Terms in Lean *reduce*, by a fixed set of steps, toward a simpler form — `(fun x => x + 1) 4` becomes `5`, and `2 + 2` becomes `4`. Each such step is called a *reduction* and is written `term ⟶ simpler term`. Two terms are *definitionally equal* — also *judgmentally equal*, written `a ≡ b` — when they reduce to a common form, and Lean's kernel then treats them as fully *interchangeable*, in particular when it compares types during type-checking. That comparison test is called *conversion* (or *defeq checking*). Definitional equality must be kept apart from *propositional equality* `a = b`, which is itself a `Prop` and may require a genuine proof; the full three-way distinction — syntactic, definitional, propositional — is laid out in {ref "equality"}[the appendix on equality].
 
 The tactic `rfl` proves exactly a definitional equality. That is why goals whose two sides are written differently but *reduce* to the same thing close by `rfl`:
@@ -86,7 +88,7 @@ example : 2 + 2 = 4 := rfl
 example : Nat.succ 0 = 1 := rfl
 ```
 
-The `#eval` command (used throughout the {ref "terms"}[chapter on terms]) runs the same reduction and prints the value. `rfl`, `#eval` and every "reduces to" below are the same phenomenon. The steps are the kernel's *reduction rules*; they recur whenever a later step is claimed to hold "by definition".
+The `#eval` command (introduced with the other {ref "naming-terms"}[commands for terms] in the next chapter) computes the value as well and prints it, though by running compiled code rather than by reduction; for the terms of this chapter both give the same result. The steps are the kernel's *reduction rules*; they recur whenever a later step is claimed to hold "by definition".
 
 ## The reduction rules
 %%%
@@ -94,7 +96,7 @@ number := false
 tag := "reduction-rules"
 %%%
 
-Definitional equality is *generated* by a fixed list of reduction rules that the {ref "elaborator"}[kernel] applies to compute terms. Most of the names come from the *lambda calculus* of Alonzo Church in the 1930s, where functions are written `fun x => e` and each rewriting rule carries a Greek letter. Lean's kernel uses six of them:
+Definitional equality is *generated* by a fixed list of reduction rules that the kernel applies to compute terms. Most of the names come from the *lambda calculus* of Alonzo Church in the 1930s, where functions are written `fun x => e` and each rewriting rule carries a Greek letter. Lean's kernel uses six of them:
 
 :::table (align := left) +header
 * + Rule
@@ -188,7 +190,7 @@ Recognizing when a goal is "true by reduction" — and therefore closed by `rfl`
 
 ::::keepEnv
 :::example "Reducibility, weak head normal form, and decidability"
-How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[reducible]` definition is unfolded freely, an ordinary `def` is unfolded on demand, and an `@[irreducible]` one is left folded. And the kernel usually does not reduce all the way to a *normal form*; it stops at *weak head normal form* (WHNF) — just far enough to expose the outermost constructor or binder — which is all that comparing two terms requires. On the terms that occur in practice this terminates, so `rfl` and the type checker give an answer. In full generality definitional equality in Lean is undecidable, and the checker is sound but incomplete: there are equal terms on which it fails ({ref "types"}[next chapter]). The counterexamples are constructed and need `Acc.rec`, the recursor of well-founded recursion, on proofs.
+How eagerly the δ rule fires is governed by *reducibility* annotations: a `@[reducible]` definition is unfolded freely, an ordinary `def` is unfolded on demand, and an `@[irreducible]` one is left folded. And the kernel usually does not reduce all the way to a *normal form*; it stops at *weak head normal form* (WHNF) — just far enough to expose the outermost constructor or binder — which is all that comparing two terms requires. On the terms that occur in practice this terminates, so `rfl` and the type checker give an answer. In full generality definitional equality in Lean is undecidable, and the checker is sound but incomplete: there are equal terms on which it fails ({ref "type-rules"}[Conversion] in chapter 1.5). The counterexamples are constructed and need `Acc.rec`, the recursor of well-founded recursion, on proofs.
 :::
 ::::
 
@@ -246,11 +248,11 @@ def myNot : Bool → Bool
 example : myNot false = true := rfl
 ```
 
-Lean translates such a definition into the recursor, so on constructors it reduces just as `Bool.rec` does. Pattern matching works for every inductive type, including recursive ones like `Nat`; it is treated in detail in {ref "pattern-matching"}[the chapter on terms].
+Lean translates such a definition into the recursor, so on constructors it reduces just as `Bool.rec` does. Pattern matching works for every inductive type, including recursive ones like `Nat`; it is treated in detail in {ref "pattern-matching"}[chapter 1.3].
 
 ::::keepEnv
 :::example "How `bif` is defined under the hood"
-Internally, Lean does not build runnable definitions from `Bool.rec` directly — the code generator cannot compile a bare recursor, whereas it *can* compile a `match`. So `bif` is not primitive: it is notation for a function `cond`, which does the actual branching with a `match` (the inline form of pattern matching, see {ref "pattern-matching"}[the chapter on terms]):
+Internally, Lean does not build runnable definitions from `Bool.rec` directly — the code generator cannot compile a bare recursor, whereas it *can* compile a `match`. So `bif` is not primitive: it is notation for a function `cond`, which does the actual branching with a `match` (the inline form of pattern matching, see {ref "pattern-matching"}[chapter 1.3]):
 
 ```
 -- the underlying function, defined by matching on `c`:

@@ -31,6 +31,9 @@ namespace SlidesTypes
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.8em; }
 .reveal section img.tree { height: 185px; margin: 0 auto; }
 .reveal section img.bintree { height: 240px; margin: 0 auto; }
+.reveal section img.cantor { height: 260px; width: auto; max-width: none; flex: 0 0 auto; margin: 0; }
+.reveal .r-hstack { align-items: center; justify-content: center; gap: 1.4rem; }
+.reveal .r-hstack .r-vstack p { text-align: left; font-size: 0.66em; margin: 0.3em 0; }
 ```
 
 # Pattern matching and recursion
@@ -125,7 +128,15 @@ example : fib 3 = 2 := rfl
 
 # Are all cases covered?
 
-`0` is `zero`, `1` is `succ zero`, `n + 2` is `succ (succ n)`. Lean turns the three patterns into two nested case splits:
+```
+Nat.casesOn : {motive : ℕ → Sort u} → (t : ℕ) →
+  motive zero → ((n : ℕ) → motive (succ n)) → motive t
+```
+
+- A case split, one case per constructor. `succ` gets `n`, but no value at `n`: no recursion.
+- Built from the recursor: `Nat.casesOn t z s` is `Nat.rec z (fun n _ => s n) t`.
+
+The patterns `0`, `1`, `n + 2` of `fib` become two nested case splits:
 
 ```
 fun x => Nat.casesOn x  (case 0)
@@ -133,16 +144,8 @@ fun x => Nat.casesOn x  (case 0)
     (fun n => (case n + 2)))
 ```
 
-Every leaf of this tree must be reached by a pattern. Without the line for `1`:
-
-```lean +error -panel -stretch
-def fib' : ℕ → ℕ
-  | 0 => 0
-  | n + 2 => fib' n + fib' (n + 1)
-```
-
 :::class "key"
-Lean reports "Missing cases: (Nat.succ Nat.zero)".
+Every leaf must be reached by a pattern. Without the line for `1`: "Missing cases: (Nat.succ Nat.zero)".
 :::
 
 # Two values back
@@ -193,7 +196,17 @@ example : (BinTree.node .leaf 3
 
 # Termination by a measure
 
-Cantor's enumeration of `ℕ × ℕ`. No argument shrinks in both calls; the pair `(m + n, m)` (diagonal, position) does.
+::::hstack
+{image "../static/figures/cantor_pairing.png" (class := "cantor")}[Grid of the points (m, n) with m + n at most 4, labelled with their position in Cantor's enumeration; arrows run down each diagonal]
+
+:::vstack
+Cantor's enumeration of `ℕ × ℕ`: `pairIndex m n` is the position of `(m, n)`.
+
+No argument shrinks in both calls. The pair `(m + n, m)`, diagonal and position, does.
+
+Pairs are compared lexicographically: `(a, b) < (c, d)` iff `a < c`, or `a = c` and `b < d`.
+:::
+::::
 
 ```lean -panel -stretch
 def pairIndex : ℕ → ℕ → ℕ
@@ -202,14 +215,6 @@ def pairIndex : ℕ → ℕ → ℕ
   | m + 1, n => pairIndex m (n + 1) + 1
 termination_by m n => (m + n, m)
 decreasing_by all_goals (rw [Prod.lex_def]; omega)
-```
-
-The order comes from the type of the measure; `#synth` runs the instance search:
-
-```lean -panel -stretch
-#synth WellFoundedRelation (ℕ × ℕ)
--- Prod.instWellFoundedRelation, defined as Prod.lex:
--- (a, b) < (c, d) iff a < c, or a = c and b < d
 ```
 
 # Lean finds the measure
@@ -295,7 +300,9 @@ Nat.brecOn : {motive : ℕ → Sort u} → (t : ℕ) →
   ((n : ℕ) → Nat.below n → motive n) → motive t
 ```
 
-`F` gets `n` and the table at `n`, returns the value at `n`; at `0` the table is `⟨⟩`. One pass of `Nat.rec` computes value and table together:
+- One step function `F` for all `n`: it gets `n` and the table at `n`, and returns the value at `n`.
+- No separate base case: at `0` the table is `⟨⟩`.
+- Built from the recursor, by one pass that computes value and table together:
 
 ```
 Nat.brecOn.go n F : motive n ×' Nat.below n :=

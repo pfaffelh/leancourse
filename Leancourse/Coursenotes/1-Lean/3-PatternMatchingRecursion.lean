@@ -107,6 +107,15 @@ def fib : ℕ → ℕ
 
 Lean checks that the three patterns cover every natural number. The numerals in the patterns stand for constructors: `0` is `Nat.zero`, `1` is `Nat.succ Nat.zero`, and `n + 2` is `Nat.succ (Nat.succ n)`. Lean splits the argument by its constructor, `zero` or `succ m`, and splits `m` again where a pattern requires it. For `fib` this gives two nested case splits, with `Nat.casesOn`, the recursor without recursive values:
 
+```lean
+#check @Nat.casesOn
+-- {motive : ℕ → Sort u} → (t : ℕ) →
+--   motive Nat.zero →
+--   ((n : ℕ) → motive (Nat.succ n)) → motive t
+```
+
+`Nat.casesOn t z s` has one case per constructor. The case for `succ n` receives `n`, but no value at `n`, so there is no recursion. It is built from the recursor: `Nat.casesOn t z s` is `Nat.rec z (fun n _ => s n) t`. Applied to `fib`, the patterns `0`, `1`, `n + 2` become
+
 ```
 fun x => Nat.casesOn x  (case 0)
   (fun m => Nat.casesOn m  (case 1)

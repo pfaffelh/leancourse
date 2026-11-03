@@ -85,3 +85,4 @@ figure:has(img[src*="/logos/"]) > figcaption {
 
 /* Small square diagrams in the chapters, e.g. Cantor's pairing. */
 figure img[src*="cantor_pairing"] { max-width: 18rem; height: auto; }
+figure img[src*="bintree"] { max-width: 26rem; height: auto; }

@@ -11,7 +11,8 @@ set_option pp.rawOnError true
 Deck for the chapter "Pattern matching and recursion" of part 1 (Lean
 and its type theory). It follows the chapter section by section:
 pattern matching, structural and well-founded recursion, proofs about
-recursive definitions, the recursor, strict positivity. It reopens the
+recursive definitions, the recursor, course-of-values recursion
+with `brecOn`, strict positivity. It reopens the
 namespace of the deck for chapter 1.2, whose `MyNat` it uses.
 -/
 
@@ -29,6 +30,7 @@ namespace SlidesTypes
 .reveal section .small table, .reveal section table.small { font-size: 0.52em; }
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.8em; }
 .reveal section img.tree { height: 185px; margin: 0 auto; }
+.reveal section img.bintree { height: 240px; margin: 0 auto; }
 ```
 
 # Pattern matching and recursion
@@ -143,13 +145,9 @@ def fib' : ℕ → ℕ
 Lean reports "Missing cases: (Nat.succ Nat.zero)".
 :::
 
-# The recursor behind `fib`
+# Two values back
 
-```lean -panel -stretch
-#print fib    -- fun x => Nat.brecOn x fib._f
-```
-
-`fib (n + 2)` needs two earlier values, `Nat.rec` hands over only one. `Nat.brecOn` is built from `Nat.rec` and hands over the values at _all_ smaller arguments. By hand, with `Nat.rec`: carry the pair `(fib n, fib (n + 1))`.
+`fib (n + 2)` needs two earlier values; `Nat.rec` hands over only one. By hand: carry the pair `(fib n, fib (n + 1))`.
 
 ```lean -panel -stretch
 def fibPair (n : ℕ) : ℕ × ℕ :=
@@ -157,6 +155,39 @@ def fibPair (n : ℕ) : ℕ × ℕ :=
 
 example : fibPair 10 = (55, 89) := rfl
 ```
+
+:::class "key"
+Lean carries the values at _all_ smaller arguments, with `Nat.brecOn`. More after the recursor.
+:::
+
+# Binary trees
+
+```lean -panel -stretch
+inductive BinTree where
+  | leaf : BinTree
+  | node (l : BinTree) (a : ℕ) (r : BinTree) : BinTree
+```
+
+{image "../static/figures/bintree.png" (class := "bintree")}[Three trees: .leaf of height 0; .node .leaf 4 .leaf of height 1; .node .leaf 3 (.node .leaf 4 .leaf) of height 2. Circles are nodes with their number, squares are leaves.]
+
+- `BinTree` is the type of all finite binary trees; each element is one tree.
+- `leaf`: a single leaf, no number. `node l a r`: root `a`, subtrees `l`, `r`.
+- All leaves are the same term `.leaf`; only their positions differ.
+
+# Height: recursion on both subtrees
+
+```lean -panel -stretch
+def BinTree.height : BinTree → ℕ
+  | .leaf => 0
+  | .node l _ r => max l.height r.height + 1
+
+example : BinTree.leaf.height = 0 := rfl
+example : (BinTree.node .leaf 4 .leaf).height = 1 := rfl
+example : (BinTree.node .leaf 3
+    (.node .leaf 4 .leaf)).height = 2 := rfl
+```
+
+`l` and `r` are parts of `.node l _ r`: both calls are structural.
 
 # Termination by a measure
 
@@ -222,6 +253,136 @@ List.rec : {motive : List α → Sort u} →
 :::class "key"
 Read as a proof, `motive tail` is the induction hypothesis.
 :::
+
+# Course-of-values recursion
+
+- The recursor hands the case for `succ n` _one_ value: the value at `n`.
+- Structural recursion may call on _any_ part: `fib (n + 2)` calls `fib (n + 1)` and `fib n`.
+- `Nat.brecOn`, built from `Nat.rec`, hands the step a _table_ with the values at all parts.
+- Every recursive call becomes a lookup in the table.
+
+```lean -panel -stretch
+#print fib    -- fun x => Nat.brecOn x fib._f
+```
+
+:::class "key"
+Every inductive type `T` has its own `T.below` (the table) and `T.brecOn`.
+:::
+
+# The table `Nat.below`
+
+Defined with `Nat.rec` (see `#print Nat.below`):
+
+- `Nat.below 0 = PUnit`: nothing below `0`; one element `⟨⟩`.
+- `Nat.below (n + 1) = motive n ×' Nat.below n`: value at `n`, then table at `n`.
+- `×'` (`PProd`): pairs like `×`; components may be proofs.
+
+```lean -panel -stretch
+example : Nat.below (motive := fun _ => ℕ) 3 =
+    (ℕ ×' ℕ ×' ℕ ×' PUnit.{1}) := rfl
+```
+
+:::class "key"
+Table `t` at `n + 2`: value at `n + 1` is `t.1`, value at `n` is `t.2.1`.
+:::
+
+# `Nat.brecOn`
+
+```
+Nat.brecOn : {motive : ℕ → Sort u} → (t : ℕ) →
+  ((n : ℕ) → Nat.below n → motive n) → motive t
+```
+
+`F` gets `n` and the table at `n`, returns the value at `n`; at `0` the table is `⟨⟩`. One pass of `Nat.rec` computes value and table together:
+
+```
+Nat.brecOn.go n F : motive n ×' Nat.below n :=
+  Nat.rec ⟨F 0 ⟨⟩, ⟨⟩⟩
+    (fun n t => ⟨F (n + 1) t, t⟩) n
+Nat.brecOn n F := (Nat.brecOn.go n F).1
+```
+
+:::class "key"
+(value at `n`, table at `n`) _is_ the table at `n + 1`.
+:::
+
+# The table for `fib`
+
+:::table +colHeaders +rowSeps
+*
+  * `n`
+  * `Nat.brecOn.go n fib._f`
+*
+  * `0`
+  * `⟨0, ⟨⟩⟩`
+*
+  * `1`
+  * `⟨1, 0, ⟨⟩⟩`
+*
+  * `2`
+  * `⟨1, 1, 0, ⟨⟩⟩`
+*
+  * `3`
+  * `⟨2, 1, 1, 0, ⟨⟩⟩`
+:::
+
+```lean -panel -stretch
+example : Nat.brecOn.go (motive := fun _ => ℕ)
+    3 fib._f = ⟨2, 1, 1, 0, ⟨⟩⟩ := rfl
+```
+
+:::class "key"
+`fibPair` carries the last two values; `Nat.brecOn` carries all of them, each computed once.
+:::
+
+# What Lean makes of `fib`
+
+```
+fib._f := fun x t => match x, t with
+  | 0,     _ => 0
+  | 1,     _ => 1
+  | n + 2, t => t.2.1 + t.1   -- fib n + fib (n + 1)
+```
+
+- Each recursive call is replaced by a lookup: `fib (n + 1)` ↦ `t.1`, `fib n` ↦ `t.2.1`.
+- *This is the structural check*: the argument of a call must be a part of the pattern.
+- `loop n`: the table at `n` has no entry for `n`.
+- `log2 (n / 2)`: `n / 2` is not obtained from `n` by taking constructors off.
+- Then Lean tries well-founded recursion: works for `log2`, fails for `loop`.
+
+# `Nat.brecOn` by hand
+
+```lean -panel -stretch
+def fib2 (n : ℕ) : ℕ :=
+  Nat.brecOn (motive := fun _ => ℕ) n fun k t =>
+    match k, t with
+    | 0, _ => 0
+    | 1, _ => 1
+    | _ + 2, ⟨fib1, fib0, _⟩ => fib0 + fib1
+
+example : fib2 10 = 55 := rfl
+example : fib 90 = 2880067194370816120 := rfl
+```
+
+- The kernel goes through `Nat.brecOn`: the table is built once, so `fib 90` is immediate.
+- `#eval` runs the equations as written: `#eval fib 32` makes about seven million calls.
+
+# Trees and proofs
+
+`BinTree.below (.node l a r) =`
+`(motive l ×' BinTree.below l) ×' (motive r ×' BinTree.below r)`: the table branches like the tree. In `height`: `l.height` ↦ `t.1.1`, `r.height` ↦ `t.2.1`.
+
+With a `Prop` motive the entries are proofs: induction hypotheses for all parts.
+
+```lean -panel -stretch
+theorem fib_pos : (n : ℕ) → 0 < fib (n + 1)
+  | 0 => by decide
+  | 1 => by decide
+  | n + 2 => by
+      have h := fib_pos n     -- two steps back
+      show 0 < fib (n + 1) + fib (n + 2)
+      omega
+```
 
 # An infinitely branching tree
 
@@ -317,4 +478,5 @@ Proved for inductive types: Aczel 1977, Dybjer 1991; for the CIC: Werner 1997; f
 - Recursion must terminate. Structural recursion calls itself on parts of the argument and becomes the recursor.
 - Well-founded recursion needs a measure that decreases; it is used through its equation lemmas, not `rfl`.
 - The recursor of a type has one case per constructor, with a value of the motive for every recursive argument.
+- Structural recursion becomes `brecOn`: the step gets the table of values at all parts, recursive calls become lookups.
 - Constructors must be strictly positive.

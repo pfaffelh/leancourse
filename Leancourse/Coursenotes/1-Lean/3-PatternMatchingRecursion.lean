@@ -125,7 +125,7 @@ The error is "Missing cases: (Nat.succ Nat.zero)". A pattern that can never be r
 
 Lean only accepts a recursive definition once it is convinced the recursion *terminates*. There are two ways:
 
-* *Structural recursion.* Every recursive call is on a part of the input, that is, on an argument of the constructor that built it. Lean translates the definition into the recursor of the type (more precisely into `brecOn`, a packaging of the recursor), and there is nothing to prove.
+* *Structural recursion.* Every recursive call is on a part of the input, that is, on an argument of the constructor that built it. Lean translates the definition into the recursor of the type (more precisely into `brecOn`, built from the recursor, see {ref "brecon"}[Course-of-values recursion]), and there is nothing to prove.
 * *Well-founded recursion.* Every recursive call makes a *measure* smaller, a natural number computed from the arguments. Lean translates the definition into `WellFounded.fix` and needs a proof that the measure decreases.
 
 `factorial`, `length'` and `fib` are structural. In `fib (n + 2)` the calls are `fib n` and `fib (n + 1)`, both on parts of `n + 2 = succ (succ n)`. So `fib` is translated into the recursor, it computes by ι, and `rfl` checks values:
@@ -135,14 +135,7 @@ Lean only accepts a recursive definition once it is convinced the recursion *ter
 example : fib 3 = 2 := rfl
 ```
 
-The recursor `Nat.rec` of {ref "nat-intro"}[chapter 1.1] hands the step only the value at `n`, but `fib (n + 2)` needs the values at `n` and at `n + 1`. Lean therefore uses `Nat.brecOn`, which is built from `Nat.rec` and hands the step the values at *all* smaller arguments:
-
-```lean
-#print fib
--- def fib : ℕ → ℕ := fun x => Nat.brecOn x fib._f
-```
-
-By hand, with `Nat.rec` alone, one carries the pair `(fib n, fib (n + 1))` along:
+The recursor `Nat.rec` of {ref "nat-intro"}[chapter 1.1] hands the step only the value at `n`, but `fib (n + 2)` needs the values at `n` and at `n + 1`. By hand, with `Nat.rec` alone, one carries the pair `(fib n, fib (n + 1))` along:
 
 ```lean
 def fibPair (n : ℕ) : ℕ × ℕ :=
@@ -151,23 +144,36 @@ def fibPair (n : ℕ) : ℕ × ℕ :=
 example : fibPair 10 = (55, 89) := rfl
 ```
 
-Recursion on several parts works the same way. In a binary tree whose nodes carry a natural number, every node has two subtrees, and the height recurses on both. A tree is either empty, `leaf`, or a node `node l a r` that carries the number `a` and has a *left subtree* `l` and a *right subtree* `r`, both again trees. The example below is the tree with root `3`, an empty left subtree, and as right subtree a single node carrying `4`:
+Lean does the same, but carries the values at *all* smaller arguments, with `Nat.brecOn`; {ref "brecon"}[Course-of-values recursion] shows how.
 
-```
-    3
-     \
-      4
-```
+Recursion on several parts works the same way. Binary trees whose nodes carry natural numbers:
 
 ```lean
 inductive BinTree where
   | leaf : BinTree
   | node (l : BinTree) (a : ℕ) (r : BinTree) : BinTree
+```
 
+`BinTree` is the type of *all* finite binary trees of this kind, of any shape; each element is one particular tree. Both constructors build a whole tree:
+
+* `leaf` is the tree that consists of a single leaf. It carries no number. Inside a larger tree it marks the end of a branch, so `.leaf` on its own is the empty tree.
+* `node l a r` is the tree whose root carries the number `a`, with *left subtree* `l` and *right subtree* `r`. Both are again whole trees, possibly `leaf`.
+
+So the numbers sit at the nodes, and every node has exactly two subtrees. Where a branch stops, the subtree is `leaf`. All leaves are the same term `.leaf`. A tree is a term, and two leaves of one tree differ only in their position, as the two entries of the pair `(1, 1)` do: `.node .leaf 4 .leaf` contains the subtree `.leaf` twice, once on the left and once on the right. In the same way `.node t 5 t` contains the tree `t` twice. Two trees are equal when they have the same shape and the same numbers at the same places. Putting the numbers into the leaves instead, `leaf (a : ℕ) : BinTree`, gives another type; `MyTree` in {ref "positivity-rule"}[Strict positivity] is declared that way.
+
+:::figure "Three elements of BinTree. Circles are nodes and carry their number, squares are leaves and carry nothing."
+![Three trees. First: a single square, the term .leaf, height 0. Second: a circle 4 with two squares below it, the term .node .leaf 4 .leaf, height 1. Third: a circle 3 with a square on the left and the circle 4 on the right, which again has two squares below it; the term .node .leaf 3 (.node .leaf 4 .leaf), height 2.](/static/figures/bintree.png)
+:::
+
+The height counts the nodes on the longest path from the root down to a leaf. It recurses on both subtrees:
+
+```lean
 def BinTree.height : BinTree → ℕ
   | .leaf => 0
   | .node l _ r => max l.height r.height + 1
 
+example : BinTree.leaf.height = 0 := rfl
+example : (BinTree.node .leaf 4 .leaf).height = 1 := rfl
 example : (BinTree.node .leaf 3
     (.node .leaf 4 .leaf)).height = 2 := rfl
 ```
@@ -338,6 +344,155 @@ With the recursor come its computation rules, one per constructor: applied to `c
 ```
 
 The constructors of `Colour` have no arguments, so its cases are plain values and `Colour.rec` is a case distinction with three branches. `MyOption.some` has an argument `a : α` that is not recursive, so its case is a function of `a` and gets no value of the motive. `List.cons` has the recursive argument `tail`, and its case gets `motive tail`, the result for the rest of the list; read as a proof, this is the induction hypothesis. A structure has a single constructor, so `Point.rec` just unpacks the fields. For an inductive type in `Prop` with more than one constructor, such as `MyOr`, the motive may only take values in `Prop` ({ref "prop-special"}[Why `Prop` is special]).
+
+# Course-of-values recursion
+%%%
+tag := "brecon"
+%%%
+
+The recursor hands the case for `succ n` one value, the value at `n`. A structurally recursive definition may call itself on any part of the input: `fib (n + 2)` calls `fib (n + 1)` and `fib n`, and a definition on trees may call itself on a subtree of a subtree. Lean closes this gap with `brecOn`, which is built from the recursor. It hands the step a *table* with the values at *all* parts of the input, and Lean replaces every recursive call by a lookup in this table. This is called *course-of-values recursion*. We describe it for `ℕ`. Every inductive type `T` has its own `T.below` and `T.brecOn`, built by the same recipe.
+
+## The table `Nat.below`
+%%%
+tag := "nat-below"
+%%%
+
+`Nat.below n` is the type of the table at `n`. It has one entry for each `k < n`, and the entry for `n - 1` comes first. It is a type defined by recursion, with `Nat.rec`:
+
+```lean
+#print Nat.below
+-- Nat.below n :=
+--   Nat.rec PUnit (fun n t => motive n ×' t) n
+```
+
+As equations:
+
+1. `Nat.below 0 = PUnit`. There is nothing below `0`. `PUnit` is a type with exactly one element, `⟨⟩`.
+2. `Nat.below (n + 1) = motive n ×' Nat.below n`: first the value at `n`, then the table at `n`.
+
+`α ×' β` (`PProd`) is the type of pairs `⟨a, b⟩` with `a : α` and `b : β`, like `α × β`. Unlike `α × β`, its components may also be proofs. This is needed when the motive is a proposition (see the end of this section). `×'` associates to the right. For `fib` the motive is the constant `fun _ => ℕ`, and the table at `3` holds three numbers, the values at `2`, `1` and `0`:
+
+```lean
+example : Nat.below (motive := fun _ => ℕ) 3 =
+    (ℕ ×' ℕ ×' ℕ ×' PUnit.{1}) := rfl
+```
+
+In a table `t` at `n + 2`, the value at `n + 1` is `t.1`, and the value at `n` is `t.2.1`.
+
+## `Nat.brecOn`
+%%%
+tag := "nat-brecon"
+%%%
+
+```lean
+#check @Nat.brecOn
+-- {motive : ℕ → Sort u} → (t : ℕ) →
+--   ((n : ℕ) → Nat.below n → motive n) →
+--   motive t
+```
+
+`Nat.brecOn t F` computes the value at `t`. The step `F` receives a number `n` and the table at `n`, and returns the value at `n`. There is no separate base case. At `0` the table is the empty `⟨⟩`, and `F 0 ⟨⟩` has to give the value without any help.
+
+Lean builds `Nat.brecOn` from a single pass of `Nat.rec`. This pass computes the value and the table together. A pair (value at `n`, table at `n`) has the type `motive n ×' Nat.below n`, which by equation 2 is `Nat.below (n + 1)`: it *is* the table at `n + 1`. So the step of the recursor takes the table `t` at `n + 1`, computes the new value `F (n + 1) t`, and puts it in front:
+
+```
+Nat.brecOn.go n F : motive n ×' Nat.below n :=
+  Nat.rec ⟨F 0 ⟨⟩, ⟨⟩⟩
+    (fun n t => ⟨F (n + 1) t, t⟩) n
+
+Nat.brecOn n F := (Nat.brecOn.go n F).1
+```
+
+Each value is computed once, and the table grows by one entry per step. For `fib`, `Nat.brecOn.go n` is the list of all values from `n` down to `0`:
+
+:::table (align := left) +header
+* + `n`
+  + `Nat.brecOn.go n fib._f`
+* + `0`
+  + `⟨0, ⟨⟩⟩`
+* + `1`
+  + `⟨1, 0, ⟨⟩⟩`
+* + `2`
+  + `⟨1, 1, 0, ⟨⟩⟩`
+* + `3`
+  + `⟨2, 1, 1, 0, ⟨⟩⟩`
+:::
+
+```lean
+example : Nat.brecOn.go (motive := fun _ => ℕ)
+    3 fib._f = ⟨2, 1, 1, 0, ⟨⟩⟩ := rfl
+```
+
+`fibPair` in {ref "recursion"}[Recursion and termination] carries the last two values; `Nat.brecOn` carries all of them.
+
+## What Lean makes of `fib`
+%%%
+tag := "fib-brecon"
+%%%
+
+```lean
+#print fib
+-- def fib : ℕ → ℕ := fun x => Nat.brecOn x fib._f
+#print fib._f
+-- fun x t => match x, t with
+--   | 0,     _ => 0
+--   | 1,     _ => 1
+--   | n + 2, t => t.2.1 + t.1
+```
+
+(The printed `fib._f` is written slightly differently but means the same.) `fib._f` is the definition of `fib` with each recursive call replaced by a lookup. At `n + 2` the table has the type `ℕ ×' ℕ ×' Nat.below n`. So `fib (n + 1)` became `t.1`, and `fib n` became `t.2.1`.
+
+This replacement is the check for structural recursion. Lean has to find every recursive call in the table, and it can do so only when the argument of the call is a part of the pattern, such as `n + 1` and `n` in `n + 2`. In `loop n` the argument `n` is the input itself, and the table at `n` has no entry for `n`. In `log2` the argument `n / 2` is smaller than `n`, but it is not obtained from `n` by taking constructors off, so Lean does not know which entry to take. In both cases Lean falls back to well-founded recursion, which succeeds for `log2` and fails for `loop`.
+
+The same can be written by hand. The pattern `⟨fib1, fib0, _⟩` takes the table at `k + 2` apart:
+
+```lean
+def fib2 (n : ℕ) : ℕ :=
+  Nat.brecOn (motive := fun _ => ℕ) n fun k t =>
+    match k, t with
+    | 0, _ => 0
+    | 1, _ => 1
+    | _ + 2, ⟨fib1, fib0, _⟩ => fib0 + fib1
+
+example : fib2 10 = 55 := rfl
+```
+
+The kernel computes `fib` through `Nat.brecOn`, so it builds the table once, from the bottom up. `rfl` checks the 90th Fibonacci number at once:
+
+```lean
+example : fib 90 = 2880067194370816120 := rfl
+```
+
+`#eval` does not use `Nat.brecOn`. The compiler translates the equations as written, two calls per step, so `#eval fib 32` makes about seven million calls and takes a noticeable time.
+
+## Trees and proofs
+%%%
+tag := "brecon-trees-proofs"
+%%%
+
+For `BinTree` the table branches like the tree:
+
+1. `BinTree.below .leaf = PUnit`.
+2. `BinTree.below (.node l a r) = (motive l ×' BinTree.below l) ×' (motive r ×' BinTree.below r)`.
+
+So the table at a tree holds the values at all of its subtrees, at every depth. In `BinTree.height._f` the calls `l.height` and `r.height` become `t.1.1` and `t.2.1`.
+
+With a `Prop`-valued motive the entries of the table are proofs, the induction hypotheses for all parts of the input. That is why the table uses `×'` and not `×`. A theorem proved by pattern matching with recursive calls is translated with `brecOn` just like a definition. This is the form of strong induction that structural recursion gives:
+
+```lean
+theorem fib_pos : (n : ℕ) → 0 < fib (n + 1)
+  | 0 => by decide
+  | 1 => by decide
+  | n + 2 => by
+      have h := fib_pos n
+      show 0 < fib (n + 1) + fib (n + 2)
+      omega
+
+#print fib_pos
+-- fun x => Nat.brecOn x fib_pos._f
+```
+
+The case `n + 2` uses the statement for `n`, two steps back. With the `induction` tactic the hypothesis is only the statement one step back.
 
 # Strict positivity
 %%%

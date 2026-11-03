@@ -179,3 +179,28 @@ example (n : ℕ) (h : 0 < n) :
   have h2 : 2 * n / 2 = n := by omega
   simp [h1, h2]
   omega
+
+example (n : ℕ) : digitSum n ≤ n := by
+  fun_induction digitSum n with
+  | case1 => omega
+  | case2 n h ih => omega
+
+example (n : ℕ) : binLength n ≤ n := by
+  fun_induction binLength n with
+  | case1 => omega
+  | case2 n h ih => omega
+
+def fib : ℕ → ℕ
+  | 0 => 0
+  | 1 => 1
+  | n + 2 => fib n + fib (n + 1)
+
+example (n : ℕ) : fib n ≤ 2 ^ n := by
+  fun_induction fib n with
+  | case1 => simp
+  | case2 => simp
+  | case3 n ih1 ih2 =>
+    have h1 : 2 ^ (n + 1) = 2 * 2 ^ n := by ring
+    have h2 : 2 ^ (n + 2) = 4 * 2 ^ n := by ring
+    omega
+

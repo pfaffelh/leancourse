@@ -149,6 +149,8 @@ Lean reports "Missing cases: (Nat.succ Nat.zero)".
 
 `fib (n + 2)` needs two earlier values; `Nat.rec` hands over only one. By hand: carry the pair `(fib n, fib (n + 1))`.
 
+`α × β`: the structure of pairs `(a, b)`, with fields `p.1 : α` and `p.2 : β` (chapter 1.4).
+
 ```lean -panel -stretch
 def fibPair (n : ℕ) : ℕ × ℕ :=
   Nat.rec (0, 1) (fun _ p => (p.2, p.1 + p.2)) n
@@ -191,7 +193,7 @@ example : (BinTree.node .leaf 3
 
 # Termination by a measure
 
-Cantor's diagonal enumeration of `ℕ × ℕ`. No argument shrinks in both calls; the pair (diagonal, position) does, lexicographically.
+Cantor's enumeration of `ℕ × ℕ`. No argument shrinks in both calls; the pair `(m + n, m)` (diagonal, position) does.
 
 ```lean -panel -stretch
 def pairIndex : ℕ → ℕ → ℕ
@@ -202,7 +204,7 @@ termination_by m n => (m + n, m)
 decreasing_by all_goals (rw [Prod.lex_def]; omega)
 ```
 
-The order comes from the type of the measure, by instance search:
+The order comes from the type of the measure; `#synth` runs the instance search:
 
 ```lean -panel -stretch
 #synth WellFoundedRelation (ℕ × ℕ)

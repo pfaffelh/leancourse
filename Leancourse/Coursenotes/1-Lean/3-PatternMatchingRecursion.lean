@@ -135,7 +135,7 @@ Lean only accepts a recursive definition once it is convinced the recursion *ter
 example : fib 3 = 2 := rfl
 ```
 
-The recursor `Nat.rec` of {ref "nat-intro"}[chapter 1.1] hands the step only the value at `n`, but `fib (n + 2)` needs the values at `n` and at `n + 1`. By hand, with `Nat.rec` alone, one carries the pair `(fib n, fib (n + 1))` along:
+The recursor `Nat.rec` of {ref "nat-intro"}[chapter 1.1] hands the step only the value at `n`, but `fib (n + 2)` needs the values at `n` and at `n + 1`. By hand, with `Nat.rec` alone, one carries the pair `(fib n, fib (n + 1))` along. Its type `ℕ × ℕ` is the type of pairs of natural numbers. In general `α × β` is a structure ({ref "structures"}[Structures]) with the two fields `fst : α` and `snd : β`; a pair is written `(a, b)`, and its fields are `p.1` and `p.2`. As for every structure, `⟨a, b⟩` works as well, but only where Lean already knows the type: `#check ⟨1, 2⟩` fails, `#check (1, 2)` gives `ℕ × ℕ`, because `(a, b)` is notation for `Prod.mk a b` alone. {ref "sigma-types"}[Chapter 1.4] treats pairs in full.
 
 ```lean
 def fibPair (n : ℕ) : ℕ × ℕ :=
@@ -221,9 +221,9 @@ decreasing_by all_goals (rw [Prod.lex_def]; omega)
 #eval pairIndex 2 1   -- 8
 ```
 
-Here Lean needs help. No argument decreases in both recursive calls, and the sum `m + n` stays the same in the third line. Without the last two lines of the definition Lean reports "Could not find a decreasing measure". The measure is a pair: first the diagonal `m + n`, then the position `m` on it. Pairs are compared *lexicographically*: `(a, b)` is smaller than `(c, d)` if `a < c`, or if `a = c` and `b < d`. `termination_by` names the measure; `m n =>` names the two arguments, which the patterns leave unnamed. `decreasing_by` proves that the measure decreases. There is one goal for each recursive call, and `all_goals` applies the same tactics to both: `rw [Prod.lex_def]` replaces the lexicographic order by its definition, and `omega`, a tactic that proves linear arithmetic over `ℕ` and `ℤ`, finishes.
+Here Lean needs help. No argument decreases in both recursive calls, and the sum `m + n` stays the same in the third line. Without the last two lines of the definition Lean reports "Could not find a decreasing measure". The measure is the pair `(m + n, m) : ℕ × ℕ`: first the diagonal `m + n`, then the position `m` on it. Pairs are compared *lexicographically*: `(a, b)` is smaller than `(c, d)` if `a < c`, or if `a = c` and `b < d`. `termination_by` names the measure; `m n =>` names the two arguments, which the patterns leave unnamed. `decreasing_by` proves that the measure decreases. There is one goal for each recursive call, and `all_goals` applies the same tactics to both: `rw [Prod.lex_def]` replaces the lexicographic order by its definition, and `omega`, a tactic that proves linear arithmetic over `ℕ` and `ℤ`, finishes.
 
-That pairs are compared lexicographically is not written in the definition. Lean takes the order from the type of the measure, by instance search for the class `WellFoundedRelation` (typeclasses are the subject of {ref "typeclasses"}[chapter 1.6]). On `ℕ` the order is `<`; on a product it is `Prod.lex`, built from the orders on the two factors:
+That pairs are compared lexicographically is not written in the definition. Lean takes the order from the type of the measure, by instance search for the class `WellFoundedRelation` (typeclasses are the subject of {ref "typeclasses"}[chapter 1.6]). On `ℕ` the order is `<`; on a product it is `Prod.lex`, built from the orders on the two factors. The command `#synth C` runs this search for the class `C` and prints the instance it finds, or an error if there is none:
 
 ```lean
 #synth WellFoundedRelation (ℕ × ℕ)

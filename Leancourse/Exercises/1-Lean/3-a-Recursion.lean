@@ -24,6 +24,7 @@ in chapter 1.2 and chapter 1.3 first.
 | `rw [f]`                   | unfold `f` once, by its defining equation    |
 | `simp [f]`                 | unfold `f` as often as needed and simplify   |
 | `T.rec`                    | the recursor of an inductive type `T`        |
+| `fun_induction f x with`   | induction along the branches of `f`          |
 
 ## Tactics from earlier sheets
 
@@ -249,3 +250,53 @@ example (n : ℕ) : myGcd 0 n = n := by
 example (n : ℕ) (h : 0 < n) :
     binLength (2 * n) = binLength n + 1 := by
   sorry
+
+/-! ## Part 5: Induction along the definition
+
+`induction n` gives a hypothesis for `n` when the goal is about
+`n + 1`. A function such as `digits` calls itself on `n / 10`, so that
+hypothesis is the wrong one. `fun_induction digits n` follows the
+definition instead: one goal per branch, with `digits n` already
+replaced by that branch, and one induction hypothesis per recursive
+call. The cases are named `case1`, `case2`, … in the order of the
+branches; each takes the variables and conditions of its branch, and
+then the hypotheses. -/
+
+example (n : ℕ) : digits n ≤ n + 1 := by
+  fun_induction digits n with
+  | case1 n h =>
+    -- h : n < 10
+    -- ⊢ 1 ≤ n + 1
+    omega
+  | case2 n h ih =>
+    -- h : ¬n < 10
+    -- ih : digits (n / 10) ≤ n / 10 + 1
+    -- ⊢ 1 + digits (n / 10) ≤ n + 1
+    omega
+
+-- Exercise 19) In the first branch the condition `n = 0` is used up:
+-- Lean replaces `n` by `0`, and `case1` takes no names.
+example (n : ℕ) : digitSum n ≤ n := by
+  sorry
+
+-- Exercise 20) For your `binLength` from exercise 12.
+example (n : ℕ) : binLength n ≤ n := by
+  sorry
+
+/-! Structural recursion works the same way. `fib` has three
+branches, and the third calls itself twice, so `case3` has two
+induction hypotheses. `induction n` would give only the one for
+`n + 1`. -/
+
+def fib : ℕ → ℕ
+  | 0 => 0
+  | 1 => 1
+  | n + 2 => fib n + fib (n + 1)
+
+-- Exercise 21) In `case3` the goal shows `2 ^ n.succ.succ`, which is
+-- `2 ^ (n + 2)`. `omega` does not know powers: state
+-- `2 ^ (n + 1) = 2 * 2 ^ n` and `2 ^ (n + 2) = 4 * 2 ^ n` with
+-- `have … := by ring`, then `omega`. The first two cases: `simp`.
+example (n : ℕ) : fib n ≤ 2 ^ n := by
+  sorry
+

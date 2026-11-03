@@ -407,6 +407,16 @@ tag := "quotient-types"
 
 The last way to form a type, after universes, function types and inductive types, is the *quotient*. Given a type `α` and a relation `r : α → α → Prop`, the type `Quot r` glues together elements that `r` relates: `α` seen up to `r`. This makes `ℝ` as Cauchy sequences up to equivalence an actual construction ({ref "reals-quotient"}[chapter 2.1]). `Multiset α` (lists up to reordering) is a quotient in Mathlib. ℤ, ℚ and ℤ/nℤ are quotients in mathematics, but Lean defines them through normal forms instead: `Int` is an inductive type with the constructors `ofNat n` and `negSucc n` (for `-(n + 1)`), `Rat` is a structure of a numerator and a denominator with proofs that the fraction is reduced, and `ZMod n` is `Fin n` for `n > 0`.
 
+`Quot` is not defined by a declaration, the way `Nat` or `Prod` are. It is a *primitive* of the kernel, like `Prop`: `#print Quot` answers "Quotient primitive". Lean adds four constants and one computation rule, and the four steps below describe exactly these:
+
+```
+Quot      : {α : Sort u} → (α → α → Prop) → Sort u
+Quot.mk   : (r : α → α → Prop) → α → Quot r
+Quot.lift : (f : α → β) →
+              (∀ a b, r a b → f a = f b) → Quot r → β
+Quot.ind  : (∀ a, P (Quot.mk r a)) → ∀ q : Quot r, P q
+```
+
 *Formation.* `Quot r` is a type.
 
 *Construction.* `Quot.mk r a` is the class of `a : α`.
@@ -427,14 +437,14 @@ example (r : Nat → Nat → Prop) (f : Nat → Nat)
     Quot.lift f h (Quot.mk r a) = f a := rfl
 ```
 
-One property is missing from the four steps: related elements should have the *same* class. It does not follow from the rules, and Lean adds it as an *axiom*, a constant that is assumed without proof:
+One property is missing from the four steps: related elements should have the *same* class. It does not follow from the four constants. They all hold for `Quot r := α` with `Quot.mk r a := a` and `Quot.lift f h := f`, where nothing is glued and `Quot.mk r a ≠ Quot.mk r b` for `a ≠ b`. So Lean adds the property as an *axiom*, a constant that is assumed without proof:
 
 ```lean
 #check @Quot.sound  -- r a b → Quot.mk r a = Quot.mk r b
 #print axioms Quot.sound   -- [Quot.sound]
 ```
 
-`#print axioms name` lists the axioms that a constant depends on. In practice one usually goes through `Quotient`, a thin wrapper of `Quot` for a relation that is an equivalence relation; such a relation, bundled with the proof that it is one, is called a `Setoid`.
+`#print axioms name` lists the axioms that a constant depends on. With the axiom, `Quot r` is the quotient of `α` by the equivalence relation *generated* by `r`: `Quot.mk r a = Quot.mk r b` holds exactly when `a` and `b` are connected by a finite chain of `r`-steps, in either direction (Mathlib's `Quot.eqvGen_exact` and `Quot.eqvGen_sound`). So `r` need not be an equivalence relation. In practice one usually goes through `Quotient`, a thin wrapper of `Quot` for a relation that is an equivalence relation; such a relation, bundled with the proof that it is one, is called a `Setoid`.
 
 ## Example: the integers mod n
 %%%

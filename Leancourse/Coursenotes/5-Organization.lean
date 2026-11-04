@@ -110,7 +110,7 @@ written at the start of the lab.
 * + 4
   + Wed 11.11.
   + Lab
-  + *Test 1*, then sheets
+  + *Test 1* ([practice tasks, PDF](static/tests/test1-practice.pdf)), then sheets
   + `L-e`, `L-f`, `1.1-c`
 * + 5
   + Mon 16.11.
@@ -247,6 +247,10 @@ questions:
 * Is `¬(P ∧ Q) → (¬P ∨ ¬Q)` provable constructively? If not, where
   does the excluded middle come in?
 * This proof fails with "no binders to introduce". Why?
+
+For test 1 there are
+[twelve practice tasks with answers (PDF)](static/tests/test1-practice.pdf)
+of the same kinds as the six in the test.
 
 # Goals
 %%%

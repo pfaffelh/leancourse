@@ -33,6 +33,13 @@ one of your toolbox lemmas in one line with
 bounded sequences converge (this needs the completeness of `ℝ` via
 suprema).
 
+*Comments and extensions.*  This is the project closest to a
+first-year course, and a good choice if Lean is still new to you.
+Further steps: Cauchy sequences and their convergence in `ℝ`;
+Bolzano–Weierstrass; series and the comparison test. For each, prove
+the classical version first and then compare with the Mathlib
+statement.
+
 *References.*  {citet mathematicsInLean}[] develops exactly this
 programme in its convergence chapter, and {citet buzzardMehta}[]
 cover limits of sequences as a running example; consult them when

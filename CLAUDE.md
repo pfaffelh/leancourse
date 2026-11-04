@@ -2961,3 +2961,26 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   `simp`) nach 1.3-a Aufgabe 4.
 - `absurd` ist ein Theorem (Kern) *und* eine Taktik (Batteries,
   `absurd h` macht das Ziel zu `¬P`); L-d benutzt das Theorem.
+
+## 2026-11-04 -- Projekte neu zusammengestellt
+
+- Gestrichen: Cantor-Schroeder-Bernstein und Monty Hall (`git rm`).
+  Jetzt sechs Projekte in `Coursenotes/3-Projects/`: `1-Naturals`
+  (Lean-`Nat` gegen die fuenf Peano-Axiome, Dedekinds
+  Rekursionssatz, `Peano`-Struktur `≃ ℕ`), `2-Integers` (ℤ auf drei
+  Arten: Quotient, induktiv wie Lean, Normalformen; Vergleich),
+  `3-Limits`, `4-Girard`, `5-MathlibResult` (einen Mathlib-Satz ueber
+  seine Formalisierung verstehen), `6-Mutual` (`mutual`-Typen, im Kurs
+  nicht behandelt). Tags: `project-naturals`, `project-integers`,
+  `project-limits`, `project-girard`, `project-mathlib`,
+  `project-mutual`; `project-csb` und `project-monty-hall` gibt es
+  nicht mehr.
+- Einleitung: Uebungsblaetter laufen das ganze Semester, das Projekt
+  kommt dazu, rund 90 Stunden. Organization nachgezogen.
+- Getestet: `induction` lehnt mutual Typen ab ("does not support the
+  type ... because it is mutually inductive"); `#check @Rose.rec` fuer
+  `Rose α` mit `List (Rose α)` zeigt zwei Motive (nested = mutual).
+  `Tree` ist in Mathlib belegt (deprecated -> `BinaryTree`), daher
+  `MTree`/`MForest`.
+- Alles nur auf `preparation`; die Projektdateien stehen in
+  `WITHHELD`.

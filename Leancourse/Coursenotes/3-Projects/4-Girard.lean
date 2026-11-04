@@ -5,7 +5,7 @@ import Leancourse.Coursenotes.References
 open Verso.Genre Manual
 open Leancourse.Refs
 
-#doc (Manual) "Project 1: Girard's paradox, or why `Type : Type` is fatal" =>
+#doc (Manual) "Project 4: Girard's paradox, or why `Type : Type` is fatal" =>
 %%%
 tag := "project-girard"
 %%%
@@ -68,6 +68,12 @@ depth:
   paradox, and explain — in prose and with `#check_failure`
   experiments — why Lean's *impredicative* `Prop` does not fall to
   the same argument.
+
+*Comments.*  This is the most demanding of the projects. It suits
+someone who wants to see why {ref "type-universes"}[the universe
+hierarchy] and {ref "rules"}[the rules of chapter 1.5] are what they
+are. The write-up should explain, in
+prose, the line from Russell's paradox to Girard's.
 
 *References.*  The paradox is from the thesis of
 {citet girard1972}[]; {citet coquand1986}[] gives the analysis on

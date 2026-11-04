@@ -46,11 +46,12 @@ WITHHELD = [
     "Leancourse/Coursenotes/2-Mathematics/7-Topology.lean",           # 2.7
     "Leancourse/Coursenotes/2-Mathematics/8-MeasureTheory.lean",      # 2.8
     "Leancourse/Coursenotes/2-Mathematics/9-Probability.lean",        # 2.9
-    "Leancourse/Coursenotes/3-Projects/1-Girard.lean",                # 3
-    "Leancourse/Coursenotes/3-Projects/2-CantorSchroederBernstein.lean",
+    "Leancourse/Coursenotes/3-Projects/1-Naturals.lean",              # 3
+    "Leancourse/Coursenotes/3-Projects/2-Integers.lean",
     "Leancourse/Coursenotes/3-Projects/3-Limits.lean",
-    "Leancourse/Coursenotes/3-Projects/4-Integers.lean",
-    "Leancourse/Coursenotes/3-Projects/5-MontyHall.lean",
+    "Leancourse/Coursenotes/3-Projects/4-Girard.lean",
+    "Leancourse/Coursenotes/3-Projects/5-MathlibResult.lean",
+    "Leancourse/Coursenotes/3-Projects/6-Mutual.lean",
 ]
 
 HEADING = re.compile(r"^#{1,6} ")

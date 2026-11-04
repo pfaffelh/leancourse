@@ -342,7 +342,7 @@ The notes have six parts.
 * *Lean and its type theory*: the natural numbers and reduction; functions, inductive types and structures; pattern matching and recursion; pairs, subtypes, propositions as types and quotients; the rules of the type theory; typeclasses; notation.
 * *Mathematics*: numbers, sets and types, the foundations (universes, axioms, well-foundedness), then the areas of *Mathlib* listed above. Pointers into the API, not full formalizations.
 * *Appendix*: the glossary of tactics (a longer list is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)), the structure of a Lean file, navigating *Mathlib*, common pitfalls, and small reference topics such as the diagnostic commands (`#print axioms`, `#find_home`, `#lint`).
-* *Projects*: five topics for the individual formalization projects, each with a description, a sketch of an implementation and references.
+* *Projects*: six topics for the individual formalization projects, each with a description, a sketch of an implementation, comments and references.
 * *Bibliography*: the works cited throughout, with links.
 * *Organization*: what comes when, the short tests, the slides and the recordings.
 
@@ -350,6 +350,6 @@ Tactics and theory are interleaved. You usually meet a tactic in a working examp
 
 The exercises carry the course (the `Exercises` folder of the exercises repository, see below). Feedback is immediate: error messages from the elaborator, and the *proof state* in the infoview, which shows what remains to be proved at every cursor position. Start with the first sheet; the sheets explain as they go.
 
-In addition to the sheets, you work on an individual project, mostly self-chosen — an exercise from your first year, or a part of *Mathlib* you want to know; the {ref "projects"}[Projects chapter] has five worked-out suggestions.
+In addition to the sheets, which run through the whole semester, you work on an individual project of about 90 hours, mostly self-chosen — an exercise from your first year, or a part of *Mathlib* you want to know; the {ref "projects"}[Projects chapter] has six suggestions.
 
 Before the first lab session, get Lean running on your own machine.

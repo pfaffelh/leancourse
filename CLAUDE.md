@@ -2984,3 +2984,5 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   `MTree`/`MForest`.
 - Alles nur auf `preparation`; die Projektdateien stehen in
   `WITHHELD`.
+- Am selben Abend auf `main` freigegeben: die sechs Projektdateien
+  stehen nicht mehr in `WITHHELD` (auf beiden Branches).

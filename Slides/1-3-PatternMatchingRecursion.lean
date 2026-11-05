@@ -148,21 +148,42 @@ Lean carries the values at _all_ smaller arguments, with `Nat.brecOn`. More afte
 # The recursor in general
 
 ```
-inductive T where
-  | c₁ (a₁ : A₁) … (aₖ : Aₖ) : T
+inductive T where                   -- bⱼ non-recursive, rⱼ recursive
+  | c₁ (b₁ : B₁) … (bₗ : Bₗ) (r₁ … rₖ : T) : T
   | …                               -- constructors c₂, …, cₘ
 
 T.rec : {motive : T → Sort u} →
-  (f₁ : (a₁ : A₁) → … → (aₖ : Aₖ) →
-     motive aᵢ → … →                -- one for every aᵢ with Aᵢ = T
-     motive (c₁ a₁ … aₖ)) →         -- case c₁
+  (f₁ : (b₁ : B₁) → … → (bₗ : Bₗ) → (r₁ … rₖ : T) →
+     motive r₁ → … → motive rₖ →    -- one per recursive argument
+     motive (c₁ b₁ … bₗ r₁ … rₖ)) → -- case c₁
   … → (fₘ : …) →                    -- cases c₂, …, cₘ
   (t : T) → motive t
 ```
 
 - `motive t`: the result type, may depend on `t`. Parameters (`α` in `List α`) come first.
-- `fⱼ`: the case for `cⱼ`. `T.rec f₁ … fₘ (c₁ a₁ … aₖ) ⟶ f₁ a₁ … aₖ (T.rec f₁ … fₘ aᵢ) …`
-- `T.casesOn`: the same, without the values `motive aᵢ`.
+- `T.casesOn`: the same, without the values `motive rⱼ`.
+
+# How `T.rec` is defined
+
+`T.rec` has no body: the kernel adds it as a constant, a _recursor_, with one reduction rule per constructor. Everything it does is reduction by these rules.
+
+```
+#print Nat.rec
+-- rules:
+-- for Nat.zero (0 fields): fun motive zero succ => zero
+-- for Nat.succ (1 fields): fun motive zero succ n =>
+--   succ n (Nat.rec zero succ n)
+```
+
+In general, with `R := T.rec f₁ … fₘ`:
+
+```
+R (c₁ b₁ … bₗ r₁ … rₖ)  ⟶  f₁ b₁ … bₗ r₁ … rₖ (R r₁) … (R rₖ)
+```
+
+:::class "key"
+This is ι-reduction (chapter 1.1). It fires only on a constructor; on a variable `n`, `R n` is stuck.
+:::
 
 # Case splits: `Nat.casesOn`
 

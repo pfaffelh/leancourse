@@ -334,20 +334,26 @@ Lean generates `T.rec` for every `inductive` declaration from its constructors, 
 3. One *case* per constructor, in the order of the declaration. For a constructor `c (a₁ : A₁) … (aₖ : Aₖ) : T` the case takes the arguments `a₁ … aₖ`, then, for every argument `aᵢ` of type `T` itself (a *recursive* argument), a value of `motive aᵢ`, and returns a value of `motive (c a₁ … aₖ)`.
 4. The term `t : T` to be consumed; the result has type `motive t`.
 
-As one type, for `T` with constructors `c₁, …, cₘ` (parameters omitted):
+As one type, for `T` with constructors `c₁, …, cₘ` (parameters omitted). The arguments of `c₁` are split into non-recursive ones `bⱼ : Bⱼ` and recursive ones `rⱼ : T`; for readability the non-recursive ones are listed first, while in a declaration they may come in any order, and the case keeps that order.
 
 ```
 T.rec : {motive : T → Sort u} →
-  (f₁ : (a₁ : A₁) → … → (aₖ : Aₖ) →
-     motive aᵢ → … →                -- one for every aᵢ with Aᵢ = T
-     motive (c₁ a₁ … aₖ)) →         -- case c₁
+  (f₁ : (b₁ : B₁) → … → (bₗ : Bₗ) → (r₁ … rₖ : T) →
+     motive r₁ → … → motive rₖ →    -- one per recursive argument
+     motive (c₁ b₁ … bₗ r₁ … rₖ)) → -- case c₁
   … → (fₘ : …) →                    -- cases c₂, …, cₘ
   (t : T) → motive t
 ```
 
-`T.casesOn` has the same cases without the values `motive aᵢ`, and takes `t` before the cases.
+`T.casesOn` has the same cases without the values `motive rⱼ`, and takes `t` before the cases.
 
 With the recursor come its computation rules, one per constructor: applied to `c a₁ … aₖ`, the recursor takes the case for `c`, and passes it the arguments and, for each recursive argument `aᵢ`, the recursor applied to `aᵢ`. For `BinTree` the rule for `node` is `BinTree.rec z s (.node l a r) ⟶ s l a r (BinTree.rec z s l) (BinTree.rec z s r)`.
+
+`T.rec` has no body. It is not defined by a term; the kernel adds it as a new constant, a *recursor*, together with these rules, and everything `T.rec` does is reduction by them. Applying one is ι-reduction ({ref "reduction-rules"}[the reduction rules]). A rule fires only when the argument is a constructor application: `BinTree.rec z s t` for a variable `t` does not reduce, which is why statements about all `t` need induction rather than `rfl`. `#print` shows the rules:
+
+```lean
+#print BinTree.rec
+```
 
 ```lean
 #check @Colour.rec

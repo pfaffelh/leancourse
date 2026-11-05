@@ -160,8 +160,13 @@ T.rec : {motive : T → Sort u} →
   (t : T) → motive t
 ```
 
+In general, with `R := T.rec f₁ … fₘ`:
+
+```
+R (c₁ b₁ … bₗ r₁ … rₖ)  ⟶  f₁ b₁ … bₗ r₁ … rₖ (R r₁) … (R rₖ)
+```
+
 - `motive t`: the result type, may depend on `t`. Parameters (`α` in `List α`) come first.
-- `T.casesOn`: the same, without the values `motive rⱼ`.
 
 # How `T.rec` is defined
 
@@ -183,6 +188,29 @@ R (c₁ b₁ … bₗ r₁ … rₖ)  ⟶  f₁ b₁ … bₗ r₁ … rₖ (R r
 
 :::class "key"
 This is ι-reduction (chapter 1.1). It fires only on a constructor; on a variable `n`, `R n` is stuck.
+:::
+
+# `T.casesOn` in general
+
+```
+T.casesOn : {motive : T → Sort u} → (t : T) →
+  (f₁ : (b₁ : B₁) → … → (bₗ : Bₗ) → (r₁ … rₖ : T) →
+     motive (c₁ b₁ … bₗ r₁ … rₖ)) → -- case c₁, no motive rⱼ
+  … → (fₘ : …) →                    -- cases c₂, …, cₘ
+  motive t
+```
+
+An ordinary definition: `T.rec`, with every case ignoring the values at the `rⱼ`.
+
+```
+T.casesOn t f₁ … fₘ :=
+  T.rec (fun b₁ … bₗ r₁ … rₖ _ … _ => f₁ b₁ … rₖ) … t
+
+T.casesOn (c₁ b₁ … bₗ r₁ … rₖ) f₁ … fₘ  ⟶  f₁ b₁ … bₗ r₁ … rₖ
+```
+
+:::class "key"
+No recursion: a case split on the outermost constructor. Pattern matching is compiled to it.
 :::
 
 # Case splits: `Nat.casesOn`
@@ -330,6 +358,23 @@ Read as a proof, `motive tail` is the induction hypothesis.
 Every inductive type `T` has its own `T.below` (the table) and `T.brecOn`.
 :::
 
+# `T.below` and `T.brecOn` in general
+
+```
+T.below : {motive : T → Sort u} → T → Sort (max 1 u)
+T.below (c₁ b₁ … bₗ r₁ … rₖ) =                -- PUnit if k = 0
+  (motive r₁ ×' T.below r₁) ×' … ×' (motive rₖ ×' T.below rₖ)
+
+T.brecOn : {motive : T → Sort u} → (t : T) →
+  (F : (t : T) → T.below t → motive t) → motive t
+```
+
+Both are ordinary definitions by `T.rec`. `T.below t` is the table of values at all parts of `t`; `F` gets `t` and its table. With `G t := ⟨T.brecOn t F, table at t⟩`:
+
+```
+T.brecOn (c₁ b₁ … bₗ r₁ … rₖ) F  ⟶  F (c₁ b₁ … bₗ r₁ … rₖ) ⟨G r₁, …, G rₖ⟩
+```
+
 # The table `Nat.below`
 
 Defined with `Nat.rec` (see `#print Nat.below`):
@@ -474,34 +519,25 @@ inductive Bad where
 
 Strict positivity: in argument types of constructors, the type occurs only _right_ of `→`. In the type `Bad → False` of `f`, `Bad` stands _left_ of `→`.
 
-Suppose Lean accepted it. Every `b : Bad` is `mk f` for some `f : Bad → False`, so pattern matching takes `f` out again:
+If Lean accepted it, we would have `mk` and, by pattern matching `| .mk f => f`, its inverse `unmk`. Then:
 
+```lean -panel -stretch
+example (Bad : Type) (mk : (Bad → False) → Bad)
+    (unmk : Bad → (Bad → False)) : False := by
+  have neg : Bad → False := fun b => unmk b b
+  have b : Bad := mk neg
+  exact neg b
 ```
-def unmk : Bad → (Bad → False)
-  | .mk f => f          -- unmk (mk f) = f
-```
-
-:::class "key"
-`mk : (Bad → False) → Bad` and `unmk : Bad → (Bad → False)`: so `Bad ↔ ¬Bad`.
-:::
 
 # False from nothing
+
+- `neg b`: take the function stored in `b`, apply it to `b` itself. So `neg : Bad → False`.
+- `mk neg : Bad`, and `neg` applied to it is a proof of `False`: no hypothesis, no axiom.
+- With `Bad` accepted, `mk` and `unmk` would not be hypotheses but constructor and pattern match, and the same term would be a closed proof of `False`:
 
 ```
 def neg (b : Bad) : False := unmk b b
 def boom : False := neg (Bad.mk neg)
-```
-
-- `neg b`: take the function stored in `b`, apply it to `b` itself. So `neg : Bad → False`.
-- `Bad.mk neg : Bad`, and `neg` applied to it is a proof of `False`: no hypothesis, no axiom.
-
-Lean checks the argument, with `mk` and `unmk` as hypotheses:
-
-```lean -panel -stretch
-example (Bad : Type) (mk : (Bad → False) → Bad)
-    (unmk : Bad → (Bad → False)) : False :=
-  let neg : Bad → False := fun b => unmk b b
-  neg (mk neg)
 ```
 
 :::class "key"

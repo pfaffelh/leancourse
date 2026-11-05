@@ -335,8 +335,8 @@ Every inductive type `T` has its own `T.below` (the table) and `T.brecOn`.
 Defined with `Nat.rec` (see `#print Nat.below`):
 
 - `Nat.below 0 = PUnit`: nothing below `0`; one element `⟨⟩`.
-- `Nat.below (n + 1) = motive n ×' Nat.below n`: value at `n`, then table at `n`.
-- `×'` (`PProd`): pairs like `×`; components may be proofs.
+- `Nat.below (n + 1) = motive n ×' Nat.below n`: an element is a pair `⟨value at n, table at n⟩`.
+- `×'` (`PProd`): pairs like `×`, but components may be proofs. Needed because `motive` may be `Prop`-valued: then the table holds the induction hypotheses.
 
 ```lean -panel -stretch
 example : Nat.below (motive := fun _ => ℕ) 3 =

@@ -117,9 +117,15 @@ Lean checks that the three patterns cover every natural number. The numerals in 
 `Nat.casesOn t z s` has one case per constructor. The case for `succ n` receives `n`, but no value at `n`, so there is no recursion. It is built from the recursor: `Nat.casesOn t z s` is `Nat.rec z (fun n _ => s n) t`. Applied to `fib`, the patterns `0`, `1`, `n + 2` become
 
 ```
-fun x => Nat.casesOn x  (case 0)
-  (fun m => Nat.casesOn m  (case 1)
-    (fun n => (case n + 2)))
+fun x => Nat.casesOn x  (case 0)          -- x = zero
+  (fun m => Nat.casesOn m  (case 1)       -- x = succ m, m = zero
+    (fun n => (case n + 2)))              -- x = succ (succ n)
+```
+
+The pattern `1` is read in two steps: the outer split finds `succ m`, the inner split finds `m = zero`. Lean stores this term as `fib.match_1`; its cases `h_1`, `h_2`, `h_3` are the right-hand sides of the three patterns:
+
+```lean
+#print fib.match_1
 ```
 
 Every leaf of this tree must be reached by one of the patterns. With the line for `1` missing, the case `Nat.succ Nat.zero` is reached by none:
@@ -327,6 +333,19 @@ Lean generates `T.rec` for every `inductive` declaration from its constructors, 
 2. The *motive* `motive : T → Sort u`, the type of the result, which may depend on the term.
 3. One *case* per constructor, in the order of the declaration. For a constructor `c (a₁ : A₁) … (aₖ : Aₖ) : T` the case takes the arguments `a₁ … aₖ`, then, for every argument `aᵢ` of type `T` itself (a *recursive* argument), a value of `motive aᵢ`, and returns a value of `motive (c a₁ … aₖ)`.
 4. The term `t : T` to be consumed; the result has type `motive t`.
+
+As one type, for `T` with constructors `c₁, …, cₘ` (parameters omitted):
+
+```
+T.rec : {motive : T → Sort u} →
+  (f₁ : (a₁ : A₁) → … → (aₖ : Aₖ) →
+     motive aᵢ → … →                -- one for every aᵢ with Aᵢ = T
+     motive (c₁ a₁ … aₖ)) →         -- case c₁
+  … → (fₘ : …) →                    -- cases c₂, …, cₘ
+  (t : T) → motive t
+```
+
+`T.casesOn` has the same cases without the values `motive aᵢ`, and takes `t` before the cases.
 
 With the recursor come its computation rules, one per constructor: applied to `c a₁ … aₖ`, the recursor takes the case for `c`, and passes it the arguments and, for each recursive argument `aᵢ`, the recursor applied to `aᵢ`. For `BinTree` the rule for `node` is `BinTree.rec z s (.node l a r) ⟶ s l a r (BinTree.rec z s l) (BinTree.rec z s r)`.
 

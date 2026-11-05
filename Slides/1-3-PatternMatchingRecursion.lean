@@ -128,36 +128,6 @@ example : fib 3 = 2 := rfl
 - `fib` computes by ι: `fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)`.
 - `def loop (n : ℕ) : ℕ := loop n + 1` is rejected. It would give `loop 0 = loop 0 + 1`; subtract `loop 0`: `0 = 1`.
 
-# Case splits: `Nat.casesOn`
-
-```
-Nat.rec : {motive : ℕ → Sort u} →
-  motive zero → ((n : ℕ) → motive n → motive (succ n)) →
-  (t : ℕ) → motive t
-
-Nat.casesOn : {motive : ℕ → Sort u} → (t : ℕ) →
-  motive zero → ((n : ℕ) → motive (succ n)) → motive t
-```
-
-In words: `Nat.casesOn t z s` only asks which constructor built `t`. If `t` is `zero`, the result is `z`. If `t` is `succ n`, the result is `s n`.
-
-- One case per constructor. `succ` gets `n`, but not the value `motive n` that `Nat.rec` passes: no recursion.
-- Built from the recursor: `Nat.casesOn t z s` is `Nat.rec z (fun n _ => s n) t`.
-
-# Are all cases covered?
-
-The patterns `0`, `1`, `n + 2` of `fib` become two nested case splits:
-
-```
-fun x => Nat.casesOn x  (case 0)
-  (fun m => Nat.casesOn m  (case 1)
-    (fun n => (case n + 2)))
-```
-
-:::class "key"
-Every leaf must be reached by a pattern. Without the line for `1`: "Missing cases: (Nat.succ Nat.zero)".
-:::
-
 # Two values back
 
 `fib (n + 2)` needs two earlier values; `Nat.rec` hands over only one. By hand: carry the pair `(fib n, fib (n + 1))`.
@@ -173,6 +143,59 @@ example : fibPair 10 = (55, 89) := rfl
 
 :::class "key"
 Lean carries the values at _all_ smaller arguments, with `Nat.brecOn`. More after the recursor.
+:::
+
+# The recursor in general
+
+```
+inductive T where
+  | c₁ (a₁ : A₁) … (aₖ : Aₖ) : T
+  | …                               -- constructors c₂, …, cₘ
+
+T.rec : {motive : T → Sort u} →
+  (f₁ : (a₁ : A₁) → … → (aₖ : Aₖ) →
+     motive aᵢ → … →                -- one for every aᵢ with Aᵢ = T
+     motive (c₁ a₁ … aₖ)) →         -- case c₁
+  … → (fₘ : …) →                    -- cases c₂, …, cₘ
+  (t : T) → motive t
+```
+
+- `motive t`: the result type, may depend on `t`. Parameters (`α` in `List α`) come first.
+- `fⱼ`: the case for `cⱼ`. `T.rec f₁ … fₘ (c₁ a₁ … aₖ) ⟶ f₁ a₁ … aₖ (T.rec f₁ … fₘ aᵢ) …`
+- `T.casesOn`: the same, without the values `motive aᵢ`.
+
+# Case splits: `Nat.casesOn`
+
+```
+Nat.rec : {motive : ℕ → Sort u} →
+  motive zero → ((n : ℕ) → motive n → motive (succ n)) →
+  (t : ℕ) → motive t
+
+Nat.casesOn : {motive : ℕ → Sort u} → (t : ℕ) →
+  motive zero → ((n : ℕ) → motive (succ n)) → motive t
+```
+
+For `ℕ`: `zero` has no arguments, `succ` one recursive argument.
+
+In words: `Nat.casesOn t z s` only asks which constructor built `t`. If `t` is `zero`, the result is `z`. If `t` is `succ n`, the result is `s n`.
+
+- One case per constructor. `succ` gets `n`, but not the value `motive n` that `Nat.rec` passes: no recursion.
+- Built from the recursor: `Nat.casesOn t z s` is `Nat.rec z (fun n _ => s n) t`.
+
+# Are all cases covered?
+
+Lean first writes the patterns of `fib` with constructors: `0` is `zero`, `1` is `succ zero`, `n + 2` is `succ (succ n)`. Then it splits from the outside in:
+
+```
+fun x => Nat.casesOn x  (case 0)          -- x = zero
+  (fun m => Nat.casesOn m  (case 1)       -- x = succ m, m = zero
+    (fun n => (case n + 2)))              -- x = succ (succ n)
+```
+
+So `1` is read in two steps: the outer split finds `succ`, the inner one finds `zero`. `#print fib.match_1` shows exactly this term.
+
+:::class "key"
+Every leaf must be reached by a pattern. Without the line for `1`: "Missing cases: (Nat.succ Nat.zero)".
 :::
 
 # Binary trees
@@ -252,7 +275,7 @@ example : log2 16 = 4 := by simp [log2]
 
 Structural recursion computes, so `rfl` works. Well-founded recursion does not: use the equation lemma `log2.eq_1`, via `rw [log2]`, `unfold log2` or `simp [log2]`.
 
-# How the recursor is built
+# Example: `List.rec`
 
 ```
 List.rec : {motive : List α → Sort u} →
@@ -263,9 +286,8 @@ List.rec : {motive : List α → Sort u} →
   (t : List α) → motive t
 ```
 
-- the motive `T → Sort u`: the type of the result
-- one case per constructor: its arguments, and `motive aᵢ` for every argument `aᵢ : T`
-- computation: `List.rec n c (a :: l) ⟶ c a l (List.rec n c l)`
+- `nil` has no arguments; `cons` has `head : α` and the recursive argument `tail : List α`, so its case gets `motive tail`.
+- Computation: `List.rec n c (a :: l) ⟶ c a l (List.rec n c l)`
 
 :::class "key"
 Read as a proof, `motive tail` is the induction hypothesis.

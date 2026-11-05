@@ -41,12 +41,12 @@ namespace SlidesTypes
 Lean and its type theory — chapter 3
 
 :::class "key"
-A function on an inductive type has one branch per constructor; Lean turns the branches into the recursor.
+We know the recursor already, here are more details.
 :::
 
 # Pattern matching
 
-One branch per constructor, each prefixed by `|`.
+Recall: for an inductive type `α`, a function `α → β` is defined with the recursor `α.rec`. Pattern matching is a more convenient way to write it: one branch per constructor, each prefixed by `|`.
 
 ```lean -panel -stretch
 def factorial : ℕ → ℕ
@@ -86,13 +86,15 @@ inductive List (α : Type u) where
   | nil : List α                    -- written []
   | cons (a : α) (l : List α) :
       List α                        -- written a :: l
+
+infixr:67 " :: " => List.cons       -- Lean's core library
 ```
 
 ```lean -panel -stretch
 #eval (1 :: 2 :: 3 :: [] : List ℕ)   -- [1, 2, 3]
 ```
 
-A list is empty, or a first element followed by a list. `[1, 2, 3]` is notation for `1 :: 2 :: 3 :: []`.
+A list is empty, or a first element followed by a list. `[1, 2, 3]` is notation for `1 :: 2 :: 3 :: []`. `infixr` makes `::` a right-associative infix operator with binding power 67, so `1 :: 2 :: []` is `1 :: (2 :: [])` (more in chapter 1.7).
 
 # Functions on lists
 
@@ -126,15 +128,23 @@ example : fib 3 = 2 := rfl
 - `fib` computes by ι: `fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)`.
 - `def loop (n : ℕ) : ℕ := loop n + 1` is rejected. It would give `loop 0 = loop 0 + 1`; subtract `loop 0`: `0 = 1`.
 
-# Are all cases covered?
+# Case splits: `Nat.casesOn`
 
 ```
+Nat.rec : {motive : ℕ → Sort u} →
+  motive zero → ((n : ℕ) → motive n → motive (succ n)) →
+  (t : ℕ) → motive t
+
 Nat.casesOn : {motive : ℕ → Sort u} → (t : ℕ) →
   motive zero → ((n : ℕ) → motive (succ n)) → motive t
 ```
 
-- A case split, one case per constructor. `succ` gets `n`, but no value at `n`: no recursion.
+In words: `Nat.casesOn t z s` only asks which constructor built `t`. If `t` is `zero`, the result is `z`. If `t` is `succ n`, the result is `s n`.
+
+- One case per constructor. `succ` gets `n`, but not the value `motive n` that `Nat.rec` passes: no recursion.
 - Built from the recursor: `Nat.casesOn t z s` is `Nat.rec z (fun n _ => s n) t`.
+
+# Are all cases covered?
 
 The patterns `0`, `1`, `n + 2` of `fib` become two nested case splits:
 

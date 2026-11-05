@@ -72,59 +72,59 @@ example (f : Bool → Bool) (b : Bool) : f (f (f b)) = f b := by
 
 /-! ## Part 2: Binary trees -/
 
-inductive MyTree where
-  | leaf : MyTree
-  | node : MyTree → ℕ → MyTree → MyTree
+inductive BinTree where
+  | leaf : BinTree
+  | node (l : BinTree) (a : ℕ) (r : BinTree) : BinTree
 
-open MyTree
+open BinTree
 
-def MyTree.size : MyTree → ℕ
+def BinTree.size : BinTree → ℕ
   | leaf => 0
   | node l _ r => l.size + 1 + r.size
 
-def MyTree.leaves : MyTree → ℕ
+def BinTree.leaves : BinTree → ℕ
   | leaf => 1
   | node l _ r => l.leaves + r.leaves
 
-example (t : MyTree) : t.leaves = t.size + 1 := by
+example (t : BinTree) : t.leaves = t.size + 1 := by
   induction t with
   | leaf => rfl
   | node l a r ihl ihr =>
-    simp only [MyTree.leaves, MyTree.size, ihl, ihr]
+    simp only [BinTree.leaves, BinTree.size, ihl, ihr]
     omega
 
-def MyTree.sum : MyTree → ℕ
+def BinTree.sum : BinTree → ℕ
   | leaf => 0
   | node l a r => l.sum + a + r.sum
 
 example : (node (node leaf 1 leaf) 2 (node leaf 3 leaf)).sum = 6 :=
   rfl
 
-def MyTree.mirror : MyTree → MyTree
+def BinTree.mirror : BinTree → BinTree
   | leaf => leaf
   | node l a r => node r.mirror a l.mirror
 
-example (t : MyTree) : t.mirror.size = t.size := by
+example (t : BinTree) : t.mirror.size = t.size := by
   induction t with
   | leaf => rfl
   | node l a r ihl ihr =>
-    simp only [MyTree.mirror, MyTree.size, ihl, ihr]
+    simp only [BinTree.mirror, BinTree.size, ihl, ihr]
     omega
 
-example (t : MyTree) : t.mirror.mirror = t := by
+example (t : BinTree) : t.mirror.mirror = t := by
   induction t with
   | leaf => rfl
   | node l a r ihl ihr =>
-    simp only [MyTree.mirror, ihl, ihr]
+    simp only [BinTree.mirror, ihl, ihr]
 
-noncomputable def MyTree.size' (t : MyTree) : ℕ :=
-  MyTree.rec 0 (fun _ _ _ sl sr => sl + 1 + sr) t
+noncomputable def BinTree.size' (t : BinTree) : ℕ :=
+  BinTree.rec 0 (fun _ _ _ sl sr => sl + 1 + sr) t
 
-example (t : MyTree) : t.size' = t.size := by
+example (t : BinTree) : t.size' = t.size := by
   induction t with
   | leaf => rfl
   | node l a r ihl ihr =>
-    simp only [MyTree.size]
+    simp only [BinTree.size]
     rw [← ihl, ← ihr]
     rfl
 

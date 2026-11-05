@@ -93,49 +93,49 @@ example (f : Bool → Bool) (b : Bool) : f (f (f b)) = f b := by
 
 A tree is a leaf, or a node with a left tree, a label and a right
 tree. The type occurs in the arguments of its own constructor: it is
-recursive, like `ℕ`. (`Tree` is taken in Mathlib, hence `MyTree`.) -/
+recursive, like `ℕ`. This is the type `BinTree` from chapter 1.3. -/
 
-inductive MyTree where
-  | leaf : MyTree
-  | node : MyTree → ℕ → MyTree → MyTree
+inductive BinTree where
+  | leaf : BinTree
+  | node (l : BinTree) (a : ℕ) (r : BinTree) : BinTree
 
-open MyTree
+open BinTree
 
 /-! A recursive function calls itself on the subtrees. That is
 structural recursion, and Lean accepts it without further proof. -/
 
-def MyTree.size : MyTree → ℕ
+def BinTree.size : BinTree → ℕ
   | leaf => 0
   | node l _ r => l.size + 1 + r.size
 
-def MyTree.leaves : MyTree → ℕ
+def BinTree.leaves : BinTree → ℕ
   | leaf => 1
   | node l _ r => l.leaves + r.leaves
 
 /-! `induction t` gives one goal per constructor, and for `node` one
-induction hypothesis per subtree. `simp only [MyTree.leaves, ...]`
+induction hypothesis per subtree. `simp only [BinTree.leaves, ...]`
 rewrites with the defining equations and the hypotheses; what is
 left is arithmetic. -/
 
-example (t : MyTree) : t.leaves = t.size + 1 := by
+example (t : BinTree) : t.leaves = t.size + 1 := by
   induction t with
   | leaf => rfl
   | node l a r ihl ihr =>
-    simp only [MyTree.leaves, MyTree.size, ihl, ihr]
+    simp only [BinTree.leaves, BinTree.size, ihl, ihr]
     omega
 
-/-! `dsimp only [MyTree.size]` unfolds with the same equations, and it
+/-! `dsimp only [BinTree.size]` unfolds with the same equations, and it
 applies a `fun` to its argument. It uses only equations that hold by
 definition, and it leaves the goal for you to look at instead of
 trying to finish it. -/
 
-example (l r : MyTree) (a : ℕ) :
+example (l r : BinTree) (a : ℕ) :
     (node l a r).size = (fun n => n + 1) (l.size + r.size) := by
-  dsimp only [MyTree.size]
+  dsimp only [BinTree.size]
   omega
 
 -- Exercise 5) The sum of all labels.
-def MyTree.sum : MyTree → ℕ
+def BinTree.sum : BinTree → ℕ
   | _ => sorry
 
 -- Once exercise 5 is solved, uncomment:
@@ -144,33 +144,33 @@ def MyTree.sum : MyTree → ℕ
 
 -- Exercise 6) The mirror image: left and right swapped, at every
 -- node.
-def MyTree.mirror : MyTree → MyTree
+def BinTree.mirror : BinTree → BinTree
   | _ => sorry
 
 -- Exercise 7) Like the worked example above.
-example (t : MyTree) : t.mirror.size = t.size := by
+example (t : BinTree) : t.mirror.size = t.size := by
   sorry
 
 -- Exercise 8) Here `simp only` closes the goal by itself.
-example (t : MyTree) : t.mirror.mirror = t := by
+example (t : BinTree) : t.mirror.mirror = t := by
   sorry
 
-/-! Every inductive type comes with a recursor, here `MyTree.rec`. It
+/-! Every inductive type comes with a recursor, here `BinTree.rec`. It
 takes a value for `leaf` and, for `node l a r`, a function of `l`,
 `a`, `r` and of the two values already computed for `l` and `r`.
 `#eval` cannot run a function defined with the recursor of your own
 type, so it is marked `noncomputable`; `rfl` and `induction` work. -/
 
-#check @MyTree.rec
+#check @BinTree.rec
 
 -- Exercise 9) The size once more, now with the recursor. `sl` and
 -- `sr` are the sizes of the two subtrees.
-noncomputable def MyTree.size' (t : MyTree) : ℕ :=
-  MyTree.rec sorry (fun _ _ _ sl sr => sorry) t
+noncomputable def BinTree.size' (t : BinTree) : ℕ :=
+  BinTree.rec sorry (fun _ _ _ sl sr => sorry) t
 
 -- Exercise 10) By induction. In the `node` case, `simp only
--- [MyTree.size]`, then `rw [← ihl, ← ihr]`; what is left is `rfl`.
-example (t : MyTree) : t.size' = t.size := by
+-- [BinTree.size]`, then `rw [← ihl, ← ihr]`; what is left is `rfl`.
+example (t : BinTree) : t.size' = t.size := by
   sorry
 
 /-! ## Part 3: Recursion that is not structural

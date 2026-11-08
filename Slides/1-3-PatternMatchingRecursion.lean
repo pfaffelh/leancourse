@@ -31,6 +31,7 @@ namespace SlidesTypes
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.8em; }
 .reveal section img.tree { height: 185px; margin: 0 auto; }
 .reveal section img.bintree { height: 240px; margin: 0 auto; }
+.reveal section img.recfig { height: 480px; width: auto; max-width: none; margin: 0 auto; }
 .reveal section img.cantor { height: 260px; width: auto; max-width: none; flex: 0 0 auto; margin: 0; }
 .reveal .r-hstack { align-items: center; justify-content: center; gap: 1.4rem; }
 .reveal .r-hstack .r-vstack p { text-align: left; font-size: 0.66em; margin: 0.3em 0; }
@@ -144,6 +145,12 @@ example : fibPair 10 = (55, 89) := rfl
 :::class "key"
 Lean carries the values at _all_ smaller arguments, with `Nat.brecOn`. More after the recursor.
 :::
+
+# How a recursor is built
+
+{image "../static/figures/mynat_rec.png" (class := "recfig")}[Top: inductive MyNat where | zero : MyNat | succ (n : MyNat) : MyNat. Bottom: MyNat.rec with implicit motive : MyNat → Sort u, then (zero : motive MyNat.zero) → (succ : (n : MyNat) → motive n → motive (MyNat.succ n)) → (t : MyNat) → motive t. Arrows: the type MyNat gives the motive; constructor zero gives case zero; constructor succ gives case succ; its recursive argument n gives (n : MyNat) → motive n; the last line is the resulting function.]
+
+`#check @MyNat.rec` omits the case names `zero`, `succ`.
 
 # The recursor in general
 

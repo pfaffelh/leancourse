@@ -66,9 +66,15 @@ inductive List (α : Type u) where
   | cons (a : α) (l : List α) : List α        -- written a :: l
 
 infixr:67 " :: " => List.cons
+
+syntax "[" term,* "]" : term                -- simplified
+macro_rules
+  | `([])          => `(List.nil)
+  | `([$a])        => `(List.cons $a List.nil)
+  | `([$a, $as,*]) => `(List.cons $a [$as,*])
 ```
 
-The last line makes `::` a right-associative infix operator with binding power 67, so `1 :: 2 :: []` is `1 :: (2 :: [])` ({ref "notation"}[chapter 1.7]). `[1, 2, 3]` is notation for `1 :: 2 :: 3 :: []`, that is `List.cons 1 (List.cons 2 (List.cons 3 List.nil))`. A function on lists has a branch for `[]` and one for `a :: l`. The pattern `_` matches anything and names nothing.
+`infixr` makes `::` a right-associative infix operator with binding power 67, so `1 :: 2 :: []` is `1 :: (2 :: [])`. `syntax` declares the bracket form, and `macro_rules` rewrites it, one element at a time, into `List.cons` and `List.nil` ({ref "notation"}[chapter 1.7]). So `[1, 2, 3]` is `1 :: 2 :: 3 :: []`, that is `List.cons 1 (List.cons 2 (List.cons 3 List.nil))`. Lean's own definition (`Init/Data/List/Notation.lean`) does the same, with one shortcut for lists of 64 or more elements. A function on lists has a branch for `[]` and one for `a :: l`. The pattern `_` matches anything and names nothing.
 
 ```lean
 -- A function on Option α: extract or use a default

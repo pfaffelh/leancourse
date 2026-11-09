@@ -89,15 +89,27 @@ inductive List (α : Type u) where
   | nil : List α                    -- written []
   | cons (a : α) (l : List α) :
       List α                        -- written a :: l
-
-infixr:67 " :: " => List.cons       -- Lean's core library
 ```
 
 ```lean -panel -stretch
 #eval (1 :: 2 :: 3 :: [] : List ℕ)   -- [1, 2, 3]
 ```
 
-A list is empty, or a first element followed by a list. `[1, 2, 3]` is notation for `1 :: 2 :: 3 :: []`. `infixr` makes `::` a right-associative infix operator with binding power 67, so `1 :: 2 :: []` is `1 :: (2 :: [])` (more in chapter 1.7).
+A list is empty, or a first element followed by a list. `[1, 2, 3]` is notation for `1 :: 2 :: 3 :: []`.
+
+# Notation for lists
+
+```
+infixr:67 " :: " => List.cons       -- Lean's core library
+
+syntax "[" term,* "]" : term        -- simplified
+macro_rules
+  | `([])          => `(List.nil)
+  | `([$a])        => `(List.cons $a List.nil)
+  | `([$a, $as,*]) => `(List.cons $a [$as,*])
+```
+
+`infixr` makes `::` a right-associative infix operator with binding power 67, so `1 :: 2 :: []` is `1 :: (2 :: [])`. `syntax` declares the bracket form, `macro_rules` rewrites it, one element at a time, into `List.cons` and `List.nil` (more in chapter 1.7).
 
 # Functions on lists
 

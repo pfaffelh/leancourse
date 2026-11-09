@@ -187,8 +187,16 @@ def main():
             print("no window for %s open -- switching anyway" % inp,
                   file=sys.stderr)
         cur = request(sock, "GetInputSettings", {"inputName": inp})
-        if cur.get("responseData", {}).get("inputSettings", {}) \
-                .get("capture_window") != target:
+        cur = cur.get("responseData", {}).get("inputSettings", {}) \
+            .get("capture_window", "")
+        # compare window id and class, not the title: VS Code changes
+        # its title with every edit, and every SetInputSettings makes
+        # OBS 30.0.2 sort all window names, which segfaults on a
+        # window without one
+        def key(s):
+            parts = s.split("\r\n")
+            return (parts[0], parts[-1]) if s else None
+        if key(cur) != key(target):
             request(sock, "SetInputSettings", {
                 "inputName": inp,
                 "inputSettings": {"capture_window": target}})

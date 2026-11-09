@@ -54,6 +54,11 @@ screen_h=$(xwininfo -root | awk '/^  Height:/{print $2}')
 y=$(( screen_h - ${size#*x} ))
 
 echo "Slides: $url  (close the window to stop)"
+# --ozone-platform=x11: OBS captures the window with xcomposite, which
+# only sees X11 windows. Under a Wayland session Chrome otherwise runs
+# natively on Wayland, and then the window is invisible both to OBS and
+# to the xprop lookup in obs_scene.py -- the slides scene stays black.
 "$chrome" --user-data-dir="$profile" --no-first-run --no-default-browser-check \
+  --ozone-platform=x11 \
   --app="$url" \
   --window-position=0,$y --window-size="${size/x/,}" >/dev/null 2>&1

@@ -204,3 +204,69 @@ example (n : ℕ) : fib n ≤ 2 ^ n := by
     have h2 : 2 ^ (n + 2) = 4 * 2 ^ n := by ring
     omega
 
+/-! ## Part 6: Lists -/
+
+def sumList : List ℕ → ℕ
+  | [] => 0
+  | a :: l => a + sumList l
+
+example : sumList [1, 2, 3] = 6 := rfl
+
+example (l₁ l₂ : List ℕ) :
+    sumList (l₁ ++ l₂) = sumList l₁ + sumList l₂ := by
+  induction l₁ with
+  | nil => simp [sumList]
+  | cons a l ih =>
+    simp only [List.cons_append, sumList, ih]
+    omega
+
+/-! ## Part 7: Case splits -/
+
+-- Without the first branch: "Missing cases: Nat.zero".
+def pred' : ℕ → ℕ
+  | 0 => 0
+  | n + 1 => n
+
+example : pred' 0 = 0 := rfl
+
+def isZero (n : ℕ) : Bool :=
+  Nat.casesOn n true (fun _ => false)
+
+example : isZero 0 = true := rfl
+example : isZero 5 = false := rfl
+
+/-! ## Part 8: Two values at once -/
+
+def fibPair : ℕ → ℕ × ℕ
+  | 0 => (0, 1)
+  | n + 1 =>
+    let p := fibPair n
+    (p.2, p.1 + p.2)
+
+example : fibPair 10 = (55, 89) := rfl
+
+example (n : ℕ) : fibPair n = (fib n, fib (n + 1)) := by
+  induction n with
+  | zero => rfl
+  | succ n ih =>
+    simp only [fibPair, ih, fib]
+
+/-! ## Part 9: Strict positivity
+
+Accepted: `T1` (to the right of the arrow), `T3` (nested in `List`).
+Rejected: `T2`, `T4` (left of an arrow, even of two), `T5`. -/
+
+namespace Positivity
+
+inductive T1 where
+  | mk : (ℕ → T1) → T1
+
+inductive T3 where
+  | mk : List T3 → T3
+
+end Positivity
+
+example (Bad : Type) (mk : (Bad → False) → Bad)
+    (unmk : Bad → (Bad → False)) : False := by
+  have neg : Bad → False := fun b => unmk b b
+  exact neg (mk neg)

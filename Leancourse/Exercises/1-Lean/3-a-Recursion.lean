@@ -25,6 +25,8 @@ in chapter 1.2 and chapter 1.3 first.
 | `simp [f]`                 | unfold `f` as often as needed and simplify   |
 | `T.rec`                    | the recursor of an inductive type `T`        |
 | `fun_induction f x with`   | induction along the branches of `f`          |
+| `[]`, `a :: l`             | the two patterns for a list                  |
+| `T.casesOn`                | the case split behind every `match`          |
 
 ## Tactics from earlier sheets
 
@@ -300,3 +302,103 @@ def fib : ℕ → ℕ
 example (n : ℕ) : fib n ≤ 2 ^ n := by
   sorry
 
+/-! ## Part 6: Lists
+
+A list is `[]` or `a :: l` (chapter 1.3). A function on lists has
+one branch for each, as for `BinTree` above. -/
+
+-- Exercise 22) The sum of a list of natural numbers.
+def sumList : List ℕ → ℕ
+  | _ => sorry
+
+-- Once exercise 22 is solved, uncomment:
+-- example : sumList [1, 2, 3] = 6 := rfl
+
+-- Exercise 23) Induction on `l₁`. The simp lemma `List.cons_append`
+-- says `(a :: l₁) ++ l₂ = a :: (l₁ ++ l₂)`.
+example (l₁ l₂ : List ℕ) :
+    sumList (l₁ ++ l₂) = sumList l₁ + sumList l₂ := by
+  sorry
+
+/-! ## Part 7: Case splits
+
+Lean checks that the patterns cover every constructor. -/
+
+-- Exercise 24) Uncomment the definition and read the error. Add
+-- the missing branch so that `pred' 0 = 0`.
+-- def pred' : ℕ → ℕ
+--   | n + 1 => n
+
+/-! Behind every `match` is `T.casesOn`: the recursor without the
+values at the recursive arguments. For `ℕ` it takes the value at
+`0` and a function for `n + 1`. -/
+
+#check @Nat.casesOn
+
+-- Exercise 25) Define `isZero` with `Nat.casesOn`, without pattern
+-- matching.
+def isZero (n : ℕ) : Bool :=
+  Nat.casesOn n sorry (fun _ => sorry)
+
+-- Once exercise 25 is solved, uncomment:
+-- example : isZero 0 = true := rfl
+-- example : isZero 5 = false := rfl
+
+/-! ## Part 8: Two values at once
+
+`fib` from Part 5 calls itself twice in every step. Carrying the
+pair `(fib n, fib (n + 1))` needs one call per step (chapter 1.3,
+*Course-of-values recursion*). -/
+
+-- Exercise 26) From the pair `p` for `n`, build the pair for
+-- `n + 1`.
+def fibPair : ℕ → ℕ × ℕ
+  | 0 => (0, 1)
+  | n + 1 =>
+    let p := fibPair n
+    sorry
+
+-- Once exercise 26 is solved, uncomment:
+-- example : fibPair 10 = (55, 89) := rfl
+
+-- Exercise 27) Induction on `n`. In the `succ` case,
+-- `simp only [fibPair, ih, fib]` is enough.
+example (n : ℕ) : fibPair n = (fib n, fib (n + 1)) := by
+  sorry
+
+/-! Compare the running times: uncomment and look at the line
+`interpretation … took …`.
+
+```
+set_option profiler true in
+#eval fib 30
+set_option profiler true in
+#eval (fibPair 30).1
+```
+-/
+
+/-! ## Part 9: Strict positivity
+
+Lean accepts an inductive type only if the type being declared
+never stands to the left of an arrow in the argument of a
+constructor (chapter 1.3). -/
+
+-- Exercise 28) Which of these does Lean accept? Decide first, then
+-- uncomment them one at a time.
+-- inductive T1 where
+--   | mk : (ℕ → T1) → T1
+-- inductive T2 where
+--   | mk : (T2 → ℕ) → T2
+-- inductive T3 where
+--   | mk : List T3 → T3
+-- inductive T4 where
+--   | mk : ((T4 → ℕ) → ℕ) → T4
+-- inductive T5 where
+--   | mk : (T5 → T5) → T5
+
+-- Exercise 29) Why the rule is there. With `mk` and `unmk` as
+-- hypotheses, `Bad` behaves like `Bad ↔ ¬Bad`. Derive `False`:
+-- first `have neg : Bad → False`, by applying `unmk` to `b` twice.
+example (Bad : Type) (mk : (Bad → False) → Bad)
+    (unmk : Bad → (Bad → False)) : False := by
+  sorry

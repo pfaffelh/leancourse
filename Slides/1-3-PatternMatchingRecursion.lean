@@ -11,8 +11,8 @@ set_option pp.rawOnError true
 Deck for the chapter "Pattern matching and recursion" of part 1 (Lean
 and its type theory). It follows the chapter section by section:
 pattern matching, structural and well-founded recursion, proofs about
-recursive definitions, the recursor, course-of-values recursion
-with `brecOn`, strict positivity. It reopens the
+recursive definitions, the recursor (with figures), `casesOn`,
+course-of-values recursion, strict positivity. It reopens the
 namespace of the deck for chapter 1.2, whose `MyNat` it uses.
 -/
 
@@ -31,6 +31,8 @@ namespace SlidesTypes
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.8em; }
 .reveal section img.tree { height: 185px; margin: 0 auto; }
 .reveal section img.bintree { height: 240px; margin: 0 auto; }
+.reveal section img.recgen { height: 405px; width: auto; max-width: none; margin: 0 auto; }
+.reveal section img.casesfig { height: 470px; width: auto; max-width: none; margin: 0 auto; }
 .reveal section img.recfig { height: 480px; width: auto; max-width: none; margin: 0 auto; }
 .reveal section img.cantor { height: 260px; width: auto; max-width: none; flex: 0 0 auto; margin: 0; }
 .reveal .r-hstack { align-items: center; justify-content: center; gap: 1.4rem; }
@@ -143,7 +145,7 @@ example : fibPair 10 = (55, 89) := rfl
 ```
 
 :::class "key"
-Lean carries the values at _all_ smaller arguments, with `Nat.brecOn`. More after the recursor.
+Lean's own translation of `fib` carries the values at _all_ smaller arguments (later in this deck).
 :::
 
 # How a recursor is built
@@ -154,89 +156,37 @@ Lean carries the values at _all_ smaller arguments, with `Nat.brecOn`. More afte
 
 # The recursor in general
 
-```
-inductive T where                   -- bⱼ non-recursive, rⱼ recursive
-  | c₁ (b₁ : B₁) … (bₗ : Bₗ) (r₁ … rₖ : T) : T
-  | …                               -- constructors c₂, …, cₘ
+{image "../static/figures/rec_general.png" (class := "recgen")}[Top: inductive T where | c₁ (b₁ : B₁) … (bₗ : Bₗ) (r₁ … rₖ : T) : T | …. Bottom: T.rec with implicit motive : T → Sort u, then the case f₁ : (b₁ : B₁) → … → (bₗ : Bₗ) → (r₁ … rₖ : T) → motive r₁ → … → motive rₖ → motive (c₁ b₁ … bₗ r₁ … rₖ), then the other cases and (t : T) → motive t. Arrows: the type gives the motive; constructor c₁ gives case f₁; its non-recursive arguments are passed on; its recursive arguments also give the values motive rⱼ; the other constructors give the other cases.]
 
-T.rec : {motive : T → Sort u} →
-  (f₁ : (b₁ : B₁) → … → (bₗ : Bₗ) → (r₁ … rₖ : T) →
-     motive r₁ → … → motive rₖ →    -- one per recursive argument
-     motive (c₁ b₁ … bₗ r₁ … rₖ)) → -- case c₁
-  … → (fₘ : …) →                    -- cases c₂, …, cₘ
-  (t : T) → motive t
-```
-
-In general, with `R := T.rec f₁ … fₘ`:
+`T.rec` has no body; the kernel knows it only by its ι-rules. With `R := T.rec f₁ … fₘ`:
 
 ```
 R (c₁ b₁ … bₗ r₁ … rₖ)  ⟶  f₁ b₁ … bₗ r₁ … rₖ (R r₁) … (R rₖ)
 ```
 
-- `motive t`: the result type, may depend on `t`. Parameters (`α` in `List α`) come first.
-
-# How `T.rec` is defined
-
-`T.rec` has no body: the kernel adds it as a constant, a _recursor_, with one reduction rule per constructor. Everything it does is reduction by these rules.
+# Example: `List.rec`
 
 ```
-#print Nat.rec
--- rules:
--- for Nat.zero (0 fields): fun motive zero succ => zero
--- for Nat.succ (1 fields): fun motive zero succ n =>
---   succ n (Nat.rec zero succ n)
+List.rec : {motive : List α → Sort u} →
+  motive [] →                       -- case nil
+  ((head : α) → (tail : List α) →
+     motive tail →                  -- recursive argument
+     motive (head :: tail)) →       -- case cons
+  (t : List α) → motive t
 ```
 
-In general, with `R := T.rec f₁ … fₘ`:
-
-```
-R (c₁ b₁ … bₗ r₁ … rₖ)  ⟶  f₁ b₁ … bₗ r₁ … rₖ (R r₁) … (R rₖ)
-```
+- `nil` has no arguments; `cons` has `head : α` and the recursive argument `tail : List α`, so its case gets `motive tail`.
+- Computation: `List.rec n c (a :: l) ⟶ c a l (List.rec n c l)`
 
 :::class "key"
-This is ι-reduction (chapter 1.1). It fires only on a constructor; on a variable `n`, `R n` is stuck.
+Read as a proof, `motive tail` is the induction hypothesis.
 :::
 
-# `T.casesOn` in general
+# Case splits: `casesOn`
 
-```
-T.casesOn : {motive : T → Sort u} → (t : T) →
-  (f₁ : (b₁ : B₁) → … → (bₗ : Bₗ) → (r₁ … rₖ : T) →
-     motive (c₁ b₁ … bₗ r₁ … rₖ)) → -- case c₁, no motive rⱼ
-  … → (fₘ : …) →                    -- cases c₂, …, cₘ
-  motive t
-```
+{image "../static/figures/mynat_casesOn.png" (class := "casesfig")}[Top: the declaration of MyNat. Bottom: MyNat.casesOn with implicit motive : MyNat → Sort u, then (t : MyNat), then (zero : motive MyNat.zero), then (succ : (n : MyNat) → motive (MyNat.succ n)), then motive t. Arrows as for MyNat.rec, but the recursive argument n gives only (n : MyNat), no value motive n.]
 
-An ordinary definition: `T.rec`, with every case ignoring the values at the `rⱼ`.
-
-```
-T.casesOn t f₁ … fₘ :=
-  T.rec (fun b₁ … bₗ r₁ … rₖ _ … _ => f₁ b₁ … rₖ) … t
-
-T.casesOn (c₁ b₁ … bₗ r₁ … rₖ) f₁ … fₘ  ⟶  f₁ b₁ … bₗ r₁ … rₖ
-```
-
-:::class "key"
-No recursion: a case split on the outermost constructor. Pattern matching is compiled to it.
-:::
-
-# Case splits: `Nat.casesOn`
-
-```
-Nat.rec : {motive : ℕ → Sort u} →
-  motive zero → ((n : ℕ) → motive n → motive (succ n)) →
-  (t : ℕ) → motive t
-
-Nat.casesOn : {motive : ℕ → Sort u} → (t : ℕ) →
-  motive zero → ((n : ℕ) → motive (succ n)) → motive t
-```
-
-For `ℕ`: `zero` has no arguments, `succ` one recursive argument.
-
-In words: `Nat.casesOn t z s` only asks which constructor built `t`. If `t` is `zero`, the result is `z`. If `t` is `succ n`, the result is `s n`.
-
-- One case per constructor. `succ` gets `n`, but not the value `motive n` that `Nat.rec` passes: no recursion.
-- Built from the recursor: `Nat.casesOn t z s` is `Nat.rec z (fun n _ => s n) t`.
+`casesOn t z s` only asks which constructor built `t`. It is `MyNat.rec z (fun n _ => s n) t`; for `ℕ`: `Nat.casesOn`.
 
 # Are all cases covered?
 
@@ -331,163 +281,22 @@ example : log2 16 = 4 := by simp [log2]
 
 Structural recursion computes, so `rfl` works. Well-founded recursion does not: use the equation lemma `log2.eq_1`, via `rw [log2]`, `unfold log2` or `simp [log2]`.
 
-# Example: `List.rec`
-
-```
-List.rec : {motive : List α → Sort u} →
-  motive [] →                       -- case nil
-  ((head : α) → (tail : List α) →
-     motive tail →                  -- recursive argument
-     motive (head :: tail)) →       -- case cons
-  (t : List α) → motive t
-```
-
-- `nil` has no arguments; `cons` has `head : α` and the recursive argument `tail : List α`, so its case gets `motive tail`.
-- Computation: `List.rec n c (a :: l) ⟶ c a l (List.rec n c l)`
-
-:::class "key"
-Read as a proof, `motive tail` is the induction hypothesis.
-:::
-
 # Course-of-values recursion
 
-- The recursor hands the case for `succ n` _one_ value: the value at `n`.
-- `fib (n + 2)` calls `fib (n + 1)` _and_ `fib n`.
-- `Nat.brecOn`, built from `Nat.rec`, hands the step a _table_ with the values at all parts.
-
-```lean -panel -stretch
-#print fib    -- fun x => Nat.brecOn x fib._f
-```
-
-`fib._f : (x : ℕ) → Nat.below x → ℕ`, generated by Lean: `fib` with every recursive call replaced by a table lookup.
-
-:::class "key"
-Every inductive type `T` has its own `T.below` (the table) and `T.brecOn`.
-:::
-
-# `T.below` and `T.brecOn` in general
+`fib (n + 2)` needs `fib (n + 1)` _and_ `fib n`, the recursor hands over only one value. Lean's translation passes a table of _all_ smaller values (`Nat.brecOn`; `#print fib` shows it). Carrying the pair by hand, as in `fibPair`, also makes `#eval` fast:
 
 ```
-T.below : {motive : T → Sort u} → T → Sort (max 1 u)
-T.below (c₁ b₁ … bₗ r₁ … rₖ) =                -- PUnit if k = 0
-  (motive r₁ ×' T.below r₁) ×' … ×' (motive rₖ ×' T.below rₖ)
-
-T.brecOn : {motive : T → Sort u} → (t : T) →
-  (F : (t : T) → T.below t → motive t) → motive t
+#eval fib 30                 -- 0.6 s
+#eval fib 32                 -- 1.7 s: about 7 million calls
+#eval (fibPair 32).1         -- immediate: 32 steps
+#eval (fibPair 10000).1      -- immediate, 2090 digits
 ```
 
-Both are ordinary definitions by `T.rec`. `T.below t` is the table of values at all parts of `t`; `F` gets `t` and its table. With `G t := ⟨T.brecOn t F, table at t⟩`:
+`#eval` runs `fib` as written: every call makes two more, so the time grows like `fib n` itself, by a factor of about 1.6 per step.
 
-```
-T.brecOn (c₁ b₁ … bₗ r₁ … rₖ) F  ⟶  F (c₁ b₁ … bₗ r₁ … rₖ) ⟨G r₁, …, G rₖ⟩
-```
+# Two steps back in proofs
 
-# The table `Nat.below`
-
-Defined with `Nat.rec` (see `#print Nat.below`):
-
-- `Nat.below 0 = PUnit`: nothing below `0`; one element `⟨⟩`.
-- `Nat.below (n + 1) = motive n ×' Nat.below n`: an element is a pair `⟨value at n, table at n⟩`.
-- `×'` (`PProd`): pairs like `×`, but components may be proofs. Needed because `motive` may be `Prop`-valued: then the table holds the induction hypotheses.
-
-```lean -panel -stretch
-example : Nat.below (motive := fun _ => ℕ) 3 =
-    (ℕ ×' ℕ ×' ℕ ×' PUnit.{1}) := rfl
-```
-
-:::class "key"
-Table `t` at `n + 2`: value at `n + 1` is `t.1`, value at `n` is `t.2.1`.
-:::
-
-# `Nat.brecOn`
-
-```
-Nat.brecOn : {motive : ℕ → Sort u} → (t : ℕ) →
-  ((n : ℕ) → Nat.below n → motive n) → motive t
-```
-
-- One step function `F` for all `n`: it gets `n` and the table at `n`, and returns the value at `n`.
-- No separate base case: at `0` the table is `⟨⟩`.
-- Built from the recursor, by one pass that computes value and table together:
-
-```
-Nat.brecOn.go n F : motive n ×' Nat.below n :=
-  Nat.rec ⟨F 0 ⟨⟩, ⟨⟩⟩
-    (fun n t => ⟨F (n + 1) t, t⟩) n
-Nat.brecOn n F := (Nat.brecOn.go n F).1
-```
-
-:::class "key"
-(value at `n`, table at `n`) _is_ the table at `n + 1`.
-:::
-
-# The table for `fib`
-
-:::table +colHeaders +rowSeps
-*
-  * `n`
-  * `Nat.brecOn.go n fib._f`
-*
-  * `0`
-  * `⟨0, ⟨⟩⟩`
-*
-  * `1`
-  * `⟨1, 0, ⟨⟩⟩`
-*
-  * `2`
-  * `⟨1, 1, 0, ⟨⟩⟩`
-*
-  * `3`
-  * `⟨2, 1, 1, 0, ⟨⟩⟩`
-:::
-
-```lean -panel -stretch
-example : Nat.brecOn.go (motive := fun _ => ℕ)
-    3 fib._f = ⟨2, 1, 1, 0, ⟨⟩⟩ := rfl
-```
-
-:::class "key"
-`fibPair` carries the last two values; `Nat.brecOn` carries all of them, each computed once.
-:::
-
-# What Lean makes of `fib`
-
-```
-fib._f := fun x t => match x, t with
-  | 0,     _ => 0
-  | 1,     _ => 1
-  | n + 2, t => t.2.1 + t.1   -- fib n + fib (n + 1)
-```
-
-- Each recursive call is replaced by a lookup: `fib (n + 1)` ↦ `t.1`, `fib n` ↦ `t.2.1`.
-- *This is the structural check*: the argument of a call must be a part of the pattern.
-- `loop n`: the table at `n` has no entry for `n`.
-- `log2 (n / 2)`: `n / 2` is not obtained from `n` by taking constructors off.
-- Then Lean tries well-founded recursion: works for `log2`, fails for `loop`.
-
-# `Nat.brecOn` by hand
-
-```lean -panel -stretch
-def fib2 (n : ℕ) : ℕ :=
-  Nat.brecOn (motive := fun _ => ℕ) n fun k t =>
-    match k, t with
-    | 0, _ => 0
-    | 1, _ => 1
-    | _ + 2, ⟨fib1, fib0, _⟩ => fib0 + fib1
-
-example : fib2 10 = 55 := rfl
-example : fib 90 = 2880067194370816120 := rfl
-```
-
-- The kernel goes through `Nat.brecOn`: the table is built once, so `fib 90` is immediate.
-- `#eval` runs the equations as written: `#eval fib 32` makes about seven million calls.
-
-# Trees and proofs
-
-`BinTree.below (.node l a r) =`
-`(motive l ×' BinTree.below l) ×' (motive r ×' BinTree.below r)`: the table branches like the tree. In `height`: `l.height` ↦ `t.1.1`, `r.height` ↦ `t.2.1`.
-
-With a `Prop` motive the entries are proofs: induction hypotheses for all parts.
+The same works with a `Prop`-valued motive: a proof may use the statement for _all_ smaller arguments, here two steps back.
 
 ```lean -panel -stretch
 theorem fib_pos : (n : ℕ) → 0 < fib (n + 1)
@@ -584,5 +393,5 @@ Proved for inductive types: Aczel 1977, Dybjer 1991; for the CIC: Werner 1997; f
 - Recursion must terminate. Structural recursion calls itself on parts of the argument and becomes the recursor.
 - Well-founded recursion needs a measure that decreases; it is used through its equation lemmas, not `rfl`.
 - The recursor of a type has one case per constructor, with a value of the motive for every recursive argument.
-- Structural recursion becomes `brecOn`: the step gets the table of values at all parts, recursive calls become lookups.
+- Pattern matching becomes `casesOn`; structural recursion passes the values at all smaller arguments (`brecOn`, Project 7).
 - Constructors must be strictly positive.

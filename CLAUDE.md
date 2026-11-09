@@ -2986,3 +2986,39 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   `WITHHELD`.
 - Am selben Abend auf `main` freigegeben: die sechs Projektdateien
   stehen nicht mehr in `WITHHELD` (auf beiden Branches).
+
+## 2026-11-08 -- Deck 1.3 entschlackt, Rekursor-Grafiken, Projekt 7
+
+- **Drei Grafiken** aus `scripts/figures/recursor.py` (vorher
+  `mynat_rec.py`): `mynat_rec` (Folie "How a recursor is built"),
+  `rec_general` (Folie "The recursor in general", ersetzt den
+  Codeblock) und `mynat_casesOn` (Folie "Case splits: `casesOn`").
+  Deklaration oben, erzeugte Konstante unten, Bauteile farbig
+  umrandet, Pfeile dazwischen. Positionen in Zeichen gezaehlt
+  (Monospace), Kasten = Teilstring. Zeilen haben weissen Hintergrund,
+  Pfeile laufen darunter; Pfeile nie auf ein `→` am Zeilenende
+  zielen lassen (der Kasten endet davor, `rstrip(" →")`).
+- **Aus dem Deck raus** (Autor: "ziemlich kompliziert"): "How `T.rec`
+  is defined" (jetzt eine Zeile auf Folie 9), "`T.casesOn` in
+  general", und die sechs Folien `T.below`/`T.brecOn` bis "`Nat.brecOn`
+  by hand". "Course-of-values recursion" zeigt stattdessen die
+  gemessenen Laufzeiten: `#eval fib 30` 0,6 s, `fib 32` 1,7 s,
+  `fibPair` sofort. 33 -> 24 Folien. Das Skript-Kapitel 1.3 behaelt
+  den Stoff (Abschnitt `brecon`).
+- **Projekt 7** `3-Projects/7-EquationCompiler.lean` (tag
+  `project-equation-compiler`): `casesOn`, `match_1`, `below`,
+  `brecOn`, `fib._f` von Hand nachbauen, fuer ℕ und `BinTree`, mit
+  `rfl` gegen Lean pruefen. Projekte- und Organization-Kapitel sagen
+  jetzt "seven". Nur auf `preparation`.
+- **Kapitel 1.3 folgt jetzt dem Deck** (gleicher Tag, Nachtrag): Pattern
+  matching / Structural recursion (tag `recursion`, mit `loop` und
+  `fibPair`) / The recursor (MyNat-Grafik, Rezept, allgemeine Grafik,
+  Regel, `#print MyNat.rec`; Unterabschnitte Examples `recursor-examples`,
+  `casesOn` `cases-on`, Are all cases covered? `match-coverage`) /
+  Recursion on trees (`recursion-trees`, mit `BinTree.rec` und
+  `noncomputable`) / Termination by a measure (`wf-recursion`) / Proving
+  / Course-of-values (`brecon`, kurz: Idee, Laufzeiten, `fib_pos`) /
+  Strict positivity. Die Tags `nat-below`, `nat-brecon`, `fib-brecon`,
+  `brecon-trees-proofs` gibt es nicht mehr; der Stoff ist Projekt 7.
+  Im Deck steht "Example: `List.rec`" jetzt direkt nach "The recursor
+  in general".

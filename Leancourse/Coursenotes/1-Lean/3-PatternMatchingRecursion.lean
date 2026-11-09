@@ -56,7 +56,7 @@ def MyNat.toNat : MyNat → ℕ
 
 Writing plain `zero` in place of `.zero` would fail: there is no `zero` in scope, only `MyNat.zero`. As for `Point.x`, for `m : MyNat` the name `m.toNat` means `MyNat.toNat m`.
 
-Pattern matching is translated into the recursor for the kernel and into running code for `#eval`. A definition with the recursor of your own type, as in {ref "recursor"}[The recursor], cannot be run by `#eval`. That is why functions are usually written by pattern matching.
+Pattern matching is translated into the recursor for the kernel and into running code for `#eval`. A definition with the recursor of your own type, as in {ref "recursion-trees"}[Recursion on trees], cannot be run by `#eval`. That is why functions are usually written by pattern matching.
 
 Pattern matching works for any inductive type. A list is empty, or a first element followed by a list. In Lean's library (`u` is a universe variable, {ref "polymorphic-functions"}[Polymorphic functions]):
 
@@ -64,9 +64,11 @@ Pattern matching works for any inductive type. A list is empty, or a first eleme
 inductive List (α : Type u) where
   | nil : List α                              -- written []
   | cons (a : α) (l : List α) : List α        -- written a :: l
+
+infixr:67 " :: " => List.cons
 ```
 
-So `[1, 2, 3]` is notation for `1 :: 2 :: 3 :: []`, that is `List.cons 1 (List.cons 2 (List.cons 3 List.nil))`. A function on lists has a branch for `[]` and one for `a :: l`. The pattern `_` matches anything and names nothing.
+The last line makes `::` a right-associative infix operator with binding power 67, so `1 :: 2 :: []` is `1 :: (2 :: [])` ({ref "notation"}[chapter 1.7]). `[1, 2, 3]` is notation for `1 :: 2 :: 3 :: []`, that is `List.cons 1 (List.cons 2 (List.cons 3 List.nil))`. A function on lists has a branch for `[]` and one for `a :: l`. The pattern `_` matches anything and names nothing.
 
 ```lean
 -- A function on Option α: extract or use a default
@@ -89,12 +91,12 @@ def isEmpty' {α : Type*} (l : List α) : Bool :=
   | _ :: _ => false
 ```
 
-# Recursion and termination
+# Structural recursion
 %%%
 tag := "recursion"
 %%%
 
-The definitions above are *recursive*: they call themselves on smaller inputs. A classic example with two base cases is the Fibonacci sequence:
+The definitions above are *recursive*: they call themselves. A classic example with two base cases is the Fibonacci sequence:
 
 ```lean
 def fib : ℕ → ℕ
@@ -105,7 +107,115 @@ def fib : ℕ → ℕ
 #eval fib 10    -- 55
 ```
 
-Lean checks that the three patterns cover every natural number. The numerals in the patterns stand for constructors: `0` is `Nat.zero`, `1` is `Nat.succ Nat.zero`, and `n + 2` is `Nat.succ (Nat.succ n)`. Lean splits the argument by its constructor, `zero` or `succ m`, and splits `m` again where a pattern requires it. For `fib` this gives two nested case splits, with `Nat.casesOn`, the recursor without recursive values:
+A recursive call is *structural* if its argument is a part of the input, that is, an argument of the constructor that built it. The numerals in the patterns stand for constructors: `0` is `Nat.zero`, `1` is `Nat.succ Nat.zero`, and `n + 2` is `Nat.succ (Nat.succ n)`. The parts of `n + 2` are `n + 1` and `n`, so both calls of `fib` are structural. `factorial` and `length'` are structural as well. Lean translates a structurally recursive definition into the recursor of the type ({ref "recursor"}[The recursor]), and there is nothing to prove. So `fib` computes by ι, and `rfl` checks values:
+
+```lean
+-- fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)
+example : fib 3 = 2 := rfl
+```
+
+Lean accepts a recursive definition only once it is convinced that the recursion *terminates*. Structural recursion is one way. The other is a *measure*, a natural number computed from the arguments that decreases with every call ({ref "wf-recursion"}[Termination by a measure]). A call that is neither is rejected:
+
+```lean +error
+def loop (n : ℕ) : ℕ := loop n + 1
+```
+
+Lean reports that the argument `n` is unchanged in the recursive call. Were the definition accepted, it would give `loop 0 = loop 0 + 1`, and subtracting `loop 0` on both sides gives `0 = 1`.
+
+The recursor `Nat.rec` of {ref "nat-intro"}[chapter 1.1] hands the step only the value at `n`, but `fib (n + 2)` needs the values at `n` and at `n + 1`. By hand, with `Nat.rec` alone, one carries the pair `(fib n, fib (n + 1))` along. Its type `ℕ × ℕ` is the type of pairs of natural numbers. In general `α × β` is a structure ({ref "structures"}[Structures]) with the two fields `fst : α` and `snd : β`; a pair is written `(a, b)`, and its fields are `p.1` and `p.2`. As for every structure, `⟨a, b⟩` works as well, but only where Lean already knows the type: `#check ⟨1, 2⟩` fails, `#check (1, 2)` gives `ℕ × ℕ`, because `(a, b)` is notation for `Prod.mk a b` alone. {ref "sigma-types"}[Chapter 1.4] treats pairs in full.
+
+```lean
+def fibPair (n : ℕ) : ℕ × ℕ :=
+  Nat.rec (0, 1) (fun _ p => (p.2, p.1 + p.2)) n
+
+example : fibPair 10 = (55, 89) := rfl
+```
+
+Lean's own translation of `fib` carries the values at *all* smaller arguments ({ref "brecon"}[Course-of-values recursion]).
+
+# The recursor
+%%%
+tag := "recursor"
+%%%
+
+{ref "nat-intro"}[Chapter 1.1] used the recursor `Nat.rec` in a *non-dependent* form, into a fixed result type. In general the result type may *depend* on the term being consumed. This dependency is recorded by a *motive* `T → Sort u`. The figure shows how Lean builds `MyNat.rec` from the declaration of `MyNat` ({ref "types"}[chapter 1.2]). The names `zero` and `succ` of the cases are added for reading; `#check @MyNat.rec` omits them.
+
+:::figure "How MyNat.rec is built. Each part of the declaration (top) is boxed in a colour; the arrow leads to the part of the recursor (bottom) it produces."
+![Top: inductive MyNat where | zero : MyNat | succ (n : MyNat) : MyNat. Bottom: MyNat.rec with the implicit motive : MyNat → Sort u, then (zero : motive MyNat.zero), then (succ : (n : MyNat) → motive n → motive (MyNat.succ n)), then (t : MyNat) → motive t. Arrows: the type MyNat gives the motive; the constructor zero gives the case zero; the constructor succ gives the case succ; its recursive argument n gives (n : MyNat) → motive n.](/static/figures/mynat_rec.png)
+:::
+
+The case for `succ` receives the argument `n` and, because `n` is again of type `MyNat`, the value `motive n` already computed for it. Lean generates `T.rec` for every `inductive` declaration from its constructors, always by the same recipe:
+
+1. The parameters of `T`, such as `α` in `MyOption α`, as implicit arguments.
+2. The *motive* `motive : T → Sort u`, the type of the result, which may depend on the term.
+3. One *case* per constructor, in the order of the declaration. For a constructor `c (a₁ : A₁) … (aₖ : Aₖ) : T` the case takes the arguments `a₁ … aₖ`, then, for every argument `aᵢ` of type `T` itself (a *recursive* argument), a value of `motive aᵢ`, and returns a value of `motive (c a₁ … aₖ)`.
+4. The term `t : T` to be consumed; the result has type `motive t`.
+
+As one picture, for `T` with constructors `c₁, …, cₘ` (parameters omitted). The arguments of `c₁` are split into non-recursive ones `bⱼ : Bⱼ` and recursive ones `rⱼ : T`. For readability the non-recursive ones are listed first; in a declaration they may come in any order, and the case keeps that order.
+
+:::figure "The recursor of an arbitrary inductive type T."
+![Top: inductive T where | c₁ (b₁ : B₁) … (bₗ : Bₗ) (r₁ … rₖ : T) : T | …. Bottom: T.rec with the implicit motive : T → Sort u, then the case f₁ : (b₁ : B₁) → … → (bₗ : Bₗ) → (r₁ … rₖ : T) → motive r₁ → … → motive rₖ → motive (c₁ b₁ … bₗ r₁ … rₖ), then the other cases and (t : T) → motive t. Arrows: the type gives the motive; the constructor c₁ gives the case f₁; its non-recursive arguments are passed on; its recursive arguments also give the values motive rⱼ; the other constructors give the other cases.](/static/figures/rec_general.png)
+:::
+
+With the recursor come its computation rules, one per constructor. Applied to a constructor, the recursor takes the case for it and passes it the arguments and, for each recursive argument, the recursor applied to that argument. With `R := T.rec f₁ … fₘ`:
+
+```
+R (c₁ b₁ … bₗ r₁ … rₖ)  ⟶  f₁ b₁ … bₗ r₁ … rₖ (R r₁) … (R rₖ)
+```
+
+For `MyNat` the rule for `succ` is `MyNat.rec z s (.succ n) ⟶ s n (MyNat.rec z s n)`.
+
+`T.rec` has no body. It is not defined by a term; the kernel adds it as a new constant, a *recursor*, together with these rules, and everything `T.rec` does is reduction by them. Applying one is ι-reduction ({ref "reduction-rules"}[the reduction rules]). A rule fires only when the argument is a constructor application: `MyNat.rec z s t` for a variable `t` does not reduce, which is why statements about all `t` need induction rather than `rfl`. `#print` shows the rules:
+
+```lean
+#print MyNat.rec
+```
+
+With a `Prop`-valued motive the same recursor is the *induction principle*: to prove a statement for every `t : MyNat`, prove it for `zero`, and prove it for `succ n` assuming it for `n`. Recursion and induction are two readings of the single primitive `MyNat.rec`, which is why the `induction` tactic and recursive definitions feel so alike. The `induction` tactic applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.
+
+## Examples
+%%%
+tag := "recursor-examples"
+number := false
+%%%
+
+```lean
+#check @List.rec
+-- {α : Type v} → {motive : List α → Sort u} →
+--   motive [] →
+--   ((head : α) → (tail : List α) →
+--      motive tail → motive (head :: tail)) →
+--   (t : List α) → motive t
+#check @Colour.rec
+-- {motive : Colour → Sort u} →
+--   motive .red → motive .green → motive .blue →
+--   (t : Colour) → motive t
+#check @MyOption.rec
+-- {α : Type} → {motive : MyOption α → Sort u} →
+--   motive .none →
+--   ((a : α) → motive (.some a)) →
+--   (t : MyOption α) → motive t
+#check @Point.rec
+-- {motive : Point → Sort u} →
+--   ((x y : ℕ) → motive { x := x, y := y }) →
+--   (t : Point) → motive t
+```
+
+`List.cons` has the non-recursive argument `head` and the recursive argument `tail`, so its case gets `motive tail`, the result for the rest of the list; read as a proof, this is the induction hypothesis. The computation rule is `List.rec n c (a :: l) ⟶ c a l (List.rec n c l)`. The constructors of `Colour` have no arguments, so its cases are plain values and `Colour.rec` is a case distinction with three branches. `MyOption.some` has an argument `a : α` that is not recursive, so its case is a function of `a` and gets no value of the motive. A structure has a single constructor, so `Point.rec` just unpacks the fields. For an inductive type in `Prop` with more than one constructor, such as `MyOr`, the motive may only take values in `Prop` ({ref "prop-special"}[Why `Prop` is special]).
+
+## Case splits: `casesOn`
+%%%
+tag := "cases-on"
+number := false
+%%%
+
+Besides `T.rec`, Lean defines `T.casesOn`, the recursor without the values at the recursive arguments. It takes `t` before the cases:
+
+:::figure "How MyNat.casesOn is built. As for MyNat.rec, but the recursive argument n gives no value motive n."
+![Top: the declaration of MyNat. Bottom: MyNat.casesOn with the implicit motive : MyNat → Sort u, then (t : MyNat), then (zero : motive MyNat.zero), then (succ : (n : MyNat) → motive (MyNat.succ n)), then motive t. Arrows as for MyNat.rec; the recursive argument n gives only (n : MyNat).](/static/figures/mynat_casesOn.png)
+:::
+
+`MyNat.casesOn t z s` only asks which constructor built `t`: the result is `z` if `t` is `zero`, and `s n` if `t` is `succ n`. There is no recursion. It is an ordinary definition, built from the recursor: `MyNat.casesOn t z s` is `MyNat.rec z (fun n _ => s n) t`. For `ℕ` the same is `Nat.casesOn`:
 
 ```lean
 #check @Nat.casesOn
@@ -114,7 +224,13 @@ Lean checks that the three patterns cover every natural number. The numerals in 
 --   ((n : ℕ) → motive (Nat.succ n)) → motive t
 ```
 
-`Nat.casesOn t z s` has one case per constructor. The case for `succ n` receives `n`, but no value at `n`, so there is no recursion. It is built from the recursor: `Nat.casesOn t z s` is `Nat.rec z (fun n _ => s n) t`. Applied to `fib`, the patterns `0`, `1`, `n + 2` become
+## Are all cases covered?
+%%%
+tag := "match-coverage"
+number := false
+%%%
+
+Pattern matching is compiled to `casesOn`. Lean writes the patterns with constructors and splits the argument by its constructor, `zero` or `succ m`, and splits `m` again where a pattern requires it. For the patterns `0`, `1`, `n + 2` of `fib` this gives two nested case splits:
 
 ```
 fun x => Nat.casesOn x  (case 0)          -- x = zero
@@ -138,31 +254,12 @@ def fib' : ℕ → ℕ
 
 The error is "Missing cases: (Nat.succ Nat.zero)". A pattern that can never be reached, because earlier patterns already cover it, is an error as well ("Redundant alternative").
 
-Lean only accepts a recursive definition once it is convinced the recursion *terminates*. There are two ways:
+# Recursion on trees
+%%%
+tag := "recursion-trees"
+%%%
 
-* *Structural recursion.* Every recursive call is on a part of the input, that is, on an argument of the constructor that built it. Lean translates the definition into the recursor of the type (more precisely into `brecOn`, built from the recursor, see {ref "brecon"}[Course-of-values recursion]), and there is nothing to prove.
-* *Well-founded recursion.* Every recursive call makes a *measure* smaller, a natural number computed from the arguments. Lean translates the definition into `WellFounded.fix` and needs a proof that the measure decreases.
-
-`factorial`, `length'` and `fib` are structural. In `fib (n + 2)` the calls are `fib n` and `fib (n + 1)`, both on parts of `n + 2 = succ (succ n)`. So `fib` is translated into the recursor, it computes by ι, and `rfl` checks values:
-
-```lean
--- fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)
-example : fib 3 = 2 := rfl
-```
-
-The recursor `Nat.rec` of {ref "nat-intro"}[chapter 1.1] hands the step only the value at `n`, but `fib (n + 2)` needs the values at `n` and at `n + 1`. By hand, with `Nat.rec` alone, one carries the pair `(fib n, fib (n + 1))` along. Its type `ℕ × ℕ` is the type of pairs of natural numbers. In general `α × β` is a structure ({ref "structures"}[Structures]) with the two fields `fst : α` and `snd : β`; a pair is written `(a, b)`, and its fields are `p.1` and `p.2`. As for every structure, `⟨a, b⟩` works as well, but only where Lean already knows the type: `#check ⟨1, 2⟩` fails, `#check (1, 2)` gives `ℕ × ℕ`, because `(a, b)` is notation for `Prod.mk a b` alone. {ref "sigma-types"}[Chapter 1.4] treats pairs in full.
-
-```lean
-def fibPair (n : ℕ) : ℕ × ℕ :=
-  Nat.rec (0, 1) (fun _ p => (p.2, p.1 + p.2)) n
-
-example : fibPair 10 = (55, 89) := rfl
-```
-
-Lean does the same, but carries the values at *all* smaller arguments, with `Nat.brecOn`; {ref "brecon"}[Course-of-values recursion] shows how.
-
-Recursion on several parts works the same way. Binary trees whose nodes carry natural numbers:
-
+A structural call may be on any part of the input, and a definition may call itself on several parts at once. Binary trees whose nodes carry natural numbers:
 ```lean
 inductive BinTree where
   | leaf : BinTree
@@ -193,15 +290,36 @@ example : (BinTree.node .leaf 3
     (.node .leaf 4 .leaf)).height = 2 := rfl
 ```
 
-A call that is not on a smaller argument is rejected:
+The recursor of `BinTree` follows the recipe of {ref "recursor"}[The recursor]. The case for `node` receives the three arguments of the constructor and, for the two subtrees `l` and `r`, the values `motive l` and `motive r`:
 
-```lean +error
-def loop (n : ℕ) : ℕ := loop n + 1
+```lean
+#check @BinTree.rec
+-- {motive : BinTree → Sort u} →
+--   motive .leaf →                       -- leaf case
+--   ((l : BinTree) → (a : ℕ) → (r : BinTree) →
+--      motive l → motive r →
+--      motive (.node l a r)) →            -- node case
+--   (t : BinTree) → motive t
 ```
 
-Lean reports that the argument `n` is unchanged in the recursive call. Were the definition accepted, it would give `loop 0 = loop 0 + 1`, and subtracting `loop 0` on both sides gives `0 = 1`.
+With the constant motive `fun _ => ℕ` this is recursion, for instance the sum of all numbers in a tree:
 
-When a recursive call is not on a part of the input, Lean cannot translate the definition structurally and looks for a measure. Often it finds one on its own. In `log2` the argument shrinks from `n` to `n / 2`. This holds only for `n ≥ 1`; for `n = 0` the call would be `log2 0` again. The `if` excludes this case: the recursive call stands in the branch where `2 ≤ n`, and Lean uses this condition to prove `n / 2 < n`.
+```lean
+noncomputable def BinTree.sum : BinTree → ℕ :=
+  BinTree.rec 0 (fun _ a _ sl sr => sl + a + sr)
+
+example : (BinTree.node .leaf 3
+    (.node .leaf 4 .leaf)).sum = 7 := rfl
+```
+
+Lean evaluates a definition in two ways. The *compiler* translates it into a program, and `#eval` runs that program. The *kernel* reduces the term with the {ref "reduction-rules"}[reduction rules], and `rfl` uses the kernel. The keyword `noncomputable` tells Lean not to compile a definition. Nothing else changes: the definition has the same type and the same value, `rfl` and all proofs work as before, and only `#eval` is unavailable. Here the keyword is needed because the compiler does not support the recursors of your own types (for `Nat` it has special support). With a `Prop`-valued motive, `BinTree.rec` is induction on trees with two induction hypotheses, one for each subtree.
+
+# Termination by a measure
+%%%
+tag := "wf-recursion"
+%%%
+
+When a recursive call is not on a part of the input, Lean cannot translate the definition structurally and looks for a measure. It then translates the definition into `WellFounded.fix` and needs a proof that the measure decreases. Often it finds the measure and the proof on its own. In `log2` the argument shrinks from `n` to `n / 2`. This holds only for `n ≥ 1`; for `n = 0` the call would be `log2 0` again. The `if` excludes this case: the recursive call stands in the branch where `2 ≤ n`, and Lean uses this condition to prove `n / 2 < n`.
 
 ```lean
 def log2 (n : Nat) : Nat :=
@@ -296,222 +414,23 @@ example (n : ℕ) (h : 2 ≤ n) :
 
 Proofs by induction that follow the recursion of a function, one case per branch, are done with `fun_induction` ({ref "induction"}[induction]).
 
-# The recursor
-%%%
-tag := "recursor"
-%%%
-
-{ref "nat-intro"}[Chapter 1.1] used the recursor `Nat.rec` in a *non-dependent* form, into a fixed result type. In general the result type may *depend* on the term being consumed. This dependency is recorded by a *motive* `T → Sort u`. The binary tree `BinTree` from {ref "recursion"}[Recursion and termination] shows the full form:
-
-```lean
-#check @BinTree.rec
--- {motive : BinTree → Sort u} →
---   motive .leaf →                       -- leaf case
---   ((l : BinTree) → (a : ℕ) → (r : BinTree) →
---      motive l → motive r →
---      motive (.node l a r)) →            -- node case
---   (t : BinTree) → motive t
-```
-
-The case for `node` receives the three arguments of the constructor and, for the two subtrees `l` and `r`, the values `motive l` and `motive r` already computed for them. With the constant motive `fun _ => ℕ` this is recursion, for instance the sum of all numbers in a tree:
-
-```lean
-noncomputable def BinTree.sum : BinTree → ℕ :=
-  BinTree.rec 0 (fun _ a _ sl sr => sl + a + sr)
-
-example : (BinTree.node .leaf 3
-    (.node .leaf 4 .leaf)).sum = 7 := rfl
-```
-
-Lean evaluates a definition in two ways. The *compiler* translates it into a program, and `#eval` runs that program. The *kernel* reduces the term with the {ref "reduction-rules"}[reduction rules], and `rfl` uses the kernel. The keyword `noncomputable` tells Lean not to compile a definition. Nothing else changes: the definition has the same type and the same value, `rfl` and all proofs work as before, and only `#eval` is unavailable. Here the keyword is needed because the compiler does not support the recursors of your own types (for `Nat` it has special support).
-
-With a `Prop`-valued motive the same recursor is the *induction principle* for trees: to prove a statement for every tree, prove it for `leaf`, and prove it for `node l a r` assuming it for `l` and for `r`. Those are two induction hypotheses, one for each subtree. Recursion and induction are two readings of the single primitive `BinTree.rec`, which is why the `induction` tactic and recursive definitions feel so alike. The `induction` tactic applies the recursor for you: one subgoal per constructor, with an induction hypothesis for each recursive argument.
-
-Lean generates `T.rec` for every `inductive` declaration from its constructors, always by the same recipe:
-
-1. The parameters of `T`, such as `α` in `MyOption α`, as implicit arguments.
-2. The *motive* `motive : T → Sort u`, the type of the result, which may depend on the term.
-3. One *case* per constructor, in the order of the declaration. For a constructor `c (a₁ : A₁) … (aₖ : Aₖ) : T` the case takes the arguments `a₁ … aₖ`, then, for every argument `aᵢ` of type `T` itself (a *recursive* argument), a value of `motive aᵢ`, and returns a value of `motive (c a₁ … aₖ)`.
-4. The term `t : T` to be consumed; the result has type `motive t`.
-
-As one type, for `T` with constructors `c₁, …, cₘ` (parameters omitted). The arguments of `c₁` are split into non-recursive ones `bⱼ : Bⱼ` and recursive ones `rⱼ : T`; for readability the non-recursive ones are listed first, while in a declaration they may come in any order, and the case keeps that order.
-
-```
-T.rec : {motive : T → Sort u} →
-  (f₁ : (b₁ : B₁) → … → (bₗ : Bₗ) → (r₁ … rₖ : T) →
-     motive r₁ → … → motive rₖ →    -- one per recursive argument
-     motive (c₁ b₁ … bₗ r₁ … rₖ)) → -- case c₁
-  … → (fₘ : …) →                    -- cases c₂, …, cₘ
-  (t : T) → motive t
-```
-
-`T.casesOn` has the same cases without the values `motive rⱼ`, and takes `t` before the cases.
-
-With the recursor come its computation rules, one per constructor: applied to `c a₁ … aₖ`, the recursor takes the case for `c`, and passes it the arguments and, for each recursive argument `aᵢ`, the recursor applied to `aᵢ`. For `BinTree` the rule for `node` is `BinTree.rec z s (.node l a r) ⟶ s l a r (BinTree.rec z s l) (BinTree.rec z s r)`.
-
-`T.rec` has no body. It is not defined by a term; the kernel adds it as a new constant, a *recursor*, together with these rules, and everything `T.rec` does is reduction by them. Applying one is ι-reduction ({ref "reduction-rules"}[the reduction rules]). A rule fires only when the argument is a constructor application: `BinTree.rec z s t` for a variable `t` does not reduce, which is why statements about all `t` need induction rather than `rfl`. `#print` shows the rules:
-
-```lean
-#print BinTree.rec
-```
-
-```lean
-#check @Colour.rec
--- {motive : Colour → Sort u} →
---   motive .red → motive .green → motive .blue →
---   (t : Colour) → motive t
-#check @MyOption.rec
--- {α : Type} → {motive : MyOption α → Sort u} →
---   motive .none →
---   ((a : α) → motive (.some a)) →
---   (t : MyOption α) → motive t
-#check @List.rec
--- {α : Type v} → {motive : List α → Sort u} →
---   motive [] →
---   ((head : α) → (tail : List α) →
---      motive tail → motive (head :: tail)) →
---   (t : List α) → motive t
-#check @Point.rec
--- {motive : Point → Sort u} →
---   ((x y : ℕ) → motive { x := x, y := y }) →
---   (t : Point) → motive t
-```
-
-The constructors of `Colour` have no arguments, so its cases are plain values and `Colour.rec` is a case distinction with three branches. `MyOption.some` has an argument `a : α` that is not recursive, so its case is a function of `a` and gets no value of the motive. `List.cons` has the recursive argument `tail`, and its case gets `motive tail`, the result for the rest of the list; read as a proof, this is the induction hypothesis. A structure has a single constructor, so `Point.rec` just unpacks the fields. For an inductive type in `Prop` with more than one constructor, such as `MyOr`, the motive may only take values in `Prop` ({ref "prop-special"}[Why `Prop` is special]).
-
 # Course-of-values recursion
 %%%
 tag := "brecon"
 %%%
 
-The recursor hands the case for `succ n` one value, the value at `n`. A structurally recursive definition may call itself on any part of the input: `fib (n + 2)` calls `fib (n + 1)` and `fib n`, and a definition on trees may call itself on a subtree of a subtree. Lean closes this gap with `brecOn`, which is built from the recursor. It hands the step a *table* with the values at *all* parts of the input, and Lean replaces every recursive call by a lookup in this table. This is called *course-of-values recursion*. We describe it for `ℕ`. Every inductive type `T` has its own `T.below` and `T.brecOn`, built by the same recipe.
+The recursor hands the case for `succ n` one value, the value at `n`. A structurally recursive definition may call itself on any part of the input: `fib (n + 2)` calls `fib (n + 1)` and `fib n`. Lean's translation closes this gap. It passes the step a table of the values at *all* smaller arguments, built from the recursor in one pass (the constant `Nat.brecOn`; `#print fib` shows it), and replaces every recursive call by a lookup in this table. This is called *course-of-values recursion*. How the table is built is {ref "project-equation-compiler"}[Project 7].
 
-## The table `Nat.below`
-%%%
-tag := "nat-below"
-%%%
-
-`Nat.below n` is the type of the table at `n`. It has one entry for each `k < n`, and the entry for `n - 1` comes first. It is a type defined by recursion, with `Nat.rec`:
-
-```lean
-#print Nat.below
--- Nat.below n :=
---   Nat.rec PUnit (fun n t => motive n ×' t) n
-```
-
-As equations:
-
-1. `Nat.below 0 = PUnit`. There is nothing below `0`. `PUnit` is a type with exactly one element, `⟨⟩`.
-2. `Nat.below (n + 1) = motive n ×' Nat.below n`: first the value at `n`, then the table at `n`.
-
-`α ×' β` (`PProd`) is the type of pairs `⟨a, b⟩` with `a : α` and `b : β`, like `α × β`. Unlike `α × β`, its components may also be proofs. This is needed when the motive is a proposition (see the end of this section). `×'` associates to the right. For `fib` the motive is the constant `fun _ => ℕ`, and the table at `3` holds three numbers, the values at `2`, `1` and `0`:
-
-```lean
-example : Nat.below (motive := fun _ => ℕ) 3 =
-    (ℕ ×' ℕ ×' ℕ ×' PUnit.{1}) := rfl
-```
-
-In a table `t` at `n + 2`, the value at `n + 1` is `t.1`, and the value at `n` is `t.2.1`.
-
-## `Nat.brecOn`
-%%%
-tag := "nat-brecon"
-%%%
-
-```lean
-#check @Nat.brecOn
--- {motive : ℕ → Sort u} → (t : ℕ) →
---   ((n : ℕ) → Nat.below n → motive n) →
---   motive t
-```
-
-`Nat.brecOn t F` computes the value at `t`. The step `F` receives a number `n` and the table at `n`, and returns the value at `n`. There is no separate base case. At `0` the table is the empty `⟨⟩`, and `F 0 ⟨⟩` has to give the value without any help.
-
-Lean builds `Nat.brecOn` from a single pass of `Nat.rec`. This pass computes the value and the table together. A pair (value at `n`, table at `n`) has the type `motive n ×' Nat.below n`, which by equation 2 is `Nat.below (n + 1)`: it *is* the table at `n + 1`. So the step of the recursor takes the table `t` at `n + 1`, computes the new value `F (n + 1) t`, and puts it in front:
+`#eval` does not use this translation. The compiler runs `fib` as written, and every call makes two more, so the running time grows like `fib n` itself, by a factor of about 1.6 per step. Carrying the pair by hand, as in `fibPair` ({ref "recursion"}[Structural recursion]), needs one step per number:
 
 ```
-Nat.brecOn.go n F : motive n ×' Nat.below n :=
-  Nat.rec ⟨F 0 ⟨⟩, ⟨⟩⟩
-    (fun n t => ⟨F (n + 1) t, t⟩) n
-
-Nat.brecOn n F := (Nat.brecOn.go n F).1
+#eval fib 30                 -- 0.6 s
+#eval fib 32                 -- 1.7 s: about 7 million calls
+#eval (fibPair 32).1         -- immediate: 32 steps
+#eval (fibPair 10000).1      -- immediate, 2090 digits
 ```
 
-Each value is computed once, and the table grows by one entry per step. For `fib`, `Nat.brecOn.go n` is the list of all values from `n` down to `0`:
-
-:::table (align := left) +header
-* + `n`
-  + `Nat.brecOn.go n fib._f`
-* + `0`
-  + `⟨0, ⟨⟩⟩`
-* + `1`
-  + `⟨1, 0, ⟨⟩⟩`
-* + `2`
-  + `⟨1, 1, 0, ⟨⟩⟩`
-* + `3`
-  + `⟨2, 1, 1, 0, ⟨⟩⟩`
-:::
-
-```lean
-example : Nat.brecOn.go (motive := fun _ => ℕ)
-    3 fib._f = ⟨2, 1, 1, 0, ⟨⟩⟩ := rfl
-```
-
-`fibPair` in {ref "recursion"}[Recursion and termination] carries the last two values; `Nat.brecOn` carries all of them.
-
-## What Lean makes of `fib`
-%%%
-tag := "fib-brecon"
-%%%
-
-```lean
-#print fib
--- def fib : ℕ → ℕ := fun x => Nat.brecOn x fib._f
-#print fib._f
--- fun x t => match x, t with
---   | 0,     _ => 0
---   | 1,     _ => 1
---   | n + 2, t => t.2.1 + t.1
-```
-
-(The printed `fib._f` is written slightly differently but means the same.) `fib._f` is the definition of `fib` with each recursive call replaced by a lookup. At `n + 2` the table has the type `ℕ ×' ℕ ×' Nat.below n`. So `fib (n + 1)` became `t.1`, and `fib n` became `t.2.1`.
-
-This replacement is the check for structural recursion. Lean has to find every recursive call in the table, and it can do so only when the argument of the call is a part of the pattern, such as `n + 1` and `n` in `n + 2`. In `loop n` the argument `n` is the input itself, and the table at `n` has no entry for `n`. In `log2` the argument `n / 2` is smaller than `n`, but it is not obtained from `n` by taking constructors off, so Lean does not know which entry to take. In both cases Lean falls back to well-founded recursion, which succeeds for `log2` and fails for `loop`.
-
-The same can be written by hand. The pattern `⟨fib1, fib0, _⟩` takes the table at `k + 2` apart:
-
-```lean
-def fib2 (n : ℕ) : ℕ :=
-  Nat.brecOn (motive := fun _ => ℕ) n fun k t =>
-    match k, t with
-    | 0, _ => 0
-    | 1, _ => 1
-    | _ + 2, ⟨fib1, fib0, _⟩ => fib0 + fib1
-
-example : fib2 10 = 55 := rfl
-```
-
-The kernel computes `fib` through `Nat.brecOn`, so it builds the table once, from the bottom up. `rfl` checks the 90th Fibonacci number at once:
-
-```lean
-example : fib 90 = 2880067194370816120 := rfl
-```
-
-`#eval` does not use `Nat.brecOn`. The compiler translates the equations as written, two calls per step, so `#eval fib 32` makes about seven million calls and takes a noticeable time.
-
-## Trees and proofs
-%%%
-tag := "brecon-trees-proofs"
-%%%
-
-For `BinTree` the table branches like the tree:
-
-1. `BinTree.below .leaf = PUnit`.
-2. `BinTree.below (.node l a r) = (motive l ×' BinTree.below l) ×' (motive r ×' BinTree.below r)`.
-
-So the table at a tree holds the values at all of its subtrees, at every depth. In `BinTree.height._f` the calls `l.height` and `r.height` become `t.1.1` and `t.2.1`.
-
-With a `Prop`-valued motive the entries of the table are proofs, the induction hypotheses for all parts of the input. That is why the table uses `×'` and not `×`. A theorem proved by pattern matching with recursive calls is translated with `brecOn` just like a definition. This is the form of strong induction that structural recursion gives:
+With a `Prop`-valued motive the table holds proofs: the statement for all smaller arguments. A theorem proved by pattern matching with recursive calls is translated just like a definition. This is the form of strong induction that structural recursion gives:
 
 ```lean
 theorem fib_pos : (n : ℕ) → 0 < fib (n + 1)
@@ -521,9 +440,6 @@ theorem fib_pos : (n : ℕ) → 0 < fib (n + 1)
       have h := fib_pos n
       show 0 < fib (n + 1) + fib (n + 2)
       omega
-
-#print fib_pos
--- fun x => Nat.brecOn x fib_pos._f
 ```
 
 The case `n + 2` uses the statement for `n`, two steps back. With the `induction` tactic the hypothesis is only the statement one step back.

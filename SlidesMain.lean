@@ -102,7 +102,8 @@ def main (args : List String) : IO UInt32 := do
   let decks : List (String × (String → IO UInt32)) :=
     [ ("0-introduction",      fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«0-Introduction»)),
       ("1-1-nat",             fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-1-Nat»)),
-      ("1-2-functions-inductive-structures", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-2-FunctionsInductiveStructures»)) ]
+      ("1-2-functions-inductive-structures", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-2-FunctionsInductiveStructures»)),
+      ("1-3-pattern-matching-recursion", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-3-PatternMatchingRecursion»)) ]
   let mut code : UInt32 := 0
   for (name, run) in decks do
     IO.println s!"slides: {name}"

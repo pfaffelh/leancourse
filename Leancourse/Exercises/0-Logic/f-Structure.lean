@@ -27,6 +27,8 @@ one line.
 | `L-a` | `intro`, `exact`, `apply` |
 | `L-b` | `obtain`                  |
 | `L-c` | `left`, `right`           |
+| `L-d` | `absurd`                  |
+| `L-e` | `Classical.em`            |
 -/
 
 variable (P Q R S T : Prop)

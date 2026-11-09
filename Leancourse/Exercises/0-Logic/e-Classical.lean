@@ -34,6 +34,7 @@ logic is needed.
 | `L-a` | `intro`, `exact`, `apply` |
 | `L-b` | `constructor`, `obtain`   |
 | `L-c` | `left`, `right`           |
+| `L-d` | `absurd`                  |
 -/
 
 variable (P Q R S T : Prop)

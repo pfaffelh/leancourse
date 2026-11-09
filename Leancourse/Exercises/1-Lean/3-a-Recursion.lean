@@ -28,12 +28,12 @@ in chapter 1.2 and chapter 1.3 first.
 
 ## Tactics from earlier sheets
 
-| sheet   | tactics        |
-|---------|----------------|
-| `1.1-a` | `rfl`          |
-| `1.1-b` | `cases`, `<;>` |
-| `L-f`   | `have`         |
-| `1.1-c` | `omega`        |
+| sheet   | tactics                 |
+|---------|-------------------------|
+| `1.1-a` | `rfl`                   |
+| `1.1-b` | `cases`, `<;>`          |
+| `L-f`   | `have`                  |
+| `1.1-c` | `simp`, `ring`, `omega` |
 -/
 
 /-! ## Part 1: A type with finitely many elements

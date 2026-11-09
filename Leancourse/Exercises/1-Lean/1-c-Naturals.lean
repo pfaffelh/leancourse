@@ -163,8 +163,10 @@ example (n : ℕ) : 0 * n + n * 1 + 0 = n := by
 
 /-! ## Part 4: Finding the lemma
 
-Part of each task is to find the lemma that does the work, with
-`exact?` or by guessing its name. -/
+Part of each task is to find the lemma that does the work. Its name
+describes the statement: `Nat.pow_succ'` below is about `x ^ (y + 1)`.
+Guess the name and check it with `#check`. Sheet `L-g` introduces
+`exact?`, which does the search for you. -/
 
 example (x y : ℕ) : x ^ (y + 1) = x * x ^ y :=
   Nat.pow_succ'

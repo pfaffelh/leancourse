@@ -525,7 +525,7 @@ tag := "positivity-sufficient"
 number := false
 %%%
 
-Read in sets, a declaration is an equation for a set `X`: an element of the type is exactly one of the things the constructors build. `False` is the empty set.
+Read in sets, the declared type is a set `X` that satisfies an equation `X = F(X)`. Here `F(X)` is everything the constructors build from arguments in `X`, and the equation says that an element of the type is exactly one of these things. `False` is the empty set.
 
 :::table (align := left) +header
 * + declaration

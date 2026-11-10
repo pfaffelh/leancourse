@@ -357,24 +357,9 @@ example (Bad : Type) (mk : (Bad → False) → Bad)
   exact neg b
 ```
 
-# False from nothing
-
-- `neg b`: take the function stored in `b`, apply it to `b` itself. So `neg : Bad → False`.
-- `mk neg : Bad`, and `neg` applied to it is a proof of `False`: no hypothesis, no axiom.
-- With `Bad` accepted, `mk` and `unmk` would not be hypotheses but constructor and pattern match, and the same term would be a closed proof of `False`:
-
-```
-def neg (b : Bad) : False := unmk b b
-def boom : False := neg (Bad.mk neg)
-```
-
-:::class "key"
-It loops: `neg (mk neg) ⟶ unmk (mk neg) (mk neg) ⟶ neg (mk neg)`.
-:::
-
 # Why positivity is enough
 
-Read in sets, a declaration is an equation `X = F(X)`:
+Read in sets, the declared type `X` satisfies `X = F(X)`:
 
 :::table +colHeaders +rowSeps
 *

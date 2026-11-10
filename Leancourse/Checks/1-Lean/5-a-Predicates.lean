@@ -19,7 +19,8 @@ functions.
 | `let f := e`          | give a term a name inside a proof              |
 | `choose f hf using h` | `h : ∀ x, ∃ y, R x y`: get the function `f`    |
 
-`rfl`, `rw`, `exact?` and `apply?` are known from `1.1-a` and `L-g`.
+`rfl` and `rw` are known from `1.1-a`, `exact?` from `1.1-c`,
+`apply?` from `L-g`.
 -/
 
 variable (α β : Type) [Inhabited α]

@@ -3052,3 +3052,21 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   Richtung (`Finset.mul_sum` nur als
   `_ * ∑ _ ∈ _, ?f _ = ∑ _ ∈ _, (_ * ?f _)`). `#search` = `#leansearch`;
   "Addition of natural numbers is commutative." liefert nur Instanzen.
+
+## 2026-11-10 (2) -- Deck 1.4 nach Durchsicht, ℤ/2ℤ statt ℤ/nℤ, `#search`
+
+- Deck 1.4: "Vectors and matrices" nennt die Typfamilie
+  `n ↦ (Fin n → α)` und hat `zeros : (n : ℕ) → (Fin n → ℕ)`. Die
+  funext-Folie war 929 px hoch und ist geteilt in "`funext` from
+  `Quot.sound`" und "Why `rfl` proves `hf`". **`#print axioms` zeigt
+  seine Ausgabe auf Folien nur als Hover, nicht als Panel** -- dort
+  bleibt der Kommentar `-- [Quot.sound]` stehen.
+- Quotientenbeispiel in Deck und Kapitel 1.4 nur noch fuer n = 2
+  (Autor: kein freier Parameter): `SameParity`, `Parity`, `Parity.mk`,
+  `Parity.rem`, im Kapitel `Parity.toZMod : Parity → ZMod 2`. Tag
+  `zmod-quotient` bleibt, Titel "Example: the integers mod 2".
+- `2.0-a` benutzt `#search` statt `#leansearch` (Anfrage muss auf `.`
+  oder `?` enden). Zeugen von `L-g` und `1.5-a` an die Blaetter
+  angeglichen (`exact?` aus `1.1-c`).
+- Deck 1.3: Folie "False from nothing" entfernt; "Why positivity is
+  enough" sagt, dass `X` der deklarierte Typ ist.

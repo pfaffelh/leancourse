@@ -285,7 +285,7 @@ example (R : Type*) [CommRing R] (I : Ideal R) : CommRing (R ⧸ I) :=
   inferInstance
 ```
 
-`ZMod n` is not defined as a quotient (see {ref "zmod-quotient"}[The integers mod n] for the construction by hand), but it is one up to isomorphism. `≃+*` denotes a ring isomorphism, a bijective ring homomorphism:
+`ZMod n` is not defined as a quotient (see {ref "zmod-quotient"}[The integers mod 2] for the construction of `ZMod 2` by hand), but it is one up to isomorphism. `≃+*` denotes a ring isomorphism, a bijective ring homomorphism:
 
 ```lean
 #check (Int.quotientSpanNatEquivZMod 6 :

@@ -480,46 +480,45 @@ theorem myFunext {α β : Type*} {f g : α → β}
 
 The `rfl` needs the computation rule to hold by definition. A quotient built by hand, as a type of equivalence classes with `Classical.choice` picking a representative, satisfies it only as a proved equation, and the `rfl` fails. This is one reason why `Quot` is a primitive of the kernel and not a definition.
 
-## Example: the integers mod n
+## Example: the integers mod 2
 %%%
 tag := "zmod-quotient"
 number := false
 %%%
 
-ℤ/nℤ, which appeared as `ZMod n` in {ref "pi-types"}[Dependent functions], is the quotient of ℤ by the relation "same remainder mod `n`". Built by hand:
+ℤ/2ℤ is the quotient of ℤ by the relation "same parity", that is, same remainder mod 2. In Mathlib it is `ZMod 2`, the case `n = 2` of the `ZMod n` from {ref "pi-types"}[Dependent functions]. Built by hand:
 
 ```lean
--- a and b have the same remainder mod n
-def ModRel (n a b : ℤ) : Prop := a % n = b % n
+-- a and b have the same remainder mod 2
+def SameParity (a b : ℤ) : Prop := a % 2 = b % 2
 
-def IntMod (n : ℤ) : Type := Quot (ModRel n)
+def Parity : Type := Quot SameParity
 
-def IntMod.mk (n a : ℤ) : IntMod n :=
-  Quot.mk (ModRel n) a
+def Parity.mk (a : ℤ) : Parity := Quot.mk SameParity a
 
-example : IntMod.mk 5 7 = IntMod.mk 5 2 :=
+example : Parity.mk 7 = Parity.mk 1 :=
   Quot.sound rfl
 ```
 
-`Quot.sound` turns the proof `7 % 5 = 2 % 5`, which is `rfl`, into the equality of the two classes. A function out of `IntMod n` needs a proof that it is well defined. For the remainder of a class this proof is the relation itself:
+`Quot.sound` turns the proof `7 % 2 = 1 % 2`, which is `rfl`, into the equality of the two classes. A function out of `Parity` needs a proof that it is well defined. For the remainder of a class this proof is the relation itself:
 
 ```lean
-def IntMod.rem (n : ℤ) : IntMod n → ℤ :=
-  Quot.lift (fun a => a % n) (fun _ _ h => h)
+def Parity.rem : Parity → ℤ :=
+  Quot.lift (fun a => a % 2) (fun _ _ h => h)
 
-example : IntMod.rem 5 (IntMod.mk 5 17) = 2 := rfl
+example : Parity.rem (Parity.mk 17) = 1 := rfl
 ```
 
-The map to Mathlib's `ZMod n` sends the class of `a` to `a` read in `ZMod n`. It is well defined by the library theorem `ZMod.intCast_eq_intCast_iff'`, which says that two integers are equal in `ZMod n` exactly when they have the same remainder:
+The map to Mathlib's `ZMod 2` sends the class of `a` to `a` read in `ZMod 2`. It is well defined by the library theorem `ZMod.intCast_eq_intCast_iff'`, which says that two integers are equal in `ZMod 2` exactly when they have the same remainder mod 2:
 
 ```lean
-def IntMod.toZMod (n : ℕ) : IntMod n → ZMod n :=
-  Quot.lift (fun a => (a : ZMod n))
+def Parity.toZMod : Parity → ZMod 2 :=
+  Quot.lift (fun a => (a : ZMod 2))
     (fun a b h =>
-      (ZMod.intCast_eq_intCast_iff' a b n).mpr h)
+      (ZMod.intCast_eq_intCast_iff' a b 2).mpr h)
 ```
 
-Mathlib itself does not define `ZMod n` as a quotient. It defines it by pattern matching on `n`, as `ℤ` for `n = 0` and as `Fin n` otherwise, which makes it computable: `#eval` and `decide` work on it. `ZMod n` is still isomorphic to the quotient of ℤ by the ideal `nℤ`; see {ref "quotients"}[Quotient structures] in chapter 2.5 for reference.
+Mathlib itself does not define `ZMod 2` as a quotient. `ZMod` is defined by pattern matching on its argument: `ZMod 0` is `ℤ`, and `ZMod 2` is `Fin 2`. This makes it computable: `#eval` and `decide` work on it. `ZMod 2` is still isomorphic to the quotient of ℤ by the ideal `2ℤ`; see {ref "quotients"}[Quotient structures] in chapter 2.5 for reference.
 
 # The four steps at a glance
 %%%

@@ -18,7 +18,6 @@ search does not succeed.
 | tool               | use it when                                         |
 |--------------------|-----------------------------------------------------|
 | `rw? at h`         | an equation in Mathlib rewrites the hypothesis `h`  |
-| `#leansearch "…"`  | the same as `#search`                               |
 
 ## Tactics from earlier sheets
 
@@ -182,7 +181,7 @@ example (x : ℝ) : 0 < Real.exp x * (x ^ 2 + 1) := by
 
 /-! ## Part 6: Searching outside Lean
 
-`#loogle` and `#leansearch` send the query to a server, so they need
+`#loogle` and `#search` send the query to a server, so they need
 an internet connection; both sites can also be used in the browser.
 `#loogle` takes a pattern, with `?a` for a variable that must occur
 the same way each time and `_` for anything:
@@ -190,9 +189,9 @@ the same way each time and `_` for anything:
     #loogle (?a + ?b) ^ 2 = _
     #loogle Real.sqrt, Real.exp
 
-`#leansearch` takes a sentence in English:
+`#search` takes a sentence in English that ends with `.` or `?`:
 
-    #leansearch "a continuous function takes every value in between"
+    #search "A continuous function takes every value in between."
 
 Uncomment the searches below one at a time. -/
 
@@ -207,11 +206,11 @@ example (a b : ℝ) : (a + b) ^ 2 = a ^ 2 + 2 * a * b + b ^ 2 := by
 -- #loogle Real.sqrt ?x ^ 2 = ?x
 
 -- Exercise 20) The intermediate value theorem. `exact?` fails. Find
--- `intermediate_value_Icc` with `#leansearch`, read its statement
+-- `intermediate_value_Icc` with `#search`, read its statement
 -- with `#check`, and use it. It wants `ContinuousOn f (Set.Icc 0 1)`;
 -- `hf.continuousOn` gives that. Its conclusion is about an image
 -- `f '' s`, as in chapter 2.2.
--- #leansearch "a continuous function takes every value in between"
+-- #search "A continuous function takes every value in between."
 example (f : ℝ → ℝ) (hf : Continuous f) (h0 : f 0 < 0) (h1 : 0 < f 1) :
     ∃ x, f x = 0 := by
   sorry

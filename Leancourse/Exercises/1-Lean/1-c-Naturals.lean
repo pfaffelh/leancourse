@@ -24,6 +24,16 @@ arithmetic for us.
 | `omega`                | linear arithmetic on `ℕ` and `ℤ`                    |
 | `push_cast`            | move the map `ℕ → ℝ` inwards: `↑(n + 1) = ↑n + 1`   |
 
+## Searching for lemmas, introduced here
+
+| command                | use it when                                         |
+|------------------------|-----------------------------------------------------|
+| `#check name`          | you guessed a name and want to see its statement    |
+| `exact?`               | some lemma in Mathlib closes the goal               |
+| `rw?`                  | some equation in Mathlib rewrites the goal          |
+| `#loogle ?a * (_ + _)` | you know the shape of the statement                 |
+| `#search "..."`        | you can say the statement in English                |
+
 ## Tactics from earlier sheets
 
 | sheet   | tactics                             |
@@ -68,22 +78,83 @@ example (n : ℕ) (hn : n ≠ 0) : ∃ k : ℕ, n = succ k :=
 example (n : ℕ) (h : n > 1) : ∃ k : ℕ, n = k + 2 := by
   sorry
 
-/-! ## Part 2: Rewriting and `calc`
+/-! ## Part 2: Finding a lemma
+
+Most steps of a proof are lemmas that Mathlib already has. Finding
+them is a skill of its own, and every later sheet needs it. There are
+four ways.
+
+*Guess the name.* Mathlib names a lemma after its statement, read
+from left to right: `add_zero` is `a + 0 = a`, `mul_add` is
+`a * (b + c) = a * b + a * c`, `pow_succ` is about `a ^ (n + 1)`.
+`le` stands for `≤`, `lt` for `<`, and `_of_` separates the conclusion
+from the hypotheses: `le_of_lt` is `a < b → a ≤ b`. Check a guess
+with `#check`. -/
+
+#check add_zero
+#check le_of_lt
+
+/-! *Let Lean search.* `exact?` searches Mathlib for a lemma that
+closes the goal, `rw?` for an equation that rewrites it. Both work
+offline and print what they found. Replace the call by its result: a
+search left in the file runs again each time the file is checked.
+
+Uncomment and run it: -/
+
+example (a b c : ℕ) : a * (b + c) = a * b + a * c := by
+  -- exact?
+  exact Nat.mul_add a b c
+
+/-! *Search by shape.* `#loogle` takes a pattern. `_` stands for any
+term, `?a` for a term that must be the same at every place where `?a`
+occurs:
+
+    #loogle ?a * (?b + ?c) = ?a * ?b + ?a * ?c
+
+finds `Nat.mul_add`, and the same law for `ℤ` and `ℚ`. Three things
+to know:
+
+* A pattern that is too general fails: `#loogle ?a + ?b = ?b + ?a`
+  runs out of time. Fix the type, `(?a : ℕ) + ?b = ?b + ?a`, or add
+  a part of the name: `?a + ?b = ?b + ?a, "comm"`.
+* Besides patterns, `#loogle` takes constants and parts of names,
+  separated by commas. `^` is the constant `HPow.hPow` and `≤` is
+  `LE.le`, so `#loogle HPow.hPow, LE.le, "le_self"` finds
+  `Nat.le_self_pow : n ≠ 0 → a ≤ a ^ n`.
+* A pattern for an equation matches only in the direction in which
+  Mathlib states it. If nothing comes back, swap the two sides.
+
+*Search in English.* `#search` takes a sentence that ends with `.` or
+`?`:
+
+    #search "The power of a natural number is at least the number."
+
+Its first answer is `le_self_pow₀`. The answers are suggestions,
+ordered by similarity, so read their statements.
+
+`#loogle` and `#search` send the query to a server and need a network
+connection. Like `exact?`, delete them once you have the name. -/
+
+-- Exercises 2 to 5) Replace `sorry` by a lemma. Find each one in at
+-- least two of the four ways.
+example (a : ℕ) : 0 + a = a :=
+  sorry
+
+example (a b c : ℕ) : (a + b) * c = a * c + b * c :=
+  sorry
+
+example (a b c : ℕ) : a + b + c = a + (b + c) :=
+  sorry
+
+example (a : ℕ) : a ^ 2 = a * a :=
+  sorry
+
+/-! ## Part 3: Rewriting and `calc`
 
 `rw [h]` (sheet `1.1-a`) with `h : a = b` replaces `a` by `b`; new is
-`rw [← h]`, which replaces `b` by `a`. Mathlib's lemmas about `+`, `*` and `^` are equations of this
-kind. These are the ones used below: -/
-
-#check add_zero   -- a + 0 = a
-#check zero_add   -- 0 + a = a
-#check add_comm   -- a + b = b + a
-#check add_assoc  -- a + b + c = a + (b + c)
-#check mul_one    -- a * 1 = a
-#check one_mul    -- 1 * a = a
-#check mul_comm   -- a * b = b * a
-#check mul_add    -- a * (b + c) = a * b + a * c
-#check add_mul    -- (a + b) * c = a * c + b * c
-#check pow_two    -- a ^ 2 = a * a
+`rw [← h]`, which replaces `b` by `a`. Mathlib's lemmas about `+`, `*`
+and `^` are equations of this kind; find the ones you need as in
+Part 2. -/
 
 example (m n : ℕ) : m + n = n + m + 0 := by
   rw [add_zero, add_comm]
@@ -112,15 +183,15 @@ lemma binom1 (n : ℕ) : (n + 1) ^ 2 = n ^ 2 + 2 * n + 1 := by
     _ = n ^ 2 + (n + n + 1) := by rw [add_assoc, ← add_assoc n n 1]
     _ = n ^ 2 + 2 * n + 1 := by rw [← add_assoc, ← double]
 
--- Exercise 2) With `rw` only.
+-- Exercise 6) With `rw` only.
 example (a b c : ℕ) : (a + b) * c = c * a + b * c := by
   sorry
 
--- Exercise 3) With `calc`, one lemma per step.
+-- Exercise 7) With `calc`, one lemma per step.
 example (m n : ℕ) : m * (n + 1) + 0 = m + m * n := by
   sorry
 
-/-! ## Part 3: Four automatic tactics
+/-! ## Part 4: Four automatic tactics
 
 Rewriting each rule by hand is slow. Four tactics do it for us:
 
@@ -145,7 +216,7 @@ example (k m n : ℕ) (h₁ : k ≤ m + n) (h₂ : m < n) : k < 2 * n := by
 example (n : ℕ) : n + 0 + 0 = 0 + 0 + n := by
   simp
 
--- Exercises 4 to 8) One tactic each. Which one?
+-- Exercises 8 to 12) One tactic each. Which one?
 example : 0 < 1 := by
   sorry
 
@@ -161,43 +232,39 @@ example (k m n : ℕ) (h₁ : k + 2 ≤ m) (h₂ : m < n) : k + 3 ≤ n := by
 example (n : ℕ) : 0 * n + n * 1 + 0 = n := by
   sorry
 
-/-! ## Part 4: Finding the lemma
+/-! ## Part 5: Lemmas in proofs
 
-Part of each task is to find the lemma that does the work. Its name
-describes the statement: `Nat.pow_succ'` below is about `x ^ (y + 1)`.
-Guess the name and check it with `#check`. Sheet `L-g` introduces
-`exact?`, which does the search for you. -/
+From here on the exercises say what a lemma states, not what it is
+called. Find the name as in Part 2. -/
 
-example (x y : ℕ) : x ^ (y + 1) = x * x ^ y :=
-  Nat.pow_succ'
-
--- Exercise 9)
+-- Exercise 13)
 example (m n : ℕ) : m ^ (n + 2) = m * m ^ n * m := by
   sorry
 
--- Exercise 10) A lemma saying `a ≤ a ^ n` for `n ≠ 0` exists.
+-- Exercise 14) A lemma saying `a ≤ a ^ n` for `n ≠ 0` exists.
 example (n : ℕ) : n ≤ n ^ 2 := by
   sorry
 
--- Exercise 11) Three inequalities in a row: `have` each of them, then
--- `le_trans`. For `n ^ 2 ≤ n ^ 3`, the case `n = 0` is separate.
-#check Nat.pow_le_pow_left   -- m ≤ n → m ^ i ≤ n ^ i
-#check Nat.pow_le_pow_right  -- n > 0 → i ≤ j → n ^ i ≤ n ^ j
-#check le_trans              -- a ≤ b → b ≤ c → a ≤ c
+-- Exercise 15) Three inequalities in a row: `have` each of them, then
+-- chain them. For `n ^ 2 ≤ n ^ 3`, the case `n = 0` is separate.
+-- Lemmas for these statements help:
+--   m ≤ n → m ^ i ≤ n ^ i
+--   n > 0 → i ≤ j → n ^ i ≤ n ^ j
+--   a ≤ b → b ≤ c → a ≤ c
 
 example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k ^ 2 ≤ n ^ 3 := by
   sorry
 
--- Exercise 12) For `0 ≤ x`, a power is at most `1` exactly when `x`
+-- Exercise 16) For `0 ≤ x`, a power is at most `1` exactly when `x`
 -- is. One direction is a lemma; for the other, assume `1 < x` with
--- `by_contra` and `push Not`.
-#check pow_le_one₀   -- 0 ≤ a → a ≤ 1 → a ^ n ≤ 1
-#check one_lt_pow₀   -- 1 < a → n ≠ 0 → 1 < a ^ n
+-- `by_contra` and `push Not`. Lemmas for these statements help:
+--   0 ≤ a → a ≤ 1 → a ^ n ≤ 1
+--   1 < a → n ≠ 0 → 1 < a ^ n
 
 example (x : ℝ) (n : ℕ) (h : 0 ≤ x) : x ^ (n + 1) ≤ 1 ↔ x ≤ 1 := by
   sorry
 
-/-! ## Part 5: Induction
+/-! ## Part 6: Induction
 
 `induction n with` (sheet `1.1-a`) is `cases n with` plus an induction
 hypothesis in the `succ` case. -/
@@ -211,7 +278,7 @@ example (n : ℕ) : n = 0 ∨ ∃ k : ℕ, n = succ k := by
     right
     use n
 
--- Exercise 13) In the `succ` case, split the induction hypothesis with
+-- Exercise 17) In the `succ` case, split the induction hypothesis with
 -- `obtain (hk | hk) := hn`.
 example (n : ℕ) : (∃ k : ℕ, n = 2 * k) ∨ (∃ k : ℕ, n = 2 * k + 1) := by
   induction n with
@@ -228,28 +295,29 @@ example (x : ℝ) (d : ℕ) : 0 ≤ (d : ℝ) * x ^ 2 := by
   have h₀ : 0 ≤ (d : ℝ) := Nat.cast_nonneg d
   exact mul_nonneg h₀ (sq_nonneg x)
 
--- Exercise 14) Bernoulli's inequality for `0 ≤ x`. In the `succ` case,
--- first show `1 ≤ (1 + x) ^ n` (lemma `one_le_pow₀`), then a `calc`.
-#check one_le_pow₀                  -- 1 ≤ a → 1 ≤ a ^ n
-#check mul_le_mul_of_nonneg_right   -- b ≤ c → 0 ≤ a → b * a ≤ c * a
+-- Exercise 18) Bernoulli's inequality for `0 ≤ x`. In the `succ` case,
+-- first show `1 ≤ (1 + x) ^ n`, then a `calc`. Lemmas for these
+-- statements help:
+--   1 ≤ a → 1 ≤ a ^ n
+--   b ≤ c → 0 ≤ a → b * a ≤ c * a
 
 example (n : ℕ) (x : ℝ) (h : 0 ≤ x) : (1 : ℝ) + n * x ≤ (1 + x) ^ n := by
   sorry
 
--- Exercise 15)
+-- Exercise 19)
 example (n : ℕ) : n + 1 ≤ 2 ^ n := by
   sorry
 
-/-! ## Part 6: Sums
+/-! ## Part 7: Sums
 
 `∑ k ∈ Finset.range n, f k` is the sum of `f k` for `k < n`, typed
 `\sum`; `Finset.range n` is `{0, …, n - 1}`. Finite sets are in chapter
-2.2; here the notation is enough, together with
-`Finset.sum_range_succ`, which splits off the last summand. -/
+2.2; here the notation is enough, together with a lemma that splits
+off the last summand:
+`∑ k ∈ Finset.range (n + 1), f k = ∑ k ∈ Finset.range n, f k + f n`.
+Find its name. -/
 
-#check Finset.sum_range_succ
-
--- Exercise 16)
+-- Exercise 20)
 example (n : ℕ) : 2 * (∑ k ∈ Finset.range (n + 1), k) = n * (n + 1) := by
   induction n with
   | zero =>
@@ -257,20 +325,20 @@ example (n : ℕ) : 2 * (∑ k ∈ Finset.range (n + 1), k) = n * (n + 1) := by
   | succ n hn =>
     sorry
 
--- Exercise 17) The sum of the first `n` odd numbers.
+-- Exercise 21) The sum of the first `n` odd numbers.
 example (n : ℕ) :
     (∑ k ∈ Finset.range n, (2 * k + 1)) = n ^ 2 := by
   sorry
 
-/-! ## Part 7: `omega`
+/-! ## Part 8: `omega`
 
 `omega` decides linear arithmetic over `ℕ` and `ℤ`, including
 subtraction on `ℕ` and division and remainder by numerals. -/
 
--- Exercise 18) Division with remainder: name `q` and `r` with `use`.
+-- Exercise 22) Division with remainder: name `q` and `r` with `use`.
 example (n : ℕ) : ∃ q r : ℕ, n = 2 * q + r ∧ r < 2 := by
   sorry
 
--- Exercise 19)
+-- Exercise 23)
 example (n : ℕ) (h : 0 < n) : n - 1 < n := by
   sorry

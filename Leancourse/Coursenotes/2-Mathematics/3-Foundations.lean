@@ -183,33 +183,7 @@ Despite the name and its fundamental role, `funext` is *not* an axiom: it is pro
 -- 'funext' depends on axioms: [Quot.sound]
 ```
 
-The proof fits in a few lines. We give it for functions `α → β`; Lean's `funext` treats dependent functions in the same way.
-
-```lean
-theorem myFunext {α β : Type} {f g : α → β}
-    (h : ∀ x, f x = g x) : f = g := by
-  -- pointwise equality, as a relation on α → β
-  let r : (α → β) → (α → β) → Prop :=
-    fun f g => ∀ x, f x = g x
-  -- evaluation, defined on the quotient
-  let ev : Quot r → α → β := fun q x =>
-    Quot.lift (fun f => f x) (fun _ _ hfg => hfg x) q
-  -- ev (Quot.mk r f) reduces to fun x => f x, which is f
-  have hf : ev (Quot.mk r f) = f := rfl
-  have hg : ev (Quot.mk r g) = g := rfl
-  rw [← hf, ← hg]
-  exact congrArg ev (Quot.sound h)
-
-#print axioms myFunext
--- 'myFunext' depends on axioms: [Quot.sound]
-```
-
-1. Form the quotient of the function space `α → β` by pointwise equality `r`.
-2. Evaluation at a point `x` is well defined on this quotient: functions that agree pointwise have the same value at `x`, and the proof of that is `hfg x`. So there is a map `ev : Quot r → (α → β)` that turns a class back into a function.
-3. `ev (Quot.mk r f)` reduces by the computation rule of `Quot.lift` to `fun x => f x`, which is `f` by η. Both steps are definitional, so `rfl` proves `hf`, and likewise `hg`.
-4. By hypothesis `r f g` holds, so `Quot.sound h : Quot.mk r f = Quot.mk r g`. Applying `ev` to both sides gives `f = g`.
-
-Step 3 needs the computation rule to hold by definition. A quotient built by hand, as a type of equivalence classes with `Classical.choice` picking a representative, satisfies it only as a proved equation, and the `rfl` fails. This is one reason why `Quot` is a primitive of the kernel and not a definition ({ref "quotient-types"}[Quotient types]).
+The proof is in {ref "quot-funext"}[Function extensionality from `Quot.sound`] in chapter 1.4: form the quotient of `α → β` by pointwise equality, and evaluate a class at a point with `Quot.lift`.
 
 So `Quot.sound` implies `funext`, and the converse fails, even with `propext` added. Interpret `Quot r` as `α` itself, `Quot.mk r a` as `a` and `Quot.lift f h` as `f`. The four quotient constants and the computation rule hold, and so do `funext` and `propext`, since functions and propositions are extensional in set theory. `Quot.sound` fails as soon as `r` relates two different elements. Given the quotient primitives, `funext` is strictly weaker than `Quot.sound`. Rocq has no quotients in its kernel; there `funext` is not provable and is added as an axiom when needed.
 

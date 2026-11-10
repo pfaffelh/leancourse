@@ -15,7 +15,6 @@ to know what it was trying to do.
 
 | tactic          | use it when                                                |
 |-----------------|------------------------------------------------------------|
-| `exact?`        | some lemma in Mathlib closes the goal                      |
 | `apply?`        | some lemma reduces the goal                                |
 | `tauto`         | the goal is a tautology of propositional logic             |
 | `itauto`        | the same, but *constructively*                             |
@@ -26,18 +25,19 @@ to know what it was trying to do.
 
 ## Tactics from earlier sheets
 
-| sheet | tactics |
-|-------|---------|
-| `L-a` | `exact` |
+| sheet   | tactics  |
+|---------|----------|
+| `L-a`   | `exact`  |
+| `1.1-c` | `exact?` |
 -/
 
 variable (P Q R S T : Prop)
 
 /-! ## `exact?` and `apply?`
 
-`exact?` searches Mathlib for a lemma that closes the goal. It prints
-what it found. Replace the call by the result -- a search left in a
-file makes it slow to compile.
+`exact?` is known from sheet `1.1-c`: it searches Mathlib for a lemma
+that closes the goal and prints what it found. Replace the call by the
+result -- a search left in a file makes it slow to compile.
 
 Uncomment and run it: -/
 
@@ -198,11 +198,11 @@ example : (P ∨ Q) ∧ (¬P) → Q := by
 
 /-! ## Searching outside Lean
 
-Two services find lemmas by shape or by words. They work from
-inside the file:
+Two services find lemmas by shape or by words, as on sheet `1.1-c`.
+They work from inside the file:
 
 * `#loogle` -- search by the shape of the statement,
-* `#leansearch` -- search in English.
+* `#search` -- search in English.
 
 Try `exact?` first. It is offline and exact. Use the services when
 you do not know what the lemma is called or whether it exists.

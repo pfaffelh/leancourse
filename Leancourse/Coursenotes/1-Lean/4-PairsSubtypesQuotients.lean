@@ -437,6 +437,12 @@ example (r : Nat → Nat → Prop) (f : Nat → Nat)
     Quot.lift f h (Quot.mk r a) = f a := rfl
 ```
 
+## One axiom
+%%%
+tag := "quot-sound"
+number := false
+%%%
+
 One property is missing from the four steps: related elements should have the *same* class. It does not follow from the four constants. They all hold for `Quot r := α` with `Quot.mk r a := a` and `Quot.lift f h := f`, where nothing is glued and `Quot.mk r a ≠ Quot.mk r b` for `a ≠ b`. So Lean adds the property as an *axiom*, a constant that is assumed without proof:
 
 ```lean
@@ -445,6 +451,34 @@ One property is missing from the four steps: related elements should have the *s
 ```
 
 `#print axioms name` lists the axioms that a constant depends on. With the axiom, `Quot r` is the quotient of `α` by the equivalence relation *generated* by `r`: `Quot.mk r a = Quot.mk r b` holds exactly when `a` and `b` are connected by a finite chain of `r`-steps, in either direction (Mathlib's `Quot.eqvGen_exact` and `Quot.eqvGen_sound`). So `r` need not be an equivalence relation. In practice one usually goes through `Quotient`, a thin wrapper of `Quot` for a relation that is an equivalence relation; such a relation, bundled with the proof that it is one, is called a `Setoid`.
+
+## Function extensionality from `Quot.sound`
+%%%
+tag := "quot-funext"
+number := false
+%%%
+
+Two functions that agree at every point are equal. This is `funext`, and in Lean it is not an axiom but a theorem: it follows from `Quot.sound` and the computation rule. Form the quotient of the function space `α → β` by pointwise equality. There `f` and `g` have the same class by `Quot.sound`. Evaluation at a point `x` is well defined on the quotient, because functions that agree pointwise have the same value at `x`; with `Quot.lift` it turns a class back into a function.
+
+```lean
+theorem myFunext {α β : Type*} {f g : α → β}
+    (h : ∀ x, f x = g x) : f = g := by
+  let eqv (f g : α → β) := ∀ x, f x = g x
+  have hq : Quot.mk eqv f = Quot.mk eqv g := Quot.sound h
+  have hf : f = (fun x =>
+      Quot.lift (fun f => f x) (fun _ _ h => h x)
+        (Quot.mk eqv f)) := rfl
+  have hg : g = (fun x =>
+      Quot.lift (fun g => g x) (fun _ _ h => h x)
+        (Quot.mk eqv g)) := rfl
+  rw [hf, hg, hq]
+
+#print axioms myFunext  -- [Quot.sound]
+```
+
+`rfl` proves `hf` because Lean computes the right side until it is `f`. The computation rule of the quotient, followed by that of functions, gives `Quot.lift (fun f => f x) _ (Quot.mk eqv f) ⟶ (fun f => f x) f ⟶ f x`, and the η-rule gives `fun x => f x ≡ f`. So the right side of `hf` is `f` by definition; the same holds for `hg`. After `rw [hf, hg]` the two sides differ only in `Quot.mk eqv f` and `Quot.mk eqv g`, and `rw [hq]` makes them equal. The only axiom used is `Quot.sound`. The proof is for functions `α → β`; Lean's `funext` treats dependent functions in the same way. The rules are listed in {ref "reduction-rules"}[The reduction rules] in chapter 1.1.
+
+The `rfl` needs the computation rule to hold by definition. A quotient built by hand, as a type of equivalence classes with `Classical.choice` picking a representative, satisfies it only as a proved equation, and the `rfl` fails. This is one reason why `Quot` is a primitive of the kernel and not a definition.
 
 ## Example: the integers mod n
 %%%

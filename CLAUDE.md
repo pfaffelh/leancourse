@@ -3022,3 +3022,33 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   `brecon-trees-proofs` gibt es nicht mehr; der Stoff ist Projekt 7.
   Im Deck steht "Example: `List.rec`" jetzt direkt nach "The recursor
   in general".
+
+## 2026-11-10 -- `funext` aus `Quot.sound` nach 1.4; Lemmasuche nach `1.1-c`
+
+- **Beweis von `funext` steht jetzt in 1.4** (Nutzerwunsch), Abschnitt
+  *Function extensionality from `Quot.sound`* (tag `quot-funext`) nach
+  dem neuen Unterabschnitt *One axiom* (tag `quot-sound`), wie im Deck
+  1-4 (neue Folie nach *One axiom*). Fassung ohne Hilfsfunktion `ev`:
+  `hf`/`hg` mit `rfl` (Rechenregel von `Quot.lift` plus η), dann
+  `rw [hf, hg, hq]`; `#print axioms` gibt `[Quot.sound]`. Der Absatz
+  "rfl braucht die Rechenregel definitorisch, darum ist `Quot`
+  primitiv" ist mitgewandert. 2.3 *Function extensionality is a
+  theorem* behaelt Aussage, `#print axioms` und die Umkehrung
+  (`funext` echt schwaecher als `Quot.sound`, Rocq), verweist fuer den
+  Beweis auf 1.4.
+- **`1.1-c` Teil 2 *Finding a lemma*** fuehrt die Suche ein: Namen
+  raten + `#check`, `exact?`/`rw?`, `#loogle`, `#search` (eigene
+  Tabelle im Kopf). Danach nennen die Aufgaben nur noch Aussagen,
+  keine Lemmanamen (alle `#check`-Listen weg). Aufgaben 2-5 neu, Rest
+  um 4 verschoben (23 Aufgaben), Zeuge in `Checks/` mitgezogen. Hebt
+  `cc50c32` ("1.1-c no longer relies on exact?") bewusst auf. `L-g`
+  fuehrt `exact?` nicht mehr ein (Vorkenntnis aus `1.1-c`), `2.0-a`
+  setzt `#check`, `exact?`, `rw?`, `#loogle`, `#search` voraus und
+  bleibt das Blatt fuer "wenn die Suche scheitert".
+- Gemessen (v4.34): `#loogle ?a + ?b = ?b + ?a` laeuft in den
+  Heartbeat-Timeout; `(?a : ℕ) + ?b = ?b + ?a` oder `..., "comm"`
+  findet `Nat.add_comm`. `#loogle Nat.pow, LE.le` findet nichts (`^`
+  ist `HPow.hPow`). Ein Gleichungsmuster matcht nur in Mathlibs
+  Richtung (`Finset.mul_sum` nur als
+  `_ * ∑ _ ∈ _, ?f _ = ∑ _ ∈ _, (_ * ?f _)`). `#search` = `#leansearch`;
+  "Addition of natural numbers is commutative." liefert nur Instanzen.

@@ -8,8 +8,8 @@ reference is the appendix* Navigating Mathlib.
 
 Mathlib has about 189 000 theorems. From here on most steps of a
 proof are among them, and the work is to find the right one.
-`exact?`, `apply?`, `#loogle` and `#leansearch` are known from
-`L-g`, where the goals were propositional. Here the goals are
+`#check`, `exact?`, `rw?`, `#loogle` and `#search` are known from
+`1.1-c`, `apply?` from `L-g`. Here the goals are
 mathematics, and most of the sheet is about what to do when the first
 search does not succeed.
 
@@ -17,11 +17,8 @@ search does not succeed.
 
 | tool               | use it when                                         |
 |--------------------|-----------------------------------------------------|
-| `rw?`              | an equation or `↔` in Mathlib rewrites the goal     |
-| `rw? at h`         | the same for the hypothesis `h`                     |
-| `#check name`      | you guessed a name and want to see its statement    |
-| `#loogle ?a + _`   | you know the form of the statement                  |
-| `#loogle A, B`     | you know constants that occur in the statement      |
+| `rw? at h`         | an equation in Mathlib rewrites the hypothesis `h`  |
+| `#leansearch "…"`  | the same as `#search`                               |
 
 ## Tactics from earlier sheets
 

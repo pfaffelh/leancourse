@@ -113,7 +113,7 @@ written at the start of the lab.
   + Wed 11.11.
   + Lab
   + *Test 1* ([practice tasks, PDF](static/tests/test1-practice.pdf)), then sheets
-  + `L-e`, `L-f`, `1.1-c`
+  + `L-f`, `1.1-c`
 * + 5
   + Mon 16.11.
   + Lecture
@@ -123,7 +123,7 @@ written at the start of the lab.
   + Wed 18.11.
   + Lab
   + Sheets
-  + `L-g`, `1.2-b`, `1.3-a`, extra `X-a`
+  + `L-e`, `L-g`, `1.2-b`, extra `X-a`
 * + 6
   + Mon 23.11.
   + Lecture
@@ -133,7 +133,7 @@ written at the start of the lab.
   + Wed 25.11.
   + Lab
   + Sheets
-  + `1.4-a`, `1.4-b`, `1.5-a`
+  + `1.3-a`, `1.4-b`, `1.5-a`
 * + 7
   + Mon 30.11.
   + Lecture
@@ -143,7 +143,7 @@ written at the start of the lab.
   + Wed 02.12.
   + Lab
   + *Test 2*, then sheets
-  + `1.4-c`, `1.6-a`
+  + `1.4-a`, `1.4-c`, `1.6-a`
 * + 8
   + Mon 07.12.
   + Lecture

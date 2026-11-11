@@ -9,7 +9,7 @@ set_option pp.rawOnError true
 /-
 Deck for the chapter "Rules for building types" of part 1 (Lean and
 its type theory). It follows the chapter section by section: the rules
-of Lean's type theory, how the universe of a type is determined, and
+of Lean's type theory and
 why `Prop` is special.
 -/
 
@@ -95,7 +95,7 @@ The first types: the universes, and the `inductive` declarations of the environm
 
 $$`\frac{}{\Gamma \vdash \mathrm{Sort}\ u : \mathrm{Sort}\ (u+1)} \qquad\qquad \frac{(x : \alpha) \in \Gamma}{\Gamma \vdash x : \alpha}`
 
-with $`\mathrm{Prop} = \mathrm{Sort}\ 0` and $`\mathrm{Type}\ u = \mathrm{Sort}\ (u+1)`.
+with $`\mathrm{Prop} = \mathrm{Sort}\ 0` and $`\mathrm{Type}\ u = \mathrm{Sort}\ (u+1)`. `Type : Type` is not allowed: it would give Girard's paradox, a proof of `False`.
 
 ```lean -panel -stretch
 #check Sort 0   -- Prop : Type
@@ -114,10 +114,15 @@ $$`\frac{\Gamma \vdash \alpha : \mathrm{Sort}\ u \qquad \Gamma,\, x : \alpha \vd
 $`\mathrm{imax}\ u\ v = 0` if $`v = 0`, else $`\max(u, v)`. One rule, three readings: `α → β`, `(n : ℕ) → Fin n`, and `∀ x : α, P x`.
 
 ```lean -panel -stretch
-#check ℕ → Type            -- Type 1
 #check (n : ℕ) → Fin n     -- Type
 #check ∀ p : Prop, p → p   -- Prop
+example : Type := ℕ → Prop
+example (P : ℕ → Prop) : Prop := (n : ℕ) → P n
 ```
+
+:::class "key"
+`Prop : Type`, so `ℕ → Prop : Type`. `P n : Prop`, so `(n : ℕ) → P n : Prop`.
+:::
 
 # Abstraction and application
 
@@ -132,7 +137,7 @@ example (P Q : Prop) (hQ : Q) : P → Q :=
 ```
 
 :::class "key"
-Left rule: `intro`. Right rule: `exact h a`, `apply h`.
+Left rule: `intro`. Right rule: `exact f a`, `apply f`.
 :::
 
 # Conversion
@@ -167,34 +172,100 @@ $$`\mathrm{Nat.rec}\ m\ z\ s\ 0 \equiv z \qquad \mathrm{Nat.rec}\ m\ z\ s\ (n+1)
 
 $`m` is the _motive_ (the type of the result), $`z` the value at `0`, $`s` the _step_.
 
-`#print Or` shows `Or.inl`, `Or.inr`; `#print False` shows no constructor at all. Two conditions: _strict positivity_, and _restricted elimination_ out of `Prop`.
+Two conditions:
+
+- _Strict positivity_: the new type may occur in a constructor argument only to the right of every arrow. `mk : (Bad → False) → Bad` is rejected: it would prove `False` without any axiom (1.3).
+- _Restricted elimination_: for a type in `Prop`, the motive `m` must land in `Prop` again. A proof can be used to prove things, not to compute data.
+
+# Restricted elimination
+
+The recursor of a type in `Prop` may only produce proofs, not data. Reason: all proofs of a proposition are equal (proof irrelevance, slide _Conversion_). Data read off a proof could tell two proofs apart.
+
+```lean +error -panel -stretch
+example (a b : Prop) (h : a ∨ b) : Bool :=
+  match h with
+  | Or.inl _ => true
+  | Or.inr _ => false
+```
+
+Exception, _subsingleton elimination_: at most one constructor, and all its arguments are proofs. `False`, `Eq`, `And` qualify; `Or` and `∃` do not.
+
+# The tag has to stay hidden
+
+```lean -panel -stretch
+example {a : Prop} (h : a) :
+    (Or.inl (b := a) h) = Or.inr (b := a) h :=
+  rfl
+```
+
+A `which : a ∨ b → Bool` would give `true ≡ false`.
+
+:::table +colHeaders +rowSeps
+*
+  * in `Prop`
+  * in `Type`
+  * stays hidden
+*
+  * `∃ x, q x`
+  * `Σ x, q x`
+  * the witness
+*
+  * `a ∨ ¬a`
+  * `Decidable a`
+  * the tag
+:::
 
 # Quotients and axioms
 
 $$`\mathrm{Quot.lift}\ f\ h\ (\mathrm{Quot.mk}\ r\ a) \equiv f\ a`
 
-```lean -panel -stretch
-#check @propext    -- (a ↔ b) → a = b
-#check @Classical.choice -- Nonempty α → α
-#print axioms Classical.em
+Three axioms:
+
+```
+axiom Quot.sound : r a b → Quot.mk r a = Quot.mk r b
+axiom propext : (a ↔ b) → a = b
+axiom Classical.choice : Nonempty α → α
 ```
 
-The third axiom is `Quot.sound`: related elements have the same class. `Classical.em` and `funext` are theorems.
+- `Quot.sound`: related elements have the same class (1.4).
+- `propext`: equivalent propositions are equal (next slide).
+- `Classical.choice`: an element of `α` from a proof of `Nonempty α`.
+
+`Classical.em` and `funext` are theorems.
+
+# Propositional extensionality
+
+`a ↔ b` means `a → b` and `b → a`: a pair of functions between proofs. `a = b` means that `a` and `b` are the same term of type `Prop`. Without an axiom, the first does not give the second.
+
+```lean -panel -stretch
+example : (1 = 1) = True :=
+  propext ⟨fun _ => trivial, fun _ => rfl⟩
+example (a b : Prop) (h : a ↔ b) (ha : a) : b := by
+  rw [← h]
+  exact ha
+```
+
+:::class "key"
+`rw` with `h : a ↔ b` uses `propext`; `h.mp ha` does not.
+:::
 
 # `Nonempty` and choice
 
 ```lean -panel -stretch
 example {α : Type} (a : α) : Nonempty α := ⟨a⟩
 
-noncomputable def pickOne {α : Type}
-    (h : Nonempty α) : α :=
-  Classical.choice h
+noncomputable def pick (h : ∃ n : ℕ, 5 < n) : ℕ :=
+  Classical.choose h
+
+def search (h : ∃ n : ℕ, 5 < n) : ℕ :=
+  Nat.find h
+#eval search ⟨6, by decide⟩
 ```
 
 `Nonempty α`: `α` has an element, but the proof does not give it back. A proof cannot be eliminated into data.
 
 :::class "key"
-`Classical.choice` is the step from `Prop` back to data. Definitions that use it are `noncomputable`.
+`Classical.choice` is the step from `Prop` back to data. Definitions whose data use it are `noncomputable`. `Nat.find` searches instead.
 :::
 
 # The kernel and the elaborator
@@ -208,36 +279,6 @@ theorem rulesDemo (p q : Prop) (hp : p) (hq : q) :
 - _elaborator_: notation, `{α}`, `[C α]`, `↑`, `match`, tactics; not trusted
 - _kernel_: checks the explicit term; small, trusted
 - errors come from the elaborator; `(kernel) …` is rare
-
-# How Lean checks the rules
-
-From `src/kernel/type_checker.cpp`, the application rule:
-
-```
-expr f_type = ensure_pi(infer_type(app_fn(e)));
-expr a_type = infer_type(app_arg(e));
-if (!is_def_eq(a_type, binding_domain(f_type)))
-    throw app_type_mismatch_exception(...);
-return instantiate(binding_body(f_type), app_arg(e));
-```
-
-:::class "key"
-Conversion is the call `is_def_eq`. About 1 400 lines check every proof.
-:::
-
-# How the universe is determined
-
-```lean -panel -stretch
-#check (ℕ → Type)             -- Type 1
-#check (∀ α : Type, α → α)    -- Type 1
-#check (∀ α : Type 5, α → α)  -- Type 6
-```
-
-_Predicative_: a type lands above everything it quantifies over.
-
-:::class "key"
-`Type : Type` would give Girard's paradox, a proof of `False`.
-:::
 
 # Why `Prop` is special: proof irrelevance
 
@@ -288,44 +329,6 @@ Russell's vicious circle principle forbids this; he needed the axiom of reducibi
 
 :::class "key"
 Consistency is well supported, not settled.
-:::
-
-# Restricted elimination
-
-A proof carries no observable content, so no data can be read off it.
-
-```lean +error -panel -stretch
-example (a b : Prop) (h : a ∨ b) : Bool :=
-  match h with
-  | Or.inl _ => true
-  | Or.inr _ => false
-```
-
-Exception, _subsingleton elimination_: `False`, `Eq`, `And`. Not `Or`, not `∃`.
-
-# The tag has to stay hidden
-
-```lean -panel -stretch
-example {a : Prop} (h : a) :
-    (Or.inl (b := a) h) = Or.inr (b := a) h :=
-  rfl
-```
-
-A `which : a ∨ b → Bool` would give `true ≡ false`.
-
-:::table +colHeaders +rowSeps
-*
-  * in `Prop`
-  * in `Type`
-  * stays hidden
-*
-  * `∃ x, q x`
-  * `Σ x, q x`
-  * the witness
-*
-  * `a ∨ ¬a`
-  * `Decidable a`
-  * the tag
 :::
 
 # Tactic mode and term mode

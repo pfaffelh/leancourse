@@ -3070,3 +3070,29 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   angeglichen (`exact?` aus `1.1-c`).
 - Deck 1.3: Folie "False from nothing" entfernt; "Why positivity is
   enough" sagt, dass `X` der deklarierte Typ ist.
+
+## 2026-11-11 -- Blätter verschoben, Deck 1.5 nach Durchsicht
+
+- Übung 11.11. (Test 1 plus drei Blätter) war zu voll: `L-e` nach W5
+  (vor `L-g`), `1.3-a` nach W6, `1.4-a` nach W7. **Nicht `1.4-b`**:
+  `1.5-a` setzt `fun` von dort voraus. `L-e` ist auf `main` beider
+  Repos zurückgezogen und kommt mit dem Release für W5 wieder.
+  Übungen mit Test: höchstens zwei längere Blätter (`plan.md`).
+- Deck 1.5: "Function types" mit `ℕ → Prop : Type` gegen
+  `(n : ℕ) → P n : Prop`; "Rules for inductive types" erklärt strikte
+  Positivität und eingeschränkte Elimination, direkt danach
+  "Restricted elimination" und "The tag has to stay hidden" (von
+  hinten vorgezogen; Begründung über Beweisirrelevanz von *Conversion*).
+  "Quotients and axioms" listet alle drei Axiome als ungeprüften
+  Block (mit `#check` 854 px), neue Folie "Propositional
+  extensionality" (`rw` mit `↔` braucht `propext`, `h.mp` nicht).
+  "`Nonempty` and choice": `Classical.choose` gegen `Nat.find`.
+  Raus: "How Lean checks the rules" (C++) und "How the universe is
+  determined" (doppelt zu 5/6); Girard steht jetzt auf Folie 5.
+- **`noncomputable` ist nicht dasselbe wie "braucht Choice"**
+  (getestet): Choice nur im Beweisteil bleibt berechenbar (`#eval`
+  geht), und ein Rekursor eines eigenen Typs (`T.rec`) ist
+  `noncomputable` ohne jedes Axiom. Entscheidend ist, ob der
+  *Datenteil* Code hat.
+- Offen: KaTeX verschluckt `\ ` im ganzen Deck 1.5 ("Sortu",
+  "Nat.recmzs0").

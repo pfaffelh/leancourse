@@ -381,7 +381,7 @@ Read in sets, the declared type `X` satisfies `X = F(X)`:
 - With `X → Bool` instead: `X` would contain its power set. Cantor.
 
 :::class "key"
-Proved for inductive types: Aczel 1977, Dybjer 1991; for the CIC: Werner 1997; for Lean, checked in Lean: Con-Leche (Breitner).
+Proved for inductive types: Aczel 1977, Dybjer 1991; for the CIC: Werner 1997.
 :::
 
 # Summary

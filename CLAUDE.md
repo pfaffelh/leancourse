@@ -3094,5 +3094,13 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   geht), und ein Rekursor eines eigenen Typs (`T.rec`) ist
   `noncomputable` ohne jedes Axiom. Entscheidend ist, ob der
   *Datenteil* Code hat.
+- Danach: Con-Leche steht auf "Is this consistent?" in 1.5 (dort
+  gehoert es hin), nicht mehr in der Schlusszeile von "Why positivity
+  is enough" in 1.3. "Russell's supremum" mit benannten Praedikaten
+  `ratsBelow`/`ratsBelowSup` (ohne `Set`, ohne "Dedekind" -- beides
+  ist zu dem Zeitpunkt nicht bekannt). "Is this consistent?" erklaert
+  first-order und die Unerreichbaren (eine pro `Type u`), "meet" ->
+  Minimum. "Tactic mode and term mode" steht hinter "The kernel and
+  the elaborator".
 - Offen: KaTeX verschluckt `\ ` im ganzen Deck 1.5 ("Sortu",
   "Nat.recmzs0").

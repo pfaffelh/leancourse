@@ -280,6 +280,23 @@ theorem rulesDemo (p q : Prop) (hp : p) (hq : q) :
 - _kernel_: checks the explicit term; small, trusted
 - errors come from the elaborator; `(kernel) …` is rare
 
+# Tactic mode and term mode
+
+```lean -panel -stretch
+example : ∀ n : ℕ, n < n + 1 := by
+  intro n
+  exact Nat.lt_succ_self n
+
+example : ∀ n : ℕ, n < n + 1 :=
+  fun n => Nat.lt_succ_self n
+```
+
+After `by`, each tactic changes the proof state: hypotheses above `⊢`, the goal after it. `show_term` prints the term built, like `#print` for a finished theorem. For data, tactic mode works too, but one writes terms: `#eval` and `rfl` use them.
+
+:::class "key"
+`intro` builds a `fun`; `exact` supplies a term.
+:::
+
 # Why `Prop` is special: proof irrelevance
 
 `Prop` records _that_ a statement holds, not _which_ proof.
@@ -308,44 +325,41 @@ A `∀` into `Prop` stays small; a `∀` into `Type u` must climb.
 
 # Russell's supremum
 
-Russell's vicious circle principle forbids this; he needed the axiom of reducibility. Lean grants the circle in `Prop` and refuses it for data.
+A real `r` is fixed by the rationals below it. Define reals this way, and `ratsBelowSup S` is a real:
 
 ```lean -panel -stretch
--- the body ranges over all reals ...
-#check fun (S : Set ℝ) (q : ℚ) =>
-  (∃ x ∈ S, (q : ℝ) < x)       -- Prop
--- ... the cut is an ordinary Set ℚ
-#check fun (S : Set ℝ) =>
-  {q : ℚ | ∃ x ∈ S, (q : ℝ) < x}
+-- the rationals below r
+def ratsBelow (r : ℝ) : ℚ → Prop :=
+  fun q => (q : ℝ) < r
+-- the rationals below sup S, for a bounded set S
+def ratsBelowSup (S : ℝ → Prop) : ℚ → Prop :=
+  fun q => ∃ x : ℝ, S x ∧ (q : ℝ) < x
 ```
+
+`ratsBelowSup S` quantifies over all reals, itself included. Russell's vicious circle principle forbids this; he needed the axiom of reducibility.
+
+:::class "key"
+In Lean the body is a `Prop`, so `ratsBelowSup S : ℚ → Prop` is an ordinary predicate.
+:::
 
 # Is this consistent?
 
-- Model `Prop` as fixed truth values: a `∀` over it is a meet, hence
-  a member again.
-- Lean is not first-order, so the model is built by hand.
-- Carneiro 2019: relative to ZFC with $`n` inaccessibles. An error was
-  found; unique typing and Pi-injectivity remain open.
+- Model `Prop` as the truth values `false` and `true`: a `∀` gets the
+  minimum of its instances, again a truth value.
+- First-order logic quantifies only over elements, not over sets or
+  predicates. For it, consistent means having a model (Gödel 1929).
+  Lean quantifies over types and propositions, so the model is built
+  by hand.
+- Carneiro 2019: relative to ZFC with $`n` inaccessible cardinals,
+  one per universe `Type u` (each gives a set that is itself a model
+  of ZFC). An error was found; unique typing and Pi-injectivity
+  remain open.
+- Con-Leche (Breitner): a checker for Lean, written in Lean, with a
+  proof that every environment it accepts has a model. It avoids the
+  open properties. Not a theorem about Lean's own kernel.
 
 :::class "key"
-Consistency is well supported, not settled.
-:::
-
-# Tactic mode and term mode
-
-```lean -panel -stretch
-example : ∀ n : ℕ, n < n + 1 := by
-  intro n
-  exact Nat.lt_succ_self n
-
-example : ∀ n : ℕ, n < n + 1 :=
-  fun n => Nat.lt_succ_self n
-```
-
-After `by`, each tactic changes the proof state: hypotheses above `⊢`, the goal after it. `show_term` prints the term built, like `#print` for a finished theorem. For data, tactic mode works too, but one writes terms: `#eval` and `rfl` use them.
-
-:::class "key"
-`intro` builds a `fun`; `exact` supplies a term.
+Consistency is proved for Con-Leche, not for the kernel Lean runs.
 :::
 
 # Summary

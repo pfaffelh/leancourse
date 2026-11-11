@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # 1.3-a -- Pattern matching and recursion
 
-*Notes chapter 1.3, week 5.*
+*Notes chapter 1.3, week 6.*
 
 Sheet `1.1-a` defined functions on `ℕ` through the recursor. Here
 you declare types of your own and define functions on them by

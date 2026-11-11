@@ -31,10 +31,10 @@ Kontext, ohne Lean.
 | 1 | 19.10. | 21.10. | Warum formalisieren? · *Mi: Installation* | Einleitung | L-a | |
 | 2 | 26.10. | 28.10. | `Nat`, `Bool`, Reduktionsregeln | 1.1 | L-b, L-c, 1.1-a | |
 | 3 | 02.11. | 04.11. | Universen, Funktionen, induktive Typen, Strukturen | 1.2 | L-d, 1.2-a, 1.1-b | |
-| 4 | 09.11. | 11.11. | Pattern Matching und Rekursion | 1.3 | L-e, L-f, 1.1-c | **Test 1** |
-| 5 | 16.11. | 18.11. | Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-g, 1.2-b, 1.3-a · *extra:* X-a | |
-| 6 | 23.11. | 25.11. | Regeln zum Bau von Typen, `Prop` | 1.5 | 1.4-a, 1.4-b, 1.5-a | |
-| 7 | 30.11. | 02.12. | Typklassen: Instanzen, Suche, `Decidable`, `classical` | 1.6 | 1.4-c, 1.6-a | **Test 2** |
+| 4 | 09.11. | 11.11. | Pattern Matching und Rekursion | 1.3 | L-f, 1.1-c | **Test 1** |
+| 5 | 16.11. | 18.11. | Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-e, L-g, 1.2-b · *extra:* X-a | |
+| 6 | 23.11. | 25.11. | Regeln zum Bau von Typen, `Prop` | 1.5 | 1.3-a, 1.4-b, 1.5-a | |
+| 7 | 30.11. | 02.12. | Typklassen: Instanzen, Suche, `Decidable`, `classical` | 1.6 | 1.4-a, 1.4-c, 1.6-a | **Test 2** |
 | 8 | 07.12. | 09.12. | Typklassen: Funktoren und Monaden, Koerzionen, Hierarchien; Notation | 1.6, 1.7 | 1.6-b, 1.6-c, 1.7-a | |
 | 9 | 14.12. | 16.12. | Zahlen; Mengen und Typen | 2.1, 2.2 | 2.0-a, 2.1-a, 2.2-a | **Test 3** |
 | 10 | 21.12. | -- | Grundlagen: Universen, Axiome, Fundiertheit | 2.3 | 2.2-b, 2.2-c, 2.3-a, 2.3-b | |
@@ -80,12 +80,16 @@ der Wochen 4 bis 6 sind danach so verteilt, dass keine Übung mehr als
 rund 50 Aufgaben hat (W4 vorher 54 plus Test 1, W5 vorher 70): `1.3-a`
 läuft in W5, `1.4-a`/`1.4-b` in W6, `1.4-c` in W7.
 
+Am 11.11.2026 war die Übung mit Test 1 und drei Blättern zu voll.
+Seitdem: `L-e` in W5 (vor `L-g`, dessen Aufgabe 5 klassische Schritte
+benennt), `1.3-a` in W6, `1.4-a` in W7. `1.4-b` bleibt in W6, weil
+`1.5-a` `fun` von dort voraussetzt; `1.4-a` braucht vor W8 niemand.
+Übungen mit Test sollen höchstens zwei längere Blätter haben.
+
 Skriptzeilen je Termin (Stand 29.10.2026): Mittel 474, Spanne 330
 (W2) bis 768 (damals W15, seitdem um `IO`/`StateM`/`Except` gekürzt).
 Die schwerste Übungswoche ist W12 (67 Aufgaben, `2.4-a` allein 38).
 Wenn gekürzt werden muss, dann dort.
-
-Wenn drei Blätter zu viel sind, rutscht `1.1-b`.
 
 ### Benennung
 

@@ -336,7 +336,7 @@ def ratsBelowSup (S : ℝ → Prop) : ℚ → Prop :=
   fun q => ∃ x : ℝ, S x ∧ (q : ℝ) < x
 ```
 
-`ratsBelowSup S` quantifies over all reals, itself included. Russell's vicious circle principle forbids this; he needed the axiom of reducibility.
+The `∃ x : ℝ` in `ratsBelowSup S` runs over all reals, `ratsBelowSup S` itself included. Russell's vicious circle principle forbids this; he needed the axiom of reducibility.
 
 :::class "key"
 In Lean the body is a `Prop`, so `ratsBelowSup S : ℚ → Prop` is an ordinary predicate.

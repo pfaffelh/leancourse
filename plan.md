@@ -81,10 +81,13 @@ rund 50 Aufgaben hat (W4 vorher 54 plus Test 1, W5 vorher 70): `1.3-a`
 läuft in W5, `1.4-a`/`1.4-b` in W6, `1.4-c` in W7.
 
 Am 11.11.2026 war die Übung mit Test 1 und drei Blättern zu voll.
-Seitdem: `L-e` in W5 (vor `L-g`, dessen Aufgabe 5 klassische Schritte
-benennt), `1.3-a` in W6, `1.4-a` in W7. `1.4-b` bleibt in W6, weil
+Seitdem: `L-e` in W5 (vor `L-g`), `1.3-a` in W6, `1.4-a` in W7. `1.4-b` bleibt in W6, weil
 `1.5-a` `fun` von dort voraussetzt; `1.4-a` braucht vor W8 niemand.
 Übungen mit Test sollen höchstens zwei längere Blätter haben.
+Am 15.11.2026 fiel `L-g` Aufgabe 5 (`itauto` gegen `tauto`) weg, das
+vorgerechnete Beispiel bleibt. Ebenso der Schlussteil *Searching
+outside Lean* mit zwei Aufgaben (`#loogle`/`#search` kommen schon auf
+`1.1-c`). `L-g` hat jetzt 9 Aufgaben.
 
 Skriptzeilen je Termin (Stand 29.10.2026): Mittel 474, Spanne 330
 (W2) bis 768 (damals W15, seitdem um `IO`/`StateM`/`Except` gekürzt).

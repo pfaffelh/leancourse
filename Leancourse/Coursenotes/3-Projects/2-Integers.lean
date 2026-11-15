@@ -5,7 +5,7 @@ import Leancourse.Coursenotes.References
 open Verso.Genre Manual
 open Leancourse.Refs
 
-#doc (Manual) "Project 2: The integers, defined in several ways" =>
+#doc (Manual) "Project 2: The integers, defined in several ways (reserved)" =>
 %%%
 tag := "project-integers"
 %%%

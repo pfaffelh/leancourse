@@ -28,34 +28,32 @@ to know what it was trying to do.
 | sheet   | tactics  |
 |---------|----------|
 | `L-a`   | `exact`  |
+| `L-f`   | `refine` |
 | `1.1-c` | `exact?` |
 -/
 
 variable (P Q R S T : Prop)
 
-/-! ## `exact?` and `apply?`
+/-! ## `apply?`
 
-`exact?` is known from sheet `1.1-c`: it searches Mathlib for a lemma
-that closes the goal and prints what it found. Replace the call by the
-result -- a search left in a file makes it slow to compile.
+`exact?` (sheet `1.1-c`) reports only lemmas that close the goal.
+`apply?` also reports lemmas that leave goals behind, written as
+`refine lemma ?_` with the remaining goals underneath. The list is
+long, and the first entry is often not the useful one: pick one whose
+remaining goals you can prove.
 
-Uncomment and run it: -/
+Here `exact?` fails. Uncomment `apply?` and look for `Or.inr`: -/
 
-example : ¬¬P ↔ P := by
-  -- exact?
-  exact not_not
+example (hq : Q) (hr : R) : P ∨ (Q ∧ R) := by
+  -- apply?
+  refine Or.inr ?_
+  exact ⟨hq, hr⟩
 
-/-! `apply?` is the same for lemmas that leave goals behind.
+/-! Like `exact?`, `apply?` is slow. Replace it by the line you chose. -/
 
-Both are slow. They are for when you suspect the statement is already
-in the library, not for every goal. -/
-
--- Exercise 1) Use `exact?`, then paste the result.
-example : (P ∧ Q) ↔ (Q ∧ P) := by
-  sorry
-
--- Exercise 2) Same. The name you get is worth remembering.
-example : (P → Q) ↔ (¬Q → ¬P) := by
+-- Exercise 1) `exact?` fails. Use `apply?`, pick a suggestion, and
+-- finish the proof.
+example (hp : P) (hq : Q) : (P ∧ Q) ∨ R := by
   sorry
 
 /-! ## `tauto`
@@ -66,11 +64,11 @@ a to f fall to it. -/
 example : ((P → Q) → P) → P := by
   tauto
 
--- Exercise 3) One line each.
+-- Exercise 2) One line each.
 example : ¬(P ∧ Q) ↔ (¬P ∨ ¬Q) := by
   sorry
 
--- Exercise 4)
+-- Exercise 3)
 example : P ∨ (Q ∧ R) ↔ (P ∨ Q) ∧ (P ∨ R) := by
   sorry
 
@@ -91,26 +89,6 @@ while `tauto` succeeds. Swap the two and see: -/
 example : ¬(P ∧ Q) ↔ (¬P ∨ ¬Q) := by
   tauto
 
--- Exercise 5) For each of the next four, try `itauto` first. Where it
--- fails, use `tauto` and add a comment saying which classical step is
--- needed.
-
--- Exercise 5a)
-example : P → ¬¬P := by
-  sorry
-
--- Exercise 5b)
-example : ¬¬P → P := by
-  sorry
-
--- Exercise 5c)
-example : (P → Q) → (¬Q → ¬P) := by
-  sorry
-
--- Exercise 5d)
-example : (¬Q → ¬P) → (P → Q) := by
-  sorry
-
 /-! ## `simp`
 
 `simp` (sheet `1.1-c`) rewrites with a large set of lemmas marked
@@ -127,7 +105,7 @@ attribute changes between Mathlib versions, so a proof that is just
 example : (P ∧ True) ↔ P := by
   simp only [and_true]
 
--- Exercise 6) `simp`, then the same with `simp only` and named
+-- Exercise 4) `simp`, then the same with `simp only` and named
 -- lemmas. Use `simp?` to find out which it used.
 example : (P ∨ False) ↔ P := by
   sorry
@@ -141,7 +119,7 @@ hypotheses back in. -/
 example (h1 : P ∧ True) (h2 : P → Q) : Q ∧ True := by
   simp_all
 
--- Exercise 7) `simp` alone does not close this; `simp_all` does.
+-- Exercise 5) `simp` alone does not close this; `simp_all` does.
 example (h1 : P ∨ False) (h2 : ¬Q → ¬P) : Q ∨ False := by
   sorry
 
@@ -154,7 +132,7 @@ when `h` says the same as the goal, up to `simp`. -/
 example (h : P ∧ True) : True ∧ P := by
   simpa using h
 
--- Exercise 8) One line.
+-- Exercise 6) One line.
 example (h : True ∧ (P ∨ False)) : P := by
   sorry
 
@@ -187,32 +165,11 @@ without comment. A tactic that always succeeds teaches nothing.
 
 Use it. But know what you handed over. -/
 
--- Exercise 9) Prove this with `grind`, then prove it again by hand
+-- Exercise 7) Prove this with `grind`, then prove it again by hand
 -- with the tactics of sheets a to f. Which proof tells you more?
 example : (P ∨ Q) ∧ (¬P) → Q := by
   sorry
 
--- Exercise 10) `grind` fails on exactly one statement of sheet L-a.
+-- Exercise 8) `grind` fails on exactly one statement of sheet L-a.
 -- Which, and why? Write the answer as a comment.
 -- (No Lean code required.)
-
-/-! ## Searching outside Lean
-
-Two services find lemmas by shape or by words, as on sheet `1.1-c`.
-They work from inside the file:
-
-* `#loogle` -- search by the shape of the statement,
-* `#search` -- search in English.
-
-Try `exact?` first. It is offline and exact. Use the services when
-you do not know what the lemma is called or whether it exists.
-
-Lean's own documentation and the Zulip chat are the next step. -/
-
--- Exercise 11) Find the Mathlib name of this law, by any means.
-example : ((P ∨ Q) ∨ R) ↔ (P ∨ (Q ∨ R)) := by
-  sorry
-
--- Exercise 12) And of this one.
-example : (P → (Q → R)) ↔ ((P ∧ Q) → R) := by
-  sorry

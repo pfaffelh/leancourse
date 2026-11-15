@@ -36,6 +36,8 @@ used without the other.
     {ref "types"}[chapter]
   * [Pattern matching and recursion](slides/1-3-pattern-matching-recursion/) —
     {ref "pattern-matching-and-recursion"}[chapter]
+  * [Pairs, subtypes, families, quotients](slides/1-4-pairs-subtypes-quotients/) —
+    {ref "type-formers"}[chapter]
 
 A deck appears here when its chapter is taught.
 
@@ -236,8 +238,9 @@ tag := "short-tests"
 
 Five tests, 20 minutes each, at the start of the lab, on paper.
 **Three of the five must be passed** for the _Studienleistung_.
-A test has six tasks, each either right or wrong, and is passed with
-three of them. A test not taken counts as not passed.
+A test has six tasks with three parts each. Every part is worth one
+point and is either right or wrong; the test is passed with 10 of the
+18 points. A test not taken counts as not passed.
 
 Dates: **11.11., 02.12., 16.12., 27.01., 10.02.**
 
@@ -252,7 +255,7 @@ questions:
 
 For test 1 there are
 [twelve practice tasks with answers (PDF)](static/tests/test1-practice.pdf)
-of the same kinds as the six in the test.
+of the same kinds as the six in the test (there each task has three parts).
 
 # Goals
 %%%

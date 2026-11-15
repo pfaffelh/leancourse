@@ -134,16 +134,3 @@ example {n : ℕ} (i : Fin n) : rev (rev i) = i := by
   apply Fin.ext
   simp only [rev]
   omega
-
-/-! ## Part 3: A dependent function
-
-`ZMod n` is ℤ/nℤ. The function `natSelf` sends `n` to the class of
-`n` in ℤ/nℤ. -/
-
-def natSelf : (n : ℕ) → ZMod n := fun n => n
-
--- Exercise 6) Compute `natSelf 6`, then prove it. What is
--- `natSelf n` for every `n`, and why does that not make `natSelf`
--- a constant function?
-example : natSelf 6 = 0 := by
-  decide

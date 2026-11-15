@@ -87,7 +87,9 @@ Seitdem: `L-e` in W5 (vor `L-g`), `1.3-a` in W6, `1.4-a` in W7. `1.4-b` bleibt i
 Am 15.11.2026 fiel `L-g` Aufgabe 5 (`itauto` gegen `tauto`) weg, das
 vorgerechnete Beispiel bleibt. Ebenso der Schlussteil *Searching
 outside Lean* mit zwei Aufgaben (`#loogle`/`#search` kommen schon auf
-`1.1-c`). `L-g` hat jetzt 9 Aufgaben.
+`1.1-c`). Der Anfang übt nur noch `apply?` (`exact?` ist von `1.1-c`), `L-g` hat
+jetzt 8 Aufgaben. `1.2-b` verliert Teil 3 (`ZMod`, eine Aufgabe; die
+Idee steht als `sevenMod` in 1.2).
 
 Skriptzeilen je Termin (Stand 29.10.2026): Mittel 474, Spanne 330
 (W2) bis 768 (damals W15, seitdem um `IO`/`StateM`/`Except` gekürzt).
@@ -129,7 +131,7 @@ Vorgetragen werden die Abschnitte, die `A-a` verlangt:
 Seit dem 27.10.2026 hat jedes Kapitel von Teil 1 ein Blatt. Eigene
 induktive Typen, Mustervergleich und `termination_by` stehen auf
 `1.3-a` (dazu der Rekursor eines eigenen Typs), Strukturen mit
-`extends`, `Fin` und `ZMod` auf `1.2-b`, induktive Prädikate und ein
+`extends` und `Fin` auf `1.2-b`, induktive Prädikate und ein
 Quotient (ℤ aus ℕ × ℕ) auf `1.4-c`, Termmodus und Junktoren auf
 `1.4-b`. Kapitel 1.5 hat `1.5-a` (Gleichheit, `ext`, `choose`,
 `change`). Die Regeln selbst, `imax` und die eingeschränkte

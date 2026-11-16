@@ -322,17 +322,36 @@ Two constructors: a proof of `P ∨ Q` is a proof of `P` or one of `Q`, marked b
 structure Point where
   x : ℕ
   y : ℕ
-
-example : (Point.mk 3 4).x = 3 := rfl
-example (p : Point) : p = Point.mk p.x p.y := rfl
 ```
 
-An inductive type with one constructor `Point.mk` and named fields.
+is essentially the inductive type
+
+```
+inductive Point where
+  | mk : ℕ → ℕ → Point
+```
+
+with names for the two arguments of the one constructor `Point.mk`.
+
+:::class "key"
+`structure`: one constructor, named fields (points, complex numbers, groups). `inductive`: several constructors (`ℕ`, lists, trees, `Option`).
+:::
+
+# `Point` in four steps
+
+```lean -panel -stretch
+example : (Point.mk 3 4).x = 3 := rfl
+example (p : Point) : p.x = Point.x p := rfl
+```
 
 - _Formation_: `Point : Type`
-- _Construction_: the one constructor `Point.mk`
-- _Use_: projections `Point.x p`, written `p.x`
+- _Construction_: `Point.mk : ℕ → ℕ → Point`, all fields supplied
+- _Use_: the projections `Point.x : Point → ℕ` and `Point.y`
 - _Computation_: `(Point.mk 3 4).x` reduces to `3`; η: `p ≡ Point.mk p.x p.y`
+
+:::class "key"
+Dot notation: `p.x` means `Point.x p`. Lean sees `p : Point` and looks for `x` in the namespace `Point`.
+:::
 
 # Building values
 
@@ -351,7 +370,28 @@ Anonymous constructor, record, `where` form: all call `Point.mk`.
 Structures are immutable: `with` builds a new `Point`.
 :::
 
-# Defaults and extensions
+# Operations
+
+```lean -panel -stretch
+def Point.normSq (p : Point) : ℕ :=
+  p.x * p.x + p.y * p.y
+example : p2.normSq = 25 := rfl
+
+structure MyComplex where
+  re : ℤ
+  im : ℤ
+def MyComplex.mul (a b : MyComplex) : MyComplex :=
+  { re := a.re * b.re - a.im * b.im,
+    im := a.re * b.im + a.im * b.re }
+def iu : MyComplex := { re := 0, im := 1 }  -- i
+example : (iu.mul iu).re = -1 := rfl
+```
+
+:::class "key"
+An operation is an ordinary function. Named `Point.f`, it is called as `p.f`, like a projection.
+:::
+
+# Default values
 
 ```lean -panel -stretch
 -- a, a + d, a + 2d, ...
@@ -359,12 +399,27 @@ structure ArithProg where
   start : ℕ := 0
   step : ℕ := 1
 def evens : ArithProg := { step := 2 }
+example : evens.start = 0 := rfl
+```
 
+A field with a default may be left out. With both defaults, `{}` is the progression 0, 1, 2, ….
+
+# Extending a structure
+
+```lean -panel -stretch
 structure Point3D extends Point where
   z : ℕ
 def q : Point3D := { x := 1, y := 2, z := 3 }
-#eval q.x    -- 1 (inherited)
+example : q.x = 1 := rfl
+example : q.toPoint = ⟨1, 2⟩ := rfl
+example : q.normSq = 5 := rfl
 ```
+
+`extends Point` adds a field `toPoint : Point`. Dot notation looks in `Point3D`, then in `Point`: fields and functions of `Point` work on `q`.
+
+:::class "key"
+Mathlib builds its algebra this way: a commutative ring extends a ring, which extends a semiring.
+:::
 
 # Data with a property
 
@@ -405,6 +460,26 @@ example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
 ```
 
 `intro ::` names the constructor `And.intro` instead of `And.mk`; `h.1`, `h.2` are `h.left`, `h.right`.
+
+# When are two values equal?
+
+```lean -panel -stretch
+example (n : ℕ) (a b : Fin n)
+    (h : a.val = b.val) : a = b :=
+  Fin.ext h
+
+example (n : ℕ) (a b : Fin n)
+    (h : a.val = b.val) : a = b := by
+  cases a; cases b; cases h; rfl
+```
+
+By η, `p = Point.mk p.x p.y` is `rfl`; `ℕ` has no such rule. Two values with equal fields are equal, but not by `rfl`:
+
+`Fin.ext` needs no axiom: after `cases`, two proofs of `val < n` remain, and Lean identifies proofs of the same proposition (chapter 1.5).
+
+:::class "key"
+Mathlib calls "equal if the fields are equal" `.ext`: `Fin.ext`, `Prod.ext`, `Subtype.ext`.
+:::
 
 # Structures and inductive types
 
@@ -455,4 +530,4 @@ A `structure` is an inductive type with one constructor, plus field names, proje
 - Functions: `(x : α) → β x`, built with `fun`, used by application, computed by β.
 - `def`, currying, `fun x ↦ …`, `·`, implicit and universe-polymorphic arguments.
 - `inductive`: built with constructors, used by pattern matching (chapter 1.3), computed by ι. `∨` is one of them.
-- `structure`: an inductive type with one constructor, named fields, projections; a field may be a proof. `Fin n` and `∧` are structures.
+- `structure`: an inductive type with one constructor, named fields, projections, dot notation `p.f` for `Point.f p`; a field may be a proof; `extends` inherits fields and functions; equality by `.ext`. `Fin n` and `∧` are structures.

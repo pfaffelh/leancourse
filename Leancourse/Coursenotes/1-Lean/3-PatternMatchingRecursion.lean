@@ -318,7 +318,7 @@ example : (BinTree.node .leaf 3
     (.node .leaf 4 .leaf)).sum = 7 := rfl
 ```
 
-Lean evaluates a definition in two ways. The *compiler* translates it into a program, and `#eval` runs that program. The *kernel* reduces the term with the {ref "reduction-rules"}[reduction rules], and `rfl` uses the kernel. The keyword `noncomputable` tells Lean not to compile a definition. Nothing else changes: the definition has the same type and the same value, `rfl` and all proofs work as before, and only `#eval` is unavailable. Here the keyword is needed because the compiler does not support the recursors of your own types (for `Nat` it has special support). With a `Prop`-valued motive, `BinTree.rec` is induction on trees with two induction hypotheses, one for each subtree.
+Lean evaluates a definition in two ways. The *compiler* translates it into a program, and `#eval` runs that program. The *kernel* reduces the term with the {ref "reduction-rules"}[reduction rules], and `rfl` uses the kernel. The keyword `noncomputable` tells Lean not to compile a definition. Nothing else changes: the definition has the same type and the same value, `rfl` and all proofs work as before, and only `#eval` is unavailable. Here the keyword is needed because the compiler does not support the recursors of your own types (for `Nat` it has special support). The appendix collects all reasons for the keyword ({ref "noncomputable"}[Computable and noncomputable definitions]). With a `Prop`-valued motive, `BinTree.rec` is induction on trees with two induction hypotheses, one for each subtree.
 
 # Termination by a measure
 %%%

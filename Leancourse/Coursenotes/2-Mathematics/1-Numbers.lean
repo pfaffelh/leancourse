@@ -183,7 +183,7 @@ example : (1 : ℝ) + 1 = 2 := by norm_num
 example : (1 : ℝ) < 2 := by norm_num
 ```
 
-Division, the inverse and the square root on `ℝ` are not given by an algorithm: their definitions use `Classical.choice`. They are `noncomputable` ({ref "pattern-matching-and-recursion"}[chapter 1.3] says what the keyword means). A definition that uses them must be marked as well. Lean says so:
+Division, the inverse and the square root on `ℝ` are not given by an algorithm: their definitions use `Classical.choice`. They are `noncomputable` (the appendix section {ref "noncomputable"}[Computable and noncomputable definitions] says what the keyword means). A definition that uses them must be marked as well. Lean says so:
 
 ```lean +error
 def recip (x : ℝ) : ℝ := 1 / x

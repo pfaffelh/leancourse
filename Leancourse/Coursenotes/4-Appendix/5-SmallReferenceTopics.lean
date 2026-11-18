@@ -156,6 +156,175 @@ tag := "elaborator"
 
 The *kernel* checks every term against a small, fixed set of rules; the *elaborator* turns what you write (notation, implicit arguments, instances, coercions, `match`, tactics) into such a term. Only the kernel has to be trusted. Both are described in {ref "kernel-elaborator"}[The kernel and the elaborator] in chapter 1.5, together with the size of the kernel and its reimplementations. The logic the kernel implements, the *Calculus of Inductive Constructions*, is the subject of {ref "cic"}[the Mathematics part].
 
+# Computable and noncomputable definitions
+%%%
+tag := "noncomputable"
+%%%
+
+Lean evaluates a definition in two ways. The *compiler* translates it into code, and `#eval` runs that code. The *kernel* reduces terms by the rules of {ref "kernel-elaborator"}[chapter 1.5] when it checks `rfl` or `decide`. A definition is `noncomputable` when the compiler produces no code for it. This concerns the compiler only: the kernel checks a `noncomputable` definition like any other, and theorems about it are proved as usual. Lean asks for the keyword when compilation fails, with the error `failed to compile definition, consider marking it as 'noncomputable'`.
+
+```lean
+namespace NoncompEx
+```
+
+## Choice in the data
+
+`Classical.choose h` returns an element from a proof `h : ∃ x, p x`. It is defined from the axiom `Classical.choice`, which has no code.
+
+```lean +error
+def pick₀ (h : ∃ n : ℕ, 5 < n) : ℕ :=
+  Classical.choose h
+```
+
+With the keyword, the definition is accepted. Lean knows that the result is larger than 5, but not which number it is:
+
+```lean
+noncomputable def pick (h : ∃ n : ℕ, 5 < n) : ℕ :=
+  Classical.choose h
+
+example : 5 < pick ⟨6, by decide⟩ :=
+  Classical.choose_spec _
+```
+
+```lean +error
+#eval pick ⟨6, by decide⟩
+```
+
+`pick ⟨6, by decide⟩ = 6` can be neither proved nor refuted.
+
+## Definitions that use noncomputable ones
+
+A definition that uses a `noncomputable` one in its data is `noncomputable` itself. On `ℝ`, the inverse and the decision whether `x = 0` are of this kind. Both have to decide whether a Cauchy sequence tends to `0`, which no algorithm can do, and Mathlib decides it with `Classical.choice`. Addition is computable.
+
+```lean
+def addOne (x : ℝ) : ℝ := x + 1
+```
+
+```lean +error
+def recip (x : ℝ) : ℝ := x⁻¹
+```
+
+```lean
+noncomputable def isZero (x : ℝ) : Bool := decide (x = 0)
+
+example : isZero 0 = true := by simp [isZero]
+```
+
+`rfl` and `decide` fail: the kernel cannot reduce `Classical.choice` either.
+
+## Choice only in proofs
+
+The compiler erases proofs. A definition whose data are computable stays computable, even if a proof inside it uses `Classical.choice`:
+
+```lean
+def two : {n : ℕ // n = 2 ∨ n ≠ 2} := ⟨2, Classical.em _⟩
+
+#eval two.val
+#print axioms two
+```
+
+`#print axioms` lists `Classical.choice` for `two`, and for `addOne` too. `noncomputable` and "uses choice" are therefore not the same.
+
+## Recursors of your own types
+
+The compiler does not translate the recursor `T.rec` of an inductive type declared in your file ({ref "recursor"}[chapter 1.3]). `Nat.rec` has special support.
+
+```lean
+inductive BT where
+  | leaf
+  | node (l r : BT)
+```
+
+```lean +error
+def size₀ (t : BT) : ℕ :=
+  BT.rec 1 (fun _ _ a b => a + b) t
+```
+
+Here no axiom is involved: `#print axioms size₀` reports none. The kernel can reduce `BT.rec`, so `rfl` and `decide` work:
+
+```lean
+noncomputable def size (t : BT) : ℕ :=
+  BT.rec 1 (fun _ _ a b => a + b) t
+
+example : size (.node .leaf .leaf) = 2 := rfl
+```
+
+Two ways out. Pattern matching is compiled directly:
+
+```lean
+def sizeM : BT → ℕ
+  | .leaf => 1
+  | .node l r => sizeM l + sizeM r
+
+#eval sizeM (.node .leaf .leaf)
+```
+
+Or Mathlib's command `compile_inductive%` generates code for the recursor:
+
+```lean
+inductive BT' where
+  | leaf
+  | node (l r : BT')
+
+compile_inductive% BT'
+
+def size' (t : BT') : ℕ :=
+  BT'.rec 1 (fun _ _ a b => a + b) t
+
+#eval size' (.node .leaf .leaf)
+```
+
+## Compiler and kernel are independent
+
+`#eval` needs code from the compiler; `rfl` and `decide` need reduction in the kernel. Each can fail without the other:
+
+```lean
+def search (h : ∃ n : ℕ, 5 < n) : ℕ := Nat.find h
+
+#eval search ⟨6, by decide⟩
+```
+
+```lean +error
+example : search ⟨6, by decide⟩ = 6 := by decide
+```
+
+`Nat.find` uses well-founded recursion, which the kernel does not unfold ({ref "wf-recursion"}[chapter 1.3]). A proof works with lemmas:
+
+```lean
+example : search ⟨6, by decide⟩ = 6 := by
+  rw [search, Nat.find_eq_iff]
+  exact ⟨by decide, fun n hn => by omega⟩
+```
+
+:::table +header
+* + definition
+  + `#eval` (compiler)
+  + `rfl`, `decide` (kernel)
+* + `sizeM`, pattern matching
+  + yes
+  + yes
+* + `size`, `BT.rec`
+  + no
+  + yes
+* + `search`, `Nat.find`
+  + yes
+  + no
+* + `pick`, `Classical.choose`
+  + no
+  + no
+:::
+
+## What to do
+
+* Choose with an algorithm where there is one: `Nat.find` instead of `Classical.choose` on `ℕ`.
+* Use classical reasoning in proofs only: the tactic {ref "classical"}[`classical`] inside `by` does not make a definition noncomputable.
+* Write recursive functions with `match`, not with `T.rec`.
+* Otherwise mark the definition `noncomputable`. For a file with many such definitions, write `noncomputable section` at the top and `end` at the bottom.
+
+```lean
+end NoncompEx
+```
+
 # Diagnostic Commands
 %%%
 tag := "diagnostics"

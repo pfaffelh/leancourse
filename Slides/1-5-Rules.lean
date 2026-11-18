@@ -340,23 +340,96 @@ example (a b : Prop) (h : a ↔ b) (ha : a) : b := by
 `rw` with `h : a ↔ b` uses `propext`; `h.mp ha` does not.
 :::
 
+# Extensionality
+
+:::table +colHeaders +rowSeps
+*
+  * type
+  * equality means
+  * Lean
+  * first-order logic + ZF
+*
+  * functions
+  * same values
+  * `funext`, theorem from `Quot.sound`
+  * theorem: a function is its graph, a set of pairs
+*
+  * propositions
+  * same truth
+  * `propext`, axiom
+  * no question: formulas are not sets, `φ = ψ` is not a formula
+*
+  * sets
+  * same elements
+  * `Set.ext`, theorem from both
+  * extensionality axiom
+:::
+
+`Set α` is `α → Prop`:
+
+```lean -panel -stretch
+example (α : Type) (s t : Set α) (h : ∀ x, x ∈ s ↔ x ∈ t) :
+    s = t :=
+  funext fun x => propext (h x)
+```
+
+:::class "key"
+In Lean, propositions are terms, so their equality needs a rule.
+:::
+
 # `Nonempty` and choice
 
 ```lean -panel -stretch
-example {α : Type} (a : α) : Nonempty α := ⟨a⟩
+example (h : ∃ n : ℕ, 5 < n) : Nonempty {n : ℕ // 5 < n} :=
+  let ⟨n, hn⟩ := h
+  ⟨⟨n, hn⟩⟩
 
 noncomputable def pick (h : ∃ n : ℕ, 5 < n) : ℕ :=
   Classical.choose h
-
-def search (h : ∃ n : ℕ, 5 < n) : ℕ :=
-  Nat.find h
-#eval search ⟨6, by decide⟩
 ```
 
-`Nonempty α`: `α` has an element, but the proof does not give it back. A proof cannot be eliminated into data.
+From `∃` to `Nonempty` is proof to proof: allowed. `Classical.choose h` applies `Classical.choice` to this proof of `Nonempty` and takes `.val`. Lean knows `5 < pick h`, but not which number `pick h` is.
 
 :::class "key"
-`Classical.choice` is the step from `Prop` back to data. Definitions whose data use it are `noncomputable`. `Nat.find` searches instead.
+`Classical.choice` is the only step from a proof back to data.
+:::
+
+# `noncomputable`
+
+No code from the compiler, so no `#eval`. The kernel checks as usual.
+
+```lean -panel -stretch
+inductive BT where | leaf | node (l r : BT)
+noncomputable def size (t : BT) : ℕ :=
+  BT.rec 1 (fun _ _ a b => a + b) t
+example : size (.node .leaf .leaf) = 2 := rfl
+```
+
+:::table +colHeaders +rowSeps
+*
+  * definition
+  * `#eval` (compiler)
+  * `rfl`, `decide` (kernel)
+*
+  * by pattern matching
+  * yes
+  * yes
+*
+  * `size`, with `BT.rec`
+  * no
+  * yes
+*
+  * `Nat.find`
+  * yes
+  * no: well-founded recursion
+*
+  * `pick`, with `Classical.choose`
+  * no
+  * no
+:::
+
+:::class "key"
+`noncomputable` concerns the compiler, not the logic.
 :::
 
 # The kernel and the elaborator

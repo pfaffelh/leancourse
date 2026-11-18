@@ -282,7 +282,7 @@ Beyond the rules, Lean has exactly three axioms:
 
 A theorem whose list is empty holds in the rules alone, and its proof is constructive.
 
-*`Nonempty` and choice.* `Nonempty α` is the proposition that `α` has an element. A proof is `⟨a⟩` for some `a : α`, but the proof does not give `a` back: by restricted elimination (*Inductive types* above), a proof can be used to prove things, not to compute data. `Classical.choice` is exactly the step from the proposition back to data. Its relative `Classical.choose` takes a proof of `∃ x, P x` to a witness. A definition that uses them cannot be computed and must be marked `noncomputable`:
+*`Nonempty` and choice.* `Nonempty α` is the proposition that `α` has an element. A proof is `⟨a⟩` for some `a : α`, but the proof does not give `a` back: by restricted elimination (*Inductive types* above), a proof can be used to prove things, not to compute data. `Classical.choice` is exactly the step from the proposition back to data. Its relative `Classical.choose` takes a proof of `∃ x, P x` to a witness. A definition whose data use them has no code and must be marked `noncomputable` (appendix, {ref "noncomputable"}[Computable and noncomputable definitions]):
 
 ```lean
 example {α : Type} (a : α) : Nonempty α := ⟨a⟩

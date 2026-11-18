@@ -501,7 +501,7 @@ def realIsZero (x : ℝ) : Bool :=
   if x = 0 then true else false
 ```
 
-The error is `failed to compile definition, consider marking it as 'noncomputable'`. Decidability by an algorithm is the *constructive* half: it works without axioms, and the resulting code is executable. Where no algorithm exists, the instance comes from the axiom of choice.
+The error is `failed to compile definition, consider marking it as 'noncomputable'`. Decidability by an algorithm is the *constructive* half: it works without axioms, and the resulting code is executable. Where no algorithm exists, the instance comes from the axiom of choice ({ref "noncomputable"}[Computable and noncomputable definitions]).
 
 ## The `classical` tactic
 %%%

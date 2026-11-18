@@ -402,12 +402,14 @@ noncomputable def size (t : BT) : ℕ :=
   BT.rec 1 (fun _ _ a b => a + b) t
 example : size (.node .leaf .leaf) = 2 := rfl
 
-def search (h : ∃ n : ℕ, 5 < n) : ℕ := Nat.find h
-#eval search ⟨6, by decide⟩
+def size' : BT → ℕ
+  | .leaf => 1
+  | .node l r => size' l + size' r
+#eval size' (.node .leaf .leaf)
 ```
 
 :::class "key"
-`size` has no code, but the kernel computes it. `search` has code, but the kernel does not unfold `Nat.find`.
+`size` has no code, but the kernel computes it. With `match`, `size'` is computable.
 :::
 
 # Compiler and kernel are independent
@@ -418,7 +420,7 @@ def search (h : ∃ n : ℕ, 5 < n) : ℕ := Nat.find h
   * computable (`#eval`)
   * `rfl`, `decide` (kernel)
 *
-  * by pattern matching
+  * `size'`, by pattern matching
   * yes
   * yes
 *

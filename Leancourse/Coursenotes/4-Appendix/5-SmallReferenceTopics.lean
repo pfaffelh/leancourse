@@ -314,11 +314,53 @@ example : search ⟨6, by decide⟩ = 6 := by
   + no
 :::
 
+## When the compiler enters proofs: `native_decide`
+
+`decide` proves a proposition `p` with a `Decidable p` instance: the kernel reduces the instance to `isTrue _`. For large computations this is slow or runs out of recursion depth. `native_decide` runs the same decision procedure as compiled code instead. If the result is `true`, it adds an axiom saying so and derives `p` from it.
+
+```lean +error
+example : (List.range 10000).sum = 49995000 := by
+  decide
+```
+
+```lean
+theorem bigSum : (List.range 10000).sum = 49995000 := by
+  native_decide
+
+#print axioms bigSum
+```
+
+The axiom `bigSum._native.native_decide.ax_1_1` states the result of the computation. With it, the proof depends on the compiler, the runtime, and every piece of code attached to a definition by `@[implemented_by]` or `@[extern]`. The kernel never sees the computation.
+
+That code can disagree with the definition the kernel sees. In the following file, tested with Lean v4.34, `implemented_by` gives `g` compiled code that returns `false`, while its definition returns `true`. Lean accepts the file without an error:
+
+```
+def fImpl (_ : Nat) : Bool := false
+@[implemented_by fImpl] def g (_ : Nat) : Bool := true
+
+theorem g_true  : g 0 = true  := rfl              -- kernel
+theorem g_false : g 0 = false := by native_decide -- compiled code
+theorem oops : False := by
+  have h1 := g_true
+  rw [g_false] at h1
+  exact Bool.false_ne_true h1
+
+#print axioms oops
+-- 'oops' depends on axioms: [g_false._native.native_decide.ax_1_1]
+```
+
+`#print axioms` shows where the trust went. A theorem whose axioms are only `propext`, `Quot.sound` and `Classical.choice` has been checked by the kernel; `noncomputable`, `#eval` and the compiler play no role in that check. Mathlib does not allow `native_decide`. Where `decide` is too slow, a tactic that builds a kernel-checked proof is the alternative, for primality `norm_num`:
+
+```lean
+example : Nat.Prime 1000003 := by norm_num
+```
+
 ## What to do
 
 * Choose with an algorithm where there is one: `Nat.find` instead of `Classical.choose` on `ℕ`.
 * Use classical reasoning in proofs only: the tactic {ref "classical"}[`classical`] inside `by` does not make a definition noncomputable.
 * Write recursive functions with `match`, not with `T.rec`.
+* Avoid `native_decide` in proofs.
 * Otherwise mark the definition `noncomputable`. For a file with many such definitions, write `noncomputable section` at the top and `end` at the bottom.
 
 ```lean

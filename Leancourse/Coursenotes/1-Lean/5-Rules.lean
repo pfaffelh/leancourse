@@ -426,7 +426,7 @@ The error is "type of theorem `five` is not a proposition". The converse, `def` 
 
 Proof irrelevance is also why proofs are usually written in tactic mode and data in term mode; see {ref "term"}[Tactic mode and term mode] at the end of this section.
 
-*`Prop` is impredicative*: `Prop` is the one universe that escapes the predicativity of the {ref "universe-determined"}[previous section]. As long as the body of a `∀` statement is a proposition, the whole `∀` is a `Prop` — even when we range over an arbitrarily large universe of types:
+*`Prop` is impredicative*: a definition is _impredicative_ if it quantifies over a totality that contains the object being defined, and _predicative_ if not. `∀ p : Prop, p → p` is a `Prop` and quantifies over all of `Prop`: impredicative. `(α : Type) → α → α` quantifies over `Type` and lies in `Type 1`, outside it: predicative. `Prop` is the one universe that escapes the predicativity of the {ref "universe-determined"}[previous section]. As long as the body of a `∀` statement is a proposition, the whole `∀` is a `Prop` — even when we range over an arbitrarily large universe of types:
 
 ```lean
 -- Prop-valued body: stays `Prop`, however big the domain.

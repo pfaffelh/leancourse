@@ -61,45 +61,34 @@ Chapters 1.2 and 1.4 described each type former in four steps. Type theory calls
 This chapter writes them down as rules.
 :::
 
-# The rules of Lean's type theory
+# Judgements and the context
 
-Lean accepts a term only if a small, fixed set of rules builds it. They derive two kinds of _judgement_:
+A small, fixed set of rules derives two kinds of _judgement_:
 
 - $`\Gamma \vdash e : \alpha` — in the context $`\Gamma`, the term $`e` has type $`\alpha`
 - $`\Gamma \vdash e \equiv e'` — in $`\Gamma`, $`e` and $`e'` are definitionally equal
 
-A rule is a fraction: if the judgements above the line hold, so does the one below.
-
-:::class "key"
-These rules are all of Lean's logic. `∀` is a function type; `∧`, `∨`, `∃`, `=`, `False` are inductive types.
-:::
-
-# The context
-
-$`\Gamma = x_1 : \alpha_1,\ \dots,\ x_n : \alpha_n`, for example $`n : \mathbb N,\ h : 0 < n,\ v : \mathrm{Fin}\ n \to \mathbb N`:
+The context $`\Gamma = x_1 : \alpha_1,\;\dots,\;x_n : \alpha_n` is the part before the colon:
 
 ```lean -panel -stretch
 example (n : ℕ) (h : 0 < n) (v : Fin n → ℕ) : ℕ :=
   v ⟨0, h⟩
 ```
 
-- _Order matters_: built left to right; each type must be a type in the context before it. `h : 0 < n` needs `n` first.
+- _Order matters_: `h : 0 < n` needs `n` first.
 - _Variables, not constants_: no value, an arbitrary element or proof.
-- _Binders extend it_: a binder (`fun x`, `∀ x`, `let x`) introduces a _bound_ variable for its body, like $`i` in $`\sum_i`. The body of `fun x => e` is checked in $`\Gamma,\ x : \alpha`.
-
-:::class "key"
-The first types: the universes, and the `inductive` declarations of the environment.
-:::
+- _Binders extend it_: the body of `fun x => e` is checked in $`\Gamma,\;x : \alpha`.
 
 # Universes and variables
 
-$$`\frac{}{\Gamma \vdash \mathrm{Sort}\ u : \mathrm{Sort}\ (u+1)} \qquad\qquad \frac{(x : \alpha) \in \Gamma}{\Gamma \vdash x : \alpha}`
+A rule is written as a fraction: if the judgements above the line hold, so does the one below.
 
-with $`\mathrm{Prop} = \mathrm{Sort}\ 0` and $`\mathrm{Type}\ u = \mathrm{Sort}\ (u+1)`. `Type : Type` is not allowed: it would give Girard's paradox, a proof of `False`.
+$$`\frac{}{\Gamma \vdash \texttt{Sort}\;u : \texttt{Sort}\;(u+1)} \qquad\qquad \frac{(x : \alpha) \in \Gamma}{\Gamma \vdash x : \alpha}`
+
+with `Prop = Sort 0` and `Type u = Sort (u+1)`. `Type : Type` is not allowed: it would give Girard's paradox, a proof of `False`.
 
 ```lean -panel -stretch
-#check Sort 0   -- Prop : Type
-#check Type 3   -- Type 3 : Type 4
+#check Type 3
 example (P : Prop) (h : P) : P := h
 ```
 
@@ -109,9 +98,9 @@ The variable rule is `exact h`, or `assumption`.
 
 # Function types
 
-$$`\frac{\Gamma \vdash \alpha : \mathrm{Sort}\ u \qquad \Gamma,\, x : \alpha \vdash \beta : \mathrm{Sort}\ v}{\Gamma \vdash (x : \alpha) \to \beta : \mathrm{Sort}\ (\mathrm{imax}\ u\ v)}`
+$$`\frac{\Gamma \vdash \alpha : \texttt{Sort}\;u \qquad \Gamma,\, x : \alpha \vdash \beta : \texttt{Sort}\;v}{\Gamma \vdash (x : \alpha) \to \beta : \texttt{Sort}\;(\mathrm{imax}\;u\;v)}`
 
-$`\mathrm{imax}\ u\ v = 0` if $`v = 0`, else $`\max(u, v)`. One rule, three readings: `α → β`, `(n : ℕ) → Fin n`, and `∀ x : α, P x`.
+$`\mathrm{imax}\;u\;v = 0` if $`v = 0`, else $`\max(u, v)`. One rule, three readings: `α → β`, `(n : ℕ) → Fin n`, and `∀ x : α, P x`.
 
 ```lean -panel -stretch
 #check (n : ℕ) → Fin n     -- Type
@@ -126,7 +115,7 @@ example (P : ℕ → Prop) : Prop := (n : ℕ) → P n
 
 # Abstraction and application
 
-$$`\frac{\Gamma,\, x : \alpha \vdash e : \beta}{\Gamma \vdash (\mathrm{fun}\ x \Rightarrow e) : (x : \alpha) \to \beta} \qquad\quad \frac{\Gamma \vdash f : (x : \alpha) \to \beta \qquad \Gamma \vdash a : \alpha}{\Gamma \vdash f\ a : \beta[x := a]}`
+$$`\frac{\Gamma,\, x : \alpha \vdash e : \beta}{\Gamma \vdash (\mathrm{fun}\;x \Rightarrow e) : (x : \alpha) \to \beta} \qquad\quad \frac{\Gamma \vdash f : (x : \alpha) \to \beta \qquad \Gamma \vdash a : \alpha}{\Gamma \vdash f\;a : \beta[x := a]}`
 
 ```lean -panel -stretch
 #check (fun n : ℕ => (0 : Fin (n + 1))) 3
@@ -166,9 +155,9 @@ This is the rule behind `rfl`.
 
 Each `inductive` adds the type (formation), its constructors (introduction), the recursor (elimination) and ι-rules (computation):
 
-$$`\mathrm{Nat.rec} : (m : \mathbb N \to \mathrm{Sort}\ u) \to m\ 0 \to \big((n : \mathbb N) \to m\ n \to m\ (n+1)\big) \to (t : \mathbb N) \to m\ t`
+$$`\mathrm{Nat.rec} : (m : \mathbb N \to \texttt{Sort}\;u) \to m\;0 \to \big((n : \mathbb N) \to m\;n \to m\;(n+1)\big) \to (t : \mathbb N) \to m\;t`
 
-$$`\mathrm{Nat.rec}\ m\ z\ s\ 0 \equiv z \qquad \mathrm{Nat.rec}\ m\ z\ s\ (n+1) \equiv s\ n\ (\mathrm{Nat.rec}\ m\ z\ s\ n)`
+$$`\mathrm{Nat.rec}\;m\;z\;s\;0 \equiv z \qquad \mathrm{Nat.rec}\;m\;z\;s\;(n+1) \equiv s\;n\;(\mathrm{Nat.rec}\;m\;z\;s\;n)`
 
 $`m` is the _motive_ (the type of the result), $`z` the value at `0`, $`s` the _step_.
 
@@ -217,7 +206,7 @@ A `which : a ∨ b → Bool` would give `true ≡ false`.
 
 # Quotients and axioms
 
-$$`\mathrm{Quot.lift}\ f\ h\ (\mathrm{Quot.mk}\ r\ a) \equiv f\ a`
+$$`\mathrm{Quot.lift}\;f\;h\;(\mathrm{Quot.mk}\;r\;a) \equiv f\;a`
 
 Three axioms:
 

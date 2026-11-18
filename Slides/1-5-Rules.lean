@@ -17,6 +17,12 @@ namespace SlidesRules
 #doc (Slides) "Rules for building types" =>
 
 ```css
+.reveal section .r-vstack:has(> p.rule) { display: flex; width: fit-content; align-items: stretch; margin: 0.2em auto; }
+.reveal section .r-hstack > .r-vstack:has(> p.rule) { margin: 0.2em 0; }
+.reveal section p code { white-space: nowrap; }
+.reveal section p.rule { margin: 0; padding: 0.05em 0.5em; text-align: center; white-space: nowrap; }
+.reveal section p.rule:last-child { border-top: 2px solid currentColor; }
+.reveal .r-hstack:has(> .r-vstack > p.rule) { gap: 2.5rem; align-items: flex-end; }
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
 .reveal section p.key, .reveal section .key p { color: #1b91ff; }
 .reveal section table { font-size: 0.62em; margin: 0.2em auto 0.4em; }
@@ -83,7 +89,21 @@ example (n : ℕ) (h : 0 < n) (v : Fin n → ℕ) : ℕ :=
 
 A rule is written as a fraction: if the judgements above the line hold, so does the one below.
 
-$$`\frac{}{\Gamma \vdash \texttt{Sort}\;u : \texttt{Sort}\;(u+1)} \qquad\qquad \frac{(x : \alpha) \in \Gamma}{\Gamma \vdash x : \alpha}`
+:::::::hstack
+::::::vstack
+:::::class "rule"
+`Γ ⊢ Sort u : Sort (u+1)`
+:::::
+::::::
+
+::::::vstack
+:::::class "rule"
+`(x : α) ∈ Γ`
+
+`Γ ⊢ x : α`
+:::::
+::::::
+:::::::
 
 with `Prop = Sort 0` and `Type u = Sort (u+1)`. `Type : Type` is not allowed: it would give Girard's paradox, a proof of `False`.
 
@@ -98,24 +118,46 @@ The variable rule is `exact h`, or `assumption`.
 
 # Function types
 
-$$`\frac{\Gamma \vdash \alpha : \texttt{Sort}\;u \qquad \Gamma,\, x : \alpha \vdash \beta : \texttt{Sort}\;v}{\Gamma \vdash (x : \alpha) \to \beta : \texttt{Sort}\;(\mathrm{imax}\;u\;v)}`
+::::::vstack
+:::::class "rule"
+`Γ ⊢ α : Sort u`  `Γ, x : α ⊢ β : Sort v`
 
-$`\mathrm{imax}\;u\;v = 0` if $`v = 0`, else $`\max(u, v)`. One rule, three readings: `α → β`, `(n : ℕ) → Fin n`, and `∀ x : α, P x`.
+`Γ ⊢ (x : α) → β : Sort (imax u v)`
+:::::
+::::::
+
+`imax u v = 0` if `v = 0`, else `max u v`. One rule, three readings: `α → β`, `(n : ℕ) → Fin n`, and `∀ x : α, P x`.
 
 ```lean -panel -stretch
-#check (n : ℕ) → Fin n     -- Type
-#check ∀ p : Prop, p → p   -- Prop
+#check (n : ℕ) → Fin n
+#check ∀ p : Prop, p → p
 example : Type := ℕ → Prop
 example (P : ℕ → Prop) : Prop := (n : ℕ) → P n
 ```
 
 :::class "key"
-`Prop : Type`, so `ℕ → Prop : Type`. `P n : Prop`, so `(n : ℕ) → P n : Prop`.
+So `ℕ → Prop : Type`, but `(n : ℕ) → P n : Prop`.
 :::
 
 # Abstraction and application
 
-$$`\frac{\Gamma,\, x : \alpha \vdash e : \beta}{\Gamma \vdash (\mathrm{fun}\;x \Rightarrow e) : (x : \alpha) \to \beta} \qquad\quad \frac{\Gamma \vdash f : (x : \alpha) \to \beta \qquad \Gamma \vdash a : \alpha}{\Gamma \vdash f\;a : \beta[x := a]}`
+:::::::hstack
+::::::vstack
+:::::class "rule"
+`Γ, x : α ⊢ e : β`
+
+`Γ ⊢ (fun x => e) : (x : α) → β`
+:::::
+::::::
+
+::::::vstack
+:::::class "rule"
+`Γ ⊢ f : (x : α) → β`  `Γ ⊢ a : α`
+
+`Γ ⊢ f a : β[x := a]`
+:::::
+::::::
+:::::::
 
 ```lean -panel -stretch
 #check (fun n : ℕ => (0 : Fin (n + 1))) 3
@@ -131,7 +173,13 @@ Left rule: `intro`. Right rule: `exact f a`, `apply f`.
 
 # Conversion
 
-$$`\frac{\Gamma \vdash e : \alpha \qquad \Gamma \vdash \alpha \equiv \beta}{\Gamma \vdash e : \beta}`
+::::::vstack
+:::::class "rule"
+`Γ ⊢ e : α`  `Γ ⊢ α ≡ β`
+
+`Γ ⊢ e : β`
+:::::
+::::::
 
 ```lean -panel -stretch
 example : 2 + 2 = 4 := rfl

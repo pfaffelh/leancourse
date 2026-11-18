@@ -474,7 +474,7 @@ example {a : Prop} (h : a) :
     (Or.inl (b := a) h) = Or.inr (b := a) h := rfl
 ```
 
-Here `h : a` is a proof of the (true) proposition `a`. "Left or right?" is simply not a well-posed question about a proof of `a ∨ a`: the tag is not distinguishable content. So if the rejected `(a ∨ b) → Bool` above were allowed — call the resulting function `which` — then setting `b := a` would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h` (they are {ref "defeq"}[definitionally equal], the `≡` from chapter 1.1), so we would get `true ≡ false`, a contradiction. Because proofs are indistinguishable, the tag has to stay trapped.
+Here `h : a` is a proof of the (true) proposition `a`. "Left or right?" is simply not a well-posed question about a proof of `a ∨ a`: which constructor was used is not distinguishable content. So if the rejected `(a ∨ b) → Bool` above were allowed — call the resulting function `which` — then setting `b := a` would give `which (Or.inl h) = true` and `which (Or.inr h) = false`; but `Or.inl h ≡ Or.inr h` (they are {ref "defeq"}[definitionally equal], the `≡` from chapter 1.1), so we would get `true ≡ false`, a contradiction. Because proofs are indistinguishable, the constructor has to stay hidden.
 
 We cannot *build* such a `which` — Lean rejects it — but we can *assume* one exists for *every* `a ∨ b` (with its left- and right-branch computation rules as hypotheses) and then instantiate at `b := a`, where the two injections collide. In the proof, `left (a := True) (b := True)` gives the implicit arguments `a` and `b` of `left` by name. Watch `true = false` — hence `False` — drop out:
 

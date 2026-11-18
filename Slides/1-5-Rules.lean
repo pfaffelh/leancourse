@@ -281,7 +281,7 @@ example (a b : Prop) (h : a ∧ b) : Bool :=
 
 One case, only proofs as arguments: the result cannot depend on `h`.
 
-# The tag has to stay hidden
+# The constructor has to stay hidden
 
 ```lean -panel -stretch
 example {a : Prop} (h : a) :
@@ -289,7 +289,7 @@ example {a : Prop} (h : a) :
   rfl
 ```
 
-A `which : a ∨ b → Bool` would give `true ≡ false`.
+A `which : a ∨ b → Bool` reading off the constructor would give `true ≡ false`.
 
 :::table +colHeaders +rowSeps
 *
@@ -303,14 +303,12 @@ A `which : a ∨ b → Bool` would give `true ≡ false`.
 *
   * `a ∨ ¬a`
   * `Decidable a`
-  * the tag
+  * the constructor (`inl` or `inr`)
 :::
 
-# Quotients and axioms
+# The three axioms
 
-$$`\mathrm{Quot.lift}\;f\;h\;(\mathrm{Quot.mk}\;r\;a) \equiv f\;a`
-
-Three axioms:
+Everything so far follows from the rules. Lean adds three axioms:
 
 ```
 axiom Quot.sound : r a b → Quot.mk r a = Quot.mk r b
@@ -403,12 +401,21 @@ inductive BT where | leaf | node (l r : BT)
 noncomputable def size (t : BT) : ℕ :=
   BT.rec 1 (fun _ _ a b => a + b) t
 example : size (.node .leaf .leaf) = 2 := rfl
+
+def search (h : ∃ n : ℕ, 5 < n) : ℕ := Nat.find h
+#eval search ⟨6, by decide⟩
 ```
+
+:::class "key"
+`size` has no code, but the kernel computes it. `search` has code, but the kernel does not unfold `Nat.find`.
+:::
+
+# Compiler and kernel are independent
 
 :::table +colHeaders +rowSeps
 *
   * definition
-  * `#eval` (compiler)
+  * computable (`#eval`)
   * `rfl`, `decide` (kernel)
 *
   * by pattern matching
@@ -444,23 +451,6 @@ theorem rulesDemo (p q : Prop) (hp : p) (hq : q) :
 - _kernel_: checks the explicit term; small, trusted
 - errors come from the elaborator; `(kernel) …` is rare
 
-# Tactic mode and term mode
-
-```lean -panel -stretch
-example : ∀ n : ℕ, n < n + 1 := by
-  intro n
-  exact Nat.lt_succ_self n
-
-example : ∀ n : ℕ, n < n + 1 :=
-  fun n => Nat.lt_succ_self n
-```
-
-After `by`, each tactic changes the proof state: hypotheses above `⊢`, the goal after it. `show_term` prints the term built, like `#print` for a finished theorem. For data, tactic mode works too, but one writes terms: `#eval` and `rfl` use them.
-
-:::class "key"
-`intro` builds a `fun`; `exact` supplies a term.
-:::
-
 # Why `Prop` is special: proof irrelevance
 
 `Prop` records _that_ a statement holds, not _which_ proof.
@@ -476,16 +466,16 @@ example (a b : ℕ) : a = b := rfl
 # `Prop` is impredicative
 
 ```lean -panel -stretch
-#check (∀ α : Type 5, α = α)  -- Prop
-#check (∀ p : Prop, p → p)    -- Prop
-#check (∀ p : Prop, p)        -- Prop
+#check (∀ α : Type 5, α = α)
+#check (∀ p : Prop, p → p)
+#check ((α : Type) → α → α)
 ```
 
-`∀ p : Prop, p → p` quantifies over a totality to which it belongs.
+A definition is _impredicative_ if it quantifies over a totality that contains the object being defined, and _predicative_ if not.
 
-:::class "key"
-A `∀` into `Prop` stays small; a `∀` into `Type u` must climb.
-:::
+- `∀ p : Prop, p → p` is a `Prop` and quantifies over all of `Prop`: impredicative.
+- `(α : Type) → α → α` quantifies over `Type` and lies in `Type 1`, outside it: predicative.
+
 
 # Russell's supremum
 

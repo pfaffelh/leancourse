@@ -20,6 +20,9 @@ namespace SlidesRules
 .reveal section .r-vstack:has(> p.rule) { display: flex; width: fit-content; align-items: stretch; margin: 0.2em auto; }
 .reveal section .r-hstack > .r-vstack:has(> p.rule) { margin: 0.2em 0; }
 .reveal section p code { white-space: nowrap; }
+.reveal section p.rlabel, .reveal section .rlabel p { font-size: 0.5em; color: #888; margin: 0 0 0.1em; }
+.reveal section p.rule.small { font-size: 0.62em; }
+.reveal section pre { margin: 0.3em auto; }
 .reveal section p.rule { margin: 0; padding: 0.05em 0.5em; text-align: center; white-space: nowrap; }
 .reveal section p.rule:last-child { border-top: 2px solid currentColor; }
 .reveal .r-hstack:has(> .r-vstack > p.rule) { gap: 2.5rem; align-items: flex-end; }
@@ -201,22 +204,65 @@ This is the rule behind `rfl`.
 
 # Rules for inductive types
 
-Each `inductive` adds the type (formation), its constructors (introduction), the recursor (elimination) and ι-rules (computation):
+```
+inductive T where
+  | c₁ (b₁ : B₁) … (bₗ : Bₗ) (r₁ … rₖ : T) : T
+  | …   -- c₂, …, cₘ
+```
 
-$$`\mathrm{Nat.rec} : (m : \mathbb N \to \texttt{Sort}\;u) \to m\;0 \to \big((n : \mathbb N) \to m\;n \to m\;(n+1)\big) \to (t : \mathbb N) \to m\;t`
+:::::::hstack
+::::::vstack
+:::::class "rlabel"
+formation
+:::::
 
-$$`\mathrm{Nat.rec}\;m\;z\;s\;0 \equiv z \qquad \mathrm{Nat.rec}\;m\;z\;s\;(n+1) \equiv s\;n\;(\mathrm{Nat.rec}\;m\;z\;s\;n)`
+:::::class "rule small"
+`Γ ⊢ T : Sort u`
+:::::
+::::::
 
-$`m` is the _motive_ (the type of the result), $`z` the value at `0`, $`s` the _step_.
+::::::vstack
+:::::class "rlabel"
+introduction
+:::::
 
-Two conditions:
+:::::class "rule small"
+`Γ ⊢ b₁ : B₁`  `…`  `Γ ⊢ rₖ : T`
 
-- _Strict positivity_: the new type may occur in a constructor argument only to the right of every arrow. `mk : (Bad → False) → Bad` is rejected: it would prove `False` without any axiom (1.3).
-- _Restricted elimination_: for a type in `Prop`, the motive `m` must land in `Prop` again. A proof can be used to prove things, not to compute data.
+`Γ ⊢ c₁ b₁ … bₗ r₁ … rₖ : T`
+:::::
+::::::
+:::::::
+
+::::::vstack
+:::::class "rlabel"
+elimination, likewise `f₂`, …, `fₘ`
+:::::
+
+:::::class "rule small"
+`Γ ⊢ motive : T → Sort v`
+
+`Γ ⊢ f₁ : (b₁ : B₁) → … → (rₖ : T) → motive r₁ → … → motive rₖ → motive (c₁ b₁ … rₖ)`
+
+`Γ ⊢ T.rec f₁ … fₘ : (t : T) → motive t`
+:::::
+::::::
+
+::::::vstack
+:::::class "rlabel"
+computation, with `R := T.rec f₁ … fₘ`
+:::::
+
+:::::class "rule small"
+`Γ ⊢ b₁ : B₁`  `…`  `Γ ⊢ rₖ : T`
+
+`Γ ⊢ R (c₁ b₁ … bₗ r₁ … rₖ) ≡ f₁ b₁ … bₗ r₁ … rₖ (R r₁) … (R rₖ)`
+:::::
+::::::
 
 # Restricted elimination
 
-The recursor of a type in `Prop` may only produce proofs, not data. Reason: all proofs of a proposition are equal (proof irrelevance, slide _Conversion_). Data read off a proof could tell two proofs apart.
+The recursor of a proposition may only produce proofs: all its proofs are equal (_Conversion_), and data could tell them apart.
 
 ```lean +error -panel -stretch
 example (a b : Prop) (h : a ∨ b) : Bool :=
@@ -226,6 +272,14 @@ example (a b : Prop) (h : a ∨ b) : Bool :=
 ```
 
 Exception, _subsingleton elimination_: at most one constructor, and all its arguments are proofs. `False`, `Eq`, `And` qualify; `Or` and `∃` do not.
+
+```lean -panel -stretch
+example (a b : Prop) (h : a ∧ b) : Bool :=
+  match h with
+  | ⟨_, _⟩ => true
+```
+
+One case, only proofs as arguments: the result cannot depend on `h`.
 
 # The tag has to stay hidden
 

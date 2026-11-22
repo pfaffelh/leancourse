@@ -7,9 +7,9 @@ import Mathlib
 
 The rules of chapter 1.5 in practice: in which universe a type
 lives, when two terms are equal by computation, why proofs carry no
-data, and the axioms `funext`, `propext` and `Classical.choice`.
-Read chapter 1.5 first. Sheet `2.3-a` (week 10) returns to the
-axioms.
+data, functions as terms, and the axioms `funext`, `propext` and
+`Classical.choice`. Read chapter 1.5 first. Sheet `2.3-a` (week 10)
+returns to the axioms.
 
 ## Introduced here
 
@@ -17,6 +17,7 @@ axioms.
 |-----------------------|--------------------------------------------|
 | `change t`            | like `show t`: replace the goal by `t`     |
 | `change t at h`       | the same for a hypothesis `h`              |
+| `let f := e`          | give a term a name inside a proof          |
 | `ext x`               | goal `f = g`: prove `f x = g x`            |
 | `propext h`           | `P = Q` from `h : P ↔ Q`                   |
 | `Classical.choose h`  | a witness of `h : ∃ x, P x`, without code  |
@@ -25,14 +26,18 @@ axioms.
 
 ## Tactics from earlier sheets
 
-| sheet   | tactics                                |
-|---------|----------------------------------------|
-| `L-a`   | `trivial`, `intro`, `exact`, `apply`   |
-| `L-b`   | `constructor`, `obtain`                |
-| `1.1-a` | `rfl`, `rw`, `show`                    |
-| `1.1-b` | `decide`                               |
-| `L-f`   | `have`                                 |
-| `1.1-c` | `simp`, `omega`                        |
+| sheet   | tactics                              |
+|---------|--------------------------------------|
+| `L-a`   | `trivial`, `intro`, `exact`, `apply` |
+| `L-b`   | `constructor`, `obtain`              |
+| `L-c`   | `left`, `right`                      |
+| `1.1-a` | `rfl`, `rw`, `show`                  |
+| `1.1-b` | `decide`                             |
+| `1.2-a` | `use`                                |
+| `L-e`   | `by_cases`                           |
+| `L-f`   | `have`, `rintro`                     |
+| `1.1-c` | `simp`, `omega`                      |
+| `L-g`   | `tauto`                              |
 
 `fun x => e` is known from `1.4-b`.
 -/
@@ -112,7 +117,40 @@ eliminate into `Prop`". -/
 example (h : ∃ n : ℕ, 3 < n) : ∃ n : ℕ, 2 < n := by
   sorry
 
-/-! ## Part 4: Equal functions
+/-! ## Part 4: Functions and predicates
+
+A function is a term `fun x => e`, so `use` can supply one as the
+witness of an `∃`. `let` gives it a name first. -/
+
+example (a : α) : ∃ (f : α → α), ∀ x, f x = a := by
+  use fun _ => a
+  intro x
+  rfl
+
+example (a : α) : ∃ (f : α → α), ∀ x, f x = a := by
+  let f : α → α := fun _ => a
+  use f
+  intro x
+  rfl
+
+/-! A predicate is a function into `Prop`, built the same way. -/
+
+example (f g : α → Prop) :
+    ∃ (h : α → Prop), ∀ x, h x = (f x ∧ g x) := by
+  use fun x => f x ∧ g x
+  intro x
+  rfl
+
+-- Exercise 8) Give `f` and `g` explicitly. Constant functions do.
+example : ∃ (f g : α → Prop), ∀ x, f x ↔ ¬(g x) := by
+  sorry
+
+-- Exercise 9) The same with `Bool`. Put the cursor on `xor` and
+-- press `F12` to see its definition.
+example : ∃ (f g : α → Bool), ∀ x, xor (f x) (g x) := by
+  sorry
+
+/-! ## Part 5: Equal functions
 
 Two functions are equal if they agree at every point (`funext`,
 proved from `Quot.sound` in chapter 1.4). `ext x` turns the goal
@@ -123,34 +161,68 @@ example : (fun n : ℕ => 0 + n) = (fun n => n) := by
   ext n
   simp
 
--- Exercise 8) One direction is `ext`, the other is `rw`.
+-- Exercise 10) One direction is `ext`, the other is `rw`.
 example (f g : α → β) : (∀ x, f x = g x) ↔ f = g := by
   sorry
 
--- Exercise 9) The right-hand side says that `β` has at most one
+-- Exercise 11) The right-hand side says that `β` has at most one
 -- element. Apply the hypothesis to two constant functions, and
 -- evaluate at `a`.
 example (a : α) :
     (∀ (f g : α → β), f = g) → (∀ (y₁ y₂ : β), y₁ = y₂) := by
   sorry
 
-/-! ## Part 5: Equal propositions
+/-! ## Part 6: Equal propositions
 
 `propext : (P ↔ Q) → P = Q` is an axiom. -/
 
 example (P Q : Prop) (h : P ↔ Q) : P = Q := propext h
 
--- Exercise 10) A proposition with a proof equals `True`.
+-- Exercise 12) A proposition with a proof equals `True`.
 example (P : Prop) (hP : P) : P = True := by
   sorry
 
--- Exercise 11) For functions into `Prop`, `ext x` leaves the goal
+-- Exercise 13) For functions into `Prop`, `ext x` leaves the goal
 -- `P x ∧ Q x ↔ Q x ∧ P x`: it uses `funext` and `propext`.
 example (P Q : α → Prop) :
     (fun x => P x ∧ Q x) = (fun x => Q x ∧ P x) := by
   sorry
 
-/-! ## Part 6: Choice
+/-! With `propext`, `rw [h]` also works for `h : P ↔ Q`: it replaces
+`P` by `Q`, because the two are now equal. The following `l1` says
+that an implication is a disjunction; it is in Mathlib as
+`imp_iff_or_not`. -/
+
+lemma l1 (P Q : Prop) : (P → Q) ↔ (Q ∨ ¬P) := by
+  constructor
+  · intro hPQ
+    by_cases h : P
+    · left
+      exact hPQ h
+    · right
+      exact h
+  · intro h hP
+    obtain (h1 | h2) := h
+    · exact h1
+    · exact absurd hP h2
+
+-- Exercise 14) Peirce's law. `rw [l1]` rewrites the innermost
+-- implication; three times turn the goal into a statement about `∨`
+-- and `¬`. Then `by_cases` on `P`. `rintro (h1 | h2)` splits a
+-- disjunction while introducing it.
+example (P Q : Prop) : ((P → Q) → P) → P := by
+  rw [l1, l1, l1]
+  sorry
+
+-- Exercise 15) `exact?` finds this one (`not_imp_not`). Do it with
+-- `rw` instead: rewrite both sides with `l1`, then `tauto`. `l1`
+-- takes the two propositions as arguments, so you can say which
+-- instance you mean.
+lemma l2 (P Q : Prop) : (P → Q) ↔ (¬Q → ¬P) := by
+  rw [l1 P Q, l1 (¬Q) (¬P)]
+  sorry
+
+/-! ## Part 7: Choice
 
 `Classical.choice : Nonempty α → α` is the only way from a proof back
 to data. `Classical.choose h` uses it to get a witness of
@@ -168,14 +240,14 @@ example (h : ∃ n : ℕ, 5 < n) : 5 < pick h :=
 `Nat.find h` is the least one, and `Nat.find_spec h` says that it
 works. -/
 
--- Exercise 12) Define `pick'` with `Nat.find`, without
+-- Exercise 16) Define `pick'` with `Nat.find`, without
 -- `noncomputable`. Then remove the comment mark in front of `#eval`.
 def pick' (h : ∃ n : ℕ, 5 < n) : ℕ :=
   sorry
 
 -- #eval pick' ⟨10, by decide⟩
 
--- Exercise 13)
+-- Exercise 17)
 example (h : ∃ n : ℕ, 5 < n) : 5 < pick' h := by
   sorry
 
@@ -187,7 +259,7 @@ example (h : ∀ n : ℕ, ∃ m, n < m) : ∃ f : ℕ → ℕ, ∀ n, n < f n :=
   choose f hf using h
   exact ⟨f, hf⟩
 
--- Exercise 14)
+-- Exercise 18)
 example (R : α → α → Prop) (h : ∀ x, ∃ y, R x y)
     (hR : ∀ x y, R x y → R y x) : ∃ f : α → α, ∀ x, R (f x) x := by
   sorry
@@ -195,11 +267,11 @@ example (R : α → α → Prop) (h : ∀ x, ∃ y, R x y)
 /-! `Nonempty α` says that `α` has an element, without naming one.
 It is a proposition, so the rule of Part 3 applies. -/
 
--- Exercise 15) `obtain ⟨x⟩ := h` is allowed here.
+-- Exercise 19) `obtain ⟨x⟩ := h` is allowed here.
 example (h : Nonempty α) : ∃ x : α, x = x := by
   sorry
 
--- Exercise 16) Here the result is data and `obtain` fails. Use
+-- Exercise 20) Here the result is data and `obtain` fails. Use
 -- `Classical.choice`.
 noncomputable def someElement (h : Nonempty α) : α :=
   sorry

@@ -1,173 +1,75 @@
 import Mathlib
 
 /-!
-# (witness) 1.5-a -- Predicates and equality
+# (witness) 1.5-a -- Rules, equality and choice
 
 *Notes chapter 1.5, week 6.*
-
-The setting is the one of sheet `1.2-a` (week 3): a type `α` and
-predicates on it. New here is equality — between terms, and between
-functions.
-
-## Tactics introduced here
-
-| tactic                | use it when                                    |
-|-----------------------|------------------------------------------------|
-| `ext x`               | goal `f = g`: prove `f x = g x` for every `x`  |
-| `change t`            | replace the goal by a definitionally equal `t` |
-| `fun x ↦ e`           | the function sending `x` to `e`                |
-| `let f := e`          | give a term a name inside a proof              |
-| `choose f hf using h` | `h : ∀ x, ∃ y, R x y`: get the function `f`    |
-
-`rfl` and `rw` are known from `1.1-a`, `exact?` from `1.1-c`,
-`apply?` from `L-g`.
 -/
 
-variable (α β : Type) [Inhabited α]
-variable (P Q : α → Prop)
-variable (R : α → α → Prop)
-variable (S T : Prop)
+variable (α β : Type)
 
-/-! ## Equality and `rfl`
+/-! ## Part 1: Universes -/
 
-`rfl` proves `a = a`, and more generally any `a = b` where the two
-sides reduce to the same term. The same tactic also proves `A ↔ B`
-when the two are definitionally equal, because `↔` on definitionally
-equal propositions is reflexive in the same way. -/
+-- Exercise 1)
+#check ℕ → ℕ                  -- Type
+#check ℕ → Type               -- Type 1
+#check Type → Type            -- Type 1
+#check ∀ n : ℕ, n + 0 = n     -- Prop
+#check ∀ p : Prop, p → p      -- Prop
+#check (γ : Type) → γ → γ     -- Type 1
 
-example (x : α) : x = x := by
+-- Exercise 2)
+example : Type 1 := Type
+example : ℕ → Type := fun n => Fin n
+example : (γ : Type) → γ → γ := fun _ x => x
+
+/-! ## Part 2: Conversion -/
+
+def dbl (n : ℕ) : ℕ := n + n
+
+example : dbl 3 = 6 := by
   rfl
 
--- Exercise 1) `¬P` is *by definition* `P → False` (sheet `L-d`), so
--- this needs nothing but reflexivity.
+-- Exercise 3)
+example : (fun n : ℕ => n * n + 1) 3 = 10 := by
+  rfl
+
+-- Exercise 4)
 example (P : Prop) : ¬P ↔ (P → False) := by
   rfl
 
-/-! ## Finding the lemma
+example (P : Prop) (h : ¬¬P) (hn : ¬P) : False := by
+  change (P → False) → False at h
+  exact h hn
 
-Most of what you need is in Mathlib already. `exact?` looks for a
-lemma that closes the goal, `apply?` for one that reduces it. Here
-`exact?` finds the statement under a name worth remembering: -/
+-- Exercise 5)
+example (P : Prop) (hP : P) : ¬¬P := by
+  change (P → False) → False
+  intro h
+  exact h hP
 
-example (P Q : Prop) : ((P → Q) ∧ (Q → P)) ↔ (P ↔ Q) := by
-  -- exact?
-  exact iff_def.symm
+/-! ## Part 3: Proofs carry no data -/
 
-/-! ## `rw`
-
-`rw [h]` rewrites with `h : a = b` left to right, `rw [← h]` right to
-left. It works on `↔` as well, because a proposition may be replaced
-by an equivalent one anywhere. -/
-
-example (x y z : α) : (x = y) → (y = z) → (x = z) := by
-  intro h1 h2
-  rw [h1]
-  rw [h2]
-
-/-! The same statement, rewriting the other way round. Compare the
-goal after the first line in each. -/
-
-example (x y z : α) : (x = y) → (y = z) → (x = z) := by
-  intro h1 h2
-  rw [← h2]
-  rw [h1]
-
-/-! To rewrite with an `↔` you first need one. This one says that an
-implication is a disjunction in disguise; it is in Mathlib as
-`imp_iff_or_not`, but proving it is two case splits. -/
-
-lemma l1 (P Q : Prop) : (P → Q) ↔ (Q ∨ ¬P) := by
-  constructor
-  · intro hPQ
-    by_cases h : P
-    · left
-      exact hPQ h
-    · right
-      exact h
-  · intro h hP
-    obtain (h1 | h2) := h
-    · exact h1
-    · exact absurd hP h2
-
--- Exercise 2) Peirce's law, which `L-e` left you to do by hand.
--- Here `rw [l1]` rewrites the innermost implication; repeating it
--- three times turns the goal into one about `∨` and `¬`, and then
--- `by_cases` on `P` finishes it. `rintro (h1 | h2)` splits the
--- disjunction as you introduce it.
-example (P Q : Prop) : (((P → Q) → P) → P) := by
-  rw [l1, l1, l1]
-  by_cases hP : P
-  · left
-    exact hP
-  · right
-    rintro (h1 | h2)
-    · exact hP h1
-    · exact h2 (Or.inr hP)
-
--- Exercise 3) `exact?` finds this one outright (the name is
--- `not_imp_not`). Do it with `rw [l1 ...]` instead: rewrite both
--- sides, then `tauto`. Note that `l1` takes its two propositions as
--- arguments, so you can say which instance you mean.
-lemma l2 (P Q : Prop) : (P → Q) ↔ (¬Q → ¬P) := by
-  rw [l1 P Q, l1 (¬Q) (¬P)]
-  tauto
-
-/-! ## Functions
-
-`fun x ↦ e` is the function sending `x` to `e`; `f x` is what the
-rest of mathematics writes `f(x)`. -/
-
-example : ∃ (f : α → α), f = f := by
-  use fun _ ↦ default
-
-/-! `let` gives the function a name first. -/
-
-example : ∃ (f : α → α), f = f := by
-  let f : α → α := fun _ ↦ default
-  use f
-
-/-! A predicate is a function into `Prop`, so the same notation
-builds one. -/
-
-example (f g : α → Prop) : ∃ (h : α → Prop), ∀ x, h x = (f x ∧ g x) := by
-  use fun x ↦ f x ∧ g x
-  intro x
+example (P : Prop) (h₁ h₂ : P) : h₁ = h₂ := by
   rfl
 
--- Exercise 4) Give `f` and `g` explicitly. Constant functions do.
-example : ∃ (f g : α → Prop), ∀ x, (f x) ↔ ¬(g x) := by
-  use fun _ ↦ True, fun _ ↦ False
-  intro x
+-- Exercise 6)
+example (h₁ h₂ : 2 < 5) : (⟨2, h₁⟩ : Fin 5) = ⟨2, h₂⟩ := by
+  rfl
+
+-- Exercise 7)
+example (h : ∃ n : ℕ, 3 < n) : ∃ n : ℕ, 2 < n := by
+  obtain ⟨n, hn⟩ := h
+  exact ⟨n, by omega⟩
+
+/-! ## Part 4: Equal functions -/
+
+example : (fun n : ℕ => 0 + n) = (fun n => n) := by
+  ext n
   simp
 
--- Exercise 5) Same idea with `Bool`. Put the cursor on `xor` and
--- press `F12` to see its definition.
-example : ∃ (f g : α → Bool), ∀ x, xor (f x) (g x) := by
-  use fun _ ↦ true, fun _ ↦ false
-  intro x
-  simp
-
--- Exercise 6) Turning a `∀ x, ∃ y` into a function is exactly what
--- `choose` does; it uses the axiom of choice (chapters 1.5, 2.3).
-example : (∀ (x : α), ∃ (y : α), R x y) →
-    ∃ (f : α → α), ∀ (x : α), R x (f x) := by
-  intro h
-  choose f hf using h
-  exact ⟨f, hf⟩
-
-/-! ## When are two functions equal?
-
-When they agree at every point. `ext x` turns the goal `f = g` into
-`f x = g x` for an arbitrary `x`. (Both functions must have the same
-type for `f = g` to be stated at all.) -/
-
-example (f g : α → Prop) (h : ∀ x, f x = ¬¬(g x)) : f = g := by
-  ext x
-  rw [h x]
-  rw [not_not]
-
--- Exercise 7) One direction is `ext`, the other is `rw`.
-example (f g : α → β) : (∀ x, ((f x) = (g x))) ↔ f = g := by
+-- Exercise 8)
+example (f g : α → β) : (∀ x, f x = g x) ↔ f = g := by
   constructor
   · intro h
     ext x
@@ -175,19 +77,70 @@ example (f g : α → β) : (∀ x, ((f x) = (g x))) ↔ f = g := by
   · intro h x
     rw [h]
 
-/-! ## `change`
+-- Exercise 9)
+example (a : α) :
+    (∀ (f g : α → β), f = g) → (∀ (y₁ y₂ : β), y₁ = y₂) := by
+  intro h y₁ y₂
+  have hfg := h (fun _ => y₁) (fun _ => y₂)
+  change (fun _ => y₁) a = (fun _ => y₂) a
+  rw [hfg]
 
-`change t` replaces the goal by `t`, provided the two are
-definitionally equal. It changes nothing for the kernel and
-everything for the reader. -/
+/-! ## Part 5: Equal propositions -/
 
-example (x : α) (f : α → Prop) : (¬(f x)) ↔ ((f x) → False) := by
-  change (¬(f x)) ↔ (¬(f x))
-  rfl
+example (P Q : Prop) (h : P ↔ Q) : P = Q := propext h
 
--- Exercise 8) The right-hand side says that `β` has at most one
--- element. Apply the hypothesis to two constant functions.
-example : (∀ (f g : α → β), f = g) → (∀ (y1 y2 : β), y1 = y2) := by
-  intro h y1 y2
-  have hfg := h (fun _ ↦ y1) (fun _ ↦ y2)
-  exact congrFun hfg default
+-- Exercise 10)
+example (P : Prop) (hP : P) : P = True := by
+  apply propext
+  constructor
+  · intro _
+    trivial
+  · intro _
+    exact hP
+
+-- Exercise 11)
+example (P Q : α → Prop) :
+    (fun x => P x ∧ Q x) = (fun x => Q x ∧ P x) := by
+  ext x
+  constructor
+  · intro h
+    exact ⟨h.2, h.1⟩
+  · intro h
+    exact ⟨h.2, h.1⟩
+
+/-! ## Part 6: Choice -/
+
+noncomputable def pick (h : ∃ n : ℕ, 5 < n) : ℕ :=
+  Classical.choose h
+
+example (h : ∃ n : ℕ, 5 < n) : 5 < pick h :=
+  Classical.choose_spec h
+
+-- Exercise 12)
+def pick' (h : ∃ n : ℕ, 5 < n) : ℕ :=
+  Nat.find h
+
+#eval pick' ⟨10, by decide⟩   -- 6
+
+-- Exercise 13)
+example (h : ∃ n : ℕ, 5 < n) : 5 < pick' h :=
+  Nat.find_spec h
+
+example (h : ∀ n : ℕ, ∃ m, n < m) : ∃ f : ℕ → ℕ, ∀ n, n < f n := by
+  choose f hf using h
+  exact ⟨f, hf⟩
+
+-- Exercise 14)
+example (R : α → α → Prop) (h : ∀ x, ∃ y, R x y)
+    (hR : ∀ x y, R x y → R y x) : ∃ f : α → α, ∀ x, R (f x) x := by
+  choose f hf using h
+  exact ⟨f, fun x => hR x (f x) (hf x)⟩
+
+-- Exercise 15)
+example (h : Nonempty α) : ∃ x : α, x = x := by
+  obtain ⟨x⟩ := h
+  exact ⟨x, rfl⟩
+
+-- Exercise 16)
+noncomputable def someElement (h : Nonempty α) : α :=
+  Classical.choice h

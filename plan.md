@@ -133,10 +133,11 @@ induktive Typen, Mustervergleich und `termination_by` stehen auf
 `1.3-a` (dazu der Rekursor eines eigenen Typs), Strukturen mit
 `extends` und `Fin` auf `1.2-b`, induktive Prädikate und ein
 Quotient (ℤ aus ℕ × ℕ) auf `1.4-c`, Termmodus und Junktoren auf
-`1.4-b`. Kapitel 1.5 hat `1.5-a` (Gleichheit, `ext`, `choose`,
-`change`). Die Regeln selbst, `imax` und die eingeschränkte
-Elimination werden gelesen, nicht geübt; die Universen stehen auf
-`1.4-a`.
+`1.4-b`. Kapitel 1.5 hat `1.5-a` (Universen, Konversion mit `change`,
+Beweisirrelevanz und eingeschränkte Elimination, `ext`/`funext`,
+`propext`, `Classical.choose` gegen `Nat.find`, `choose`,
+`Nonempty`). Die Regeln als Brüche und `imax` werden gelesen,
+nicht geübt.
 
 Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
 `1.1-b`, `1.6-c`). `1.6-c` (Funktoren und Monaden) übernimmt die

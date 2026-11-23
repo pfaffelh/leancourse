@@ -7,26 +7,25 @@
     scripts/obs_scene.py "<scene>"  -> any scene by its exact name
     scripts/obs_scene.py start|stop|pause|resume   -> the recording
 
-Bound to F1/F2/F3 and F7-F10 by scripts/recording_keys.sh. Standard library only
-(plus `xprop`), so it needs nothing installed. Port and password are
-read from OBS's own websocket settings, so they cannot drift apart.
+Bound to F1/F2/F3 and F7-F10 by scripts/recording_keys.sh. Standard library
+only, so it needs nothing installed. Port and password are read from OBS's
+own websocket settings, so they cannot drift apart.
 
-Before switching to the slides or the VS Code scene, the script looks
-up the current window by its X11 class and points the window capture
-at it. OBS on its own finds a window again after a restart only if
-title *and* class match exactly, and VS Code changes its title with
-every file; the desktop portal, the other way to pick a window, asks
-in a dialog at every start and crashes if OBS quits while it is open.
+The script only switches scenes. It used to point the window capture at
+the current window by its X11 class, because OBS finds a window again
+after a restart only if title *and* class match. That was for the
+xcomposite capture, which needs an X11 session; since Ubuntu 26.04 the
+machine has no X11 session left (`/usr/share/xsessions` is empty), so
+the scenes capture through PipeWire instead and remember their window
+with a restore token of their own.
 """
 import base64
 import configparser
 import hashlib
 import json
 import os
-import re
 import socket
 import struct
-import subprocess
 import sys
 
 SCENES = {
@@ -39,14 +38,6 @@ RECORD = {
     "stop": "StopRecord",
     "pause": "PauseRecord",
     "resume": "ResumeRecord",
-}
-# scene -> (window-capture input, regex on the window's WM_CLASS instance)
-WINDOWS = {
-    # Chrome --app names the window after host and path:
-    # localhost__slides_1-1-nat or pfaffelh.github.io__leancourse_slides_1-1-nat
-    "Vortrag": ("Folien (Fenster)", r"__(leancourse_)?slides_"),
-    # the snap package of VS Code reports `code_code`
-    "Blatt lösen (VS Code)": ("VS Code (Fenster)", r"^code(_code)?$"),
 }
 # obs-websocket up to 5.4 (OBS 30) keeps its settings in OBS's
 # global.ini; from 5.5 (OBS 31) in a JSON file of its own.
@@ -65,23 +56,6 @@ def read_config():
     ini.read(GLOBAL_INI, encoding="utf-8")
     sec = ini["OBSWebSocket"]
     return int(sec.get("ServerPort", "4455")), sec.get("ServerPassword", "")
-
-
-def find_window(pattern):
-    """The topmost window whose WM_CLASS instance matches, as the
-    `id\\r\\ntitle\\r\\ninstance` string xcomposite capture stores."""
-    def prop(*args):
-        return subprocess.run(["xprop", *args], capture_output=True,
-                              text=True).stdout
-    stack = re.findall(r"0x[0-9a-f]+", prop("-root", "_NET_CLIENT_LIST_STACKING"))
-    for wid in reversed(stack):  # last is topmost
-        m = re.search(r'= "([^"]*)"', prop("-id", wid, "WM_CLASS"))
-        if m and re.search(pattern, m.group(1)):
-            t = re.search(r'= "(.*)"', prop("-id", wid, "_NET_WM_NAME"))
-            title = t.group(1).encode().decode("unicode_escape").encode(
-                "latin-1").decode("utf-8") if t else ""
-            return "%d\r\n%s\r\n%s" % (int(wid, 16), title, m.group(1))
-    return None
 
 
 def send(sock, obj):
@@ -177,29 +151,6 @@ def main():
             sys.exit("OBS: %s" % status.get("comment", status))
         return
     scene = SCENES.get(sys.argv[1], sys.argv[1])
-
-    if scene in WINDOWS:
-        inp, pattern = WINDOWS[scene]
-        # no matching window: capture nothing rather than whatever
-        # window the source pointed at last time
-        target = find_window(pattern) or ""
-        if not target:
-            print("no window for %s open -- switching anyway" % inp,
-                  file=sys.stderr)
-        cur = request(sock, "GetInputSettings", {"inputName": inp})
-        cur = cur.get("responseData", {}).get("inputSettings", {}) \
-            .get("capture_window", "")
-        # compare window id and class, not the title: VS Code changes
-        # its title with every edit, and every SetInputSettings makes
-        # OBS 30.0.2 sort all window names, which segfaults on a
-        # window without one
-        def key(s):
-            parts = s.split("\r\n")
-            return (parts[0], parts[-1]) if s else None
-        if key(cur) != key(target):
-            request(sock, "SetInputSettings", {
-                "inputName": inp,
-                "inputSettings": {"capture_window": target}})
 
     status = request(sock, "SetCurrentProgramScene",
                      {"sceneName": scene})["requestStatus"]

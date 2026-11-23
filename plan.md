@@ -12,7 +12,7 @@ Universität Freiburg, Wintersemester 2026/27.
 | Weihnachtspause | 23.12.2026 -- 06.01.2027 |
 | Ende | Sa 13.02.2027 (letzter Termin Mi 10.02.) |
 | Personal | Dozent + ein Tutor |
-| Prüfung | mündlich (Fragenkatalog in `exam.md`) |
+| Prüfung | mündlich (Fragenkatalog in `~/bwSyncShare/leancourse/exam.md`) |
 | Zulassung | 3 von 5 Kurztests bestanden |
 | Workload | 180 h, davon 43,5 h Kontaktzeit; rund 9 h/Woche Eigenarbeit |
 
@@ -170,7 +170,7 @@ Keine Teilpunkte. Die Regel steht ab Woche 1 fest.
 Geprüft werden Beweiszustände und Verständnis, keine Lemmanamen und
 keine Syntax. Aufgabentypen: Beweiszustand nach einer Taktik,
 Multiple Choice, Antwort mit einem Wort oder Satz. Die Tests liegen
-in `tests/` (gitignored, nie veröffentlicht), Test 1 vom 29.10.
+in `~/bwSyncShare/leancourse/tests/` (außerhalb des Repos), Test 1 vom 29.10.
 mit Lösungsschlüssel.
 
 ## Hausaufgaben und KI

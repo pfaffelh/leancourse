@@ -9,3 +9,6 @@ MyExercises/
 
 # Short tests (pen and paper), never published
 /tests
+
+# Python bytecode
+__pycache__/

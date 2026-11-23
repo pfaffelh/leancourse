@@ -144,7 +144,7 @@ written at the start of the lab.
 * + 7
   + Wed 02.12.
   + Lab
-  + *Test 2*, then sheets
+  + *Test 2* ([practice tasks, PDF](static/tests/test2-practice.pdf)), then sheets
   + `1.4-a`, `1.4-c`, `1.6-a`
 * + 8
   + Mon 07.12.
@@ -253,9 +253,15 @@ questions:
   does the excluded middle come in?
 * This proof fails with "no binders to introduce". Why?
 
-For test 1 there are
-[twelve practice tasks with answers (PDF)](static/tests/test1-practice.pdf)
-of the same kinds as the six in the test (there each task has three parts).
+Practice tasks of the same kinds as the six in the test (there each
+task has three parts), with answers on the last pages or without:
+
+* Test 1, twelve tasks:
+  [with answers (PDF)](static/tests/test1-practice.pdf),
+  [without answers (PDF)](static/tests/test1-practice-tasks.pdf)
+* Test 2, eighteen tasks:
+  [with answers (PDF)](static/tests/test2-practice.pdf),
+  [without answers (PDF)](static/tests/test2-practice-tasks.pdf)
 
 # Goals
 %%%

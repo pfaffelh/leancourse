@@ -9,7 +9,7 @@ set_option pp.rawOnError true
 /-
 Deck for the chapter "Rules for building types" of part 1 (Lean and
 its type theory). It follows the chapter section by section: the rules
-of Lean's type theory, how the universe of a type is determined, and
+of Lean's type theory and
 why `Prop` is special.
 -/
 
@@ -17,6 +17,15 @@ namespace SlidesRules
 #doc (Slides) "Rules for building types" =>
 
 ```css
+.reveal section .r-vstack:has(> p.rule) { display: flex; width: fit-content; align-items: stretch; margin: 0.2em auto; }
+.reveal section .r-hstack > .r-vstack:has(> p.rule) { margin: 0.2em 0; }
+.reveal section p code { white-space: nowrap; }
+.reveal section p.rlabel, .reveal section .rlabel p { font-size: 0.5em; color: #888; margin: 0 0 0.1em; }
+.reveal section p.rule.small { font-size: 0.62em; }
+.reveal section pre { margin: 0.3em auto; }
+.reveal section p.rule { margin: 0; padding: 0.05em 0.5em; text-align: center; white-space: nowrap; }
+.reveal section p.rule:last-child { border-top: 2px solid currentColor; }
+.reveal .r-hstack:has(> .r-vstack > p.rule) { gap: 2.5rem; align-items: flex-end; }
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
 .reveal section p.key, .reveal section .key p { color: #1b91ff; }
 .reveal section table { font-size: 0.62em; margin: 0.2em auto 0.4em; }
@@ -61,45 +70,48 @@ Chapters 1.2 and 1.4 described each type former in four steps. Type theory calls
 This chapter writes them down as rules.
 :::
 
-# The rules of Lean's type theory
+# Judgements and the context
 
-Lean accepts a term only if a small, fixed set of rules builds it. They derive two kinds of _judgement_:
+A small, fixed set of rules derives two kinds of _judgement_:
 
 - $`\Gamma \vdash e : \alpha` — in the context $`\Gamma`, the term $`e` has type $`\alpha`
 - $`\Gamma \vdash e \equiv e'` — in $`\Gamma`, $`e` and $`e'` are definitionally equal
 
-A rule is a fraction: if the judgements above the line hold, so does the one below.
-
-:::class "key"
-These rules are all of Lean's logic. `∀` is a function type; `∧`, `∨`, `∃`, `=`, `False` are inductive types.
-:::
-
-# The context
-
-$`\Gamma = x_1 : \alpha_1,\ \dots,\ x_n : \alpha_n`, for example $`n : \mathbb N,\ h : 0 < n,\ v : \mathrm{Fin}\ n \to \mathbb N`:
+The context $`\Gamma = x_1 : \alpha_1,\;\dots,\;x_n : \alpha_n` is the part before the colon:
 
 ```lean -panel -stretch
 example (n : ℕ) (h : 0 < n) (v : Fin n → ℕ) : ℕ :=
   v ⟨0, h⟩
 ```
 
-- _Order matters_: built left to right; each type must be a type in the context before it. `h : 0 < n` needs `n` first.
+- _Order matters_: `h : 0 < n` needs `n` first.
 - _Variables, not constants_: no value, an arbitrary element or proof.
-- _Binders extend it_: a binder (`fun x`, `∀ x`, `let x`) introduces a _bound_ variable for its body, like $`i` in $`\sum_i`. The body of `fun x => e` is checked in $`\Gamma,\ x : \alpha`.
-
-:::class "key"
-The first types: the universes, and the `inductive` declarations of the environment.
-:::
+- _Binders extend it_: the body of `fun x => e` is checked in $`\Gamma,\;x : \alpha`.
 
 # Universes and variables
 
-$$`\frac{}{\Gamma \vdash \mathrm{Sort}\ u : \mathrm{Sort}\ (u+1)} \qquad\qquad \frac{(x : \alpha) \in \Gamma}{\Gamma \vdash x : \alpha}`
+A rule is written as a fraction: if the judgements above the line hold, so does the one below.
 
-with $`\mathrm{Prop} = \mathrm{Sort}\ 0` and $`\mathrm{Type}\ u = \mathrm{Sort}\ (u+1)`.
+:::::::hstack
+::::::vstack
+:::::class "rule"
+`Γ ⊢ Sort u : Sort (u+1)`
+:::::
+::::::
+
+::::::vstack
+:::::class "rule"
+`(x : α) ∈ Γ`
+
+`Γ ⊢ x : α`
+:::::
+::::::
+:::::::
+
+with `Prop = Sort 0` and `Type u = Sort (u+1)`. `Type : Type` is not allowed: it would give Girard's paradox, a proof of `False`.
 
 ```lean -panel -stretch
-#check Sort 0   -- Prop : Type
-#check Type 3   -- Type 3 : Type 4
+#check Type 3
 example (P : Prop) (h : P) : P := h
 ```
 
@@ -109,19 +121,46 @@ The variable rule is `exact h`, or `assumption`.
 
 # Function types
 
-$$`\frac{\Gamma \vdash \alpha : \mathrm{Sort}\ u \qquad \Gamma,\, x : \alpha \vdash \beta : \mathrm{Sort}\ v}{\Gamma \vdash (x : \alpha) \to \beta : \mathrm{Sort}\ (\mathrm{imax}\ u\ v)}`
+::::::vstack
+:::::class "rule"
+`Γ ⊢ α : Sort u`  `Γ, x : α ⊢ β : Sort v`
 
-$`\mathrm{imax}\ u\ v = 0` if $`v = 0`, else $`\max(u, v)`. One rule, three readings: `α → β`, `(n : ℕ) → Fin n`, and `∀ x : α, P x`.
+`Γ ⊢ (x : α) → β : Sort (imax u v)`
+:::::
+::::::
+
+`imax u v = 0` if `v = 0`, else `max u v`. One rule, three readings: `α → β`, `(n : ℕ) → Fin n`, and `∀ x : α, P x`.
 
 ```lean -panel -stretch
-#check ℕ → Type            -- Type 1
-#check (n : ℕ) → Fin n     -- Type
-#check ∀ p : Prop, p → p   -- Prop
+#check (n : ℕ) → Fin n
+#check ∀ p : Prop, p → p
+example : Type := ℕ → Prop
+example (P : ℕ → Prop) : Prop := (n : ℕ) → P n
 ```
+
+:::class "key"
+So `ℕ → Prop : Type`, but `(n : ℕ) → P n : Prop`.
+:::
 
 # Abstraction and application
 
-$$`\frac{\Gamma,\, x : \alpha \vdash e : \beta}{\Gamma \vdash (\mathrm{fun}\ x \Rightarrow e) : (x : \alpha) \to \beta} \qquad\quad \frac{\Gamma \vdash f : (x : \alpha) \to \beta \qquad \Gamma \vdash a : \alpha}{\Gamma \vdash f\ a : \beta[x := a]}`
+:::::::hstack
+::::::vstack
+:::::class "rule"
+`Γ, x : α ⊢ e : β`
+
+`Γ ⊢ (fun x => e) : (x : α) → β`
+:::::
+::::::
+
+::::::vstack
+:::::class "rule"
+`Γ ⊢ f : (x : α) → β`  `Γ ⊢ a : α`
+
+`Γ ⊢ f a : β[x := a]`
+:::::
+::::::
+:::::::
 
 ```lean -panel -stretch
 #check (fun n : ℕ => (0 : Fin (n + 1))) 3
@@ -132,12 +171,18 @@ example (P Q : Prop) (hQ : Q) : P → Q :=
 ```
 
 :::class "key"
-Left rule: `intro`. Right rule: `exact h a`, `apply h`.
+Left rule: `intro`. Right rule: `exact f a`, `apply f`.
 :::
 
 # Conversion
 
-$$`\frac{\Gamma \vdash e : \alpha \qquad \Gamma \vdash \alpha \equiv \beta}{\Gamma \vdash e : \beta}`
+::::::vstack
+:::::class "rule"
+`Γ ⊢ e : α`  `Γ ⊢ α ≡ β`
+
+`Γ ⊢ e : β`
+:::::
+::::::
 
 ```lean -panel -stretch
 example : 2 + 2 = 4 := rfl
@@ -159,42 +204,241 @@ This is the rule behind `rfl`.
 
 # Rules for inductive types
 
-Each `inductive` adds the type (formation), its constructors (introduction), the recursor (elimination) and ι-rules (computation):
-
-$$`\mathrm{Nat.rec} : (m : \mathbb N \to \mathrm{Sort}\ u) \to m\ 0 \to \big((n : \mathbb N) \to m\ n \to m\ (n+1)\big) \to (t : \mathbb N) \to m\ t`
-
-$$`\mathrm{Nat.rec}\ m\ z\ s\ 0 \equiv z \qquad \mathrm{Nat.rec}\ m\ z\ s\ (n+1) \equiv s\ n\ (\mathrm{Nat.rec}\ m\ z\ s\ n)`
-
-$`m` is the _motive_ (the type of the result), $`z` the value at `0`, $`s` the _step_.
-
-`#print Or` shows `Or.inl`, `Or.inr`; `#print False` shows no constructor at all. Two conditions: _strict positivity_, and _restricted elimination_ out of `Prop`.
-
-# Quotients and axioms
-
-$$`\mathrm{Quot.lift}\ f\ h\ (\mathrm{Quot.mk}\ r\ a) \equiv f\ a`
-
-```lean -panel -stretch
-#check @propext    -- (a ↔ b) → a = b
-#check @Classical.choice -- Nonempty α → α
-#print axioms Classical.em
+```
+inductive T where
+  | c₁ (b₁ : B₁) … (bₗ : Bₗ) (r₁ … rₖ : T) : T
+  | …   -- c₂, …, cₘ
 ```
 
-The third axiom is `Quot.sound`: related elements have the same class. `Classical.em` and `funext` are theorems.
+:::::::hstack
+::::::vstack
+:::::class "rlabel"
+formation
+:::::
+
+:::::class "rule small"
+`Γ ⊢ T : Sort u`
+:::::
+::::::
+
+::::::vstack
+:::::class "rlabel"
+introduction
+:::::
+
+:::::class "rule small"
+`Γ ⊢ b₁ : B₁`  `…`  `Γ ⊢ rₖ : T`
+
+`Γ ⊢ c₁ b₁ … bₗ r₁ … rₖ : T`
+:::::
+::::::
+:::::::
+
+::::::vstack
+:::::class "rlabel"
+elimination, likewise `f₂`, …, `fₘ`
+:::::
+
+:::::class "rule small"
+`Γ ⊢ motive : T → Sort v`
+
+`Γ ⊢ f₁ : (b₁ : B₁) → … → (rₖ : T) → motive r₁ → … → motive rₖ → motive (c₁ b₁ … rₖ)`
+
+`Γ ⊢ T.rec f₁ … fₘ : (t : T) → motive t`
+:::::
+::::::
+
+::::::vstack
+:::::class "rlabel"
+computation, with `R := T.rec f₁ … fₘ`
+:::::
+
+:::::class "rule small"
+`Γ ⊢ b₁ : B₁`  `…`  `Γ ⊢ rₖ : T`
+
+`Γ ⊢ R (c₁ b₁ … bₗ r₁ … rₖ) ≡ f₁ b₁ … bₗ r₁ … rₖ (R r₁) … (R rₖ)`
+:::::
+::::::
+
+# Restricted elimination
+
+The recursor of a proposition may only produce proofs: all its proofs are equal (_Conversion_), and data could tell them apart.
+
+```lean +error -panel -stretch
+example (a b : Prop) (h : a ∨ b) : Bool :=
+  match h with
+  | Or.inl _ => true
+  | Or.inr _ => false
+```
+
+Exception, _subsingleton elimination_: at most one constructor, and all its arguments are proofs. `False`, `Eq`, `And` qualify; `Or` and `∃` do not.
+
+```lean -panel -stretch
+example (a b : Prop) (h : a ∧ b) : Bool :=
+  match h with
+  | ⟨_, _⟩ => true
+```
+
+One case, only proofs as arguments: the result cannot depend on `h`.
+
+# The constructor has to stay hidden
+
+```lean -panel -stretch
+example {a : Prop} (h : a) :
+    (Or.inl (b := a) h) = Or.inr (b := a) h :=
+  rfl
+```
+
+A `which : a ∨ b → Bool` reading off the constructor would give `true ≡ false`.
+
+:::table +colHeaders +rowSeps
+*
+  * in `Prop`
+  * in `Type`
+  * stays hidden
+*
+  * `∃ x, q x`
+  * `Σ x, q x`
+  * the witness
+*
+  * `a ∨ ¬a`
+  * `Decidable a`
+  * the constructor (`inl` or `inr`)
+:::
+
+# The three axioms
+
+Everything so far follows from the rules. Lean adds three axioms:
+
+```
+axiom Quot.sound : r a b → Quot.mk r a = Quot.mk r b
+axiom propext : (a ↔ b) → a = b
+axiom Classical.choice : Nonempty α → α
+```
+
+- `Quot.sound`: related elements have the same class (1.4).
+- `propext`: equivalent propositions are equal (next slide).
+- `Classical.choice`: an element of `α` from a proof of `Nonempty α`.
+
+`Classical.em` and `funext` are theorems.
+
+# Propositional extensionality
+
+`a ↔ b` means `a → b` and `b → a`: a pair of functions between proofs. `a = b` means that `a` and `b` are the same term of type `Prop`. Without an axiom, the first does not give the second.
+
+```lean -panel -stretch
+example : (1 = 1) = True :=
+  propext ⟨fun _ => trivial, fun _ => rfl⟩
+example (a b : Prop) (h : a ↔ b) (ha : a) : b := by
+  rw [← h]
+  exact ha
+```
+
+:::class "key"
+`rw` with `h : a ↔ b` uses `propext`; `h.mp ha` does not.
+:::
+
+# Extensionality
+
+:::table +colHeaders +rowSeps
+*
+  * type
+  * equality means
+  * Lean
+  * first-order logic + ZF
+*
+  * functions
+  * same values
+  * `funext`, theorem from `Quot.sound`
+  * theorem: a function is its graph, a set of pairs
+*
+  * propositions
+  * same truth
+  * `propext`, axiom
+  * no question: formulas are not sets, `φ = ψ` is not a formula
+*
+  * sets
+  * same elements
+  * `Set.ext`, theorem from both
+  * extensionality axiom
+:::
+
+`Set α` is `α → Prop`:
+
+```lean -panel -stretch
+example (α : Type) (s t : Set α) (h : ∀ x, x ∈ s ↔ x ∈ t) :
+    s = t :=
+  funext fun x => propext (h x)
+```
+
+:::class "key"
+In Lean, propositions are terms, so their equality needs a rule.
+:::
 
 # `Nonempty` and choice
 
 ```lean -panel -stretch
-example {α : Type} (a : α) : Nonempty α := ⟨a⟩
+example (h : ∃ n : ℕ, 5 < n) : Nonempty {n : ℕ // 5 < n} :=
+  let ⟨n, hn⟩ := h
+  ⟨⟨n, hn⟩⟩
 
-noncomputable def pickOne {α : Type}
-    (h : Nonempty α) : α :=
-  Classical.choice h
+noncomputable def pick (h : ∃ n : ℕ, 5 < n) : ℕ :=
+  Classical.choose h
 ```
 
-`Nonempty α`: `α` has an element, but the proof does not give it back. A proof cannot be eliminated into data.
+From `∃` to `Nonempty` is proof to proof: allowed. `Classical.choose h` applies `Classical.choice` to this proof of `Nonempty` and takes `.val`. Lean knows `5 < pick h`, but not which number `pick h` is.
 
 :::class "key"
-`Classical.choice` is the step from `Prop` back to data. Definitions that use it are `noncomputable`.
+`Classical.choice` is the only step from a proof back to data.
+:::
+
+# `noncomputable`
+
+No code from the compiler, so no `#eval`. The kernel checks as usual.
+
+```lean -panel -stretch
+inductive BT where | leaf | node (l r : BT)
+noncomputable def size (t : BT) : ℕ :=
+  BT.rec 1 (fun _ _ a b => a + b) t
+example : size (.node .leaf .leaf) = 2 := rfl
+
+def size' : BT → ℕ
+  | .leaf => 1
+  | .node l r => size' l + size' r
+#eval size' (.node .leaf .leaf)
+```
+
+:::class "key"
+`size` has no code, but the kernel computes it. With `match`, `size'` is computable.
+:::
+
+# Compiler and kernel are independent
+
+:::table +colHeaders +rowSeps
+*
+  * definition
+  * computable (`#eval`)
+  * `rfl`, `decide` (kernel)
+*
+  * `size'`, by pattern matching
+  * yes
+  * yes
+*
+  * `size`, with `BT.rec`
+  * no
+  * yes
+*
+  * `Nat.find`
+  * yes
+  * no: well-founded recursion
+*
+  * `pick`, with `Classical.choose`
+  * no
+  * no
+:::
+
+:::class "key"
+`noncomputable` concerns the compiler, not the logic.
 :::
 
 # The kernel and the elaborator
@@ -208,36 +452,6 @@ theorem rulesDemo (p q : Prop) (hp : p) (hq : q) :
 - _elaborator_: notation, `{α}`, `[C α]`, `↑`, `match`, tactics; not trusted
 - _kernel_: checks the explicit term; small, trusted
 - errors come from the elaborator; `(kernel) …` is rare
-
-# How Lean checks the rules
-
-From `src/kernel/type_checker.cpp`, the application rule:
-
-```
-expr f_type = ensure_pi(infer_type(app_fn(e)));
-expr a_type = infer_type(app_arg(e));
-if (!is_def_eq(a_type, binding_domain(f_type)))
-    throw app_type_mismatch_exception(...);
-return instantiate(binding_body(f_type), app_arg(e));
-```
-
-:::class "key"
-Conversion is the call `is_def_eq`. About 1 400 lines check every proof.
-:::
-
-# How the universe is determined
-
-```lean -panel -stretch
-#check (ℕ → Type)             -- Type 1
-#check (∀ α : Type, α → α)    -- Type 1
-#check (∀ α : Type 5, α → α)  -- Type 6
-```
-
-_Predicative_: a type lands above everything it quantifies over.
-
-:::class "key"
-`Type : Type` would give Girard's paradox, a proof of `False`.
-:::
 
 # Why `Prop` is special: proof irrelevance
 
@@ -254,95 +468,34 @@ example (a b : ℕ) : a = b := rfl
 # `Prop` is impredicative
 
 ```lean -panel -stretch
-#check (∀ α : Type 5, α = α)  -- Prop
-#check (∀ p : Prop, p → p)    -- Prop
-#check (∀ p : Prop, p)        -- Prop
+#check (∀ α : Type 5, α = α)
+#check (∀ p : Prop, p → p)
+#check ((α : Type) → α → α)
 ```
 
-`∀ p : Prop, p → p` quantifies over a totality to which it belongs.
+A definition is _impredicative_ if it quantifies over a totality that contains the object being defined, and _predicative_ if not.
 
-:::class "key"
-A `∀` into `Prop` stays small; a `∀` into `Type u` must climb.
-:::
+- `∀ p : Prop, p → p` is a `Prop` and quantifies over all of `Prop`: impredicative.
+- `(α : Type) → α → α` quantifies over `Type` and lies in `Type 1`, outside it: predicative.
+
 
 # Russell's supremum
 
-Russell's vicious circle principle forbids this; he needed the axiom of reducibility. Lean grants the circle in `Prop` and refuses it for data.
+A real `r` is fixed by the rationals below it. Define reals this way, and `ratsBelowSup S` is a real:
 
 ```lean -panel -stretch
--- the body ranges over all reals ...
-#check fun (S : Set ℝ) (q : ℚ) =>
-  (∃ x ∈ S, (q : ℝ) < x)       -- Prop
--- ... the cut is an ordinary Set ℚ
-#check fun (S : Set ℝ) =>
-  {q : ℚ | ∃ x ∈ S, (q : ℝ) < x}
+-- the rationals below r
+def ratsBelow (r : ℝ) : ℚ → Prop :=
+  fun q => (q : ℝ) < r
+-- the rationals below sup S, for a bounded set S
+def ratsBelowSup (S : ℝ → Prop) : ℚ → Prop :=
+  fun q => ∃ x : ℝ, S x ∧ (q : ℝ) < x
 ```
 
-# Is this consistent?
-
-- Model `Prop` as fixed truth values: a `∀` over it is a meet, hence
-  a member again.
-- Lean is not first-order, so the model is built by hand.
-- Carneiro 2019: relative to ZFC with $`n` inaccessibles. An error was
-  found; unique typing and Pi-injectivity remain open.
+The `∃ x : ℝ` in `ratsBelowSup S` runs over all reals, `ratsBelowSup S` itself included. Russell's vicious circle principle forbids this; he needed the axiom of reducibility.
 
 :::class "key"
-Consistency is well supported, not settled.
-:::
-
-# Restricted elimination
-
-A proof carries no observable content, so no data can be read off it.
-
-```lean +error -panel -stretch
-example (a b : Prop) (h : a ∨ b) : Bool :=
-  match h with
-  | Or.inl _ => true
-  | Or.inr _ => false
-```
-
-Exception, _subsingleton elimination_: `False`, `Eq`, `And`. Not `Or`, not `∃`.
-
-# The tag has to stay hidden
-
-```lean -panel -stretch
-example {a : Prop} (h : a) :
-    (Or.inl (b := a) h) = Or.inr (b := a) h :=
-  rfl
-```
-
-A `which : a ∨ b → Bool` would give `true ≡ false`.
-
-:::table +colHeaders +rowSeps
-*
-  * in `Prop`
-  * in `Type`
-  * stays hidden
-*
-  * `∃ x, q x`
-  * `Σ x, q x`
-  * the witness
-*
-  * `a ∨ ¬a`
-  * `Decidable a`
-  * the tag
-:::
-
-# Tactic mode and term mode
-
-```lean -panel -stretch
-example : ∀ n : ℕ, n < n + 1 := by
-  intro n
-  exact Nat.lt_succ_self n
-
-example : ∀ n : ℕ, n < n + 1 :=
-  fun n => Nat.lt_succ_self n
-```
-
-After `by`, each tactic changes the proof state: hypotheses above `⊢`, the goal after it. `show_term` prints the term built, like `#print` for a finished theorem. For data, tactic mode works too, but one writes terms: `#eval` and `rfl` use them.
-
-:::class "key"
-`intro` builds a `fun`; `exact` supplies a term.
+In Lean the body is a `Prop`, so `ratsBelowSup S : ℚ → Prop` is an ordinary predicate.
 :::
 
 # Summary

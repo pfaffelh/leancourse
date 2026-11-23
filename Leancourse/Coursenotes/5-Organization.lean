@@ -38,6 +38,8 @@ used without the other.
     {ref "pattern-matching-and-recursion"}[chapter]
   * [Pairs, subtypes, families, quotients](slides/1-4-pairs-subtypes-quotients/) —
     {ref "type-formers"}[chapter]
+  * [Rules for building types](slides/1-5-rules/) —
+    {ref "rules"}[chapter]
 
 A deck appears here when its chapter is taught.
 

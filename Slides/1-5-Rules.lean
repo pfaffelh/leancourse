@@ -498,26 +498,6 @@ The `∃ x : ℝ` in `ratsBelowSup S` runs over all reals, `ratsBelowSup S` itse
 In Lean the body is a `Prop`, so `ratsBelowSup S : ℚ → Prop` is an ordinary predicate.
 :::
 
-# Is this consistent?
-
-- Model `Prop` as the truth values `false` and `true`: a `∀` gets the
-  minimum of its instances, again a truth value.
-- First-order logic quantifies only over elements, not over sets or
-  predicates. For it, consistent means having a model (Gödel 1929).
-  Lean quantifies over types and propositions, so the model is built
-  by hand.
-- Carneiro 2019: relative to ZFC with $`n` inaccessible cardinals,
-  one per universe `Type u` (each gives a set that is itself a model
-  of ZFC). An error was found; unique typing and Pi-injectivity
-  remain open.
-- Con-Leche (Breitner): a checker for Lean, written in Lean, with a
-  proof that every environment it accepts has a model. It avoids the
-  open properties. Not a theorem about Lean's own kernel.
-
-:::class "key"
-Consistency is proved for Con-Leche, not for the kernel Lean runs.
-:::
-
 # Summary
 
 - A few rules (context, universes, functions, conversion, inductive types) are all of Lean's logic.

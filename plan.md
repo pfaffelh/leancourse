@@ -35,18 +35,27 @@ Kontext, ohne Lean.
 | 5 | 16.11. | 18.11. | Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-e, L-g, 1.2-b · *extra:* X-a | |
 | 6 | 23.11. | 25.11. | Regeln zum Bau von Typen, `Prop` | 1.5 | 1.3-a, 1.4-b, 1.5-a | |
 | 7 | 30.11. | 02.12. | Typklassen: Instanzen, Suche, `Decidable`, `classical` | 1.6 | 1.4-a, 1.4-c, 1.6-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Typklassen: Funktoren und Monaden, Koerzionen, Hierarchien; Notation | 1.6, 1.7 | 1.6-b, 1.6-c, 1.6-d, 1.7-a | |
-| 9 | 14.12. | 16.12. | Zahlen; Mengen und Typen | 2.1, 2.2 | 2.0-a, 2.1-a, 2.2-a | **Test 3** |
-| 10 | 21.12. | -- | Grundlagen: Universen, Axiome, Fundiertheit | 2.3 | 2.2-b, 2.2-c, 2.3-a, 2.3-b | |
+| 8 | 07.12. | 09.12. | Typklassen: Funktoren und Monaden, Koerzionen, Hierarchien | 1.6 | 1.6-b, 1.6-c, 1.6-d | |
+| 9 | 14.12. | 16.12. | Notation | 1.7 | 1.7-a, 2.0-a | **Test 3** |
+| 10 | 21.12. | -- | Zahlen | 2.1 | 2.1-a | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
-| 11 | 11.01. | 13.01. | Proof Engineering; `conv` | Anhang | A-a, A-b | |
-| 12 | 18.01. | 20.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 2.4-a, 2.5-a | |
-| 13 | 25.01. | 27.01. | Filter | 2.6 | 2.6-a, 2.6-b | **Test 4** |
-| 14 | 01.02. | 03.02. | Topologie | 2.7 | 2.7-a | |
+| 11 | 11.01. | 13.01. | Mengen und Typen | 2.2 | 2.2-a, 2.2-b, 2.2-c | |
+| 12 | 18.01. | 20.01. | Grundlagen: Universen, Axiome, Fundiertheit | 2.3 | 2.3-a, 2.3-b, A-a, A-b | |
+| 13 | 25.01. | 27.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 2.4-a, 2.5-a | **Test 4** |
+| 14 | 01.02. | 03.02. | Filter | 2.6 | 2.6-a, 2.6-b | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.8 | 2.8-a, 2.8-b | **Test 5** |
 
-38 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. Über die Pause laufen die
-vier Blätter zu 2.2 und 2.3.
+37 Pflichtblätter, dazu die Extrablätter `X-a` (Woche 5) und `2.7-a`
+(Topologie, ohne Vorlesung). Über die Pause läuft `2.1-a`.
+
+Seit dem 24.11.2026 (Variante C): Proof Engineering hat keine Vorlesung
+mehr, `A-a` und `A-b` laufen als Blätter in W12 (nicht früher: `A-a`
+benutzt Mengen aus 2.2, `A-b` setzt `conv` aus `A-a` voraus, und
+`2.6-a` braucht `field_simp` aus `A-a`). Topologie (2.7) ist Lesestoff,
+kein späteres Kapitel hängt daran. Die zwei freien Termine gehen an
+Notation (1.7, durch die Notationstabelle gewachsen) und an die
+Trennung von 2.1 und 2.2, die je eine eigene Vorlesung und ein
+eigenes Deck bekommen. Es bleibt kein Puffer.
 
 Seit dem 30.10.2026 bekommen die Typklassen (1.6) zwei Vorlesungen:
 W7 Instanzen, Instanzsuche, `Decidable` und die Taktik `classical`;
@@ -60,9 +69,8 @@ Seit dem 24.11.2026 ist das Kapitel Maßtheorie mitsamt Extrablatt
 gestrichen; Wahrscheinlichkeit ist jetzt Kapitel 2.8 (`2.8-a`,
 `2.8-b`, vorher `2.9-a`, `2.9-b`).
 
-Zwei Kapitelpaare teilen sich einen Termin: 2.1+2.2 (W9), 2.4+2.5
-(W12). Notation (1.7) läuft mit der zweiten Typklassen-Vorlesung. Notation bekommt keine eigene Vorlesung, weil Studierende kaum eigene
-Notation einführen. Seit dem 27.10.2026 gibt
+Ein Kapitelpaar teilt sich einen Termin: 2.4+2.5 (W13). Notation (1.7)
+hat seit dem 24.11.2026 eine eigene Vorlesung (W9). Seit dem 27.10.2026 gibt
 es kein eigenes Kapitel *Terme* mehr: 1.2 *Typen und Terme I*
 (Universen, Funktionen, induktive Typen, Strukturen) und 1.4 *Typen
 und Terme II* (Σ, Subtypen, Typfamilien, indizierte Familien,
@@ -94,8 +102,9 @@ Idee steht als `sevenMod` in 1.2).
 
 Skriptzeilen je Termin (Stand 29.10.2026): Mittel 474, Spanne 330
 (W2) bis 768 (damals W15, seitdem um `IO`/`StateM`/`Except` gekürzt).
-Die schwerste Übungswoche ist W12 (67 Aufgaben, `2.4-a` allein 38).
-Wenn gekürzt werden muss, dann dort.
+Die schwerste Übungswoche ist W13 (65 Aufgaben, `2.4-a` allein 37),
+und dort liegt seit dem 24.11.2026 auch Test 4. Wenn gekürzt werden
+muss, dann dort.
 
 ### Benennung
 
@@ -114,9 +123,9 @@ läuft in den Wochen 2 bis 5 und damit vor seiner Theorie (1.4 und
 
 Die Logik ist nach Woche 5 abgeschlossen.
 
-### Woche 10 (21.12.), Anhang
+### Anhang (ohne Vorlesung, Blätter in W12)
 
-Vorgetragen werden die Abschnitte, die `A-a` verlangt:
+Gelesen werden die Abschnitte, die `A-a` verlangt:
 
 | Teil von `A-a` | Thema | Abschnitt |
 |---|---|---|
@@ -152,8 +161,8 @@ Seit dem 30.10.2026 beginnt Teil 2 mit dem Kapitel 2.1 *Numbers*
 Kapiteln bleibt, sind die früheren 2.2 (Universen und Axiome) und 2.3
 (Fundiertheit) zu 2.3 *Foundations* zusammengelegt; Mengen ist jetzt
 2.2. Blätter: `2.1-a/b/c` -> `2.2-a/b/c`, `2.2-a` -> `2.3-a`,
-`2.3-a` -> `2.3-b`. `2.2-b`, `2.2-c` (Kapitel 2.2, gelesen in Woche 9)
-liegen in Woche 10, damit Woche 9 nicht vier Blätter hat.
+`2.3-a` -> `2.3-b`. Seit dem 24.11.2026 hat 2.2 eine eigene
+Vorlesung (W11), alle drei Blätter zu 2.2 laufen dort.
 Beweisirrelevanz steht auf `2.3-a`.
 `1.7-a` hat nur eine Aufgabe und ist eher ein Leseblatt.
 
@@ -215,6 +224,6 @@ Studierende brauchen nur
 - Prüfungsordnung: Ist „3 von 5 Kurztests" als Studienleistung
   zulässig?
 - Raumbuchung Mo/Mi, Rechnerausstattung im Labor.
-- Foliensätze für Teil 2 stehen (W9, W10, W12-W15, je einer pro
-  Vorlesung). Es fehlt W11 (Proof Engineering, Anhang).
+- Foliensätze für Teil 2 stehen, je einer pro Vorlesung (W10-W15),
+  dazu einer für Topologie (Lesestoff).
 - Abgabe- und Verteidigungstermin für die Projekte.

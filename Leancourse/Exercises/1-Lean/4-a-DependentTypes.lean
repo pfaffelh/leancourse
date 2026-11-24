@@ -13,7 +13,7 @@ component is a proof.
 Universes appear here too; they were introduced in chapter 1.2.
 The axioms `propext` and `Classical.choice` are listed in chapter
 1.5 and treated in chapter 2.3, with their own sheet `2.3-a` in
-week 9; `funext` is a theorem. One exercise below needs choice; it is marked.
+week 12; `funext` is a theorem. One exercise below needs choice; it is marked.
 
 ## Notation introduced here
 

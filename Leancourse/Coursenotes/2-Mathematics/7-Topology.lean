@@ -22,7 +22,7 @@ however, is stated with {ref "filters"}[filters]: continuity at a point is
 {ref "filter-tendsto"}[`Filter.Tendsto`] on neighbourhood filters, and
 compactness is defined with filters directly.
 
-The [slides](slides/2-7-topology/) for this chapter follow it section by section.
+This chapter has no lecture; it is for reading, and sheet `2.7-a` is an extra sheet. No later chapter depends on it. The [slides](slides/2-7-topology/) follow it section by section.
 
 # Notation and naming conventions
 %%%

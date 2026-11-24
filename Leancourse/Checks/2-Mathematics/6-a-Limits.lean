@@ -3,7 +3,7 @@ import Mathlib -- import all the tactics
 /-!
 # (witness) 2.6-a -- Limits of sequences
 
-*Notes chapter 2.6, week 13.*
+*Notes chapter 2.6, week 14.*
 -/
 
 /- Solutions to 2.6-a. -/

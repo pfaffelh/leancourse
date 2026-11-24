@@ -3246,3 +3246,68 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   `norm_num`); `OfNat` ist jetzt Teil 8, Aufgaben 17-19. Die Tabelle
   "Tactics from earlier sheets" sagte "None", obwohl das Blatt `rfl`
   und `ring` braucht; jetzt `1.1-a` und `1.1-c`.
+
+## 2026-11-24 (5) -- 1.7: Notationstabelle, `syntax`/`macro_rules` erklaert
+
+- Kapitel 1.7: neuer Unterabschnitt *`syntax`, `macro_rules` and
+  `notation3`* (tag `syntax-macro-rules`) am Ende von *Defining new
+  notation*. Vorher wurden die drei Namen benutzt, aber nie erklaert,
+  obwohl 1.3 (Listenliteral) dafuer auf 1.7 verweist. Beispiel
+  `local syntax "twice "` + `local macro_rules`, und die
+  `notation3`-Zeile von `∀ᶠ` aus Mathlib.
+- *Notation in Mathlib* ist jetzt eine Referenz: fuenf Tabellen (Logik,
+  Zahlen und Ordnung, Mengen, Funktionen und Typen, Summen/Integrale/
+  Grenzwerte), Spalten *You write / Lean reads / Input*, alles per
+  `pp.notation false` geprueft, Eingaben aus der `abbreviations`-Liste
+  der VS-Code-Erweiterung. Davor: `∃` ist Notation (`Exists`), `∀`
+  und `→` nicht (Funktionstypen). `Looking behind notation` hat den
+  Tag `looking-behind-notation`.
+- Deck 1-7 jetzt 23 Folien, Reihenfolge wie im Kapitel: *Scoped
+  notation* steht vor den Mathlib-Folien, neu `syntax` and
+  `macro_rules`, *Are ∀ and ∃ notation?* und fuenf Tabellenfolien.
+- **Neu in Mathlib 2026** (`Mathlib/Tactic/SetNotationForOrder.lean`):
+  auf `Set` und `Finset` ist `s ⊆ t` jetzt `LE.le s t`, nicht mehr
+  `HasSubset.Subset`; der Delaborator druckt es weiter als `⊆`.
+- Eingabe: `\int` gibt `ℤ`, das Integral ist `\integral`.
+- Leere Tabellenzellen parsen weder im Manual noch in VersoSlides;
+  dort steht `—`.
+
+## 2026-11-24 (6) -- Casts in 2.1 ausgebaut
+
+- Kapitel 2.1, `# Casts` (tag `number-casts`) von einem Absatz auf
+  sechs Unterabschnitte: welche Casts es gibt (Tabelle, Namen per
+  `pp.coercions false`), wo der Pfeil sitzt (Elaboration von aussen
+  nach innen), Casts und Operationen (Lemmatabelle mit Hypothesen:
+  `Nat.cast_sub` braucht `m ≤ n`, `Nat.cast_div` `n ∣ m` und
+  `(n : K) ≠ 0`), die Taktiken (`push_cast [h]`, `norm_cast`,
+  `exact_mod_cast`, `zify [h]`, `omega`), *Between ℝ, ℝ≥0 and ℝ≥0∞*
+  (tag `real-nnreal-ennreal-casts`: nur `ℝ≥0 → ℝ` und
+  `ℝ≥0 → ℝ≥0∞` sind Coercions, `toNNReal`/`ofReal`/`toReal` sind
+  Funktionen mit Muellwert, ihre Lemmata brauchen Hypothesen; `lift a
+  to ℝ≥0 using ha`, danach `norm_cast`) und *The way down*
+  (`Int.toNat`, `natAbs`, `⌊x⌋`, `⌊x⌋₊`). Alle Beispiele geprueft.
+- `ENNReal.ofReal x` ist per `rfl` `↑(x.toNNReal)`.
+- Deck 2-1: die eine Casts-Folie ist jetzt acht (34 Folien insgesamt).
+- `lift`, `zify`, `qify`, `rify` werden auf keinem Blatt eingefuehrt.
+
+## 2026-11-24 (7) -- Wochenplan Variante C, 2.1 und 2.2 getrennt
+
+- Proof Engineering hat keine Vorlesung mehr, Topologie (2.7) ist
+  Lesestoff mit Extrablatt `2.7-a` (kein spaeteres Kapitel haengt
+  daran; das Kapitel sagt das jetzt im Vorspann). Die zwei Termine
+  gehen an Notation (1.7, eigene Vorlesung W9) und an 2.1/2.2, die je
+  eine Vorlesung bekommen. Neuer Plan ab W8: W8 1.6b; W9 1.7 (Test 3);
+  W10 2.1; W11 2.2; W12 2.3; W13 2.4+2.5 (Test 4); W14 2.6; W15 2.8
+  (Test 5). Kein Puffer mehr.
+- Blaetter: W8 `1.6-b/c/d`; W9 `1.7-a`, `2.0-a`; W10 `2.1-a` (ueber
+  die Pause); W11 `2.2-a/b/c`; W12 `2.3-a/b`, `A-a`, `A-b`; W13
+  `2.4-a`, `2.5-a`; W14 `2.6-a/b`; W15 `2.8-a/b`. **`A-a` darf nicht
+  vor W12**: es benutzt Mengen (2.2), `A-b` braucht `conv` aus `A-a`,
+  `2.6-a` braucht `field_simp` aus `A-a`. Wochenangaben in Blaettern,
+  Zeugen, `Checks/README.md`, `plan.md` und Organization nachgezogen
+  (auch die Verweise auf `2.3-a` in `1.4-a` und `1.5-a`).
+- **Deck aufgeteilt**: `Slides/2-1-NumbersSets.lean` -> `2-1-Numbers`
+  (`git mv`, namespace `SlidesNumbers`, 21 Folien) und neu
+  `2-2-SetsAndTypes` (namespace `SlidesSets`, 15 Folien). **URLs
+  geaendert**: `slides/2-1-numbers/`, `slides/2-2-sets-and-types/`;
+  `slides/2-1-numbers-sets/` gibt es nicht mehr.

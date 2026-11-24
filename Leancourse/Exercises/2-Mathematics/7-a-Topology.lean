@@ -3,7 +3,7 @@ import Mathlib
 /-
 # 2.7-a -- Topology
 
-*Notes chapter 2.7, week 14.*
+*Notes chapter 2.7. Extra sheet: the chapter has no lecture, and nothing depends on it.*
 
 These exercises cover continuity, open and closed sets, closure and
 interior, metric spaces, compactness and connectedness. Replace each

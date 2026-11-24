@@ -3,7 +3,7 @@ import Mathlib
 /-
 # (witness) A-b -- `conv`
 
-*Appendix, week 11.*
+*Appendix, week 12.*
 -/
 
 -- 1. Rewrite only the first `a`.

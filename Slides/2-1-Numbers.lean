@@ -7,20 +7,17 @@ open VersoSlides
 set_option pp.rawOnError true
 
 /-
-Deck for the chapters "Numbers" and "Sets and types" of part 2
-(Mathematics), read in one lecture. It follows the two chapters section
-by section. Numbers: how the number types are built, the real numbers
-as a quotient, arithmetic in ℕ and ℤ, junk values, the three powers,
-nonnegative and extended reals, casts. Sets and types: sets versus
-types, sets as predicates and their operations, indexed unions, set
-equality, image and preimage, injective and surjective maps, finite
-sets and sums, and the subtype of a set.
+Deck for the chapter "Numbers" of part 2 (Mathematics). It follows the
+chapter section by section: how the number types are built, the real
+numbers as a quotient, arithmetic in ℕ and ℤ, junk values, the three
+powers, nonnegative and extended reals, casts. Chapter 2.2 has its own
+deck, `2-2-SetsAndTypes`.
 -/
 
 namespace SlidesNumbers
 open scoped NNReal ENNReal
 
-#doc (Slides) "Numbers; sets and types" =>
+#doc (Slides) "Numbers" =>
 
 ```css
 .reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
@@ -34,12 +31,12 @@ open scoped NNReal ENNReal
 .reveal section .small td, .reveal section table.small td { padding: 0.1em 0.6em; }
 ```
 
-# Numbers; sets and types
+# Numbers
 
-Mathematics — chapters 1 and 2
+Mathematics — chapter 1
 
 :::class "key"
-Each number type is built with a type former of part 1, and the construction explains its arithmetic. A set is not a new type: it is a predicate on a type.
+Each number type is built with a type former of part 1, and the construction explains its arithmetic.
 :::
 
 # How the number types are built
@@ -299,334 +296,217 @@ example : (∞ : ℝ≥0∞).toReal = 0 := by simp
 `ℝ≥0∞` is the value type of measures: every set has a measure, every nonnegative series a sum.
 :::
 
-# Casts
+# Casts go up
 
-Coercions run along `ℕ → ℤ → ℚ → ℝ → ℂ`, and `ℝ≥0 → ℝ`, `ℝ≥0 → ℝ≥0∞`.
+:::table +colHeaders
+*
+  * from
+  * to
+  * function behind `↑`
+*
+  * `ℕ`
+  * `ℤ`, `ℚ`, `ℝ`, `ℂ`, any semiring
+  * `Nat.cast`
+*
+  * `ℤ`
+  * `ℚ`, `ℝ`, `ℂ`, any ring
+  * `Int.cast`
+*
+  * `ℚ`
+  * `ℝ`, `ℂ`
+  * `Rat.cast`
+*
+  * `ℝ`
+  * `ℂ`
+  * `Complex.ofReal`
+*
+  * `ℝ≥0`
+  * `ℝ`
+  * `NNReal.toReal`
+*
+  * `ℝ≥0`
+  * `ℝ≥0∞`
+  * `ENNReal.ofNNReal`
+:::
+
+`set_option pp.coercions false` prints these names instead of `↑`.
+
+:::class "key"
+`(3 : ℕ)` and `(3 : ℝ)` are different terms. The way down is a function with a junk value.
+:::
+
+# Where the arrow goes
 
 ```lean -panel -stretch
-example (n : ℕ) : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by
-  push_cast; ring
-example : ((7 / 2 : ℕ) : ℝ) = 3 := by norm_num
+variable (n : ℕ) in
+#check (n : ℝ) + 1
+variable (n : ℕ) in
+#check ((n + 1 : ℕ) : ℝ)
+example : ((7 : ℕ) : ℝ) / 2 = 3.5 := by norm_num
+example : (((7 : ℕ) / 2 : ℕ) : ℝ) = 3 := by norm_num
 ```
 
-```
-Nat.cast_sub : m ≤ n → ((n - m : ℕ) : R) = n - m
-```
+- the expected type decides: Lean elaborates from the outside in
+- a type ascription `(… : ℕ)` fixes where the cast sits
+- for `+` both agree, for `-` and `/` not
 
-:::class "key"
-A cast commutes with `+` and `*`, not with truncated `-` or with `/` on `ℕ`.
+# Casts and operations
+
+:::table +colHeaders
+*
+  * operation
+  * lemma
+  * hypothesis
+*
+  * `+`, `*`, `^`
+  * `Nat.cast_add`, `Nat.cast_mul`, `Nat.cast_pow`
+  * none
+*
+  * numerals
+  * `Nat.cast_zero`, `Nat.cast_one`, `Nat.cast_ofNat`
+  * none
+*
+  * `=`
+  * `Nat.cast_inj`
+  * characteristic zero
+*
+  * `≤`, `<`
+  * `Nat.cast_le`, `Nat.cast_lt`
+  * target ordered
+*
+  * `-`
+  * `Nat.cast_sub`
+  * `m ≤ n`
+*
+  * `/`
+  * `Nat.cast_div`
+  * `n ∣ m`, `(n : K) ≠ 0`
 :::
 
-# Sets versus types
+Same names for `Int.cast_*`, `Rat.cast_*`, `NNReal.coe_*`, `ENNReal.coe_*`. `Int.cast_sub` needs no hypothesis.
 
-In set theory `∈` is the primitive, and an object lies in many sets. In type theory every term `a : α` has exactly one type.
-
-:::table +colHeaders +rowSeps
-*
-  * notion
-  * written
-  * its terms
-*
-  * type
-  * `α`
-  * `a : α`, with exactly one type
-*
-  * set
-  * `s : Set α`
-  * terms of `α` that satisfy a predicate
-*
-  * subtype
-  * `{ x : α // p x }`
-  * a new type: pairs of a value and a proof of `p`
-:::
-
-:::class "key"
-A set is not a new type. `s : Set α` selects terms of `α`, and its elements keep their type `α`.
-:::
-
-# Sets are predicates
+# The cast tactics
 
 ```lean -panel -stretch
-example : Set ℕ = (ℕ → Prop) := rfl
-
-def Evens : Set ℕ := { n | n % 2 = 0 }
-
-example : (4 ∈ Evens) ↔ (4 % 2 = 0) := Iff.rfl
-example : 4 ∈ Evens := by
-  show 4 % 2 = 0
-  decide
-example : 3 ∉ Evens := by
-  show ¬ (3 % 2 = 0)
-  decide
+example (m n : ℕ) (h : m ≤ n) :
+    ((n - m : ℕ) : ℝ) = n - m := by
+  push_cast [h]
+  ring
+example (m n : ℕ) (h : (m : ℝ) < n) : m < n := by
+  exact_mod_cast h
 ```
 
-:::class "key"
-`Set α` is `α → Prop`, and `a ∈ s` is `s a`.
-:::
+- `push_cast`: casts towards the leaves, `↑(n + 1)` to `↑n + 1`
+- `norm_cast`: casts towards the root, then removes them
+- `exact_mod_cast h`: `h` and goal differ only in casts
+- they use the lemmas marked `@[norm_cast]`
 
-# Operations are connectives
-
-:::table +colHeaders +rowSeps
-*
-  * statement
-  * unfolds to
-  * typed as
-*
-  * `s ⊆ t`
-  * `∀ a, a ∈ s → a ∈ t`
-  * `\subseteq`
-*
-  * `a ∈ s ∩ t`
-  * `a ∈ s ∧ a ∈ t`
-  * `\cap`
-*
-  * `a ∈ s ∪ t`
-  * `a ∈ s ∨ a ∈ t`
-  * `\cup`
-*
-  * `a ∈ sᶜ`
-  * `¬ a ∈ s`
-  * `\compl`
-*
-  * `a ∈ ∅`
-  * `False`
-  * `\empty`
-*
-  * `a ∈ Set.univ`
-  * `True`
-  * `Set.univ`
-*
-  * `a ∈ { x | p x }`
-  * `p a`
-  * literal braces
-:::
-
-:::class "key"
-The operations are defined pointwise on the predicates. Each line is `Iff.rfl`.
-:::
-
-# Indexed unions and intersections
-
-For a family `s : ι → Set α`:
+# `zify`: from ℕ to ℤ
 
 ```lean -panel -stretch
-example (s : ℕ → Set ℕ) (a : ℕ) :
-    (a ∈ ⋃ i, s i) ↔ ∃ i, a ∈ s i := Set.mem_iUnion
-example (s : ℕ → Set ℕ) (a : ℕ) :
-    (a ∈ ⋂ i, s i) ↔ ∀ i, a ∈ s i := Set.mem_iInter
-example (S : Set (Set ℕ)) (a : ℕ) :
-    (a ∈ ⋃₀ S) ↔ ∃ t ∈ S, a ∈ t := Set.mem_sUnion
+example (m n : ℕ) (h : m ≤ n) :
+    (n - m) * (n + m) = n ^ 2 - m ^ 2 := by
+  have h2 : m ^ 2 ≤ n ^ 2 := Nat.pow_le_pow_left h 2
+  zify [h, h2]
+  ring
 ```
 
-`⋃ i ∈ a, s i` ranges over a set `a : Set ι`. `⋃ i, s i` is `iSup s`, and `⋃₀ S` is `sSup S`.
+- `omega` fails: not linear; `ring` fails in `ℕ`: `-` is truncated
+- `zify [h]` moves the goal to `ℤ` and uses `h : m ≤ n` for `↑(n - m)`
+- likewise `qify` (to `ℚ`) and `rify` (to `ℝ`)
 
-:::class "key"
-Membership in an indexed union is an `∃`, in an indexed intersection a `∀`.
-:::
+# Between ℝ, ℝ≥0 and ℝ≥0∞
 
-# Set equality
-
-```lean -panel -stretch
-example (s t : Set ℕ) :
-    s = t ↔ ∀ a, a ∈ s ↔ a ∈ t :=
-  ⟨fun h a => by rw [h], fun h => Set.ext h⟩
-
-example : { n : ℕ | n % 2 = 0 } = { n | 2 ∣ n } := by
-  ext n
-  simp only [Set.mem_setOf_eq]
-  constructor <;> intro h <;> omega
-
-example : (⋃ n : ℕ, {n}) = Set.univ := by
-  ext a; simp
-```
-
-`Set.ext` uses `funext` (a theorem, from `Quot.sound`) and `propext`.
-
-:::class "key"
-Two sets are equal when they have the same members. `ext` turns `s = t` into `a ∈ s ↔ a ∈ t`.
-:::
-
-# Image and preimage
-
-```lean -panel -stretch
-example (f : ℕ → ℕ) (s : Set ℕ) (y : ℕ) :
-    y ∈ f '' s ↔ ∃ x, x ∈ s ∧ f x = y := Iff.rfl
-example (f : ℕ → ℕ) (t : Set ℕ) (x : ℕ) :
-    x ∈ f ⁻¹' t ↔ f x ∈ t := Iff.rfl
-```
-
-A hypothesis `h : y ∈ f '' s` is a triple: `obtain ⟨x, hx, rfl⟩ := h` gives `x`, a proof of `x ∈ s`, and replaces `y` by `f x`. To prove `y ∈ f '' s`, name the point: `⟨x, hx, rfl⟩` or `use x`.
-
-A hypothesis `x ∈ f ⁻¹' t` needs no unpacking. The image of the whole type is `Set.range f`.
-
-:::class "key"
-Membership in the image is an `∃`; membership in the preimage is `f x ∈ t`.
-:::
-
-# Image, preimage, inclusion
-
-```lean -panel -stretch
-example (f : ℕ → ℕ) (s t : Set ℕ) :
-    f '' s ⊆ t ↔ s ⊆ f ⁻¹' t := by
-  constructor
-  · intro h x hx
-    exact h ⟨x, hx, rfl⟩
-  · rintro h y ⟨x, hx, rfl⟩
-    exact h hx
-example (f : ℕ → ℕ) (t₁ t₂ : Set ℕ) :
-    f ⁻¹' (t₁ ∩ t₂) = f ⁻¹' t₁ ∩ f ⁻¹' t₂ := rfl
-example (f : ℕ → ℕ) (s₁ s₂ : Set ℕ) :
-    f '' (s₁ ∩ s₂) ⊆ f '' s₁ ∩ f '' s₂ :=
-  Set.image_inter_subset f s₁ s₂
-```
-
-:::class "key"
-The preimage commutes with all set operations, by `rfl`. The image commutes with `∪`, and with `∩` only up to `⊆`.
-:::
-
-# Injective and surjective
-
-```lean -panel -stretch
-example (f : ℕ → ℕ) : Function.Injective f ↔
-    ∀ a b, f a = f b → a = b := Iff.rfl
-example (f : ℕ → ℕ) : Function.Surjective f ↔
-    ∀ b, ∃ a, f a = b := Iff.rfl
-example : Function.Injective (fun n : ℕ => n + 1) := by
-  intro a b h
-  simpa using h
-example : ¬ Function.Surjective (fun n : ℕ => n + 1) := by
-  intro h
-  obtain ⟨a, ha⟩ := h 0
-  simp at ha
-```
-
-The two points in `Injective` are implicit: `hf h : a = b` for `h : f a = f b`. So `g ∘ f` is injective by `fun _ _ h => hf (hg h)`.
-
-:::class "key"
-Both are definitions with quantifiers; `intro` unfolds them.
-:::
-
-# Bijections and equivalences
-
-```lean -panel -stretch
-example (f : ℕ → ℕ) : Function.Bijective f ↔
-    Function.Injective f ∧ Function.Surjective f := Iff.rfl
-example (f : ℕ → ℕ) :
-    Function.Surjective f ↔ Set.range f = Set.univ :=
-  Set.range_eq_univ.symm
-```
-
-`α ≃ β` is a map together with its inverse. `Equiv.ofBijective` chooses the inverse with `Classical.choice`:
-
-```lean +error -panel -stretch
-def idEquiv : ℕ ≃ ℕ :=
-  Equiv.ofBijective id Function.bijective_id
-```
-
-```lean -panel -stretch
-noncomputable def idEquiv' : ℕ ≃ ℕ :=
-  Equiv.ofBijective id Function.bijective_id
-```
-
-:::class "key"
-Bijectivity is a property of `f`; the inverse is data.
-:::
-
-# Finite sets
-
-A `Set α` may be infinite. `Finset α` is a finite set given as data:
-
-```
-structure Finset (α : Type*) where
-  val : Multiset α        -- a list up to permutation
-  nodup : val.Nodup
-```
-
-```lean -panel -stretch
-example : Finset.range 4 = {0, 1, 2, 3} := by decide
-example : ({1, 2, 3} : Finset ℕ).card = 3 := by decide
-example : ∑ i ∈ Finset.range 4, i = 6 := by decide
-example : ∏ i ∈ Finset.Icc 1 4, i = 24 := by decide
-```
-
-`s.image f` removes duplicates among the values, so it needs `DecidableEq β`.
-
-:::class "key"
-A `Finset` is data, so `decide` computes with it.
-:::
-
-# Sums by induction
-
-`∑ i ∈ s, f i` is typed `\sum`, `∏` is `\prod`. The sum over `Finset.range n` runs over `0, …, n - 1`.
-
-```lean -panel -stretch
-example (n : ℕ) :
-    ∑ i ∈ Finset.range n, (2 * i + 1) = n ^ 2 := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [Finset.sum_range_succ, ih]
-    ring
-```
-
-:::class "key"
-Induction on `n`; `Finset.sum_range_succ` splits off the last term.
-:::
-
-# Counting
-
-A type with `[Fintype α]` has `Finset.univ`, the finset of all its elements.
-
-:::table +colHeaders +rowSeps
+:::table +colHeaders
 *
-  * count
-  * of
-  * infinite case
+  * from
+  * to
+  * function
+  * junk value
 *
-  * `s.card`, also `#s`
-  * `s : Finset α`
-  * does not occur
+  * `ℝ≥0`
+  * `ℝ`, `ℝ≥0∞`
+  * coercion `↑`
+  * none
 *
-  * `Fintype.card α`
-  * `α` with `[Fintype α]`
-  * does not occur
+  * `ℝ`
+  * `ℝ≥0`
+  * `x.toNNReal`
+  * `0` for `x < 0`
 *
-  * `Nat.card α`
-  * any type `α`
+  * `ℝ`
+  * `ℝ≥0∞`
+  * `ENNReal.ofReal x`
+  * `0` for `x < 0`
+*
+  * `ℝ≥0∞`
+  * `ℝ≥0`
+  * `a.toNNReal`
+  * `0` for `a = ∞`
+*
+  * `ℝ≥0∞`
+  * `ℝ`
+  * `a.toReal`
+  * `0` for `a = ∞`
+:::
+
+```
+ENNReal.toReal_ofReal : 0 ≤ x → (ofReal x).toReal = x
+ENNReal.toReal_add : a ≠ ∞ → b ≠ ∞ →
+  (a + b).toReal = a.toReal + b.toReal
+```
+
+:::class "key"
+`norm_cast` knows the coercions, not the four functions: their lemmas need hypotheses.
+:::
+
+# `lift`: move to ℝ≥0 first
+
+```lean -panel -stretch
+example (a b : ℝ≥0∞) (ha : a ≠ ∞) (hb : b ≠ ∞)
+    (h : a ≤ b) : a.toReal ≤ b.toReal := by
+  lift a to ℝ≥0 using ha
+  lift b to ℝ≥0 using hb
+  norm_cast at h ⊢
+```
+
+- `lift a to ℝ≥0 using ha` replaces `a : ℝ≥0∞` by `↑a` with `a : ℝ≥0`
+- then only coercions are left, and `norm_cast` works
+- the same for `x : ℝ` with `hx : 0 ≤ x`
+
+# The way down
+
+:::table +colHeaders
+*
+  * function
+  * notation
+  * at a negative argument
+*
+  * `Int.toNat k`
+  * —
   * `0`
 *
-  * `s.ncard`
-  * `s : Set α`
-  * `0`
+  * `Int.natAbs k`
+  * —
+  * the absolute value
 *
-  * `s.encard`
-  * `s : Set α`, value in `ℕ∞`
-  * `⊤`
+  * `Int.floor x`, `Int.ceil x`
+  * `⌊x⌋`, `⌈x⌉`
+  * rounded down, up
+*
+  * `Nat.floor x`, `Nat.ceil x`
+  * `⌊x⌋₊`, `⌈x⌉₊`
+  * `0`
 :::
-
-:::class "key"
-The `0` for an infinite set is a junk value; theorems about `ncard` assume `s.Finite`.
-:::
-
-# From a set back to a type
-
-A function defined only on `s`, or a sum over its elements, needs a type. The coercion `↥s` is the subtype `{ x // x ∈ s }`.
 
 ```lean -panel -stretch
-example : ↥Evens = { x : ℕ // x ∈ Evens } := rfl
-example : ↥Evens := ⟨4, by show 4 % 2 = 0; decide⟩
-example (x : ↥Evens) : (x : ℕ) % 2 = 0 := x.2
+example : (-3 : ℤ).toNat = 0 := by decide
+example : ⌊(-2.7 : ℝ)⌋₊ = 0 := by norm_num
 ```
-
-:::class "key"
-A term of `↥s` pairs a value in `α` with a proof that it lies in `s`.
-:::
 
 # Summary
 
 - `ℤ` and `ℚ` have one representation per number; `ℝ` is a structure around a quotient of Cauchy sequences and does not compute.
-- Functions are total; theorems carry the hypotheses. `x ^ n` is three functions; casts move with `push_cast`.
-- `Set α` is `α → Prop`: the operations are connectives, membership is `Iff.rfl`, equality is `ext`.
-- `y ∈ f '' s` is an `∃`, `x ∈ f ⁻¹' t` is `f x ∈ t`, and `f '' s ⊆ t ↔ s ⊆ f ⁻¹' t`.
-- `Injective` and `Surjective` are formulas; the inverse `α ≃ β` is data, chosen noncomputably.
-- `Finset α` is data: `decide`, sums, induction with `Finset.sum_range_succ`. `↥s` turns a set into a type.
+- Functions are total; theorems carry the hypotheses. `x ^ n` is three functions.
+- Casts go up; the way down is a function with a junk value.
+- `push_cast`, `norm_cast`, `exact_mod_cast`, `zify` and `lift` move casts.

@@ -78,23 +78,23 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `1-Lean/6-b-Coercions` | 1.6 | 8 | yes |
 | `1-Lean/6-c-Monads` | 1.6 | 8 | yes |
 | `1-Lean/6-d-Trool` | 1.6 | 8 | yes |
-| `1-Lean/7-a-Notation` | 1.7 | 8 | yes |
+| `1-Lean/7-a-Notation` | 1.7 | 9 | yes |
 | `2-Mathematics/0-a-Search` | — | 9 | yes |
-| `2-Mathematics/1-a-Numbers` | 2.1 | 9 | yes |
-| `2-Mathematics/2-a-Sets` | 2.2 | 9 | yes |
-| `2-Mathematics/2-b-ImagePreimage` | 2.2 | 10 | yes |
-| `2-Mathematics/2-c-Functions` | 2.2 | 10 | yes |
-| `2-Mathematics/3-a-Axioms` | 2.3 | 10 | yes |
-| `2-Mathematics/3-b-WellFoundedness` | 2.3 | 10 | yes |
-| `2-Mathematics/4-a-Orders` | 2.4 | 12 | yes |
-| `2-Mathematics/5-a-Algebra` | 2.5 | 12 | yes |
-| `2-Mathematics/6-a-Limits` | 2.6 | 13 | yes |
-| `2-Mathematics/6-b-Filters` | 2.6 | 13 | yes |
-| `2-Mathematics/7-a-Topology` | 2.7 | 14 | yes |
+| `2-Mathematics/1-a-Numbers` | 2.1 | 10 | yes |
+| `2-Mathematics/2-a-Sets` | 2.2 | 11 | yes |
+| `2-Mathematics/2-b-ImagePreimage` | 2.2 | 11 | yes |
+| `2-Mathematics/2-c-Functions` | 2.2 | 11 | yes |
+| `2-Mathematics/3-a-Axioms` | 2.3 | 12 | yes |
+| `2-Mathematics/3-b-WellFoundedness` | 2.3 | 12 | yes |
+| `2-Mathematics/4-a-Orders` | 2.4 | 13 | yes |
+| `2-Mathematics/5-a-Algebra` | 2.5 | 13 | yes |
+| `2-Mathematics/6-a-Limits` | 2.6 | 14 | yes |
+| `2-Mathematics/6-b-Filters` | 2.6 | 14 | yes |
+| `2-Mathematics/7-a-Topology` | 2.7 | extra | yes |
 | `2-Mathematics/8-a-Monads` | 2.8 | 15 | yes |
 | `2-Mathematics/8-b-Probability` | 2.8 | 15 | yes |
-| `4-Appendix/a-ProofEngineering` | Appendix | 11 | yes |
-| `4-Appendix/b-Conv` | Appendix | 11 | yes |
+| `4-Appendix/a-ProofEngineering` | Appendix | 12 | yes |
+| `4-Appendix/b-Conv` | Appendix | 12 | yes |
 | `9-Extra/a-Puzzles` | — | 5 | yes |
 
 Every sheet has a witness: 39 of 39, all sorry-free apart from the

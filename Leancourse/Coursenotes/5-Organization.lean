@@ -46,8 +46,10 @@ used without the other.
   * [Notation and abbreviations](slides/1-7-notation/) —
     {ref "notation"}[chapter]
 * Mathematics:
-  * [Numbers; sets and types](slides/2-1-numbers-sets/) — one lecture,
-    chapters {ref "numbers"}[2.1] and {ref "sets-and-types"}[2.2]
+  * [Numbers](slides/2-1-numbers/) —
+    {ref "numbers"}[chapter]
+  * [Sets and types](slides/2-2-sets-and-types/) —
+    {ref "sets-and-types"}[chapter]
   * [Foundations: universes, axioms, well-foundedness](slides/2-3-foundations/) —
     {ref "universes-axioms"}[chapter]
   * [Orders and the algebraic hierarchy](slides/2-4-orders-algebra/) — one
@@ -55,8 +57,8 @@ used without the other.
     {ref "algebraic-hierarchy-mathlib"}[2.5]
   * [Filters in Mathlib](slides/2-6-filters/) —
     {ref "filters"}[chapter]
-  * [Topology](slides/2-7-topology/) —
-    {ref "topology"}[chapter]
+  * [Topology](slides/2-7-topology/) — {ref "topology"}[chapter],
+    for reading, no lecture
   * [Monads and probability](slides/2-8-probability/) —
     {ref "probability-pmf"}[chapter]
 
@@ -82,7 +84,8 @@ tag := "schedule"
 Sheets are named after the chapter they belong to, so `2.6-b` is the
 second sheet on chapter 2.6. `L-a` to `L-g` are the logic block, which
 belongs to no chapter and runs alongside the first five weeks; `A-a`
-and `A-b` are the appendix, `X-a` an extra sheet. `2.0-a`, on finding
+and `A-b` are the appendix, which has no lecture of its own; `X-a`
+and `2.7-a` are extra sheets. `2.0-a`, on finding
 theorems in Mathlib, opens the mathematics part and has no chapter.
 
 Each week has two rows: the lecture on Monday presents a chapter, the
@@ -168,73 +171,73 @@ written at the start of the lab.
 * + 8
   + Mon 07.12.
   + Lecture
-  + Typeclasses: functors and monads, coercions, hierarchies; notation
-  + {ref "type-constructor-classes"}[1.6], {ref "notation"}[1.7]
+  + Typeclasses: functors and monads, coercions, hierarchies
+  + {ref "type-constructor-classes"}[1.6]
 * + 8
   + Wed 09.12.
   + Lab
   + Sheets
-  + `1.6-b`, `1.6-c`, `1.6-d`, `1.7-a`
+  + `1.6-b`, `1.6-c`, `1.6-d`
 * + 9
   + Mon 14.12.
   + Lecture
-  + Numbers; sets and types
-  + {ref "numbers"}[2.1], {ref "sets-and-types"}[2.2]
+  + Notation and abbreviations
+  + {ref "notation"}[1.7]
 * + 9
   + Wed 16.12.
   + Lab
   + *Test 3*, then sheets
-  + `2.0-a`, `2.1-a`, `2.2-a`
+  + `1.7-a`, `2.0-a`
 * + 10
   + Mon 21.12.
   + Lecture
-  + Foundations: universes, axioms, well-foundedness
-  + {ref "universes-axioms"}[2.3]
+  + Numbers
+  + {ref "numbers"}[2.1]
 * + 10
   + —
   + Lab
-  + No lab; sheets over the break
-  + `2.2-b`, `2.2-c`, `2.3-a`, `2.3-b`
+  + No lab; sheet over the break
+  + `2.1-a`
 * + 11
   + Mon 11.01.
   + Lecture
-  + Proof engineering; `conv`
-  + {ref "tactics"}[Appendix]
+  + Sets and types
+  + {ref "sets-and-types"}[2.2]
 * + 11
   + Wed 13.01.
   + Lab
   + Sheets
-  + `A-a`, `A-b`
+  + `2.2-a`, `2.2-b`, `2.2-c`
 * + 12
   + Mon 18.01.
   + Lecture
-  + Orders, the algebraic hierarchy
-  + {ref "orders-and-lattices"}[2.4], {ref "algebraic-hierarchy-mathlib"}[2.5]
+  + Foundations: universes, axioms, well-foundedness
+  + {ref "universes-axioms"}[2.3]
 * + 12
   + Wed 20.01.
   + Lab
-  + Sheets
-  + `2.4-a`, `2.5-a`
+  + Sheets; proof engineering from the {ref "tactics"}[Appendix]
+  + `2.3-a`, `2.3-b`, `A-a`, `A-b`
 * + 13
   + Mon 25.01.
   + Lecture
-  + Filters
-  + {ref "filters"}[2.6]
+  + Orders, the algebraic hierarchy
+  + {ref "orders-and-lattices"}[2.4], {ref "algebraic-hierarchy-mathlib"}[2.5]
 * + 13
   + Wed 27.01.
   + Lab
   + *Test 4*, then sheets
-  + `2.6-a`, `2.6-b`
+  + `2.4-a`, `2.5-a`
 * + 14
   + Mon 01.02.
   + Lecture
-  + Topology
-  + {ref "topology"}[2.7]
+  + Filters
+  + {ref "filters"}[2.6]
 * + 14
   + Wed 03.02.
   + Lab
   + Sheets
-  + `2.7-a`
+  + `2.6-a`, `2.6-b`
 * + 15
   + Mon 08.02.
   + Lecture
@@ -245,6 +248,11 @@ written at the start of the lab.
   + Lab
   + *Test 5*, then sheets
   + `2.8-a`, `2.8-b`
+* + —
+  + —
+  + Extra
+  + Topology, for reading
+  + {ref "topology"}[2.7], `2.7-a`
 :::
 
 

@@ -5,7 +5,7 @@ open Set Nat
 /-
 # A-a -- Proof engineering
 
-*Appendix, week 11.*
+*Appendix, week 12.*
 
 In this exercise sheet, you will practice:
 - Choosing the right automation tactic

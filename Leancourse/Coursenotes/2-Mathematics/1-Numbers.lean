@@ -16,7 +16,7 @@ htmlSplit := .never
 tag := "numbers"
 %%%
 
-The [slides](slides/2-1-numbers-sets/) for this chapter follow it section by section. The same lecture, and the same deck, also covers {ref "sets-and-types"}[chapter 2.2].
+The [slides](slides/2-1-numbers/) for this chapter follow it section by section.
 
 Mathlib has a type for each number system. Each of them is built with one of the type formers of the {ref "lean"}[Lean part], and how it is built explains most of what is surprising about it: why `5 - 7 = 0` in `ℕ`, why `1 / 0 = 0` in `ℝ`, and why a natural number in a real computation carries an arrow `↑`.
 
@@ -377,20 +377,250 @@ example : ENNReal.ofReal (-1) = 0 := by simp
 tag := "number-casts"
 %%%
 
-A natural number in a real formula is converted by the {ref "coercions"}[coercion] `↑`, here `Nat.cast : ℕ → ℝ`. The coercions run along the chain `ℕ → ℤ → ℚ → ℝ → ℂ`, and also `ℝ≥0 → ℝ` and `ℝ≥0 → ℝ≥0∞`. The tactics `push_cast`, `norm_cast` and `exact_mod_cast` move casts; they were practised on sheet `1.6-b`.
+On paper, `3` is one number, and `ℕ ⊆ ℤ ⊆ ℝ`. In Lean, `(3 : ℕ)` and `(3 : ℝ)` are terms of different types, and every expression has exactly one type. A natural number in a real formula is therefore converted by a function, the {ref "coercions"}[coercion] `↑`, which Lean inserts by itself. Proofs then have to move these arrows, and that is unfamiliar: the arrow is invisible on paper.
 
-A cast commutes with addition and multiplication, but not with the operations whose meaning changes between the types: truncated subtraction and division with remainder.
+Casts go *up*, from a smaller number system into a larger one. The way down is an ordinary function with a junk value ({ref "junk-values"}[Total functions and junk values]).
+
+## Which casts there are
+%%%
+number := false
+%%%
+
+:::table (align := left) +header
+* + From
+  + To
+  + Function behind `↑`
+* + `ℕ`
+  + `ℤ`, `ℚ`, `ℝ`, `ℂ`, any semiring
+  + `Nat.cast`
+* + `ℤ`
+  + `ℚ`, `ℝ`, `ℂ`, any ring
+  + `Int.cast`
+* + `ℚ`
+  + `ℝ`, `ℂ`, any field of characteristic zero
+  + `Rat.cast`
+* + `ℝ`
+  + `ℂ`
+  + `Complex.ofReal`
+* + `ℝ≥0`
+  + `ℝ`
+  + `NNReal.toReal`, the value of the subtype
+* + `ℝ≥0`
+  + `ℝ≥0∞`
+  + `ENNReal.ofNNReal`, that is `some`
+:::
+
+`set_option pp.coercions false` prints the names instead of `↑`:
 
 ```lean
-example (n : ℕ) : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by
-  push_cast; ring
-example : ((7 / 2 : ℕ) : ℝ) = 3 := by norm_num
+section
+variable (n : ℕ) (k : ℤ) (r : ℝ≥0)
+set_option pp.coercions false in
+#check ((n : ℝ), (k : ℚ), (r : ℝ), (r : ℝ≥0∞))
+end
+```
+
+## Where the arrow goes
+%%%
+number := false
+%%%
+
+Lean elaborates from the outside in: the expected type decides where a cast is needed. In `(n : ℝ) + 1` the addition happens in `ℝ`, and `n` is cast first. In `((n + 1 : ℕ) : ℝ)` the addition happens in `ℕ`, and the sum is cast:
+
+```lean
+section
+variable (n : ℕ)
+#check (n : ℝ) + 1          -- ↑n + 1 : ℝ
+#check ((n + 1 : ℕ) : ℝ)    -- ↑(n + 1) : ℝ
+end
+```
+
+For `+` the two agree. For `-` and `/` they do not, because these operations mean different things in `ℕ` and in `ℝ`:
+
+```lean
+example : ((7 : ℕ) : ℝ) / 2 = 3.5 := by norm_num
+example : (((7 : ℕ) / 2 : ℕ) : ℝ) = 3 := by norm_num
 example : ¬ ∀ n : ℕ, ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
   intro h
   have := h 0
   simp at this
-#check @Nat.cast_sub
--- m ≤ n → ((n - m : ℕ) : R) = n - m
 ```
 
-Where a cast appears depends on where Lean sees the type. In `(n - 1 : ℤ)` the subtraction is in `ℤ`, and `n` is cast first; in `((n - 1 : ℕ) : ℤ)` the subtraction is in `ℕ`, and the result is cast. The two agree only for `n ≥ 1`.
+## Casts and operations
+%%%
+number := false
+%%%
+
+A cast commutes with an operation if the operation means the same on both sides. Each case is a lemma; the names follow one pattern:
+
+:::table (align := left) +header
+* + Operation
+  + Lemma
+  + Hypothesis
+* + `+`, `*`, `^`
+  + `Nat.cast_add`, `Nat.cast_mul`, `Nat.cast_pow`
+  + none
+* + `0`, `1`, numerals
+  + `Nat.cast_zero`, `Nat.cast_one`, `Nat.cast_ofNat`
+  + none
+* + `=`
+  + `Nat.cast_inj`
+  + target of characteristic zero
+* + `≤`, `<`
+  + `Nat.cast_le`, `Nat.cast_lt`
+  + target ordered
+* + `-`
+  + `Nat.cast_sub`
+  + `m ≤ n`
+* + `/`
+  + `Nat.cast_div`
+  + `n ∣ m` and `(n : K) ≠ 0`
+:::
+
+The same names exist for the other casts: `Int.cast_add`, `Rat.cast_mul`, `NNReal.coe_add`, `ENNReal.coe_mul`. `Int.cast_sub` has no hypothesis, because subtraction in `ℤ` is not truncated.
+
+```lean
+#check @Nat.cast_sub
+-- m ≤ n → ((n - m : ℕ) : R) = ↑n - ↑m
+#check @Nat.cast_div
+-- n ∣ m → (n : K) ≠ 0 → ((m / n : ℕ) : K) = ↑m / ↑n
+example (n : ℕ) (h : 2 ∣ n) :
+    ((n / 2 : ℕ) : ℝ) = n / 2 := by
+  rw [Nat.cast_div h (by norm_num)]
+  norm_num
+```
+
+## The cast tactics
+%%%
+number := false
+%%%
+
+The lemmas above carry the attribute `@[norm_cast]`. The tactics use them in both directions:
+
+- {ref "push-cast"}[`push_cast`] moves casts towards the leaves: `↑(n + 1)` becomes `↑n + 1`. With `push_cast [h]` it uses `h : m ≤ n` for `Nat.cast_sub`.
+- {ref "norm-cast"}[`norm_cast`] moves casts towards the root and removes them where it can: the goal `(n : ℝ) + m = 10` becomes `n + m = 10`, and a matching hypothesis closes it.
+- `exact_mod_cast h` proves the goal from `h` when the two differ only in casts.
+- `zify`, `qify` and `rify` move a goal about natural numbers into `ℤ`, `ℚ` or `ℝ`, where subtraction and division are not truncated. `zify [h]` uses `h : m ≤ n` to turn `↑(n - m)` into `↑n - ↑m`.
+- `omega` handles linear goals in `ℕ` and `ℤ` with the cast between them.
+
+```lean
+example (m n : ℕ) (h : m ≤ n) :
+    ((n - m : ℕ) : ℝ) = n - m := by
+  push_cast [h]
+  ring
+example (m n : ℕ) (h : (m : ℝ) < n) : m < n := by
+  exact_mod_cast h
+example (m n : ℕ) (h : m + n = 10) :
+    (m : ℝ) + n = 10 := by
+  norm_cast
+example (m n : ℕ) (h : m ≤ n) :
+    (n - m) * (n + m) = n ^ 2 - m ^ 2 := by
+  have h2 : m ^ 2 ≤ n ^ 2 := Nat.pow_le_pow_left h 2
+  zify [h, h2]
+  ring
+```
+
+In the last example `omega` fails, because the goal is not linear, and `ring` fails in `ℕ`, because `-` is truncated. `zify` moves the goal to `ℤ`, where `ring` works.
+
+## Between ℝ, ℝ≥0 and ℝ≥0∞
+%%%
+number := false
+tag := "real-nnreal-ennreal-casts"
+%%%
+
+Only two of the six directions are coercions: `ℝ≥0 → ℝ` and `ℝ≥0 → ℝ≥0∞`. The other four are functions with a junk value:
+
+:::table (align := left) +header
+* + From
+  + To
+  + Function
+  + Junk value
+* + `ℝ`
+  + `ℝ≥0`
+  + `Real.toNNReal x`, written `x.toNNReal`
+  + `0` for `x < 0`
+* + `ℝ`
+  + `ℝ≥0∞`
+  + `ENNReal.ofReal x`
+  + `0` for `x < 0`
+* + `ℝ≥0∞`
+  + `ℝ≥0`
+  + `ENNReal.toNNReal a`, written `a.toNNReal`
+  + `0` for `a = ∞`
+* + `ℝ≥0∞`
+  + `ℝ`
+  + `ENNReal.toReal a`, written `a.toReal`
+  + `0` for `a = ∞`
+:::
+
+The lemmas about these functions carry the hypothesis that excludes the junk value:
+
+```lean
+section
+variable (x y : ℝ) (a b : ℝ≥0∞)
+example (hx : 0 ≤ x) : (x.toNNReal : ℝ) = x :=
+  Real.coe_toNNReal x hx
+example (hx : 0 ≤ x) : (ENNReal.ofReal x).toReal = x :=
+  ENNReal.toReal_ofReal hx
+example (ha : a ≠ ∞) : ENNReal.ofReal a.toReal = a :=
+  ENNReal.ofReal_toReal ha
+example (ha : a ≠ ∞) (hb : b ≠ ∞) :
+    (a + b).toReal = a.toReal + b.toReal :=
+  ENNReal.toReal_add ha hb
+example (hx : 0 ≤ x) (hy : 0 ≤ y) :
+    ENNReal.ofReal (x + y)
+      = ENNReal.ofReal x + ENNReal.ofReal y :=
+  ENNReal.ofReal_add hx hy
+-- `ofReal` goes through `ℝ≥0`
+example : ENNReal.ofReal x = ((x.toNNReal : ℝ≥0) : ℝ≥0∞) :=
+  rfl
+end
+```
+
+`norm_cast` knows the two coercions (`NNReal.coe_add`, `ENNReal.coe_add`, …) but not the four functions, because their lemmas need hypotheses. Most often one therefore moves to `ℝ≥0` first. The tactic `lift` does this: given `ha : a ≠ ∞`, `lift a to ℝ≥0 using ha` replaces `a : ℝ≥0∞` by `↑a` with `a : ℝ≥0`. In the same way `lift x to ℝ≥0 using hx` works for `x : ℝ` with `hx : 0 ≤ x`.
+
+```lean
+example (a b : ℝ≥0∞) (ha : a ≠ ∞) (hb : b ≠ ∞)
+    (h : a ≤ b) : a.toReal ≤ b.toReal := by
+  lift a to ℝ≥0 using ha
+  lift b to ℝ≥0 using hb
+  norm_cast at h ⊢
+example (x : ℝ) (hx : 0 ≤ x) : 0 ≤ x ^ 3 := by
+  lift x to ℝ≥0 using hx
+  positivity
+```
+
+## The way down
+%%%
+number := false
+%%%
+
+From `ℤ` to `ℕ` and from `ℝ` to `ℤ` there is no cast either, only functions:
+
+:::table (align := left) +header
+* + Function
+  + Notation
+  + Value at a negative argument
+* + `Int.toNat k`
+  + —
+  + `0`
+* + `Int.natAbs k`
+  + —
+  + the absolute value
+* + `Int.floor x`, `Int.ceil x`
+  + `⌊x⌋`, `⌈x⌉`
+  + rounded down, up
+* + `Nat.floor x`, `Nat.ceil x`
+  + `⌊x⌋₊`, `⌈x⌉₊`
+  + `0`
+:::
+
+```lean
+example : (-3 : ℤ).toNat = 0 := by decide
+example : (-3 : ℤ).natAbs = 3 := by decide
+example : ⌊(-2.7 : ℝ)⌋ = -3 := by norm_num
+example : ⌊(-2.7 : ℝ)⌋₊ = 0 := by norm_num
+example (k : ℤ) (h : 0 ≤ k) : ((k.toNat : ℕ) : ℤ) = k :=
+  Int.toNat_of_nonneg h
+```
+

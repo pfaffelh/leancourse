@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # 2.1-a -- Numbers
 
-*Notes chapter 2.1, week 9.*
+*Notes chapter 2.1, week 10.*
 
 Each number type is one of the type formers of part 1: `ℤ` is
 inductive, `ℚ` and `ℂ` are structures, `ℝ≥0` is a subtype, `ℝ≥0∞`

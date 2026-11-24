@@ -26,7 +26,7 @@ formulas with quantifiers. Finite sets, sums and counting use
 covered in {ref "curry-howard"}[Propositions as types] in the
 {ref "lean"}[Lean part].
 
-This chapter is read in one lecture with {ref "numbers"}[chapter 2.1]; the second half of [their slides](slides/2-1-numbers-sets/) follows it section by section.
+The [slides](slides/2-2-sets-and-types/) for this chapter follow it section by section.
 
 # Sets versus types
 %%%

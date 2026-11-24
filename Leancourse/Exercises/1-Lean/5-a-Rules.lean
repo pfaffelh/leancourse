@@ -8,7 +8,7 @@ import Mathlib
 The rules of chapter 1.5 in practice: in which universe a type
 lives, when two terms are equal by computation, why proofs carry no
 data, functions as terms, and the axioms `funext`, `propext` and
-`Classical.choice`. Read chapter 1.5 first. Sheet `2.3-a` (week 10)
+`Classical.choice`. Read chapter 1.5 first. Sheet `2.3-a` (week 12)
 returns to the axioms.
 
 ## Introduced here

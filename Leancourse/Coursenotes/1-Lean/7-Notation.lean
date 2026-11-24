@@ -72,9 +72,9 @@ section UnaryDemo
 prefix:80 "¡" => fun n : ℕ => n * n
 #eval ¡5    -- 25
 
--- A postfix factorial-style operator
-postfix:90 "!!" => fun n : ℕ => 2 * n + 1
-#eval 4!!   -- 9
+-- A postfix operator: the n-th odd number
+postfix:90 "°" => fun n : ℕ => 2 * n + 1
+#eval 4°   -- 9
 
 end UnaryDemo
 ```
@@ -119,39 +119,214 @@ Mathlib does this for `𝓝` (`open Topology`), `𝓟` (`open Filter`)
 and the factorial `n !` (`open Nat`). Other notation, such as `∑`,
 `∫` and `∀ᶠ`, is always available.
 
-For more complex notation involving multiple tokens or bespoke
-parsing rules, you can use the `syntax` and `macro_rules` commands,
-but `notation`, the infix variants, `prefix`/`postfix`, and
-`notation3` cover most common use cases.
+## `syntax`, `macro_rules` and `notation3`
+%%%
+number := false
+tag := "syntax-macro-rules"
+%%%
+
+`notation` does two things at once, and Lean has a command for each.
+`syntax` declares what may be written: a new rule for the parser.
+`macro_rules` says what it is replaced by. The pieces in
+`` `(…) `` are quotations, pieces of Lean syntax with holes `$x`:
+
+```lean
+section MacroDemo
+local syntax "twice " term:max : term
+local macro_rules
+  | `(twice $x) => `($x + $x)
+#eval twice 5   -- 10
+end MacroDemo
+```
+
+This is the same as `notation "twice " x:max => x + x`. The two
+commands are needed when one rule is not enough: the list literal `[1, 2, 3]`
+in {ref "pattern-matching"}[Pattern matching] is one `syntax` line
+and three `macro_rules`, one for `[]`, one for a single element and
+one that peels off the first element.
+
+`notation3` is Mathlib's extension of `notation` for notation that
+binds a variable. Mathlib declares `∀ᶠ` with it:
+
+```
+notation3 "∀ᶠ "(...)" in "f", "r:(scoped p => Filter.Eventually p f) => r
+```
+
+`(...)` stands for the bound variables, and `scoped p => …` turns
+the body after the comma into a function `p`. The next section lists
+what such declarations produce. Writing them is not part of this
+course.
 
 # Notation in Mathlib
 %%%
 tag := "mathlib-notation"
 %%%
 
-Most notation met in Mathlib binds a variable: the `i` in `∑ i ∈ s, f i` exists only after the comma. Such notation is declared with `notation3` (or `syntax` plus `macro_rules`), and Lean turns the bound variable into a `fun`. The notation is a function applied to a lambda:
+Almost every symbol in Mathlib is notation for a named constant, and `set_option pp.notation false` shows the name ({ref "looking-behind-notation"}[Looking behind notation]). The tables below list the common ones, with the key sequence for the editor. Notation that binds a variable, such as `∃ x, p x` or `∑ i ∈ s, f i`, turns the variable into a `fun` ({ref "syntax-macro-rules"}[`syntax`, `macro_rules` and `notation3`]).
+
+Two symbols are not notation. `P → Q` and `∀ x, p x` are function types, `∀` the dependent one ({ref "pi-types"}[Dependent functions]); they belong to the language of the kernel, and `pp.notation false` leaves them as they are. `∃` is notation for the inductive type `Exists`:
+
+```lean
+set_option pp.notation false in
+#check ∀ n : ℕ, n = n   -- ∀ (n : Nat), Eq n n
+set_option pp.notation false in
+#check ∃ n : ℕ, n = n   -- Exists fun n => Eq n n
+```
+
+*Logic.*
 
 :::table (align := left) +header
 * + You write
   + Lean reads
-* + `∑ i ∈ s, f i`
-  + `Finset.sum s (fun i => f i)`
-* + `∏ i ∈ s, f i`
-  + `Finset.prod s (fun i => f i)`
-* + `∑ i, f i`
-  + `Finset.sum Finset.univ (fun i => f i)`
-* + `∫ x in a..b, f x`
-  + `intervalIntegral (fun x => f x) a b volume`
-* + `∫ x, f x ∂μ`
-  + `MeasureTheory.integral μ (fun x => f x)`
-* + `{x | p x}`
-  + `Set.ofPred (fun x => p x)`
+  + Input
+* + `¬P`
+  + `Not P`
+  + `\not`
+* + `P ∧ Q`, `P ∨ Q`
+  + `And P Q`, `Or P Q`
+  + `\and`, `\or`
+* + `P ↔ Q`
+  + `Iff P Q`
+  + `\iff`
 * + `∃ x, p x`
   + `Exists (fun x => p x)`
+  + `\ex`
+* + `a = b`, `a ≠ b`
+  + `Eq a b`, `Ne a b`
+  + `\ne`
+* + `P → Q`, `∀ x, p x`
+  + not notation: function types
+  + `\to`, `\all`
+:::
+
+*Numbers and order.*
+
+:::table (align := left) +header
+* + You write
+  + Lean reads
+  + Input
+* + `ℕ`, `ℤ`, `ℚ`, `ℝ`, `ℂ`
+  + `Nat`, `Int`, `Rat`, `Real`, `Complex`
+  + `\N`, `\Z`, `\Q`, `\R`, `\C`
+* + `ℝ≥0`, `ℝ≥0∞`
+  + `NNReal`, `ENNReal`
+  + after `open NNReal`, `open ENNReal`
+* + `a ≤ b`, `a < b`
+  + `LE.le a b`, `LT.lt a b`
+  + `\le`
+* + `a ≥ b`
+  + `GE.ge a b`, by definition `LE.le b a`
+  + `\ge`
+* + `a ∣ b`
+  + `Dvd.dvd a b`
+  + `\dvd`
+* + `a / b`, `a % b`
+  + `HDiv.hDiv a b`, `HMod.hMod a b`
+  + —
+* + `x⁻¹`, `x ^ n`
+  + `Inv.inv x`, `HPow.hPow x n`
+  + `\inv`
+* + `|x|`, `‖x‖`
+  + `abs x`, `norm x`
+  + `\||` for `‖`
+* + `⌊x⌋`, `⌈x⌉`
+  + `Int.floor x`, `Int.ceil x`
+  + `\lfloor`, `\lceil`
+* + `n !`, `n‼`
+  + `Nat.factorial n`, `Nat.doubleFactorial n`
+  + `\!!`; after `open Nat`
+* + `a ⊔ b`, `a ⊓ b`
+  + `max a b`, `min a b`
+  + `\sup`, `\inf`
+:::
+
+*Sets.*
+
+:::table (align := left) +header
+* + You write
+  + Lean reads
+  + Input
+* + `a ∈ s`, `a ∉ s`
+  + `Membership.mem s a`, `¬(a ∈ s)`
+  + `\in`, `\notin`
+* + `s ⊆ t`
+  + `LE.le s t` (for `Set` and `Finset`)
+  + `\sub`
+* + `s ∩ t`, `s ∪ t`
+  + `Inter.inter s t`, `Union.union s t`
+  + `\cap`, `\cup`
+* + `sᶜ`, `s \ t`
+  + `compl s`, `sdiff s t`
+  + `\^c`
+* + `∅`
+  + `EmptyCollection.emptyCollection`
+  + `\empty`
+* + `{x | p x}`
+  + `Set.ofPred (fun x => p x)`
+  + —
+* + `{a, b}`
+  + `insert a (singleton b)`
+  + —
+* + `f '' s`, `f ⁻¹' t`
+  + `Set.image f s`, `Set.preimage f t`
+  + `\inv` then `'`
+* + `#s`
+  + `Finset.card s`
+  + after `open Finset`
+:::
+
+In `a ∈ s` the set comes first in `Membership.mem s a`. And `⊆` on `Set` and `Finset` is the order `≤`; the symbol is only printed differently.
+
+*Functions and types.*
+
+:::table (align := left) +header
+* + You write
+  + Lean reads
+  + Input
+* + `f ∘ g`
+  + `Function.comp f g`
+  + `\o`
+* + `fun x ↦ e`
+  + `fun x => e`
+  + `\mapsto`
+* + `α × β`, `α ⊕ β`
+  + `Prod α β`, `Sum α β`
+  + `\x`, `\oplus`
+* + `{x // p x}`
+  + `Subtype (fun x => p x)`
+  + —
+* + `Σ x, β x`, `(x : α) × β x`
+  + `Sigma (fun x => β x)`
+  + `\Sigma`
+* + `α ≃ β`
+  + `Equiv α β`
+  + `\equiv`
+:::
+
+*Sums, integrals, limits.*
+
+:::table (align := left) +header
+* + You write
+  + Lean reads
+  + Input
+* + `∑ i ∈ s, f i`, `∏ i ∈ s, f i`
+  + `Finset.sum s (fun i => f i)`, `Finset.prod s (fun i => f i)`
+  + `\sum`, `\prod`
+* + `∑ i, f i`
+  + `Finset.sum Finset.univ (fun i => f i)`
+  + —
+* + `∫ x in a..b, f x`
+  + `intervalIntegral (fun x => f x) a b volume`
+  + `\integral` (`\int` gives `ℤ`)
+* + `∫ x, f x ∂μ`
+  + `MeasureTheory.integral μ (fun x => f x)`
+  + `\partial`
 * + `∀ᶠ x in F, p x`
   + `Filter.Eventually (fun x => p x) F`
-* + `|x|`, `‖x‖`, `⌊x⌋`
-  + `abs x`, `norm x`, `Int.floor x`
+  + `\all\^f`
+* + `𝓝 x`, `𝓟 s`
+  + `nhds x`, `Filter.principal s`
+  + `\nhds`, `\MCP`; after `open Topology`, `open Filter`
 :::
 
 Both sides are the same term, so `rfl` proves the equation:
@@ -180,6 +355,7 @@ example (f : ℝ → ℝ) :
 ## Looking behind notation
 %%%
 number := false
+tag := "looking-behind-notation"
 %%%
 
 `set_option pp.notation false` prints a term without notation. This also answers questions of precedence. The body of `∑` is parsed with precedence 67, above that of `+` (65), so it stops before a `+`:
@@ -285,4 +461,21 @@ def NatAlias' := ℕ
 
 where `NatAlias'` is a genuinely new type: Lean will *not* automatically apply `ℕ` instances to `NatAlias'`, and you would have to derive or register them yourself.
 
-Use `abbrev` when you want a short name for a type or expression but do not want to create a new abstraction barrier. Use `def` when you intentionally want to hide the definition (e.g. to prevent the simplifier from unfolding it).
+Use `abbrev` when you want a short name for a type or expression but do not want to create a new abstraction barrier. Use `def` when the new name should be a concept of its own:
+
+- *Other instances.* Mathlib defines `def Lex (α : Type*) := α`. Because `Lex` is a `def`, `Lex (ℕ × ℕ)` can carry the lexicographic order while `ℕ × ℕ` keeps the componentwise one ({ref "typeclasses"}[chapter 1.6]). With `abbrev`, instance search would see through the name and find the componentwise order again. `OrderDual` (the reversed order) and `Multiplicative` (an additive structure written multiplicatively) are built the same way.
+- *Readable goals.* `simp` unfolds an `abbrev` everywhere. With a `def`, the goal shows the name of the concept, and one works with lemmas about it.
+- *Speed.* Reducible definitions are unfolded again and again during unification, which costs time for large definitions.
+
+```lean
+example : ¬((1, 5) ≤ ((2, 0) : ℕ × ℕ)) := by decide
+example : toLex (1, 5) ≤ toLex ((2, 0) : ℕ × ℕ) := by
+  decide
+
+abbrev LexA (α : Type) := α
+-- with `abbrev`, the componentwise order comes back
+example : ¬((1, 5) ≤ ((2, 0) : LexA (ℕ × ℕ))) := by
+  decide
+```
+
+`toLex` sends a pair to the same pair, seen as an element of `Lex (ℕ × ℕ)`.

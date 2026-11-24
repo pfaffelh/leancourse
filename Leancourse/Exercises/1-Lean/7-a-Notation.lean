@@ -3,7 +3,7 @@ import Mathlib
 /-
 # 1.7-a -- Defining your own notation
 
-*Notes chapter 1.7, week 8.*
+*Notes chapter 1.7, week 9.*
 
 These exercises accompany chapter 1.7, *Notation and
 abbreviations*. You will practice `notation`, `infixl`, `infixr`,
@@ -92,12 +92,12 @@ real declaration.
 /- ## Part 3: `prefix` and `postfix` -/
 
 -- Exercise 6.
--- Introduce a prefix operator `‼` at precedence 80 that doubles a
--- natural number.
+-- Introduce a prefix operator `⋄` (type `\diamond`) at precedence 80
+-- that doubles a natural number.
 -- Template:
---   prefix:80 "‼" => fun n : ℕ => ?_
+--   prefix:80 "⋄" => fun n : ℕ => ?_
 -- Then uncomment:
---   example : ‼7 = 14 := rfl
+--   example : ⋄7 = 14 := rfl
 
 -- Exercise 7.
 -- Introduce a postfix operator `⁺⁺` at precedence 90 that adds 1 to

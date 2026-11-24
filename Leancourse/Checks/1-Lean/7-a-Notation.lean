@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) 1.7-a -- Defining your own notation
 
-*Notes chapter 1.7, week 8.*
+*Notes chapter 1.7, week 9.*
 -/
 
 /- ## Part 1: Simple `notation` -/
@@ -28,8 +28,8 @@ example : (1 ▷ 2 ▷ 3 : ℕ) = 17 := rfl
 
 /- ## Part 3: `prefix` and `postfix` -/
 
-prefix:80 "‼" => fun n : ℕ => 2 * n
-example : ‼7 = 14 := rfl
+prefix:80 "⋄" => fun n : ℕ => 2 * n
+example : ⋄7 = 14 := rfl
 
 postfix:90 "⁺⁺" => fun n : ℕ => n + 1
 example : (3 : ℕ)⁺⁺ = 4 := rfl

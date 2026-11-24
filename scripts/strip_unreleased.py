@@ -41,8 +41,7 @@ WITHHELD = [
     "Leancourse/Coursenotes/2-Mathematics/5-AlgebraicHierarchy.lean", # 2.5
     "Leancourse/Coursenotes/2-Mathematics/6-Filters.lean",            # 2.6
     "Leancourse/Coursenotes/2-Mathematics/7-Topology.lean",           # 2.7
-    "Leancourse/Coursenotes/2-Mathematics/8-MeasureTheory.lean",      # 2.8
-    "Leancourse/Coursenotes/2-Mathematics/9-Probability.lean",        # 2.9
+    "Leancourse/Coursenotes/2-Mathematics/8-Probability.lean",        # 2.8
 ]
 
 HEADING = re.compile(r"^#{1,6} ")

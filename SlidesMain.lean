@@ -8,8 +8,12 @@ import Slides.«1-5-Rules»
 import Slides.«1-6-Typeclasses»
 import Slides.«1-6b-FunctorsMonads»
 import Slides.«1-7-Notation»
-import Slides.«2-1-Numbers»
+import Slides.«2-1-NumbersSets»
+import Slides.«2-3-Foundations»
+import Slides.«2-4-OrdersAlgebra»
 import Slides.«2-6-Filters»
+import Slides.«2-7-Topology»
+import Slides.«2-8-Probability»
 
 open VersoSlides
 
@@ -109,8 +113,12 @@ def main (args : List String) : IO UInt32 := do
       ("1-6-typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-Typeclasses»)),
       ("1-6b-functors-monads", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6b-FunctorsMonads»)),
       ("1-7-notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-7-Notation»)),
-      ("2-1-numbers",         fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-1-Numbers»)),
-      ("2-6-filters",         fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-6-Filters»)) ]
+      ("2-1-numbers-sets",    fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-1-NumbersSets»)),
+      ("2-3-foundations",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-3-Foundations»)),
+      ("2-4-orders-algebra",  fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-4-OrdersAlgebra»)),
+      ("2-6-filters",         fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-6-Filters»)),
+      ("2-7-topology",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-7-Topology»)),
+      ("2-8-probability",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-8-Probability»)) ]
   let mut code : UInt32 := 0
   for (name, run) in decks do
     IO.println s!"slides: {name}"

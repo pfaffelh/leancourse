@@ -7,8 +7,7 @@ import «Leancourse».Coursenotes.«2-Mathematics».«4-OrdersAndLattices»
 import «Leancourse».Coursenotes.«2-Mathematics».«5-AlgebraicHierarchy»
 import «Leancourse».Coursenotes.«2-Mathematics».«6-Filters»
 import «Leancourse».Coursenotes.«2-Mathematics».«7-Topology»
-import «Leancourse».Coursenotes.«2-Mathematics».«8-MeasureTheory»
-import «Leancourse».Coursenotes.«2-Mathematics».«9-Probability»
+import «Leancourse».Coursenotes.«2-Mathematics».«8-Probability»
 
 open Verso.Genre Manual
 
@@ -24,7 +23,7 @@ the foundations — universes, the axioms of Lean, well-foundedness and
 the avoidance of paradoxes. After that it surveys parts of Mathlib
 that go beyond first-year mathematics: order theory and lattices, the
 algebraic hierarchy, filters as a unifying language for limits,
-topology and measure theory, and discrete probability.  The aim is not
+topology, and discrete probability.  The aim is not
 to redo the mathematics from scratch but to show how Mathlib organizes
 it — which typeclasses to use, where to find the lemmas, and what the
 design trade-offs were.
@@ -48,6 +47,4 @@ sync with the library.
 
 {include 0 «Leancourse».Coursenotes.«2-Mathematics».«7-Topology»}
 
-{include 0 «Leancourse».Coursenotes.«2-Mathematics».«8-MeasureTheory»}
-
-{include 0 «Leancourse».Coursenotes.«2-Mathematics».«9-Probability»}
+{include 0 «Leancourse».Coursenotes.«2-Mathematics».«8-Probability»}

@@ -26,6 +26,8 @@ formulas with quantifiers. Finite sets, sums and counting use
 covered in {ref "curry-howard"}[Propositions as types] in the
 {ref "lean"}[Lean part].
 
+This chapter is read in one lecture with {ref "numbers"}[chapter 2.1]; the second half of [their slides](slides/2-1-numbers-sets/) follows it section by section.
+
 # Sets versus types
 %%%
 tag := "set-vs-type"
@@ -222,7 +224,7 @@ example (S : Set (Set ℕ)) (a : ℕ) :
     (a ∈ ⋃₀ S) ↔ ∃ t ∈ S, a ∈ t := Set.mem_sUnion
 ```
 
-These are exactly the set/indexed suprema and infima of the {ref "complete-lattices"}[complete lattice of sets]: `⋃ i, s i` *is* `iSup s`, and `⋃₀ S` *is* `sSup S`. They are also what {ref "measurable-space"}[σ-algebras] are closed under — a *countable* union or intersection is just the indexed one over `ι = ℕ`.
+These are exactly the set/indexed suprema and infima of the {ref "complete-lattices"}[complete lattice of sets]: `⋃ i, s i` *is* `iSup s`, and `⋃₀ S` *is* `sSup S`. They are also what σ-algebras are closed under — a *countable* union or intersection is just the indexed one over `ι = ℕ`.
 
 # Set equality
 %%%
@@ -232,8 +234,8 @@ tag := "foundations-set-eq"
 Two sets are equal exactly when they have the same members: the *set
 extensionality* principle `Set.ext`. This is not a definition but a
 consequence of the axioms — a set is a function into `Prop`, so it
-rests on the extensionality axioms taken up in
-the next chapter. Here we simply use it.
+rests on `propext` (an axiom) and `funext` (a theorem from `Quot.sound`),
+both taken up in the next chapter. Here we simply use it.
 
 ```lean
 -- equality of sets is membership-wise equality

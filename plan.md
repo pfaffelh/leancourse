@@ -43,10 +43,9 @@ Kontext, ohne Lean.
 | 12 | 18.01. | 20.01. | Ordnungen, algebraische Hierarchie | 2.4, 2.5 | 2.4-a, 2.5-a | |
 | 13 | 25.01. | 27.01. | Filter | 2.6 | 2.6-a, 2.6-b | **Test 4** |
 | 14 | 01.02. | 03.02. | Topologie | 2.7 | 2.7-a | |
-| 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.9 | 2.9-a, 2.9-b | **Test 5** |
+| 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.8 | 2.8-a, 2.8-b | **Test 5** |
 
-37 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5 und `2.8-a`
-(Maßtheorie) als Extrablatt ohne Woche. Über die Pause laufen die
+37 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. Über die Pause laufen die
 vier Blätter zu 2.2 und 2.3.
 
 Seit dem 30.10.2026 bekommen die Typklassen (1.6) zwei Vorlesungen:
@@ -54,10 +53,12 @@ W7 Instanzen, Instanzsuche, `Decidable` und die Taktik `classical`;
 W8 Klassen über Typkonstruktoren (`Functor`, `Monad` mit `Option` und
 `List`, die Gesetze), Koerzionen mit `DFunLike`, `extends` und
 Hierarchien, dazu Notation (1.7). Die Monaden kehren in 2.2 (Bild als
-`map`), 2.6 (`Filter.map`) und 2.9 (`PMF`) als Rückverweis wieder;
-`IO`, `StateM` und `Except` sind aus 2.9 gestrichen. Dafür entfällt
-die Vorlesung zur Maßtheorie: Kapitel 2.8 bleibt als Lesestoff,
-`2.8-a` als Extrablatt. Alles ab W8 rückt eine Woche nach.
+`map`), 2.6 (`Filter.map`) und 2.8 (`PMF`) als Rückverweis wieder;
+`IO`, `StateM` und `Except` sind aus 2.8 gestrichen. Dafür entfällt
+die Vorlesung zur Maßtheorie. Alles ab W8 rückt eine Woche nach.
+Seit dem 24.11.2026 ist das Kapitel Maßtheorie mitsamt Extrablatt
+gestrichen; Wahrscheinlichkeit ist jetzt Kapitel 2.8 (`2.8-a`,
+`2.8-b`, vorher `2.9-a`, `2.9-b`).
 
 Zwei Kapitelpaare teilen sich einen Termin: 2.1+2.2 (W9), 2.4+2.5
 (W12). Notation (1.7) läuft mit der zweiten Typklassen-Vorlesung. Notation bekommt keine eigene Vorlesung, weil Studierende kaum eigene
@@ -141,7 +142,8 @@ nicht geübt.
 
 Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
 `1.1-b`, `1.6-c`). `1.6-c` (Funktoren und Monaden) übernimmt die
-`Option`- und Listen-Aufgaben des alten `2.9-a`; `2.9-a` ist jetzt
+`Option`- und Listen-Aufgaben des alten `2.9-a`; das Blatt (heute
+`2.8-a`) ist jetzt
 *Monads in mathematics* (`Set`, `Finset`, `Filter`).
 
 Seit dem 30.10.2026 beginnt Teil 2 mit dem Kapitel 2.1 *Numbers*
@@ -213,6 +215,6 @@ Studierende brauchen nur
 - Prüfungsordnung: Ist „3 von 5 Kurztests" als Studienleistung
   zulässig?
 - Raumbuchung Mo/Mi, Rechnerausstattung im Labor.
-- Foliensätze fehlen für die Wochen 8 bis 15; der Filtersatz hat erst
-  neun Folien.
+- Foliensätze für Teil 2 stehen (W9, W10, W12-W15, je einer pro
+  Vorlesung). Es fehlt W11 (Proof Engineering, Anhang).
 - Abgabe- und Verteidigungstermin für die Projekte.

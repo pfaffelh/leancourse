@@ -46,10 +46,19 @@ used without the other.
   * [Notation and abbreviations](slides/1-7-notation/) —
     {ref "notation"}[chapter]
 * Mathematics:
-  * [Numbers](slides/2-1-numbers/) —
-    {ref "numbers"}[chapter]
+  * [Numbers; sets and types](slides/2-1-numbers-sets/) — one lecture,
+    chapters {ref "numbers"}[2.1] and {ref "sets-and-types"}[2.2]
+  * [Foundations: universes, axioms, well-foundedness](slides/2-3-foundations/) —
+    {ref "universes-axioms"}[chapter]
+  * [Orders and the algebraic hierarchy](slides/2-4-orders-algebra/) — one
+    lecture, chapters {ref "orders-and-lattices"}[2.4] and
+    {ref "algebraic-hierarchy-mathlib"}[2.5]
   * [Filters in Mathlib](slides/2-6-filters/) —
     {ref "filters"}[chapter]
+  * [Topology](slides/2-7-topology/) —
+    {ref "topology"}[chapter]
+  * [Monads and probability](slides/2-8-probability/) —
+    {ref "probability-pmf"}[chapter]
 
 Press `s` in a deck for the speaker notes, `o` for an overview of all
 slides, and `?` for the remaining keys.  Every slide carries a link in
@@ -230,15 +239,13 @@ written at the start of the lab.
   + Mon 08.02.
   + Lecture
   + Monads and probability
-  + {ref "probability-pmf"}[2.9]
+  + {ref "probability-pmf"}[2.8]
 * + 15
   + Wed 10.02.
   + Lab
   + *Test 5*, then sheets
-  + `2.9-a`, `2.9-b`
+  + `2.8-a`, `2.8-b`
 :::
-
-Chapter {ref "measure-theory"}[2.8] on measure theory is not lectured. It is there to read, and `2.8-a` is an extra sheet.
 
 
 # The short tests
@@ -285,7 +292,7 @@ The course is for mathematics students.
 * *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — {ref "tactics"}[*tactics*] — fit together. The second half goes deeper into the mathematics.
 * *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "type-constructor-classes"}[monads], needed both to use Lean and to read *Mathlib*.
 * *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "types"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
-* *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology], {ref "measure-theory"}[measure theory] (to read) and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
+* *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
 * *Proof engineering.* Automation tactics, {ref "navigating-mathlib"}[searching *Mathlib*], and the {ref "common-pitfalls"}[common pitfalls] of a large formal library.
 
 # Getting Lean running

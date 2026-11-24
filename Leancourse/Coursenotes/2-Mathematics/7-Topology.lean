@@ -16,10 +16,13 @@ htmlSplit := .never
 tag := "topology"
 %%%
 
-Topology in Mathlib is built on the {ref "filters"}[filter] framework. The primary
-definition of continuity is {ref "filter-tendsto"}[`Filter.Tendsto`] on neighbourhood filters,
-not epsilon-delta and not open preimages. Topological spaces, continuity and
-metric spaces all follow from that choice.
+A topological space in Mathlib is given by its open sets, and a continuous
+function is one whose preimages of open sets are open. Most of the theory,
+however, is stated with {ref "filters"}[filters]: continuity at a point is
+{ref "filter-tendsto"}[`Filter.Tendsto`] on neighbourhood filters, and
+compactness is defined with filters directly.
+
+The [slides](slides/2-7-topology/) for this chapter follow it section by section.
 
 # Notation and naming conventions
 %%%
@@ -110,8 +113,8 @@ Naming hints.
 - `'` and `''` are two different ASCII sequences: `''` is the image
   operator (two apostrophes), while `⁻¹'` is the preimage operator
   (unicode, `\inv'`).
-- Product-related continuity lemmas live in the `Continuous.prod`
-  namespace: `Continuous.prodMk`, `Continuous.fst`, `Continuous.snd`.
+- Continuity lemmas for products: `Continuous.prodMk`,
+  `Continuous.fst`, `Continuous.snd`.
 
 # TopologicalSpace
 %%%
@@ -119,12 +122,10 @@ tag := "topological-space"
 %%%
 
 A topological space in Mathlib is a typeclass `TopologicalSpace α` that
-specifies which sets are open. However, the actual definition in Mathlib
-uses the *neighborhood filter* approach: a `TopologicalSpace` is given by
-specifying, for each point `x`, its neighborhood filter `nhds x`.
-
-Equivalently, one can define it via `IsOpen`.  Here is the structure
-as it appears in Mathlib:
+specifies which sets are open. Its fields are the predicate `IsOpen` and
+the three axioms: the whole space is open, and finite intersections and
+arbitrary unions of open sets are open. The neighbourhood filter `nhds x`
+is defined from `IsOpen` (see {ref "nhds-filter"}[below]).
 
 {docstring TopologicalSpace}
 
@@ -217,13 +218,14 @@ framework.
 tag := "continuity-tendsto"
 %%%
 
-A function `f : α → β` between topological spaces is *continuous* if it
-preserves the neighborhood filter at every point. In Mathlib:
+A function `f : α → β` between topological spaces is *continuous* if
+preimages of open sets are open. This is the definition in Mathlib: the
+structure `Continuous` has the single field `isOpen_preimage`.
+Equivalently, `f` preserves the neighbourhood filter at every point:
 
 `Continuous f ↔ ∀ x, Filter.Tendsto f (nhds x) (nhds (f x))`
 
-This is equivalent to the classical definition: preimages of open sets are
-open.
+The filter form is the one used in most proofs.
 
 {docstring Continuous}
 
@@ -261,9 +263,13 @@ tag := "compact-spaces"
 %%%
 
 A set `s` is *compact* if every open cover has a finite subcover. In Mathlib,
-compactness is defined using filters: `s` is compact if every filter that
-contains `s` (via the principal filter) and is nontrivial has a cluster point
-in `s`. (xxx: *nontrivial filter* and *cluster point* are used here but not defined.)
+compactness is defined using filters: `s` is compact if every nontrivial
+filter `F` with `F ≤ 𝓟 s` has a cluster point in `s`. A filter is
+*nontrivial* (`F.NeBot`) if it is not `⊥`, i.e. `∅ ∉ F`. A point `x` is a
+*cluster point* of `F` (`ClusterPt x F`) if `𝓝 x ⊓ F` is nontrivial: every
+neighbourhood of `x` meets every set of `F`. For the filter `map u atTop` of
+a sequence `u` in a metric space, the cluster points are the limits of
+subsequences.
 
 {docstring IsCompact}
 
@@ -287,19 +293,24 @@ tag := "connected-spaces"
 %%%
 
 A topological space is *connected* if it cannot be written as the union of
-two nonempty disjoint open sets. A set `s` is connected if, viewed as a
-subspace, it is connected. (xxx: the distinction *connected* vs *preconnected* — used in the notation table and summary — is not explained.)
+two nonempty disjoint open sets. Mathlib separates this into two
+predicates on sets: `IsPreconnected s` says that `s` cannot be split by two
+open sets into two nonempty disjoint parts, and `IsConnected s` says in
+addition that `s` is nonempty. The empty set is preconnected but not
+connected. Most theorems need only the weaker `IsPreconnected`.
 
 ```lean
 -- ℝ is connected
 #check (inferInstance : ConnectedSpace ℝ)
 ```
 
-The interval `[a, b]` is connected:
+The interval `[a, b]` is preconnected, and connected when `a ≤ b`:
 
 {docstring isPreconnected_Icc}
 
-The continuous image of a connected set is connected:
+{docstring isConnected_Icc}
+
+The continuous image of a preconnected set is preconnected:
 
 {docstring IsPreconnected.image}
 
@@ -405,7 +416,7 @@ tag := "topology-api-summary"
 * + Compact set
   + `IsCompact s`
 * + Connected set
-  + `IsPreconnected s`
+  + `IsConnected s` (nonempty), `IsPreconnected s`
 * + Metric space
   + `MetricSpace α`
 * + Open ball

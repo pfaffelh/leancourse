@@ -22,6 +22,8 @@ built with the `extends` mechanism of
 go through it from the ground up: basic operations, then groups, rings and
 fields, then their morphisms and substructures.
 
+This chapter is read in one lecture with {ref "orders-and-lattices"}[chapter 2.4]; the second half of [their slides](slides/2-4-orders-algebra/) follows it section by section.
+
 # Notation and naming conventions
 %%%
 tag := "algebra-notation"
@@ -199,9 +201,11 @@ example : (3 : ZMod 7) * 5 = 1 := by decide
 example : (2 : ZMod 4) * 2 = 0 := by decide
 ```
 
-Mathlib also provides ordered variants:
-- `OrderedRing α` : a ring with a compatible order.
-- `LinearOrderedField α` : a linearly ordered field (like `ℝ` or `ℚ`).
+Ordered variants are mixins: the order comes from its own class, and a
+second class says that it is compatible with the ring operations.
+- `[Ring α] [PartialOrder α] [IsOrderedRing α]` : an ordered ring.
+- `[Field α] [LinearOrder α] [IsStrictOrderedRing α]` : a linearly
+  ordered field (like `ℝ` or `ℚ`).
 
 ```lean
 #check (inferInstance : LinearOrder ℝ)

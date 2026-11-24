@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# (witness) 2.9-a -- Monads in mathematics
+# (witness) 2.8-a -- Monads in mathematics
 
-*Notes chapter 2.9, week 15.*
+*Notes chapter 2.8, week 15.*
 -/
 
 open Filter

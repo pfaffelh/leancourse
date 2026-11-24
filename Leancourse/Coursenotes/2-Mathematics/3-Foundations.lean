@@ -19,6 +19,8 @@ tag := "universes-axioms"
 
 This chapter is about what Lean's mathematics rests on: proof irrelevance and the calculus of inductive constructions, the three axioms and what the kernel builds in without declaring it, why the kernel admits no loops, well-founded relations and the two mechanisms that rule out vicious circles, and classical against constructive logic. The last sections compare Lean with ZFC and with other type theories.
 
+The [slides](slides/2-3-foundations/) for this chapter follow it section by section.
+
 # Prop vs Type: proof irrelevance
 %%%
 tag := "prop-vs-type"
@@ -212,7 +214,7 @@ The argument is worth seeing, because it pinpoints exactly where non-constructiv
 Both are nonempty — `True` satisfies `U` and `False` satisfies `V` — so `Classical.choice` hands us concrete witnesses `u v : Prop` together with proofs of `u = True ∨ p` and `v = False ∨ p`. Now case-split on those two disjunctions:
 
 - If either disjunction takes its *right* branch, we have a proof of `p` outright — the left side of `p ∨ ¬p`.
-- Otherwise `u = True` and `v = False`, so `u ≠ v`. But were `p` true, then `propext` would collapse `U` and `V` into the same predicate, forcing the chosen witnesses to coincide, `u = v` — a contradiction. Hence `¬p`, the right side.
+- Otherwise `u = True` and `v = False`, so `u ≠ v`. But were `p` true, then `U x` and `V x` would both be equivalent to `True`, so `propext` makes them equal for every `x` and `funext` gives `U = V`; the chosen witnesses would then coincide, `u = v` — a contradiction. The argument thus uses all three axioms: `Classical.choice`, `propext`, and `Quot.sound` through `funext`. Hence `¬p`, the right side.
 
 Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data*, the booleans `True` and `False`, which is the move a constructive system refuses. Mathlib packages the result as `Classical.em`, used in practice through `by_contra` or `by_cases`.
 
@@ -265,7 +267,7 @@ tag := "baked-in-more"
 The list does not stop there:
 
 - *Computation* (beta, iota, delta, zeta reduction): the kernel *evaluates* terms, so `2 + 2 = 4` holds by `rfl` (these {ref "reduction-rules"}[reduction rules] are detailed in the appendix).
-- *Native literal arithmetic*: the kernel computes `Nat`, `Int`, and `String` literals with bignum-backed operations rather than unary `succ` — a baked-in optimization you rely on every time you `decide` or `#eval`.
+- *Native literal arithmetic*: the kernel represents `Nat` literals as binary numbers and computes `+`, `*`, `-`, `/`, `%`, `gcd`, `==` and `≤` on them with bignum operations rather than unary `succ` — the reason `decide` handles large numbers. `String` literals are kernel primitives as well. `Int` has no such support; it reduces through its `Nat` components.
 - *Impredicative `Prop`*: `∀ (α : Type), p α` is again a `Prop`, no matter how large `α` is.
 - *Inductive types and their recursors*: every `inductive` declaration generates an eliminator together with its built-in computation (iota) rule (see {ref "cic"}[the CIC section]).
 - *The universe hierarchy* ({ref "type-universes"}[Part 1]): in particular, never `Type : Type`.

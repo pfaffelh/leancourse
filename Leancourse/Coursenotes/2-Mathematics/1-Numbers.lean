@@ -16,7 +16,7 @@ htmlSplit := .never
 tag := "numbers"
 %%%
 
-Here are the [slides](slides/2-1-numbers/) for this chapter.
+The [slides](slides/2-1-numbers-sets/) for this chapter follow it section by section. The same lecture, and the same deck, also covers {ref "sets-and-types"}[chapter 2.2].
 
 Mathlib has a type for each number system. Each of them is built with one of the type formers of the {ref "lean"}[Lean part], and how it is built explains most of what is surprising about it: why `5 - 7 = 0` in `ℕ`, why `1 / 0 = 0` in `ℝ`, and why a natural number in a real computation carries an arrow `↑`.
 
@@ -353,7 +353,7 @@ tag := "nnreal-ennreal"
 
 `ℝ≥0` is used where a quantity cannot be negative: norms in `ℝ≥0` are written `‖x‖₊`, and a finite measure takes values in it. Subtraction on `ℝ≥0` is truncated, as on `ℕ`.
 
-`ℝ≥0∞` is the value type of measures (chapter on {ref "measure-theory"}[measure theory]). Every set gets a measure, also an unbounded one, and every series of nonnegative terms has a sum, possibly `∞`. The arithmetic of `∞` has conventions of its own:
+`ℝ≥0∞` is the value type of measures. Every set gets a measure, also an unbounded one, and every series of nonnegative terms has a sum, possibly `∞`. The arithmetic of `∞` has conventions of its own:
 
 ```lean
 example : (∞ : ℝ≥0∞) + 1 = ∞ := by simp

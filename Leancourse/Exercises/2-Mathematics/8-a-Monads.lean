@@ -1,14 +1,14 @@
 import Mathlib
 
 /-!
-# 2.9-a -- Monads in mathematics
+# 2.8-a -- Monads in mathematics
 
-*Notes chapter 2.9, week 15.*
+*Notes chapter 2.8, week 15.*
 
 `map`, `pure` and `bind` from chapter 1.6 (sheet `1.6-c`) occur in
 mathematics under other names: the image of a set, the union over a
 family, the pushforward of a filter. Read the section *Monads in
-mathematics* of chapter 2.9 first.
+mathematics* of chapter 2.8 first.
 
 | type       | `pure a`  | `map f`          | `bind s f`          |
 |------------|-----------|------------------|---------------------|

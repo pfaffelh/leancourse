@@ -90,14 +90,13 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `2-Mathematics/6-a-Limits` | 2.6 | 13 | yes |
 | `2-Mathematics/6-b-Filters` | 2.6 | 13 | yes |
 | `2-Mathematics/7-a-Topology` | 2.7 | 14 | yes |
-| `2-Mathematics/8-a-MeasureTheory` | 2.8 | extra | yes |
-| `2-Mathematics/9-a-Monads` | 2.9 | 15 | yes |
-| `2-Mathematics/9-b-Probability` | 2.9 | 15 | yes |
+| `2-Mathematics/8-a-Monads` | 2.8 | 15 | yes |
+| `2-Mathematics/8-b-Probability` | 2.8 | 15 | yes |
 | `4-Appendix/a-ProofEngineering` | Appendix | 11 | yes |
 | `4-Appendix/b-Conv` | Appendix | 11 | yes |
 | `9-Extra/a-Puzzles` | — | 5 | yes |
 
-Every sheet has a witness: 39 of 39, all sorry-free apart from the
+Every sheet has a witness: 38 of 38, all sorry-free apart from the
 one deliberate `sorry` on `L-a`, where finding the unprovable
 statement is the exercise.
 

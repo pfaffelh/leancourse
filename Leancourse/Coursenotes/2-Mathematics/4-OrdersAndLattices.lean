@@ -23,6 +23,8 @@ theorems and in {ref "topology"}[topology]. Mathlib encodes them as a
 hierarchy of typeclasses, and the aim here is to say which assumption each
 result actually needs.
 
+This chapter is read in one lecture with {ref "algebraic-hierarchy-mathlib"}[chapter 2.5]; the first half of [their slides](slides/2-4-orders-algebra/) follows it section by section.
+
 # Notation and naming conventions
 %%%
 tag := "orders-notation"
@@ -46,11 +48,11 @@ tag := "orders-notation"
   + "s is a subset of t"
   + `\sub`
 * + `⊔`
-  + `Sup.sup a b`
+  + `Max.max a b`
   + "a join b" / "a sup b"
   + `\sup`
 * + `⊓`
-  + `Inf.inf a b`
+  + `Min.min a b`
   + "a meet b" / "a inf b"
   + `\inf`
 * + `⊤`
@@ -246,10 +248,10 @@ There is also `StrictMono f` for strictly increasing functions.
 tag := "fixed-points"
 %%%
 
-The *Knaster-Tarski theorem* is one of the cornerstones of fixed point
-theory.  It generalizes Tarski's earlier fixed point theorem for the
-real line and has applications in logic, denotational semantics, and
-set theory (e.g. the Schröder-Bernstein theorem).
+Knaster and Tarski proved the following theorem in 1928 for the
+lattice of subsets of a set; Tarski stated it for all complete lattices
+in 1955. It is used in logic, denotational semantics and set theory
+(e.g. for the Schröder-Bernstein theorem).
 
 *Theorem* (Knaster-Tarski).  Let `α` be a complete lattice and let
 `f : α → α` be a monotone function. Then:

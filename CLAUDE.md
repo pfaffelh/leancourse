@@ -3104,3 +3104,65 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   the elaborator".
 - Offen: KaTeX verschluckt `\ ` im ganzen Deck 1.5 ("Sortu",
   "Nat.recmzs0").
+
+## 2026-11-23 -- Foliensaetze fuer Teil 2, einer pro Vorlesung
+
+- Neu bzw. ausgebaut, je ein Deck pro Vorlesung laut `plan.md`:
+  `2-1-NumbersSets` (W9, 2.1 + 2.2, 27 Folien; **umbenannt** aus
+  `2-1-Numbers`, URL jetzt `slides/2-1-numbers-sets/`),
+  `2-3-Foundations` (W10, 25), `2-4-OrdersAlgebra` (W12, 2.4 + 2.5,
+  26), `2-6-Filters` (W13, von 9 auf 24, die vier alten Notizen
+  bleiben), `2-7-Topology` (W14, 23), `2-9-Probability` (W15, 22;
+  seit 24.11. `2-8-Probability`). Kein Deck fuer W11 (Anhang).
+- Links: jedes Kapitel von Teil 2 verweist im Vorspann auf sein Deck,
+  Organization listet alle. Das Deck 2.3 wiederholt 1.3/1.5 nicht,
+  sondern verweist zurueck.
+- Hoechste Folie 700 px (`2-1`, Folie 3, unveraendert aus dem alten
+  Deck). **Neue Pruefung**: `#check @lemma` erzeugt auf Folien ein
+  Panel mit der vollen Signatur, das bei langen Lemmata seitlich
+  ueberlaeuft (Scrollbalken). Solche Zeilen stehen jetzt als
+  ungepruefter Block `name : aussage`. Test: im Mess-Skript
+  `scrollWidth > clientWidth` fuer `code.hl` pruefen
+  (`scratchpad/wide.js`).
+- Beim Schreiben gefundene Fehler in den Kapiteln (am 24.11. behoben, siehe unten):
+  2.4 nennt `Sup.sup`/`Inf.inf` (gibt es nicht mehr) und Knaster-Tarski
+  als Verallgemeinerung eines Satzes "fuer die reelle Gerade"; 2.5
+  nennt `OrderedRing`/`LinearOrderedField` (jetzt `IsOrderedRing`,
+  `IsStrictOrderedRing`); 2.7 sagt, `TopologicalSpace` sei ueber
+  Umgebungsfilter definiert und `Continuous` ueber `Tendsto` (beides
+  falsch: Felder `IsOpen`, `isOpen_preimage`), `isPreconnected_Icc`
+  fuer "zusammenhaengend", `Continuous.prod`-Namespace gibt es nicht;
+  2.9 Zeile ~51 "keiner der vier ist globale Monade" (PMF ist es),
+  `PMF.bernoulli`/`binomial` deprecated, `Measure.map` liefert bei
+  nicht messbarem `f` nicht `0`; 2.3 Diaconescu braucht `propext`
+  *und* `funext`, Kernel beschleunigt nur `Nat`-Literale; 2.2
+  "rests on the extensionality axioms" (`funext` ist ein Satz).
+
+## 2026-11-24 -- Masstheorie gestrichen, Kapitelfehler behoben
+
+- **Kapitel 2.8 *Measure theory* ist weg** (Autor: keine Vorlesung,
+  also raus), mit Extrablatt `2.8-a` und Zeugen (`git rm`, steht in
+  der Historie). Wahrscheinlichkeit rueckt nach: `9-Probability` ->
+  `8-Probability`, Blaetter `2.9-a/b` -> `2.8-a/b` (`8-a-Monads`,
+  `8-b-Probability`, Zeugen mit), Deck `2-8-Probability`, **URL jetzt
+  `slides/2-8-probability/`**. `WITHHELD`, Organization, `plan.md`,
+  `Checks/README.md` (38 Zeugen) nachgezogen.
+- Die `{ref}`s auf Masstheorie-Tags (`measure-theory`,
+  `measurable-space`, `measures`, `integration`,
+  `conditional-expectation`) in 1.2, 2.1, 2.2, 2.8 und Organization
+  sind Klartext bzw. Mathlib-Modulnamen geworden.
+- **Das Export-Repo `leancourse_exercises` ist nicht angefasst.** Es
+  hat noch `8-a-MeasureTheory`, `9-a-Monads`, `9-b-Probability`; der
+  naechste Export spiegelt die Umbenennung. Vorsicht: `--delete`
+  traefe dort auch `Exercises/0-Logic/test.lean` des Autors.
+- Kapitelfehler aus dem Eintrag vom 23.11. behoben: 2.2 (`propext`
+  Axiom, `funext` Satz), 2.3 (Diaconescu nennt `funext`; Kernel
+  beschleunigt nur `Nat`-Literale und `String`), 2.4 (`Max.max`/
+  `Min.min`; Knaster 1928 fuer Potenzmengen, Tarski 1955 allgemein),
+  2.5 (Mixins `IsOrderedRing`, `IsStrictOrderedRing`), 2.7 (Felder
+  `IsOpen` bzw. `isOpen_preimage`; *preconnected* gegen *connected*
+  erklaert, `isConnected_Icc` dazu; *nontrivial* und *cluster point*
+  definiert -- damit sind beide `xxx`-Notizen in 2.7 weg), 2.8 (nur
+  `PMF` ist globale Monade; `Measure.map` liefert ohne
+  AE-Messbarkeit einen Muellwert, ein Dirac-Mass, nicht `0`;
+  `bernoulli`/`binomial` deprecated, Beispiel mit `uniformOfFintype`).

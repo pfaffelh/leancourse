@@ -1,0 +1,537 @@
+import VersoSlides
+import Verso.Doc.Concrete
+import Mathlib
+
+open VersoSlides
+
+set_option pp.rawOnError true
+
+/-
+Deck for the chapter "Foundations: universes, axioms, well-foundedness"
+of part 2 (Mathematics). It follows the chapter section by section:
+the CIC, the axioms and what is not an axiom (Diaconescu), what the
+kernel bakes in, why the kernel has no loops (`partial def`),
+well-foundedness and paradoxes, constructive vs classical logic, ZFC,
+other type theories. Material lectured in part 1 (chapters 1.3 and
+1.5) is only recalled.
+-/
+
+namespace SlidesFoundations
+
+#doc (Slides) "Foundations: universes, axioms, well-foundedness" =>
+
+```css
+.reveal section p { font-size: 0.8em; line-height: 1.32; margin: 0.42em 0; }
+.reveal section p.key, .reveal section .key p { color: #1b91ff; }
+.reveal section table { font-size: 0.62em; margin: 0.2em auto 0.4em; }
+.reveal section table th,
+.reveal section table td { padding: 0.18em 0.9em; }
+.reveal section li { font-size: 0.8em; }
+.reveal section .small table, .reveal section table.small { font-size: 0.5em; }
+.reveal section .small table code, .reveal section table.small code { font-size: 0.95em; }
+.reveal section .small td, .reveal section table.small td { padding: 0.1em 0.6em; }
+```
+
+# Foundations: universes, axioms, well-foundedness
+
+Mathematics — chapter 3
+
+:::class "key"
+Lean's mathematics rests on a kernel with a few rules, three axioms, and two mechanisms against vicious circles.
+:::
+
+# The Calculus of Inductive Constructions
+
+Lean's kernel implements the CIC. Three ingredients:
+
+- _Dependent functions_ `(x : α) → β x` (Coquand, Huet 1988).
+- _Inductive types_, given by constructors (Coquand, Paulin-Mohring 1990).
+- _Universes_ `Prop`, `Type 0`, `Type 1`, …; never `Type : Type`.
+
+Terms reduce: `(fun n => n + 1) 2 ≡ 3`. Set theory has no such notion.
+
+:::class "key"
+Every Lean proof is checked against these rules by a program of a few thousand lines.
+:::
+
+# Data and logic from one rule
+
+```
+Nat.succ  : ℕ → ℕ                  -- data
+And.intro : a → b → a ∧ b          -- logic
+Or.inl    : a → a ∨ b
+Eq.refl   : (a : α) → a = a
+```
+
+```lean -panel -stretch
+inductive Traffic where
+  | red | amber | green
+```
+
+`Traffic` is declared by the same mechanism as `Nat`, `And`, `Or` and `Eq`.
+
+:::class "key"
+Data and logic are built by one rule, and each inductive type comes with its recursor.
+:::
+
+# Recall: `Prop` and the three axioms
+
+From chapter 1.5: `Prop` is proof irrelevant, impredicative, and eliminates only into `Prop`. On top of the rules, Lean declares three axioms. `#print axioms` traces a constant back to the axioms it uses:
+
+```lean -panel -stretch
+#print axioms propext           -- [propext]
+#print axioms Quot.sound        -- [Quot.sound]
+#print axioms Classical.choice  -- [Classical.choice]
+```
+
+:::class "key"
+Each depends only on itself. Everything else that looks like an axiom is a theorem.
+:::
+
+# What is not an axiom
+
+```lean -panel -stretch
+#print axioms funext
+-- [Quot.sound]
+#print axioms Classical.em
+-- [propext, Classical.choice, Quot.sound]
+```
+
+- `funext` follows from `Quot.sound` (proof in chapter 1.4).
+- The converse fails: read `Quot r` as `α` and `Quot.mk r a` as `a`. Then `funext` and `propext` hold, `Quot.sound` does not.
+- Rocq has no quotients in its kernel; there `funext` is added as an axiom.
+- `Classical.em : ∀ p, p ∨ ¬p` follows from choice: _Diaconescu's theorem_.
+
+:::class "key"
+`funext` is strictly weaker than `Quot.sound`.
+:::
+
+# Diaconescu's theorem
+
+Fix `p : Prop`. Define two predicates on `Prop`:
+
+- `U x := (x = True) ∨ p` and `V x := (x = False) ∨ p`.
+- `True` satisfies `U`, `False` satisfies `V`. Choice gives `u`, `v` with `u = True ∨ p` and `v = False ∨ p`.
+- If one of them is the right branch: `p`.
+- Otherwise `u = True` and `v = False`, so `u ≠ v`. If `p` held, `propext` and `funext` would give `U = V`, and choice would pick `u = v`. Hence `¬p`.
+
+Concluding `¬p` from a contradiction under `p` is the definition of `¬`, not `by_contra`.
+
+:::class "key"
+The only non-constructive step is choice: it turns the proposition `p` into data, `True` or `False`, that can be compared.
+:::
+
+# What the kernel bakes in
+
+Chapter 1.5 showed that these hold by `rfl`. None of them costs an axiom:
+
+```lean -panel -stretch
+theorem pf_irrel (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
+theorem eta_fun (f : Nat → Nat) :
+    (fun x => f x) = f := rfl
+theorem quot_red (a : Nat) (f : Nat → Nat) (h) :
+    Quot.lift f h (Quot.mk (fun _ _ => True) a) = f a :=
+  rfl
+
+#print axioms pf_irrel   -- does not depend on any axioms
+```
+
+:::class "key"
+`#print axioms` reports only the declared `axiom` constants.
+:::
+
+# Built in, not declared
+
+::::class "small"
+:::table +colHeaders +rowSeps
+*
+  * principle
+  * what it gives
+*
+  * proof irrelevance
+  * any two proofs of `P : Prop` are equal
+*
+  * η for functions and structures
+  * `fun x => f x ≡ f`, `⟨s.1, s.2⟩ ≡ s`
+*
+  * quotient computation
+  * `Quot.lift f h (Quot.mk r a) ≡ f a`
+*
+  * reduction (β, δ, ζ, ι)
+  * `2 + 2 = 4` by `rfl`
+*
+  * literal arithmetic
+  * `Nat` literals computed in binary, not as towers of `succ`
+*
+  * universes, impredicative `Prop`
+  * no `Type : Type`; `∀ α : Type, p α` is a `Prop`
+*
+  * restricted elimination, strict positivity
+  * no data from `∨` or `∃`; no type `Bad`
+:::
+::::
+
+:::class "key"
+Unlike the three axioms, none of these can be switched off.
+:::
+
+# What `#print axioms` does not see
+
+- The trusted base of a Lean proof is the whole kernel: the CIC with proof irrelevance, η, quotient reduction, native computation and the universe rules.
+- Proof irrelevance makes all proofs of `a = b` equal. This is _uniqueness of identity proofs_ (axiom K).
+- Homotopy type theory needs distinct proofs of equality (the univalence axiom). It is incompatible with Lean's `Prop`.
+
+:::class "key"
+Believing a Lean theorem means believing the kernel, not only three axioms.
+:::
+
+# Why the kernel has no loops
+
+Consistency means: `False` has no term. One term of type `False` gives every statement by `False.elim`.
+
+```lean +error -panel -stretch
+def badLoop : False := badLoop
+```
+
+While the body is checked, `badLoop` is already in the environment with type `False`. Every step is locally valid; the circle is visible only from outside. In Haskell, `undefined : a` inhabits every type. Under Curry-Howard, every proposition would be provable.
+
+:::class "key"
+Recall chapter 1.3: the kernel has no recursion, only recursors, and constructors must be strictly positive.
+:::
+
+# `partial def`
+
+Lean is also a programming language, and programs may loop:
+
+```lean -panel -stretch
+partial def spin (_ : Unit) : Nat := spin ()
+```
+
+A `partial` definition is opaque to the logic: it has no defining equation, so no proof can unfold it. One more requirement:
+
+```lean +error -panel -stretch
+partial def spinFalse (_ : Unit) : False := spinFalse ()
+```
+
+`could not prove that the type ∀ (x : Unit), False is nonempty`.
+
+:::class "key"
+`partial` is accepted only if the result type is already known to be inhabited.
+:::
+
+# The first inhabitant
+
+:::table +colHeaders +rowSeps
+*
+  * way to a term of `False`
+  * blocked by
+*
+  * `def c : False := c`
+  * recursion only through recursors or `WellFounded.fix`
+*
+  * `Bad.mk : (Bad → False) → Bad`
+  * strict positivity
+*
+  * `partial def c : False`
+  * the result type must be nonempty
+:::
+
+:::class "key"
+Loops are not forbidden. Forbidden is a term of a type that is not already known to be inhabited.
+:::
+
+# Well-founded relations
+
+`r : α → α → Prop` is _well-founded_ if there is no infinite descending chain `… r a₂ r a₁ r a₀`. Then one may recurse and induct along `r`: to prove `P x`, assume `P y` for all `y` with `r y x`.
+
+:::table +colHeaders +rowSeps
+*
+  * relation
+  * well-founded
+  * reason
+*
+  * `<` on `ℕ`
+  * yes
+  * every chain stops at `0`
+*
+  * `>` on `ℕ`
+  * no
+  * `0 < 1 < 2 < …`
+*
+  * `<` on `ℤ`
+  * no
+  * `0 > -1 > -2 > …`
+*
+  * `<` on `ℚ`, `ℝ`
+  * no
+  * `1 > 1/2 > 1/4 > …`
+:::
+
+:::class "key"
+Well-founded means: recursion and induction along `r` are valid.
+:::
+
+# Accessibility
+
+```
+inductive Acc (r : α → α → Prop) : α → Prop where
+  | intro (x : α) (h : ∀ y, r y x → Acc r y) : Acc r x
+-- WellFounded r: every element is accessible
+```
+
+`x` is accessible once all its predecessors are. `Acc` is inductive: a proof of `Acc r x` is a finite tree, and an infinite descending chain would need an infinitely deep one.
+
+:::class "key"
+`termination_by` and `decreasing_by` work through `WellFounded.fix`.
+:::
+
+# Why `Nat` is well-founded
+
+```lean -panel -stretch
+#check (Nat.lt_wfRel.wf : WellFounded Nat.lt)
+```
+
+`Acc (· < ·) n`, by induction on `n`:
+
+- `0`: vacuously, there is no `m < 0`.
+- `n + 1`: every `m < n + 1` has `m ≤ n` and is accessible by the induction hypothesis.
+
+Every inductive type has `sizeOf`; `sizeOfWFRel` pulls `<` on `ℕ` back along it. With `termination_by` (chapter 1.3) Lean finds the relation, and you only show that the measure decreases.
+
+:::class "key"
+A natural number is a finite tower of `succ` over `zero`: there is nothing infinite to descend through.
+:::
+
+# Why `s ∈ s` is impossible
+
+```lean -panel -stretch
+#check @Set.instMembership   -- Membership α (Set α)
+
+def mySet : Set ℕ := {0}
+#check_failure (mySet ∈ mySet)
+```
+
+`x ∈ s` needs `x : α` and `s : Set α`. For `s ∈ s`, the same `s` would need both types: `α = Set α = (α → Prop)`. No type satisfies this. In ZFC, `s ∈ s` is a formula, excluded by the axiom of foundation.
+
+:::class "key"
+In Lean, `s ∈ s` is not false but ill-formed. Russell's `{x | x ∉ x}` cannot be written.
+:::
+
+# Cantor and Russell
+
+```lean -panel -stretch
+#check @Function.cantor_surjective
+-- (f : α → Set α) : ¬Function.Surjective f
+```
+
+- No type `α` equals `α → Prop`: there is no surjection `α → Set α`.
+- Diagonal: `{x | x ∉ f x}` is no `f a`, else `a ∈ f a ↔ a ∉ f a`.
+- This set is Russell's `{x | x ∉ x}`. Cantor concludes that no surjection exists where naive set theory finds a contradiction.
+- One level up, `Type : Type` gives Girard's paradox; the universe hierarchy rules it out (Project 4).
+
+# Two mechanisms against vicious circles
+
+:::table +colHeaders +rowSeps
+*
+  * ruled out
+  * mechanism
+*
+  * infinite descent, non-terminating recursion
+  * `Acc`, `WellFounded`: an inductive predicate within a type
+*
+  * `s ∈ s`, `{x | x ∉ x}`, `Type : Type`
+  * typing and the universe hierarchy
+:::
+
+:::class "key"
+The first is a theorem-level tool used for recursion. The second is part of the rules for well-formed terms.
+:::
+
+# Classical reasoning in use
+
+```lean -panel -stretch
+example (P : Prop) : ¬¬P → P := by
+  intro hnnP
+  by_contra hnP
+  exact hnnP hnP
+```
+
+Without excluded middle, `¬¬P → P` is not provable.
+
+- Needs choice: a case split on an arbitrary proposition (`by_cases`, `by_contra`); an element of a nonempty type without a witness.
+- Does not: decidable propositions (arithmetic on `ℕ`, finite structures); constructing terms; direct proofs and induction.
+
+:::class "key"
+Mathlib uses classical logic freely: its subject is mathematical truth, not computation.
+:::
+
+# Decidability, classically
+
+`Decidable P`: an algorithm says which of `P`, `¬P` holds. Then `if` and `decide` run without axioms.
+
+```lean -panel -stretch
+def isSmall (n : ℕ) : Bool :=
+  if n < 10 then true else false
+noncomputable def isZero (x : ℝ) : Bool :=
+  if x = 0 then true else false
+```
+
+`x = 0` on `ℝ` is decidable only via `Classical.choice`: no algorithm, so `isZero` is `noncomputable`.
+
+:::class "key"
+Decidability separates the constructive core from the classical extension.
+:::
+
+# The `classical` tactic
+
+`Classical.propDecidable` makes every `Prop` decidable, via choice. The `classical` tactic switches it on in a proof:
+
+```lean -panel -stretch
+example (P : Prop) : ∃ b : Bool, b = true ↔ P := by
+  classical
+  exact ⟨decide P, by simp⟩
+```
+
+`by_cases` does not need it: it uses excluded middle directly.
+
+:::class "key"
+`classical` in proofs. A definition that uses the instance is `noncomputable`.
+:::
+
+# Lean and ZFC
+
+::::class "small"
+:::table +colHeaders +rowSeps
+*
+  * feature
+  * ZFC
+  * Lean
+*
+  * basic notion
+  * sets and membership `∈`
+  * types and terms `:`
+*
+  * `3 ∈ 7`
+  * well-formed, and true
+  * type error
+*
+  * functions
+  * sets of ordered pairs
+  * primitive
+*
+  * equality
+  * between any two sets
+  * only within a type
+*
+  * proofs
+  * not objects of the theory
+  * terms
+*
+  * computation
+  * not built in
+  * terms reduce
+*
+  * type checking
+  * does not apply
+  * decidable in practice
+:::
+::::
+
+Werner 1997: ZFC embeds into the CIC, and a dialect of the CIC embeds into ZFC with a hierarchy of inaccessible cardinals. This is not a statement about the type theory Lean implements.
+
+# The ZFC axioms in Lean
+
+::::class "small"
+:::table +colHeaders +rowSeps
+*
+  * ZFC
+  * in Lean
+  * status
+*
+  * extensionality
+  * `funext`, `propext`, `Set.ext`
+  * theorem, axiom, theorem
+*
+  * empty set
+  * `Empty`, `(∅ : Set α)`
+  * inductive type, definition
+*
+  * pairing, union
+  * `α × β`, `α ⊕ β`, `Σ`; `{a, b}`, `⋃`
+  * inductive types, definitions
+*
+  * power set
+  * `Set α := α → Prop`
+  * function type
+*
+  * infinity
+  * `ℕ`
+  * inductive type
+*
+  * separation
+  * `{x : α // p x}`, `{x | p x}`
+  * definitions
+*
+  * replacement
+  * the image `f '' s`
+  * definition
+*
+  * foundation
+  * none: `x ∈ x` is not well-typed
+  * not needed
+*
+  * choice
+  * `Classical.choice`
+  * axiom
+:::
+::::
+
+:::class "key"
+Of the ten ZFC axioms, two remain axioms. The rest become rules, inductive types or definitions.
+:::
+
+# Other type theories
+
+:::table +colHeaders +rowSeps
+*
+  * system
+  * since
+  * in short
+*
+  * simply typed λ-calculus
+  * Church 1940
+  * no dependent types
+*
+  * System F
+  * Girard, Reynolds, 1970s
+  * polymorphism; basis of Haskell, OCaml
+*
+  * Martin-Löf type theory
+  * 1971
+  * dependent types; Agda
+*
+  * CIC
+  * 1988, 1990
+  * Lean, Rocq
+*
+  * homotopy type theory
+  * 2013
+  * univalence: equivalent types are equal
+*
+  * cubical type theory
+  * 2015
+  * univalence that computes
+:::
+
+:::class "key"
+Lean works in the CIC with proof irrelevance, quotients and choice. Univalence contradicts its proof irrelevance.
+:::
+
+# Summary
+
+- Lean's kernel implements the CIC: dependent functions, inductive types, universes, and computation.
+- Three axioms are declared. `funext` and excluded middle are theorems; Diaconescu: choice gives excluded middle.
+- The kernel also bakes in proof irrelevance, η, quotient computation and positivity; `#print axioms` does not show them.
+- No term of a type comes from nothing: recursors, positivity, and `partial` only into nonempty types.
+- `Acc` rules out infinite descent; typing rules out `s ∈ s`.
+- The core is constructive, choice makes it classical. ZFC axioms become rules, types and definitions.

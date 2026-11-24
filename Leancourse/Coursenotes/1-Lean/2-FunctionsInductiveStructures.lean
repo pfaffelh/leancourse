@@ -383,7 +383,7 @@ example : (⊤ : ℕ∞) = Option.none := rfl
 example : (3 : ℕ∞) = Option.some 3 := rfl
 ```
 
-The extended non-negative reals `ℝ≥0∞`, the values of a measure in {ref "measure-theory"}[Measure theory], are built the same way, as `WithTop ℝ≥0`.
+The extended non-negative reals `ℝ≥0∞`, the values of a measure, are built the same way, as `WithTop ℝ≥0`.
 
 Disjunction is an inductive type with two constructors: a proof of `P ∨ Q` is a proof of `P` or a proof of `Q`, marked by the constructor. Declared by hand:
 

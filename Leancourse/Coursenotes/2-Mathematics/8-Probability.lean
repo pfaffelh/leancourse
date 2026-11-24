@@ -18,6 +18,8 @@ tag := "probability-pmf"
 
 `PMF α` is Mathlib's type of discrete probability distributions on `α`. It is a monad in the sense of chapter {ref "type-constructor-classes"}[1.6], and the monad structure is how one builds distributions from others. The chapter first collects the `map` and `bind` operations that have already appeared for sets, finite sets and filters.
 
+The [slides](slides/2-8-probability/) for this chapter follow it section by section.
+
 # Monads in mathematics
 %%%
 tag := "monads"
@@ -48,7 +50,7 @@ Chapter {ref "type-constructor-classes"}[1.6] introduced `map`, `pure` and `bind
   + the mixture of the `f a`, weighted by `s`
 :::
 
-Only `Set` and `Filter` are registered as functors without conditions, and none of the four is a global `Monad`. The sections below say why for each.
+`Set`, `Filter` and `PMF` are functors without conditions. Only `PMF` is a monad by a global instance; `Set` and `Filter` have monad structures that are not instances, and `Finset` is a monad only when every proposition is decidable. The sections below say why for each.
 
 ## Sets
 %%%
@@ -123,7 +125,7 @@ Mathlib's `PMF α` models a *discrete probability distribution* on a
 type `α`: it is a function `α → ℝ≥0∞` whose values sum (as a
 `tsum`) to `1`.  Unlike full measure theory, working with `PMF` lets
 us avoid most measurability hypotheses: the support of a `PMF` is
-automatically countable, and there is no {ref "measurable-space"}[sigma-algebra] on `α` to
+automatically countable, and there is no σ-algebra on `α` to
 keep track of.
 
 The goal of the rest of this chapter is to explain the *monadic*
@@ -303,8 +305,8 @@ A handy identity relates `bind` and `map`:
 {docstring PMF.bind_map}
 
 Notice how no measurability hypothesis appears: `PMF.map f p` makes
-sense for *every* function `f : α → β`.  `Measure.map`, by contrast, requires `Measurable f` and produces the
-zero measure otherwise.  Measurability only re-enters if we want
+sense for *every* function `f : α → β`.  `Measure.map f μ`, by contrast, is meaningful only when `f` is
+(almost everywhere) measurable; otherwise its value is a junk value.  Measurability only re-enters if we want
 to compare `p.map f` with the pushforward measure `p.toMeasure.map f`,
 as in `PMF.toMeasure_map_apply` — but nothing on the `PMF` side
 requires it.
@@ -376,19 +378,22 @@ tag := "pmf-concrete"
 
 Mathlib provides several familiar named distributions as `PMF`s:
 
-- `PMF.bernoulli p hp : PMF Bool` — the Bernoulli distribution with
-  probability `p` of `true`, requiring `p ≤ 1`.
-- `PMF.binomial p hp n : PMF (Fin (n + 1))` — the Binomial
-  distribution `B(n, p)`.
+- `PMF.uniformOfFintype α : PMF α` — the uniform distribution on a
+  finite nonempty type.
 - `PMF.uniformOfFinset s hs : PMF α` — the uniform distribution on
   a nonempty finite set.
+- `PMF.ofFintype f h : PMF α` — the distribution with weights `f a`
+  on a finite type, given `h : ∑ a, f a = 1`.
 
 ```lean
 -- Fair coin: probability of true is 1/2.
-noncomputable example :
-    PMF.bernoulli (1 / 2) (by norm_num) true = 1 / 2 := by
-  simp [PMF.bernoulli_apply]
+example : PMF.uniformOfFintype Bool true = 1 / 2 := by
+  simp [PMF.uniformOfFintype_apply]
 ```
+
+`PMF.bernoulli` and `PMF.binomial` are deprecated. Their successors,
+`ProbabilityTheory.bernoulliMeasure` and `ProbabilityTheory.binomial`,
+are measures, not `PMF`s.
 
 ## Beyond PMFs: measures, expectation, independence
 %%%
@@ -400,17 +405,17 @@ tag := "pmf-beyond"
 theory in Mathlib is much larger.  A sketch of where to go next:
 
 - Every `PMF α` induces a probability measure on `α` via
-  `PMF.toMeasure`; conversely, {ref "measures"}[`Measure α`] is the general setting
+  `PMF.toMeasure`; conversely, `MeasureTheory.Measure α` is the general setting
   that handles continuous distributions.
 - *Expectation* of a function `f : α → ℝ` against a probability
-  measure `μ` is the {ref "integration"}[Bochner integral] `∫ x, f x ∂μ`, found in
+  measure `μ` is the Bochner integral `∫ x, f x ∂μ`, found in
   `Mathlib.MeasureTheory.Integral.Bochner`.
 - *Independence* of two events / sigma-algebras / random variables
   is `ProbabilityTheory.IndepSets`, `IndepFun`, etc., in
   `Mathlib.Probability.Independence`.
-- *Conditional probability* and {ref "conditional-expectation"}[conditional expectation] live in
-  `Mathlib.Probability.ConditionalProbability` and the measure-theory
-  chapter of these notes.
+- *Conditional probability* and conditional expectation live in
+  `Mathlib.Probability.ConditionalProbability` and
+  `Mathlib.MeasureTheory.Function.ConditionalExpectation`.
 
 ## When do we still need measurability?
 %%%

@@ -1102,7 +1102,7 @@ The course is for mathematics students.
 * *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — *tactics* — fit together. The second half goes deeper into the mathematics.
 * *Functional programming.* Inductive types, structures, typeclasses and monads, needed both to use Lean and to read *Mathlib*.
 * *Type theory.* Lean rests on dependent type theory: the Curry-Howard correspondence, dependent types, the universe hierarchy, and Lean's axioms.
-* *Mathematics in Mathlib.* How the library organizes order theory, the algebraic hierarchy, filters (a single framework for limits), topology, measure theory and discrete probability. Textbooks rarely treat these from the point of view of formalization.
+* *Mathematics in Mathlib.* How the library organizes order theory, the algebraic hierarchy, filters (a single framework for limits), topology and discrete probability. Textbooks rarely treat these from the point of view of formalization.
 * *Proof engineering.* Automation tactics, searching *Mathlib*, and the common pitfalls of a large formal library.
 :::
 

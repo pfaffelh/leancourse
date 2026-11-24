@@ -54,20 +54,3 @@ example (a b : ℕ) (h : (a : ℚ) = b) : a = b := by
 
 example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
   omega
-
-/- ## Part 6: `OfNat` -- where numerals come from -/
-
-#check @OfNat.ofNat
-
-example : (2 : ℤ) = OfNat.ofNat 2 := rfl
-
-structure Pt where
-  x : ℤ
-  y : ℤ
-deriving Repr, DecidableEq
-
-instance : OfNat Pt 0 := ⟨⟨0, 0⟩⟩
-
-example : (0 : Pt) = ⟨0, 0⟩ := rfl
-
-#eval (0 : Pt)

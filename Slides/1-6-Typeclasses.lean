@@ -196,9 +196,8 @@ This happens at elaboration time, not at runtime.
 
 # Output parameters
 
-```lean -panel -stretch
-#check @HMul
--- Type → Type → outParam Type → Type
+```
+HMul : Type u₁ → Type u₂ → outParam (Type u₃) → Type _
 ```
 
 - normally all arguments of a class are search keys
@@ -223,20 +222,6 @@ example (p : ℕ) (hp : p.Prime) (a : ZMod p)
 :::class "key"
 Instance search does not reason: each `Fact` is supplied as asked.
 :::
-
-# Where numerals come from
-
-`2` is sugar for `OfNat.ofNat 2`; it works for every `α` with an `OfNat α 2` instance.
-
-```lean -panel -stretch
-structure Countdown where
-  val : Nat
-
-instance (n : Nat) : OfNat Countdown n where
-  ofNat := ⟨n⟩
-
-#eval (5 : Countdown).val    -- 5
-```
 
 # The `Decidable` typeclass
 
@@ -287,6 +272,6 @@ example (P : ℕ → Prop) (s : Finset ℕ) :
 - a class is a structure, an instance is a term, both marked for search
 - data classes live in `Type`, Prop classes in `Prop`
 - `[C α]` arguments are filled by instance resolution at elaboration time
-- numerals and `Decidable` run through instances
+- `Decidable` runs through instances
 - `Fact` makes a proposition an instance argument
 - `classical` makes every proposition decidable inside a proof

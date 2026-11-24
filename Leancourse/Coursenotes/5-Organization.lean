@@ -174,7 +174,7 @@ written at the start of the lab.
   + Wed 09.12.
   + Lab
   + Sheets
-  + `1.6-b`, `1.6-c`, `1.7-a`
+  + `1.6-b`, `1.6-c`, `1.6-d`, `1.7-a`
 * + 9
   + Mon 14.12.
   + Lecture

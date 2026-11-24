@@ -116,6 +116,23 @@ open scoped MyDemo
 Active only after `open MyDemo` or `open scoped MyDemo`. Mathlib does
 this for `𝓝`, `𝓟`, `∫`, `∀ᶠ`.
 
+# Where numerals come from
+
+Not declared notation: the parser knows literals, an instance gives the meaning.
+`2` becomes `OfNat.ofNat 2`; it works for every `α` with an `OfNat α 2` instance.
+
+```lean -panel -stretch
+structure Countdown where
+  val : Nat
+
+instance (n : Nat) : OfNat Countdown n where
+  ofNat := ⟨n⟩
+
+#eval (5 : Countdown).val    -- 5
+```
+
+A bare `2` is a natural number: a _default instance_.
+
 # Rewriting a hypothesis with `▸`
 
 From `h : x = y` and `hx : P x`, the term `h ▸ hx` proves `P y`.
@@ -169,5 +186,6 @@ def NatAlias' := ℕ
 - `notation` is syntax, expanded before type checking
 - `infixl`, `infixr`, `prefix`, `postfix` with a binding power
 - `scoped` keeps notation inside a namespace
+- numerals are literals, read through `OfNat`
 - `h ▸ hx` rewrites, `f <| x` saves brackets
 - `abbrev` unfolds automatically, `def` does not

@@ -139,6 +139,56 @@ parsing rules, you can use the `syntax` and `macro_rules` commands,
 but `notation`, the infix variants, `prefix`/`postfix`, and
 `notation3` cover most common use cases.
 
+# Where numerals come from (`OfNat`)
+%%%
+tag := "ofnat"
+%%%
+
+Numerals look like notation but are not declared with `notation`. The parser knows numeric literals, and a typeclass decides what they mean. `a + b` is declared notation and becomes `HAdd.hAdd a b`; the literal `2` becomes `OfNat.ofNat 2`:
+
+```lean
+#check @OfNat.ofNat
+-- {α : Type} → (n : ℕ) → [OfNat α n] → α
+```
+
+So `(2 : α)` means "the element of `α` denoted by the numeral `2`", available for any `α` that has an `OfNat α 2` instance. That is why the same `2` works across types,
+
+```lean
+#check (2 : ℤ)
+#check (2 : ℝ)
+```
+
+and why you can give a numeral to your own type simply by providing the instance:
+
+```lean
+structure Countdown where
+  val : Nat
+
+instance (n : Nat) : OfNat Countdown n where
+  ofNat := ⟨n⟩
+
+#eval (5 : Countdown).val    -- 5
+```
+
+The instance decides what a numeral means. In {ref "pi-types"}[Dependent functions], `#eval` printed `2` for `(7 : ZMod 5)`. `#synth` names the instance Lean finds:
+
+```lean
+#synth OfNat (ZMod 5) 7   -- instOfNatAtLeastTwo
+```
+
+This instance exists for every type with a cast from ℕ and turns the numeral `7` into `Nat.cast 7`. Mathlib defines the cast into `ZMod (n + 1)` as the cast into `Fin (n + 1)`, and that takes the remainder: `Fin.ofNat n i` is `⟨i % n, _⟩`. So `(7 : ZMod 5)` is `⟨7 % 5, _⟩`, and `rfl` sees it:
+
+```lean
+example : (7 : ZMod 5) = 2 := rfl
+```
+
+Without any other information Lean reads a bare numeral as a natural number. This is a *default instance*: `@[default_instance]` marks an instance to use when synthesis would otherwise be ambiguous.
+
+```lean
+#check 2         -- 2 : ℕ
+#check (2 : ℝ)   -- 2 : ℝ
+```
+
 # Two useful shorthands
 %%%
 tag := "abreviation"

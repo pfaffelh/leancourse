@@ -3195,3 +3195,29 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   from chapter 1.5", neue Folien `propext` und *Literal arithmetic*,
   `badLoop`- und die beiden `Decidable`-Folien raus. Hoechste Folie
   663 px.
+
+## 2026-11-24 (3) -- Zahlliterale nach 1.7, neues Blatt `1.6-d` Trool
+
+- Abschnitt *Where numerals come from (`OfNat`)* (tag `ofnat`) steht
+  jetzt in 1.7 *Notation*, hinter *Defining new notation*. Neuer
+  Einstieg: Zahlen sind keine deklarierte Notation, der Parser kennt
+  Literale, eine Instanz gibt die Bedeutung. Der Punkt
+  `@[default_instance]` (nacktes `2` ist `ℕ`) ist aus den *Practical
+  tips* von 1.6 mitgewandert. Folie entsprechend von Deck 1-6 (jetzt
+  17 Folien) nach Deck 1-7 (13). Blatt: Teil 6 von `1.6-b` (`OfNat`,
+  `Pt`) ist jetzt Teil 7 von `1.7-a` (Aufgaben 14-16); Teil 6 ist neu: `∗` und `÷` mit Praezedenz 51-64, also Strich vor Punkt (65 besteht `2 + 3 ∗ 4 = 20` nur wegen der Linksassoziativitaet, `3 ∗ 4 + 2 = 18` nicht; `×` ist belegt durch den Produkttyp).
+- Deck 1-6, Folie *Output parameters*: `#check @HMul` lief als Panel
+  seitlich ueber (1036 > 912 px); jetzt ungepruefter Block.
+- Neu `1.6-d` (`6-d-Trool.lean`, W8, 16 Aufgaben, Zeuge in `Checks/`):
+  `inductive Trool | no | maybe | yes`, `+`/`*` modulo 3 per
+  Mustervergleich, Gesetze per `cases a <;> cases b <;> rfl`,
+  `Trool ≃ ZMod 3` (Mustervergleich auf `ZMod 3` mit `0 | 1 | 2` geht,
+  weil `ZMod 3 = Fin 3`; `right_inv` per `decide`), Extra
+  `Trool ≃+* ZMod 3` und das Distributivgesetz per
+  `ringEquiv.injective` + `map_add`/`map_mul` statt 27 Faellen.
+  38 Pflichtblaetter, 39 Zeugen. W8 hat damit vier Blaetter.
+- `prereq.py` (Tabelle "Tactics from earlier sheets") lag im alten
+  Scratchpad und ist weg; die Tabelle von `1.6-d` ist von Hand.
+- Mathlib hat `+` auf `Bool` (`Mathlib/Algebra/Ring/BooleanRing.lean`):
+  `+` = `-` = `xor`, `*` = `&&`, `-a = a`, `(3 : Bool) = true`. Ohne
+  Mathlib gibt es kein `HAdd Bool Bool`.

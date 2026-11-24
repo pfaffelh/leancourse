@@ -395,49 +395,6 @@ example (p : ℕ) (hp : p.Prime) (a : ZMod p)
 
 The warning at the end of the docstring means: instance search does not reason. From `Fact (p = 7)` it does not conclude `Fact p.Prime`; every `Fact` that is needed has to be supplied in exactly the form the instance asks for. Mathlib uses `Fact` for a few such side conditions: besides primality mostly `Fact (1 ≤ p)` for the `Lᵖ` spaces, and the dimension of a Euclidean space in geometry.
 
-# Where numerals come from (`OfNat`)
-%%%
-tag := "ofnat"
-%%%
-
-Even a plain numeral is resolved through a typeclass. Writing `2` is sugar for `OfNat.ofNat 2`:
-
-```lean
-#check @OfNat.ofNat
--- {α : Type} → (n : ℕ) → [OfNat α n] → α
-```
-
-So `(2 : α)` means "the element of `α` denoted by the numeral `2`", available for any `α` that has an `OfNat α 2` instance. That is why the same `2` works across types,
-
-```lean
-#check (2 : ℤ)
-#check (2 : ℝ)
-```
-
-and why you can give a numeral to your own type simply by providing the instance:
-
-```lean
-structure Countdown where
-  val : Nat
-
-instance (n : Nat) : OfNat Countdown n where
-  ofNat := ⟨n⟩
-
-#eval (5 : Countdown).val    -- 5
-```
-
-The instance decides what a numeral means. In {ref "pi-types"}[Dependent functions], `#eval` printed `2` for `(7 : ZMod 5)`. `#synth` names the instance Lean finds:
-
-```lean
-#synth OfNat (ZMod 5) 7   -- instOfNatAtLeastTwo
-```
-
-This instance exists for every type with a cast from ℕ and turns the numeral `7` into `Nat.cast 7`. Mathlib defines the cast into `ZMod (n + 1)` as the cast into `Fin (n + 1)`, and that takes the remainder: `Fin.ofNat n i` is `⟨i % n, _⟩`. So `(7 : ZMod 5)` is `⟨7 % 5, _⟩`, and `rfl` sees it:
-
-```lean
-example : (7 : ZMod 5) = 2 := rfl
-```
-
 # The `Decidable` typeclass
 %%%
 tag := "decidable-typeclass"
@@ -779,7 +736,7 @@ A few further knobs control *which* instance is found. You rarely need them at f
 
 * *Priorities.* Every instance has a priority, by default `1000`; `instance (priority := 2000) : …` is tried before the others, `instance (priority := 100) : …` after them. Since Lean takes the first solution it finds, priorities resolve overlaps.
 * *`local` and `scoped` instances.* A `local instance` is active only until the end of the current section, namespace, or file; a `scoped instance` is active only inside its namespace or once you `open` it. Mathlib uses `scoped` heavily. `open scoped Classical` switches on classical decidability for a whole section; inside a proof the {ref "classical-tactic"}[`classical` tactic] does the same for that proof alone.
-* *Default instances.* `@[default_instance]` supplies a fallback when synthesis would otherwise be ambiguous — it is how a bare numeral like `2` defaults to `ℕ` when nothing else pins down its type.
+* *Default instances.* `@[default_instance]` supplies a fallback when synthesis would otherwise be ambiguous; see {ref "ofnat"}[Where numerals come from] in chapter 1.7.
 
 # Practical tips
 %%%

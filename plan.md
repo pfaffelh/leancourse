@@ -35,7 +35,7 @@ Kontext, ohne Lean.
 | 5 | 16.11. | 18.11. | Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-e, L-g, 1.2-b · *extra:* X-a | |
 | 6 | 23.11. | 25.11. | Regeln zum Bau von Typen, `Prop` | 1.5 | 1.3-a, 1.4-b, 1.5-a | |
 | 7 | 30.11. | 02.12. | Typklassen: Instanzen, Suche, `Decidable`, `classical` | 1.6 | 1.4-a, 1.4-c, 1.6-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Typklassen: Funktoren und Monaden, Koerzionen, Hierarchien; Notation | 1.6, 1.7 | 1.6-b, 1.6-c, 1.7-a | |
+| 8 | 07.12. | 09.12. | Typklassen: Funktoren und Monaden, Koerzionen, Hierarchien; Notation | 1.6, 1.7 | 1.6-b, 1.6-c, 1.6-d, 1.7-a | |
 | 9 | 14.12. | 16.12. | Zahlen; Mengen und Typen | 2.1, 2.2 | 2.0-a, 2.1-a, 2.2-a | **Test 3** |
 | 10 | 21.12. | -- | Grundlagen: Universen, Axiome, Fundiertheit | 2.3 | 2.2-b, 2.2-c, 2.3-a, 2.3-b | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
@@ -45,7 +45,7 @@ Kontext, ohne Lean.
 | 14 | 01.02. | 03.02. | Topologie | 2.7 | 2.7-a | |
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.8 | 2.8-a, 2.8-b | **Test 5** |
 
-37 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. Über die Pause laufen die
+38 Pflichtblätter, dazu `X-a` als Extrablatt in Woche 5. Über die Pause laufen die
 vier Blätter zu 2.2 und 2.3.
 
 Seit dem 30.10.2026 bekommen die Typklassen (1.6) zwei Vorlesungen:

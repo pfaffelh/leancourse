@@ -12,8 +12,8 @@ this is the same machinery as on sheet `1.6-a`, applied to the thing
 you will trip over most often.
 
 Three classes do three different jobs, and the chapter calls them
-`Coe`, `CoeSort` and `CoeFun`. The last part of the sheet is about
-numerals, which are also resolved through a class.
+`Coe`, `CoeSort` and `CoeFun`. Numerals, which are also resolved
+through a class, are on sheet `1.7-a`.
 
 ## What is introduced here
 
@@ -25,7 +25,6 @@ numerals, which are also resolved through a class.
 | `CoeFun`          | a bundled object is applied like a function  |
 | `norm_cast`       | normalise casts, often closing the goal      |
 | `exact_mod_cast`  | `exact`, up to casts                         |
-| `OfNat`           | the class behind the numeral `2`             |
 
 ## Tactics from earlier sheets
 
@@ -150,33 +149,3 @@ example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
 -- left side is `0` and the right side `-1`. Uncomment and watch
 -- `omega` refuse:
 -- example (n : ℕ) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by omega
-
-/-
-## Part 6: `OfNat` -- where numerals come from
-
-Even `2` is resolved through a class: writing `2` means
-`OfNat.ofNat 2`, and which `2` you get depends on the instance.
--/
-
-#check @OfNat.ofNat
--- {α : Type u_1} → (x : ℕ) → [self : OfNat α x] → α
-
--- Exercise 14: The numeral and the explicit form are the same term.
-example : (2 : ℤ) = OfNat.ofNat 2 := by
-  sorry
-
-structure Pt where
-  x : ℤ
-  y : ℤ
-deriving Repr, DecidableEq
-
--- Exercise 15: Give `Pt` a zero, so that the numeral `0` may be
--- written for the origin.
-instance : OfNat Pt 0 :=
-  sorry
-
--- Exercise 16: Once the instance is there, this holds by `rfl`.
-example : (0 : Pt) = ⟨0, 0⟩ := by
-  sorry
-
--- #eval (0 : Pt)   -- uncomment after Exercise 15

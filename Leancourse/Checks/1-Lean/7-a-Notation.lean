@@ -52,3 +52,39 @@ example (n : ℤ) : 0 ≤ (‖n‖₁ : ℤ) := by positivity
 notation "if! " c " then! " a " else! " b => bif c then a else b
 example : (if! true  then! 1 else! 2 : ℕ) = 1 := rfl
 example : (if! false then! 1 else! 2 : ℕ) = 2 := rfl
+
+/- ## Part 6: Addition before multiplication -/
+
+section AdditionFirst
+
+local infixl:60 " ∗ " => HMul.hMul
+local infixl:60 " ÷ " => HDiv.hDiv
+example : (2 : ℕ) + 3 ∗ 4 = 20 := rfl
+example : (3 : ℕ) ∗ 4 + 2 = 18 := rfl
+example : (8 : ℕ) - 2 ÷ 3 = 2 := rfl
+example : (12 : ℕ) ÷ 2 ∗ 3 = 18 := rfl
+
+-- 51 to 64 work. At 65 `∗` binds like `+`, and left-associativity
+-- gives `3 ∗ 4 + 2 = (3 ∗ 4) + 2 = 14`. At 50 or below `∗` binds no
+-- tighter than `=`, so `... = 20` is no longer parsed as intended.
+
+example (a b c : ℚ) : a ∗ (b + c) = (a ∗ b) + (a ∗ c) := by ring
+
+end AdditionFirst
+
+/- ## Part 7: `OfNat` -- where numerals come from -/
+
+#check @OfNat.ofNat
+
+example : (2 : ℤ) = OfNat.ofNat 2 := rfl
+
+structure Pt where
+  x : ℤ
+  y : ℤ
+deriving Repr, DecidableEq
+
+instance : OfNat Pt 0 := ⟨⟨0, 0⟩⟩
+
+example : (0 : Pt) = ⟨0, 0⟩ := rfl
+
+#eval (0 : Pt)

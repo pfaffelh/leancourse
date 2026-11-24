@@ -9,7 +9,8 @@ set_option pp.rawOnError true
 /-
 Deck for the chapter "Notation and abbreviations" (part 1 of the
 notes). It follows the chapter section by section: `notation`, infix,
-prefix and postfix operators, scoped notation, `▸` and `<|`, `abbrev`.
+prefix and postfix operators, notation in Mathlib (`∑`, `∫`, `deriv`),
+scoped notation, numerals, `▸` and `<|`, `abbrev`.
 New notation here is `local` or `scoped`, so it does not leak into the
 other decks when all of them are compiled together.
 -/
@@ -90,16 +91,64 @@ local notation "between " a " and " b =>
 #check between (1 : ℕ) and 10    -- Set ℕ
 ```
 
-# Notation with binders
+# Notation in Mathlib
 
-Mathlib writes `∑ k ∈ range n, f k` and `∀ᶠ x in F, p x`.
+:::table +colHeaders
+*
+  * you write
+  * Lean reads
+*
+  * `∑ i ∈ s, f i`
+  * `Finset.sum s (fun i => f i)`
+*
+  * `∫ x in a..b, f x`
+  * `intervalIntegral (fun x => f x) a b volume`
+*
+  * `∫ x, f x ∂μ`
+  * `MeasureTheory.integral μ (fun x => f x)`
+*
+  * `{x | p x}`
+  * `Set.ofPred (fun x => p x)`
+*
+  * `∀ᶠ x in F, p x`
+  * `Filter.Eventually (fun x => p x) F`
+*
+  * `|x|`, `‖x‖`, `⌊x⌋`
+  * `abs x`, `norm x`, `Int.floor x`
+:::
 
-- these bind a variable after the comma
-- built with `notation3`, or `syntax` plus `macro_rules`
-- writing them from scratch takes macro plumbing
+Built with `notation3`, or `syntax` plus `macro_rules`.
 
 :::class "key"
-For day-to-day notation, `notation`, `infixl`, `infixr`, `prefix` and `postfix` are almost always enough.
+A variable bound after the symbol becomes a `fun`: the notation is a function applied to a lambda.
+:::
+
+# The derivative has no notation
+
+```lean -panel -stretch
+#check deriv (fun x : ℝ => x ^ 2)
+example : deriv (fun x : ℝ => x ^ 2) 3 = 6 := by
+  norm_num
+```
+
+- `deriv f x`: the function is an argument, written with `fun`
+- `deriv f : ℝ → ℝ`, the second derivative is `deriv (deriv f)`
+- defined through the Fréchet derivative: `deriv f x = fderiv ℝ f x 1`
+
+# Looking behind notation
+
+```lean -panel -stretch
+set_option pp.notation false in
+#check ∑ i ∈ Finset.range 3, i + 1
+#eval ∑ i ∈ Finset.range 3, i + 1    -- 4, not 6
+```
+
+- `pp.notation false` prints the term without notation
+- the body of `∑` stops before `+`: this is `(∑ i ∈ range 3, i) + 1`
+- the body of `∫` does not: `∫ x in 0..1, x + 1` integrates `x + 1`
+
+:::class "key"
+When in doubt, bracket: `∑ i ∈ s, (f i + 1)`.
 :::
 
 # Scoped notation
@@ -114,7 +163,8 @@ open scoped MyDemo
 ```
 
 Active only after `open MyDemo` or `open scoped MyDemo`. Mathlib does
-this for `𝓝`, `𝓟`, `∫`, `∀ᶠ`.
+this for `𝓝` (`open Topology`), `𝓟` (`open Filter`) and `n !` (`open Nat`);
+`∑`, `∫` and `∀ᶠ` are always available.
 
 # Where numerals come from
 
@@ -185,6 +235,8 @@ def NatAlias' := ℕ
 
 - `notation` is syntax, expanded before type checking
 - `infixl`, `infixr`, `prefix`, `postfix` with a binding power
+- Mathlib's `∑`, `∫`, `{x | p x}` turn a bound variable into a `fun`
+- `pp.notation false` shows what notation stands for
 - `scoped` keeps notation inside a namespace
 - numerals are literals, read through `OfNat`
 - `h ▸ hx` rewrites, `f <| x` saves brackets

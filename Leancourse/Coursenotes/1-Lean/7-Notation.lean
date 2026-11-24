@@ -96,21 +96,6 @@ notation "between " a " and " b => Set.Ico a b
 end TernaryDemo
 ```
 
-## Notation with binders
-%%%
-number := false
-%%%
-
-Mathlib uses `notation3` (and its underlying machinery `syntax` +
-`macro_rules`) to introduce binder-style notation like
-`∑ k ∈ range n, f k` and `∀ᶠ x in F, p x`.  These let you bind a
-variable inside the expression that follows the comma.  Writing such
-notation from scratch involves a fair amount of macro plumbing and
-is beyond the scope of this section — the standard reference is the
-[Lean 4 documentation on macros](https://leanprover.github.io/theorem_proving_in_lean4/macros.html).
-For ordinary day-to-day notation, plain `notation`, `infixl`,
-`infixr`, `prefix`, and `postfix` are almost always enough.
-
 ## Scoped notation
 %%%
 number := false
@@ -130,14 +115,83 @@ open scoped MyDemo
 #eval ✦    -- 42
 ```
 
-This is the pattern used throughout Mathlib for notation like `𝓝`,
-`𝓟`, `∫`, `∀ᶠ`, etc.: they are scoped to the relevant namespace and
-enabled with `open scoped`.
+Mathlib does this for `𝓝` (`open Topology`), `𝓟` (`open Filter`)
+and the factorial `n !` (`open Nat`). Other notation, such as `∑`,
+`∫` and `∀ᶠ`, is always available.
 
 For more complex notation involving multiple tokens or bespoke
 parsing rules, you can use the `syntax` and `macro_rules` commands,
 but `notation`, the infix variants, `prefix`/`postfix`, and
 `notation3` cover most common use cases.
+
+# Notation in Mathlib
+%%%
+tag := "mathlib-notation"
+%%%
+
+Most notation met in Mathlib binds a variable: the `i` in `∑ i ∈ s, f i` exists only after the comma. Such notation is declared with `notation3` (or `syntax` plus `macro_rules`), and Lean turns the bound variable into a `fun`. The notation is a function applied to a lambda:
+
+:::table (align := left) +header
+* + You write
+  + Lean reads
+* + `∑ i ∈ s, f i`
+  + `Finset.sum s (fun i => f i)`
+* + `∏ i ∈ s, f i`
+  + `Finset.prod s (fun i => f i)`
+* + `∑ i, f i`
+  + `Finset.sum Finset.univ (fun i => f i)`
+* + `∫ x in a..b, f x`
+  + `intervalIntegral (fun x => f x) a b volume`
+* + `∫ x, f x ∂μ`
+  + `MeasureTheory.integral μ (fun x => f x)`
+* + `{x | p x}`
+  + `Set.ofPred (fun x => p x)`
+* + `∃ x, p x`
+  + `Exists (fun x => p x)`
+* + `∀ᶠ x in F, p x`
+  + `Filter.Eventually (fun x => p x) F`
+* + `|x|`, `‖x‖`, `⌊x⌋`
+  + `abs x`, `norm x`, `Int.floor x`
+:::
+
+Both sides are the same term, so `rfl` proves the equation:
+
+```lean
+example (f : ℕ → ℝ) (n : ℕ) :
+    ∑ i ∈ Finset.range n, f i
+      = Finset.sum (Finset.range n) f := rfl
+
+example (f : ℝ → ℝ) :
+    ∫ x in (0 : ℝ)..1, f x
+      = intervalIntegral f 0 1
+          MeasureTheory.volume := rfl
+```
+
+The derivative has no notation. `deriv f x` is the derivative of `f` at `x`, and the function is passed as an argument, written with `fun`. `deriv f` is again a function `ℝ → ℝ`, so the second derivative is `deriv (deriv f)`. Mathlib defines `deriv` through the Fréchet derivative: `deriv f x = fderiv ℝ f x 1`.
+
+```lean
+#check deriv (fun x : ℝ => x ^ 2)
+example : deriv (fun x : ℝ => x ^ 2) 3 = 6 := by
+  norm_num
+example (f : ℝ → ℝ) :
+    deriv f = fun x => fderiv ℝ f x 1 := rfl
+```
+
+## Looking behind notation
+%%%
+number := false
+%%%
+
+`set_option pp.notation false` prints a term without notation. This also answers questions of precedence. The body of `∑` is parsed with precedence 67, above that of `+` (65), so it stops before a `+`:
+
+```lean
+set_option pp.notation false in
+#check ∑ i ∈ Finset.range 3, i + 1
+#eval ∑ i ∈ Finset.range 3, i + 1     -- 4
+#eval ∑ i ∈ Finset.range 3, (i + 1)   -- 6
+```
+
+The body of `∫` is parsed with precedence 60, so `∫ x in 0..1, x + 1` integrates `x + 1`. When in doubt, use brackets.
 
 # Where numerals come from (`OfNat`)
 %%%

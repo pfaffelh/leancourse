@@ -3221,3 +3221,28 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
 - Mathlib hat `+` auf `Bool` (`Mathlib/Algebra/Ring/BooleanRing.lean`):
   `+` = `-` = `xor`, `*` = `&&`, `-a = a`, `(3 : Bool) = true`. Ohne
   Mathlib gibt es kein `HAdd Bool Bool`.
+
+## 2026-11-24 (4) -- 1.7: Notation aus Mathlib (`∑`, `∫`, `deriv`)
+
+- Deck 1-7 (15 Folien): *Notation with binders* ersetzt durch drei
+  Folien: *Notation in Mathlib* (Tabelle "you write / Lean reads":
+  `∑ i ∈ s`, `∫ x in a..b`, `∫ x, f x ∂μ`, `{x | p x}`, `∀ᶠ`,
+  `|x|`/`‖x‖`/`⌊x⌋`), *The derivative has no notation*
+  (`deriv (fun x => x ^ 2) 3 = 6` per `norm_num`; `simp` laesst
+  `2 * 3 = 6` stehen; `deriv f x = fderiv ℝ f x 1` ist `rfl`) und
+  *Looking behind notation* (`pp.notation false`; der Rumpf von `∑`
+  hat Praezedenz 67 und endet vor `+`, `∑ i ∈ range 3, i + 1 = 4`;
+  der von `∫` hat 60 und schliesst `+` ein). Kapitel 1.7: neuer
+  Abschnitt `# Notation in Mathlib` (tag `mathlib-notation`) vor den
+  Zahlliteralen, mit denselben Beispielen und `rfl`-Gleichungen.
+- **Falsch war** (Kapitel und Folie *Scoped notation*): `∫` und `∀ᶠ`
+  seien scoped. Sie sind global; scoped sind `𝓝`
+  (`open Topology`), `𝓟` (`open Filter`), `n !` (`open Nat`).
+- `{x | p x}` ist in diesem Mathlib `Set.ofPred`, nicht mehr `setOf`
+  (deprecated seit 2026-07-09).
+- Blatt `1.7-a`: neuer Teil 7 *Notation in Mathlib* (Aufgaben
+  14-16: `∑ i ∈ range 4, i + 1` gegen `(i + 1)` vorhersagen, vier
+  Notationen per `pp.notation false` aufloesen, `deriv` per
+  `norm_num`); `OfNat` ist jetzt Teil 8, Aufgaben 17-19. Die Tabelle
+  "Tactics from earlier sheets" sagte "None", obwohl das Blatt `rfl`
+  und `ring` braucht; jetzt `1.1-a` und `1.1-c`.

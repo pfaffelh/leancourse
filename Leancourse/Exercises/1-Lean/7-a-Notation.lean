@@ -7,10 +7,11 @@ import Mathlib
 
 These exercises accompany chapter 1.7, *Notation and
 abbreviations*. You will practice `notation`, `infixl`, `infixr`,
-`prefix`, `postfix`, and `scoped` notation. The last part is about
-numerals, which are not declared notation but are resolved through
-the class `OfNat`; the part before it turns the order of
-operations upside down.
+`prefix`, `postfix`, and `scoped` notation. Part 6 turns the order
+of operations upside down. Part 7 reads Mathlib's notation (`∑`,
+`∫`, `{x | p x}`, `∀ᶠ`) and the derivative, which has none. The
+last part is about numerals, which are not declared notation but
+are resolved through the class `OfNat`.
 
 Each exercise is stated as a comment.  Write the requested notation
 declaration, then uncomment the `example` check lines below it to
@@ -22,13 +23,19 @@ real declaration.
 
 ## What is introduced here
 
-| notation | use it when                      |
-|----------|----------------------------------|
-| `OfNat`  | the class behind the numeral `2` |
+| notation                        | use it when                               |
+|---------------------------------|-------------------------------------------|
+| `∑ i ∈ s, f i`                  | a finite sum, `Finset.sum s (fun i => f i)` |
+| `deriv f x`                     | the derivative of `f : ℝ → ℝ` at `x`      |
+| `set_option pp.notation false in` | to see what notation stands for         |
+| `OfNat`                         | the class behind the numeral `2`          |
 
 ## Tactics from earlier sheets
 
-None.
+| sheet   | tactics               |
+|---------|-----------------------|
+| `1.1-a` | `rfl`                 |
+| `1.1-c` | `ring`, `norm_num`    |
 -/
 
 /- ## Part 1: Simple `notation` -/
@@ -172,7 +179,41 @@ section AdditionFirst
 end AdditionFirst
 
 /-
-## Part 7: `OfNat` -- where numerals come from
+## Part 7: Notation in Mathlib
+
+Mathlib's notation binds a variable, and the bound variable becomes a
+`fun`: `∑ i ∈ s, f i` is `Finset.sum s (fun i => f i)`. To see what a
+piece of notation stands for, print it without notation:
+-/
+
+set_option pp.notation false in
+#check ∑ i ∈ Finset.range 3, i ^ 2
+
+-- Exercise 14.
+-- Predict both values before you compute anything. Then replace `?`
+-- by your numbers and uncomment; `rfl` checks them. Explain the
+-- difference in a comment.
+--   example : ∑ i ∈ Finset.range 4, i + 1 = ? := rfl
+--   example : ∑ i ∈ Finset.range 4, (i + 1) = ? := rfl
+
+-- Exercise 15.
+-- Find out with `set_option pp.notation false in #check` what the
+-- left-hand sides stand for. Write that on the right, without the
+-- notation, and uncomment.
+--   example (f : ℕ → ℕ) : ∑ i ∈ Finset.range 5, f i = ? := rfl
+--   example : {x : ℕ | x < 3} = ? := rfl
+--   example (p : ℕ → Prop) : (∀ᶠ n in Filter.atTop, p n) = ? := rfl
+--   example : ∫ x in (0 : ℝ)..1, x + 1 = ? := rfl
+-- In the last one: is `+ 1` inside the integral or outside?
+
+-- Exercise 16.
+-- The derivative has no notation: `deriv f x` takes the function as
+-- an argument, written with `fun`.
+example : deriv (fun x : ℝ => x ^ 3) 2 = 12 := by
+  sorry
+
+/-
+## Part 8: `OfNat` -- where numerals come from
 
 Even `2` is resolved through a class: writing `2` means
 `OfNat.ofNat 2`, and which `2` you get depends on the instance.
@@ -181,7 +222,7 @@ Even `2` is resolved through a class: writing `2` means
 #check @OfNat.ofNat
 -- {α : Type u_1} → (x : ℕ) → [self : OfNat α x] → α
 
--- Exercise 14.
+-- Exercise 17.
 -- The numeral and the explicit form are the same term.
 example : (2 : ℤ) = OfNat.ofNat 2 := by
   sorry
@@ -191,15 +232,15 @@ structure Pt where
   y : ℤ
 deriving Repr, DecidableEq
 
--- Exercise 15.
+-- Exercise 18.
 -- Give `Pt` a zero, so that the numeral `0` may be written for the
 -- origin.
 instance : OfNat Pt 0 :=
   sorry
 
--- Exercise 16.
+-- Exercise 19.
 -- Once the instance is there, this holds by `rfl`.
 example : (0 : Pt) = ⟨0, 0⟩ := by
   sorry
 
--- #eval (0 : Pt)   -- uncomment after Exercise 15
+-- #eval (0 : Pt)   -- uncomment after Exercise 18

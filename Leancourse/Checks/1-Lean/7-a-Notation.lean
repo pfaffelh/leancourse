@@ -72,7 +72,28 @@ example (a b c : ℚ) : a ∗ (b + c) = (a ∗ b) + (a ∗ c) := by ring
 
 end AdditionFirst
 
-/- ## Part 7: `OfNat` -- where numerals come from -/
+/- ## Part 7: Notation in Mathlib -/
+
+-- The body of `∑` is parsed at precedence 67 and stops before `+`:
+-- the first sum is `(0 + 1 + 2 + 3) + 1`.
+example : ∑ i ∈ Finset.range 4, i + 1 = 7 := rfl
+example : ∑ i ∈ Finset.range 4, (i + 1) = 10 := rfl
+
+example (f : ℕ → ℕ) :
+    ∑ i ∈ Finset.range 5, f i = Finset.sum (Finset.range 5) f := rfl
+example : {x : ℕ | x < 3} = Set.ofPred (fun x => x < 3) := rfl
+example (p : ℕ → Prop) :
+    (∀ᶠ n in Filter.atTop, p n) = Filter.Eventually p Filter.atTop :=
+  rfl
+-- The body of `∫` is parsed at precedence 60, so `+ 1` is inside.
+example : ∫ x in (0 : ℝ)..1, x + 1
+    = intervalIntegral (fun x => x + 1) 0 1 MeasureTheory.volume :=
+  rfl
+
+example : deriv (fun x : ℝ => x ^ 3) 2 = 12 := by
+  norm_num
+
+/- ## Part 8: `OfNat` -- where numerals come from -/
 
 #check @OfNat.ofNat
 

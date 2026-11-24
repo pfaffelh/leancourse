@@ -744,7 +744,7 @@ Mathlib does not write a `CoeFun` instance for each kind of morphism. A structur
 
 Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean reads it as `↑n + r`. A goal can also fill with `↑`s that block tactics like `ring` or `linarith`; the {ref "coercion-headaches"}[appendix] covers the numeric chain `ℕ → ℤ → ℚ → ℝ` and the `norm_cast` / `push_cast` tactics that tidy them up.
 
-# The algebraic hierarchy in Mathlib
+# Hierarchies with `extends`
 %%%
 tag := "algebraic-hierarchy"
 %%%

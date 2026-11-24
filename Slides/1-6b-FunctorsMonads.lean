@@ -183,7 +183,7 @@ example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
 One instance per kind of map, not one per map.
 :::
 
-# The algebraic hierarchy
+# Hierarchies with `extends`
 
 ```
 class Group (α : Type) extends Monoid α where

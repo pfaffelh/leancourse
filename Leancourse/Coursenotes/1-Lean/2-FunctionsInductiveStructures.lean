@@ -603,7 +603,7 @@ example {n : ℕ} (a b : Fin n) (h : a.val = b.val) :
   cases a; cases b; cases h; rfl
 ```
 
-Mathlib calls every lemma of the form "equal if the parts are equal" `.ext`: `Fin.ext`, `Prod.ext`, `Subtype.ext`. For functions the analogous statement, `funext`, does not follow from splitting into fields; it is discussed in {ref "axiom-funext"}[Function extensionality is a theorem].
+Mathlib calls every lemma of the form "equal if the parts are equal" `.ext`: `Fin.ext`, `Prod.ext`, `Subtype.ext`. For functions the analogous statement, `funext`, does not follow from splitting into fields; it is proved in {ref "quot-funext"}[Function extensionality from `Quot.sound`] in chapter 1.4.
 
 ## Conjunction
 %%%

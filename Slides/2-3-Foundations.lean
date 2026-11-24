@@ -9,8 +9,7 @@ set_option pp.rawOnError true
 /-
 Deck for the chapter "Foundations: universes, axioms, well-foundedness"
 of part 2 (Mathematics). It follows the chapter section by section:
-the CIC, the axioms and what is not an axiom (Diaconescu), what the
-kernel bakes in, why the kernel has no loops (`partial def`),
+`propext` and Diaconescu, what the kernel bakes in, `partial def`,
 well-foundedness and paradoxes, constructive vs classical logic, ZFC,
 other type theories. Material lectured in part 1 (chapters 1.3 and
 1.5) is only recalled.
@@ -40,70 +39,36 @@ Mathematics — chapter 3
 Lean's mathematics rests on a kernel with a few rules, three axioms, and two mechanisms against vicious circles.
 :::
 
-# The Calculus of Inductive Constructions
+# Recall from chapter 1.5
 
-Lean's kernel implements the CIC. Three ingredients:
-
-- _Dependent functions_ `(x : α) → β x` (Coquand, Huet 1988).
-- _Inductive types_, given by constructors (Coquand, Paulin-Mohring 1990).
-- _Universes_ `Prop`, `Type 0`, `Type 1`, …; never `Type : Type`.
-
-Terms reduce: `(fun n => n + 1) 2 ≡ 3`. Set theory has no such notion.
-
-:::class "key"
-Every Lean proof is checked against these rules by a program of a few thousand lines.
-:::
-
-# Data and logic from one rule
-
-```
-Nat.succ  : ℕ → ℕ                  -- data
-And.intro : a → b → a ∧ b          -- logic
-Or.inl    : a → a ∨ b
-Eq.refl   : (a : α) → a = a
-```
+- Lean's rules form a variant of the _Calculus of Inductive Constructions_ (CIC): dependent functions (Coquand, Huet 1988), inductive types (Coquand, Paulin-Mohring 1990), universes.
+- `Prop` is proof irrelevant, impredicative, and eliminates only into `Prop`.
+- Three axioms: `propext`, `Quot.sound`, `Classical.choice`. `funext` is a theorem from `Quot.sound` (chapter 1.4).
 
 ```lean -panel -stretch
-inductive Traffic where
-  | red | amber | green
-```
-
-`Traffic` is declared by the same mechanism as `Nat`, `And`, `Or` and `Eq`.
-
-:::class "key"
-Data and logic are built by one rule, and each inductive type comes with its recursor.
-:::
-
-# Recall: `Prop` and the three axioms
-
-From chapter 1.5: `Prop` is proof irrelevant, impredicative, and eliminates only into `Prop`. On top of the rules, Lean declares three axioms. `#print axioms` traces a constant back to the axioms it uses:
-
-```lean -panel -stretch
-#print axioms propext           -- [propext]
-#print axioms Quot.sound        -- [Quot.sound]
-#print axioms Classical.choice  -- [Classical.choice]
-```
-
-:::class "key"
-Each depends only on itself. Everything else that looks like an axiom is a theorem.
-:::
-
-# What is not an axiom
-
-```lean -panel -stretch
-#print axioms funext
--- [Quot.sound]
 #print axioms Classical.em
 -- [propext, Classical.choice, Quot.sound]
 ```
 
-- `funext` follows from `Quot.sound` (proof in chapter 1.4).
-- The converse fails: read `Quot r` as `α` and `Quot.mk r a` as `a`. Then `funext` and `propext` hold, `Quot.sound` does not.
-- Rocq has no quotients in its kernel; there `funext` is added as an axiom.
-- `Classical.em : ∀ p, p ∨ ¬p` follows from choice: _Diaconescu's theorem_.
+:::class "key"
+This chapter: what the axioms give, what the kernel adds silently, and what rules out vicious circles.
+:::
+
+# `propext`
+
+```lean -panel -stretch
+#check @propext  -- (a ↔ b) → a = b
+
+example (P : Prop) : (P ∧ True) = P := by
+  ext
+  simp
+```
+
+- A set `s : Set α` is a predicate `α → Prop`.
+- Same members: `propext` makes the predicates equal at every point, `funext` makes them equal.
 
 :::class "key"
-`funext` is strictly weaker than `Quot.sound`.
+`propext` and `funext` together make set equality extensional.
 :::
 
 # Diaconescu's theorem
@@ -121,25 +86,6 @@ Concluding `¬p` from a contradiction under `p` is the definition of `¬`, not `
 The only non-constructive step is choice: it turns the proposition `p` into data, `True` or `False`, that can be compared.
 :::
 
-# What the kernel bakes in
-
-Chapter 1.5 showed that these hold by `rfl`. None of them costs an axiom:
-
-```lean -panel -stretch
-theorem pf_irrel (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
-theorem eta_fun (f : Nat → Nat) :
-    (fun x => f x) = f := rfl
-theorem quot_red (a : Nat) (f : Nat → Nat) (h) :
-    Quot.lift f h (Quot.mk (fun _ _ => True) a) = f a :=
-  rfl
-
-#print axioms pf_irrel   -- does not depend on any axioms
-```
-
-:::class "key"
-`#print axioms` reports only the declared `axiom` constants.
-:::
-
 # Built in, not declared
 
 ::::class "small"
@@ -147,32 +93,55 @@ theorem quot_red (a : Nat) (f : Nat → Nat) (h) :
 *
   * principle
   * what it gives
+  * where
 *
   * proof irrelevance
   * any two proofs of `P : Prop` are equal
+  * 1.5
 *
   * η for functions and structures
   * `fun x => f x ≡ f`, `⟨s.1, s.2⟩ ≡ s`
-*
-  * quotient computation
-  * `Quot.lift f h (Quot.mk r a) ≡ f a`
+  * 1.5
 *
   * reduction (β, δ, ζ, ι)
   * `2 + 2 = 4` by `rfl`
+  * 1.1
 *
-  * literal arithmetic
-  * `Nat` literals computed in binary, not as towers of `succ`
+  * quotient computation
+  * `Quot.lift f h (Quot.mk r a) ≡ f a`
+  * 1.4
 *
-  * universes, impredicative `Prop`
-  * no `Type : Type`; `∀ α : Type, p α` is a `Prop`
+  * impredicative `Prop`, universes
+  * `∀ p : Prop, p → p` is a `Prop`; no `Type : Type`
+  * 1.5, 1.2
 *
-  * restricted elimination, strict positivity
-  * no data from `∨` or `∃`; no type `Bad`
+  * strict positivity
+  * no type `Bad`
+  * 1.3
+*
+  * subsingleton elimination
+  * no data from `∨` or `∃`
+  * 1.5
 :::
 ::::
 
+```lean -panel -stretch
+theorem pf_irrel (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
+#print axioms pf_irrel   -- does not depend on any axioms
+```
+
 :::class "key"
-Unlike the three axioms, none of these can be switched off.
+`#print axioms` reports only the declared `axiom` constants. None of these can be switched off.
+:::
+
+# Literal arithmetic
+
+- The kernel stores `Nat` literals in binary and computes `+`, `*`, `-`, `/`, `%`, `gcd`, `==`, `≤` with bignum operations, not as towers of `succ`.
+- This is why `decide` handles large numbers.
+- `String` literals are kernel primitives too. `Int` has no such support; it reduces through its `Nat` components.
+
+:::class "key"
+An implementation choice, not a rule of the type theory, and part of what one trusts.
 :::
 
 # What `#print axioms` does not see
@@ -185,23 +154,9 @@ Unlike the three axioms, none of these can be switched off.
 Believing a Lean theorem means believing the kernel, not only three axioms.
 :::
 
-# Why the kernel has no loops
-
-Consistency means: `False` has no term. One term of type `False` gives every statement by `False.elim`.
-
-```lean +error -panel -stretch
-def badLoop : False := badLoop
-```
-
-While the body is checked, `badLoop` is already in the environment with type `False`. Every step is locally valid; the circle is visible only from outside. In Haskell, `undefined : a` inhabits every type. Under Curry-Howard, every proposition would be provable.
-
-:::class "key"
-Recall chapter 1.3: the kernel has no recursion, only recursors, and constructors must be strictly positive.
-:::
-
 # `partial def`
 
-Lean is also a programming language, and programs may loop:
+A non-terminating recursion would prove `False` (chapter 1.3). But Lean is also a programming language, and programs may loop:
 
 ```lean -panel -stretch
 partial def spin (_ : Unit) : Nat := spin ()
@@ -326,7 +281,7 @@ In Lean, `s ∈ s` is not false but ill-formed. Russell's `{x | x ∉ x}` cannot
 
 - No type `α` equals `α → Prop`: there is no surjection `α → Set α`.
 - Diagonal: `{x | x ∉ f x}` is no `f a`, else `a ∈ f a ↔ a ∉ f a`.
-- This set is Russell's `{x | x ∉ x}`. Cantor concludes that no surjection exists where naive set theory finds a contradiction.
+- This set is Russell's `{x | x ∉ x}`. Cantor concludes that no surjection exists where naive set theory finds a contradiction. The same diagonal makes a negative occurrence fatal (chapter 1.3).
 - One level up, `Type : Type` gives Girard's paradox; the universe hierarchy rules it out (Project 4).
 
 # Two mechanisms against vicious circles
@@ -358,44 +313,11 @@ example (P : Prop) : ¬¬P → P := by
 
 Without excluded middle, `¬¬P → P` is not provable.
 
-- Needs choice: a case split on an arbitrary proposition (`by_cases`, `by_contra`); an element of a nonempty type without a witness.
-- Does not: decidable propositions (arithmetic on `ℕ`, finite structures); constructing terms; direct proofs and induction.
+- Needs choice: `by_cases`, `by_contra` on any proposition; an element of a nonempty type without a witness; a `Decidable` instance without an algorithm (`classical`, chapter 1.6).
+- Does not: decidable propositions, constructing terms, direct proofs and induction.
 
 :::class "key"
 Mathlib uses classical logic freely: its subject is mathematical truth, not computation.
-:::
-
-# Decidability, classically
-
-`Decidable P`: an algorithm says which of `P`, `¬P` holds. Then `if` and `decide` run without axioms.
-
-```lean -panel -stretch
-def isSmall (n : ℕ) : Bool :=
-  if n < 10 then true else false
-noncomputable def isZero (x : ℝ) : Bool :=
-  if x = 0 then true else false
-```
-
-`x = 0` on `ℝ` is decidable only via `Classical.choice`: no algorithm, so `isZero` is `noncomputable`.
-
-:::class "key"
-Decidability separates the constructive core from the classical extension.
-:::
-
-# The `classical` tactic
-
-`Classical.propDecidable` makes every `Prop` decidable, via choice. The `classical` tactic switches it on in a proof:
-
-```lean -panel -stretch
-example (P : Prop) : ∃ b : Bool, b = true ↔ P := by
-  classical
-  exact ⟨decide P, by simp⟩
-```
-
-`by_cases` does not need it: it uses excluded middle directly.
-
-:::class "key"
-`classical` in proofs. A definition that uses the instance is `noncomputable`.
 :::
 
 # Lean and ZFC
@@ -529,8 +451,8 @@ Lean works in the CIC with proof irrelevance, quotients and choice. Univalence c
 
 # Summary
 
-- Lean's kernel implements the CIC: dependent functions, inductive types, universes, and computation.
-- Three axioms are declared. `funext` and excluded middle are theorems; Diaconescu: choice gives excluded middle.
+- `propext` and `funext` make set equality extensional.
+- Diaconescu: choice gives excluded middle, so `Classical.em` is a theorem.
 - The kernel also bakes in proof irrelevance, η, quotient computation and positivity; `#print axioms` does not show them.
 - No term of a type comes from nothing: recursors, positivity, and `partial` only into nonempty types.
 - `Acc` rules out infinite descent; typing rules out `s ∈ s`.

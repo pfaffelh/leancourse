@@ -143,6 +143,20 @@ example : fib 3 = 2 := rfl
 - `fib` computes by ι: `fib 3 ⟶ fib 1 + fib 2 ⟶ 1 + (fib 0 + fib 1) ⟶ 1 + (0 + 1)`.
 - `def loop (n : ℕ) : ℕ := loop n + 1` is rejected. It would give `loop 0 = loop 0 + 1`; subtract `loop 0`: `0 = 1`.
 
+# A loop would prove `False`
+
+```lean +error -panel -stretch
+def badLoop : False := badLoop
+```
+
+- One term of type `False` gives every statement, by `False.elim`. Whether it computes does not matter: nobody runs a proof.
+- While the body is checked, `badLoop` is already in the environment with type `False`. Every step is locally valid; the circle is visible only from outside.
+- In Haskell, `undefined : a` inhabits every type. Read as logic, every proposition would be provable.
+
+:::class "key"
+Termination is the rule that keeps a logic consistent; a programming language can do without it.
+:::
+
 # Two values back
 
 `fib (n + 2)` needs two earlier values; `Nat.rec` hands over only one. By hand: carry the pair `(fib n, fib (n + 1))`.

@@ -364,6 +364,17 @@ Lean computes the right side of `hf` until it is `f`.
 After `rw [hq]` both sides agree. The only axiom used is `Quot.sound`.
 :::
 
+# The converse fails
+
+- `funext` does not imply `Quot.sound`, even with `propext`.
+- The model of _One axiom_: `Quot r := α`, `Quot.mk r a := a`, `Quot.lift f h := f`.
+- There `funext` and `propext` hold (sets and functions are extensional), `Quot.sound` fails as soon as `r` relates two different elements.
+- Rocq has no quotients in its kernel; there `funext` is not provable and is added as an axiom.
+
+:::class "key"
+Given the quotient primitives, `funext` is strictly weaker than `Quot.sound`.
+:::
+
 # The integers mod 2
 
 ```lean -panel -stretch

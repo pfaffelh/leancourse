@@ -26,7 +26,7 @@ The [slides](slides/1-5-rules/) for this chapter follow it section by section.
 tag := "type-rules"
 %%%
 
-Lean accepts a term only if it can be built with a small, fixed set of rules. These rules are all of Lean's logic. There are no separate rules for $`\land`, $`\lor`, $`\forall`, $`\exists` or $`=`: $`\forall` is a function type, and the others are inductive types, defined with the rules below. Set theory is organized differently. ZFC is a theory in first-order logic, which brings its own rules of inference, and on top of it come ten axioms about $`\in` ({ref "comparison-zfc"}[Comparison with ZFC set theory]).
+Lean accepts a term only if it can be built with a small, fixed set of rules. These rules are all of Lean's logic. Together they form a variant of the *Calculus of Inductive Constructions* (CIC): the Calculus of Constructions of {citet coquandHuet1988}[], a typed λ-calculus with dependent function types and impredicative `Prop`, extended by inductive types {citep coquandPaulin1990}[]. There are no separate rules for $`\land`, $`\lor`, $`\forall`, $`\exists` or $`=`: $`\forall` is a function type, and the others are inductive types, defined with the rules below. Set theory is organized differently. ZFC is a theory in first-order logic, which brings its own rules of inference, and on top of it come ten axioms about $`\in` ({ref "comparison-zfc"}[Comparison with ZFC set theory]).
 
 ## Judgements and contexts
 %%%
@@ -239,7 +239,7 @@ So `False` is the type with no constructor, `Or` has the two constructors `Or.in
 
 A declaration is accepted only under two conditions:
 
-* *Strict positivity*: the type being defined must not occur to the left of an arrow in the type of a constructor argument. Otherwise `False` can be proved without any axiom ({ref "strict-positivity"}[Strict positivity]).
+* *Strict positivity*: the type being defined must not occur to the left of an arrow in the type of a constructor argument. Otherwise `False` can be proved without any axiom ({ref "positivity-rule"}[Strict positivity] in chapter 1.3).
 * *Restricted elimination*: for an inductive type in `Prop`, the motive of the recursor must again land in `Prop`. A proof can be used to prove things, but not to compute data. The exceptions are types with at most one constructor whose arguments are all proofs, such as `Eq`, `And`, `True` and `False`.
 
 The second condition is forced by proof irrelevance. For `h : P`, the terms `Or.inl h` and `Or.inr h` are two proofs of `P ∨ P`, hence definitionally equal. A function `P ∨ P → Bool` defined by recursion could send them to `true` and `false`, and then `true ≡ false`.
@@ -263,6 +263,7 @@ Here $`h` is a proof that $`f` respects $`r`. That two related elements give the
 ## Axioms
 %%%
 number := false
+tag := "rules-axioms"
 %%%
 
 Beyond the rules, Lean has exactly three axioms:
@@ -414,7 +415,6 @@ For data living in a `Type` there is no such collapse, for obvious reasons.
 ```lean +error
 example (a b : ℕ) : a = b := rfl
 ```
-See also {ref "prop-vs-type"}[Prop vs Type].
 
 Proof irrelevance is the reason why Lean has `theorem` besides `def` ({ref "naming-terms"}[Commands for terms]). Since any two proofs of a statement are equal, only the statement of a theorem matters later, never its proof. Lean therefore generates no executable code for a theorem, and it requires that its type is a proposition:
 

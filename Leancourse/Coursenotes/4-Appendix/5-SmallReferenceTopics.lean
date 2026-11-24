@@ -154,7 +154,7 @@ searching the library by content or name, see
 tag := "elaborator"
 %%%
 
-The *kernel* checks every term against a small, fixed set of rules; the *elaborator* turns what you write (notation, implicit arguments, instances, coercions, `match`, tactics) into such a term. Only the kernel has to be trusted. Both are described in {ref "kernel-elaborator"}[The kernel and the elaborator] in chapter 1.5, together with the size of the kernel and its reimplementations. The logic the kernel implements, the *Calculus of Inductive Constructions*, is the subject of {ref "cic"}[the Mathematics part].
+The *kernel* checks every term against a small, fixed set of rules; the *elaborator* turns what you write (notation, implicit arguments, instances, coercions, `match`, tactics) into such a term. Only the kernel has to be trusted. Both are described in {ref "kernel-elaborator"}[The kernel and the elaborator] in chapter 1.5, together with the size of the kernel and its reimplementations. The logic the kernel implements, the *Calculus of Inductive Constructions*, is described in {ref "type-rules"}[The rules of Lean's type theory] in chapter 1.5.
 
 # Computable and noncomputable definitions
 %%%

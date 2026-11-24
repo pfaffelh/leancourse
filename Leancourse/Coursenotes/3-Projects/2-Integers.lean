@@ -18,7 +18,7 @@ of them, proves that they are isomorphic rings, and compares them.
    pair `(a, b)` stands for `a - b`. This is the standard construction
    from a first-year course, and it uses
    {ref "quotient-types"}[quotient types] and the axiom
-   {ref "axiom-quot"}[`Quot.sound`].
+   {ref "quot-sound"}[`Quot.sound`].
 2. *Inductive, as in Lean.* Two constructors `ofNat n` (for `n`) and
    `negSucc n` (for `-(n + 1)`). Every integer has exactly one
    representation, so equality is decidable and `#eval` works.

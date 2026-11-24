@@ -128,6 +128,14 @@ def loop (n : ℕ) : ℕ := loop n + 1
 
 Lean reports that the argument `n` is unchanged in the recursive call. Were the definition accepted, it would give `loop 0 = loop 0 + 1`, and subtracting `loop 0` on both sides gives `0 = 1`.
 
+For proofs the danger is more direct. A term of type `False` anywhere in the environment makes Lean inconsistent, because `False.elim` turns it into a proof of anything, and it does not matter whether that term computes: nobody runs a proof. General recursion would hand one over at once:
+
+```lean +error
+def badLoop : False := badLoop
+```
+
+Nothing about this is locally wrong. Checking `def c : T := e` asks whether `e` has type `T`, and while the body is being checked the name `c` is already in the environment with the declared type. Every step is valid; the circle is visible only from outside. A type checker will not notice it, so it has to be excluded by a separate rule, and termination is that rule. This also separates a logic from a programming language. In Haskell `undefined : a` inhabits every type, and nobody minds, because Haskell is not a logic. Read as logic, with types as propositions ({ref "curry-howard"}[chapter 1.4]), "every type is inhabited" says "every proposition is provable".
+
 The recursor `Nat.rec` of {ref "nat-intro"}[chapter 1.1] hands the step only the value at `n`, but `fib (n + 2)` needs the values at `n` and at `n + 1`. By hand, with `Nat.rec` alone, one carries the pair `(fib n, fib (n + 1))` along. Its type `ℕ × ℕ` is the type of pairs of natural numbers. In general `α × β` is a structure ({ref "structures"}[Structures]) with the two fields `fst : α` and `snd : β`; a pair is written `(a, b)`, and its fields are `p.1` and `p.2`. As for every structure, `⟨a, b⟩` works as well, but only where Lean already knows the type: `#check ⟨1, 2⟩` fails, `#check (1, 2)` gives `ℕ × ℕ`, because `(a, b)` is notation for `Prod.mk a b` alone. {ref "sigma-types"}[Chapter 1.4] treats pairs in full.
 
 ```lean

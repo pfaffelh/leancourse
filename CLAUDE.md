@@ -3166,3 +3166,32 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   `PMF` ist globale Monade; `Measure.map` liefert ohne
   AE-Messbarkeit einen Muellwert, ein Dirac-Mass, nicht `0`;
   `bernoulli`/`binomial` deprecated, Beispiel mit `uniformOfFintype`).
+
+## 2026-11-24 (2) -- 2.3 ohne Dopplungen zu Teil 1
+
+- 2.3 von 798 auf 504 Zeilen. **Gestrichen** (stand in 1.3-1.6):
+  *Prop vs Type*, *The CIC*, die Unterabschnitte zu `Quot.sound`,
+  `Classical.choice` und `funext`, *Recursors instead of recursion*,
+  *Strict positivity*, *Decidability, classically*. Die Tags
+  `prop-vs-type`, `cic`, `axiom-propext`, `axiom-quot`,
+  `axiom-choice`, `axiom-funext`, `termination`,
+  `recursors-not-recursion`, `strict-positivity`, `baked-in-more`,
+  `baked-in-meaning`, `decidable-classically`, `derived-not-axioms`
+  gibt es nicht mehr. Externe Verweise zeigen jetzt dorthin, wo der
+  Stoff steht: `cic` -> `type-rules` (1.5, dort neu ein Satz, der die
+  CIC mit Zitaten benennt), `strict-positivity` -> `positivity-rule`
+  (1.3), `axiom-funext` -> `quot-funext` (1.4), `axiom-quot` ->
+  `quot-sound` (1.4). 1.5 *Axioms* hat neu den Tag `rules-axioms`.
+- **Verschoben:** `badLoop` mit Haskell-Vergleich nach 1.3 (hinter
+  `loop`), das Gegenmodell "`funext` echt schwaecher als `Quot.sound`"
+  mit Rocq nach 1.4 (hinter *Function extensionality from
+  `Quot.sound`*). Je eine neue Folie in den Decks 1-3 und 1-4.
+- **Bleibt in 2.3:** `propext` und Mengengleichheit, Diaconescu, die
+  Tabelle der eingebauten Prinzipien (jetzt mit Spalte "wo in Teil 1"),
+  `Nat`-Literale, Vertrauensbasis und Axiom K, `partial def` (jetzt
+  `#`-Abschnitt), `Acc`/`WellFounded`, `s ∈ s`, klassische Logik, ZFC,
+  andere Typtheorien.
+- Deck 2-3 nachgezogen (25 -> 20 Folien): CIC- und Datenfolie zu "Recall
+  from chapter 1.5", neue Folien `propext` und *Literal arithmetic*,
+  `badLoop`- und die beiden `Decidable`-Folien raus. Hoechste Folie
+  663 px.

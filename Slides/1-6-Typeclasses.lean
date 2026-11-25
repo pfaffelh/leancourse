@@ -98,24 +98,18 @@ Typeclasses add nothing to the logic.
 
 # One type, two orders
 
-Mathlib: `def Lex (α : Type*) := α`. Same elements, new name. Instance search does not look through the name, so `Lex α` carries its own instances; `toLex : α ≃ Lex α`.
+Mathlib: `def Lex (α : Type*) := α`; `α ×ₗ β` is `Lex (α × β)`. Instance search does not see through `Lex`, so it has its own instances:
 
-:::table +colHeaders
-*
-  * type
-  * `(a₁, b₁) ≤ (a₂, b₂)` means
-  * order
-*
-  * `ℕ × ℕ`
-  * `a₁ ≤ a₂ ∧ b₁ ≤ b₂`
-  * partial: componentwise
-*
-  * `Lex (ℕ × ℕ)`
-  * `a₁ < a₂ ∨ (a₁ = a₂ ∧ b₁ ≤ b₂)`
-  * linear: lexicographic
-:::
+```
+instance : LE (α × β) where
+  le p q := p.1 ≤ q.1 ∧ p.2 ≤ q.2
+instance : LE (α ×ₗ β) where
+  le := Prod.Lex (· < ·) (· ≤ ·)
+```
 
-```lean -panel
+`Prod.Lex`: `a₁ < a₂`, or `a₁ = a₂ ∧ b₁ ≤ b₂`. Partial order, linear order.
+
+```lean -panel -stretch
 example : ¬ (1, 5) ≤ ((2, 0) : ℕ × ℕ) := by decide
 example : ¬ (2, 0) ≤ ((1, 5) : ℕ × ℕ) := by decide
 example : toLex ((1, 5) : ℕ × ℕ) ≤ toLex (2, 0) := by

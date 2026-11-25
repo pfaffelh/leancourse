@@ -110,7 +110,30 @@ So typeclasses cannot make Lean inconsistent, and they use no axiom. What an ins
 def Lex (α : Type*) := α
 ```
 
-So `Lex α` has the same elements as `α`, under a new name. Instance search does not look through that name, so `Lex α` can carry instances of its own (chapter 1.8 explains why this needs `def` and not `abbrev`). `toLex : α ≃ Lex α` sends an element to the same element, seen in `Lex α`, and `ofLex` goes back. The two orders on pairs are:
+So `Lex α` has the same elements as `α`, under a new name. Instance search does not look through that name, so `Lex α` can carry instances of its own (chapter 1.8 explains why this needs `def` and not `abbrev`). `toLex : α ≃ Lex α` sends an element to the same element, seen in `Lex α`, and `ofLex` goes back. Mathlib writes `α ×ₗ β` for `Lex (α × β)` and gives the two types two `LE` instances:
+
+```
+-- Mathlib/Order/Basic.lean
+instance : LE (α × β) where
+  le p q := p.1 ≤ q.1 ∧ p.2 ≤ q.2
+
+-- Mathlib/Data/Prod/Lex.lean
+instance instLE (α β : Type*) [LT α] [LE β] :
+    LE (α ×ₗ β) where
+  le := Prod.Lex (· < ·) (· ≤ ·)
+```
+
+`Prod.Lex ra rb` is an inductive predicate from Lean's core library, with one constructor per case:
+
+```
+protected inductive Lex : α × β → α × β → Prop where
+  | left  {a₁} (b₁) {a₂} (b₂) (h : ra a₁ a₂) :
+      Prod.Lex (a₁, b₁) (a₂, b₂)
+  | right (a) {b₁ b₂} (h : rb b₁ b₂) :
+      Prod.Lex (a, b₁) (a, b₂)
+```
+
+`left`: the first components are strictly ordered, the second ones are arbitrary. `right`: the first components are equal, the second ones decide. In summary:
 
 :::table (align := left) +header
 * + type

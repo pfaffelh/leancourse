@@ -1,7 +1,7 @@
 import Mathlib
 
 /-!
-# (witness) 1.7-b -- Coercions and casts
+# (witness) 1.7-b -- Coercions
 
 *Notes chapter 1.7, week 9.*
 -/
@@ -32,30 +32,7 @@ example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
 
 example (f : ℕ →+ ℕ) : f 0 = 0 := map_zero f
 
-/- ## Part 5: The numeric chain -/
-
-example (n m : ℕ) (h : (n : ℤ) + m = 10) : (↑(n + m) : ℤ) = 10 := by
-  push_cast
-  exact h
-
-example (n m : ℕ) : ((n + m : ℕ) : ℤ) ^ 2
-    = (n : ℤ) ^ 2 + 2 * n * m + (m : ℤ) ^ 2 := by
-  push_cast
-  ring
-
-example (n : ℕ) (h : n < 5) : (n : ℤ) < 5 := by
-  exact_mod_cast h
-
-example (n : ℕ) : ((n : ℤ) = 0) ↔ n = 0 := by
-  norm_cast
-
-example (a b : ℕ) (h : (a : ℚ) = b) : a = b := by
-  exact_mod_cast h
-
-example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
-  omega
-
-/- ## Part 6: Your own coercions -/
+/- ## Part 5: Your own coercions -/
 
 structure Pos where
   val : ℕ
@@ -82,7 +59,7 @@ example (f g : Affine) (x : ℤ) : f.comp g x = f (g x) := by
   show f.a * g.a * x + (f.a * g.b + f.b) = f.a * (g.a * x + g.b) + f.b
   ring
 
-/- ## Part 7: Hierarchies with `extends` -/
+/- ## Part 6: Hierarchies with `extends` -/
 
 class MyMonoid (α : Type) extends Mul α, One α where
   one_mul : ∀ a : α, 1 * a = a

@@ -282,7 +282,7 @@ There are three flavours, according to *what* the target is:
   + Example
 * + `Coe`
   + ... a term of another type
-  + a subtype into its base type; `ℕ → ℤ` via `NatCast` (`Nat.cast`, sheet 1.7-b)
+  + a subtype into its base type; `ℕ → ℤ` via `NatCast` (`Nat.cast`, chapter 2.1)
 * + `CoeSort`
   + ... a *type* (where a `Sort` is expected)
   + a set as a type; `b : Bool` as the type `b = true`
@@ -315,7 +315,7 @@ example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
 
 Mathlib does not write a `CoeFun` instance for each kind of map. Each kind of map registers an instance of the class `DFunLike`, and one generic `CoeFun` instance serves them all ({ref "representation-pitfalls"}[How an object is represented]).
 
-Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean reads it as `↑n + r`. A goal can also fill with `↑`s that block tactics like `ring` or `linarith`; the {ref "coercion-headaches"}[appendix] covers the numeric chain `ℕ → ℤ → ℚ → ℝ` and the `norm_cast` / `push_cast` tactics that tidy them up.
+Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean reads it as `↑n + r`. Coercions between number types along `ℕ → ℤ → ℚ → ℝ → ℂ` are called *casts*. A goal can fill with `↑`s that block tactics like `ring` or `linarith`. Which casts there are, the lemmas that move them, and the tactics `push_cast`, `norm_cast` and `exact_mod_cast` are in {ref "number-casts"}[Casts] in chapter 2.1, once the number types are built.
 
 # Hierarchies with `extends`
 %%%

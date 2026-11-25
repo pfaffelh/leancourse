@@ -1,7 +1,7 @@
 import Mathlib
 
 /-!
-# 1.7-b -- Coercions and casts
+# 1.7-b -- Coercions
 
 *Notes chapter 1.7, week 9.*
 
@@ -13,7 +13,9 @@ you will trip over most often.
 
 Three classes do three different jobs, and the chapter calls them
 `Coe`, `CoeSort` and `CoeFun`. Numerals, which are also resolved
-through a class, are on sheet `1.8-a`.
+through a class, are on sheet `1.8-a`. Casts between number types,
+`ℕ → ℤ → ℚ → ℝ`, are coercions too; they are practised on sheet
+`2.1-a`, together with chapter 2.1.
 
 ## What is introduced here
 
@@ -23,8 +25,6 @@ through a class, are on sheet `1.8-a`.
 | `Coe`             | a value becomes a value of another type      |
 | `CoeSort`         | a value becomes a *type*                     |
 | `CoeFun`          | a bundled object is applied like a function  |
-| `norm_cast`       | normalise casts, often closing the goal      |
-| `exact_mod_cast`  | `exact`, up to casts                         |
 | `instance : Coe`  | a coercion for your own structure            |
 | `extends`         | a class that contains other classes          |
 
@@ -35,7 +35,7 @@ through a class, are on sheet `1.8-a`.
 | `L-a`   | `exact`                                        |
 | `1.1-a` | `rw`, `show`                                   |
 | `L-f`   | `have`                                         |
-| `1.1-c` | `ring`, `omega`, `push_cast`, `calc`, `exact?` |
+| `1.1-c` | `ring`, `omega`, `calc`, `exact?`              |
 -/
 
 /-
@@ -111,53 +111,7 @@ example (f : ℕ →+ ℕ) : f 0 = 0 :=
   sorry
 
 /-
-## Part 5: The numeric chain
-
-The chain is `ℕ → ℤ → ℚ → ℝ → ℂ`. A goal can fill up with `↑`s and
-then `ring` or `linarith` will not fire, because the two sides are
-not even the same type. Three tactics tidy this up:
-
-* `push_cast` moves `↑` *inwards*, towards the leaves;
-* `norm_cast` normalises and often closes the goal outright;
-* `exact_mod_cast h` is `exact h`, up to casts.
--/
-
--- Exercise 8: The hypothesis is already cast-free inside; push the
--- cast in the goal inwards and finish.
-example (n m : ℕ) (h : (n : ℤ) + m = 10) : (↑(n + m) : ℤ) = 10 := by
-  sorry
-
--- Exercise 9: `ring` alone fails here -- the left side is a cast of
--- a sum, the right side a sum of casts. Fix that first.
-example (n m : ℕ) : ((n + m : ℕ) : ℤ) ^ 2
-    = (n : ℤ) ^ 2 + 2 * n * m + (m : ℤ) ^ 2 := by
-  sorry
-
--- Exercise 10: An inequality that survives the cast.
-example (n : ℕ) (h : n < 5) : (n : ℤ) < 5 := by
-  sorry
-
--- Exercise 11: One tactic closes this.
-example (n : ℕ) : ((n : ℤ) = 0) ↔ n = 0 := by
-  sorry
-
--- Exercise 12: Two steps up the chain at once.
-example (a b : ℕ) (h : (a : ℚ) = b) : a = b := by
-  sorry
-
--- Exercise 13: Subtraction is the dangerous one, because `ℕ` cuts
--- off at zero. With `1 ≤ n` the statement is true; `omega` knows
--- both `ℕ` and `ℤ` and handles the casts itself.
-example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
-  sorry
-
--- Without the hypothesis the statement is false: for `n = 0` the
--- left side is `0` and the right side `-1`. Uncomment and watch
--- `omega` refuse:
--- example (n : ℕ) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by omega
-
-/-
-## Part 6: Your own coercions
+## Part 5: Your own coercions
 
 A `Coe` instance for your own structure is one line: it names the
 function Lean inserts. A `CoeFun` instance says how a value is applied
@@ -168,11 +122,11 @@ structure Pos where
   val : ℕ
   pos : 0 < val
 
--- Exercise 14: Let `Pos` coerce to `ℕ` by forgetting the proof.
+-- Exercise 8: Let `Pos` coerce to `ℕ` by forgetting the proof.
 instance : Coe Pos ℕ :=
   sorry
 
--- Exercise 15: `p.pos` is the proof that was forgotten. `have` it,
+-- Exercise 9: `p.pos` is the proof that was forgotten. `have` it,
 -- then `omega`.
 example (p q : Pos) : 0 < (p : ℕ) + q := by
   sorry
@@ -182,7 +136,7 @@ structure Affine where
   a : ℤ
   b : ℤ
 
--- Exercise 16: Let an `Affine` be applied to `x : ℤ`, with value
+-- Exercise 10: Let an `Affine` be applied to `x : ℤ`, with value
 -- `f.a * x + f.b`.
 instance : CoeFun Affine (fun _ => ℤ → ℤ) :=
   sorry
@@ -190,14 +144,14 @@ instance : CoeFun Affine (fun _ => ℤ → ℤ) :=
 def Affine.comp (f g : Affine) : Affine :=
   ⟨f.a * g.a, f.a * g.b + f.b⟩
 
--- Exercise 17: Composition is what its name says. `show` makes the
+-- Exercise 11: Composition is what its name says. `show` makes the
 -- coercion explicit: write out both sides with `.a` and `.b`, then
 -- `ring`.
 example (f g : Affine) (x : ℤ) : f.comp g x = f (g x) := by
   sorry
 
 /-
-## Part 7: Hierarchies with `extends`
+## Part 6: Hierarchies with `extends`
 
 `extends Mul α, One α` makes `MyMonoid α` contain a `*` and a `1`;
 the class adds two laws. An instance of `MyMonoid` also provides
@@ -208,12 +162,12 @@ class MyMonoid (α : Type) extends Mul α, One α where
   one_mul : ∀ a : α, 1 * a = a
   mul_one : ∀ a : α, a * 1 = a
 
--- Exercise 18: `ℕ` is a monoid. `*` and `1` are already there; give
+-- Exercise 12: `ℕ` is a monoid. `*` and `1` are already there; give
 -- the two laws. `exact?` finds them.
 instance : MyMonoid ℕ :=
   sorry
 
--- Exercise 19: The unit is unique: an `e` with `e * a = a` for all
+-- Exercise 13: The unit is unique: an `e` with `e * a = a` for all
 -- `a` is `1`. Apply `h` to `1`.
 theorem MyMonoid.one_unique {α : Type} [MyMonoid α] (e : α)
     (h : ∀ a : α, e * a = a) : e = 1 := by

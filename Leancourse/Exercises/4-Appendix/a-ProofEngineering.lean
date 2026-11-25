@@ -12,7 +12,7 @@ In this exercise sheet, you will practice:
 - Fixing broken proofs (definitional equality, the wrong tactic)
 - Combining several tactics in one proof
 
-Finding lemmas is practised on `2.0-a`, casts on `1.7-b`.
+Finding lemmas is practised on `2.0-a`, casts on `2.1-a`.
 
 Prerequisites: You should be familiar with basic Lean tactics (intro, apply, exact,
 rw, simp, ring, linarith, omega) from earlier chapters.
@@ -36,8 +36,7 @@ rw, simp, ring, linarith, omega) from earlier chapters.
 | `1.1-a` | `rw`                                                                 |
 | `1.1-b` | `decide`                                                             |
 | `1.1-c` | `calc`, `ring`, `norm_num`, `linarith`, `simp`, `omega`, `push_cast` |
-| `1.7-b` | `norm_cast`                                                          |
-| `2.1-a` | `positivity`                                                         |
+| `2.1-a` | `norm_cast`, `positivity`                                            |
 -/
 
 /-

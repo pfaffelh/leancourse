@@ -16,6 +16,8 @@ is `Option ℝ≥0`. Read chapter 2.1 first.
 
 | tactic                     | use it when                                   |
 |----------------------------|-----------------------------------------------|
+| `norm_cast`                | normalise casts, often closing the goal       |
+| `exact_mod_cast h`         | `exact h`, up to casts                        |
 | `zify [h]`                 | a goal in `ℕ` with `-` is easier in `ℤ`       |
 | `norm_cast at h ⊢`         | remove casts from `h` and from the goal       |
 | `lift x to ℝ≥0 using h`    | `x` lies in the image of the cast, by `h`     |
@@ -31,7 +33,6 @@ is `Option ℝ≥0`. Read chapter 2.1 first.
 | `1.1-b` | `decide`, `<;>`                                              |
 | `L-f`   | `have`                                                       |
 | `1.1-c` | `norm_num`, `simp`, `omega`, `ring`, `linarith`, `push_cast` |
-| `1.7-b` | `norm_cast`                                                  |
 -/
 
 open scoped NNReal ENNReal
@@ -131,25 +132,70 @@ example (a : ℝ≥0∞) : a + ∞ = ∞ := by
 example : (∞ : ℝ≥0∞).toReal = 0 := by
   sorry
 
-/-! ## Part 6: Casts -/
+/-! ## Part 6: Casts
 
--- Exercise 20) `(Nat.even_mul_succ_self n).two_dvd` gives
+A cast is a coercion between number types (chapter 1.7, *Coercions*).
+The chain is `ℕ → ℤ → ℚ → ℝ → ℂ`. A goal can fill up with `↑`s, and
+then `ring` or `linarith` do not fire: a cast of a sum is not a sum
+of casts. Three tactics tidy this up:
+
+- `push_cast` moves `↑` inwards, towards the leaves (sheet `1.1-c`);
+- `norm_cast` normalises and often closes the goal outright;
+- `exact_mod_cast h` is `exact h`, up to casts.
+-/
+
+-- Exercise 20) The hypothesis is already cast-free inside; push the
+-- cast in the goal inwards and finish.
+example (n m : ℕ) (h : (n : ℤ) + m = 10) : (↑(n + m) : ℤ) = 10 := by
+  sorry
+
+-- Exercise 21) `ring` alone fails here -- the left side is a cast of
+-- a sum, the right side a sum of casts. Fix that first.
+example (n m : ℕ) : ((n + m : ℕ) : ℤ) ^ 2
+    = (n : ℤ) ^ 2 + 2 * n * m + (m : ℤ) ^ 2 := by
+  sorry
+
+-- Exercise 22) An inequality that survives the cast.
+example (n : ℕ) (h : n < 5) : (n : ℤ) < 5 := by
+  sorry
+
+-- Exercise 23) One tactic closes this.
+example (n : ℕ) : ((n : ℤ) = 0) ↔ n = 0 := by
+  sorry
+
+-- Exercise 24) Two steps up the chain at once.
+example (a b : ℕ) (h : (a : ℚ) = b) : a = b := by
+  sorry
+
+-- Exercise 25) Subtraction is the dangerous one, because `ℕ` cuts
+-- off at zero. With `1 ≤ n` the statement is true; `omega` knows
+-- both `ℕ` and `ℤ` and handles the casts itself.
+example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
+  sorry
+
+-- Without the hypothesis the statement is false: for `n = 0` the
+-- left side is `0` and the right side `-1`. Uncomment and watch
+-- `omega` refuse:
+-- example (n : ℕ) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by omega
+
+-- Exercise 26) `(Nat.even_mul_succ_self n).two_dvd` gives
 -- `2 ∣ n * (n + 1)`; then `Nat.cast_div`, `push_cast`, `ring`.
 example (n : ℕ) :
     ((n * (n + 1) / 2 : ℕ) : ℝ) = n * (n + 1) / 2 := by
   sorry
 
--- Exercise 21) For `ℝ`, rewrite with `Nat.cast_sub h` first.
+-- Exercise 27) For `ℝ`, rewrite with `Nat.cast_sub h` first.
 example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
   sorry
 
--- Exercise 22) Which side is computed in `ℕ`?
+-- Exercise 28) Which side is computed in `ℕ`?
 example : ((7 / 2 : ℕ) : ℝ) ≠ 7 / 2 := by
   sorry
 
 /-! ## Part 7: More casts
 
-Read the section *Casts* of chapter 2.1 first. Four new tactics:
+Read the section *Casts* of chapter 2.1 first. Three new tactics,
+and `norm_cast` on a hypothesis:
 
 - `zify [h]` moves a goal from `ℕ` to `ℤ`. A subtraction `n - m`
   becomes `↑n - ↑m` only if `h : m ≤ n` is in the list.
@@ -160,45 +206,45 @@ Read the section *Casts* of chapter 2.1 first. Four new tactics:
   squares, sums and products of positive terms, casts from `ℕ`.
 -/
 
--- Exercise 23) `ring` fails in `ℕ`; `zify` needs both `≤` facts.
+-- Exercise 29) `ring` fails in `ℕ`; `zify` needs both `≤` facts.
 example (n : ℕ) (h : 1 ≤ n) : (n - 1) * (n + 1) = n ^ 2 - 1 := by
   sorry
 
--- Exercise 24) Remove the casts from `h`.
+-- Exercise 30) Remove the casts from `h`.
 example (m n : ℕ) (h : (m : ℝ) + 1 ≤ n) : m < n := by
   sorry
 
--- Exercise 25) `omega` knows `Int.toNat`.
+-- Exercise 31) `omega` knows `Int.toNat`.
 example (k : ℤ) : (k.toNat : ℤ) = max k 0 := by
   sorry
 
--- Exercise 26) `rw [Int.floor_eq_iff]`.
+-- Exercise 32) `rw [Int.floor_eq_iff]`.
 example (n : ℤ) : ⌊(n : ℝ) + 1 / 2⌋ = n := by
   sorry
 
--- Exercise 27) Which hypothesis excludes the junk value?
+-- Exercise 33) Which hypothesis excludes the junk value?
 example (x y : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
     (ENNReal.ofReal (x * y)).toReal = x * y := by
   sorry
 
--- Exercise 28) Lift both to `ℝ≥0`, then `norm_cast at h ⊢`.
+-- Exercise 34) Lift both to `ℝ≥0`, then `norm_cast at h ⊢`.
 example (a b : ℝ≥0∞) (ha : a ≠ ∞) (hb : b ≠ ∞)
     (h : a.toReal < b.toReal) : a < b := by
   sorry
 
--- Exercise 29) Without `ha` it is false. Try `a = ∞`.
+-- Exercise 35) Without `ha` it is false. Try `a = ∞`.
 example : ¬ ∀ a b : ℝ≥0∞, a.toReal < b.toReal → a < b := by
   sorry
 
--- Exercise 30) `Real.toNNReal_add`.
+-- Exercise 36) `Real.toNNReal_add`.
 example (x y : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
     (x + y).toNNReal = x.toNNReal + y.toNNReal := by
   sorry
 
--- Exercise 31) Without the hypotheses it is false. Try `1` and `-1`.
+-- Exercise 37) Without the hypotheses it is false. Try `1` and `-1`.
 example : ¬ ∀ x y : ℝ, (x + y).toNNReal = x.toNNReal + y.toNNReal := by
   sorry
 
--- Exercise 32)
+-- Exercise 38)
 example (x : ℝ) (n : ℕ) : 0 < (n : ℝ) + 1 + x ^ 2 := by
   sorry

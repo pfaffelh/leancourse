@@ -45,29 +45,7 @@ In practice, if you are working with concrete types (`ℕ`, `ℝ`, etc.) and Mat
 tag := "coercion-headaches"
 %%%
 
-In mathematics, we freely treat a natural number as an integer, a rational as a real, and so on. In Lean, these are different types, and moving between them requires {ref "coercions"}[coercions], written `↑` (or `Nat.cast`, `Int.cast`, etc.).
-
-Lean inserts coercions automatically in many cases, but sometimes the coercion chain gets confused, especially when mixing several numeric types.
-
-**The standard coercion chain:**
-```
-ℕ → ℤ → ℚ → ℝ → ℂ
-```
-
-**Common problem:** Your goal looks right, but it involves a mismatch between, say, `(n : ℕ)` and `(↑n : ℤ)`, and tactics like `ring` or `linarith` fail because the types do not match.
-
-**Tactics for coercion issues:**
-
-- `push_cast` pushes coercions inward: it rewrites `↑(a + b)` to `↑a + ↑b`, `↑(a * b)` to `↑a * ↑b`, etc.
-- `norm_cast` normalizes cast expressions (moving coercions outward and simplifying) and can close goals involving casts.
-- `exact_mod_cast` and `apply_mod_cast` are versions of `exact` and `apply` that handle casts automatically.
-
-```lean
-example (n m : ℕ) (h : (n : ℤ) + m = 10) : (↑(n + m) : ℤ) = 10 := by push_cast; exact h
-example (n : ℕ) (h : n < 5) : (n : ℤ) < 5 := by exact_mod_cast h
-```
-
-**Tip:** When working with mixed types, try to state everything in the "largest" type from the start. For example, if you are working with both `ℕ` and `ℝ`, cast to `ℝ` as early as possible and use `push_cast` and `norm_cast` to manage the casts.
+A natural number in a real formula is converted by a cast `↑`, a {ref "coercions"}[coercion] between number types. When `ring` or `linarith` fail on a goal that looks right, look for `↑`s: a cast of a sum is not a sum of casts. The section {ref "number-casts"}[Casts] in chapter 2.1 lists the casts, the lemmas that move them (with their hypotheses) and the tactics `push_cast`, `norm_cast`, `exact_mod_cast` and `zify`.
 
 # Definitional equality surprises
 %%%

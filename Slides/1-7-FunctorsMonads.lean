@@ -283,7 +283,7 @@ A coercion: a conversion Lean inserts when a term of type `α` stands where `β`
 *
   * `Coe`
   * a term of another type
-  * subtype into base type; `ℕ → ℤ` via `NatCast` (`Nat.cast`, sheet 1.7-b)
+  * subtype into base type; `ℕ → ℤ` via `NatCast` (`Nat.cast`, chapter 2.1)
 *
   * `CoeSort`
   * a type

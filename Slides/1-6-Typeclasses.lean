@@ -88,14 +88,42 @@ Two instances of a Prop class are definitionally equal: they never conflict.
   * `instance`
 :::
 
-`instance foo : C := …` is roughly `@[instance] def foo : C := …`; the attribute `@[instance]` marks the `def` for instance search.
+`instance foo : C := …` is `@[instance_reducible, instance] def foo : C := …`. The attribute `instance` registers the `def` for instance search, `instance_reducible` lets the search unfold it. Without a name, Lean generates one (`instInhabitedFoo`).
 
 The kernel knows neither `class` nor `instance`: the elaborator writes the instance into the term.
 
-The instance fixes the meaning: `(1, 5) ≤ (2, 0)` is false on `ℕ × ℕ`, true on `Lex (ℕ × ℕ)`.
-
 :::class "key"
 Typeclasses add nothing to the logic.
+:::
+
+# One type, two orders
+
+Mathlib: `def Lex (α : Type*) := α`. Same elements, new name. Instance search does not look through the name, so `Lex α` carries its own instances; `toLex : α ≃ Lex α`.
+
+:::table +colHeaders
+*
+  * type
+  * `(a₁, b₁) ≤ (a₂, b₂)` means
+  * order
+*
+  * `ℕ × ℕ`
+  * `a₁ ≤ a₂ ∧ b₁ ≤ b₂`
+  * partial: componentwise
+*
+  * `Lex (ℕ × ℕ)`
+  * `a₁ < a₂ ∨ (a₁ = a₂ ∧ b₁ ≤ b₂)`
+  * linear: lexicographic
+:::
+
+```lean -panel
+example : ¬ (1, 5) ≤ ((2, 0) : ℕ × ℕ) := by decide
+example : ¬ (2, 0) ≤ ((1, 5) : ℕ × ℕ) := by decide
+example : toLex ((1, 5) : ℕ × ℕ) ≤ toLex (2, 0) := by
+  decide
+```
+
+:::class "key"
+The instance decides what `≤` means.
 :::
 
 # Creating instances

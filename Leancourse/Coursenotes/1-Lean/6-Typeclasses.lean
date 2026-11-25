@@ -81,7 +81,7 @@ Typeclasses inherit the *proof* / *data* split drawn for terms in general: an in
 
 An instance is a term you construct: that is what `instance … where …` does, and its fields are values you can project and run. You then use it as a *property of the type* — declared once, synthesized wherever `[C α]` is required, rarely named or passed by hand. For a data class it stays data, carried at runtime; for a `Prop` class it is a proof and is erased.
 
-The parallel holds at the term level: `class` is a `structure` marked for instance search, and `instance` is a `def` marked for instance search, with `instance foo : C := …` roughly sugar for `@[instance] def foo : C := …`. Here `@[instance]` is an *attribute*: a mark on the `def` that registers it for instance search. A plain `def` of a class type is a perfectly good term, only invisible to the search.
+The parallel holds at the term level: `class` is a `structure` marked for instance search, and `instance` is a `def` marked for instance search, and `instance foo : C := …` is `@[instance_reducible, instance] def foo : C := …`. The two names in `@[…]` are *attributes*, marks on the `def`: `instance` registers it for instance search, and `instance_reducible` allows the search to unfold it. Without a name, `instance : C := …` gets a generated one, such as `instInhabitedFoo`. A plain `def` of a class type is a perfectly good term, only invisible to the search.
 
 :::table (align := left) +header
 * + Level
@@ -104,10 +104,31 @@ set_option pp.explicit true in
 --   (@OfNat.ofNat ℕ 1 (instOfNatNat 1))
 ```
 
-So typeclasses cannot make Lean inconsistent, and they use no axiom. What an instance does decide is what a statement *means*: `≤` and `+` stand for whatever instance is found. On `ℕ × ℕ` the order found is the componentwise one, so `(1, 5) ≤ (2, 0)` is false. The lexicographic order lives on the type `Lex (ℕ × ℕ)`, which has the same elements and a different instance:
+So typeclasses cannot make Lean inconsistent, and they use no axiom. What an instance does decide is what a statement *means*: `≤` and `+` stand for whatever instance is found. The standard example is the order on pairs. Mathlib defines
+
+```
+def Lex (α : Type*) := α
+```
+
+So `Lex α` has the same elements as `α`, under a new name. Instance search does not look through that name, so `Lex α` can carry instances of its own (chapter 1.8 explains why this needs `def` and not `abbrev`). `toLex : α ≃ Lex α` sends an element to the same element, seen in `Lex α`, and `ofLex` goes back. The two orders on pairs are:
+
+:::table (align := left) +header
+* + type
+  + `(a₁, b₁) ≤ (a₂, b₂)` means
+  + order
+* + `ℕ × ℕ`
+  + `a₁ ≤ a₂ ∧ b₁ ≤ b₂`
+  + partial: componentwise (`Prod.mk_le_mk`)
+* + `Lex (ℕ × ℕ)`
+  + `a₁ < a₂ ∨ (a₁ = a₂ ∧ b₁ ≤ b₂)`
+  + linear: lexicographic (`Prod.Lex.toLex_le_toLex`)
+:::
+
+So `(1, 5)` and `(2, 0)` are incomparable in `ℕ × ℕ`, and `(1, 5)` is the smaller one in `Lex (ℕ × ℕ)`:
 
 ```lean
 example : ¬ ((1, 5) ≤ ((2, 0) : ℕ × ℕ)) := by decide
+example : ¬ ((2, 0) ≤ ((1, 5) : ℕ × ℕ)) := by decide
 example : toLex (1, 5) ≤ (toLex (2, 0) : Lex (ℕ × ℕ)) := by
   decide
 ```

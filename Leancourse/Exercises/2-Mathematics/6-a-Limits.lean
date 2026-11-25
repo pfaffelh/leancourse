@@ -7,21 +7,20 @@ import Mathlib -- import all the tactics
 
 ## Tactics from earlier sheets
 
-| sheet   | tactics                            |
-|---------|------------------------------------|
-| `L-a`   | `intro`, `exact`                   |
-| `L-b`   | `obtain`                           |
-| `1.1-a` | `rfl`, `show`, `rw`                |
-| `1.2-a` | `use`                              |
-| `1.1-b` | `<;>`                              |
-| `L-e`   | `by_contra`                        |
-| `L-f`   | `have`, `refine`                   |
-| `1.1-c` | `calc`, `ring`, `linarith`, `simp` |
-| `L-g`   | `simp only`                        |
-| `1.5-a` | `let`                              |
-| `1.7-b` | `norm_cast`, `exact_mod_cast`      |
-| `2.1-a` | `positivity`                       |
-| `A-a`   | `field_simp`                       |
+| sheet   | tactics                                     |
+|---------|---------------------------------------------|
+| `L-a`   | `intro`, `exact`                            |
+| `L-b`   | `obtain`                                    |
+| `1.1-a` | `rfl`, `show`, `rw`                         |
+| `1.2-a` | `use`                                       |
+| `1.1-b` | `<;>`                                       |
+| `L-e`   | `by_contra`                                 |
+| `L-f`   | `have`, `refine`                            |
+| `1.1-c` | `calc`, `ring`, `linarith`, `simp`          |
+| `L-g`   | `simp only`                                 |
+| `1.5-a` | `let`                                       |
+| `2.1-a` | `norm_cast`, `exact_mod_cast`, `positivity` |
+| `A-a`   | `field_simp`                                |
 -/
 
 /-

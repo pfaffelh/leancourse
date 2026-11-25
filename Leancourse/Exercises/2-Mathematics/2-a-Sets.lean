@@ -1,22 +1,31 @@
--- Again, we only import tactics
-import Mathlib.Tactic -- imports all the Lean tactics
+import Mathlib
 
 /-!
 # 2.2-a -- Sets
 
 *Notes chapter 2.2, week 11.*
 
+## Introduced here
+
+| notation                    | meaning                                        |
+|-----------------------------|------------------------------------------------|
+| `s ⊆ t`, `s ∩ t`, `s ∪ t`   | subset, intersection, union                    |
+| `sᶜ`, `s \ t`               | complement, difference                         |
+| `⋃ i, s i`                  | union of a family; `Set.mem_iUnion`            |
+| `∑ i ∈ Finset.range n, f i` | `f 0 + ⋯ + f (n - 1)`; `Finset.sum_range_succ` |
+
 ## Tactics from earlier sheets
 
-| sheet   | tactics          |
-|---------|------------------|
-| `L-a`   | `intro`, `exact` |
-| `L-b`   | `constructor`    |
-| `1.1-a` | `rfl`, `rw`      |
-| `L-e`   | `by_contra`      |
-| `L-f`   | `rintro`         |
-| `1.1-c` | `simp`           |
-| `1.5-a` | `ext`            |
+| sheet   | tactics                     |
+|---------|-----------------------------|
+| `L-a`   | `intro`, `exact`            |
+| `L-b`   | `constructor`, `obtain`     |
+| `1.1-a` | `rfl`, `rw`, `induction`    |
+| `L-e`   | `by_contra`                 |
+| `L-f`   | `rintro`                    |
+| `L-g`   | `simp only`                 |
+| `1.1-c` | `simp`, `ring`              |
+| `1.5-a` | `ext`                       |
 -/
 
 variable (α β : Type)
@@ -98,7 +107,7 @@ example : (∀ x, x ∈ s) ↔ ¬∃ x, x ∈ sᶜ := by
 
 When are two sets equal? Well, if they contain the same elements. This is what extensionality is about.
 
-If the goal is `⊢ s = t` where `s` and `t` are `Set α`, then `ext x,` will create a hypothesis `x : α` and change
+If the goal is `⊢ s = t` where `s` and `t` are `Set α`, then `ext x` creates `x : α` and changes
 the goal to `x ∈ s ↔ x ∈ t`.
 
 Since we will be dealing with sets below anyway, we start with a different example. Two functions are equal, if all values are equal.
@@ -135,4 +144,20 @@ example : s = sᶜᶜ := by
 
 -- Exercise 10
 example : s = ∅ ↔ s ⊆ ∅ := by
+  sorry
+
+/-! # Unions of families and finite sums
+
+`⋃ n, s n` is the union of the sets `s 0, s 1, …`. Membership is an
+`∃`: `x ∈ ⋃ n, s n ↔ ∃ n, x ∈ s n`, which is `Set.mem_iUnion`.
+`∑ i ∈ Finset.range n, f i` is the finite sum `f 0 + ⋯ + f (n - 1)`
+from section *Finite sets and sums* of chapter 2.2. -/
+
+-- Exercise 11) `ext x`, `simp only [Set.mem_iUnion, Set.mem_Icc,
+-- Set.mem_Ici]`, then `exists_nat_ge`.
+example : (⋃ n : ℕ, Set.Icc (0 : ℝ) n) = Set.Ici 0 := by
+  sorry
+
+-- Exercise 12) Induction on `n`, with `Finset.sum_range_succ`.
+example (n : ℕ) : ∑ i ∈ Finset.range n, (2 * i + 1) = n ^ 2 := by
   sorry

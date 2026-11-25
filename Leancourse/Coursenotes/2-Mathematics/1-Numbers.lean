@@ -134,7 +134,7 @@ In analysis, `ℝ` is the completion of `ℚ`: a real number is given by a Cauch
 example (f : CauSeq ℚ abs) : ℕ → ℚ := f.1
 ```
 
-*Classes of sequences: a quotient.* Two Cauchy sequences are related, `f ≈ g`, if `f - g` tends to `0`. The quotient by this relation is `CauSeq.Completion.Cauchy abs`, and `CauSeq.Completion.mk` is its `Quot.mk`. Related sequences give the same class by `Quotient.sound`, the form of `Quot.sound` for an equivalence relation:
+*Classes of sequences: a quotient.* Two Cauchy sequences are related, `f ≈ g`, if `f - g` tends to `0`, written `(f - g).LimZero`. Here `≈` (typed `\approx`) is the relation of a `Setoid` ({ref "quot-sound"}[chapter 1.4]). The quotient by this relation is `CauSeq.Completion.Cauchy abs`, and `CauSeq.Completion.mk` is its `Quot.mk`. Related sequences give the same class by `Quotient.sound`, the form of `Quot.sound` for an equivalence relation:
 
 ```lean
 example (f g : CauSeq ℚ abs) :
@@ -165,9 +165,9 @@ example (f g : CauSeq ℚ abs) :
   CauSeq.Completion.mk_add f g
 ```
 
-This equation is the computation step `Quot.lift f h (Quot.mk r a) ⟶ f a`, for an operation with two arguments. Multiplication, the order and the limits of `ℝ` are defined in the same way: on representatives, with a proof that the result does not depend on the choice.
+This equation is the computation step `Quot.lift φ h (Quot.mk r a) ⟶ φ a`, for an operation with two arguments; `+` on `ℝ` unwraps the structure and uses it. Multiplication, the order and the limits of `ℝ` are defined in the same way: on representatives, with a proof that the result does not depend on the choice.
 
-A real number is not a finite object. `#eval` shows the first terms of a Cauchy sequence that represents it, and equality of real numbers is not decidable, so `decide` and `rfl` fail even on `1 + 1 = 2`. Concrete computations with real numbers are proved with `norm_num`.
+A real number is not a finite object. `#eval` shows the first terms of a Cauchy sequence that represents it. Lean has an instance `DecidableEq ℝ`, but it is built from `Classical.choice` and does not compute, so `decide` fails even on `1 + 1 = 2`; `rfl` fails because `+` on `ℝ` does not reduce. Concrete computations with real numbers are proved with `norm_num`.
 
 ```lean
 #eval (1 : ℝ) + 1
@@ -280,7 +280,7 @@ The alternative would be a division that takes a proof of `b ≠ 0` as an argume
 
 So no false statement can be proved from a junk value; it only appears in statements that hold for it as well, such as `(a + b) / c = a / c + b / c`, which holds for `c = 0` too and therefore has no hypothesis. When a theorem does not apply, the first thing to check is which of its hypotheses is missing.
 
-Functions of analysis follow the same pattern. Each has a predicate that says whether the value means what it should, and the theorems about the value assume the predicate:
+Functions of analysis follow the same pattern. Each has a predicate that says whether the value means what it should, and the theorems about the value assume the predicate. `∑' n, f n` is the sum of the series (`tsum`).
 
 :::table (align := left) +header
 * + value
@@ -328,8 +328,8 @@ tag := "powers"
   + `zpow`, with `x ^ (-n) = (x ^ n)⁻¹`
   + groups, fields
 * + `y : ℝ`
-  + `Real.rpow`, via `exp` and `log`
-  + `ℝ`, `ℝ≥0`, `ℂ`
+  + `Real.rpow` via `exp` and `log` (`NNReal.rpow`, `ENNReal.rpow` likewise)
+  + `ℝ`, `ℝ≥0`, `ℝ≥0∞`
 :::
 
 Each has its own theorems (`pow_succ`, `zpow_neg`, `Real.rpow_add`), and they are related by casts, such as `Real.rpow_natCast : x ^ (n : ℝ) = x ^ n`. A numeral in the exponent is read as a natural number, so `x ^ 2` is `x * x`. The same holds for `1 / 2`, and that is a trap: `1 / 2` is then division in `ℕ`, which is `0`, and `x ^ (1 / 2)` is `1`.
@@ -351,17 +351,15 @@ For a negative base, `x ^ y` with real `y` is defined as `exp (log x * y) * cos 
 tag := "nnreal-ennreal"
 %%%
 
-`ℝ≥0` is used where a quantity cannot be negative: norms in `ℝ≥0` are written `‖x‖₊`, and a finite measure takes values in it. Subtraction on `ℝ≥0` is truncated, as on `ℕ`.
+`ℝ≥0` is used where a quantity cannot be negative: norms in `ℝ≥0` are written `‖x‖₊`. Subtraction on `ℝ≥0` is truncated, as on `ℕ`.
 
-`ℝ≥0∞` is the value type of measures. Every set gets a measure, also an unbounded one, and every series of nonnegative terms has a sum, possibly `∞`. The arithmetic of `∞` has conventions of its own:
+In `ℝ≥0∞` every series of nonnegative terms has a sum, possibly `∞`. Mathlib also uses it as the value type of measures, which this course does not cover. The arithmetic of `∞` has conventions of its own:
 
 ```lean
 example : (∞ : ℝ≥0∞) + 1 = ∞ := by simp
 example : (0 : ℝ≥0∞) * ∞ = 0 := by simp
 example : (∞ : ℝ≥0∞) - ∞ = 0 := by simp
 example : (1 : ℝ≥0∞) / 0 = ∞ := by simp
-example : MeasureTheory.volume (Set.univ : Set ℝ) = ∞ := by
-  simp
 #check @ENNReal.summable   -- every f : α → ℝ≥0∞ is summable
 ```
 
@@ -425,12 +423,13 @@ end
 number := false
 %%%
 
-Lean elaborates from the outside in: the expected type decides where a cast is needed. In `(n : ℝ) + 1` the addition happens in `ℝ`, and `n` is cast first. In `((n + 1 : ℕ) : ℝ)` the addition happens in `ℕ`, and the sum is cast:
+For arithmetic, Lean finds the largest type among the operands and casts each operand into it. In `(n : ℝ) + 1` and in `(n + 1 : ℝ)` the addition happens in `ℝ`, and `n` is cast first. In `((n + 1 : ℕ) : ℝ)` the addition happens in `ℕ`, and the sum is cast:
 
 ```lean
 section
 variable (n : ℕ)
 #check (n : ℝ) + 1          -- ↑n + 1 : ℝ
+#check (n + 1 : ℝ)          -- ↑n + 1 : ℝ
 #check ((n + 1 : ℕ) : ℝ)    -- ↑(n + 1) : ℝ
 end
 ```
@@ -577,7 +576,7 @@ example : ENNReal.ofReal x = ((x.toNNReal : ℝ≥0) : ℝ≥0∞) :=
 end
 ```
 
-`norm_cast` knows the two coercions (`NNReal.coe_add`, `ENNReal.coe_add`, …) but not the four functions, because their lemmas need hypotheses. Most often one therefore moves to `ℝ≥0` first. The tactic `lift` does this: given `ha : a ≠ ∞`, `lift a to ℝ≥0 using ha` replaces `a : ℝ≥0∞` by `↑a` with `a : ℝ≥0`. In the same way `lift x to ℝ≥0 using hx` works for `x : ℝ` with `hx : 0 ≤ x`.
+`norm_cast` knows the two coercions (`NNReal.coe_add`, `ENNReal.coe_add`, …) but not the four functions, because their lemmas need hypotheses. Most often one therefore moves to `ℝ≥0` first. The tactic `lift` does this: given `ha : a ≠ ∞`, `lift a to ℝ≥0 using ha` replaces `a : ℝ≥0∞` by `↑a` with `a : ℝ≥0`. In the same way `lift x to ℝ≥0 using hx` works for `x : ℝ` with `hx : 0 ≤ x`. In the second example below, `simp` fails without the two `lift`s.
 
 ```lean
 example (a b : ℝ≥0∞) (ha : a ≠ ∞) (hb : b ≠ ∞)
@@ -585,9 +584,12 @@ example (a b : ℝ≥0∞) (ha : a ≠ ∞) (hb : b ≠ ∞)
   lift a to ℝ≥0 using ha
   lift b to ℝ≥0 using hb
   norm_cast at h ⊢
-example (x : ℝ) (hx : 0 ≤ x) : 0 ≤ x ^ 3 := by
+example (x y : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
+    ENNReal.ofReal (x * y)
+      = ENNReal.ofReal x * ENNReal.ofReal y := by
   lift x to ℝ≥0 using hx
-  positivity
+  lift y to ℝ≥0 using hy
+  simp
 ```
 
 ## The way down

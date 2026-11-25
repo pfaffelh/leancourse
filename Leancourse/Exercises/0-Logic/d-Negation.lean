@@ -22,11 +22,12 @@ that do are in L-e.
 
 ## Tactics from earlier sheets
 
-| sheet   | tactics                     |
-|---------|-----------------------------|
-| `L-a`   | `trivial`, `intro`, `exact` |
-| `L-b`   | `constructor`, `obtain`     |
-| `1.1-a` | `rfl`, `show`               |
+| sheet   | tactics                              |
+|---------|--------------------------------------|
+| `L-a`   | `trivial`, `intro`, `exact`          |
+| `L-b`   | `constructor`, `obtain`              |
+| `L-c`   | `left`, `right`, `obtain (_ \| _)`   |
+| `1.1-a` | `rfl`, `show`                        |
 -/
 
 variable (P Q R S T : Prop)

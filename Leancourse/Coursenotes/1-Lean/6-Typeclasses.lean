@@ -17,7 +17,7 @@ tag := "typeclasses"
 
 A typeclass associates operations and properties with a type and lets Lean find the right implementation on its own. It is the mechanism by which Lean knows that the integers form a ring and the reals a field, and it is how Mathlib organizes mathematics.
 
-The chapter is read in two lectures. The second begins at {ref "type-constructor-classes"}[Classes over type constructors]. Each lecture has its slides: [first lecture](slides/1-6-typeclasses/), [second lecture](slides/1-6b-functors-monads/).
+The [slides](slides/1-6-typeclasses/) for this chapter follow it section by section. {ref "functors-monads"}[Chapter 1.7] continues with classes over type constructors (functors and monads), coercions and hierarchies of classes.
 
 # The problem typeclasses solve
 %%%
@@ -47,7 +47,7 @@ This says: for any type `α`, an instance of `MyAdd α` provides a function `myA
 - A `structure` is constructed and passed *explicitly*: you write `⟨...⟩` or call its named projections.
 - A `class` is also a structure, but Lean's *instance resolution* will synthesize one for you whenever a function expects an `[Add α]` argument. You never write the instance argument by hand.
 
-Use `structure` when the value is data the user manipulates: a `Point`, a `Person`, a `RingHom`. Use `class` when it is a *canonical* piece of structure attached to a type — a `Group` on `ℤ`, an `Add` on `ℕ` — that Lean should find on its own.
+Use `structure` when the value is data the user manipulates: a `Point`, a `Person`, a `RingHom`. Use `class` when it is a *canonical* piece of structure attached to a type — an `AddGroup` on `ℤ`, an `Add` on `ℕ` — that Lean should find on its own.
 
 # Data classes and Prop classes
 %%%
@@ -65,23 +65,23 @@ Because a `class` is a `structure`, the applied class `C α` is an ordinary *typ
 
 (`inferInstance` stands for the instance that Lean finds by itself.)
 
-*Prop classes* have only propositional fields, so they live in `Prop`, and their instances are *proofs*. Mathlib's `Fact` is the standard example: it packages a proof of `p` as an instance that instance search can find ({ref "fact"}[Propositions as instances] below).
+*Prop classes* have only propositional fields, so they live in `Prop`, and their instances are *proofs*. `Nonempty` from {ref "rules"}[chapter 1.5] is an example: `Nonempty α` says that `α` has an element, and an instance of it is a proof of that. Mathlib's `Fact` is another ({ref "fact"}[Propositions as instances] below).
 
 ```lean
-#check @Fact                          -- Prop → Prop
+#check @Nonempty                      -- Sort u → Prop
 ```
 
 Being a proposition, a `Prop` class inherits {ref "prop-special"}[proof irrelevance]: any two instances are definitionally equal. That is a feature — such an instance can never *conflict* with another, and it is erased at runtime.
 
 ```lean
-example (h₁ h₂ : Fact (2 = 2)) : h₁ = h₂ := rfl
+example (h₁ h₂ : Nonempty ℕ) : h₁ = h₂ := rfl
 ```
 
 Typeclasses inherit the *proof* / *data* split drawn for terms in general: an instance is data or a proof exactly according to whether its class lives in `Type` or `Prop`.
 
-An instance is a term you construct: that is what `instance … where …` does, and its fields are values you can project and run. You then use it as a *property of the type* — declared once, synthesized wherever `[C α]` is required, rarely named or passed by hand. For a data class it stays data, carried at runtime; for a `Prop` class it is a proof and is erased. So "an instance is only a property, not a term" describes the usage, not the substance: the term is there, and its construction is delegated to instance resolution.
+An instance is a term you construct: that is what `instance … where …` does, and its fields are values you can project and run. You then use it as a *property of the type* — declared once, synthesized wherever `[C α]` is required, rarely named or passed by hand. For a data class it stays data, carried at runtime; for a `Prop` class it is a proof and is erased.
 
-The parallel holds at the term level: `class` is a `structure` marked for instance search, and `instance` is a `def` marked for instance search, with `instance foo : C := …` sugar for `@[instance] def foo : C := …`. A plain `def` of a class type is a perfectly good term, only invisible to the search.
+The parallel holds at the term level: `class` is a `structure` marked for instance search, and `instance` is a `def` marked for instance search, with `instance foo : C := …` roughly sugar for `@[instance] def foo : C := …`. Here `@[instance]` is an *attribute*: a mark on the `def` that registers it for instance search. A plain `def` of a class type is a perfectly good term, only invisible to the search.
 
 :::table (align := left) +header
 * + Level
@@ -144,10 +144,11 @@ instance : Add Vec2 where
 instance : ToString Vec2 where
   toString v := s!"({v.x}, {v.y})"
 
-#eval (⟨1.0, 2.0⟩ : Vec2) + ⟨3.0, 4.0⟩    -- outputs (4.0, 6.0)
+#eval (⟨1.0, 2.0⟩ : Vec2) + ⟨3.0, 4.0⟩
+-- outputs (4.000000, 6.000000)
 ```
 
-We defined two instances: `Add Vec2` so we can use `+`, and `ToString Vec2` so Lean can print `Vec2` values.
+We defined two instances: `Add Vec2` so we can use `+`, and `ToString Vec2` so Lean can print `Vec2` values. `s!"…{e}…"` is a string with the value of `e` inserted.
 
 # Using `deriving`
 %%%
@@ -168,7 +169,7 @@ def alice : Student := { name := "Alice", age := 22 }
 #eval alice    -- outputs { name := "Alice", age := 22 }
 ```
 
-Without `deriving Repr`, the `#eval` command would not know how to print a `Student`. The `deriving` clause tells Lean to automatically create a `Repr` instance. Here is what the commonly derived classes provide:
+`#eval` would derive a missing `Repr` on the fly; `deriving Repr` declares it once, as the definition `instReprStudent`. Other classes are not derived on the fly: without `deriving BEq`, `alice == alice` fails with `failed to synthesize BEq Student`. Here is what the commonly derived classes provide:
 
 :::table +header
 * + Typeclass
@@ -223,7 +224,8 @@ tag := "square-bracket-notation"
 When a function needs a typeclass instance, we use square brackets `[...]` in its signature:
 
 ```lean
-def doubleIt [Add α] (x : α) : α := x + x
+def doubleIt {α : Type} [Add α] (x : α) : α :=
+  x + x
 
 #eval doubleIt 5        -- outputs 10
 #eval doubleIt (3 : ℤ)  -- outputs 6
@@ -234,7 +236,8 @@ The `[Add α]` argument tells Lean: "find an `Add` instance for `α` automatical
 You can name the instance if you need to refer to it:
 
 ```lean
-def tripleIt [inst : Add α] (x : α) : α := inst.add x (inst.add x x)
+def tripleIt {α : Type} [inst : Add α] (x : α) : α :=
+  inst.add x (inst.add x x)
 ```
 
 But usually the unnamed form `[Add α]` is preferred, since Lean resolves it behind the scenes.
@@ -248,17 +251,17 @@ tag := "inspecting-typeclasses"
 
 When working with Mathlib, it is often useful to see all the implicit and typeclass arguments of a lemma. The `@` symbol makes all arguments explicit:
 
-```
+```lean
 #check mul_comm
--- mul_comm : ∀ {M : Type u_1} [inst : CommMonoid M] (a b : M), a * b = b * a
+-- mul_comm.{u_1} {G : Type u_1} [CommMagma G]
+--   (a b : G) : a * b = b * a
 ```
 
-```
-#check @mul_comm
--- @mul_comm : ∀ {M : Type u_1} → CommMonoid M → M → M → M = M
-```
+The type `G` is implicit, and the instance `[CommMagma G]` (a multiplication that is commutative) is found by instance search. `@` turns every argument into an explicit one, so you can supply them: `@mul_comm ℕ _ 2 3 : 2 * 3 = 3 * 2` (`_` for the instance).
 
-The first form shows `[inst : CommMonoid M]` in brackets, meaning it is found automatically. The `@` version shows all arguments explicitly, which helps understand exactly what typeclass constraints are required.
+```lean
+#check @mul_comm ℕ _ 2 3
+```
 
 # Defining multiple instances
 %%%
@@ -333,14 +336,15 @@ tag := "outparam"
 
 By default, instance search treats *all* of a class's arguments as search keys: it must know them to look up an instance. Occasionally one argument is *determined by* the instance rather than given in advance. Marking it `outParam` tells Lean: do not wait for this argument — find the instance from the others, and *read this one off* the result.
 
-The standard example is heterogeneous multiplication `a * b`, whose result type need not match the arguments:
+The standard example is heterogeneous multiplication. `a * b` is `HMul.hMul a b` with `a : α`, `b : β` and a result of type `γ`, which need not match the arguments:
 
 ```lean
 #check @HMul
--- HMul : Type → Type → outParam Type → Type
+-- HMul : Type u_1 → Type u_2 → outParam (Type u_3) →
+--   Type (max (max u_1 u_2) u_3)
 ```
 
-Because the result `γ` is an `outParam`, Lean resolves `HMul α β ?γ` from `α` and `β` alone and *learns* `γ` from the chosen instance. The same device lets `a ∈ s` infer the element type from the collection — `Membership`'s element type is an `outParam` too. This is why you often see it in Mathlib signatures.
+Because the result type `γ` is an `outParam`, Lean finds the instance `HMul α β _` from `α` and `β` alone and *reads off* `γ` from it. For `x ^ n` with `x : ℝ` and `n : ℕ` (class `HPow`), the instance found is `HPow ℝ ℕ ℝ`, so the result is a real number. The same device lets `a ∈ s` infer the element type from the collection — `Membership`'s element type is an `outParam` too. This is why you often see it in Mathlib signatures.
 
 # Propositions as instances: `Fact`
 %%%
@@ -400,7 +404,8 @@ The warning at the end of the docstring means: instance search does not reason. 
 tag := "decidable-typeclass"
 %%%
 
-`Decidable` sits at the border between *programs* and *proofs*. It has
+`Decidable` was introduced in {ref "prop-special"}[chapter 1.5]. It
+sits at the border between *programs* and *proofs* and has
 two constructors, `isTrue h` with a proof `h : P` and `isFalse h` with
 a proof `h : ¬P`. An element of `Decidable P` is therefore the
 information *which* of the two cases holds, together with a proof.
@@ -413,8 +418,8 @@ Programs branch on that information, so the class lives in `Type`, not
 
 -- Many concrete propositions are decidable, and the
 -- instance is found by typeclass resolution:
-#check (inferInstance : Decidable (2 + 3 = 5))  -- isTrue ..
-#check (inferInstance : Decidable (2 + 3 = 6))  -- isFalse ..
+#eval (inferInstance : Decidable (2 + 3 = 5))  -- isTrue _
+#eval (inferInstance : Decidable (2 + 3 = 6))  -- isFalse _
 ```
 
 Two everyday features rest on this instance search:
@@ -423,22 +428,26 @@ Two everyday features rest on this instance search:
   how the program knows which branch to take. This is also why
   {ref "deriving"}[`deriving DecidableEq`] (above) is useful: it makes
   `a = b` decidable, so you may branch on equality of your own type.
-* The `decide` tactic closes any goal whose proposition is decidable,
-  simply by running that algorithm and checking the answer is
-  `isTrue`:
+* The `decide` tactic evaluates the `Decidable` instance and succeeds
+  if it reduces to `isTrue`:
 
 ```lean
 example : 2 + 3 = 5 := by decide
 example : ¬(2 + 3 = 6) := by decide
 ```
 
+On `ℝ`, `decide` gets stuck at `Classical.choice` and fails, even on
+`(1 : ℝ) + 1 = 2`; the reason is explained below.
+
 An instance can be written by hand. Decidability of "is `n` zero?", by cases on `n`:
 
 ```lean
 def decZero (n : Nat) : Decidable (n = 0) :=
   match n with
-  | 0     => isTrue rfl                    -- a proof that 0 = 0
-  | m + 1 => isFalse (Nat.succ_ne_zero m)  -- a proof that m + 1 ≠ 0
+  -- `rfl`: a proof that 0 = 0
+  | 0     => isTrue rfl
+  -- a proof that m + 1 ≠ 0
+  | m + 1 => isFalse (Nat.succ_ne_zero m)
 ```
 
 Each branch supplies a proof, which is why `Decidable` lives in `Type` and carries content. Registered as an `instance`, `decZero` is what `decide` runs and what `if n = 0 then … else …` consults. `deriving DecidableEq` generates such a definition for you.
@@ -476,6 +485,14 @@ The axiom `Classical.choice` (chapter {ref "rules"}[1.5]) gives a `Decidable` in
 It is not an algorithm, only a choice of `isTrue` or `isFalse` that exists by the axiom. It is therefore `noncomputable`, and it is not a global instance. The tactic `classical` makes it a local instance, with low priority, for the rest of the proof. Instances that exist, such as decidable equality on `ℕ`, are still found first.
 
 ```lean
+example (P : Prop) : ∃ b : Bool, (b = true ↔ P) := by
+  classical
+  exact ⟨decide P, decide_eq_true_iff⟩
+```
+
+`decide P` needs `Decidable P`. Without the line `classical`, the `exact` fails with `failed to synthesize Decidable P`. The same happens with finite sets (`Finset`: {ref "finite-sets"}[chapter 2.2]):
+
+```lean
 example (P : ℕ → Prop) (s : Finset ℕ) :
     ∃ t : Finset ℕ, t ⊆ s ∧ ∀ x ∈ t, P x := by
   classical
@@ -495,256 +512,3 @@ Three rules decide where the instance comes from:
 `by_cases h : P` needs none of this: it falls back to the excluded middle by itself.
 
 Mathlib avoids `open Classical` for a whole file. With it, a term may carry the classical instance where a lemma carries the real one. The two are equal, since any two terms of `Decidable P` are, but not syntactically equal, and `rw` and `simp` then fail to match.
-
-# Classes over type constructors
-%%%
-tag := "type-constructor-classes"
-%%%
-
-The classes so far take a type: `Add ℕ`, `Decidable (2 + 3 = 5)`. A class can also take a *type constructor*, a function `Type → Type` such as `Option` or `List`. The two most important are `Functor` and `Monad`.
-
-```lean
-#check (Functor : (Type → Type) → Type 1)
-#check (Monad : (Type → Type) → Type 1)
-```
-
-## Functor
-%%%
-number := false
-tag := "functor-typeclass"
-%%%
-
-A `Functor f` provides
-
-* `map : (α → β) → f α → f β`, written `g <$> x`.
-
-It applies a function to what is inside, without changing the shape around it:
-
-```lean
-#eval (· + 10) <$> (some 5 : Option ℕ)   -- some 15
-#eval (· + 10) <$> (none : Option ℕ)     -- none
-#eval (· * 2) <$> [1, 2, 3]              -- [2, 4, 6]
-```
-
-`map` cannot turn `none` into `some`, and it cannot shorten a list. Two laws say so: mapping the identity changes nothing, and mapping a composition is mapping twice. They are fields of the class `LawfulFunctor`:
-
-```lean
-example (x : Option ℕ) : id <$> x = x := id_map x
-
-example (g h : ℕ → ℕ) (xs : List ℕ) :
-    (h ∘ g) <$> xs = h <$> g <$> xs :=
-  comp_map g h xs
-```
-
-## Monad
-%%%
-number := false
-tag := "monad-typeclass"
-%%%
-
-`Option α` is the type of a computation that may fail. Division by zero is the standard case:
-
-```lean
-def safeDivide (a b : ℕ) : Option ℕ :=
-  if b = 0 then none else some (a / b)
-```
-
-To divide twice, the second division must run on the result of the first, and only if there is one. A `Monad m` provides exactly this:
-
-* `pure : α → m α` turns a value into a computation that returns it;
-* `bind : m α → (α → m β) → m β`, written `x >>= f`, runs `x` and passes its result to `f`.
-
-For `Option`, `pure` is `some`, and `bind` passes the failure on:
-
-```lean
-def optionBind (x : Option α) (f : α → Option β) :
-    Option β :=
-  match x with
-  | none => none
-  | some a => f a
-
-def divideTwice (a b c : ℕ) : Option ℕ :=
-  safeDivide a b >>= fun r => safeDivide r c
-
-#eval divideTwice 100 5 4    -- some 5
-#eval divideTwice 100 0 4    -- none
-```
-
-Every monad is a functor, with `g <$> x = x >>= (pure ∘ g)`.
-
-## The `do`-notation
-%%%
-number := false
-tag := "do-notation"
-%%%
-
-A chain of `>>=` and `fun` is hard to read. The `do`-notation writes it as a sequence of steps:
-
-```lean
-def divideThrice (a b c d : ℕ) : Option ℕ := do
-  let r ← safeDivide a b
-  let s ← safeDivide r c
-  safeDivide s d
-
-#eval divideThrice 1000 10 5 4    -- some 5
-#eval divideThrice 1000 10 0 4    -- none
-```
-
-`let r ← e` runs `e` and names its result `r`; Lean translates each such line into a `>>=`. `return a` is `pure a`.
-
-## Lists as a monad
-%%%
-number := false
-tag := "list-monad"
-%%%
-
-A list is a computation with several results. `pure a` is `[a]`, and `xs >>= f` applies `f` to each element and concatenates the lists:
-
-```lean
-#eval [1, 2] >>= fun x => [x, x * 10]   -- [1, 10, 2, 20]
-
-def pairs : List (ℕ × ℕ) := do
-  let x ← [1, 2, 3]
-  let y ← [10, 20]
-  return (x, y)
-
-#eval pairs
--- [(1, 10), (1, 20), (2, 10), (2, 20), (3, 10), (3, 20)]
-```
-
-`let x ← [1, 2, 3]` reads "for each `x` in `[1, 2, 3]`". The result is the list version of `{(x, y) | x ∈ {1, 2, 3}, y ∈ {10, 20}}`. The instance comes from Mathlib (`#synth Monad List` names it).
-
-## The monad laws
-%%%
-number := false
-tag := "monad-laws"
-%%%
-
-Three laws make the `do`-notation behave as expected. They are fields of `LawfulMonad`:
-
-:::table (align := left) +header
-* + law
-  + statement
-  + Lean
-* + left identity
-  + `pure a >>= f = f a`
-  + `pure_bind`
-* + right identity
-  + `x >>= pure = x`
-  + `bind_pure`
-* + associativity
-  + `x >>= f >>= g = x >>= fun a => f a >>= g`
-  + `bind_assoc`
-:::
-
-For `Option` each law is a computation, by cases on `x`:
-
-```lean
-example (a : ℕ) (f : ℕ → Option ℕ) :
-    (pure a >>= f) = f a := rfl
-
-example (x : Option ℕ) : (x >>= pure) = x := by
-  cases x <;> rfl
-```
-
-The name comes from category theory. A monad there is a functor `T` with natural transformations `η : Id → T` (here `pure`) and `μ : T ∘ T → T` (here `join`, which is `bind` with the identity), and the three laws are its coherence conditions, for the category of types and functions.
-
-# Coercions
-%%%
-tag := "coercions"
-%%%
-
-A *coercion* is a conversion Lean inserts automatically when a term of one type appears where another is expected, such as a `ℕ` where a `ℤ` is wanted. Coercions are registered as instances of the class `Coe`, so instance resolution drives them too: on a mismatch Lean finds the instance and inserts the conversion, written `↑`.
-
-```lean
-example (n : ℕ) : ℤ := n      -- inserted silently
-example (n : ℕ) : ℤ := ↑n     -- the same, written explicitly
-```
-
-There are three flavours, according to *what* the target is:
-
-:::table (align := left) +header
-* + Class
-  + Converts a term into ...
-  + Example
-* + `Coe`
-  + ... a term of another type
-  + `ℕ → ℤ`; a subtype into its base type
-* + `CoeSort`
-  + ... a *type* (where a `Sort` is expected)
-  + a set as a type; `Bool → Prop`
-* + `CoeFun`
-  + ... a *function* (in applied position)
-  + a bundled morphism `f` applied as `f x`
-:::
-
-`Coe` is the ordinary case — one value becomes another:
-
-```lean
-example (s : {n : ℕ // n > 0}) : ℕ := s   -- the subtype's `.val`
-```
-
-`CoeSort` lets a term stand in for a *type*. It turns `b : Bool` into the proposition `b = true`, and it is how a `Set α` may be written where a type is expected:
-
-```lean
-example (b : Bool) : Prop := b
-example (s : Set ℕ) : Type := s   -- the subtype ↥s of its members
-```
-
-`CoeFun` lets a *bundled* object be applied like a plain function — so an algebra homomorphism can be written `f x` even though `f` is really a structure carrying that function together with its properties:
-
-```lean
-example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
-```
-
-Mathlib does not write a `CoeFun` instance for each kind of morphism. A structure type whose elements are functions registers this once, through the class `DFunLike`, and the coercion to functions follows from it ({ref "representation-pitfalls"}[How an object is represented]).
-
-Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean reads it as `↑n + r`. A goal can also fill with `↑`s that block tactics like `ring` or `linarith`; the {ref "coercion-headaches"}[appendix] covers the numeric chain `ℕ → ℤ → ℚ → ℝ` and the `norm_cast` / `push_cast` tactics that tidy them up.
-
-# Hierarchies with `extends`
-%%%
-tag := "algebraic-hierarchy"
-%%%
-
-Mathlib's algebraic structures are typeclasses, and each one `extends` the weaker structures below it. Simplified:
-
-```
-class Group (α : Type) extends Monoid α where
-  inv : α → α
-  inv_mul_cancel : ∀ a : α, inv a * a = 1
-```
-
-`extends` makes `Monoid α` a field of `Group α`, and the projection `Group.toMonoid` is registered as an instance. So from `[CommRing α]`, instance resolution reaches `Add α`, `Mul α` and `AddCommGroup α` by walking the `extends` chain:
-
-```lean
-example (α : Type) [CommRing α] : AddCommGroup α :=
-  inferInstance
-
-#synth AddCommGroup ℤ
-```
-
-That is what lets `mul_comm` be stated once, for `CommMonoid`, and hold for `ℕ`, `ℝ`, polynomial rings and matrix rings alike. When two paths lead to the same class, they must give the same instance; when they do not, the result is a *diamond* ({ref "typeclass-diamonds"}[Typeclass diamonds] in the appendix).
-
-Which structures there are and how to move between them is {ref "algebraic-hierarchy-mathlib"}[a chapter of its own] in the Mathematics part.
-
-# Managing instances
-%%%
-tag := "managing-instances"
-%%%
-
-A few further knobs control *which* instance is found. You rarely need them at first, but they show up when reading Mathlib:
-
-* *Priorities.* Every instance has a priority, by default `1000`; `instance (priority := 2000) : …` is tried before the others, `instance (priority := 100) : …` after them. Since Lean takes the first solution it finds, priorities resolve overlaps.
-* *`local` and `scoped` instances.* A `local instance` is active only until the end of the current section, namespace, or file; a `scoped instance` is active only inside its namespace or once you `open` it. Mathlib uses `scoped` heavily. `open scoped Classical` switches on classical decidability for a whole section; inside a proof the {ref "classical-tactic"}[`classical` tactic] does the same for that proof alone.
-* *Default instances.* `@[default_instance]` supplies a fallback when synthesis would otherwise be ambiguous; see {ref "ofnat"}[Where numerals come from] in chapter 1.7.
-
-# Practical tips
-%%%
-tag := "typeclass-tips"
-%%%
-
-* When you get an error like "failed to synthesize instance," it means Lean cannot find a required typeclass instance. Check that your type has the necessary instance defined.
-* Use `#check @lemma_name` to see all implicit arguments and understand what instances a lemma requires.
-* In Mathlib, most standard types (`ℕ`, `ℤ`, `ℚ`, `ℝ`, `ℂ`) have instances for all the common typeclasses. You rarely need to define instances for these.
-* When defining your own types, provide instances for the typeclasses you need. Start with `Repr` (for printing), then `Add`, `Mul`, etc., as needed.
-* The `deriving` mechanism can automatically generate instances for some typeclasses (like `Repr`, `BEq`, `Hashable`, `Inhabited`).

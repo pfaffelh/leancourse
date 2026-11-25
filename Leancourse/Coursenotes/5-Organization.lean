@@ -40,10 +40,11 @@ used without the other.
     {ref "type-formers"}[chapter]
   * [Rules for building types](slides/1-5-rules/) —
     {ref "rules"}[chapter]
-  * [Typeclasses](slides/1-6-typeclasses/) and
-    [Functors, monads, coercions, hierarchies](slides/1-6b-functors-monads/),
-    two lectures — {ref "typeclasses"}[chapter]
-  * [Notation and abbreviations](slides/1-7-notation/) —
+  * [Typeclasses](slides/1-6-typeclasses/) —
+    {ref "typeclasses"}[chapter]
+  * [Functors, monads, coercions, hierarchies](slides/1-7-functors-monads/) —
+    {ref "functors-monads"}[chapter]
+  * [Notation and abbreviations](slides/1-8-notation/) —
     {ref "notation"}[chapter]
 * Mathematics:
   * [Numbers](slides/2-1-numbers/) —
@@ -157,7 +158,7 @@ written at the start of the lab.
   + Wed 25.11.
   + Lab
   + Sheets
-  + `1.3-a`, `1.4-b`, `1.5-a`
+  + `1.3-a`, `1.4-b`
 * + 7
   + Mon 30.11.
   + Lecture
@@ -167,27 +168,27 @@ written at the start of the lab.
   + Wed 02.12.
   + Lab
   + *Test 2* ([practice tasks, PDF](static/tests/test2-practice.pdf)), then sheets
-  + `1.4-a`, `1.4-c`, `1.6-a`
+  + `1.4-a`, `1.4-c`, `1.5-a`
 * + 8
   + Mon 07.12.
   + Lecture
   + Typeclasses: functors and monads, coercions, hierarchies
-  + {ref "type-constructor-classes"}[1.6]
+  + {ref "functors-monads"}[1.7]
 * + 8
   + Wed 09.12.
   + Lab
   + Sheets
-  + `1.6-b`, `1.6-c`, `1.6-d`
+  + `1.6-a`, `1.6-b`
 * + 9
   + Mon 14.12.
   + Lecture
   + Notation and abbreviations
-  + {ref "notation"}[1.7]
+  + {ref "notation"}[1.8]
 * + 9
   + Wed 16.12.
   + Lab
   + *Test 3*, then sheets
-  + `1.7-a`, `2.0-a`
+  + `1.7-a`, `1.7-b`
 * + 10
   + Mon 21.12.
   + Lecture
@@ -196,8 +197,8 @@ written at the start of the lab.
 * + 10
   + —
   + Lab
-  + No lab; sheet over the break
-  + `2.1-a`
+  + No lab; sheets over the break
+  + `1.8-a`, `2.0-a`, `2.1-a`
 * + 11
   + Mon 11.01.
   + Lecture
@@ -360,7 +361,7 @@ tag := "notes-layout"
 
 The notes have six parts.
 
-* *Lean and its type theory*: the natural numbers and reduction; functions, inductive types and structures; pattern matching and recursion; pairs, subtypes, propositions as types and quotients; the rules of the type theory; typeclasses; notation.
+* *Lean and its type theory*: the natural numbers and reduction; functions, inductive types and structures; pattern matching and recursion; pairs, subtypes, propositions as types and quotients; the rules of the type theory; typeclasses; functors, monads and coercions; notation.
 * *Mathematics*: numbers, sets and types, the foundations (universes, axioms, well-foundedness), then the areas of *Mathlib* listed above. Pointers into the API, not full formalizations.
 * *Appendix*: the glossary of tactics (a longer list is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)), the structure of a Lean file, navigating *Mathlib*, common pitfalls, and small reference topics such as the diagnostic commands (`#print axioms`, `#find_home`, `#lint`).
 * *Projects*: seven topics for the individual formalization projects, each with a description, a sketch of an implementation, comments and references.

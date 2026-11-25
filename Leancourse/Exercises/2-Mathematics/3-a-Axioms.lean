@@ -50,8 +50,9 @@ neither is excluded middle (Diaconescu derives it from choice,
 `∀ x, f x = g x`.
 -/
 
--- Exercise 1: Two ways of writing the same function.
-example : (fun n : ℕ => n + 0) = (fun n : ℕ => n) := by
+-- Exercise 1: Two ways of writing the same function. `rfl` fails:
+-- `0 + n` does not reduce to `n`.
+example : (fun n : ℕ => 0 + n) = id := by
   sorry
 
 -- Exercise 2: The same, one level up -- functions into a function type.
@@ -71,9 +72,8 @@ one by the other anywhere.
 example : (True ∧ True) = True := by
   sorry
 
--- Exercise 4: Use `propext` to rewrite inside another proposition.
--- Hint: first prove `h : (P ∧ True) = P`, then `rw [h]`.
-example (P : Prop) (hP : P) : (P ∧ True) := by
+-- Exercise 4: A function on `Prop`. `funext P`, then `propext`.
+example : (fun P : Prop => P ∧ True) = id := by
   sorry
 
 /-

@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# (witness) 1.6-c -- Functors and monads
+# (witness) 1.7-a -- Functors and monads
 
-*Notes chapter 1.6, week 8.*
+*Notes chapter 1.7, week 9.*
 -/
 
 /-! ## Part 1: `map` -/
@@ -113,3 +113,38 @@ def pythagoreanTriples : List (ℕ × ℕ × ℕ) := do
   return (a, b, c)
 
 example : (3, 4, 5) ∈ pythagoreanTriples := by decide
+
+/-! ## Part 5: A functor of your own -/
+
+inductive LTree (α : Type) where
+  | leaf : LTree α
+  | node : LTree α → α → LTree α → LTree α
+
+-- Exercise 18)
+def LTree.map {α β : Type} (f : α → β) : LTree α → LTree β
+  | .leaf => .leaf
+  | .node l a r => .node (l.map f) (f a) (r.map f)
+
+-- Exercise 19)
+instance : Functor LTree where
+  map := LTree.map
+
+-- Exercise 20)
+example {α : Type} (t : LTree α) : id <$> t = t := by
+  induction t with
+  | leaf => rfl
+  | node l a r ihl ihr =>
+    show LTree.node (id <$> l) (id a) (id <$> r) = _
+    rw [ihl, ihr]
+    rfl
+
+-- Exercise 21) *Extra.*
+example {α β γ : Type} (f : α → β) (g : β → γ) (t : LTree α) :
+    (g ∘ f) <$> t = g <$> f <$> t := by
+  induction t with
+  | leaf => rfl
+  | node l a r ihl ihr =>
+    show LTree.node ((g ∘ f) <$> l) ((g ∘ f) a) ((g ∘ f) <$> r)
+      = LTree.node (g <$> f <$> l) (g (f a)) (g <$> f <$> r)
+    rw [ihl, ihr]
+    rfl

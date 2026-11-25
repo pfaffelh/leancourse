@@ -61,7 +61,8 @@ example (h : P → Q) (hP : P) : Q ∧ Q := by
   have hQ : Q := h hP
   exact ⟨hQ, hQ⟩
 
--- Exercise 3) A case split recorded as a `have`.
+-- Exercise 3) *Extra, for after `L-e` (week 5).* A case split
+-- recorded as a `have`. The `have` needs `Classical.em` from `L-e`.
 example (hPQ : P → Q) (hnPQ : ¬P → Q) : Q := by
   have h : P ∨ ¬P := by
     exact Classical.em P

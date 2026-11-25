@@ -33,7 +33,8 @@ PLACEHOLDER = "This section is published right before the chapter is taught."
 WITHHELD = [
     "Leancourse/Coursenotes/1-Lean/5-Rules.lean",             # 1.5
     "Leancourse/Coursenotes/1-Lean/6-Typeclasses.lean",       # 1.6
-    "Leancourse/Coursenotes/1-Lean/7-Notation.lean",          # 1.7
+    "Leancourse/Coursenotes/1-Lean/7-FunctorsMonads.lean",    # 1.7
+    "Leancourse/Coursenotes/1-Lean/8-Notation.lean",          # 1.8
     "Leancourse/Coursenotes/2-Mathematics/1-Numbers.lean",            # 2.1
     "Leancourse/Coursenotes/2-Mathematics/2-SetsAndTypes.lean",       # 2.2
     "Leancourse/Coursenotes/2-Mathematics/3-Foundations.lean",        # 2.3

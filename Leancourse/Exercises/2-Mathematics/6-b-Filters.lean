@@ -9,6 +9,12 @@ These exercises cover the construction and use of filters in Mathlib,
 including Filter.Tendsto, Filter.Eventually, and Filter.atTop.
 Replace each `sorry` with a proof.
 
+## Introduced here
+
+| tactic                                   | use it when                           |
+|------------------------------------------|---------------------------------------|
+| `filter_upwards [h₁, h₂] with x hx₁ hx₂` | goal `∀ᶠ x in F, r x` from `∀ᶠ` facts |
+
 ## Tactics from earlier sheets
 
 | sheet   | tactics                                 |
@@ -17,7 +23,8 @@ Replace each `sorry` with a proof.
 | `L-b`   | `obtain`                                |
 | `L-f`   | `have`, `refine`, `rintro`              |
 | `1.1-c` | `norm_num`, `linarith`, `simp`, `omega` |
-| `L-g`   | `simpa`                                 |
+| `L-g`   | `simpa`, `simp only`                    |
+| `1.2-a` | `use`                                   |
 -/
 
 open Filter
@@ -223,4 +230,25 @@ example {α : Type*} (F : Filter α) : F ≤ ⊤ := by
 -- Exercise 30: On ℕ, the cofinite filter is ≤ atTop.
 -- (Every set in atTop has finite complement.)
 example : (cofinite : Filter ℕ) ≤ atTop := by
+  sorry
+
+/- ## Part 8: Frequently, and the bridge to sheet 2.6-a
+
+`∃ᶠ x in F, p x` means `¬ ∀ᶠ x in F, ¬ p x`: the set where `p`
+fails is not in `F`. For `atTop` on `ℕ`: `p n` holds for infinitely
+many `n`. -/
+
+-- Exercise 31: Infinitely many natural numbers are even.
+-- Hint: `rw [frequently_atTop]`; witness `2 * N`.
+example : ∃ᶠ n in (atTop : Filter ℕ), n % 2 = 0 := by
+  sorry
+
+/- The definition of a limit from sheet 2.6-a. -/
+def TendsTo (x : ℕ → ℝ) (t : ℝ) : Prop :=
+  ∀ ε > 0, ∃ N : ℕ, ∀ n, N ≤ n → |x n - t| < ε
+
+-- Exercise 32: It is the filter limit along `atTop`.
+-- Hint: `rw [Metric.tendsto_atTop]`, then `simp only [Real.dist_eq]`.
+example (x : ℕ → ℝ) (t : ℝ) :
+    TendsTo x t ↔ Tendsto x atTop (nhds t) := by
   sorry

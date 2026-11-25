@@ -69,17 +69,17 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `1-Lean/1-c-Naturals` | 1.1 | 4 | yes |
 | `1-Lean/2-a-Quantifiers` | 1.2 | 3 | yes |
 | `1-Lean/2-b-Structures` | 1.2 | 5 | yes |
-| `1-Lean/3-a-Recursion` | 1.3 | 5 | yes |
-| `1-Lean/4-a-DependentTypes` | 1.4 | 6 | yes |
+| `1-Lean/3-a-Recursion` | 1.3 | 6 | yes |
+| `1-Lean/4-a-DependentTypes` | 1.4 | 7 | yes |
 | `1-Lean/4-b-CurryHoward` | 1.4 | 6 | yes |
 | `1-Lean/4-c-Predicates` | 1.4 | 7 | yes |
-| `1-Lean/5-a-Rules` | 1.5 | 6 | yes |
-| `1-Lean/6-a-Typeclasses` | 1.6 | 7 | yes |
-| `1-Lean/6-b-Coercions` | 1.6 | 8 | yes |
-| `1-Lean/6-c-Monads` | 1.6 | 8 | yes |
-| `1-Lean/6-d-Trool` | 1.6 | 8 | yes |
-| `1-Lean/7-a-Notation` | 1.7 | 9 | yes |
-| `2-Mathematics/0-a-Search` | — | 9 | yes |
+| `1-Lean/5-a-Rules` | 1.5 | 7 | yes |
+| `1-Lean/6-a-Typeclasses` | 1.6 | 8 | yes |
+| `1-Lean/6-b-Trool` | 1.6 | 8 | yes |
+| `1-Lean/7-a-Monads` | 1.7 | 9 | yes |
+| `1-Lean/7-b-Coercions` | 1.7 | 9 | yes |
+| `1-Lean/8-a-Notation` | 1.8 | 10 | yes |
+| `2-Mathematics/0-a-Search` | — | 10 | yes |
 | `2-Mathematics/1-a-Numbers` | 2.1 | 10 | yes |
 | `2-Mathematics/2-a-Sets` | 2.2 | 11 | yes |
 | `2-Mathematics/2-b-ImagePreimage` | 2.2 | 11 | yes |
@@ -105,10 +105,10 @@ Writing the first batch turned up three faults that a type-check
 alone could never have caught, because the broken lines sat in
 comments or were simply false:
 
-* `1.7-a` exercise 3 gave the template `notation "avg " a " " b => ?_`.
+* `1.8-a` exercise 3 gave the template `notation "avg " a " " b => ?_`.
   A bare `" "` is not a valid atom, so no student could have followed
   it. The template is now `notation "avg(" a ", " b ")"`.
-* `1.7-a` exercise 2 checked itself with `example : sq 5 = 25 := rfl`,
+* `1.8-a` exercise 2 checked itself with `example : sq 5 = 25 := rfl`,
   which parses as `sq (5 = 25)` and fails to elaborate. The check line
   now carries the type ascription, with a note on precedence.
 * `2.2-b` exercise 2 asked for `g ⁻¹' s = s` for an *arbitrary*

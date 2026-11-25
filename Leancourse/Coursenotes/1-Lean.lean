@@ -6,7 +6,8 @@ import «Leancourse».Coursenotes.«1-Lean».«3-PatternMatchingRecursion»
 import «Leancourse».Coursenotes.«1-Lean».«4-PairsSubtypesQuotients»
 import «Leancourse».Coursenotes.«1-Lean».«5-Rules»
 import «Leancourse».Coursenotes.«1-Lean».«6-Typeclasses»
-import «Leancourse».Coursenotes.«1-Lean».«7-Notation»
+import «Leancourse».Coursenotes.«1-Lean».«7-FunctorsMonads»
+import «Leancourse».Coursenotes.«1-Lean».«8-Notation»
 
 open Verso.Genre Manual
 
@@ -24,7 +25,7 @@ function types, `inductive` types and structures; the functions on
 inductive types, defined by pattern matching and recursion; dependent
 pairs, subtypes, type families, propositions as types, and quotients.
 A last chapter on types gives the rules behind them, with `Prop`.
-After that come the typeclass system and notation.
+After that come the typeclass system, in two chapters, and notation.
 (Several reference topics — the alphabetical tactic glossary, how a
 Lean file is organized, Lean's brackets, equality and reduction, the
 diagnostic commands, and Navigating Mathlib — are covered in the
@@ -43,5 +44,6 @@ and well-foundedness, are treated in the *Mathematics* part.)
 
 {include 0  «Leancourse».Coursenotes.«1-Lean».«6-Typeclasses»}
 
+{include 0  «Leancourse».Coursenotes.«1-Lean».«7-FunctorsMonads»}
 
-{include 0  «Leancourse».Coursenotes.«1-Lean».«7-Notation»}
+{include 0  «Leancourse».Coursenotes.«1-Lean».«8-Notation»}

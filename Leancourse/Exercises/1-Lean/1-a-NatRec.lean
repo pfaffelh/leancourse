@@ -8,7 +8,7 @@ import Mathlib
 `Nat` has two constructors, `Nat.zero` and `Nat.succ`, and one
 recursor, `Nat.rec`. On this sheet every function is defined with
 the recursor and every proof uses only reduction (`rfl`) and
-`induction`. No lemmas from Mathlib. They come on the next sheet.
+`induction`. No lemmas from Mathlib. They come on sheet `1.1-c`.
 
 Read the sections *The natural numbers* and *Definitional equality
 and `rfl`* in the chapter on the natural numbers first.

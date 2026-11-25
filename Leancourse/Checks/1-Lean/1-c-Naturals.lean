@@ -89,12 +89,12 @@ example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k ^ 2 ≤ n ^ 3 := by
   have h₀ : k ^ 2 ≤ m ^ 2 := Nat.pow_le_pow_left hkm 2
   have h₁ : m ^ 2 ≤ n ^ 2 := Nat.pow_le_pow_left hmn 2
   have h₂ : n ^ 2 ≤ n ^ 3 := by
-    by_cases hn : n = 0
-    · rw [hn]; rfl
-    · exact Nat.pow_le_pow_right (Nat.pos_of_ne_zero hn) (by norm_num)
+    cases n with
+    | zero => rfl
+    | succ k => exact Nat.pow_le_pow_right (by omega) (by norm_num)
   exact le_trans h₀ (le_trans h₁ h₂)
 
--- Exercise 16)
+-- Exercise 16) *Extra, for after `L-e` (week 5).*
 example (x : ℝ) (n : ℕ) (h : 0 ≤ x) : x ^ (n + 1) ≤ 1 ↔ x ≤ 1 := by
   constructor
   · intro h₁

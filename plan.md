@@ -33,11 +33,11 @@ Kontext, ohne Lean.
 | 3 | 02.11. | 04.11. | Universen, Funktionen, induktive Typen, Strukturen | 1.2 | L-d, 1.2-a, 1.1-b | |
 | 4 | 09.11. | 11.11. | Pattern Matching und Rekursion | 1.3 | L-f, 1.1-c | **Test 1** |
 | 5 | 16.11. | 18.11. | Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-e, L-g, 1.2-b · *extra:* X-a | |
-| 6 | 23.11. | 25.11. | Regeln zum Bau von Typen, `Prop` | 1.5 | 1.3-a, 1.4-b, 1.5-a | |
-| 7 | 30.11. | 02.12. | Typklassen: Instanzen, Suche, `Decidable`, `classical` | 1.6 | 1.4-a, 1.4-c, 1.6-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Typklassen: Funktoren und Monaden, Koerzionen, Hierarchien | 1.6 | 1.6-b, 1.6-c, 1.6-d | |
-| 9 | 14.12. | 16.12. | Notation | 1.7 | 1.7-a, 2.0-a | **Test 3** |
-| 10 | 21.12. | -- | Zahlen | 2.1 | 2.1-a | |
+| 6 | 23.11. | 25.11. | Regeln zum Bau von Typen, `Prop` | 1.5 | 1.3-a, 1.4-b | |
+| 7 | 30.11. | 02.12. | Typklassen: Instanzen, Suche, `Decidable`, `classical` | 1.6 | 1.4-a, 1.4-c, 1.5-a | **Test 2** |
+| 8 | 07.12. | 09.12. | Funktoren und Monaden, Koerzionen, Hierarchien | 1.7 | 1.6-a, 1.6-b | |
+| 9 | 14.12. | 16.12. | Notation | 1.8 | 1.7-a, 1.7-b | **Test 3** |
+| 10 | 21.12. | -- | Zahlen | 2.1 | 1.8-a, 2.0-a, 2.1-a | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
 | 11 | 11.01. | 13.01. | Mengen und Typen | 2.2 | 2.2-a, 2.2-b, 2.2-c | |
 | 12 | 18.01. | 20.01. | Grundlagen: Universen, Axiome, Fundiertheit | 2.3 | 2.3-a, 2.3-b, A-a, A-b | |
@@ -46,18 +46,26 @@ Kontext, ohne Lean.
 | 15 | 08.02. | 10.02. | Monaden und Wahrscheinlichkeit | 2.8 | 2.8-a, 2.8-b | **Test 5** |
 
 37 Pflichtblätter, dazu die Extrablätter `X-a` (Woche 5) und `2.7-a`
-(Topologie, ohne Vorlesung). Über die Pause läuft `2.1-a`.
+(Topologie, ohne Vorlesung). Über die Pause laufen `1.8-a`, `2.0-a`
+und `2.1-a`.
 
 Seit dem 24.11.2026 (Variante C): Proof Engineering hat keine Vorlesung
 mehr, `A-a` und `A-b` laufen als Blätter in W12 (nicht früher: `A-a`
-benutzt Mengen aus 2.2, `A-b` setzt `conv` aus `A-a` voraus, und
-`2.6-a` braucht `field_simp` aus `A-a`). Topologie (2.7) ist Lesestoff,
+benutzt Mengen aus 2.2, und `2.6-a` braucht `field_simp` aus
+`A-a`). Topologie (2.7) ist Lesestoff,
 kein späteres Kapitel hängt daran. Die zwei freien Termine gehen an
-Notation (1.7, durch die Notationstabelle gewachsen) und an die
+Notation (1.8, durch die Notationstabelle gewachsen) und an die
 Trennung von 2.1 und 2.2, die je eine eigene Vorlesung und ein
 eigenes Deck bekommen. Es bleibt kein Puffer.
 
-Seit dem 30.10.2026 bekommen die Typklassen (1.6) zwei Vorlesungen:
+Seit dem 24.11.2026 ist das frühere Typklassenkapitel in zwei Kapitel
+geteilt, eins pro Vorlesung: 1.6 *Typeclasses* (bis `Decidable` und
+`classical`, Deck `1-6-typeclasses`) und 1.7 *Functors, monads,
+coercions, hierarchies* (Deck `1-7-functors-monads`). Notation ist
+damit 1.8. Blätter umbenannt: `1.6-d` (Trool) -> `1.6-b`, `1.6-c`
+(Monaden) -> `1.7-a`, `1.6-b` (Koerzionen) -> `1.7-b`, `1.7-a`
+(Notation) -> `1.8-a`.
+Davor, seit dem 30.10.2026, bekamen die Typklassen (1.6) zwei Vorlesungen:
 W7 Instanzen, Instanzsuche, `Decidable` und die Taktik `classical`;
 W8 Klassen über Typkonstruktoren (`Functor`, `Monad` mit `Option` und
 `List`, die Gesetze), Koerzionen mit `DFunLike`, `extends` und
@@ -69,7 +77,7 @@ Seit dem 24.11.2026 ist das Kapitel Maßtheorie mitsamt Extrablatt
 gestrichen; Wahrscheinlichkeit ist jetzt Kapitel 2.8 (`2.8-a`,
 `2.8-b`, vorher `2.9-a`, `2.9-b`).
 
-Ein Kapitelpaar teilt sich einen Termin: 2.4+2.5 (W13). Notation (1.7)
+Ein Kapitelpaar teilt sich einen Termin: 2.4+2.5 (W13). Notation (1.8)
 hat seit dem 24.11.2026 eine eigene Vorlesung (W9). Seit dem 27.10.2026 gibt
 es kein eigenes Kapitel *Terme* mehr: 1.2 *Typen und Terme I*
 (Universen, Funktionen, induktive Typen, Strukturen) und 1.4 *Typen
@@ -93,6 +101,15 @@ Am 11.11.2026 war die Übung mit Test 1 und drei Blättern zu voll.
 Seitdem: `L-e` in W5 (vor `L-g`), `1.3-a` in W6, `1.4-a` in W7. `1.4-b` bleibt in W6, weil
 `1.5-a` `fun` von dort voraussetzt; `1.4-a` braucht vor W8 niemand.
 Übungen mit Test sollen höchstens zwei längere Blätter haben.
+Am 25.11.2026 waren W6 (74 Aufgaben), W12 (66) und W13 (65 mit Test 4)
+zu voll. Seitdem rücken die Blätter ab W6 bis zur Pause je eine Woche
+nach: `1.5-a` in W7, `1.6-a` in W8, `1.7-a`/`1.7-b` in W9, `1.8-a` und
+`2.0-a` über die Pause. Die Blätter zu 1.5 bis 1.8 laufen damit eine
+Woche nach ihrer Vorlesung. `1.4-a` ist auf rund 10 Aufgaben neu geschrieben; gekürzt
+sind `A-a` (Teile B und C, Wiederholungen von `1.7-b`, `2.0-a`,
+`2.2-b`), `2.4-a` (Aufgaben 1–13 und 27), `2.5-a` (Aufgaben 1–5, 10,
+12, 13) und `2.8-b` (die Monadengesetze, die `2.8-a` schon übt).
+`1.3-a` und `1.4-b` blieben unverändert (schon ausgegeben).
 Am 15.11.2026 fiel `L-g` Aufgabe 5 (`itauto` gegen `tauto`) weg, das
 vorgerechnete Beispiel bleibt. Ebenso der Schlussteil *Searching
 outside Lean* mit zwei Aufgaben (`#loogle`/`#search` kommen schon auf
@@ -102,9 +119,8 @@ Idee steht als `sevenMod` in 1.2).
 
 Skriptzeilen je Termin (Stand 29.10.2026): Mittel 474, Spanne 330
 (W2) bis 768 (damals W15, seitdem um `IO`/`StateM`/`Except` gekürzt).
-Die schwerste Übungswoche ist W13 (65 Aufgaben, `2.4-a` allein 37),
-und dort liegt seit dem 24.11.2026 auch Test 4. Wenn gekürzt werden
-muss, dann dort.
+Die schwerste Übungswoche war W13 (65 Aufgaben, `2.4-a` allein 37,
+dazu Test 4); am 25.11.2026 gekürzt, siehe oben.
 
 ### Benennung
 
@@ -129,9 +145,8 @@ Gelesen werden die Abschnitte, die `A-a` verlangt:
 
 | Teil von `A-a` | Thema | Abschnitt |
 |---|---|---|
-| A, E | Welche Automatiktaktik? | *Tactics* |
-| B | Das richtige Lemma finden | *Navigating Mathlib* |
-| C, D | Koerzionen, kaputte Beweise | *Common Pitfalls* |
+| A, C, D | Welche Automatiktaktik? | *Tactics* |
+| B | Kaputte Beweise | *Common Pitfalls* |
 | `A-b` | `conv` | *Tactics/Conv* |
 
 *File Structure* und *Small Reference Topics* bleiben draußen.
@@ -150,7 +165,7 @@ Beweisirrelevanz und eingeschränkte Elimination, `ext`/`funext`,
 nicht geübt.
 
 Gelöscht: das frühere `04-a-Basics` (Inhalt liegt auf `1.1-a`,
-`1.1-b`, `1.6-c`). `1.6-c` (Funktoren und Monaden) übernimmt die
+`1.1-b`, `1.7-a`). `1.7-a` (Funktoren und Monaden) übernimmt die
 `Option`- und Listen-Aufgaben des alten `2.9-a`; das Blatt (heute
 `2.8-a`) ist jetzt
 *Monads in mathematics* (`Set`, `Finset`, `Filter`).
@@ -164,7 +179,7 @@ Kapiteln bleibt, sind die früheren 2.2 (Universen und Axiome) und 2.3
 `2.3-a` -> `2.3-b`. Seit dem 24.11.2026 hat 2.2 eine eigene
 Vorlesung (W11), alle drei Blätter zu 2.2 laufen dort.
 Beweisirrelevanz steht auf `2.3-a`.
-`1.7-a` hat nur eine Aufgabe und ist eher ein Leseblatt.
+`1.8-a` hat 19 Aufgaben (Stand 24.11.2026), die meisten sind Notationsdeklarationen zum Auskommentieren.
 
 ## Kurztests
 

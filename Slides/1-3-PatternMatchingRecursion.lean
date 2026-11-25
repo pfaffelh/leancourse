@@ -109,7 +109,7 @@ macro_rules
   | `([$a, $as,*]) => `(List.cons $a [$as,*])
 ```
 
-`infixr` makes `::` a right-associative infix operator with binding power 67, so `1 :: 2 :: []` is `1 :: (2 :: [])`. `syntax` declares the bracket form, `macro_rules` rewrites it, one element at a time, into `List.cons` and `List.nil` (more in chapter 1.7).
+`infixr` makes `::` a right-associative infix operator with binding power 67, so `1 :: 2 :: []` is `1 :: (2 :: [])`. `syntax` declares the bracket form, `macro_rules` rewrites it, one element at a time, into `List.cons` and `List.nil` (more in chapter 1.8).
 
 # Functions on lists
 

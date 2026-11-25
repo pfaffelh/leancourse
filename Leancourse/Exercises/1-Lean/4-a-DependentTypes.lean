@@ -5,195 +5,201 @@ import Mathlib
 
 *Notes chapters 1.2 and 1.4, week 7.*
 
-A type may depend on a value. `Σ (x : α), β x` pairs a value with
-data whose type depends on it, `(x : α) → β x` is the function
-version, and `{x : α // P x}` is the special case where the second
-component is a proof.
+A type may depend on a value. A Σ-type pairs a value with data whose
+type depends on it, a dependent function returns a value whose type
+depends on the input, and a subtype pairs a value with a proof. An
+indexed family is a type family declared with `inductive`.
 
-Universes appear here too; they were introduced in chapter 1.2.
-The axioms `propext` and `Classical.choice` are listed in chapter
-1.5 and treated in chapter 2.3, with their own sheet `2.3-a` in
-week 12; `funext` is a theorem. One exercise below needs choice; it is marked.
+Most exercises ask you to define something. Each definition is
+followed by an `example` that pins down what it should compute. On
+this sheet those examples are `sorry`; once your definition is done,
+replace the `sorry` by the tactic named in the comment. If it fails,
+the definition is wrong.
 
-## Notation introduced here
+## Introduced here
 
-| notation         | means                                         |
-|------------------|-----------------------------------------------|
-| `Σ (x : α), β x` | dependent pair, second component in `Type`    |
-| `(x : α) → β x`  | dependent function (Pi type)                  |
-| `{x : α // P x}` | subtype: a value together with a proof        |
-| `p.1`, `p.2`     | the two components of a pair or subtype       |
-| `Subtype.ext`    | two subtype elements agree if their values do |
-| `universe u`     | declare a universe variable                   |
+| notation                    | means                                          |
+|-----------------------------|------------------------------------------------|
+| `(x : α) × β x`             | Σ-type: pairs `⟨a, b⟩` with `b : β a`          |
+| `p.1`, `p.2`                | the two components of a pair                   |
+| `Fintype.card α`            | the number of elements of a finite type        |
+| `{x : α // P x}`            | subtype: pairs `⟨a, h⟩` with `h : P a`         |
+| `s.val`, `s.property`       | the element and the proof                      |
+| `Subtype.ext`               | two elements agree if their values do          |
+| `inductive T : ℕ → Type`    | an indexed family: constructors fix the index  |
 
 ## Tactics from earlier sheets
 
-| sheet   | tactics                     |
-|---------|-----------------------------|
-| `1.1-a` | `rfl`                       |
-| `L-f`   | `have`                      |
-| `1.1-c` | `norm_num`, `simp`, `omega` |
+| sheet   | tactics                          |
+|---------|----------------------------------|
+| `L-a`   | `apply`                          |
+| `L-d`   | `absurd`                         |
+| `L-f`   | `have`                           |
+| `1.1-a` | `rfl`, `show`                    |
+| `1.1-b` | `decide`                         |
+| `1.1-c` | `simp`, `omega`                  |
+| `1.3-a` | `induction t with`, `simp [f]`   |
 -/
 
-/-
-## Part 1: Sigma types
+/-! ## Part 1: Σ-types
 
-Recall: `Σ (x : α), β x` is the type of dependent pairs ⟨a, b⟩
-where `a : α` and `b : β a`. The second component `β x` must itself
-live in `Type`, not in `Prop`.  Sigma represents computationally
-relevant data: you can extract the witness with `.1` and the
-associated data with `.2`.
+The second component of `⟨n, k⟩ : (n : ℕ) × Fin (n + 1)` has type
+`Fin (n + 1)`, which depends on the first component `n`. -/
 
-If the second component is a *proposition*, use the subtype
-`{x : α // P x}` (covered in Part 3) or the universe-polymorphic
-`PSigma`.  Genuine `Σ` requires `β x : Type`.
--/
+def aPair : (n : ℕ) × Fin (n + 1) := ⟨3, 2⟩
 
--- Exercise 1: Construct an element of a Sigma type.
--- A length `n` together with a vector of that length
--- (here represented as `Fin n → ℕ`, a list of `n` natural numbers).
-def lengthAndVec : Σ (n : ℕ), Fin n → ℕ :=
+#eval aPair.1   -- 3
+#eval aPair.2   -- 2, as an element of `Fin 4`
+
+-- Exercise 1) Send `⟨n, k⟩` to `⟨n + 1, k⟩`: the same value `k`, now
+-- as an element of `Fin (n + 2)`. Hint: match on `⟨n, k⟩` and build
+-- the second component as `⟨k.val, _⟩`; `omega` knows `k.val < n + 1`.
+def sigmaShift : (n : ℕ) × Fin (n + 1) → (n : ℕ) × Fin (n + 1) :=
   sorry
 
--- Exercise 2: Construct another Sigma element.
--- A natural number n together with a term of Fin (n + 1)
--- (which is nonempty for every n, since `⟨0, _⟩ : Fin (n+1)`).
-def withPoint : Σ (n : ℕ), Fin (n + 1) :=
+example : sigmaShift ⟨2, 1⟩ = ⟨3, 1⟩ := by
+  sorry -- rfl, once solved
+
+example : sigmaShift ⟨0, 0⟩ = ⟨1, 0⟩ := by
+  sorry -- rfl, once solved
+
+/- The pairs `⟨n, k⟩` with a fixed `n` form one piece, and the Σ-type
+is the disjoint union of the pieces. So it has `∑ₙ |β n|` elements,
+while the Π-type `(n : α) → β n` has `∏ₙ |β n|`. -/
+
+example : Fintype.card ((n : Fin 4) × Fin (n + 1)) = 10 := by decide
+example : Fintype.card ((n : Fin 4) → Fin (n + 1)) = 24 := by decide
+
+-- Exercise 2) Compute both numbers by hand. Then replace each `sorry`
+-- on the right-hand side by your number and the proof by `decide`.
+example : Fintype.card ((n : Fin 5) × Fin n) = sorry := by
   sorry
 
--- Exercise 3: A function on Sigma types.
--- Given a Sigma pair, extract and double the first component.
-def doubleFst (p : Σ (n : ℕ), Fin (n + 1)) : ℕ :=
+example : Fintype.card ((n : Fin 5) → Fin n) = sorry := by
   sorry
 
--- Exercise 4: Map over the second component of a Sigma type.
--- Given ⟨n, k : Fin (n+1)⟩, produce ⟨n+1, k.castSucc : Fin (n+2)⟩.
--- Hint: `Fin.castSucc` includes `Fin (n+1)` into `Fin (n+2)`.
-def sigmaShift (p : Σ (n : ℕ), Fin (n + 1)) :
-    Σ (n : ℕ), Fin (n + 1) :=
-  sorry
+/-! ## Part 2: Type families and dependent functions
 
-/-
-## Part 2: Dependent functions (Pi types)
+A type family is a function whose values are types. A dependent
+function `(b : Bool) → BoolFamily b` returns a value in `ℕ` or in
+`String`, depending on `b`. -/
 
-The type `(x : α) → β x` is a Pi type: a function whose return type
-depends on the input value.
--/
-
--- Exercise 5: A simple dependent function
--- Given n, return the zero vector of length n (as a function from Fin n)
-def zeroVec (n : ℕ) : Fin n → ℕ :=
-  sorry
-
--- Exercise 6: Another dependent function
--- Given n, return the identity permutation on Fin n
-def idPerm (n : ℕ) : Fin n → Fin n :=
-  sorry
-
--- Exercise 7: A function that returns different types depending on input
-def boolToType : Bool → Type
+def BoolFamily : Bool → Type
   | true  => ℕ
   | false => String
 
--- Now define a function that returns a value of the appropriate type
-def boolToVal : (b : Bool) → boolToType b :=
+def boolFamilyExample : (b : Bool) → BoolFamily b
+  | true  => (42 : ℕ)
+  | false => ("hello" : String)
+
+-- Exercise 3) A pair `⟨b, x⟩` with `x : BoolFamily b` is a number or
+-- a string. Return the number itself, or the length `s.length` of the
+-- string. Hint: match on `⟨true, n⟩` and `⟨false, s⟩`.
+def size : (b : Bool) × BoolFamily b → ℕ :=
   sorry
 
-/-
-## Part 3: Subtypes
+example : size ⟨true, (7 : ℕ)⟩ = 7 := by
+  sorry -- rfl, once solved
 
-The subtype `{x : α // P x}` consists of pairs ⟨x, h⟩ where x : α
-and h : P x. Two subtypes are equal iff their first components agree.
--/
+example : size ⟨false, ("abc" : String)⟩ = 3 := by
+  sorry -- decide, once solved
 
--- Exercise 8: Construct an element of a subtype
-def evenNumber : {n : ℕ // n % 2 = 0} :=
+/- A type family can be defined by recursion. `NTuple n` is the type
+of `n`-tuples of natural numbers, ending in `()`: -/
+
+def NTuple : ℕ → Type
+  | 0     => Unit
+  | n + 1 => ℕ × NTuple n
+
+example : NTuple 2 := (5, 7, ())
+
+-- Exercise 4) Define the dependent function that sends `n` to the
+-- tuple `(n - 1, ..., 1, 0, ())`. Each branch returns a value of a
+-- different type: `NTuple 0` in the first, `NTuple (n + 1)` in the
+-- second.
+def countDown : (n : ℕ) → NTuple n :=
   sorry
 
--- Exercise 9: Define a function on subtypes
--- Given an even number, produce the next even number
+example : countDown 3 = ((2, 1, 0, ()) : NTuple 3) := by
+  sorry -- rfl, once solved
+
+/-! ## Part 3: Subtypes
+
+An element of `{n : ℕ // n % 2 = 0}` is a pair `⟨n, h⟩` of a number
+and a proof that it is even. A function into a subtype has to supply
+the proof. -/
+
+def four : {n : ℕ // n % 2 = 0} := ⟨4, by decide⟩
+
+-- Exercise 5) The next even number, `n + 2`. Hint: `n.property` is
+-- the proof for `n`; make it a hypothesis with `have` for `omega`.
 def nextEven (n : {n : ℕ // n % 2 = 0}) : {m : ℕ // m % 2 = 0} :=
   sorry
 
--- Exercise 10: Prove two subtype elements are equal
--- Hint: use Subtype.ext
-example : (⟨4, by norm_num⟩ : {n : ℕ // n % 2 = 0}) =
-          (⟨4, by norm_num⟩ : {n : ℕ // n % 2 = 0}) := by
+example : (nextEven four).val = 6 := by
+  sorry -- rfl, once solved
+
+-- Exercise 6) `rfl` fails: `n + n` and `2 * n` are different terms.
+-- `apply Subtype.ext` reduces the goal to the values; `show n + n = 2 * n`
+-- makes that visible to `omega`.
+example (n : ℕ) (h₁ : (n + n) % 2 = 0) (h₂ : (2 * n) % 2 = 0) :
+    (⟨n + n, h₁⟩ : {m : ℕ // m % 2 = 0}) = ⟨2 * n, h₂⟩ := by
   sorry
 
-/-
-## Part 4: Universe levels
-
-Chapter 1.2 gave the hierarchy: `Prop = Sort 0`, `Type u = Sort (u+1)`,
-and `Sort u : Sort (u+1)`.  Here you read it off in the editor.
--/
-
--- These three are given.  Check each with `#check` and convince
--- yourself the annotation is the only one that type-checks.
-
--- #check ℕ
-example : Type 0 := ℕ
-
--- #check Type 0
-example : Type 1 := Type 0
-
--- #check Prop
-example : Type 0 := Prop
-
--- Exercise 11: Universe-polymorphic identity
--- Define a universe-polymorphic identity function
-universe u
-def myPolyId (α : Type u) (a : α) : α :=
-  sorry
-
--- Once Exercise 11 is solved, these two work at different levels:
-#check myPolyId ℕ 42
-#check myPolyId (Type 0) ℕ
-
-/-
-## Part 5: Subtype vs Exists (and a note on PSigma)
-
-Understand the difference between *computational* and *propositional*
-existence.  Because `Σ` demands a `Type`-valued second component,
-the right analogue of `∃ x : α, P x` (with `P : α → Prop`) is the
-subtype `{x : α // P x}`.  It carries the witness as data.
-
-(There is also `PSigma`, which is universe-polymorphic and accepts
-a `Prop`-valued second component; `Subtype` is the more common
-choice in Mathlib for this pattern.)
--/
-
--- Exercise 12: Subtypes give you data.
--- Construct a subtype element; you will be able to extract the
--- witness with `.1`.
-def squareRootOf25 : {n : ℕ // n * n = 25} :=
-  sorry
-
--- Now the witness is computable: squareRootOf25.1 evaluates to 5.
--- #eval squareRootOf25.1  -- uncomment after solving
-
--- Exercise 13: Exists gives only a proof.
--- You can prove existence but cannot extract the witness without
--- classical choice -- that direction is on sheet `2.3-a`.
-example : ∃ (n : ℕ), n * n = 25 :=
-  sorry
-
--- Exercise 14: Converting Subtype to Exists.
--- This direction always works (forgetting data) and needs no axiom.
+-- Exercise 7) From a subtype to `∃`. This direction forgets data and
+-- needs no axiom. The converse, from `∃` to a subtype, needs choice;
+-- it is on sheet `2.3-a`.
 theorem subtypeToExists {α : Type} {P : α → Prop}
     (s : {x : α // P x}) : ∃ (x : α), P x :=
   sorry
 
-/-
-## Part 6: Challenge problems
--/
-
--- Exercise 15: Define a "safe head" function using subtypes
--- The input is guaranteed to be a nonempty list
-def safeHead {α : Type} (l : {l : List α // l ≠ []}) : α :=
+-- Exercise 8) The first element of a list that is known to be
+-- nonempty. Hint: match on `⟨a :: _, _⟩` and `⟨[], h⟩`. In the second
+-- case `h : [] ≠ []`, which contradicts `rfl`.
+def safeHead {α : Type} : {l : List α // l ≠ []} → α :=
   sorry
 
--- Exercise 16: Use the safe head function
--- Hint: you need to provide a list together with a proof it is nonempty
 example : safeHead ⟨[1, 2, 3], by simp⟩ = 1 := by
+  sorry -- rfl, once solved
+
+/-! ## Part 4: An indexed family
+
+`Vec α n` is the type of lists of length `n`. The index `n` is fixed
+by the constructors: `nil` has length `0`, `cons` adds one. A match on
+`v : Vec α (n + 1)` needs no case for `nil`, because `nil` has index
+`0`, which is not of the form `n + 1`. -/
+
+inductive Vec (α : Type) : ℕ → Type where
+  | nil : Vec α 0
+  | cons {n : ℕ} : α → Vec α n → Vec α (n + 1)
+
+namespace Vec
+
+def head {α : Type} {n : ℕ} : Vec α (n + 1) → α
+  | .cons a _ => a
+
+#eval (cons 1 (cons 2 nil)).head   -- 1
+
+-- Exercise 9) Pair up two vectors of the same length. Two cases are
+-- enough. Why are `nil` with `cons` and `cons` with `nil` not needed?
+def zip {α β : Type} {n : ℕ} : Vec α n → Vec β n → Vec (α × β) n :=
   sorry
+
+example : zip (cons 1 (cons 2 nil)) (cons true (cons false nil)) =
+    cons (1, true) (cons (2, false) nil) := by
+  sorry -- rfl, once solved
+
+-- Exercise 10) Forget the length: turn a vector into a list.
+def toList {α : Type} {n : ℕ} : Vec α n → List α :=
+  sorry
+
+example : (cons 1 (cons 2 (cons 3 nil))).toList = [1, 2, 3] := by
+  sorry -- rfl, once solved
+
+-- Exercise 11) The list has the length that the index promised.
+-- Hint: induction on `v`, as for the trees on sheet `1.3-a`.
+theorem length_toList {α : Type} {n : ℕ} (v : Vec α n) :
+    v.toList.length = n := by
+  sorry
+
+end Vec

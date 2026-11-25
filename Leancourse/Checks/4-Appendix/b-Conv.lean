@@ -20,8 +20,8 @@ example (f : ℕ → ℕ) (h : ∀ n, f n = 0) :
   conv_lhs => ext n; rw [h]
 
 -- 4. Simplify the hypothesis with `conv at h`, then finish.
-example (a b : ℕ) (h : a + 0 = b) : a = b := by
-  conv at h => lhs; rw [add_zero]
+example (a b : ℕ) (h : 0 + a = b) : a = b := by
+  conv at h => lhs; rw [zero_add]
   exact h
 
 -- 5. Reach the first `a` deep inside with `enter`.

@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# (witness) 1.6-b -- Coercions and casts
+# (witness) 1.7-b -- Coercions and casts
 
-*Notes chapter 1.6, week 8.*
+*Notes chapter 1.7, week 9.*
 -/
 
 /- ## Part 1: The silent arrow -/
@@ -54,3 +54,45 @@ example (a b : ℕ) (h : (a : ℚ) = b) : a = b := by
 
 example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
   omega
+
+/- ## Part 6: Your own coercions -/
+
+structure Pos where
+  val : ℕ
+  pos : 0 < val
+
+instance : Coe Pos ℕ := ⟨Pos.val⟩
+
+example (p q : Pos) : 0 < (p : ℕ) + q := by
+  have := p.pos
+  omega
+
+/-- The map `x ↦ a * x + b`, stored as its two coefficients. -/
+structure Affine where
+  a : ℤ
+  b : ℤ
+
+instance : CoeFun Affine (fun _ => ℤ → ℤ) :=
+  ⟨fun f x => f.a * x + f.b⟩
+
+def Affine.comp (f g : Affine) : Affine :=
+  ⟨f.a * g.a, f.a * g.b + f.b⟩
+
+example (f g : Affine) (x : ℤ) : f.comp g x = f (g x) := by
+  show f.a * g.a * x + (f.a * g.b + f.b) = f.a * (g.a * x + g.b) + f.b
+  ring
+
+/- ## Part 7: Hierarchies with `extends` -/
+
+class MyMonoid (α : Type) extends Mul α, One α where
+  one_mul : ∀ a : α, 1 * a = a
+  mul_one : ∀ a : α, a * 1 = a
+
+instance : MyMonoid ℕ where
+  one_mul := Nat.one_mul
+  mul_one := Nat.mul_one
+
+theorem MyMonoid.one_unique {α : Type} [MyMonoid α] (e : α)
+    (h : ∀ a : α, e * a = a) : e = 1 := by
+  calc e = e * 1 := by rw [MyMonoid.mul_one]
+    _ = 1 := h 1

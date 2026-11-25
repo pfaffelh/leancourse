@@ -255,7 +255,7 @@ def sevenMod : (n : ℕ) → ZMod n :=
 #eval sevenMod 0    -- 7
 ```
 
-The numeral `7` in `ZMod 5` is read modulo 5, so `#eval` shows the representative `2`. How a numeral gets its meaning in a type is explained in chapter 1.7, {ref "ofnat"}[Where numerals come from].
+The numeral `7` in `ZMod 5` is read modulo 5, so `#eval` shows the representative `2`. How a numeral gets its meaning in a type is explained in chapter 1.8, {ref "ofnat"}[Where numerals come from].
 
 In terms of sets, a function `f : (x : α) → β x` chooses one element `f x ∈ β x` for every `x`. It is an element of the product $`\prod_{x \in \alpha} \beta(x)`. This is where the name Π comes from.
 

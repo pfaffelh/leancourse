@@ -12,16 +12,26 @@ is `Option ℝ≥0`. Read chapter 2.1 first.
 `ℝ≥0` and `ℝ≥0∞` need the line `open scoped NNReal ENNReal` below.
 `∞` is typed `\infty`.
 
+## Introduced here
+
+| tactic                     | use it when                                   |
+|----------------------------|-----------------------------------------------|
+| `zify [h]`                 | a goal in `ℕ` with `-` is easier in `ℤ`       |
+| `norm_cast at h ⊢`         | remove casts from `h` and from the goal       |
+| `lift x to ℝ≥0 using h`    | `x` lies in the image of the cast, by `h`     |
+| `positivity`               | goal `0 < e` or `0 ≤ e`, by the shape of `e`  |
+
 ## Tactics from earlier sheets
 
-| sheet   | tactics                     |
-|---------|-----------------------------|
-| `L-a`   | `intro`, `exact`            |
-| `L-b`   | `constructor`               |
-| `1.1-a` | `rfl`, `rw`                 |
-| `1.1-b` | `decide`, `<;>`             |
-| `L-f`   | `have`                      |
-| `1.1-c` | `norm_num`, `simp`, `omega` |
+| sheet   | tactics                                                      |
+|---------|--------------------------------------------------------------|
+| `L-a`   | `intro`, `exact`                                             |
+| `L-b`   | `constructor`                                                |
+| `1.1-a` | `rfl`, `rw`                                                  |
+| `1.1-b` | `decide`, `<;>`                                              |
+| `L-f`   | `have`                                                       |
+| `1.1-c` | `norm_num`, `simp`, `omega`, `ring`, `linarith`, `push_cast` |
+| `1.7-b` | `norm_cast`                                                  |
 -/
 
 open scoped NNReal ENNReal
@@ -123,8 +133,10 @@ example : (∞ : ℝ≥0∞).toReal = 0 := by
 
 /-! ## Part 6: Casts -/
 
--- Exercise 20) `omega` handles casts from `ℕ` to `ℤ`.
-example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
+-- Exercise 20) `(Nat.even_mul_succ_self n).two_dvd` gives
+-- `2 ∣ n * (n + 1)`; then `Nat.cast_div`, `push_cast`, `ring`.
+example (n : ℕ) :
+    ((n * (n + 1) / 2 : ℕ) : ℝ) = n * (n + 1) / 2 := by
   sorry
 
 -- Exercise 21) For `ℝ`, rewrite with `Nat.cast_sub h` first.
@@ -133,4 +145,60 @@ example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
 
 -- Exercise 22) Which side is computed in `ℕ`?
 example : ((7 / 2 : ℕ) : ℝ) ≠ 7 / 2 := by
+  sorry
+
+/-! ## Part 7: More casts
+
+Read the section *Casts* of chapter 2.1 first. Four new tactics:
+
+- `zify [h]` moves a goal from `ℕ` to `ℤ`. A subtraction `n - m`
+  becomes `↑n - ↑m` only if `h : m ≤ n` is in the list.
+- `norm_cast at h ⊢` removes casts from `h` and from the goal.
+- `lift x to ℝ≥0 using h` replaces `x : ℝ` by `↑x` with `x : ℝ≥0`.
+  Here `h : 0 ≤ x`. For `a : ℝ≥0∞` the condition is `a ≠ ∞`.
+- `positivity` proves `0 < e` or `0 ≤ e` from the shape of `e`:
+  squares, sums and products of positive terms, casts from `ℕ`.
+-/
+
+-- Exercise 23) `ring` fails in `ℕ`; `zify` needs both `≤` facts.
+example (n : ℕ) (h : 1 ≤ n) : (n - 1) * (n + 1) = n ^ 2 - 1 := by
+  sorry
+
+-- Exercise 24) Remove the casts from `h`.
+example (m n : ℕ) (h : (m : ℝ) + 1 ≤ n) : m < n := by
+  sorry
+
+-- Exercise 25) `omega` knows `Int.toNat`.
+example (k : ℤ) : (k.toNat : ℤ) = max k 0 := by
+  sorry
+
+-- Exercise 26) `rw [Int.floor_eq_iff]`.
+example (n : ℤ) : ⌊(n : ℝ) + 1 / 2⌋ = n := by
+  sorry
+
+-- Exercise 27) Which hypothesis excludes the junk value?
+example (x y : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
+    (ENNReal.ofReal (x * y)).toReal = x * y := by
+  sorry
+
+-- Exercise 28) Lift both to `ℝ≥0`, then `norm_cast at h ⊢`.
+example (a b : ℝ≥0∞) (ha : a ≠ ∞) (hb : b ≠ ∞)
+    (h : a.toReal < b.toReal) : a < b := by
+  sorry
+
+-- Exercise 29) Without `ha` it is false. Try `a = ∞`.
+example : ¬ ∀ a b : ℝ≥0∞, a.toReal < b.toReal → a < b := by
+  sorry
+
+-- Exercise 30) `Real.toNNReal_add`.
+example (x y : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
+    (x + y).toNNReal = x.toNNReal + y.toNNReal := by
+  sorry
+
+-- Exercise 31) Without the hypotheses it is false. Try `1` and `-1`.
+example : ¬ ∀ x y : ℝ, (x + y).toNNReal = x.toNNReal + y.toNNReal := by
+  sorry
+
+-- Exercise 32)
+example (x : ℝ) (n : ℕ) : 0 < (n : ℝ) + 1 + x ^ 2 := by
   sorry

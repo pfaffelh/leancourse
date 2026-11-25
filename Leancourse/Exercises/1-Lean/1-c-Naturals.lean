@@ -36,15 +36,15 @@ arithmetic for us.
 
 ## Tactics from earlier sheets
 
-| sheet   | tactics                             |
-|---------|-------------------------------------|
-| `L-a`   | `intro`, `exact`                    |
-| `L-b`   | `constructor`, `obtain`             |
-| `L-c`   | `left`, `right`                     |
-| `1.1-a` | `rfl`, `induction`                  |
-| `1.2-a` | `use`                               |
-| `L-e`   | `by_cases`, `by_contra`, `push Not` |
-| `L-f`   | `have`                              |
+| sheet   | tactics                                       |
+|---------|-----------------------------------------------|
+| `L-a`   | `intro`, `exact`                              |
+| `L-b`   | `constructor`, `obtain`                       |
+| `L-c`   | `left`, `right`                               |
+| `1.1-a` | `rfl`, `induction`                            |
+| `1.2-a` | `use`                                         |
+| `L-f`   | `have`                                        |
+| `L-e`   | `by_contra`, `push Not` (Ex. 16, extra only)  |
 -/
 
 open Nat
@@ -255,9 +255,9 @@ example (n : ℕ) : n ≤ n ^ 2 := by
 example (k m n : ℕ) (hkm : k ≤ m) (hmn : m ≤ n) : k ^ 2 ≤ n ^ 3 := by
   sorry
 
--- Exercise 16) For `0 ≤ x`, a power is at most `1` exactly when `x`
--- is. One direction is a lemma; for the other, assume `1 < x` with
--- `by_contra` and `push Not`. Lemmas for these statements help:
+-- Exercise 16) *Extra, for after `L-e` (week 5).* For `0 ≤ x`, a
+-- power is at most `1` exactly when `x` is. One direction is a lemma;
+-- for the other, assume `1 < x` with `by_contra` and `push Not`. Lemmas for these statements help:
 --   0 ≤ a → a ≤ 1 → a ^ n ≤ 1
 --   1 < a → n ≠ 0 → 1 < a ^ n
 

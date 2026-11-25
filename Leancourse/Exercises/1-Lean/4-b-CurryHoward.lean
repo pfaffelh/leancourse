@@ -23,8 +23,8 @@ first.
 | `(h : False).elim`      | anything                   | `exfalso`             |
 | `⟨a, h⟩`                | `∃ x, P x`                 | `use a`               |
 
-New are `fun` and `h.elim`; the other terms are from `L-b`, `L-c`,
-`L-d` and `1.2-a`.
+New is `h.elim`. `fun` appeared on `L-a` and `L-f`, the other terms
+on `L-b`, `L-c`, `L-d` and `1.2-a`.
 
 `show_term` in front of tactics prints the term they build, which
 helps when you are stuck.

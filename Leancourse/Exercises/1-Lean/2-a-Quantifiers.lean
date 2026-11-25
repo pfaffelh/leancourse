@@ -118,9 +118,9 @@ example (h : ∀ x, P x ↔ ∃ y, R x y) : ∀ y, ∀ x, R x y → P x := by
 
 /-! ## Negating a quantifier
 
-The four rules below are the quantifier half of what `L-e` did for
-`∧`, `∨` and `→`. The tactic `push Not` applies them for you; here
-you prove them, so do not use it.
+The four rules below are the quantifier half of the De Morgan rules
+for `∧`, `∨` and `→`, which come on `L-e` in week 5. The tactic
+`push Not` (also `L-e`) applies them; here you prove them by hand.
 
 Three of the four are constructive. The fourth is exercise 8. -/
 
@@ -136,7 +136,7 @@ example : ¬(∃ x, P x) → ∀ x, ¬ P x := by
 example : (∃ x, ¬ P x) → ¬(∀ x, P x) := by
   sorry
 
--- Exercise 8) *Extra, for after `L-e` in week 4.* This is the one
+-- Exercise 8) *Extra, for after `L-e` in week 5.* This is the one
 -- direction that is not constructive: knowing that not every `x`
 -- satisfies `P` does not hand you an `x` that fails it. You need
 -- `by_contra` twice.

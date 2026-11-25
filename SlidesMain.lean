@@ -6,8 +6,8 @@ import Slides.«1-3-PatternMatchingRecursion»
 import Slides.«1-4-PairsSubtypesQuotients»
 import Slides.«1-5-Rules»
 import Slides.«1-6-Typeclasses»
-import Slides.«1-6b-FunctorsMonads»
-import Slides.«1-7-Notation»
+import Slides.«1-7-FunctorsMonads»
+import Slides.«1-8-Notation»
 import Slides.«2-1-Numbers»
 import Slides.«2-2-SetsAndTypes»
 import Slides.«2-3-Foundations»
@@ -112,8 +112,8 @@ def main (args : List String) : IO UInt32 := do
       ("1-4-pairs-subtypes-quotients", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-4-PairsSubtypesQuotients»)),
       ("1-5-rules",           fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-5-Rules»)),
       ("1-6-typeclasses",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6-Typeclasses»)),
-      ("1-6b-functors-monads", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-6b-FunctorsMonads»)),
-      ("1-7-notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-7-Notation»)),
+      ("1-7-functors-monads", fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-7-FunctorsMonads»)),
+      ("1-8-notation",        fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«1-8-Notation»)),
       ("2-1-numbers",         fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-1-Numbers»)),
       ("2-2-sets-and-types",  fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-2-SetsAndTypes»)),
       ("2-3-foundations",     fun d => slidesMain (config := deckConfig d) (doc := %doc Slides.«2-3-Foundations»)),

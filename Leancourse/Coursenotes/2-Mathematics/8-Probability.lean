@@ -6,6 +6,7 @@ import Mathlib
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
 open MyDef
+open scoped ENNReal Topology
 
 set_option pp.rawOnError true
 set_option verso.docstring.allowMissing true
@@ -16,7 +17,7 @@ htmlSplit := .never
 tag := "probability-pmf"
 %%%
 
-`PMF α` is Mathlib's type of discrete probability distributions on `α`. It is a monad in the sense of chapter {ref "type-constructor-classes"}[1.6], and the monad structure is how one builds distributions from others. The chapter first collects the `map` and `bind` operations that have already appeared for sets, finite sets and filters.
+`PMF α` is Mathlib's type of discrete probability distributions on `α`. It is a monad in the sense of chapter {ref "type-constructor-classes"}[1.7], and the monad structure is how one builds distributions from others. The chapter first collects the `map` and `bind` operations that have already appeared for sets, finite sets and filters.
 
 The [slides](slides/2-8-probability/) for this chapter follow it section by section.
 
@@ -25,7 +26,7 @@ The [slides](slides/2-8-probability/) for this chapter follow it section by sect
 tag := "monads"
 %%%
 
-Chapter {ref "type-constructor-classes"}[1.6] introduced `map`, `pure` and `bind` for `Option` and `List`. The same three operations occur in mathematics, and so far they have appeared under other names:
+Chapter {ref "type-constructor-classes"}[1.7] introduced `map`, `pure` and `bind` for `Option` and `List`. The same three operations occur in mathematics, and so far they have appeared under other names:
 
 :::table (align := left) +header
 * + type
@@ -81,7 +82,7 @@ example : (3, 10) ∈ setPairs := by
 end SetMonad
 ```
 
-`bind s f` is `⋃ a ∈ s, f a`, so `setPairs` is the set `{1, 2, 3} ×ˢ {10, 20}`, as the list monad gave a list of the same pairs.
+`bind s f` is `⋃ a ∈ s, f a`, so `setPairs` is the set of pairs `(x, y)` with `x ∈ {1, 2, 3}` and `y ∈ {10, 20}` (the product set `{1, 2, 3} ×ˢ {10, 20}`, typed `\xs`), as the list monad gave a list of the same pairs.
 
 ## Finite sets
 %%%
@@ -89,7 +90,7 @@ number := false
 tag := "finset-monad"
 %%%
 
-`Finset.image f s` and `Finset.biUnion s f` are `map` and `bind`, but both need `DecidableEq β`: a finite set has no duplicates, so the elements `f a` must be compared. For that reason `Finset` is a `Functor` and a `Monad` only when every proposition is decidable, that is, after the {ref "classical-tactic"}[`classical` tactic] or `open Classical`. In practice one writes `Finset.image` and `Finset.biUnion` directly:
+`Finset.image f s` and `Finset.biUnion s f` are `map` and `bind`, but both need `DecidableEq β`: a finite set has no duplicates, so the elements `f a` must be compared. For that reason `Finset` is a `Functor` and a `Monad` only when every proposition is decidable, that is, with the {ref "classical-tactic"}[`classical` tactic] (in a proof) or `open Classical in` (in a definition). In practice one writes `Finset.image` and `Finset.biUnion` directly:
 
 ```lean
 example : ({1, 2} : Finset ℕ).biUnion (fun n => {n, 10 * n})
@@ -112,7 +113,7 @@ example (f : ℕ → ℕ) (F : Filter ℕ) :
 
 The definition of a limit, `Tendsto f F G ↔ Filter.map f F ≤ G`, is a statement about this `map`.
 
-`Filter.bind` exists too, and `Filter.monad` is a `Monad`, but it is not an instance. Filters already carry an `Applicative` instance, through `Filter.seq`, and the `seq` that `Filter.monad` derives from `bind` is a different function. One type cannot have both.
+`Filter.bind` exists too, and `Filter.monad` is a `Monad`, but it is not an instance. `Filter` has a global `<*>`, given by `Filter.seq`. A global `Monad Filter` would bring a second `<*>`, derived from `bind`, and the two differ: a diamond.
 
 `PMF` is the case where the monad is a global instance and the `do`-notation is used in practice. The rest of the chapter is about it.
 
@@ -191,7 +192,22 @@ tag := "pmf-definition"
 {docstring PMF}
 
 So a `PMF α` is a function `p : α → ℝ≥0∞` together with a proof
-`HasSum p 1`. (xxx: unconditional summation `tsum`/`HasSum` — the crux of `PMF` — is not defined.)  In particular:
+`HasSum p 1`. `HasSum f 1` says that the finite sums `∑ a ∈ s, f a`
+tend to `1` as `s` grows through the finite sets: it is
+`Tendsto (fun s => ∑ a ∈ s, f a) atTop (𝓝 1)`, with the filter `atTop`
+on `Finset α` from chapter {ref "filters"}[2.6]. The order of summation
+plays no role (unconditional summation). `∑' a, f a` is the value of
+the sum (`0` if `f` is not summable).
+
+```lean
+example (f : ℕ → ℝ≥0∞) (a : ℝ≥0∞) :
+    HasSum f a ↔ Filter.Tendsto
+      (fun s : Finset ℕ => ∑ b ∈ s, f b)
+      Filter.atTop (𝓝 a) :=
+  Iff.rfl
+```
+
+In particular:
 
 - `p a : ℝ≥0∞` is the probability mass at `a`;
 - `∑' a, p a = 1` (total mass is one);
@@ -203,7 +219,7 @@ So a `PMF α` is a function `p : α → ℝ≥0∞` together with a proof
 
 The countability of the support is the key reason we can largely
 avoid measurability: a discrete distribution only "sees" countably
-many values, so integrals against a `PMF` reduce to infinite sums.
+many values, so an expectation is the sum `∑' a, p a * g a`.
 
 ## `pure`: the Dirac distribution
 %%%
@@ -255,7 +271,8 @@ second-stage distributions along the support of the first:
 
 {docstring PMF.support_bind}
 
-The *monad laws* hold by definition (no measurability needed):
+The *monad laws* are theorems, proved by computing with sums; no
+measurability is needed:
 
 {docstring PMF.pure_bind}
 
@@ -263,9 +280,9 @@ The *monad laws* hold by definition (no measurability needed):
 
 {docstring PMF.bind_bind}
 
-These are exactly the two identity laws and the associativity law
-introduced earlier in this chapter, specialised from `Option` and
-`List` to `PMF`.
+These are the two identity laws and the associativity law introduced
+in chapter {ref "type-constructor-classes"}[1.7] (`pure_bind`,
+`bind_pure`, `bind_assoc`), here for `PMF`.
 
 ## `map`: pushing a distribution along a function
 %%%
@@ -304,12 +321,9 @@ A handy identity relates `bind` and `map`:
 
 {docstring PMF.bind_map}
 
-Notice how no measurability hypothesis appears: `PMF.map f p` makes
-sense for *every* function `f : α → β`.  `Measure.map f μ`, by contrast, is meaningful only when `f` is
-(almost everywhere) measurable; otherwise its value is a junk value.  Measurability only re-enters if we want
-to compare `p.map f` with the pushforward measure `p.toMeasure.map f`,
-as in `PMF.toMeasure_map_apply` — but nothing on the `PMF` side
-requires it.
+No measurability hypothesis appears: `PMF.map f p` is defined for
+*every* function `f : α → β`. Pushing a measure forward, by contrast,
+needs a measurability hypothesis on `f`.
 
 ## `join`: flattening distributions of distributions
 %%%
@@ -321,27 +335,32 @@ A *distribution of distributions* is a `PMF (PMF α)`: a random
 choice of a random variable.  The `join` operation collapses it
 into a single `PMF α` by sampling at both stages.
 
-Mathlib does not define `PMF.join` separately, because every monad
-already supplies it as `bind id`.  In Lean:
+Mathlib has no `PMF.join`; the generic `joinM` (= `bind · id`) works
+for every monad. Written out for `PMF`:
 
 ```lean
--- `join` derived from the monadic structure
-noncomputable def PMF.join {α : Type*} (P : PMF (PMF α)) : PMF α :=
+noncomputable def pmfJoin {α : Type} (P : PMF (PMF α)) :
+    PMF α :=
   P.bind id
+
+example {α : Type} (p : PMF α) :
+    pmfJoin (PMF.pure p) = p :=
+  PMF.pure_bind p id
 ```
 
 Equivalently, unfolding `bind`,
 
 ```
-(P.join) a = ∑' q, P q * q a.
+(pmfJoin P) a = ∑' q, P q * q a.
 ```
 
 The general monad identities give us
 
-- `join (pure p) = p`  (from `PMF.pure_bind`);
-- `join (p.map pure) = p`  (from `PMF.bind_pure`);
-- `join (P.map (fun p ↦ p.map f)) = (join P).map f`  (naturality);
-- `join (P.map join) = join (join P)`  (associativity of join),
+- `pmfJoin (pure p) = p`  (from `PMF.pure_bind`);
+- `pmfJoin (p.map pure) = p`  (from `PMF.bind_pure`);
+- `pmfJoin (P.map (fun p ↦ p.map f)) = (pmfJoin P).map f`
+  (naturality);
+- `pmfJoin (P.map pmfJoin) = pmfJoin (pmfJoin P)`  (associativity),
 
 all derivable from `pure_bind`, `bind_pure`, and `bind_bind`.  No
 measurability is used anywhere.
@@ -364,10 +383,17 @@ noncomputable example (die : PMF (Fin 6)) : PMF ℕ := do
   pure (x.val + y.val + 2)
 ```
 
-Under the hood, this is elaborated to
+The `do`-block is elaborated to
 
 ```
-die.bind fun x => die.bind fun y => pure (x.val + y.val + 2).
+die >>= fun x => die >>= fun y => pure (x.val + y.val + 2)
+```
+
+and `>>=` on `PMF` is `PMF.bind`:
+
+```lean
+example {α β : Type} (p : PMF α) (f : α → PMF β) :
+    p >>= f = p.bind f := rfl
 ```
 
 ## Concrete distributions
@@ -391,51 +417,24 @@ example : PMF.uniformOfFintype Bool true = 1 / 2 := by
   simp [PMF.uniformOfFintype_apply]
 ```
 
-`PMF.bernoulli` and `PMF.binomial` are deprecated. Their successors,
-`ProbabilityTheory.bernoulliMeasure` and `ProbabilityTheory.binomial`,
-are measures, not `PMF`s.
-
-## Beyond PMFs: measures, expectation, independence
+## Beyond PMFs
 %%%
 number := false
 tag := "pmf-beyond"
 %%%
 
-`PMF` is the right tool for *discrete* distributions, but probability
-theory in Mathlib is much larger.  A sketch of where to go next:
+Continuous distributions, such as the uniform distribution on
+`[0, 1]` or the normal distribution, are measures `Measure α` on a
+σ-algebra `MeasurableSpace α`; they are not part of this course.
+`PMF.toMeasure` turns a `PMF` into a measure. `PMF.bernoulli` and
+`PMF.binomial` are deprecated; their successors,
+`ProbabilityTheory.bernoulliMeasure` and `ProbabilityTheory.binomial`,
+are measures.
 
-- Every `PMF α` induces a probability measure on `α` via
-  `PMF.toMeasure`; conversely, `MeasureTheory.Measure α` is the general setting
-  that handles continuous distributions.
-- *Expectation* of a function `f : α → ℝ` against a probability
-  measure `μ` is the Bochner integral `∫ x, f x ∂μ`, found in
-  `Mathlib.MeasureTheory.Integral.Bochner`.
-- *Independence* of two events / sigma-algebras / random variables
-  is `ProbabilityTheory.IndepSets`, `IndepFun`, etc., in
-  `Mathlib.Probability.Independence`.
-- *Conditional probability* and conditional expectation live in
-  `Mathlib.Probability.ConditionalProbability` and
-  `Mathlib.MeasureTheory.Function.ConditionalExpectation`.
+Discrete probability stays inside `PMF`: no σ-algebra, no
+measurability. Composing samplers, pushing them along functions and
+computing marginals all happen there.
 
-## When do we still need measurability?
-%%%
-number := false
-tag := "pmf-measurability"
-%%%
-
-The `PMF` monad goes a remarkably long way with no mention of
-sigma-algebras.  You only need to reach for measurability when:
-
-1. You want to convert a `PMF α` to a Mathlib `Measure α`: this
-   uses `PMF.toMeasure`, which *does* require a `MeasurableSpace α`.
-2. You want to integrate a function `g : α → ℝ` against a `PMF` and
-   reuse the Bochner-integral library.  For discrete sums this is
-   usually avoidable; the `PMF`-level API (e.g. `PMF.bind_apply`)
-   gives you an explicit `tsum`.
-3. You want to compare `PMF.map f` with the measure-theoretic
-   pushforward `Measure.map f`.
-
-For most manipulations of discrete distributions — composing
-samplers, pushing them along functions, computing marginals —
-working directly with `PMF` and its monad laws is cleaner and
-measurability-free.
+For further reading: Mathlib's measure-theoretic probability theory
+is in the namespace `ProbabilityTheory`, in the files under
+`Mathlib/Probability`.

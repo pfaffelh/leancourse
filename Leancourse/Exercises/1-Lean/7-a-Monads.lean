@@ -1,13 +1,13 @@
 import Mathlib
 
 /-!
-# 1.6-c -- Functors and monads
+# 1.7-a -- Functors and monads
 
-*Notes chapter 1.6, week 8.*
+*Notes chapter 1.7, week 9.*
 
 `Option` and `List` are type constructors, and the classes `Functor`
 and `Monad` are classes over them. Read the section *Classes over type
-constructors* of chapter 1.6 first.
+constructors* of chapter 1.7 first.
 
 ## Introduced here
 
@@ -25,10 +25,10 @@ constructors* of chapter 1.6 first.
 
 ## Tactics from earlier sheets
 
-| sheet   | tactics           |
-|---------|-------------------|
-| `1.1-a` | `rfl`             |
-| `1.1-b` | `cases`, `decide` |
+| sheet   | tactics                          |
+|---------|----------------------------------|
+| `1.1-a` | `rfl`, `induction`, `show`, `rw` |
+| `1.1-b` | `cases`, `decide`                |
 
 
 The definitions below come with `#eval` lines. Uncomment them once your
@@ -170,3 +170,32 @@ def pythagoreanTriples : List (ℕ × ℕ × ℕ) :=
   sorry
 
 -- #eval pythagoreanTriples
+
+/-! ## Part 5: A functor of your own
+
+A binary tree with a label at every inner node. `map` keeps the shape
+and applies `f` to every label. -/
+
+inductive LTree (α : Type) where
+  | leaf : LTree α
+  | node : LTree α → α → LTree α → LTree α
+
+-- Exercise 18) Define `map` by pattern matching: a leaf stays a leaf,
+-- a node maps both subtrees and its label.
+def LTree.map {α β : Type} (f : α → β) : LTree α → LTree β :=
+  sorry
+
+-- Exercise 19) Make `LTree` a `Functor`.
+instance : Functor LTree where
+  map := sorry
+
+-- Exercise 20) The law `id_map`. Induction on `t`. In the `node` case,
+-- `show` the goal after one step of `map`, then rewrite with both
+-- hypotheses.
+example {α : Type} (t : LTree α) : id <$> t = t := by
+  sorry
+
+-- Exercise 21) *Extra.* The law `comp_map`, the same way.
+example {α β γ : Type} (f : α → β) (g : β → γ) (t : LTree α) :
+    (g ∘ f) <$> t = g <$> f <$> t := by
+  sorry

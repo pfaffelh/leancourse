@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # 1.6-a -- Typeclasses
 
-*Notes chapter 1.6, week 7.*
+*Notes chapter 1.6, week 8.*
 
 A `class` is a `structure` that Lean finds for you. You never pass an
 instance by hand: you write `[Add α]` in the signature, and *instance
@@ -28,6 +28,7 @@ and `if` need an algorithm.
 | `[Fact p]`             | a proposition as an instance argument         |
 | `Fact.out`             | the proof inside a `Fact`                     |
 | `have : C := ...`      | a local instance for the rest of the proof    |
+| `isTrue`, `isFalse`    | the two constructors of `Decidable p`         |
 
 ## Tactics from earlier sheets
 
@@ -207,17 +208,17 @@ example (n : ℕ) : n = 0 ∨ n ≠ 0 := by
 example (P : Prop) : P ∨ ¬ P := by
   sorry
 
-/-! `Finset.filter P` keeps the elements of a finite set that satisfy
-`P`, and it needs `DecidablePred P` to do so. For an arbitrary `P`
-there is no such instance. The tactic `classical` provides one, by
-the axiom of choice, for the rest of the proof. Instances that exist
-are still found first. `Finset.filter_subset` and `Finset.mem_filter`
-are the two lemmas you need. -/
+/-! `decide P : Bool` turns a proposition into a Boolean, and it needs
+`Decidable P` to do so. For an arbitrary `P` there is no such
+instance. The tactic `classical` provides one, by the axiom of
+choice, for the rest of the proof. Instances that exist are still
+found first. `decide_eq_true_iff` says `decide P = true ↔ P`. -/
 
--- Exercise 18) Start with `classical`, then give `s.filter P` as the
--- witness. Delete the line `classical` afterwards and read the error.
-example (P : ℕ → Prop) (s : Finset ℕ) :
-    ∃ t : Finset ℕ, t ⊆ s ∧ ∀ x ∈ t, P x := by
+-- Exercise 18) `decide P` needs `Decidable P`; the tactic `classical`
+-- provides one. Start with `classical`, then give `decide (P ∧ Q)` as
+-- the witness. Delete the line `classical` afterwards and read the
+-- error.
+example (P Q : Prop) : ∃ b : Bool, (b = true ↔ P ∧ Q) := by
   sorry
 
 /-! ## `Fact`
@@ -252,4 +253,25 @@ example (p : ℕ) (hp : p.Prime) (a : ZMod p) (ha : a ≠ 0) :
 -- Exercise 23) The inverse of `3` in `ZMod 7`. Rewrite with
 -- `inv_eq_of_mul_eq_one_right`; what is left, `decide` computes.
 example : (3 : ZMod 7)⁻¹ = 5 := by
+  sorry
+
+/-! ## A `Decidable` instance of your own
+
+`IsSmall` is a `def`, so instance search does not see that it is
+`n < 5`, and `decide` fails on it. An instance of `Decidable p` is
+`isTrue h` with `h : p` or `isFalse h` with `h : ¬p`. -/
+
+def IsSmall (n : ℕ) : Prop := n < 5
+
+-- Exercise 24) First try `decide` on `IsSmall 3` without the instance
+-- and read the error. Then write the instance: `if h : n < 5 then ...
+-- else ...`.
+instance (n : ℕ) : Decidable (IsSmall n) :=
+  sorry
+
+-- Exercise 25) Now `decide` works.
+example : IsSmall 3 := by
+  sorry
+
+example : ¬ IsSmall 7 := by
   sorry

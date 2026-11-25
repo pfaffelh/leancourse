@@ -242,3 +242,21 @@ example {α : Type*} (F : Filter α) : F ≤ ⊤ := by
 -- (Every set in atTop has finite complement.)
 example : (cofinite : Filter ℕ) ≤ atTop := by
   exact Nat.cofinite_eq_atTop ▸ le_rfl
+
+/- ## Part 8: Frequently, and the bridge to sheet 2.6-a -/
+
+-- Exercise 31
+example : ∃ᶠ n in (atTop : Filter ℕ), n % 2 = 0 := by
+  rw [frequently_atTop]
+  intro N
+  exact ⟨2 * N, by omega, by omega⟩
+
+def TendsTo (x : ℕ → ℝ) (t : ℝ) : Prop :=
+  ∀ ε > 0, ∃ N : ℕ, ∀ n, N ≤ n → |x n - t| < ε
+
+-- Exercise 32
+example (x : ℕ → ℝ) (t : ℝ) :
+    TendsTo x t ↔ Tendsto x atTop (nhds t) := by
+  rw [Metric.tendsto_atTop]
+  simp only [Real.dist_eq, ge_iff_le]
+  rfl

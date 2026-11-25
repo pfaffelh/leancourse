@@ -8,7 +8,7 @@ import Mathlib
 
 /- ## Part 1: Function extensionality -/
 
-example : (fun n : ℕ => n + 0) = (fun n : ℕ => n) := by
+example : (fun n : ℕ => 0 + n) = id := by
   funext n
   simp
 
@@ -21,10 +21,9 @@ example : (fun (m n : ℕ) => m + n) = (fun (m n : ℕ) => n + m) := by
 example : (True ∧ True) = True :=
   propext ⟨fun _ => trivial, fun h => ⟨h, h⟩⟩
 
-example (P : Prop) (hP : P) : (P ∧ True) := by
-  have h : (P ∧ True) = P := propext ⟨fun x => x.1, fun x => ⟨x, trivial⟩⟩
-  rw [h]
-  exact hP
+example : (fun P : Prop => P ∧ True) = id := by
+  funext P
+  exact propext ⟨fun x => x.1, fun x => ⟨x, trivial⟩⟩
 
 /- ## Part 3: Excluded middle -/
 

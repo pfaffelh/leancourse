@@ -1,7 +1,7 @@
 import Mathlib
 
 /-!
-# (witness) 1.6-d -- Trool: a type with three elements
+# (witness) 1.6-b -- Trool: a type with three elements
 
 *Notes chapter 1.6, week 8.*
 -/

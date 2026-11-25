@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) 1.5-a -- Rules, equality and choice
 
-*Notes chapter 1.5, week 6.*
+*Notes chapter 1.5, week 7.*
 -/
 
 variable (α β : Type)
@@ -163,9 +163,9 @@ lemma l1 (P Q : Prop) : (P → Q) ↔ (Q ∨ ¬P) := by
     · exact h1
     · exact absurd hP h2
 
--- Exercise 14) Peirce's law. `rw [l1]` rewrites the innermost
--- implication; three times turn the goal into a statement about `∨`
--- and `¬`. Then `by_cases` on `P`. `rintro (h1 | h2)` splits a
+-- Exercise 14) Peirce's law. `rw [l1]` rewrites the outermost
+-- implication first, then the next one inside; three times turn the
+-- goal into `P ∨ ¬(P ∨ ¬(Q ∨ ¬P))`. Then `by_cases` on `P`. `rintro (h1 | h2)` splits a
 -- disjunction while introducing it.
 example (P Q : Prop) : ((P → Q) → P) → P := by
   rw [l1, l1, l1]

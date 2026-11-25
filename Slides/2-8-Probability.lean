@@ -11,12 +11,12 @@ Deck for the chapter "Monads and Probability Mass Functions" of part 2
 (Mathematics), the last lecture of the course. It follows the chapter
 section by section: monads in mathematics (sets, finite sets, filters),
 then probability mass functions (definition, `pure`, `bind`, `map`,
-`join`, the `Monad PMF` instance, concrete distributions, measures,
-measurability).
+`join`, the `Monad PMF` instance, concrete distributions, beyond
+`PMF`s).
 -/
 
 namespace SlidesProbability
-open scoped ENNReal
+open scoped ENNReal Topology
 
 #doc (Slides) "Monads and probability" =>
 
@@ -34,13 +34,13 @@ open scoped ENNReal
 
 # Monads and probability
 
-Mathematics — chapter 9
+Mathematics — chapter 8
 
 :::class "key"
 A discrete distribution is built from others with `pure`, `map` and `bind`. In Mathlib, `PMF` is a monad.
 :::
 
-# Monads, from chapter 1.6
+# Monads, from chapter 1.7
 
 :::table +colHeaders +rowSeps
 *
@@ -133,7 +133,7 @@ example : ({1, 2} : Finset ℕ).biUnion (fun n => {n, 10 * n})
 A finite set has no duplicates, so the elements `f a` must be compared: `Finset.biUnion` needs `[DecidableEq β]`, and `Finset.instMonad` needs `[(P : Prop) → Decidable P]`.
 
 :::class "key"
-`Finset` is a monad only after `classical`. In practice: `Finset.image` and `Finset.biUnion`.
+`Finset` is a monad only with `classical` (in a proof) or `open Classical in` (in a definition). In practice: `Finset.image` and `Finset.biUnion`.
 :::
 
 # Filters
@@ -149,21 +149,10 @@ example (f : ℕ → ℕ) (F G : Filter ℕ) :
 
 `pure a` is the principal filter `𝓟 {a}`: it contains the sets that contain `a`.
 
+`Filter.monad` is not an instance. `Filter` has a global `<*>`, given by `Filter.seq`; a global `Monad Filter` would bring a second `<*>`, derived from `bind`, and the two differ: a diamond.
+
 :::class "key"
 A limit is a statement about `map`.
-:::
-
-# Why `Filter.monad` is not an instance
-
-```lean -panel -stretch
-#check (Filter.monad : Monad Filter)
-#synth Applicative Filter
-```
-
-Filters already have an `Applicative` instance, with `seq` given by `Filter.seq`. The `seq` that `Filter.monad` derives from `bind` is a different function.
-
-:::class "key"
-One type cannot carry both. `PMF` is the case where the monad is a global instance and `do` is used in practice.
 :::
 
 # Probability mass functions
@@ -172,6 +161,22 @@ One type cannot carry both. `PMF` is the case where the monad is a global instan
 def PMF (α : Type u) : Type u :=
   { f : α → ℝ≥0∞ // HasSum f 1 }
 ```
+
+`HasSum f 1`: the finite sums `∑ a ∈ s, f a` tend to `1` as `s` grows through the finite sets: `Tendsto … atTop (𝓝 1)` on `Finset α`. `∑' a, f a` is the value of the sum (`0` if not summable).
+
+```lean -panel -stretch
+example (f : ℕ → ℝ≥0∞) (a : ℝ≥0∞) :
+    HasSum f a ↔ Filter.Tendsto
+      (fun s : Finset ℕ => ∑ b ∈ s, f b)
+      Filter.atTop (𝓝 a) :=
+  Iff.rfl
+```
+
+:::class "key"
+A `PMF` is a function with sum `1`, the sum a limit along `atTop` on finite sets (chapter 2.6).
+:::
+
+# Mass and support
 
 ```lean -panel -stretch
 example {α : Type} (p : PMF α) : ∑' a, p a = 1 :=
@@ -183,7 +188,7 @@ example {α : Type} (p : PMF α) : p.support.Countable :=
 `p a : ℝ≥0∞` is the mass at `a`, and `p.support = {a | p a ≠ 0}`.
 
 :::class "key"
-The support is countable and there is no σ-algebra: integrals against a `PMF` are sums.
+The support is countable and there is no σ-algebra: an expectation is the sum `∑' a, p a * g a`.
 :::
 
 # `pure`: the Dirac distribution
@@ -200,7 +205,7 @@ example {α : Type} (a : α) : (PMF.pure a).support = {a} :=
 Mass `1` at `a`, mass `0` elsewhere.
 
 :::class "key"
-Write `PMF.pure`: a bare `pure` is the generic `Pure.pure`, and Lean needs the type to resolve it.
+With the type given, `(pure a : PMF α)` is `PMF.pure a` (`rfl`). Write `PMF.pure` when the type is not clear.
 :::
 
 # `bind`: composing distributions
@@ -236,7 +241,7 @@ end
 ```
 
 :::class "key"
-The laws of chapter 1.6, for `PMF`. No measurability appears.
+The laws of chapter 1.7, for `PMF`. No measurability appears.
 :::
 
 # `map`: the image distribution
@@ -245,13 +250,14 @@ The laws of chapter 1.6, for `PMF`. No measurability appears.
 example {α β : Type} (f : α → β) (p : PMF α) :
     p.bind (PMF.pure ∘ f) = p.map f :=
   PMF.bind_pure_comp f p
+-- the if b = f a needs DecidableEq β
 open Classical in
 example {α β : Type} (f : α → β) (p : PMF α) (b : β) :
     (p.map f) b = ∑' a, if b = f a then p a else 0 :=
   PMF.map_apply f p b
 ```
 
-`(p.map f) b` is the mass that `p` puts on `f ⁻¹' {b}`.
+`(p.map f) b` is the mass that `p` puts on `f ⁻¹' {b}`. `p.map f` is defined for every function `f`: no measurability hypothesis.
 
 :::class "key"
 `map` is `bind` composed with `pure`, as for every monad.
@@ -276,17 +282,6 @@ end
 Each one is a calculation with `bind` and `pure`.
 :::
 
-# `map` needs no measurability
-
-- `PMF.map f p` is defined for every function `f : α → β`.
-- `Measure.map f μ` needs `f` to be (almost everywhere) measurable; otherwise its value is a junk value.
-- Measurability comes back only when `p.map f` is compared with the measure `p.toMeasure.map f`:
-
-```
-PMF.toMeasure_map_apply : Measurable f → MeasurableSet s →
-  (PMF.map f p).toMeasure s = p.toMeasure (f ⁻¹' s)
-```
-
 # `join`: a distribution of distributions
 
 ```lean -panel -stretch
@@ -303,7 +298,7 @@ example {α : Type} (p : PMF α) :
 ```
 
 :::class "key"
-Mathlib has no `PMF.join`: every monad has it as `bind id`.
+Mathlib has no `PMF.join`; the generic `joinM` (= `bind · id`) works for every monad.
 :::
 
 # The `Monad PMF` instance
@@ -319,7 +314,7 @@ noncomputable example (die : PMF (Fin 6)) : PMF ℕ := do
   pure (x.val + y.val + 2)
 ```
 
-The `do`-block is `die.bind fun x => die.bind fun y => pure (x.val + y.val + 2)`.
+The `do`-block is `die >>= fun x => die >>= fun y => pure (x.val + y.val + 2)`, and `>>=` on `PMF` is `PMF.bind`.
 
 :::class "key"
 Two dice, summed: the `do`-block reads as the description of the experiment.
@@ -342,57 +337,21 @@ example : PMF.uniformOfFintype Bool true = 1 / 2 := by
 A fair coin: mass `1 / 2` on each side.
 :::
 
-# Bernoulli and binomial
-
-`PMF.bernoulli` and `PMF.binomial` are deprecated. Their successors are measures, not `PMF`s:
-
-- `ProbabilityTheory.bernoulliMeasure`
-- `ProbabilityTheory.binomial : ℕ → unitInterval → Measure ℕ`
-
-:::class "key"
-Mathlib's probability theory is moving to measures.
-:::
-
 # Beyond `PMF`s
 
-:::table +colHeaders +rowSeps
-*
-  * notion
-  * in Mathlib
-*
-  * from `PMF` to measure
-  * `PMF.toMeasure`, needs `MeasurableSpace α`
-*
-  * general distributions
-  * `Measure α` with `IsProbabilityMeasure`
-*
-  * expectation
-  * the Bochner integral `∫ x, f x ∂μ`
-*
-  * independence
-  * `ProbabilityTheory.IndepSets`, `IndepFun`
-*
-  * conditional expectation
-  * `μ[f | m]`, chapter 8
-:::
+Continuous distributions (uniform on `[0, 1]`, normal) are measures `Measure α` on a σ-algebra `MeasurableSpace α`, not part of this course. `PMF.toMeasure` turns a `PMF` into one.
 
-Continuous distributions need `Measure α`; `PMF` covers the discrete ones.
-
-# When measurability is needed
-
-1. Converting `p : PMF α` to a measure: `PMF.toMeasure` needs `MeasurableSpace α`.
-2. Integrating `g : α → ℝ` with the Bochner integral. For discrete sums, `PMF.bind_apply` gives a `tsum` directly.
-3. Comparing `PMF.map f` with `Measure.map f`.
+`PMF.bernoulli` and `PMF.binomial` are deprecated; their successors are measures.
 
 :::class "key"
-Composing, pushing forward and computing marginals stay inside `PMF`, without measurability.
+Discrete probability stays inside `PMF`: no σ-algebra, no measurability.
 :::
 
 # What the semester covered
 
 Part 1 described Lean's type theory: functions, inductive types, structures, recursion, quotients, the rules of the kernel, typeclasses.
 
-Part 2 read Mathlib with it: numbers, sets, foundations, orders, algebra, filters, topology, measures and, today, probability.
+Part 2 read Mathlib with it: numbers, sets, foundations, orders, algebra, filters and, today, probability; topology as reading.
 
 The same few type formers carry all of part 2.
 

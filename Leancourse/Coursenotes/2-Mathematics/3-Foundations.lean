@@ -65,9 +65,9 @@ The argument is worth seeing, because it pinpoints exactly where non-constructiv
 Both are nonempty — `True` satisfies `U` and `False` satisfies `V` — so `Classical.choice` hands us concrete witnesses `u v : Prop` together with proofs of `u = True ∨ p` and `v = False ∨ p`. Now case-split on those two disjunctions:
 
 - If either disjunction takes its *right* branch, we have a proof of `p` outright — the left side of `p ∨ ¬p`.
-- Otherwise `u = True` and `v = False`, so `u ≠ v`. But were `p` true, then `U x` and `V x` would both be equivalent to `True`, so `propext` makes them equal for every `x` and `funext` gives `U = V`; the chosen witnesses would then coincide, `u = v` — a contradiction. The argument thus uses all three axioms: `Classical.choice`, `propext`, and `Quot.sound` through `funext`. Hence `¬p`, the right side.
+- Otherwise `u = True` and `v = False`, so `u ≠ v`. But were `p` true, then `U x` and `V x` would both be equivalent to `True`, so `propext` makes them equal for every `x` and `funext` gives `U = V`; the witnesses `u` and `v` are `Classical.choose` applied to equal arguments and would coincide, `u = v` — a contradiction. The argument thus uses all three axioms: `Classical.choice`, `propext`, and `Quot.sound` through `funext`. Hence `¬p`, the right side.
 
-Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data*, the booleans `True` and `False`, which is the move a constructive system refuses. Mathlib packages the result as `Classical.em`, used in practice through `by_contra` or `by_cases`.
+Either way we obtain `p ∨ ¬p`. The decisive step is that `Classical.choice` turns the *propositional* assumption `p` into *comparable data*: the propositions `True` and `False`, which can be compared with `=`. This is the move a constructive system refuses. Mathlib packages the result as `Classical.em`, used in practice through `by_contra` or `by_cases`.
 
 The step "assume `p`, derive a contradiction, conclude `¬p`" does not itself use excluded middle, so the argument is not circular. Proving `¬p` by assuming `p` and reaching a contradiction is *negation introduction* — it is simply the definition of `¬p` as `p → False`, and it is constructively valid. The *classical* principle is the opposite direction: concluding a positive `p` from `¬¬p` (that is `by_contra`), which we never invoke here. Likewise, the case splits above *eliminate* disjunctions we already hold (from the choice specification); they do not conjure `p ∨ ¬p` out of nothing — that disjunction is our *conclusion*, assembled constructively from the cases. The one and only non-constructive ingredient is `Classical.choice`, and using it is not the same as assuming the `p ∨ ¬p` we are proving.
 
@@ -103,8 +103,8 @@ tag := "baked-in"
 * + Strict positivity
   + no `inductive Bad | mk : (Bad → False) → Bad`
   + {ref "positivity-rule"}[1.3]
-* + Subsingleton elimination
-  + no data from proofs of `∨` or `∃`
+* + Restricted elimination
+  + no data from proofs of `∨` or `∃`; subsingleton propositions are exempt
   + {ref "prop-special"}[1.5]
 :::
 
@@ -117,7 +117,7 @@ theorem pf_irrel (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
 -- 'pf_irrel' does not depend on any axioms
 ```
 
-One more is not a rule of the type theory but an implementation choice: the kernel represents `Nat` literals as binary numbers and computes `+`, `*`, `-`, `/`, `%`, `gcd`, `==` and `≤` on them with bignum operations rather than unary `succ` — the reason `decide` handles large numbers. `String` literals are kernel primitives as well. `Int` has no such support; it reduces through its `Nat` components.
+One more is not a rule of the type theory but an implementation choice: the kernel represents `Nat` literals as binary numbers and computes `+`, `*`, `-`, `/`, `%`, `^`, `gcd`, `Nat.beq` and `Nat.ble` on them with bignum operations rather than unary `succ` — the reason `decide` handles large numbers. `String` literals are kernel primitives as well. `Int` has no such support; it reduces through its `Nat` components.
 
 Two consequences. First, the *trusted base* of a Lean proof is not "three axioms" but the whole kernel, with all of the above. Believing a Lean theorem means believing all of that. Second, proof irrelevance for `Prop` makes all proofs of `a = b` equal, which is *uniqueness of identity proofs* (axiom K). This makes Lean *incompatible* with the univalence axiom of {ref "other-type-theories"}[Homotopy Type Theory], where distinct equality proofs must be allowed to differ.
 
@@ -140,7 +140,7 @@ partial def spinFalse (_ : Unit) : False := spinFalse ()
 
 `could not prove that the type ∀ (x : Unit), False is nonempty`. A `partial` definition is only accepted when its result type is *already known to be inhabited*, so it can never be the first inhabitant of anything.
 
-That is the rule underneath termination, strict positivity and `partial def`. Loops are not forbidden. What is forbidden is producing an inhabitant of a type that is not already known to have one.
+That is the rule underneath termination, strict positivity and `partial def`. Loops are not forbidden. What is forbidden is a loop that produces the first inhabitant of a type.
 
 # Well-foundedness and paradoxes
 %%%
@@ -249,8 +249,9 @@ The relation `<` on `Nat` is well-founded:
 One proves `Acc (· < ·) n` by induction on `n`:
 
 - `0` is accessible *vacuously* — there is no `m < 0`.
-- `n + 1` is accessible because every `m < n + 1` (that is, `m ≤ n`)
-  is accessible by the induction hypothesis.
+- `n + 1` is accessible: a predecessor `m < n + 1` is either `n`,
+  accessible by the induction hypothesis, or `m < n`, and then
+  `Acc n` gives `Acc m` (`Acc.inv`).
 
 The deeper reason is that `Nat` is *itself* an inductive type
 (`zero | succ`): every natural number is a *finite* tower of `succ`
@@ -259,9 +260,9 @@ through.  Structural recursion on `Nat` is the prototype of
 well-founded recursion, and the well-foundedness of `<` is just a
 restatement of it.
 
-In practice you almost never prove well-foundedness yourself.  Mathlib
-already supplies it — the `Nat.lt_wfRel.wf` above is one of many
-`WellFoundedRelation` instances — and when you write a recursive
+In practice you almost never prove well-foundedness yourself.  Lean's
+core library already supplies it (`Nat.lt_wfRel`), and for every
+inductive type `sizeOfWFRel` provides a well-founded relation.  When you write a recursive
 definition with `termination_by` ({ref "wf-recursion"}[Termination by a measure] in chapter
 1.3), Lean finds the well-founded relation automatically
 and asks you only, via `decreasing_by`, to show that your *measure*
@@ -289,9 +290,9 @@ says that `x ∈ s` requires `x : α` and `s : Set α`.  For `s ∈ s` the
 same `s` would need type `α` *and* type `Set α` at once — that is,
 `α = Set α`, i.e. `α = (α → Prop)` (recall that a
 {ref "foundations-sets"}[set is just a predicate]).  No such type
-exists (there is no
-matching `Membership` instance, and by *Cantor's theorem*
-`α ≄ (α → Prop)`).  So `s ∈ s` is not a *false* statement; it is
+exists (the elaborator would have to identify `Set α` with `α`,
+which fails; and by *Cantor's theorem* there is not even a bijection
+`α → (α → Prop)`).  So `s ∈ s` is not a *false* statement; it is
 *ill-formed*:
 
 ```lean
@@ -370,7 +371,7 @@ You need classical axioms when:
 
 You do *not* need classical axioms when:
 - Working with decidable propositions (natural number arithmetic, finite structures)
-- Constructing specific terms (defining functions, data structures)
+- Defining functions by an algorithm
 - Proving things by direct construction or induction
 
 Mathlib uses classical logic freely, since its subject is mathematical truth rather than computation: `by_cases` and `by_contra` everywhere, and the `classical` tactic where a proof needs a `Decidable` instance.
@@ -393,7 +394,7 @@ Most mathematicians are (at least implicitly) trained in ZFC set theory. Here ar
   + Set
   + Term of some type
 * + `3 ∈ 7`
-  + Well-formed (and true!)
+  + Well-formed; true for von Neumann numerals (`7 = {0,…,6}`)
   + Type error
 * + Functions
   + Sets of ordered pairs
@@ -412,7 +413,7 @@ Most mathematicians are (at least implicitly) trained in ZFC set theory. Here ar
   + Decidable (in practice)
 :::
 
-A key practical difference: in ZFC, you can ask nonsensical questions like "is 3 ∈ π?" and get an answer. In Lean, comparing objects of different types is a type error, which catches many mistakes early.
+A key practical difference: in ZFC, you can ask nonsensical questions like "is 3 ∈ π?": the question is well-formed, and its answer depends on how `3` and `π` are encoded as sets. In Lean, comparing objects of different types is a type error, which catches many mistakes early.
 
 
 The axioms of ZFC are listed in the box below. Lean's type theory has rules instead, given in {ref "type-rules"}[The rules of Lean's type theory], and three axioms: `propext`, `Quot.sound` and `Classical.choice`.
@@ -460,9 +461,12 @@ Each ZFC axiom has a counterpart in Lean:
 * + Empty set
   + `Empty`, `(∅ : Set α)`
   + inductive type, definition
-* + Pairing, union
-  + `α × β`, `α ⊕ β`, `Σ`; for sets `{a, b}`, `⋃`
-  + inductive types, definitions
+* + Pairing
+  + `{a, b}`
+  + definition
+* + Union
+  + `⋃₀`, `α ⊕ β`, `Σ`
+  + definition, inductive types
 * + Power set
   + `Set α := α → Prop`
   + function type
@@ -474,7 +478,7 @@ Each ZFC axiom has a counterpart in Lean:
   + definitions
 * + Replacement
   + the image `f '' s`
-  + definition
+  + definition (the strength of replacement comes from the universes)
 * + Foundation
   + no counterpart: `x ∈ x` is not well-typed
   + not needed
@@ -494,11 +498,11 @@ tag := "other-type-theories"
 
 Lean's type theory is one of several:
 
-- **Simply typed lambda calculus** (Church, 1940): No dependent types. Foundation for Haskell, OCaml.
-- **System F** (Girard, Reynolds, 1970s): Adds polymorphism but not full dependent types.{citep girard1972}[]
-- **Martin-Löf Type Theory** (MLTT, 1971+): The origin of dependent types in proof assistants. Used in Agda.{citep martinLof1975}[]
-- **Calculus of Inductive Constructions** (CIC): the system Lean's kernel implements ({ref "type-rules"}[chapter 1.5]); also used, in a closely related form, by Coq/Rocq.
-- **Homotopy Type Theory** (HoTT, 2013): Interprets types as topological spaces and equality as paths. Adds the univalence axiom (due to Voevodsky): equivalent types are equal. This is incompatible with Lean's proof irrelevance for `Prop`, so HoTT uses different proof assistants (Agda, cubical Agda, or specialized Lean forks).
-- **Cubical Type Theory** (2015+): Makes HoTT computational by using a cube category to model paths.{citep cohenEtAl2018}[]
+- *Simply typed lambda calculus* (Church, 1940): No polymorphism, no dependent types.
+- *System F* (Girard, Reynolds, 1970s): Adds polymorphism but not full dependent types. Basis of the type systems of Haskell and OCaml.{citep girard1972}[]
+- *Martin-Löf Type Theory* (MLTT, 1971+): The origin of dependent types in proof assistants. Used in Agda.{citep martinLof1975}[]
+- *Calculus of Inductive Constructions* (CIC): the system Lean's kernel implements ({ref "type-rules"}[chapter 1.5]); also used, in a closely related form, by Coq/Rocq.
+- *Homotopy Type Theory* (HoTT, 2013): Interprets types as topological spaces and equality as paths. Adds the univalence axiom (due to Voevodsky): equivalent types are equal. This is incompatible with Lean's proof irrelevance for `Prop`, so HoTT uses different proof assistants (Agda, cubical Agda, Rocq's HoTT library; Lean 2 had a HoTT mode).
+- *Cubical Type Theory* (2015+): Makes HoTT computational by using a cube category to model paths.{citep cohenEtAl2018}[]
 
-For this course, Lean's type theory (CIC + proof irrelevance + quotients + choice) is the framework we work in. It is expressive enough to formalize virtually all of modern mathematics, as the Mathlib library demonstrates.
+For this course, Lean's type theory (CIC + proof irrelevance + quotients + choice) is the framework we work in. Mathlib is built on it.

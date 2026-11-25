@@ -45,6 +45,8 @@ local notation "δ" => (2 : ℕ)
 #check (δ : ℕ)
 ```
 
+`local`: valid until the end of the section or file (as `local instance`, 1.7).
+
 # Notation is syntax
 
 ```lean -panel -stretch
@@ -62,10 +64,12 @@ Lean replaces the notation by the right-hand side _before_ type checking.
 local infixl:65 " ⊕⊕ " =>
   fun (a b : ℕ) => a + b + 1
 #eval 3 ⊕⊕ 4 -- 8
+#eval 3 ⊕⊕ 4 * 2 -- 12
 ```
 
-- `infixl`: left-associative, `infixr`: right-associative
-- `65`: binding power, the same as `+`
+- `65`: the precedence, the same as `+`
+- higher number binds tighter: `*` is 70, `+` is 65, so `3 ⊕⊕ 4 * 2 = 3 ⊕⊕ 8 = 12`
+- `infixl`: `a ⊕⊕ b ⊕⊕ c = (a ⊕⊕ b) ⊕⊕ c`; `infixr` groups to the right
 - the spaces around `⊕⊕` are part of the syntax
 
 # Prefix and postfix
@@ -86,10 +90,8 @@ local postfix:90 "°" => fun n : ℕ => 2 * n + 1
 Custom tokens mixed with several arguments:
 
 ```lean -panel -stretch
--- the half-open interval from a to b
-local notation "between " a " and " b =>
-  Set.Ico a b
-#check between (1 : ℕ) and 10    -- Set ℕ
+local notation "avg " a " and " b => (a + b) / 2
+#eval avg 4 and 10    -- 7
 ```
 
 # Scoped notation
@@ -117,6 +119,7 @@ local macro_rules
 ```
 
 - `syntax`: what may be written, a new rule for the parser
+- `term:max`: the argument is a term of maximal precedence (a name, a numeral, or something in brackets); `: term` makes the whole a term again
 - `macro_rules`: what it is replaced by; `` `(…) `` is syntax with holes `$x`
 - `notation` does both at once; several rules: the list literal `[1, 2, 3]` (1.3)
 - `notation3`: Mathlib's `notation` for symbols that bind a variable
@@ -301,17 +304,17 @@ A variable bound after the symbol becomes a `fun`.
   * Lean reads
   * input
 *
-  * `∑ i ∈ s, f i`
-  * `Finset.sum s (fun i => f i)`
-  * `\sum`
-*
-  * `∏ i ∈ s, f i`
-  * `Finset.prod s (fun i => f i)`
-  * `\prod`
+  * `∑ i ∈ s, f i`, `∏ i ∈ s, f i`
+  * `Finset.sum s (fun i => f i)`, `Finset.prod …`
+  * `\sum`, `\prod`
 *
   * `∑ i, f i`
   * `Finset.sum Finset.univ (fun i => f i)`
   * —
+*
+  * `∑' n, f n`
+  * `tsum (fun n => f n)`
+  * `\sum`, then `'`
 *
   * `∫ x in a..b, f x`
   * `intervalIntegral (fun x => f x) a b volume`
@@ -342,7 +345,7 @@ example : deriv (fun x : ℝ => x ^ 2) 3 = 6 := by
 
 - `deriv f x`: the function is an argument, written with `fun`
 - `deriv f : ℝ → ℝ`, the second derivative is `deriv (deriv f)`
-- defined through the Fréchet derivative: `deriv f x = fderiv ℝ f x 1`
+- `fderiv ℝ f x`: the derivative as a linear map `ℝ → ℝ`; its value at `1` is the number `deriv f x`
 
 # Looking behind notation
 
@@ -353,6 +356,7 @@ set_option pp.notation false in
 ```
 
 - `pp.notation false` prints the term without notation
+- `Finset.range 3` = `{0, 1, 2}` (chapter 2.2)
 - the body of `∑` stops before `+`: this is `(∑ i ∈ range 3, i) + 1`
 - the body of `∫` does not: `∫ x in 0..1, x + 1` integrates `x + 1`
 
@@ -375,11 +379,11 @@ instance (n : Nat) : OfNat Countdown n where
 #eval (5 : Countdown).val    -- 5
 ```
 
-A bare `2` is a natural number: a _default instance_.
+A bare `2` is a natural number: the instance `OfNat ℕ n` is marked `@[default_instance]`, used when nothing else fixes the type.
 
 # Rewriting a hypothesis with `▸`
 
-From `h : x = y` and `hx : P x`, the term `h ▸ hx` proves `P y`.
+From `h : x = y` and `hx : P x`, the term `h ▸ hx` proves `P y`: it rewrites `hx` with `h`.
 Type `▸` as `\t`.
 
 ```lean -panel -stretch
@@ -390,8 +394,7 @@ example (P : ℕ → Prop) (x y : ℕ)
 
 # Brackets with `<|`
 
-`first (second very long statement)` becomes
-`first <| second very long statement` — no closing bracket.
+`f (g (h x))` becomes `f <| g <| h x` — no closing bracket.
 
 ```lean -panel -stretch
 example (P Q : Prop) (hP : P) (hnP : ¬P) :
@@ -412,14 +415,20 @@ def NatAlias' := ℕ
   * `abbrev`
   * `def`
 *
-  * unfolded
-  * automatically (reducible)
-  * not automatically (semireducible)
+  * level
+  * reducible
+  * semireducible
+*
+  * seen through by
+  * instance search, `simp`
+  * only `rfl`, `exact`
 *
   * instances of `ℕ`
   * available
   * must be derived or registered
 :::
+
+reducible / semireducible: the reducibility levels of chapter 1.1. `rw` sees through neither.
 
 :::class "key"
 `abbrev`: a short name, no new abstraction barrier. `def`: hide the definition.
@@ -436,14 +445,15 @@ example : ¬((1, 5) ≤ ((2, 0) : LexA (ℕ × ℕ))) := by
   decide
 ```
 
+- `toLex p`: the same pair, as an element of `Lex (ℕ × ℕ)` (1.6)
 - Mathlib: `def Lex (α : Type*) := α`, with the lexicographic order
 - with `abbrev`, instance search sees through `LexA` and finds the componentwise order
-- also: with `def`, goals show the concept's name, and `simp` does not unfold it
+- with `def`, lemmas about the unfolded term do not apply: it needs its own lemmas
 
 # Summary
 
 - `notation` is syntax, expanded before type checking
-- `infixl`, `infixr`, `prefix`, `postfix` with a binding power
+- `infixl`, `infixr`, `prefix`, `postfix` with a precedence
 - `syntax` declares a form, `macro_rules` says what it becomes
 - almost every Mathlib symbol is a named constant; `∑`, `∫`, `∃` turn a bound variable into a `fun`
 - `∀` and `→` are not notation
@@ -451,4 +461,4 @@ example : ¬((1, 5) ≤ ((2, 0) : LexA (ℕ × ℕ))) := by
 - `scoped` keeps notation inside a namespace
 - numerals are literals, read through `OfNat`
 - `h ▸ hx` rewrites, `f <| x` saves brackets
-- `abbrev` unfolds automatically, `def` does not; `def` can carry its own instances (`Lex`)
+- instance search and `simp` see through `abbrev`, not through `def`; `def` can carry its own instances (`Lex`)

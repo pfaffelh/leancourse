@@ -3311,3 +3311,109 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   `2-2-SetsAndTypes` (namespace `SlidesSets`, 15 Folien). **URLs
   geaendert**: `slides/2-1-numbers/`, `slides/2-2-sets-and-types/`;
   `slides/2-1-numbers-sets/` gibt es nicht mehr.
+
+## 2026-11-24 (8) -- Deck 1-6b: `Functor` und `Monad` mit Signatur
+
+- Folie und Kapitelabschnitt *Functor* zeigen jetzt die Klasse
+  (`map`; `mapConst` hat eine Voreinstellung), `<$>` als Notation fuer
+  `Functor.map`, und eine Instanz von Hand (`structure Twice` mit
+  `map g p := ⟨g p.fst, g p.snd⟩`). `<$>` ist per `rfl` `Option.map`
+  bzw. `List.map`.
+- `LawfulFunctor` hat **drei** Felder: `map_const`, `id_map`,
+  `comp_map`; `map_const` ist bei der voreingestellten `mapConst`
+  `rfl`. Gegenbeispiel: `local instance (priority := high) : Functor
+  List` mit `(xs.map g).reverse` ist gueltig und bricht `id_map`.
+  Ein `def` vom Klassentyp warnt in v4.34 ("semireducible"), daher
+  `local instance` in einer `section`.
+- *Monad*: `class Monad (m) extends Applicative m, Bind m`; ohne
+  Voreinstellung sind nur `pure` und `bind`, `map` ist per Voreinstellung
+  `x >>= pure ∘ g` (`#print Monad` zeigt alle Felder). Die alte
+  Monad-Folie heisst jetzt "`Option` as a monad". Deck 18 Folien.
+
+## 2026-11-24 (9) -- 1.6 geteilt, Durchsicht aller Folien und Kapitel ab 1.6, Blaetter
+
+- **1.6 in zwei Kapitel geteilt** (Wunsch des Autors: eine Vorlesung,
+  ein Kapitel, ein Deck): 1.6 *Typeclasses* (bis `Decidable`,
+  `classical`) und neu `1-Lean/7-FunctorsMonads.lean`, 1.7 *Functors,
+  monads, coercions, hierarchies* (tag `functors-monads`; der erste
+  Abschnitt behaelt `type-constructor-classes`). Notation ist jetzt
+  `8-Notation.lean` (1.8). Decks `1-7-FunctorsMonads` (vorher
+  `1-6b-…`), `1-8-Notation`; **URLs** `slides/1-7-functors-monads/`,
+  `slides/1-8-notation/`. Blaetter (`git mv`, Zeugen mit): `1.6-d`
+  Trool -> `1.6-b`, `1.6-c` Monads -> `1.7-a`, `1.6-b` Coercions ->
+  `1.7-b`, `1.7-a` Notation -> `1.8-a`. `strip_unreleased.py`,
+  `plan.md`, Organization, `Checks/README.md`, alle Verweise
+  nachgezogen. Unveroeffentlicht, also fuer Studierende folgenlos.
+- **Durchsicht** (vier Review-Agenten, vier Fix-Agenten, je eine
+  disjunkte Dateigruppe): alles, was auf Folien steht, ist jetzt auf
+  der Folie oder im Kapitel davor erklaert. Gefundene **Fehler**, alle
+  in Lean geprueft und behoben, u.a.: kein `Group ℤ` (nur `AddGroup`);
+  `mul_comm` steht fuer `CommMagma`; `#eval` leitet ein fehlendes
+  `Repr` selbst ab; `Group.toMonoid` gibt es nicht; `ℕ → ℤ` ist
+  `NatCast`, kein `Coe`; `bind_pure` ist kein Feld von `LawfulMonad`;
+  `Monad` hat sechs Elternklassen; **`simp` faltet `abbrev` nicht auf**
+  (es sieht beim Lemma-Matching hindurch; `rw` nicht; das Ziel zeigt
+  in beiden Faellen den Namen) -- der Eintrag vom 27.10. ("simp schon")
+  war ungenau; `(n + 1 : ℝ)` wird `↑n + 1`; `Real.rpow` gilt nicht fuer
+  ℂ; `decide` auf ℝ scheitert an der nichtberechenbaren Instanz, `rfl`
+  an `+`; Grenzwert einer Funktion ist `Tendsto f (𝓝[≠] x₀) (𝓝 l)`, nicht
+  `𝓝 x₀`; 2.6 benutzte `𝓝`, `dist`, Stetigkeit nur aus 2.7 (jetzt
+  Abschnitt *The neighbourhood filter*, tag `filter-nhds`); 2.8 baute
+  auf Masstheorie (vier Folien zu einer zusammengelegt); diverse
+  Fehler in 2.3 (Elimination, `Acc`-Induktionsschritt, Diaconescu,
+  "erster Bewohner") und 2.4/2.5 (`⊆`-Name, Felder von `Subgroup`,
+  `IsStrictOrderedRing`, Koerperdefinition mit `0 ≠ 1`, `0⁻¹ = 0`).
+- **Verso-Dateien mit `lake env lean` pruefen**: bei `{docstring}`
+  stuerzt es ab (MD4Lean); mit
+  `--load-dynlib=.lake/packages/MD4Lean/.lake/build/lib/libMD4Lean-1.so
+  --load-dynlib=.lake/packages/MD4Lean/.lake/build/lib/libMD4Lean_MD4Lean.so`
+  geht es.
+- **Blaetter**: keine Aufgabe geloescht oder umnummeriert. Fehler
+  behoben (falsche Hinweise, Voraussetzungstabellen, Stoff vor seiner
+  Woche als *Extra* markiert), neue Teile am Blattende: 1.6-a eigene
+  `Decidable`-Instanz (Extra), 1.7-a eigener Funktor `LTree`, 1.7-b
+  eigene `Coe`/`CoeFun` und `extends`, 1.8-a `abbrev`/`▸`/`<|`;
+  Teil 2 siehe Bericht des Blatt-Agenten (Casts auf 2.1-a, `positivity`
+  dort eingefuehrt, `⋃`/`Finset`-Summe auf 2.2-a, `∃ᶠ` und die Bruecke
+  `TendsTo`/`Tendsto` auf 2.6-b).
+- **Erledigt am 25.11. (siehe dort)**: Wochenlast. Gemessen: W6 74
+  Aufgaben, W12 66, W13 65 mit Test 4. Vorschlaege der Audits (nicht
+  umgesetzt): 1.4-b auf ~12 kuerzen (Wiederholungen von L-a bis L-d),
+  1.3-a Teile 7-8 als Extra, 1.4-a neu schreiben, A-a Teile B/C
+  (Wiederholungen), 2.4-a Ex 1-13 und 2.5-a Ex 1-5, 10, 12, 13
+  (Dubletten/Einzeiler), 2.8-b Ex 9-11, 14-16 (= Monadengesetze aus 2.8-a).
+
+## 2026-11-25 -- Wochenlast: Blaetter verschoben, vier Blaetter gekuerzt, 1.4-a neu
+
+- **Entscheidung des Autors** zu den offenen Vorschlaegen vom 24.11.
+  (9): `1.3-a` und `1.4-b` bleiben unveraendert (schon ausgegeben),
+  alles andere wie vorgeschlagen.
+- **Verschoben** (W6 war mit 74 Aufgaben zu voll; Blaetter rutschen bis
+  zur Pause je eine Woche): `1.5-a` W6 -> W7, `1.6-a` W7 -> W8,
+  `1.7-a`/`1.7-b` W8 -> W9, `1.8-a`/`2.0-a` W9 -> W10 (ueber die Pause,
+  zusammen mit `2.1-a`). Die Blaetter zu 1.5 bis 1.8 laufen damit eine
+  Woche nach ihrer Vorlesung. Kopfzeilen von Blatt und Zeuge,
+  `plan.md`, Organization, `Checks/README.md` (dort waren auch die
+  Wochen von `1.3-a`, `1.4-a/b` veraltet) nachgezogen. Der Extra-Teil
+  von `1.6-a` (eigene `Decidable`-Instanz, Ex 24-25) ist regulaer, weil
+  W8 keinen Test mehr hat. **`1.5-a` ist auf `main` des Export-Repos
+  schon mit "week 6" freigegeben**; beim naechsten Release mitziehen.
+- **Gekuerzt** (Zeugen im Lockstep): `A-a` Teile B und C und E5
+  geloescht (Wiederholungen von `2.0-a`, `2.2-b`, `1.7-b`), Teile
+  umbenannt D->B, E->C, F->D, 26 Aufgaben; `2.4-a` Ex 1-13 und 27 weg,
+  dazu neu `Antitone (fun s => sᶜ)`, 24 Aufgaben; `2.5-a` Ex 1-5, 10,
+  12, 13 weg, 20 + 2 Extra; `2.8-b` die sechs Gesetzes-Lemmata
+  (`pure_bind`, `bind_pure`, `bind_bind`, `map_id`, `map_comp`,
+  `pure_map`) weg, 23 Aufgaben, das Intro nennt sie als frei benutzbar.
+- **`1.4-a` neu** (11 Aufgaben, vier Teile): Σ (`sigmaShift`, Abzaehlen
+  per `Fintype.card` und `decide`), Typfamilien (`BoolFamily`,
+  `NTuple`), Subtypen (`nextEven`, `Subtype.ext`, `subtypeToExists`,
+  `safeHead` mit Hinweis), indizierte Familie `Vec` (`zip`, `toList`,
+  `length_toList`). Jede Definition hat Pruef-`example`s, die auf dem
+  Blatt `sorry` sind. Universen-Teil (Dublette zu `1.5-a`) und
+  `∃ n, n*n = 25` (Dublette zu `1.4-b`) sind raus.
+- Last danach: W6 55, W7 40 (Test 2), W8 41, W9 40 (Test 3), W10 73
+  ueber die Pause, W11 38, W12 53, W13 46 (Test 4), W14 42, W15 39
+  (Test 5).
+- Geprueft: alle Blaetter fehlerfrei, 39 Zeugen sorry-frei,
+  `strip_unreleased.py --check` ok, `lake build Leancourse` ok.

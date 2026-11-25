@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # 2.0-a -- Finding theorems
 
-*Opens the mathematics part, week 9. No chapter of its own; the
+*Opens the mathematics part, week 10. No chapter of its own; the
 reference is the appendix* Navigating Mathlib.
 
 Mathlib has about 189 000 theorems. From here on most steps of a
@@ -208,8 +208,9 @@ example (a b : ℝ) : (a + b) ^ 2 = a ^ 2 + 2 * a * b + b ^ 2 := by
 -- Exercise 20) The intermediate value theorem. `exact?` fails. Find
 -- `intermediate_value_Icc` with `#search`, read its statement
 -- with `#check`, and use it. It wants `ContinuousOn f (Set.Icc 0 1)`;
--- `hf.continuousOn` gives that. Its conclusion is about an image
--- `f '' s`, as in chapter 2.2.
+-- `hf.continuousOn` gives that. Applied to `⟨h0.le, h1.le⟩` it
+-- gives `0 ∈ f '' Set.Icc 0 1`, a point of an image. Unpack it with
+-- `obtain ⟨x, -, hx⟩ := ...`.
 -- #search "A continuous function takes every value in between."
 example (f : ℝ → ℝ) (hf : Continuous f) (h0 : f 0 < 0) (h1 : 0 < f 1) :
     ∃ x, f x = 0 := by

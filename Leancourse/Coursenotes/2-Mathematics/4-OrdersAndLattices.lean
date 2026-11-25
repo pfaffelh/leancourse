@@ -44,7 +44,7 @@ tag := "orders-notation"
   + "a strictly less than b"
   + `\lt`
 * + `⊆`
-  + `Set.Subset s t`
+  + `LE.le s t` (on `Set α`, `⊆` is notation for `≤`)
   + "s is a subset of t"
   + `\sub`
 * + `⊔`
@@ -90,7 +90,7 @@ Naming hints:
 - The prefix `s` in `sSup`, `sInf` stands for *set*: it takes a `Set α`.
 - The prefix `i` in `iSup`, `iInf` stands for *indexed*: it takes a function.
 - The bare operators `⊔` and `⊓` are *binary*; `sSup`, `sInf`, `iSup`, `iInf` are their *set/indexed* counterparts.
-- Lemma naming follows the convention `le_sup_left`, `inf_le_right`, `le_antisymm`, etc.: the conclusion is named first, then the hypotheses in order.
+- Names read the conclusion left to right, hypotheses after `of`: `le_sup_left` (`a ≤ a ⊔ b`), `inv_inv` (`a⁻¹⁻¹ = a`), `le_of_lt` (`a < b → a ≤ b`).
 
 # Partial orders
 %%%
@@ -126,8 +126,9 @@ example (a b : ℕ) (hab : a ≤ b) (hba : b ≤ a) : a = b :=
   le_antisymm hab hba
 ```
 
-The strict order `<` is defined in terms of `≤`:
-`a < b ↔ a ≤ b ∧ a ≠ b` (or equivalently `a ≤ b ∧ ¬ b ≤ a`).
+The strict order `<` is a separate field of `Preorder`, together with
+the law `lt_iff_le_not_ge : a < b ↔ a ≤ b ∧ ¬ b ≤ a`. In a partial
+order this is equivalent to `a ≤ b ∧ a ≠ b`.
 
 ```lean
 example (a b : ℕ) (h : a < b) : a ≤ b :=
@@ -143,8 +144,8 @@ tag := "powerset-order"
 %%%
 
 For any type `α`, the type {ref "foundations-sets"}[`Set α`] carries a partial order given by set
-inclusion `⊆`. This is a canonical example of a partial order that is not
-linear in general.
+inclusion `⊆`; `A ≤ B` and `A ⊆ B` are the same proposition. The order
+is not linear in general: `{0}` and `{1}` are incomparable.
 
 ```lean
 example (A B C : Set ℕ) (hAB : A ⊆ B) (hBC : B ⊆ C) : A ⊆ C :=
@@ -152,6 +153,8 @@ example (A B C : Set ℕ) (hAB : A ⊆ B) (hBC : B ⊆ C) : A ⊆ C :=
 
 example (A B : Set ℕ) (hAB : A ⊆ B) (hBA : B ⊆ A) : A = B :=
   Set.Subset.antisymm hAB hBA
+
+example (A B : Set ℕ) : (A ≤ B) = (A ⊆ B) := rfl
 ```
 
 # Lattices
@@ -290,7 +293,10 @@ Dually, the greatest fixed point:
 {docstring OrderHom.le_gfp}
 
 Note that `α →o α` is the type of monotone self-maps of `α` (the arrow
-`→o` denotes an `OrderHom`).  A useful small example:
+`→o` denotes an `OrderHom`).  The anonymous constructor
+`⟨f, h⟩` builds an element of `α →o α` from a function `f` and a
+proof `h` that it is monotone.  In the following example, `bot_le`
+says `⊥ ≤ a`, and in `Set X` the bottom element `⊥` is `∅`:
 
 ```lean
 -- The lfp of the constant ∅ map on Set X is ∅:
@@ -313,8 +319,11 @@ example {X : Type*} :
   `g : β → α`, one constructs a bijection by taking the least fixed
   point of a certain monotone operator on `Set α`.
 - *Inductively defined sets.*  Many sets in mathematics (the natural
-  numbers, syntactic terms, well-founded relations) are defined as
-  least fixed points of monotone operators.
+  numbers, syntactic terms, the accessible part `Acc r` of a relation,
+  {ref "wf-acc"}[chapter 2.3]) are defined as least fixed points of
+  monotone operators.  An inductive type is such a fixed point; strict
+  positivity makes the operator monotone
+  ({ref "positivity-sufficient"}[chapter 1.3]).
 
 # Summary of key API
 %%%
@@ -359,4 +368,4 @@ monotonicity goals.
 tag := "orders-exercises"
 %%%
 
-Now try it yourself. The exercise sheet [2.4-a](https://github.com/pfaffelh/leancourse_exercises/blob/main/Exercises/2-Mathematics/4-a-Orders.lean) turns the material above into `sorry`-holes to fill in your editor — partial orders, lattices, `sSup`/`sInf`, and monotone functions. It also runs in the browser with no local install, in the [Lean 4 web editor](https://live.lean-lang.org/).
+Now try it yourself. The exercise sheet [2.4-a](https://github.com/pfaffelh/leancourse_exercises/blob/main/Exercises/2-Mathematics/4-a-Orders.lean) turns the material above into `sorry`-holes to fill in your editor — lattices, monotone and antitone functions, `sSup`, and the Knaster-Tarski fixed points. It also runs in the browser with no local install, in the [Lean 4 web editor](https://live.lean-lang.org/).

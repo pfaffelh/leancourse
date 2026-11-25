@@ -149,7 +149,7 @@ example {x : ℕ → ℝ} {t u : ℝ}
   have hd : 0 < |t - u| := abs_pos.mpr (sub_ne_zero.mpr hne)
   obtain ⟨N1, hN1⟩ := ht (|t - u| / 2) (by linarith)
   obtain ⟨N2, hN2⟩ := hu (|t - u| / 2) (by linarith)
-  set m := max N1 N2 with hm
+  let m := max N1 N2
   have h1 := hN1 m (le_max_left _ _)
   have h2 := hN2 m (le_max_right _ _)
   have htri : |t - u| ≤ |x m - t| + |x m - u| := by

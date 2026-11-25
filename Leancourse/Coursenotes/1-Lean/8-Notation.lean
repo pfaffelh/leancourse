@@ -15,7 +15,7 @@ htmlSplit := .never
 tag := "notation"
 %%%
 
-The [slides](slides/1-7-notation/) for this chapter follow it section by section.
+The [slides](slides/1-8-notation/) for this chapter follow it section by section.
 
 # Defining new notation
 %%%
@@ -45,18 +45,20 @@ notation "double" x => x + x
 end NotationDemo
 ```
 
-You can also define infix notation with a priority (determining how tightly the operator binds):
+You can also define infix notation with a precedence:
 
 ```lean
 section InfixDemo
 
 infixl:65 " ⊕⊕ " => fun (a b : ℕ) => a + b + 1
-#eval 3 ⊕⊕ 4 -- 8
+#eval 3 ⊕⊕ 4       -- 8
+#eval 3 ⊕⊕ 4 * 2   -- 12
+#eval 1 ⊕⊕ 2 ⊕⊕ 3  -- 8
 
 end InfixDemo
 ```
 
-Here, `infixl` means left-associative infix, `65` is the binding power (the same as `+`), and the spaces around `⊕⊕` are part of the syntax. Similarly, `infixr` gives right-associative infix, and `prefix` / `postfix` are available for unary operators.
+Here, `65` is the precedence, the same as that of `+`. A higher number binds tighter: `*` has precedence 70, so `3 ⊕⊕ 4 * 2` is `3 ⊕⊕ 8 = 12`. `infixl` means left-associative: `a ⊕⊕ b ⊕⊕ c` is `(a ⊕⊕ b) ⊕⊕ c`, so `1 ⊕⊕ 2 ⊕⊕ 3` is `4 ⊕⊕ 3 = 8`. The spaces around `⊕⊕` are part of the syntax. Similarly, `infixr` gives right-associative infix, and `prefix` / `postfix` are available for unary operators.
 
 ## Prefix and postfix operators
 %%%
@@ -89,9 +91,9 @@ number := false
 ```lean
 section TernaryDemo
 
--- "between a and b" means the half-open interval [a, b)
-notation "between " a " and " b => Set.Ico a b
-#check between (1 : ℕ) and 10    -- Set ℕ
+-- "avg a and b" is the mean of a and b
+notation "avg " a " and " b => (a + b) / 2
+#eval avg 4 and 10    -- 7
 
 end TernaryDemo
 ```
@@ -101,8 +103,11 @@ end TernaryDemo
 number := false
 %%%
 
-If a notation should only be active inside a namespace (so it does
-not pollute the global symbol space), mark it `scoped`:
+A notation marked `local` is valid until the end of the current
+section or file, as a `local instance`
+({ref "managing-instances"}[chapter 1.7]). If a notation should only
+be active inside a namespace (so it does not pollute the global symbol
+space), mark it `scoped`:
 
 ```lean
 namespace MyDemo
@@ -138,6 +143,11 @@ local macro_rules
 #eval twice 5   -- 10
 end MacroDemo
 ```
+
+`term:max` says that the argument is a term of maximal precedence:
+a name, a numeral, or something in brackets. The final `: term` makes
+the whole expression a term again. The `local` in front works as for
+`notation`.
 
 This is the same as `notation "twice " x:max => x + x`. The two
 commands are needed when one rule is not enough: the list literal `[1, 2, 3]`
@@ -315,6 +325,9 @@ In `a ∈ s` the set comes first in `Membership.mem s a`. And `⊆` on `Set` and
 * + `∑ i, f i`
   + `Finset.sum Finset.univ (fun i => f i)`
   + —
+* + `∑' n, f n`
+  + `tsum (fun n => f n)`
+  + `\sum` then `'`
 * + `∫ x in a..b, f x`
   + `intervalIntegral (fun x => f x) a b volume`
   + `\integral` (`\int` gives `ℤ`)
@@ -342,7 +355,7 @@ example (f : ℝ → ℝ) :
           MeasureTheory.volume := rfl
 ```
 
-The derivative has no notation. `deriv f x` is the derivative of `f` at `x`, and the function is passed as an argument, written with `fun`. `deriv f` is again a function `ℝ → ℝ`, so the second derivative is `deriv (deriv f)`. Mathlib defines `deriv` through the Fréchet derivative: `deriv f x = fderiv ℝ f x 1`.
+The derivative has no notation. `deriv f x` is the derivative of `f` at `x`, and the function is passed as an argument, written with `fun`. `deriv f` is again a function `ℝ → ℝ`, so the second derivative is `deriv (deriv f)`. Mathlib defines `deriv` through the Fréchet derivative: `fderiv ℝ f x` is the derivative as a linear map `ℝ → ℝ`, and its value at `1` is the number `deriv f x`.
 
 ```lean
 #check deriv (fun x : ℝ => x ^ 2)
@@ -406,13 +419,13 @@ The instance decides what a numeral means. In {ref "pi-types"}[Dependent functio
 #synth OfNat (ZMod 5) 7   -- instOfNatAtLeastTwo
 ```
 
-This instance exists for every type with a cast from ℕ and turns the numeral `7` into `Nat.cast 7`. Mathlib defines the cast into `ZMod (n + 1)` as the cast into `Fin (n + 1)`, and that takes the remainder: `Fin.ofNat n i` is `⟨i % n, _⟩`. So `(7 : ZMod 5)` is `⟨7 % 5, _⟩`, and `rfl` sees it:
+This instance exists for every type with a cast from ℕ and every numeral `n ≥ 2`; `0` and `1` come from the classes `Zero` and `One`. It turns the numeral `7` into `Nat.cast 7`. Mathlib defines the cast into `ZMod (n + 1)` as the cast into `Fin (n + 1)`, and that takes the remainder: `Fin.ofNat n i` is `⟨i % n, _⟩`. So `(7 : ZMod 5)` is `⟨7 % 5, _⟩`, and `rfl` sees it:
 
 ```lean
 example : (7 : ZMod 5) = 2 := rfl
 ```
 
-Without any other information Lean reads a bare numeral as a natural number. This is a *default instance*: `@[default_instance]` marks an instance to use when synthesis would otherwise be ambiguous.
+Without any other information Lean reads a bare numeral as a natural number: the instance `instOfNatNat : OfNat ℕ n` is marked `@[default_instance]`, which means it is used when nothing else fixes the type.
 
 ```lean
 #check 2         -- 2 : ℕ
@@ -426,7 +439,7 @@ tag := "abreviation"
 
 There are at least two abbreviations used in `Mathlib` which you will encounter frequently.
 
-If you have `h : x = y` and `hx : P x` (with `P x : Prop`), you can prove `P y` by replacing `h` in `hx`. The shorthand notation for this is `h ▸ hx`. (Write `\t` for `▸`).
+If you have `h : x = y` and `hx : P x` (with `P x : Prop`), you can prove `P y` by rewriting `hx` with `h`. The shorthand notation for this is `h ▸ hx`. (Write `\t` for `▸`).
 
 ```lean
 example (P : ℕ → Prop) (x y : ℕ) (h : x = y) (hx : P x) :
@@ -434,8 +447,7 @@ example (P : ℕ → Prop) (x y : ℕ) (h : x = y) (hx : P x) :
   exact h ▸ hx
 ```
 
-Sometimes, bracketing is critical, and it appears frequently that it has the form
-`apply first (second very long statement)`, and you might get lost since the closing brackets are far away from their opening counterparts. In this case, we write `apply first <| second very long statement`, which does not need a closing symbol.
+Long terms often have the form `f (g (h x))`, and the closing brackets end up far from their opening counterparts. `f <| g <| h x` means the same and needs no closing symbol: everything to the right of `<|` is the argument.
 
 ```lean
 example (P Q : Prop) (hP : P) (hnP : ¬P) : Q := by
@@ -447,24 +459,25 @@ example (P Q : Prop) (hP : P) (hnP : ¬P) : Q := by
 tag := "abbrev"
 %%%
 
-The `abbrev` command introduces a definition that is *reducibly transparent*, meaning Lean's {ref "kernel-elaborator"}[elaborator] will unfold it automatically whenever needed. In contrast, a definition introduced with `def` is *semireducible* and will not be unfolded automatically.
+`abbrev` makes a definition *reducible* (see the reducibility levels in {ref "reduction-rules"}[chapter 1.1]): instance search, unification and `simp` see through it, `rw` does not. A `def` is *semireducible*: `rfl` and `exact` unfold it, instance search and `simp` do not.
 
 ```lean
 abbrev NatAlias := ℕ
 ```
 
-After this, `NatAlias` and `ℕ` are interchangeable everywhere — Lean treats them as definitionally equal without needing any extra work. In particular, all type class instances that apply to `ℕ` are automatically available for `NatAlias`. Compare this with
+After this, all type class instances that apply to `ℕ` are available for `NatAlias`. Compare this with
 
 ```lean
 def NatAlias' := ℕ
+example : NatAlias' := (2 : ℕ)
 ```
 
-where `NatAlias'` is a genuinely new type: Lean will *not* automatically apply `ℕ` instances to `NatAlias'`, and you would have to derive or register them yourself.
+where `NatAlias'` is a new name that instance search does not see through: Lean does *not* apply `ℕ` instances to `NatAlias'`, and you would have to derive or register them yourself. Definitional unfolding still works, so the `example` is accepted.
 
 Use `abbrev` when you want a short name for a type or expression but do not want to create a new abstraction barrier. Use `def` when the new name should be a concept of its own:
 
 - *Other instances.* Mathlib defines `def Lex (α : Type*) := α`. Because `Lex` is a `def`, `Lex (ℕ × ℕ)` can carry the lexicographic order while `ℕ × ℕ` keeps the componentwise one ({ref "typeclasses"}[chapter 1.6]). With `abbrev`, instance search would see through the name and find the componentwise order again. `OrderDual` (the reversed order) and `Multiplicative` (an additive structure written multiplicatively) are built the same way.
-- *Readable goals.* `simp` unfolds an `abbrev` everywhere. With a `def`, the goal shows the name of the concept, and one works with lemmas about it.
+- *Lemmas.* `simp` and instance search see through an `abbrev` when they match a lemma: for `abbrev F (n : ℕ) := n + 1` and `h : x + 1 = 5`, `simp [h]` proves `F x = 5`. For a `def` it does not, so a `def` needs lemmas of its own. In both cases the goal shows the name `F x`.
 - *Speed.* Reducible definitions are unfolded again and again during unification, which costs time for large definitions.
 
 ```lean
@@ -479,3 +492,11 @@ example : ¬((1, 5) ≤ ((2, 0) : LexA (ℕ × ℕ))) := by
 ```
 
 `toLex` sends a pair to the same pair, seen as an element of `Lex (ℕ × ℕ)`.
+
+For the point on lemmas:
+
+```lean
+abbrev F (n : ℕ) := n + 1
+example (x : ℕ) (h : x + 1 = 5) : F x = 5 := by
+  simp [h]
+```

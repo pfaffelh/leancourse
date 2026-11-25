@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# 1.6-b -- Coercions and casts
+# 1.7-b -- Coercions and casts
 
-*Notes chapter 1.6, week 8.*
+*Notes chapter 1.7, week 9.*
 
 In mathematics a natural number *is* an integer. In Lean `ℕ` and `ℤ`
 are different types, and moving between them is a *coercion*, written
@@ -13,7 +13,7 @@ you will trip over most often.
 
 Three classes do three different jobs, and the chapter calls them
 `Coe`, `CoeSort` and `CoeFun`. Numerals, which are also resolved
-through a class, are on sheet `1.7-a`.
+through a class, are on sheet `1.8-a`.
 
 ## What is introduced here
 
@@ -25,13 +25,17 @@ through a class, are on sheet `1.7-a`.
 | `CoeFun`          | a bundled object is applied like a function  |
 | `norm_cast`       | normalise casts, often closing the goal      |
 | `exact_mod_cast`  | `exact`, up to casts                         |
+| `instance : Coe`  | a coercion for your own structure            |
+| `extends`         | a class that contains other classes          |
 
 ## Tactics from earlier sheets
 
-| sheet   | tactics                      |
-|---------|------------------------------|
-| `L-a`   | `exact`                      |
-| `1.1-c` | `ring`, `omega`, `push_cast` |
+| sheet   | tactics                                        |
+|---------|------------------------------------------------|
+| `L-a`   | `exact`                                        |
+| `1.1-a` | `rw`, `show`                                   |
+| `L-f`   | `have`                                         |
+| `1.1-c` | `ring`, `omega`, `push_cast`, `calc`, `exact?` |
 -/
 
 /-
@@ -79,11 +83,13 @@ means the subtype of its members).
 example (b : Bool) (h : b = true) : (b : Prop) :=
   sorry
 
--- Exercise 4: A set, used where a type is expected.
+-- Exercise 4: *Extra: uses `Set`, chapter 2.2.* A set, used where a
+-- type is expected.
 example (s : Set ℕ) : Type :=
   sorry
 
--- Exercise 5: An element of that type is a natural number again.
+-- Exercise 5: *Extra: uses `Set`, chapter 2.2.* An element of that
+-- type is a natural number again.
 example (s : Set ℕ) (x : s) : ℕ :=
   sorry
 
@@ -149,3 +155,66 @@ example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
 -- left side is `0` and the right side `-1`. Uncomment and watch
 -- `omega` refuse:
 -- example (n : ℕ) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by omega
+
+/-
+## Part 6: Your own coercions
+
+A `Coe` instance for your own structure is one line: it names the
+function Lean inserts. A `CoeFun` instance says how a value is applied
+to an argument.
+-/
+
+structure Pos where
+  val : ℕ
+  pos : 0 < val
+
+-- Exercise 14: Let `Pos` coerce to `ℕ` by forgetting the proof.
+instance : Coe Pos ℕ :=
+  sorry
+
+-- Exercise 15: `p.pos` is the proof that was forgotten. `have` it,
+-- then `omega`.
+example (p q : Pos) : 0 < (p : ℕ) + q := by
+  sorry
+
+/-- The map `x ↦ a * x + b`, stored as its two coefficients. -/
+structure Affine where
+  a : ℤ
+  b : ℤ
+
+-- Exercise 16: Let an `Affine` be applied to `x : ℤ`, with value
+-- `f.a * x + f.b`.
+instance : CoeFun Affine (fun _ => ℤ → ℤ) :=
+  sorry
+
+def Affine.comp (f g : Affine) : Affine :=
+  ⟨f.a * g.a, f.a * g.b + f.b⟩
+
+-- Exercise 17: Composition is what its name says. `show` makes the
+-- coercion explicit: write out both sides with `.a` and `.b`, then
+-- `ring`.
+example (f g : Affine) (x : ℤ) : f.comp g x = f (g x) := by
+  sorry
+
+/-
+## Part 7: Hierarchies with `extends`
+
+`extends Mul α, One α` makes `MyMonoid α` contain a `*` and a `1`;
+the class adds two laws. An instance of `MyMonoid` also provides
+`Mul` and `One`, so `*` and `1` work for every monoid.
+-/
+
+class MyMonoid (α : Type) extends Mul α, One α where
+  one_mul : ∀ a : α, 1 * a = a
+  mul_one : ∀ a : α, a * 1 = a
+
+-- Exercise 18: `ℕ` is a monoid. `*` and `1` are already there; give
+-- the two laws. `exact?` finds them.
+instance : MyMonoid ℕ :=
+  sorry
+
+-- Exercise 19: The unit is unique: an `e` with `e * a = a` for all
+-- `a` is `1`. Apply `h` to `1`.
+theorem MyMonoid.one_unique {α : Type} [MyMonoid α] (e : α)
+    (h : ∀ a : α, e * a = a) : e = 1 := by
+  sorry

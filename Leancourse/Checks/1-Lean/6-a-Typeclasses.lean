@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # (witness) 1.6-a -- Typeclasses
 
-*Notes chapter 1.6, week 7.*
+*Notes chapter 1.6, week 8.*
 
 A `class` is a `structure` that Lean finds for you. You never pass an
 instance by hand: you write `[Add α]` in the signature, and *instance
@@ -176,21 +176,19 @@ example (P : Prop) : P ∨ ¬ P := by
   · exact Or.inl h
   · exact Or.inr h
 
-/-! `Finset.filter P` keeps the elements of a finite set that satisfy
-`P`, and it needs `DecidablePred P` to do so. For an arbitrary `P`
-there is no such instance. The tactic `classical` provides one, by
-the axiom of choice, for the rest of the proof. Instances that exist
-are still found first. `Finset.filter_subset` and `Finset.mem_filter`
-are the two lemmas you need. -/
+/-! `decide P : Bool` turns a proposition into a Boolean, and it needs
+`Decidable P` to do so. For an arbitrary `P` there is no such
+instance. The tactic `classical` provides one, by the axiom of
+choice, for the rest of the proof. Instances that exist are still
+found first. `decide_eq_true_iff` says `decide P = true ↔ P`. -/
 
--- Exercise 18) Start with `classical`, then give `s.filter P` as the
--- witness. Delete the line `classical` afterwards and read the error.
-example (P : ℕ → Prop) (s : Finset ℕ) :
-    ∃ t : Finset ℕ, t ⊆ s ∧ ∀ x ∈ t, P x := by
+-- Exercise 18) `decide P` needs `Decidable P`; the tactic `classical`
+-- provides one. Start with `classical`, then give `decide (P ∧ Q)` as
+-- the witness. Delete the line `classical` afterwards and read the
+-- error.
+example (P Q : Prop) : ∃ b : Bool, (b = true ↔ P ∧ Q) := by
   classical
-  refine ⟨s.filter P, Finset.filter_subset P s, ?_⟩
-  intro x hx
-  exact (Finset.mem_filter.mp hx).2
+  exact ⟨decide (P ∧ Q), decide_eq_true_iff⟩
 
 /-! ## `Fact`
 
@@ -226,4 +224,21 @@ example (p : ℕ) (hp : p.Prime) (a : ZMod p) (ha : a ≠ 0) :
 -- `inv_eq_of_mul_eq_one_right`; what is left, `decide` computes.
 example : (3 : ZMod 7)⁻¹ = 5 := by
   rw [inv_eq_of_mul_eq_one_right]
+  decide
+
+/-! ## A `Decidable` instance of your own -/
+
+def IsSmall (n : ℕ) : Prop := n < 5
+
+-- Exercise 24) First try `decide` on `IsSmall 3` without the instance
+-- and read the error. Then write the instance: `if h : n < 5 then ...
+-- else ...`.
+instance (n : ℕ) : Decidable (IsSmall n) :=
+  if h : n < 5 then isTrue h else isFalse h
+
+-- Exercise 25) Now `decide` works.
+example : IsSmall 3 := by
+  decide
+
+example : ¬ IsSmall 7 := by
   decide

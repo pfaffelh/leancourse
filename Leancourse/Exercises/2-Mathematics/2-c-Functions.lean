@@ -1,4 +1,17 @@
-/- This time, we only import the tactics, i.e. you will not have access to the whole Mathlib! 
+import Mathlib.Tactic
+
+/-!
+
+# 2.2-c -- Injective and surjective functions
+
+*Notes chapter 2.2, week 11.* Read the section *Injective and surjective
+functions* there first.
+
+## Introduced here
+
+| tactic        | use it when                                       |
+|---------------|---------------------------------------------------|
+| `simp_rw [h]` | rewrite with `h` also under `∀`, `∃` and `fun`    |
 
 ## Tactics from earlier sheets
 
@@ -10,15 +23,6 @@
 | `1.2-a` | `use`            |
 | `1.1-c` | `simp`           |
 | `L-g`   | `simpa`          |
--/
-import Mathlib.Tactic
-
-/-!
-
-# 2.2-c -- Injective and surjective functions
-
-*Notes chapter 2.2, week 11.* Read the section *Injective and surjective
-functions* there first.
 
 We already know that we write `f : α → β` for a function `f` with domain `α` and co-domain `β`. Using the usual terminology in Lean, this means that `α → β` is the type of all such functions and `f` is one representative. Please keep in mind that `f : α → β` can be evaluated at `x : α` using `f x : β`. Moreover, if `g : β → γ`, we can write `g (f x) : γ`, or `(g ∘ f) x` for their composition. (Since brackets are left-associative, the brackets must not be left out here.)
 
@@ -97,8 +101,7 @@ example (f : α → β) (g : β → γ) (h : Surjective (g ∘ f)) :
     Surjective g := by
   sorry
 
--- Exercise 7: An injective function from α to β, composed with
--- a left inverse, is the identity.
+-- Exercise 7: A function with a left inverse is injective.
 example (f : α → β) (g : β → α) (h : ∀ x, g (f x) = x) :
     Injective f := by
   sorry

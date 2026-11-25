@@ -85,8 +85,11 @@ example : (∞ : ℝ≥0∞).toReal = 0 := by
   simp
 
 -- Exercise 20)
-example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
-  omega
+example (n : ℕ) :
+    ((n * (n + 1) / 2 : ℕ) : ℝ) = n * (n + 1) / 2 := by
+  rw [Nat.cast_div (Nat.even_mul_succ_self n).two_dvd (by norm_num)]
+  push_cast
+  ring
 
 -- Exercise 21)
 example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
@@ -96,3 +99,56 @@ example (n : ℕ) (h : 1 ≤ n) : ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
 -- Exercise 22) The left side: `7 / 2 = 3` in `ℕ`, then cast.
 example : ((7 / 2 : ℕ) : ℝ) ≠ 7 / 2 := by
   norm_num
+
+-- Exercise 23)
+example (n : ℕ) (h : 1 ≤ n) : (n - 1) * (n + 1) = n ^ 2 - 1 := by
+  have h2 : 1 ≤ n ^ 2 := Nat.one_le_pow _ _ h
+  zify [h, h2]
+  ring
+
+-- Exercise 24)
+example (m n : ℕ) (h : (m : ℝ) + 1 ≤ n) : m < n := by
+  norm_cast at h
+
+-- Exercise 25)
+example (k : ℤ) : (k.toNat : ℤ) = max k 0 := by
+  omega
+
+-- Exercise 26)
+example (n : ℤ) : ⌊(n : ℝ) + 1 / 2⌋ = n := by
+  rw [Int.floor_eq_iff]
+  constructor <;> linarith
+
+-- Exercise 27) `hx` and `hy` give `0 ≤ x * y`.
+example (x y : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
+    (ENNReal.ofReal (x * y)).toReal = x * y := by
+  exact ENNReal.toReal_ofReal (mul_nonneg hx hy)
+
+-- Exercise 28)
+example (a b : ℝ≥0∞) (ha : a ≠ ∞) (hb : b ≠ ∞)
+    (h : a.toReal < b.toReal) : a < b := by
+  lift a to ℝ≥0 using ha
+  lift b to ℝ≥0 using hb
+  norm_cast at h ⊢
+
+-- Exercise 29) `(∞).toReal = 0 < 1`, but `∞ < 1` is false.
+example : ¬ ∀ a b : ℝ≥0∞, a.toReal < b.toReal → a < b := by
+  intro h
+  have := h ∞ 1 (by simp)
+  simp at this
+
+-- Exercise 30)
+example (x y : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
+    (x + y).toNNReal = x.toNNReal + y.toNNReal := by
+  exact Real.toNNReal_add hx hy
+
+-- Exercise 31) Left side `0`, right side `1 + 0`.
+example : ¬ ∀ x y : ℝ, (x + y).toNNReal = x.toNNReal + y.toNNReal := by
+  intro h
+  have := h 1 (-1)
+  rw [Real.toNNReal_of_nonpos (by norm_num : (-1 : ℝ) ≤ 0)] at this
+  norm_num at this
+
+-- Exercise 32)
+example (x : ℝ) (n : ℕ) : 0 < (n : ℝ) + 1 + x ^ 2 := by
+  positivity

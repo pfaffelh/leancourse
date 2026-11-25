@@ -17,14 +17,15 @@ import Mathlib -- import all the tactics
 | `L-e`   | `by_contra`                        |
 | `L-f`   | `have`, `refine`                   |
 | `1.1-c` | `calc`, `ring`, `linarith`, `simp` |
-| `L-g`   | `set`                              |
-| `1.6-b` | `norm_cast`, `exact_mod_cast`      |
-| `1.7-a` | `positivity`                       |
+| `L-g`   | `simp only`                        |
+| `1.5-a` | `let`                              |
+| `1.7-b` | `norm_cast`, `exact_mod_cast`      |
+| `2.1-a` | `positivity`                       |
 | `A-a`   | `field_simp`                       |
 -/
 
 /-
-While the last exercises were on natural numbers, we now come to real numbers and their limits. Recall that a sequence of real numbers is some `x : ℕ → ℝ`. We start by a definition:
+We now come to sequences of real numbers and their limits. Recall that a sequence of real numbers is some `x : ℕ → ℝ`. We start by a definition:
 
 If `x : ℕ → ℝ` is a sequence of reals and `t : ℝ`, the limit `TendsTo x t` is the assertion that `x n → t` as `n → ∞`. -/
 def TendsTo (x : ℕ → ℝ) (t : ℝ) : Prop :=
@@ -66,7 +67,7 @@ theorem tendsTo_add_const {a : ℕ → ℝ} {t : ℝ} (c : ℝ) (h : TendsTo a t
 
 -- Exercise 2: If `x` tends to `t` then `-x` tends to `-t`.
 -- Big hint: Write down the math proof first!
-example {x : ℕ → ℝ} {t : ℝ} (hx : TendsTo x t) : TendsTo (fun n => -x n) (-t) := by
+theorem tendsTo_neg {x : ℕ → ℝ} {t : ℝ} (hx : TendsTo x t) : TendsTo (fun n => -x n) (-t) := by
   sorry
 
 /- In concrete examples of series, e.g. `x : ℕ → ℝ := fun n ↦ 1 / n`, one often needs to transform between `n : ℕ` and `n : ℝ`. The reasos is that division is not defined on `ℕ`, so lean has to make sense of an expression like `1/n`. Here, the `norm_cast` tactic can help in order to transform e.g. some `n : ℝ` (which is in fact `∈ ℕ`) to `n : ℕ`. -/
@@ -118,12 +119,14 @@ example {x : ℕ → ℝ} {t : ℝ} (c : ℝ) (h : TendsTo x t) :
 
 -- Exercise 6: If `x` tends to `t` and `y` tends to `u`, then `x - y`
 -- tends to `t - u`.
+-- Hint: use `tendsTo_neg` and `tendsTo_add`.
 example {x y : ℕ → ℝ} {t u : ℝ} (hx : TendsTo x t) (hy : TendsTo y u) :
     TendsTo (fun n ↦ x n - y n) (t - u) := by
   sorry
 
 -- Exercise 7: A bounded sequence times one tending to 0 tends to 0.
 -- (This is a specialization of the squeeze theorem.)
+-- Hint: first show `0 ≤ M` from `hM 0`, then use `ε / (M + 1)`.
 example (a : ℕ → ℝ) (M : ℝ) (hM : ∀ n, |a n| ≤ M)
     (b : ℕ → ℝ) (hb : TendsTo b 0) :
     TendsTo (fun n => a n * b n) 0 := by
@@ -140,6 +143,7 @@ example : TendsTo (fun n : ℕ => 1 / ((n : ℝ) + 1)) 0 := by
 
 -- Exercise 10: Limits are unique. If `x` tends to both `t` and `u`,
 -- then `t = u`.
+-- Hint: assume `t ≠ u` and take `ε = |t - u| / 2`.
 example {x : ℕ → ℝ} {t u : ℝ}
     (ht : TendsTo x t) (hu : TendsTo x u) : t = u := by
   sorry

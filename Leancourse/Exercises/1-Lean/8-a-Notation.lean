@@ -1,17 +1,18 @@
 import Mathlib
 
 /-
-# 1.7-a -- Defining your own notation
+# 1.8-a -- Defining your own notation
 
-*Notes chapter 1.7, week 9.*
+*Notes chapter 1.8, week 10.*
 
-These exercises accompany chapter 1.7, *Notation and
+These exercises accompany chapter 1.8, *Notation and
 abbreviations*. You will practice `notation`, `infixl`, `infixr`,
 `prefix`, `postfix`, and `scoped` notation. Part 6 turns the order
 of operations upside down. Part 7 reads Mathlib's notation (`∑`,
 `∫`, `{x | p x}`, `∀ᶠ`) and the derivative, which has none. The
-last part is about numerals, which are not declared notation but
-are resolved through the class `OfNat`.
+eighth part is about numerals, which are not declared notation but
+are resolved through the class `OfNat`. The last part is about
+`abbrev`, `▸` and `<|`.
 
 Each exercise is stated as a comment.  Write the requested notation
 declaration, then uncomment the `example` check lines below it to
@@ -29,6 +30,10 @@ real declaration.
 | `deriv f x`                     | the derivative of `f : ℝ → ℝ` at `x`      |
 | `set_option pp.notation false in` | to see what notation stands for         |
 | `OfNat`                         | the class behind the numeral `2`          |
+| `abbrev T := τ`                 | a shorthand instance search unfolds       |
+| `inferInstanceAs (C τ)`         | reuse the instance of `τ` for a `def`     |
+| `h ▸ e`                         | rewrite the type of `e` with `h : a = b`  |
+| `f <| x`                        | `f x`, without parentheses around `x`     |
 
 ## Tactics from earlier sheets
 
@@ -130,7 +135,7 @@ end MyArith
 -- Template:
 --   notation "‖" x "‖₁" => Int.natAbs x
 --   example : ‖(-3 : ℤ)‖₁ = 3 := rfl
---   example (n : ℤ) : 0 ≤ (‖n‖₁ : ℤ) := by positivity
+--   example (n : ℤ) : 0 ≤ (‖n‖₁ : ℤ) := by omega
 
 -- Exercise 10.
 -- Introduce a ternary notation `if! c then! a else! b` (with
@@ -205,10 +210,13 @@ set_option pp.notation false in
 --   example (p : ℕ → Prop) : (∀ᶠ n in Filter.atTop, p n) = ? := rfl
 --   example : ∫ x in (0 : ℝ)..1, x + 1 = ? := rfl
 -- In the last one: is `+ 1` inside the integral or outside?
+-- You need not know what `Filter.Eventually` or the integral mean;
+-- only what the notation stands for.
 
 -- Exercise 16.
 -- The derivative has no notation: `deriv f x` takes the function as
--- an argument, written with `fun`.
+-- an argument, written with `fun`. `norm_num` knows derivatives of
+-- polynomials (`deriv_pow` etc.).
 example : deriv (fun x : ℝ => x ^ 3) 2 = 12 := by
   sorry
 
@@ -244,3 +252,43 @@ example : (0 : Pt) = ⟨0, 0⟩ := by
   sorry
 
 -- #eval (0 : Pt)   -- uncomment after Exercise 18
+
+/-
+## Part 9: Shorthands and `abbrev`
+
+`def Meters := ℕ` makes a new name that instance search treats as a
+new type. `abbrev Seconds := ℕ` is a shorthand that instance search
+unfolds.
+-/
+
+def Meters := ℕ
+abbrev Seconds := ℕ
+
+example (a b : Seconds) : Seconds := a + b   -- works
+
+-- Exercise 20.
+-- Uncomment the line below and read the error. Explain in a comment
+-- why it fails. Why does instance search see through `abbrev` but not
+-- through `def`?
+--   example (a b : Meters) : Meters := a + b
+
+-- Exercise 21.
+-- Give `Meters` an addition. `inferInstanceAs (Add ℕ)` hands over the
+-- instance of `ℕ`. Then the example below works.
+instance : Add Meters :=
+  sorry
+
+example (a b : Meters) : Meters := a + b
+
+-- Exercise 22.
+-- `h ▸ e` rewrites the type of `e` with `h : a = b`. Prove it in one
+-- term.
+example (f : ℕ → ℕ) (a b : ℕ) (h : a = b) (ha : f a = 0) :
+    f b = 0 :=
+  sorry
+
+-- Exercise 23.
+-- `f <| x` is `f x`; it saves the parentheses around a long `x`.
+-- Prove it with `absurd` and `<|`.
+example (P Q : Prop) (hP : P) (hnP : ¬P) : Q :=
+  sorry

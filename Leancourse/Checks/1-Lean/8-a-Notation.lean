@@ -1,9 +1,9 @@
 import Mathlib
 
 /-!
-# (witness) 1.7-a -- Defining your own notation
+# (witness) 1.8-a -- Defining your own notation
 
-*Notes chapter 1.7, week 9.*
+*Notes chapter 1.8, week 10.*
 -/
 
 /- ## Part 1: Simple `notation` -/
@@ -47,7 +47,7 @@ example : ↯ = 100 := rfl
 
 notation "‖" x "‖₁" => Int.natAbs x
 example : ‖(-3 : ℤ)‖₁ = 3 := rfl
-example (n : ℤ) : 0 ≤ (‖n‖₁ : ℤ) := by positivity
+example (n : ℤ) : 0 ≤ (‖n‖₁ : ℤ) := by omega
 
 notation "if! " c " then! " a " else! " b => bif c then a else b
 example : (if! true  then! 1 else! 2 : ℕ) = 1 := rfl
@@ -109,3 +109,38 @@ instance : OfNat Pt 0 := ⟨⟨0, 0⟩⟩
 example : (0 : Pt) = ⟨0, 0⟩ := rfl
 
 #eval (0 : Pt)
+
+/-
+## Part 9: Shorthands and `abbrev`
+
+`def Meters := ℕ` makes a new name that instance search treats as a
+new type. `abbrev Seconds := ℕ` is a shorthand that instance search
+unfolds.
+-/
+
+def Meters := ℕ
+abbrev Seconds := ℕ
+
+example (a b : Seconds) : Seconds := a + b   -- works
+
+-- Exercise 20.
+-- `Meters` is a `def`. Instance search does not unfold it, so it
+-- looks for `HAdd Meters Meters ?` and finds nothing. An `abbrev` is
+-- reducible, and instance search unfolds reducible definitions, so
+-- `Seconds` is seen as `ℕ`.
+--   example (a b : Meters) : Meters := a + b
+
+-- Exercise 21.
+instance : Add Meters :=
+  inferInstanceAs (Add ℕ)
+
+example (a b : Meters) : Meters := a + b
+
+-- Exercise 22.
+example (f : ℕ → ℕ) (a b : ℕ) (h : a = b) (ha : f a = 0) :
+    f b = 0 :=
+  h ▸ ha
+
+-- Exercise 23.
+example (P Q : Prop) (hP : P) (hnP : ¬P) : Q :=
+  absurd hP <| hnP

@@ -22,13 +22,13 @@ one line.
 
 ## Tactics from earlier sheets
 
-| sheet | tactics                   |
-|-------|---------------------------|
-| `L-a` | `intro`, `exact`, `apply` |
-| `L-b` | `obtain`                  |
-| `L-c` | `left`, `right`           |
-| `L-d` | `absurd`                  |
-| `L-e` | `Classical.em`            |
+| sheet | tactics                            |
+|-------|------------------------------------|
+| `L-a` | `intro`, `exact`, `apply`          |
+| `L-b` | `obtain`                           |
+| `L-c` | `left`, `right`                    |
+| `L-d` | `absurd`                           |
+| `L-e` | `Classical.em` (Ex. 3, extra only) |
 -/
 
 variable (P Q R S T : Prop)
@@ -68,7 +68,8 @@ example (hPQ : P → Q) (hQR : Q → R) (hRS : R → S) (hP : P) : S := by
 example (h : P → Q) (hP : P) : Q ∧ Q := by
   sorry
 
--- Exercise 3) A case split recorded as a `have`.
+-- Exercise 3) *Extra, for after `L-e` (week 5).* A case split
+-- recorded as a `have`. The `have` needs `Classical.em` from `L-e`.
 example (hPQ : P → Q) (hnPQ : ¬P → Q) : Q := by
   have h : P ∨ ¬P := by
     sorry

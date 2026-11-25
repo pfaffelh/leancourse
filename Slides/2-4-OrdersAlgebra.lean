@@ -74,7 +74,7 @@ Orders and algebraic structures are typeclass hierarchies. Each result is stated
 :::
 ::::
 
-Lemma names say the conclusion first, then the hypotheses: `le_sup_left`, `inf_le_right`, `le_antisymm`.
+Names read the conclusion left to right, hypotheses after `of`: `le_sup_left` (`a ≤ a ⊔ b`), `inv_inv` (`a⁻¹⁻¹ = a`), `le_of_lt` (`a < b → a ≤ b`).
 
 # Partial orders
 
@@ -97,10 +97,10 @@ Lemma names say the conclusion first, then the hypotheses: `le_sup_left`, `inf_l
   * `le_total`
 :::
 
-`ℕ`, `ℤ`, `ℚ`, `ℝ` carry linear orders. The strict order is defined from `≤`: `a < b ↔ a ≤ b ∧ ¬ b ≤ a`.
+`ℕ`, `ℤ`, `ℚ`, `ℝ` carry linear orders. `<` is a separate field with `a < b ↔ a ≤ b ∧ ¬ b ≤ a`; in a partial order: `a ≤ b ∧ a ≠ b`.
 
 :::class "key"
-`PartialOrder` extends `Preorder` (chapter 1.6): every partial order is a preorder.
+`PartialOrder` extends `Preorder` (chapter 1.7): every partial order is a preorder.
 :::
 
 # Partial orders in Lean
@@ -225,7 +225,7 @@ The theorem needs only completeness of `α` and monotonicity of `f`.
 
 # Proof of part 1
 
-Let `S = {x | f x ≤ x}` and `a = sInf S`.
+Let `S = {x | f x ≤ x}` (the _prefixed points_) and `a = sInf S`.
 
 - Step 1: for `x ∈ S`, `a ≤ x`, so `f a ≤ f x ≤ x`. Hence `f a` is a lower bound of `S`, so `f a ≤ a`, and `a ∈ S`.
 - Step 2: by monotonicity `f (f a) ≤ f a`, so `f a ∈ S`, hence `a ≤ f a`.
@@ -272,11 +272,9 @@ example {X : Type*} :
   · exact bot_le
 ```
 
-Applications:
+`⟨f, proof of monotonicity⟩` builds `α →o α`; `bot_le : ⊥ ≤ a`, and `∅ = ⊥` in `Set X`.
 
-- semantics of recursive definitions: least fixed points of monotone functionals
-- Schröder–Bernstein: a least fixed point of a monotone operator on `Set α`
-- inductively defined sets: least fixed points of monotone operators
+Uses: semantics of recursive definitions; Schröder–Bernstein (an operator on `Set α`); inductive types (1.3: strictly positive = monotone).
 
 # Notation for algebra
 
@@ -367,14 +365,14 @@ A lemma proved for `[Group G]` applies to every group in Mathlib.
 
 - `Ring α`: `+` an abelian group, `*` a monoid, distributive
 - `CommRing α`: moreover `*` commutative
-- `Field α`: a commutative ring in which every `a ≠ 0` is invertible
+- `Field α`: commutative ring, `0 ≠ 1`, every `a ≠ 0` invertible; `0⁻¹ = 0` by convention (chapter 2.1)
 
 ```lean -panel -stretch
-#check (inferInstance : Field ℝ)
-
 example (a b c : ℝ) : a * (b + c) = a * b + a * c :=
   mul_add a b c
 
+-- `₀`: lemma for structures with a zero
+-- (`GroupWithZero`), needs `a ≠ 0`
 example (a : ℝ) (ha : a ≠ 0) : a * a⁻¹ = 1 :=
   mul_inv_cancel₀ ha
 ```
@@ -398,7 +396,7 @@ The instance is a function of `n`: `CommRing (ZMod n)` is a type that depends on
 
 # Ordered rings
 
-The order is a separate class. A class like `IsStrictOrderedRing ℝ` states that order and ring operations fit together.
+The order is a separate class. `IsStrictOrderedRing ℝ`, a `Prop`-valued class: `a ≤ b → a + c ≤ b + c`, `0 ≤ 1`, `0 ≠ 1`, `0 < c → a < b → c * a < c * b`.
 
 ```lean -panel -stretch
 #check (inferInstance : LinearOrder ℝ)
@@ -414,13 +412,9 @@ example (a b c : ℝ) (h : a ≤ b) : a + c ≤ b + c := by
 
 # Morphisms
 
-Morphisms are _bundled_: a structure holding the function and the proofs that it preserves the operations. They apply as functions through `DFunLike` (chapter 1.6).
-
-`M →* N` preserves `*` and `1`, `M →+ N` preserves `+` and `0`, `R →+* S` preserves all four.
+Morphisms are _bundled_: the function plus proofs that it preserves the operations, applied as a function through `DFunLike` (1.7). `M →* N` preserves `*`, `1`; `M →+ N` preserves `+`, `0`; `R →+* S` all four.
 
 ```lean -panel -stretch
-#check (Int.castRingHom ℚ : ℤ →+* ℚ)
-
 example (f : ℤ →+* ℚ) (a b : ℤ) :
     f (a * b) = f a * f b :=
   map_mul f a b
@@ -428,9 +422,11 @@ example (f : ℤ →+* ℚ) (a b : ℤ) :
 example (f : ℤ →+* ℚ) : f 0 = 0 := map_zero f
 ```
 
+`map_mul`, `map_add`, `map_zero` hold for every bundled morphism type (classes `MulHomClass`, `AddMonoidHomClass`).
+
 # Substructures
 
-`Subgroup G`, `Subring R`, `Subalgebra R A`, `Ideal R` are bundled too: a carrier set and the proofs that it is closed under the operations.
+`Subgroup G`, `Subring R`, `Ideal R` are bundled too: a carrier set and the proofs that it is closed under the operations.
 
 ```lean -panel -stretch
 example {G : Type*} [Group G] (H : Subgroup G) (a b : G)
@@ -443,7 +439,7 @@ example {G : Type*} [Group G] (H : Subgroup G) :
 ```
 
 :::class "key"
-Membership `a ∈ H` comes from the carrier; closure is a field: `H.mul_mem`, `H.inv_mem`, `H.add_mem`.
+`a ∈ H` means `a ∈ H.carrier`. Closure: fields `mul_mem'`, `one_mem'`, `inv_mem'`; use the lemmas `H.mul_mem`, `H.one_mem`, `H.inv_mem` (for an ideal: `I.add_mem`).
 :::
 
 # Subgroups form a complete lattice
@@ -462,22 +458,32 @@ The order API applies to subgroups, ideals and subrings.
 
 # Quotient structures
 
-For a normal subgroup `N` of `G`, the quotient `G ⧸ N` is a group; for an ideal `I` of `R`, `R ⧸ I` is a ring.
+For a normal subgroup `N` of `G`, the quotient `G ⧸ N` is a group; for an ideal `I` of `R`, `R ⧸ I` is a ring. Normality is an instance `[N.Normal]`.
 
 ```lean -panel -stretch
+example {G : Type*} [Group G] (N : Subgroup G)
+    [N.Normal] : Group (G ⧸ N) :=
+  inferInstance
 example (R : Type*) [CommRing R] (I : Ideal R) :
     CommRing (R ⧸ I) :=
   inferInstance
+```
+
+# The integers mod 6 as a quotient
+
+```lean -panel -stretch
 example (I : Ideal ℤ) : ℤ →+* ℤ ⧸ I := Ideal.Quotient.mk I
 #check (Int.quotientSpanNatEquivZMod 6 :
   ℤ ⧸ Ideal.span {(6 : ℤ)} ≃+* ZMod 6)
 ```
 
-`ZMod n` is not defined as a quotient, but it is one up to a ring isomorphism `≃+*`.
+- `Ideal.span s`: the ideal generated by `s` (here `6ℤ`).
+- `Ideal.Quotient.mk I`: the quotient map, a ring homomorphism.
+- `ZMod n` is not defined as a quotient, but it is one up to a ring isomorphism `≃+*`.
 
 # `ext` for structures
 
-Two subgroups with the same elements are equal; two morphisms that agree everywhere are equal. `ext` reduces to these.
+Two subgroups with the same elements are equal; two morphisms that agree everywhere are equal. `ext` reduces to these; it uses lemmas tagged `@[ext]`, e.g. `Subgroup.ext`, `RingHom.ext`.
 
 ```lean -panel -stretch
 example {G : Type*} [Group G] (H K : Subgroup G)
@@ -496,7 +502,7 @@ example {R S : Type*} [Ring R] [Ring S] (f g : R →+* S)
 - `#check (inferInstance : C α)` and `#synth C α`: does `α` carry `C`?
 - `#print C`: the fields and parents of a class
 - `exact?`, `apply?`, `#loogle`: lemma search
-- names follow `<operation>_<result>`: `mul_assoc`, `map_mul`, `inv_inv`
+- Names read the conclusion left to right, hypotheses after `of`: `le_sup_left` (`a ≤ a ⊔ b`), `inv_inv` (`a⁻¹⁻¹ = a`), `le_of_lt` (`a < b → a ≤ b`).
 
 ```lean -panel -stretch
 example {R : Type*} [CommRing R] (a b : R) :

@@ -129,6 +129,8 @@ example (f g : CauSeq ℚ abs) :
     f ≈ g ↔ (f - g).LimZero := Iff.rfl
 ```
 
+`f ≈ g`: the relation of the `Setoid` (1.4), typed `\approx`; `(f - g).LimZero`: `f - g` tends to `0`.
+
 # Adding real numbers
 
 ```lean -panel -stretch
@@ -141,8 +143,10 @@ example (f g : CauSeq ℚ abs) :
 Add representatives termwise. Well defined: `f ≈ f'` and `g ≈ g'` give `f + g ≈ f' + g'`; then `Quot.lift` gives `+` on the classes.
 
 :::class "key"
-This equation is the computation rule `Quot.lift f h (Quot.mk r a) ⟶ f a`.
+This equation is the computation rule `Quot.lift φ h (Quot.mk r a) ⟶ φ a`.
 :::
+
+`+` on `ℝ` unwraps the structure and uses this.
 
 # Computing with real numbers
 
@@ -151,7 +155,7 @@ This equation is the computation rule `Quot.lift f h (Quot.mk r a) ⟶ f a`.
 example : (1 : ℝ) + 1 = 2 := by norm_num
 ```
 
-`decide` and `rfl` fail: equality of real numbers is not decidable.
+`decide` fails: `DecidableEq ℝ` comes from `Classical.choice` and does not compute. `rfl` fails: `+` on `ℝ` does not reduce. Division, inverse and square root use choice too:
 
 ```lean +error -panel -stretch
 def recip (x : ℝ) : ℝ := 1 / x
@@ -160,10 +164,6 @@ def recip (x : ℝ) : ℝ := 1 / x
 ```lean -panel -stretch
 noncomputable def reciprocal (x : ℝ) : ℝ := 1 / x
 ```
-
-:::class "key"
-Division, inverse and square root use `Classical.choice`: `noncomputable`.
-:::
 
 # Complex, nonnegative, extended
 
@@ -243,13 +243,9 @@ No false statement follows from a junk value. If a theorem does not apply, look 
   * `sSup s` in `ℝ`
   * `0`
   * `s.Nonempty`, `BddAbove s`
-*
-  * `Nat.card α`
-  * `0`
-  * `Finite α`
 :::
 
-The theorems about the value assume the predicate.
+The theorems about the value assume the predicate. `∑' n, f n`: the sum of the series (`tsum`). `sSup s`: supremum of `s : Set ℝ`.
 
 # Three kinds of power
 
@@ -268,8 +264,8 @@ The theorems about the value assume the predicate.
   * groups, fields
 *
   * `y : ℝ`
-  * `Real.rpow`, via `exp` and `log`
-  * `ℝ`, `ℝ≥0`, `ℂ`
+  * `Real.rpow` via `exp` and `log` (`NNReal.rpow`, `ENNReal.rpow` likewise)
+  * `ℝ`, `ℝ≥0`, `ℝ≥0∞`
 :::
 
 ```lean -panel -stretch
@@ -293,7 +289,7 @@ example : (∞ : ℝ≥0∞).toReal = 0 := by simp
 ```
 
 :::class "key"
-`ℝ≥0∞` is the value type of measures: every set has a measure, every nonnegative series a sum.
+`ℝ≥0∞`: every nonnegative series has a sum, possibly `∞`. Mathlib also uses it for measures.
 :::
 
 # Casts go up
@@ -339,14 +335,14 @@ example : (∞ : ℝ≥0∞).toReal = 0 := by simp
 
 ```lean -panel -stretch
 variable (n : ℕ) in
-#check (n : ℝ) + 1
+#check (n + 1 : ℝ)
 variable (n : ℕ) in
 #check ((n + 1 : ℕ) : ℝ)
 example : ((7 : ℕ) : ℝ) / 2 = 3.5 := by norm_num
 example : (((7 : ℕ) / 2 : ℕ) : ℝ) = 3 := by norm_num
 ```
 
-- the expected type decides: Lean elaborates from the outside in
+- for arithmetic, Lean finds the largest type among the operands and casts each operand into it: `(n + 1 : ℝ)` is `↑n + 1`
 - a type ascription `(… : ℕ)` fixes where the cast sits
 - for `+` both agree, for `-` and `/` not
 
@@ -396,7 +392,7 @@ example (m n : ℕ) (h : (m : ℝ) < n) : m < n := by
   exact_mod_cast h
 ```
 
-- `push_cast`: casts towards the leaves, `↑(n + 1)` to `↑n + 1`
+- `push_cast`: casts towards the leaves; `push_cast [h]` also uses `h : m ≤ n` for `Nat.cast_sub`
 - `norm_cast`: casts towards the root, then removes them
 - `exact_mod_cast h`: `h` and goal differ only in casts
 - they use the lemmas marked `@[norm_cast]`
@@ -468,11 +464,17 @@ example (a b : ℝ≥0∞) (ha : a ≠ ∞) (hb : b ≠ ∞)
   lift a to ℝ≥0 using ha
   lift b to ℝ≥0 using hb
   norm_cast at h ⊢
+example (x y : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
+    ENNReal.ofReal (x * y)
+      = ENNReal.ofReal x * ENNReal.ofReal y := by
+  lift x to ℝ≥0 using hx
+  lift y to ℝ≥0 using hy
+  simp
 ```
 
 - `lift a to ℝ≥0 using ha` replaces `a : ℝ≥0∞` by `↑a` with `a : ℝ≥0`
-- then only coercions are left, and `norm_cast` works
-- the same for `x : ℝ` with `hx : 0 ≤ x`
+- then only coercions are left, and `norm_cast` or `simp` works
+- the same for `x : ℝ` with `hx : 0 ≤ x`; without the `lift`s, `simp` fails
 
 # The way down
 

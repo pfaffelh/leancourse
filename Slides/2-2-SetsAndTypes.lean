@@ -15,7 +15,6 @@ subtype of a set.
 -/
 
 namespace SlidesSets
-open scoped NNReal ENNReal
 
 #doc (Slides) "Sets and types" =>
 
@@ -140,7 +139,7 @@ example (S : Set (Set ℕ)) (a : ℕ) :
     (a ∈ ⋃₀ S) ↔ ∃ t ∈ S, a ∈ t := Set.mem_sUnion
 ```
 
-`⋃ i ∈ a, s i` ranges over a set `a : Set ι`. `⋃ i, s i` is `iSup s`, and `⋃₀ S` is `sSup S`.
+`⋃ i ∈ a, s i` ranges over a set `a : Set ι`. `⋃` and `⋂` are supremum and infimum for the order `⊆` (chapter 2.4).
 
 :::class "key"
 Membership in an indexed union is an `∃`, in an indexed intersection a `∀`.
@@ -175,11 +174,12 @@ example (f : ℕ → ℕ) (s : Set ℕ) (y : ℕ) :
     y ∈ f '' s ↔ ∃ x, x ∈ s ∧ f x = y := Iff.rfl
 example (f : ℕ → ℕ) (t : Set ℕ) (x : ℕ) :
     x ∈ f ⁻¹' t ↔ f x ∈ t := Iff.rfl
+example (f : ℕ → ℕ) (s : Set ℕ) : f <$> s = f '' s := rfl
 ```
 
 A hypothesis `h : y ∈ f '' s` is a triple: `obtain ⟨x, hx, rfl⟩ := h` gives `x`, a proof of `x ∈ s`, and replaces `y` by `f x`. To prove `y ∈ f '' s`, name the point: `⟨x, hx, rfl⟩` or `use x`.
 
-A hypothesis `x ∈ f ⁻¹' t` needs no unpacking. The image of the whole type is `Set.range f`.
+A hypothesis `x ∈ f ⁻¹' t` needs no unpacking. The image of the whole type is `Set.range f`. `f '' s` is `f <$> s`: `Set` is a functor (1.7).
 
 :::class "key"
 Membership in the image is an `∃`; membership in the preimage is `f x ∈ t`.
@@ -238,7 +238,7 @@ example (f : ℕ → ℕ) :
   Set.range_eq_univ.symm
 ```
 
-`α ≃ β` is a map together with its inverse. `Equiv.ofBijective` chooses the inverse with `Classical.choice`:
+`α ≃ β`: a map, its inverse, and proofs that they are inverse. `Equiv.ofBijective` chooses the inverse with `Classical.choice`:
 
 ```lean +error -panel -stretch
 def idEquiv : ℕ ≃ ℕ :=
@@ -271,6 +271,8 @@ example : ∑ i ∈ Finset.range 4, i = 6 := by decide
 example : ∏ i ∈ Finset.Icc 1 4, i = 24 := by decide
 ```
 
+`Finset.range n` = `{0, …, n - 1}`, `Finset.Icc a b` = `{a, …, b}`.
+
 `s.image f` removes duplicates among the values, so it needs `DecidableEq β`.
 
 :::class "key"
@@ -297,7 +299,7 @@ Induction on `n`; `Finset.sum_range_succ` splits off the last term.
 
 # Counting
 
-A type with `[Fintype α]` has `Finset.univ`, the finset of all its elements.
+`Fintype α`: a class whose instance lists all elements of `α`, as the finset `Finset.univ`.
 
 :::table +colHeaders +rowSeps
 *
@@ -305,7 +307,7 @@ A type with `[Fintype α]` has `Finset.univ`, the finset of all its elements.
   * of
   * infinite case
 *
-  * `s.card`, also `#s`
+  * `s.card`, also `#s` after `open Finset`
   * `s : Finset α`
   * does not occur
 *

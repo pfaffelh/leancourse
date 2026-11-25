@@ -33,18 +33,17 @@ The [slides](slides/2-2-sets-and-types/) for this chapter follow it section by s
 tag := "set-vs-type"
 %%%
 
-The first reflex to unlearn is the set-theoretic one that *everything
-is a set*. In set theory `∈` is the single primitive, an object can be
+In set theory `∈` is the single primitive, an object can be
 a member of many sets, and there is no fixed notion of "the type of
 `x`". Type theory inverts this: the primitive is the *type*, and every
 term `a : α` has *exactly one* type, fixed once and for all.
 
-A set in Lean is **not** a new type. A `Set α` is a predicate on the
+A set in Lean is *not* a new type. A `Set α` is a predicate on the
 already-existing type `α`, carving out some of its terms. An element of
 `s : Set α` therefore still has type `α`; the set records only *which*
 terms of `α` lie in it.
 
-Three notions are worth keeping firmly apart:
+Three notions have to be kept apart:
 
 - a *type* `α` — the ambient collection of terms;
 - a *set* `s : Set α` — a predicate selecting terms of `α`, whose
@@ -53,11 +52,7 @@ Three notions are worth keeping firmly apart:
   genuinely *new* type, whose terms are pairs of a value and a proof
   that it satisfies `p`.
 
-So there *is* a difference between a set and a type, and it is the one
-a mathematician must internalize. The rest of this chapter makes it
-precise: sets as predicates and their operations, when two sets are
-equal, and finally how to cross the gap — turning a set back into a
-type.
+The last section of this chapter turns a set back into a type.
 
 # Notation and naming conventions
 %%%
@@ -66,7 +61,8 @@ tag := "foundations-notation"
 
 The set-theoretic symbols below are unicode characters typed in VS
 Code via a backslash escape.  Hover over a symbol in the editor to see
-its input sequence.
+its input sequence. The table *Sets* in
+{ref "mathlib-notation"}[chapter 1.8] lists more.
 
 :::table +header
 * + Symbol
@@ -82,7 +78,7 @@ its input sequence.
   + "is not a member of"
   + `\notin`
 * + `⊆`
-  + `HasSubset.Subset`
+  + `LE.le`
   + "is a subset of"
   + `\subseteq`
 * + `∪`
@@ -98,11 +94,11 @@ its input sequence.
   + "complement"
   + `\compl`
 * + `∅`
-  + `EmptyCollection`
+  + `EmptyCollection.emptyCollection`
   + "the empty set"
   + `\empty`
 * + `{x | p x}`
-  + `setOf`
+  + `Set.ofPred (fun x => p x)`
   + "the set of `x` with `p x`"
   + (literal braces)
 * + `f '' s`
@@ -224,7 +220,7 @@ example (S : Set (Set ℕ)) (a : ℕ) :
     (a ∈ ⋃₀ S) ↔ ∃ t ∈ S, a ∈ t := Set.mem_sUnion
 ```
 
-These are exactly the set/indexed suprema and infima of the {ref "complete-lattices"}[complete lattice of sets]: `⋃ i, s i` *is* `iSup s`, and `⋃₀ S` *is* `sSup S`. They are also what σ-algebras are closed under — a *countable* union or intersection is just the indexed one over `ι = ℕ`.
+These are exactly the set/indexed suprema and infima of the {ref "complete-lattices"}[complete lattice of sets]: `⋃ i, s i` *is* `iSup s`, and `⋃₀ S` *is* `sSup S`. A *countable* union or intersection is the indexed one over `ι = ℕ`.
 
 # Set equality
 %%%
@@ -234,8 +230,10 @@ tag := "foundations-set-eq"
 Two sets are equal exactly when they have the same members: the *set
 extensionality* principle `Set.ext`. This is not a definition but a
 consequence of the axioms — a set is a function into `Prop`, so it
-rests on `propext` (an axiom) and `funext` (a theorem from `Quot.sound`),
-both taken up in the next chapter. Here we simply use it.
+rests on `propext` and `funext`. `funext` is a theorem, proved from
+`Quot.sound` in {ref "quot-funext"}[chapter 1.4]; `propext` is an
+axiom ({ref "rules-axioms"}[chapter 1.5]) and comes back in chapter
+2.3.
 
 ```lean
 -- equality of sets is membership-wise equality
@@ -281,6 +279,10 @@ A hypothesis `x ∈ f ⁻¹' t` needs no unpacking, it already *is*
 `Set` is a {ref "functor-typeclass"}[functor], and the image is its
 `map`: `f <$> s` is `f '' s` by `rfl`. The two functor laws are
 `Set.image_id` and `Set.image_comp`.
+
+```lean
+example (f : ℕ → ℕ) (s : Set ℕ) : f <$> s = f '' s := rfl
+```
 
 The basic fact relating the two: `f '' s ⊆ t` holds exactly when
 `s ⊆ f ⁻¹' t`.
@@ -371,7 +373,12 @@ property of `f`; the inverse map is data. Mathlib packages a map
 together with its inverse as `α ≃ β` (an *equivalence*), and
 `Equiv.ofBijective f hf` turns a bijective `f` into one. The inverse
 is then chosen by `Classical.choice`, so `Equiv.ofBijective` is
-`noncomputable`.
+`noncomputable`. Without the keyword, Lean refuses the definition:
+
+```lean +error
+def idEquiv : ℕ ≃ ℕ :=
+  Equiv.ofBijective id Function.bijective_id
+```
 
 # Finite sets and sums
 %%%
@@ -469,5 +476,3 @@ example : ↥Evens :=
   ⟨4, by show 4 % 2 = 0; decide⟩
 ```
 
-With sets, subtypes, and their relationship to types in hand, we are
-ready to look at the structures Mathlib builds on top of them.

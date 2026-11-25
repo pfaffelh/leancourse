@@ -1,4 +1,4 @@
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # (witness) 2.2-a -- Sets
@@ -98,3 +98,22 @@ example : s = ∅ ↔ s ⊆ ∅ := by
   · intro h
     ext x
     exact ⟨fun hx => h hx, fun hx => hx.elim⟩
+
+-- Exercise 11)
+example : (⋃ n : ℕ, Set.Icc (0 : ℝ) n) = Set.Ici 0 := by
+  ext x
+  simp only [Set.mem_iUnion, Set.mem_Icc, Set.mem_Ici]
+  constructor
+  · rintro ⟨n, h0, -⟩
+    exact h0
+  · intro hx
+    obtain ⟨n, hn⟩ := exists_nat_ge x
+    exact ⟨n, hx, hn⟩
+
+-- Exercise 12)
+example (n : ℕ) : ∑ i ∈ Finset.range n, (2 * i + 1) = n ^ 2 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih]
+    ring

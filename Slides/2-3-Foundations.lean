@@ -42,7 +42,7 @@ Lean's mathematics rests on a kernel with a few rules, three axioms, and two mec
 # Recall from chapter 1.5
 
 - Lean's rules form a variant of the _Calculus of Inductive Constructions_ (CIC): dependent functions (Coquand, Huet 1988), inductive types (Coquand, Paulin-Mohring 1990), universes.
-- `Prop` is proof irrelevant, impredicative, and eliminates only into `Prop`.
+- `Prop` is proof irrelevant and impredicative; it eliminates into `Type` only for subsingletons (`False`, `Eq`, `And`, `Acc`), never for `∨`, `∃`.
 - Three axioms: `propext`, `Quot.sound`, `Classical.choice`. `funext` is a theorem from `Quot.sound` (chapter 1.4).
 
 ```lean -panel -stretch
@@ -78,7 +78,7 @@ Fix `p : Prop`. Define two predicates on `Prop`:
 - `U x := (x = True) ∨ p` and `V x := (x = False) ∨ p`.
 - `True` satisfies `U`, `False` satisfies `V`. Choice gives `u`, `v` with `u = True ∨ p` and `v = False ∨ p`.
 - If one of them is the right branch: `p`.
-- Otherwise `u = True` and `v = False`, so `u ≠ v`. If `p` held, `propext` and `funext` would give `U = V`, and choice would pick `u = v`. Hence `¬p`.
+- Otherwise `u = True`, `v = False`, so `u ≠ v`. If `p` held, `U = V` (`propext`, `funext`). `u` and `v` are `Classical.choose` applied to equal arguments, so `u = v`. Hence `¬p`.
 
 Concluding `¬p` from a contradiction under `p` is the definition of `¬`, not `by_contra`.
 
@@ -119,8 +119,8 @@ The only non-constructive step is choice: it turns the proposition `p` into data
   * no type `Bad`
   * 1.3
 *
-  * subsingleton elimination
-  * no data from `∨` or `∃`
+  * restricted elimination
+  * no data from `∨`, `∃`; exception: subsingletons (`False`, `Eq`, `And`, `Acc`)
   * 1.5
 :::
 ::::
@@ -136,7 +136,7 @@ theorem pf_irrel (p : Prop) (h1 h2 : p) : h1 = h2 := rfl
 
 # Literal arithmetic
 
-- The kernel stores `Nat` literals in binary and computes `+`, `*`, `-`, `/`, `%`, `gcd`, `==`, `≤` with bignum operations, not as towers of `succ`.
+- The kernel stores `Nat` literals in binary and computes `+`, `*`, `-`, `/`, `%`, `^`, `gcd`, `Nat.beq`, `Nat.ble` with bignum operations, not as towers of `succ`.
 - This is why `decide` handles large numbers.
 - `String` literals are kernel primitives too. `Int` has no such support; it reduces through its `Nat` components.
 
@@ -148,7 +148,7 @@ An implementation choice, not a rule of the type theory, and part of what one tr
 
 - The trusted base of a Lean proof is the whole kernel: the CIC with proof irrelevance, η, quotient reduction, native computation and the universe rules.
 - Proof irrelevance makes all proofs of `a = b` equal. This is _uniqueness of identity proofs_ (axiom K).
-- Homotopy type theory needs distinct proofs of equality (the univalence axiom). It is incompatible with Lean's `Prop`.
+- Univalence (equivalent types are equal, see "Other type theories") needs distinct proofs of equality, so it contradicts this.
 
 :::class "key"
 Believing a Lean theorem means believing the kernel, not only three axioms.
@@ -192,7 +192,7 @@ partial def spinFalse (_ : Unit) : False := spinFalse ()
 :::
 
 :::class "key"
-Loops are not forbidden. Forbidden is a term of a type that is not already known to be inhabited.
+Loops are not forbidden. A loop may only return a value of a type that is already known to be inhabited.
 :::
 
 # Well-founded relations
@@ -249,12 +249,12 @@ inductive Acc (r : α → α → Prop) : α → Prop where
 `Acc (· < ·) n`, by induction on `n`:
 
 - `0`: vacuously, there is no `m < 0`.
-- `n + 1`: every `m < n + 1` has `m ≤ n` and is accessible by the induction hypothesis.
+- `n + 1`: a predecessor `m < n + 1` is `n` (induction hypothesis) or `m < n`, and then `Acc n` gives `Acc m` (`Acc.inv`).
 
-Every inductive type has `sizeOf`; `sizeOfWFRel` pulls `<` on `ℕ` back along it. With `termination_by` (chapter 1.3) Lean finds the relation, and you only show that the measure decreases.
+Every inductive type has `sizeOf` (number of constructors used); `sizeOfWFRel` compares by it. With `termination_by` (1.3) you only show that the measure decreases.
 
 :::class "key"
-A natural number is a finite tower of `succ` over `zero`: there is nothing infinite to descend through.
+A natural number is a finite tower of `succ`: nothing infinite to descend through.
 :::
 
 # Why `s ∈ s` is impossible
@@ -263,6 +263,8 @@ A natural number is a finite tower of `succ` over `zero`: there is nothing infin
 #check @Set.instMembership   -- Membership α (Set α)
 
 def mySet : Set ℕ := {0}
+-- #check_failure succeeds only if the term
+-- fails to elaborate
 #check_failure (mySet ∈ mySet)
 ```
 
@@ -311,10 +313,9 @@ example (P : Prop) : ¬¬P → P := by
   exact hnnP hnP
 ```
 
-Without excluded middle, `¬¬P → P` is not provable.
-
+- Constructive: a proof of `∃ x, P x` contains a witness, a proof of `P ∨ Q` names a side.
 - Needs choice: `by_cases`, `by_contra` on any proposition; an element of a nonempty type without a witness; a `Decidable` instance without an algorithm (`classical`, chapter 1.6).
-- Does not: decidable propositions, constructing terms, direct proofs and induction.
+- Does not: decidable propositions, defining functions by an algorithm, direct proofs and induction.
 
 :::class "key"
 Mathlib uses classical logic freely: its subject is mathematical truth, not computation.
@@ -334,7 +335,7 @@ Mathlib uses classical logic freely: its subject is mathematical truth, not comp
   * types and terms `:`
 *
   * `3 ∈ 7`
-  * well-formed, and true
+  * well-formed; true for von Neumann numerals (`7 = {0,…,6}`)
   * type error
 *
   * functions
@@ -378,9 +379,13 @@ Werner 1997: ZFC embeds into the CIC, and a dialect of the CIC embeds into ZFC w
   * `Empty`, `(∅ : Set α)`
   * inductive type, definition
 *
-  * pairing, union
-  * `α × β`, `α ⊕ β`, `Σ`; `{a, b}`, `⋃`
-  * inductive types, definitions
+  * pairing
+  * `{a, b}`
+  * definition
+*
+  * union
+  * `⋃₀`, `α ⊕ β`, `Σ`
+  * definition, inductive types
 *
   * power set
   * `Set α := α → Prop`
@@ -396,7 +401,7 @@ Werner 1997: ZFC embeds into the CIC, and a dialect of the CIC embeds into ZFC w
 *
   * replacement
   * the image `f '' s`
-  * definition
+  * definition (the strength of replacement comes from the universes)
 *
   * foundation
   * none: `x ∈ x` is not well-typed
@@ -454,6 +459,6 @@ Lean works in the CIC with proof irrelevance, quotients and choice. Univalence c
 - `propext` and `funext` make set equality extensional.
 - Diaconescu: choice gives excluded middle, so `Classical.em` is a theorem.
 - The kernel also bakes in proof irrelevance, η, quotient computation and positivity; `#print axioms` does not show them.
-- No term of a type comes from nothing: recursors, positivity, and `partial` only into nonempty types.
+- Recursors, strict positivity, `partial` only into nonempty types: a loop may only return a value of a type already known to be inhabited.
 - `Acc` rules out infinite descent; typing rules out `s ∈ s`.
 - The core is constructive, choice makes it classical. ZFC axioms become rules, types and definitions.

@@ -12,9 +12,7 @@ equivalence `Trool ≃ ZMod 3`, and in the extra part a ring
 isomorphism.
 
 The names `no`, `maybe`, `yes` are labels. What `+` and `*` mean is
-decided by the instances you write, not by the names. Chapter 1.6
-builds the same type under the name `Mod3`, section *Defining
-multiple instances*.
+decided by the instances you write, not by the names.
 
 ## Introduced here
 

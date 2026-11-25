@@ -146,42 +146,33 @@ instance : ToString Vec2 where
 # Using `deriving`
 
 ```lean -panel -stretch
-structure Student where
-  name : String
-  age : ℕ
-  deriving Repr, BEq
+inductive Signal where
+  | red | amber | green
+  deriving Repr, DecidableEq
 
-def alice : Student := { name := "Alice", age := 22 }
-#eval alice
-#eval alice == alice
+#eval Signal.amber
+example : Signal.red ≠ Signal.green := by decide
 ```
 
-Without `deriving BEq`: `failed to synthesize BEq Student`. A _deriving handler_ reads the constructors and writes the `instance`; the kernel checks it.
+Without `deriving DecidableEq`, `decide` fails: `failed to synthesize Decidable (Signal.red ≠ Signal.green)`. A _deriving handler_ reads the constructors and writes the `instance`; the kernel checks it.
 
-# Commonly derived classes
+`Repr` is needed by `#eval`. `BEq` (`a == b`), `Hashable` and `Inhabited` are for programs.
 
-:::table +colHeaders
-*
-  * Typeclass
-  * What it provides
-*
-  * `Repr`
-  * a way to display a value (needed by `#eval`)
-*
-  * `BEq`
-  * Boolean equality `a == b`
-*
-  * `Hashable`
-  * a hash function
-*
-  * `Inhabited`
-  * a default value `default : α`
-*
-  * `DecidableEq`
-  * a decidable equality test `a = b`
+# `deriving` on a synonym
+
+```lean -panel -stretch
+def MyInt := ℤ
+  deriving CommRing
+example (a b : MyInt) : a * b = b * a := mul_comm a b
+```
+
+A `def` hides the instances of `ℤ`, as for `Lex`. `deriving` copies the chosen ones back. Without it, already `a * b` fails: `failed to synthesize HMul MyInt MyInt ?m`.
+
+Mathlib: `def ResidueField := R ⧸ maximalIdeal R deriving CommRing`, likewise `FreeCommRing`.
+
+:::class "key"
+In mathematics: `DecidableEq` for finite types, and instances for a synonym.
 :::
-
-Several at once: `deriving Repr, BEq, Hashable`.
 
 # The square bracket notation
 
@@ -195,24 +186,6 @@ def doubleIt {α : Type} [Add α] (x : α) : α :=
 
 - `(...)` you supply, `{...}` by unification, `[...]` by instance search
 - `@mul_comm ℕ _ 2 3`: all arguments explicit, `_` for the instance `CommMagma ℕ`
-
-# Defining multiple instances
-
-```lean -panel -stretch
-inductive Mod3 where
-  | zero | one | two
-  deriving Repr, BEq
-instance : Add Mod3 where
-  add
-    | .zero, b => b
-    | a, .zero => a
-    | .one, .one => .two
-    | .two, .two => .one
-    | _, _ => .zero
-#eval Mod3.two + Mod3.two
-```
-
-`Mul`, `Zero` and `One` in the same way, one `instance` each.
 
 # How instance resolution works
 
@@ -231,18 +204,36 @@ instance : Add Mod3 where
 This happens at elaboration time, not at runtime.
 :::
 
+# A class with a result type
+
+`x ^ n` with `x : ℝ`, `n : ℕ` is real. The result type is a third parameter.
+
+```lean +error -panel -stretch
+class Times (α β γ : Type) where
+  times : α → β → γ
+instance : Times ℕ ℤ ℤ := ⟨fun n z => n * z⟩
+def f (n : ℕ) (z : ℤ) := Times.times n z
+```
+
+Lean knows `α = ℕ` and `β = ℤ`, but not `γ`. Instance search starts only when all arguments are known: `typeclass instance problem is stuck`.
+
 # Output parameters
 
-```
--- simplified:
-HMul : Type u₁ → Type u₂ → outParam (Type u₃) → Type _
+```lean -panel
+class Times' (α β : Type) (γ : outParam Type) where
+  times : α → β → γ
+instance : Times' ℕ ℤ ℤ := ⟨fun n z => n * z⟩
+def f' (n : ℕ) (z : ℤ) := Times'.times n z  -- : ℤ
 ```
 
-- `a * b` is `HMul.hMul a b` with `a : α`, `b : β`, result `γ`
-- normally all arguments of a class are search keys; an `outParam` is _read off_ the instance found
-- `HMul α β _` is found from `α`, `β`; `γ` is read off
-- `x ^ n` with `x : ℝ`, `n : ℕ`: `HPow ℝ ℕ ℝ`
-- same for `a ∈ s`: `Membership` has the element type as `outParam`
+- `outParam` marks `γ` as an output: Lean searches with `α`, `β` alone and takes `γ` from the instance found
+- so for given `α`, `β` there should be one instance; the first one found fixes `γ`
+- Lean: `HMul α β (outParam γ)` for `*`, `HPow` for `^`, `HSMul` for `•`
+- `Membership (outParam α) γ`: in `a ∈ s`, the element type is read off `s : Set ℕ`
+
+:::class "key"
+Input parameters select the instance; an output parameter is read off it.
+:::
 
 # Propositions as instances
 

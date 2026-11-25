@@ -171,6 +171,8 @@ instance : ToString Vec2 where
 
 We defined two instances: `Add Vec2` so we can use `+`, and `ToString Vec2` so Lean can print `Vec2` values. `s!"…{e}…"` is a string with the value of `e` inserted.
 
+A type of your own with three elements and `+`, `*` as in ℤ/3ℤ is sheet `1.6-b`.
+
 # Using `deriving`
 %%%
 tag := "deriving"
@@ -190,21 +192,37 @@ def alice : Student := { name := "Alice", age := 22 }
 #eval alice    -- outputs { name := "Alice", age := 22 }
 ```
 
-`#eval` would derive a missing `Repr` on the fly; `deriving Repr` declares it once, as the definition `instReprStudent`. Other classes are not derived on the fly: without `deriving BEq`, `alice == alice` fails with `failed to synthesize BEq Student`. Here is what the commonly derived classes provide:
+`#eval` would derive a missing `Repr` on the fly; `deriving Repr` declares it once, as the definition `instReprStudent`. Other classes are not derived on the fly. For a finite type of your own, the one that matters in mathematics is `DecidableEq`: it lets `decide` and `if a = b then … else …` compare elements.
+
+```lean
+inductive Signal where
+  | red | amber | green
+  deriving Repr, DecidableEq
+
+example : Signal.red ≠ Signal.green := by decide
+```
+
+Without `deriving DecidableEq`, `decide` fails with `failed to synthesize Decidable (Signal.red ≠ Signal.green)`. The commonly derived classes:
 
 :::table +header
 * + Typeclass
   + What it provides
+  + Used for
 * + `Repr`
-  + a way to *display* a value (needed by `#eval`)
+  + a way to *display* a value
+  + `#eval`
 * + `BEq`
   + Boolean equality `a == b`
+  + programs
 * + `Hashable`
-  + a hash function (for use in hash maps/sets)
+  + a hash function
+  + programs (hash maps)
 * + `Inhabited`
   + a designated *default* value `default : α`
+  + programs
 * + `DecidableEq`
   + a *decidable* equality test `a = b` (returns a proof either way)
+  + `decide`, `if a = b`, `Finset`
 :::
 
 Several instances can be derived at once:
@@ -213,7 +231,7 @@ Several instances can be derived at once:
 structure Pair (α β : Type) where
   fst : α
   snd : β
-  deriving Repr, BEq, Hashable
+  deriving Repr, DecidableEq
 ```
 
 `deriving` is not part of the type theory. For each class that supports it, Lean has a *deriving handler*: a program, written in Lean, that runs when the type is declared. It reads the declaration of the type from the environment, its constructors and their fields, and writes the source code of an `instance`. That code is then elaborated and checked like an instance written by hand. The option `trace.Elab.Deriving.repr` prints what the handler writes for `Student`; slightly simplified:
@@ -236,6 +254,41 @@ The handler for `Repr` writes one line per field. The handler for `DecidableEq` 
 ```
 
 Nothing in a handler has to be trusted. If it wrote wrong code, the elaborator or the kernel would reject it, as they reject any wrong definition. The instance appears as a definition in the environment, and `#print axioms` shows which axioms it uses; for a derived `DecidableEq` there are none. Lean has handlers for the classes in the table above and a few more, and libraries can register their own. For a type that is already declared, `deriving instance Repr for Student` does the same afterwards.
+
+## Deriving on a type synonym
+%%%
+number := false
+tag := "deriving-synonym"
+%%%
+
+A `def` that names an existing type hides that type's instances. This is what `Lex` uses ({ref "class-universe"}[above]): `Lex (ℕ × ℕ)` does not see the componentwise order of `ℕ × ℕ`. It also hides the instances one wants to keep. Without them, already `a * b` fails:
+
+```lean +error
+def MyInt := ℤ
+
+example (a b : MyInt) : a * b = b * a := mul_comm a b
+```
+
+The error is `failed to synthesize HMul MyInt MyInt ?m`. A `deriving` clause on the `def` copies the named instances from the type behind it, here `CommRing ℤ`:
+
+```lean
+def MyInt' := ℤ
+  deriving CommRing
+
+example (a b : MyInt') : a * b = b * a := mul_comm a b
+```
+
+This is the main use of `deriving` in Mathlib's mathematics. For instance, the free commutative ring and the residue field of a local ring are defined as
+
+```
+def FreeCommRing (α : Type u) := MvPolynomial α ℤ
+  deriving CommRing, Inhabited
+
+def ResidueField := R ⧸ maximalIdeal R
+  deriving CommRing, Inhabited
+```
+
+and only then get instances of their own (`Field (ResidueField R)`).
 
 # The square bracket notation
 %%%
@@ -284,45 +337,6 @@ The type `G` is implicit, and the instance `[CommMagma G]` (a multiplication tha
 #check @mul_comm ℕ _ 2 3
 ```
 
-# Defining multiple instances
-%%%
-tag := "multiple-instances"
-%%%
-
-Let us build a more complete example. We define a type `Mod3` representing integers modulo 3, and equip it with algebraic structure:
-
-```lean
-inductive Mod3 where
-  | zero | one | two
-  deriving Repr, BEq
-
-instance : Add Mod3 where
-  add
-    | Mod3.zero, b => b
-    | a, Mod3.zero => a
-    | Mod3.one, Mod3.one => Mod3.two
-    | Mod3.one, Mod3.two => Mod3.zero
-    | Mod3.two, Mod3.one => Mod3.zero
-    | Mod3.two, Mod3.two => Mod3.one
-
-instance : Mul Mod3 where
-  mul
-    | Mod3.zero, _ => Mod3.zero
-    | _, Mod3.zero => Mod3.zero
-    | Mod3.one, b => b
-    | a, Mod3.one => a
-    | Mod3.two, Mod3.two => Mod3.one
-
-instance : Zero Mod3 where
-  zero := Mod3.zero
-
-instance : One Mod3 where
-  one := Mod3.one
-
-#eval (Mod3.two + Mod3.two : Mod3)    -- outputs Mod3.one
-#eval (Mod3.two * Mod3.two : Mod3)    -- outputs Mod3.one
-```
-
 # How instance resolution works
 %%%
 tag := "instance-resolution"
@@ -355,17 +369,49 @@ behind the scenes.
 tag := "outparam"
 %%%
 
-By default, instance search treats *all* of a class's arguments as search keys: it must know them to look up an instance. Occasionally one argument is *determined by* the instance rather than given in advance. Marking it `outParam` tells Lean: do not wait for this argument — find the instance from the others, and *read this one off* the result.
-
-The standard example is heterogeneous multiplication. `a * b` is `HMul.hMul a b` with `a : α`, `b : β` and a result of type `γ`, which need not match the arguments:
+For `x : ℝ` and `n : ℕ`, the power `x ^ n` is a real number; for a scalar `c` and a vector `v`, `c • v` is a vector. The type of the result is not the type of both arguments, so the class behind the notation has a third parameter for it. A class of this kind, written by hand:
 
 ```lean
-#check @HMul
--- HMul : Type u_1 → Type u_2 → outParam (Type u_3) →
---   Type (max (max u_1 u_2) u_3)
+class Times (α β γ : Type) where
+  times : α → β → γ
+
+instance : Times ℕ ℤ ℤ := ⟨fun n z => n * z⟩
 ```
 
-Because the result type `γ` is an `outParam`, Lean finds the instance `HMul α β _` from `α` and `β` alone and *reads off* `γ` from it. For `x ^ n` with `x : ℝ` and `n : ℕ` (class `HPow`), the instance found is `HPow ℝ ℕ ℝ`, so the result is a real number. The same device lets `a ∈ s` infer the element type from the collection — `Membership`'s element type is an `outParam` too. This is why you often see it in Mathlib signatures.
+Using it without saying what the result is fails:
+
+```lean +error
+def f (n : ℕ) (z : ℤ) := Times.times n z
+```
+
+The error is `typeclass instance problem is stuck`: Lean has to solve `Times ℕ ℤ ?γ` and knows `α = ℕ` and `β = ℤ`, but not `γ`. Instance search does not start while an argument of the class is unknown, because it would not know which instance to look for. In other contexts Lean guesses `γ`, and the guess is wrong. In `0 ≤ Times.times n z ^ 2`, the numeral `0` makes `γ = ℕ`, and the search fails with `failed to synthesize Times ℕ ℤ ℕ`.
+
+An *output parameter* solves this. Marking `γ` as `outParam` tells instance search to start with the other arguments, `α` and `β`, and to take `γ` from the instance it finds:
+
+```lean
+class Times' (α β : Type) (γ : outParam Type) where
+  times : α → β → γ
+
+instance : Times' ℕ ℤ ℤ := ⟨fun n z => n * z⟩
+
+def f' (n : ℕ) (z : ℤ) := Times'.times n z
+
+example (n : ℕ) (z : ℤ) : 0 ≤ Times'.times n z ^ 2 :=
+  sq_nonneg _
+```
+
+The input parameters select the instance, the output parameter is read off it. This only makes sense if the inputs determine the output: for given `α` and `β` there should be one instance, and the first one found fixes `γ`.
+
+Lean's arithmetic is built this way. `a * b` is `HMul.hMul a b` with `HMul α β (outParam γ)`, and the same holds for `HAdd`, `HPow` (`^`) and `HSMul` (`•`):
+
+```lean
+#check @HMul.hMul
+-- @HMul.hMul : {α : Type u_1} → {β : Type u_2} →
+--   {γ : outParam (Type u_3)} → [self : HMul α β γ] →
+--   α → β → γ
+```
+
+For `x ^ n` with `x : ℝ` and `n : ℕ`, instance search finds `HPow ℝ ℕ ℝ` (via `Monoid.npow`) and reads off that the result is real. For `a ∈ s`, the class is `Membership α γ` with the element type `α` as output parameter: from `s : Set ℕ` Lean reads off that `a` must be a natural number.
 
 # Propositions as instances: `Fact`
 %%%

@@ -363,4 +363,4 @@ tag := "typeclass-tips"
 * Use `#check @lemma_name` to see all implicit arguments and understand what instances a lemma requires.
 * In Mathlib, most standard types (`ℕ`, `ℤ`, `ℚ`, `ℝ`, `ℂ`) have instances for all the common typeclasses. You rarely need to define instances for these.
 * When defining your own types, provide instances for the typeclasses you need. Start with `Repr` (for printing), then `Add`, `Mul`, etc., as needed.
-* The `deriving` mechanism can automatically generate instances for some typeclasses (like `Repr`, `BEq`, `Hashable`, `Inhabited`).
+* The `deriving` mechanism can automatically generate instances for some typeclasses (like `Repr` and `DecidableEq`), and copy instances to a type synonym ({ref "deriving-synonym"}[1.6]).

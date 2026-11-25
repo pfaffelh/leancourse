@@ -5,10 +5,13 @@ import Leancourse.Coursenotes.References
 open Verso.Genre Manual
 open Leancourse.Refs
 
-#doc (Manual) "Project 4: Girard's paradox, or why `Type : Type` is fatal" =>
+#doc (Manual) "Project 4 (taken): Girard's paradox, or why `Type : Type` is fatal" =>
 %%%
 tag := "project-girard"
 %%%
+
+*Taken.*  A student has chosen this project; it is no longer
+available.
 
 *What it is.*  Russell's paradox shows that a "set of all sets that
 do not contain themselves" is contradictory.  *Girard's paradox* is

@@ -92,4 +92,82 @@ example (a b c : Trool) : a * (b + c) = a * b + a * c := by
   apply ringEquiv.injective
   rw [map_mul, map_add, map_add, map_mul, map_mul, mul_add]
 
+/-! ## Part 5: Instances are terms -/
+
+-- Exercise 17)
+-- #synth Add Trool   -- Trool.instAdd
+example : (Trool.instAdd : Add Trool) = ⟨add⟩ := by
+  rfl
+
+-- Exercise 18)
+example : (⟨mul⟩ : Add Trool).add yes yes = maybe := by
+  rfl
+
+/-! ## Part 6: `DecidableEq` by hand -/
+
+-- Exercise 19)
+def decEq : DecidableEq Trool
+  | no, no => isTrue rfl
+  | maybe, maybe => isTrue rfl
+  | yes, yes => isTrue rfl
+  | no, maybe => isFalse (by intro h; cases h)
+  | no, yes => isFalse (by intro h; cases h)
+  | maybe, no => isFalse (by intro h; cases h)
+  | maybe, yes => isFalse (by intro h; cases h)
+  | yes, no => isFalse (by intro h; cases h)
+  | yes, maybe => isFalse (by intro h; cases h)
+
+example : @decide (yes = maybe) (decEq yes maybe) = false := by
+  rfl
+
+-- Exercise 20)
+def decEq' : DecidableEq Trool := fun a b =>
+  decidable_of_iff (equiv a = equiv b) equiv.injective.eq_iff
+
+example : @decide (yes = yes) (decEq' yes yes) = true := by
+  rfl
+
+/-! ## Part 7: Finiteness as an instance -/
+
+-- Exercise 21) With `have`, the value of the instance is forgotten, and
+-- `decide` gets stuck at `Fintype.decidableForallFintype`.
+example : ∀ a b : Trool, a * b = b * a := by
+  let _ : Fintype Trool := Fintype.ofEquiv (ZMod 3) equiv.symm
+  decide
+
+instance : Fintype Trool := Fintype.ofEquiv (ZMod 3) equiv.symm
+
+-- Exercise 22)
+example (a b c : Trool) : a * (b + c) = a * b + a * c := by
+  revert a b c
+  decide
+
+-- Exercise 23)
+example : ∀ a : Trool, a ≠ 0 → ∃ b, a * b = 1 := by
+  decide
+
+-- Exercise 24)
+example : Fintype.card Trool = 3 := by
+  decide
+
+/-! ## Part 8: Following instance search -/
+
+-- Exercise 25) From the goal down:
+--   `Decidable (∀ a, a ≠ 0 → ∃ b, …)` ← `Fintype.decidableForallFintype`,
+--     which needs `Fintype Trool` (our `instFintype`) and the body;
+--   the implication ← `forall_prop_decidable`;
+--   `a ≠ 0` ← `instDecidableNot`, then `instDecidableEqTrool`
+--     (from `deriving DecidableEq`);
+--   `∃ b, a * b = 1` ← `Fintype.decidableExistsFintype`, and the
+--     equality again by `instDecidableEqTrool`.
+-- The trace also shows the candidates that failed before each step.
+-- set_option trace.Meta.synthInstance true in
+#synth Decidable (∀ a : Trool, a ≠ 0 → ∃ b, a * b = 1)
+
+-- Exercise 26) `Field (ZMod 3)` ← `ZMod.instField` ← `Fact (Nat.Prime 3)`
+-- ← `Nat.fact_prime_three`, a global instance in Mathlib.
+-- set_option trace.Meta.synthInstance true in
+#synth Field (ZMod 3)
+example : Fact (Nat.Prime 3) := Nat.fact_prime_three
+
 end Trool

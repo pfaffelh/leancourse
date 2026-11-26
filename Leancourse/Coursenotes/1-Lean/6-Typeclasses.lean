@@ -688,18 +688,9 @@ number := false
 tag := "classical-tactic"
 %%%
 
-With the axiom `Classical.choice` (chapter {ref "rules-axioms"}[1.5]) every proposition gets a `Decidable` instance. The construction has two steps.
+With the axiom `Classical.choice` (chapter {ref "rules-axioms"}[1.5]) every proposition gets a `Decidable` instance. The proof uses three things from chapter 1.5: the excluded middle, restricted elimination, and the axiom of choice. We start with the step that does not work.
 
-*Step 1: a `Decidable P` exists.* The excluded middle `Classical.em P : P ∨ ¬P` is a theorem. A case split on it gives `isTrue h` or `isFalse h`. But `P ∨ ¬P` is a proposition, and a case split on a proof may only produce a proof (restricted elimination, {ref "prop-special"}[chapter 1.5]). So the result has to be the proposition `Nonempty (Decidable P)`:
-
-```lean
-theorem decExists (P : Prop) : Nonempty (Decidable P) :=
-  match Classical.em P with
-  | .inl h => ⟨isTrue h⟩
-  | .inr h => ⟨isFalse h⟩
-```
-
-Asking directly for the data `Decidable P` fails:
+*The wrong step.* The excluded middle `Classical.em P : P ∨ ¬P` is a theorem. A case split on it seems to give the instance at once:
 
 ```lean +error
 def decDirect (P : Prop) : Decidable P :=
@@ -708,21 +699,50 @@ def decDirect (P : Prop) : Decidable P :=
   | .inr h => isFalse h
 ```
 
-The error is `recursor Or.casesOn can only eliminate into Prop`: the proof of `P ∨ ¬P` does not reveal which side holds.
+The error is `recursor Or.casesOn can only eliminate into Prop`. A case split on a proof may only produce a proof (restricted elimination, {ref "prop-special"}[chapter 1.5]), and `Decidable P` is data in `Type`.
+
+*Why Lean forbids it.* Any two proofs of the same proposition are definitionally equal, also when they come from different constructors:
+
+```lean
+example : (Or.inl trivial : True ∨ True) = Or.inr trivial :=
+  rfl
+```
+
+If a case split on a proof could produce data, the function `.inl _ => true`, `.inr _ => false` on `True ∨ True` would send two equal proofs to `true` and `false`, and `true = false` would follow. The proof of `P ∨ ¬P` does not reveal which side holds.
+
+*Step 1: a `Decidable P` exists.* The same case split is allowed when its result is a proposition. `Nonempty (Decidable P)` is one:
+
+```lean
+theorem nonempty_decidable (P : Prop) :
+    Nonempty (Decidable P) :=
+  match Classical.em P with
+  | .inl h => ⟨isTrue h⟩
+  | .inr h => ⟨isFalse h⟩
+```
+
+This says that `Decidable P` has an element. It does not give one.
 
 *Step 2: choice takes one.* `Classical.choice : Nonempty α → α` turns the existence of an element into an element. This step is exactly what the axiom adds:
 
 ```lean
 noncomputable def decByChoice (P : Prop) : Decidable P :=
-  Classical.choice (decExists P)
+  Classical.choice (nonempty_decidable P)
 ```
 
-Lean's core library defines `Classical.propDecidable` in this way:
+Choice enters twice: `Classical.em` is not an axiom either, it is proved from choice (Diaconescu), and `#print axioms Classical.em` gives `[propext, Classical.choice, Quot.sound]`.
 
-```lean
-#check @Classical.propDecidable
--- Classical.propDecidable : (a : Prop) → Decidable a
+Lean's core library does both steps in one expression, `Classical.propDecidable`:
+
 ```
+-- Init/Classical.lean
+noncomputable scoped instance (priority := low)
+    propDecidable (a : Prop) : Decidable a :=
+  choice <| match em a with
+    | Or.inl h => ⟨isTrue h⟩
+    | Or.inr h => ⟨isFalse h⟩
+```
+
+The `match` is Step 1, `choice` is Step 2. Step 1 has no name of its own there. The instance `Classical.instNonemptyDecidable : Nonempty (Decidable a)` exists, but it is proved afterwards from `propDecidable`, so it cannot replace `nonempty_decidable` above.
 
 "Decidable" therefore means less here than in the previous section. A term of `Decidable P` exists, but nothing computes whether it is `isTrue` or `isFalse`. `decide` evaluates the instance and gets stuck at `Classical.choice`, as on `ℝ`. A proof does not need to know the answer. It needs some term of `Decidable P`, for `if P then … else …` or for `decide P`, and any two such terms are equal.
 

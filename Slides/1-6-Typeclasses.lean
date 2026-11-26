@@ -381,22 +381,41 @@ example : IsDigit 3 := by
 - in a proof: `have` for Prop classes (`Fact`), `let` for data that must compute
 - `haveI`, `letI`: put the value into the term; for `def` and `instance`, not for proofs (Mathlib linter)
 
-# Decidable by choice
+# By choice: the wrong step
 
-```lean -panel -stretch
-theorem decExists (P : Prop) : Nonempty (Decidable P) :=
+```lean +error -panel -stretch
+def decDirect (P : Prop) : Decidable P :=
   match Classical.em P with
-  | .inl h => ⟨isTrue h⟩
-  | .inr h => ⟨isFalse h⟩
-noncomputable def decByChoice (P : Prop) : Decidable P :=
-  Classical.choice (decExists P)
+  | .inl h => isTrue h
+  | .inr h => isFalse h
 ```
 
-- `em P` gives a `Decidable P` only inside a proposition; without `Nonempty`: `Or.casesOn can only eliminate into Prop` (1.5)
-- `Classical.choice : Nonempty α → α` takes one out: `Classical.propDecidable`
+`Or.casesOn can only eliminate into Prop`: a case split on a proof may only produce a proof (1.5). The reason, proof irrelevance:
+
+```lean -panel -stretch
+example : (Or.inl trivial : True ∨ True) = Or.inr trivial :=
+  rfl
+```
+
+With `.inl _ => true`, `.inr _ => false` on `True ∨ True`, two equal proofs would give `true = false`.
+
+# By choice: the proof
+
+```
+-- Init/Classical.lean
+noncomputable scoped instance (priority := low)
+    propDecidable (a : Prop) : Decidable a :=
+  choice <| match em a with
+    | Or.inl h => ⟨isTrue h⟩
+    | Or.inr h => ⟨isFalse h⟩
+```
+
+- step 1, the `match`: its result `⟨isTrue h⟩ : Nonempty (Decidable a)` is a `Prop`, so the case split is allowed
+- step 2, `choice : Nonempty α → α` takes an element out
+- `em` itself rests on choice: `[propext, Classical.choice, Quot.sound]`
 
 :::class "key"
-The instance exists but computes nothing: `decide` gets stuck at `choice`.
+The instance exists but computes nothing.
 :::
 
 # The `classical` tactic

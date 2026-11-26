@@ -263,6 +263,40 @@ example : ¬(2 + 3 = 6) := by decide
 On `ℝ`, `decide` gets stuck at `Classical.choice` and fails, even on
 `(1 : ℝ) + 1 = 2`; the reason is explained in {ref "decidable-instances"}[`Decidable` instances].
 
+*Where the instance for `2 + 3 = 5` comes from.* Instance search finds `DecidableEq ℕ` and applies it to `2 + 3` and `5`:
+
+```lean
+#synth Decidable (2 + 3 = 5)
+-- instDecidableEqNat (2 + 3) 5
+```
+
+Equality `a = b` itself is an inductive proposition and computes nothing. What computes is a Boolean test, `Nat.beq`, defined by recursion on both arguments. `Nat.decEq` runs it and adds the proof that matches the result:
+
+```
+-- Init/Prelude.lean
+def Nat.beq : Nat → Nat → Bool
+  | zero,   zero   => true
+  | zero,   succ _ => false
+  | succ _, zero   => false
+  | succ n, succ m => beq n m
+
+def Nat.decEq (n m : Nat) : Decidable (n = m) :=
+  match h : beq n m with
+  | true  => isTrue (eq_of_beq_eq_true h)
+  | false => isFalse (ne_of_beq_eq_false h)
+
+instance : DecidableEq Nat := Nat.decEq
+```
+
+The recursive function `Nat.beq` is the algorithm; the two lemmas say that it computes correctly. The tactic `decide` turns this into a proof:
+
+```lean
+example : 2 + 3 = 5 := by show_term decide
+-- of_decide_eq_true (Eq.refl true)
+```
+
+`of_decide_eq_true : decide p = true → p`. It remains to check `decide (2 + 3 = 5) = true` by `rfl`: the kernel computes `Nat.decEq (2 + 3) 5`, that is `Nat.beq 5 5 = true`, gets `isTrue _`, and `decide` of that is `true`. On numerals the kernel computes `+` and `Nat.beq` with built-in binary arithmetic instead of unary `succ` ({ref "baked-in"}[chapter 2.3]).
+
 An instance can be written by hand. Decidability of "is `n` zero?", by cases on `n`:
 
 ```lean

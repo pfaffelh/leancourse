@@ -187,6 +187,25 @@ example : ¬(2 + 3 = 6) := by decide
 - `if P then _ else _` needs `Decidable P`
 - `decide` evaluates the instance and succeeds if it reduces to `isTrue`; on `ℝ` it gets stuck at `Classical.choice`
 
+# Deciding `2 + 3 = 5`
+
+```
+-- Init/Prelude.lean
+def Nat.beq : Nat → Nat → Bool
+  | zero,   zero   => true
+  | zero,   succ _ => false
+  | succ _, zero   => false
+  | succ n, succ m => beq n m
+def Nat.decEq (n m : Nat) : Decidable (n = m) :=
+  match h : beq n m with
+  | true  => isTrue (eq_of_beq_eq_true h)
+  | false => isFalse (ne_of_beq_eq_false h)
+instance : DecidableEq Nat := Nat.decEq
+```
+
+- `a = b` computes nothing; the recursive `Nat.beq` is the algorithm
+- `decide` proves `2 + 3 = 5` by `of_decide_eq_true (Eq.refl true)`: the kernel computes `Nat.beq 5 5 = true`
+
 # A `Decidable` instance by hand
 
 ```lean -panel -stretch

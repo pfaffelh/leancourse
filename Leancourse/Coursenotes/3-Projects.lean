@@ -7,6 +7,7 @@ import «Leancourse».Coursenotes.«3-Projects».«4-Girard»
 import «Leancourse».Coursenotes.«3-Projects».«5-MathlibResult»
 import «Leancourse».Coursenotes.«3-Projects».«6-Mutual»
 import «Leancourse».Coursenotes.«3-Projects».«7-EquationCompiler»
+import «Leancourse».Coursenotes.«3-Projects».«8-FoolingLean»
 
 open Verso.Genre Manual
 
@@ -19,7 +20,7 @@ tag := "projects"
 In addition to the exercise sheets, which run through the whole
 semester, every student works on an individual project: pick a
 topic, formalize it in Lean, and present the result. Every project
-should take about 90 hours. Seven suggestions follow, each with a
+should take about 90 hours. Eight suggestions follow, each with a
 description, a sketch of one implementation, comments and
 references.
 
@@ -40,3 +41,5 @@ that interests you, as long as you discuss the scope with us first.
 {include 0 «Leancourse».Coursenotes.«3-Projects».«6-Mutual»}
 
 {include 0 «Leancourse».Coursenotes.«3-Projects».«7-EquationCompiler»}
+
+{include 0 «Leancourse».Coursenotes.«3-Projects».«8-FoolingLean»}

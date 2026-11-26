@@ -242,3 +242,66 @@ example : IsSmall 3 := by
 
 example : ¬ IsSmall 7 := by
   decide
+
+/-! ## Local instances: `have` or `let`
+
+Read the section *Local instances: `have` or `let`* of chapter 1.6
+first. `IsTiny` has no instance yet. -/
+
+def IsTiny (n : ℕ) : Prop := n < 3
+
+-- Exercise 26) Supply the instance inside the proof:
+-- `have : DecidablePred IsTiny := fun n => ...` (the body as in
+-- Exercise 24), then `decide`. It fails. Explain the error in a
+-- comment, then replace `have` by `let _`.
+example : IsTiny 2 := by
+  -- With `have` the value is forgotten, and `decide` gets stuck at
+  -- the instance `this 2`.
+  let _ : DecidablePred IsTiny := fun n =>
+    if h : n < 3 then isTrue h else isFalse h
+  decide
+
+-- Exercise 27) Exercise 22 as a term, without `by`: write
+-- `haveI : Fact p.Prime := ⟨hp⟩` and, on the next line, the term.
+-- Uncomment `#print` and look at the term. Then replace `haveI` by
+-- `have` and compare.
+theorem mul_inv_of_prime (p : ℕ) (hp : p.Prime) (a : ZMod p)
+    (ha : a ≠ 0) : a * a⁻¹ = 1 :=
+  haveI : Fact p.Prime := ⟨hp⟩
+  mul_inv_cancel₀ ha
+
+-- `fun p hp a ha => mul_inv_cancel₀ ha`; with `have`, a binding
+-- `have this := { out := hp }` stays in the term.
+#print mul_inv_of_prime
+
+/-! ## `DecidableEq` by hand
+
+`DecidableEq α` is defined as `(a b : α) → Decidable (a = b)`. An
+instance is a function that takes `a b : α` and returns `isTrue h`
+with `h : a = b` or `isFalse h` with `h : a ≠ b`.
+
+`deriving DecidableEq` writes this function for you. Here you write it
+yourself. You need not decide equality from scratch:
+`decidable_of_iff q h` turns an instance of `Decidable q` into one of
+`Decidable p`, given `h : q ↔ p`. Equality of `ℤ` and of `ℕ` is
+decidable, and so is a conjunction of decidable propositions. -/
+
+structure Frac where
+  num : ℤ
+  den : ℕ
+
+-- Exercise 28) Two fractions are equal when numerators and
+-- denominators are, and both comparisons are decidable. Use
+-- `decidable_of_iff (a.num = b.num ∧ a.den = b.den)`; for the `↔`,
+-- `cases a` and `cases b` reveal the fields, then `simp`.
+instance : DecidableEq Frac := fun a b =>
+  decidable_of_iff (a.num = b.num ∧ a.den = b.den) (by
+    cases a
+    cases b
+    simp)
+
+example : (⟨1, 2⟩ : Frac) ≠ ⟨1, 3⟩ := by
+  decide
+
+example : (⟨-1, 2⟩ : Frac) = ⟨-1, 2⟩ := by
+  decide

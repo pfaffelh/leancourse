@@ -107,13 +107,21 @@ set_option pp.explicit true in
 So typeclasses cannot make Lean inconsistent, and they use no axiom. What an instance does decide is what a statement *means*: `≤` and `+` stand for whatever instance is found. The standard example is the order on pairs. Mathlib defines
 
 ```
+-- Mathlib/Order/Lex.lean
+/-- A type synonym to equip a type with its
+lexicographic order. -/
 def Lex (α : Type*) := α
+
+/-- `toLex` is the identity function to the `Lex`
+of a type. -/
+def toLex : α ≃ Lex α := Equiv.refl _
 ```
 
-So `Lex α` has the same elements as `α`, under a new name. Instance search does not look through that name, so `Lex α` can carry instances of its own (chapter 1.8 explains why this needs `def` and not `abbrev`). `toLex : α ≃ Lex α` sends an element to the same element, seen in `Lex α`, and `ofLex` goes back. Mathlib writes `α ×ₗ β` for `Lex (α × β)` and gives the two types two `LE` instances:
+So `Lex α` has the same elements as `α`, under a new name. Instance search does not look through that name, so `Lex α` can carry instances of its own (chapter 1.8 explains why this needs `def` and not `abbrev`). `toLex` sends an element to the same element, seen in `Lex α`, and `ofLex` goes back. Mathlib writes `α ×ₗ β` for `Lex (α × β)` and gives the two types two `LE` instances:
 
 ```
 -- Mathlib/Order/Basic.lean
+variable [LE α] [LE β]
 instance : LE (α × β) where
   le p q := p.1 ≤ q.1 ∧ p.2 ≤ q.2
 
@@ -122,6 +130,15 @@ instance instLE (α β : Type*) [LT α] [LE β] :
     LE (α ×ₗ β) where
   le := Prod.Lex (· < ·) (· ≤ ·)
 ```
+
+Both instances have hypotheses: the componentwise order needs `LE` on both factors, the lexicographic one `LT` on the first and `LE` on the second. For `ℕ × ℕ`, instance search therefore first finds `instLENat` and `instLTNat`, and then the instance for the pair. With `pp.explicit` the two `≤` read
+
+```
+@Prod.instLE_mathlib ℕ ℕ instLENat instLENat
+@Prod.Lex.instLE     ℕ ℕ instLTNat instLENat
+```
+
+For a type without `LE`, such as a `structure` without an order, there is no `≤` on the pairs either: `failed to synthesize LE (…)`.
 
 `Prod.Lex ra rb` is an inductive predicate from Lean's core library, with one constructor per case:
 
@@ -196,6 +213,69 @@ We defined two instances: `Add Vec2` so we can use `+`, and `ToString Vec2` so L
 
 A type of your own with three elements and `+`, `*` as in ℤ/3ℤ is sheet `1.6-b`.
 
+# `Decidable` and `DecidableEq`
+%%%
+tag := "decidable-typeclass"
+%%%
+
+`Decidable` was introduced in {ref "prop-special"}[chapter 1.5]. Lean's core library defines it, and two abbreviations built from it, as follows:
+
+```
+-- Init/Prelude.lean
+class inductive Decidable (p : Prop) where
+  | isFalse (h : ¬p) : Decidable p
+  | isTrue (h : p) : Decidable p
+
+abbrev DecidablePred {α : Sort u} (r : α → Prop) :=
+  (a : α) → Decidable (r a)
+
+abbrev DecidableEq (α : Sort u) :=
+  (a b : α) → Decidable (a = b)
+```
+
+`class inductive` declares a class that is an inductive type with several constructors rather than a structure. An element of `Decidable p` is the information *which* of the two cases holds, together with a proof. Programs branch on that information, so the class lives in `Type`, not `Prop`.
+
+`DecidablePred` and `DecidableEq` are not classes of their own but abbreviations, which instance search unfolds. An instance of `DecidableEq α` is a function that takes two elements `a b : α` and returns `isTrue h` with `h : a = b` or `isFalse h` with `h : a ≠ b`. An instance of `DecidablePred r` does the same for `r a`, for every `a`.
+
+```lean
+#check @Decidable
+-- Decidable : Prop → Type
+
+-- Many concrete propositions are decidable, and the
+-- instance is found by typeclass resolution:
+#eval (inferInstance : Decidable (2 + 3 = 5))  -- isTrue _
+#eval (inferInstance : Decidable (2 + 3 = 6))  -- isFalse _
+```
+
+Two everyday features rest on this instance search:
+
+* An `if P then _ else _` requires a `Decidable P` instance — that is
+  how the program knows which branch to take. With `DecidableEq α`
+  you may branch on `a = b` for `a b : α`.
+* The `decide` tactic evaluates the `Decidable` instance and succeeds
+  if it reduces to `isTrue`:
+
+```lean
+example : 2 + 3 = 5 := by decide
+example : ¬(2 + 3 = 6) := by decide
+```
+
+On `ℝ`, `decide` gets stuck at `Classical.choice` and fails, even on
+`(1 : ℝ) + 1 = 2`; the reason is explained in {ref "decidable-instances"}[`Decidable` instances].
+
+An instance can be written by hand. Decidability of "is `n` zero?", by cases on `n`:
+
+```lean
+def decZero (n : Nat) : Decidable (n = 0) :=
+  match n with
+  -- `rfl`: a proof that 0 = 0
+  | 0     => isTrue rfl
+  -- a proof that m + 1 ≠ 0
+  | m + 1 => isFalse (Nat.succ_ne_zero m)
+```
+
+Each branch supplies a proof, which is why `Decidable` lives in `Type` and carries content. Registered as an `instance`, `decZero` is what `decide` runs and what `if n = 0 then … else …` consults. `deriving DecidableEq` generates such a definition for you (next section).
+
 # Using `deriving`
 %%%
 tag := "deriving"
@@ -215,7 +295,7 @@ def alice : Student := { name := "Alice", age := 22 }
 #eval alice    -- outputs { name := "Alice", age := 22 }
 ```
 
-`#eval` would derive a missing `Repr` on the fly; `deriving Repr` declares it once, as the definition `instReprStudent`. Other classes are not derived on the fly. For a finite type of your own, the one that matters in mathematics is `DecidableEq`: it lets `decide` and `if a = b then … else …` compare elements.
+`#eval` would derive a missing `Repr` on the fly; `deriving Repr` declares it once, as the definition `instReprStudent`. Other classes are not derived on the fly. For a finite type of your own, the one that matters in mathematics is `DecidableEq`: it lets `decide` and `if a = b then … else …` compare elements ({ref "decidable-typeclass"}[above]).
 
 ```lean
 inductive Signal where
@@ -487,60 +567,41 @@ example (p : ℕ) (hp : p.Prime) (a : ZMod p)
   mul_inv_cancel₀ ha
 ```
 
+*Why the `Fact` is needed.* `mul_inv_cancel₀` requires `[GroupWithZero G₀]`. With `set_option trace.Meta.synthInstance true` one sees how instance search finds `GroupWithZero (ZMod p)`. It starts at the goal, applies an instance whose conclusion matches, and continues with that instance's own hypothesis as the new goal:
+
+:::table (align := left) +header
+* + goal
+  + instance applied
+  + new goal
+* + `GroupWithZero (ZMod p)`
+  + `DivisionSemiring.toGroupWithZero`
+  + `DivisionSemiring (ZMod p)`
+* + `DivisionSemiring (ZMod p)`
+  + `Semifield.toDivisionSemiring`
+  + `Semifield (ZMod p)`
+* + `Semifield (ZMod p)`
+  + `Field.toSemifield`
+  + `Field (ZMod p)`
+* + `Field (ZMod p)`
+  + `ZMod.instField`
+  + `Fact (Nat.Prime p)`
+* + `Fact (Nat.Prime p)`
+  + `this`, from the `have`
+  + —
+:::
+
+The search runs from the goal down. The instance is then assembled from the bottom up, and `#synth GroupWithZero (ZMod p)` prints it as `Field.toSemifield.toDivisionSemiring.toGroupWithZero`. At several steps there are other candidates. For `Field (ZMod p)`, the trace lists `NormedField.toField`, `littleWedderburn` and `ZMod.instField`, and the search tries them one after the other.
+
+Without the `have`, the last row is missing, and the search fails. This is correct: for composite `n`, `ZMod n` is not a group with zero. `ZMod n` has a `⁻¹` for every `n` (`ZMod.instInv`), but in `ZMod 4`, `#eval (2 : ZMod 4) * 2⁻¹` gives `2`.
+
+A hypothesis `hp : p.Prime` cannot take the place of the `Fact`. `Nat.Prime` is a `def`, not a class; `[hp : p.Prime]` is rejected with `invalid binder annotation, type is not a class instance`, and only a structure or an inductive type can be declared a class. `Fact` is the smallest such structure: it turns any proposition into a class.
+
 The warning at the end of the docstring means: instance search does not reason. From `Fact (p = 7)` it does not conclude `Fact p.Prime`; every `Fact` that is needed has to be supplied in exactly the form the instance asks for. Mathlib uses `Fact` for a few such side conditions: besides primality mostly `Fact (1 ≤ p)` for the `Lᵖ` spaces, and the dimension of a Euclidean space in geometry.
 
-# The `Decidable` typeclass
+# `Decidable` instances
 %%%
-tag := "decidable-typeclass"
+tag := "decidable-instances"
 %%%
-
-`Decidable` was introduced in {ref "prop-special"}[chapter 1.5]. It
-sits at the border between *programs* and *proofs* and has
-two constructors, `isTrue h` with a proof `h : P` and `isFalse h` with
-a proof `h : ¬P`. An element of `Decidable P` is therefore the
-information *which* of the two cases holds, together with a proof.
-Programs branch on that information, so the class lives in `Type`, not
-`Prop`:
-
-```lean
-#check @Decidable
--- Decidable : Prop → Type
-
--- Many concrete propositions are decidable, and the
--- instance is found by typeclass resolution:
-#eval (inferInstance : Decidable (2 + 3 = 5))  -- isTrue _
-#eval (inferInstance : Decidable (2 + 3 = 6))  -- isFalse _
-```
-
-Two everyday features rest on this instance search:
-
-* An `if P then _ else _` requires a `Decidable P` instance — that is
-  how the program knows which branch to take. This is also why
-  {ref "deriving"}[`deriving DecidableEq`] (above) is useful: it makes
-  `a = b` decidable, so you may branch on equality of your own type.
-* The `decide` tactic evaluates the `Decidable` instance and succeeds
-  if it reduces to `isTrue`:
-
-```lean
-example : 2 + 3 = 5 := by decide
-example : ¬(2 + 3 = 6) := by decide
-```
-
-On `ℝ`, `decide` gets stuck at `Classical.choice` and fails, even on
-`(1 : ℝ) + 1 = 2`; the reason is explained below.
-
-An instance can be written by hand. Decidability of "is `n` zero?", by cases on `n`:
-
-```lean
-def decZero (n : Nat) : Decidable (n = 0) :=
-  match n with
-  -- `rfl`: a proof that 0 = 0
-  | 0     => isTrue rfl
-  -- a proof that m + 1 ≠ 0
-  | m + 1 => isFalse (Nat.succ_ne_zero m)
-```
-
-Each branch supplies a proof, which is why `Decidable` lives in `Type` and carries content. Registered as an `instance`, `decZero` is what `decide` runs and what `if n = 0 then … else …` consults. `deriving DecidableEq` generates such a definition for you.
 
 *A single proposition or a family.* For a single proposition, `Decidable P` asks for no more than a proof of `P` or a proof of `¬P`, and this needs no axiom:
 
@@ -548,7 +609,7 @@ Each branch supplies a proof, which is why `Decidable` lives in `Type` and carri
 def decOfProof {P : Prop} (h : P) : Decidable P := isTrue h
 ```
 
-Decidability says something only for a *family* of propositions. `decZero` above is one function that, for every `n`, computes which case holds. The classes `DecidablePred p` (a `Decidable (p a)` for every `a`) and `DecidableEq α` (a `Decidable (a = b)` for all `a b : α`) ask for such a function. `n % 2 = 0` is decidable in this sense: compute the remainder. Equality of real numbers is not. A real number is given by a Cauchy sequence, and no finite part of the sequence settles whether its limit is `0`. For each single `x` one of `x = 0` and `x ≠ 0` holds, but no algorithm finds out which.
+Decidability says something only for a *family* of propositions. `decZero` above is one function that, for every `n`, computes which case holds. `DecidablePred p` and `DecidableEq α` ({ref "decidable-typeclass"}[above]) ask for such a function. `n % 2 = 0` is decidable in this sense: compute the remainder. Equality of real numbers is not. A real number is given by a Cauchy sequence, and no finite part of the sequence settles whether its limit is `0`. For each single `x` one of `x = 0` and `x ≠ 0` holds, but no algorithm finds out which.
 
 Mathlib nevertheless has an instance of `DecidableEq ℝ`. It is built from the axiom of choice and computes nothing, so a definition that branches on `x = 0` cannot be compiled:
 
@@ -559,20 +620,113 @@ def realIsZero (x : ℝ) : Bool :=
 
 The error is `failed to compile definition, consider marking it as 'noncomputable'`. Decidability by an algorithm is the *constructive* half: it works without axioms, and the resulting code is executable. Where no algorithm exists, the instance comes from the axiom of choice ({ref "noncomputable"}[Computable and noncomputable definitions]).
 
+## Local instances: `have` or `let`
+%%%
+number := false
+tag := "local-instances"
+%%%
+
+A `have` whose type is a class adds a local instance, as for `Fact` ({ref "fact"}[above]). But `have` keeps only the type and forgets the value. For a Prop class this does not matter, since any two proofs are equal. For a data class it does: `decide` has to evaluate the instance, and a forgotten value cannot be evaluated. In the following, `inferInstanceAs (Decidable (n < 10))` is the instance of `n < 10`, used for `IsDigit n`, which unfolds to it:
+
+```lean
+def IsDigit (n : ℕ) : Prop := n < 10
+```
+
+```lean +error
+example : IsDigit 3 := by
+  have : DecidablePred IsDigit :=
+    fun n => inferInstanceAs (Decidable (n < 10))
+  decide
+```
+
+The error says that reduction got stuck at the `Decidable` instance `this 3`. With `let`, the value stays visible, and `decide` works:
+
+```lean
+example : IsDigit 3 := by
+  let _ : DecidablePred IsDigit :=
+    fun n => inferInstanceAs (Decidable (n < 10))
+  decide
+```
+
+Mathlib also has `haveI` and `letI`. In a proof they behave like `have` and `let`. In the finished term they substitute the value where the instance is used, instead of leaving a `have` or `let` binding:
+
+```lean
+def withHave : Bool :=
+  have : DecidablePred IsDigit :=
+    fun n => inferInstanceAs (Decidable (n < 10))
+  decide (IsDigit 3)
+
+def withHaveI : Bool :=
+  haveI : DecidablePred IsDigit :=
+    fun n => inferInstanceAs (Decidable (n < 10))
+  decide (IsDigit 3)
+
+#print withHave   -- have this := …; decide (IsDigit 3)
+#print withHaveI  -- decide (IsDigit 3)
+```
+
+This matters for definitions and instances, whose terms are unfolded later. A proof is never unfolded, and in proofs Mathlib's linter `linter.style.haveILetI` asks for `have` and `let` instead.
+
+:::table (align := left) +header
+* + where
+  + class
+  + use
+* + in a proof
+  + Prop class, e.g. `Fact`
+  + `have`
+* + in a proof
+  + data class whose value is needed (`decide`, `rfl`)
+  + `let`
+* + in a `def` or `instance`
+  + any
+  + `haveI`, `letI`
+:::
+
 ## The `classical` tactic
 %%%
 number := false
 tag := "classical-tactic"
 %%%
 
-The axiom `Classical.choice` (chapter {ref "rules"}[1.5]) gives a `Decidable` instance for every proposition:
+With the axiom `Classical.choice` (chapter {ref "rules-axioms"}[1.5]) every proposition gets a `Decidable` instance. The construction has two steps.
+
+*Step 1: a `Decidable P` exists.* The excluded middle `Classical.em P : P ∨ ¬P` is a theorem. A case split on it gives `isTrue h` or `isFalse h`. But `P ∨ ¬P` is a proposition, and a case split on a proof may only produce a proof (restricted elimination, {ref "prop-special"}[chapter 1.5]). So the result has to be the proposition `Nonempty (Decidable P)`:
+
+```lean
+theorem decExists (P : Prop) : Nonempty (Decidable P) :=
+  match Classical.em P with
+  | .inl h => ⟨isTrue h⟩
+  | .inr h => ⟨isFalse h⟩
+```
+
+Asking directly for the data `Decidable P` fails:
+
+```lean +error
+def decDirect (P : Prop) : Decidable P :=
+  match Classical.em P with
+  | .inl h => isTrue h
+  | .inr h => isFalse h
+```
+
+The error is `recursor Or.casesOn can only eliminate into Prop`: the proof of `P ∨ ¬P` does not reveal which side holds.
+
+*Step 2: choice takes one.* `Classical.choice : Nonempty α → α` turns the existence of an element into an element. This step is exactly what the axiom adds:
+
+```lean
+noncomputable def decByChoice (P : Prop) : Decidable P :=
+  Classical.choice (decExists P)
+```
+
+Lean's core library defines `Classical.propDecidable` in this way:
 
 ```lean
 #check @Classical.propDecidable
 -- Classical.propDecidable : (a : Prop) → Decidable a
 ```
 
-It is not an algorithm, only a choice of `isTrue` or `isFalse` that exists by the axiom. It is therefore `noncomputable`, and it is not a global instance. The tactic `classical` makes it a local instance, with low priority, for the rest of the proof. Instances that exist, such as decidable equality on `ℕ`, are still found first.
+"Decidable" therefore means less here than in the previous section. A term of `Decidable P` exists, but nothing computes whether it is `isTrue` or `isFalse`. `decide` evaluates the instance and gets stuck at `Classical.choice`, as on `ℝ`. A proof does not need to know the answer. It needs some term of `Decidable P`, for `if P then … else …` or for `decide P`, and any two such terms are equal.
+
+The instance is `noncomputable`, and it is not a global instance. The tactic `classical` makes it a local instance, with low priority, for the rest of the proof. Instances that exist, such as decidable equality on `ℕ`, are still found first.
 
 ```lean
 example (P : Prop) : ∃ b : Bool, (b = true ↔ P) := by

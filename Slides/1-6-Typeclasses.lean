@@ -23,6 +23,7 @@ namespace SlidesTypeclasses
 .reveal section table { font-size: 0.62em; margin: 0.2em auto 0.4em; }
 .reveal section table th,
 .reveal section table td { padding: 0.18em 0.9em; }
+.reveal section table td p, .reveal section table th p { margin: 0; }
 .reveal section li { font-size: 0.8em; }
 ```
 
@@ -96,18 +97,29 @@ The kernel knows neither `class` nor `instance`: the elaborator writes the insta
 Typeclasses add nothing to the logic.
 :::
 
-# One type, two orders
-
-Mathlib: `def Lex (α : Type*) := α`; `α ×ₗ β` is `Lex (α × β)`. Instance search does not see through `Lex`, so it has its own instances:
+# `Lex` in Mathlib
 
 ```
-instance : LE (α × β) where
+/-- A type synonym to equip a type with its
+lexicographic order. -/
+def Lex (α : Type*) := α
+/-- `toLex` is the identity function to the `Lex`
+of a type. -/
+def toLex : α ≃ Lex α := Equiv.refl _
+```
+
+`α ×ₗ β` is `Lex (α × β)`. Instance search does not see through `Lex`, so it has its own instances:
+
+```
+instance [LE α] [LE β] : LE (α × β) where
   le p q := p.1 ≤ q.1 ∧ p.2 ≤ q.2
-instance : LE (α ×ₗ β) where
+instance [LT α] [LE β] : LE (α ×ₗ β) where
   le := Prod.Lex (· < ·) (· ≤ ·)
 ```
 
-`Prod.Lex`: `a₁ < a₂`, or `a₁ = a₂ ∧ b₁ ≤ b₂`. Partial order, linear order.
+`Prod.Lex`: `a₁ < a₂`, or `a₁ = a₂ ∧ b₁ ≤ b₂`.
+
+# One type, two orders
 
 ```lean -panel -stretch
 example : ¬ (1, 5) ≤ ((2, 0) : ℕ × ℕ) := by decide
@@ -116,8 +128,17 @@ example : toLex ((1, 5) : ℕ × ℕ) ≤ toLex (2, 0) := by
   decide
 ```
 
+Both instances have hypotheses. For `ℕ × ℕ` the search first finds `LE ℕ` and `LT ℕ`, then builds the instance for the pair (`pp.explicit`):
+
+```
+@Prod.instLE_mathlib ℕ ℕ instLENat instLENat  -- componentwise
+@Prod.Lex.instLE     ℕ ℕ instLTNat instLENat  -- lexicographic
+```
+
+Without `LE` on a factor: no `≤` on the pair, `failed to synthesize LE (…)`.
+
 :::class "key"
-The instance decides what `≤` means.
+The instance decides what `≤` means: partial order on `ℕ × ℕ`, linear order on `ℕ ×ₗ ℕ`.
 :::
 
 # Creating instances
@@ -137,18 +158,63 @@ instance : ToString Vec2 where
 
 `s!"…{e}…"`: a string with the value of `e` inserted.
 
+# `Decidable` and `DecidableEq`
+
+```
+-- Init/Prelude.lean
+class inductive Decidable (p : Prop) where
+  | isFalse (h : ¬p) : Decidable p
+  | isTrue (h : p) : Decidable p
+abbrev DecidablePred {α : Sort u} (r : α → Prop) :=
+  (a : α) → Decidable (r a)
+abbrev DecidableEq (α : Sort u) :=
+  (a b : α) → Decidable (a = b)
+```
+
+- `Decidable p`: which case holds, with a proof; data, so in `Type` (1.5)
+- `DecidableEq α`: for all `a b`, `isTrue h` with `h : a = b` or `isFalse h` with `h : a ≠ b`
+- `DecidablePred`, `DecidableEq` are abbreviations; instance search unfolds them
+
+# `decide` and `if`
+
+```lean -panel -stretch
+#check @Decidable  -- Prop → Type
+#eval (inferInstance : Decidable (2 + 3 = 5))
+example : 2 + 3 = 5 := by decide
+example : ¬(2 + 3 = 6) := by decide
+```
+
+- `if P then _ else _` needs `Decidable P`
+- `decide` evaluates the instance and succeeds if it reduces to `isTrue`; on `ℝ` it gets stuck at `Classical.choice`
+
+# A `Decidable` instance by hand
+
+```lean -panel -stretch
+def decZero (n : Nat) : Decidable (n = 0) :=
+  match n with
+  | 0     => isTrue rfl
+  -- a proof that m + 1 ≠ 0
+  | m + 1 => isFalse (Nat.succ_ne_zero m)
+```
+
+Each branch carries a proof, so `Decidable` lives in `Type`.
+`deriving DecidableEq` generates such a definition.
+
+:::class "key"
+Registered as an `instance`, `decZero` is what `decide` runs.
+:::
+
 # Using `deriving`
 
 ```lean -panel -stretch
 inductive Signal where
   | red | amber | green
   deriving Repr, DecidableEq
-
 #eval Signal.amber
 example : Signal.red ≠ Signal.green := by decide
 ```
 
-Without `deriving DecidableEq`, `decide` fails: `failed to synthesize Decidable (Signal.red ≠ Signal.green)`. A _deriving handler_ reads the constructors and writes the `instance`; the kernel checks it.
+Without it, `decide` fails: `failed to synthesize Decidable (…)`. A _deriving handler_ writes the `instance`; the kernel checks it.
 
 `Repr` is needed by `#eval`. `BEq` (`a == b`), `Hashable` and `Inhabited` are for programs.
 
@@ -198,9 +264,9 @@ def doubleIt {α : Type} [Add α] (x : α) : α :=
 This happens at elaboration time, not at runtime.
 :::
 
-# A class with a result type
+# Output parameters: the problem
 
-`x ^ n` with `x : ℝ`, `n : ℕ` is real. The result type is a third parameter.
+`x ^ n` with `x : ℝ`, `n : ℕ` is real. The result type is a third parameter, an _output_ of the instance.
 
 ```lean +error -panel -stretch
 class Times (α β γ : Type) where
@@ -209,7 +275,7 @@ instance : Times ℕ ℤ ℤ := ⟨fun n z => n * z⟩
 def f (n : ℕ) (z : ℤ) := Times.times n z
 ```
 
-Lean knows `α = ℕ` and `β = ℤ`, but not `γ`. Instance search starts only when all arguments are known: `typeclass instance problem is stuck`.
+Lean knows `α = ℕ` and `β = ℤ`, but not `γ`. Instance search starts only when all arguments are known: `typeclass instance problem is stuck`. The fix: declare `γ` an _output parameter_.
 
 # Output parameters
 
@@ -240,7 +306,39 @@ example (p : ℕ) (hp : p.Prime) (a : ZMod p)
 
 - `hp : p.Prime` is invisible to instance search: `Nat.Prime` is not a class
 - `Fact p`: a class with one field `out : p`
-- `mul_inv_cancel₀ : a ≠ 0 → a * a⁻¹ = 1`, needs a field; `Field (ZMod p)` needs `[Fact (Nat.Prime p)]`
+- `mul_inv_cancel₀ : a ≠ 0 → a * a⁻¹ = 1` needs `[GroupWithZero (ZMod p)]`
+- `Nat.Prime` is a `def`; only a structure or inductive type can be a class
+
+# The search, step by step
+
+Finding `GroupWithZero (ZMod p)` (`trace.Meta.synthInstance`): the search starts at the goal and works down. Each instance needs the class in the next row.
+
+:::table +colHeaders
+*
+  * goal, for `ZMod p`
+  * instance applied
+*
+  * `GroupWithZero`
+  * `DivisionSemiring.toGroupWithZero`
+*
+  * `DivisionSemiring`
+  * `Semifield.toDivisionSemiring`
+*
+  * `Semifield`
+  * `Field.toSemifield`
+*
+  * `Field`
+  * `ZMod.instField`
+*
+  * `Fact (Nat.Prime p)`
+  * `this`, from the `have`
+:::
+
+The instance is assembled from the bottom up: `Field.toSemifield.toDivisionSemiring.toGroupWithZero` (`#synth`). Without the `have`, the last row is missing.
+
+:::class "key"
+For composite `n` there is no such chain: in `ZMod 4`, `2 * 2⁻¹ = 2`.
+:::
 
 # Using `Fact`
 
@@ -258,36 +356,6 @@ instance : Fact (Nat.Prime 7) := ⟨by norm_num⟩
 Instance search does not reason: each `Fact` is supplied as asked.
 :::
 
-# The `Decidable` typeclass
-
-```lean -panel -stretch
-#check @Decidable  -- Prop → Type
-#eval (inferInstance : Decidable (2 + 3 = 5))
-example : 2 + 3 = 5 := by decide
-example : ¬(2 + 3 = 6) := by decide
-```
-
-- from chapter 1.5: constructors `isTrue h` and `isFalse h`
-- `if P then _ else _` needs `Decidable P`
-- `decide` evaluates the instance and succeeds if it reduces to `isTrue`; on `ℝ` it gets stuck at `Classical.choice`
-
-# A `Decidable` instance by hand
-
-```lean -panel -stretch
-def decZero (n : Nat) : Decidable (n = 0) :=
-  match n with
-  | 0     => isTrue rfl
-  -- a proof that m + 1 ≠ 0
-  | m + 1 => isFalse (Nat.succ_ne_zero m)
-```
-
-Each branch carries a proof, so `Decidable` lives in `Type`.
-`deriving DecidableEq` generates such a definition.
-
-:::class "key"
-Registered as an `instance`, `decZero` is what `decide` runs.
-:::
-
 # `Decidable`: a family, not a proposition
 
 - `isTrue h : Decidable P` for any proof `h`: says nothing
@@ -297,6 +365,38 @@ Registered as an `instance`, `decZero` is what `decide` runs.
 
 :::class "key"
 An algorithm needs no axiom, and its code runs. Without one, the instance comes from choice.
+:::
+
+# Local instances: `have` or `let`
+
+```lean -panel -stretch
+def IsDigit (n : ℕ) : Prop := n < 10
+example : IsDigit 3 := by
+  let _ : DecidablePred IsDigit :=
+    fun n => inferInstanceAs (Decidable (n < 10))
+  decide
+```
+
+- with `have`, the value is forgotten: `decide` gets stuck at the instance `this 3`
+- in a proof: `have` for Prop classes (`Fact`), `let` for data that must compute
+- `haveI`, `letI`: put the value into the term; for `def` and `instance`, not for proofs (Mathlib linter)
+
+# Decidable by choice
+
+```lean -panel -stretch
+theorem decExists (P : Prop) : Nonempty (Decidable P) :=
+  match Classical.em P with
+  | .inl h => ⟨isTrue h⟩
+  | .inr h => ⟨isFalse h⟩
+noncomputable def decByChoice (P : Prop) : Decidable P :=
+  Classical.choice (decExists P)
+```
+
+- `em P` gives a `Decidable P` only inside a proposition; without `Nonempty`: `Or.casesOn can only eliminate into Prop` (1.5)
+- `Classical.choice : Nonempty α → α` takes one out: `Classical.propDecidable`
+
+:::class "key"
+The instance exists but computes nothing: `decide` gets stuck at `choice`.
 :::
 
 # The `classical` tactic

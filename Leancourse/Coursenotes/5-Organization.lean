@@ -42,7 +42,7 @@ used without the other.
     {ref "rules"}[chapter]
   * [Typeclasses](slides/1-6-typeclasses/) —
     {ref "typeclasses"}[chapter]
-  * [Functors, monads, coercions, hierarchies](slides/1-7-functors-monads/) —
+  * [Coercions and hierarchies](slides/1-7-functors-monads/) —
     {ref "functors-monads"}[chapter]
   * [Notation and abbreviations](slides/1-8-notation/) —
     {ref "notation"}[chapter]
@@ -172,7 +172,7 @@ written at the start of the lab.
 * + 8
   + Mon 07.12.
   + Lecture
-  + Typeclasses: functors and monads, coercions, hierarchies
+  + Typeclasses: coercions, hierarchies
   + {ref "functors-monads"}[1.7]
 * + 8
   + Wed 09.12.
@@ -188,7 +188,7 @@ written at the start of the lab.
   + Wed 16.12.
   + Lab
   + *Test 3*, then sheets
-  + `1.7-a`, `1.7-b`
+  + `1.7-b`
 * + 10
   + Mon 21.12.
   + Lecture
@@ -299,7 +299,7 @@ The course is for mathematics students.
 * *Reading formal statements.* Judging whether a formal statement says what the informal one claims ({ref "why-formalize"}[see above]).
 * *Interactive theorem proving.* A small kernel checks every logical step of a proof, and the editor reports what remains to be proved as you write ({ref "term"}[the proof state]). This is not the older use of computers in mathematics, which was to work through many cases ({ref "four-colour-episode"}[the four colour theorem]).
 * *Mathematical content.* The mathematics in the first half is deliberately easy, because explaining a proof to a computer requires understanding it first, and a proof of more than a few lines has to be planned so that the commands — {ref "tactics"}[*tactics*] — fit together. The second half goes deeper into the mathematics.
-* *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "type-constructor-classes"}[monads], needed both to use Lean and to read *Mathlib*.
+* *Functional programming.* {ref "inductive"}[Inductive types], {ref "structures"}[structures], {ref "typeclasses"}[typeclasses] and {ref "coercions"}[coercions], needed both to use Lean and to read *Mathlib*.
 * *Type theory.* Lean rests on dependent type theory: the {ref "curry-howard"}[Curry-Howard correspondence], {ref "types"}[dependent types], the {ref "type-universes"}[universe hierarchy], and {ref "lean-axioms"}[Lean's axioms].
 * *Mathematics in Mathlib.* How the library organizes {ref "orders-and-lattices"}[order theory], the {ref "algebraic-hierarchy-mathlib"}[algebraic hierarchy], {ref "filters"}[filters] (a single framework for limits), {ref "topology"}[topology] and {ref "probability-pmf"}[discrete probability]. Textbooks rarely treat these from the point of view of formalization.
 * *Proof engineering.* Automation tactics, {ref "navigating-mathlib"}[searching *Mathlib*], and the {ref "common-pitfalls"}[common pitfalls] of a large formal library.
@@ -361,7 +361,7 @@ tag := "notes-layout"
 
 The notes have six parts.
 
-* *Lean and its type theory*: the natural numbers and reduction; functions, inductive types and structures; pattern matching and recursion; pairs, subtypes, propositions as types and quotients; the rules of the type theory; typeclasses; functors, monads and coercions; notation.
+* *Lean and its type theory*: the natural numbers and reduction; functions, inductive types and structures; pattern matching and recursion; pairs, subtypes, propositions as types and quotients; the rules of the type theory; typeclasses; coercions and hierarchies; notation.
 * *Mathematics*: numbers, sets and types, the foundations (universes, axioms, well-foundedness), then the areas of *Mathlib* listed above. Pointers into the API, not full formalizations.
 * *Appendix*: the glossary of tactics (a longer list is [here](https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md)), the structure of a Lean file, navigating *Mathlib*, common pitfalls, and small reference topics such as the diagnostic commands (`#print axioms`, `#find_home`, `#lint`).
 * *Projects*: eight topics for the individual formalization projects, each with a description, a sketch of an implementation, comments and references.

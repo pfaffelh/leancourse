@@ -17,7 +17,7 @@ tag := "typeclasses"
 
 A typeclass associates operations and properties with a type and lets Lean find the right implementation on its own. It is the mechanism by which Lean knows that the integers form a ring and the reals a field, and it is how Mathlib organizes mathematics.
 
-The [slides](slides/1-6-typeclasses/) for this chapter follow it section by section. {ref "functors-monads"}[Chapter 1.7] continues with classes over type constructors (functors and monads), coercions and hierarchies of classes.
+The [slides](slides/1-6-typeclasses/) for this chapter follow it section by section. {ref "functors-monads"}[Chapter 1.7] continues with coercions and hierarchies of classes.
 
 # The problem typeclasses solve
 %%%
@@ -555,7 +555,17 @@ For `x ^ n` with `x : ℝ` and `n : ℕ`, instance search finds `HPow ℝ ℕ �
 tag := "fact"
 %%%
 
-Instance search finds terms of classes, and nothing else. A hypothesis `hp : p.Prime` is invisible to it, because `Nat.Prime` is a definition and not a class. Sometimes an instance needs such a proposition all the same, and Mathlib's `Fact` turns the proposition into a class:
+*The problem.* `ZMod p` is a field exactly when `p` is prime. As an instance, this is a statement with a condition: for every `p`, if `p` is prime, then `Field (ZMod p)`. But an instance is applied by instance search, and each of its arguments has to be found by unification or by instance search again. A hypothesis `hp : p.Prime` is found by neither, and Lean rejects the declaration:
+
+```lean +error
+noncomputable instance (p : ℕ) (hp : p.Prime) :
+    Field (ZMod p) :=
+  @ZMod.instField p ⟨hp⟩
+```
+
+The error is `This instance has 1 argument that cannot be inferred using typeclass synthesis`, namely `(hp : Nat.Prime p)`. Square brackets do not help: `[hp : p.Prime]` is rejected because `Nat.Prime` is a definition and not a class (details below).
+
+*The solution.* Mathlib's `Fact` turns a proposition into a class:
 
 {docstring Fact}
 

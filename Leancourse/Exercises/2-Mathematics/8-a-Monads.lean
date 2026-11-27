@@ -5,7 +5,7 @@ import Mathlib
 
 *Notes chapter 2.8, week 15.*
 
-`map`, `pure` and `bind` from chapter 1.7 (sheet `1.7-a`) occur in
+`map`, `pure` and `bind` occur in
 mathematics under other names: the image of a set, the union over a
 family, the pushforward of a filter. Read the section *Monads in
 mathematics* of chapter 2.8 first.

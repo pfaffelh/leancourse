@@ -364,6 +364,49 @@ set_option pp.notation false in
 When in doubt, bracket: `∑ i ∈ s, (f i + 1)`.
 :::
 
+# `(n : ℤ)` is a type ascription
+
+`(e : T)` is syntax, not a function. Its elaborator, from Lean's source (`elabTypeAscription`), simplified:
+
+```
+let type ← elabType T       -- ℤ
+let e ← elabTerm e type     -- n, with expected type ℤ
+ensureHasType type e        -- ℕ is not ℤ: coercion
+```
+
+- `ensureHasType`: if the type of `e` is `T` (up to definitional unfolding), done
+- otherwise Lean searches an instance of `CoeT ℕ n ℤ` (chapter 1.7) and inserts `CoeT.coe ℕ n ℤ inst`
+- no instance: the error `Type mismatch`
+
+# `(n : ℤ)` step by step
+
+```lean -panel -stretch
+def toInt (n : ℕ) : ℤ := (n : ℤ)
+example (n : ℕ) : (n : ℤ) = @CoeT.coe ℕ n ℤ _ := rfl
+set_option pp.coercions false in
+set_option pp.fieldNotation false in
+#print toInt
+```
+
+1. elaborate `n` against `ℤ`: type `ℕ`, mismatch
+2. search `CoeT ℕ n ℤ`: found via `CoeTail ℕ ℤ` from `NatCast ℤ`
+3. unfold `CoeT.coe ℕ n ℤ inst` until `Nat.cast n` is left
+4. `Nat.cast` has the attribute `@[coe]`: Lean prints `↑n`
+
+# `↑`, `⇑`, `↥`
+
+```lean -panel -stretch
+example (n : ℕ) : ℤ := ↑n
+example (f : ℕ →+ ℕ) : ℕ → ℕ := ⇑f
+example (s : Set ℕ) : Type := ↥s
+set_option pp.coercions false in
+#check fun (f : ℕ →+ ℕ) (s : Set ℕ) (x : s) => (f x : ℤ)
+```
+
+- `↑e`: elaborate `e`, then `ensureHasType` against the expected type; without one, `↑` does nothing
+- `⇑f`: search `CoeFun`; `↥s`: search `CoeSort`
+- `pp.coercions false` shows the functions behind the arrows
+
 # Where numerals come from
 
 Not declared notation: the parser knows literals, an instance gives the meaning.

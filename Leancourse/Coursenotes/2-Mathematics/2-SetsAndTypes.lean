@@ -276,14 +276,6 @@ To prove `y ∈ f '' s` you name the point: `⟨x, hx, rfl⟩`, or `use x`.
 A hypothesis `x ∈ f ⁻¹' t` needs no unpacking, it already *is*
 `f x ∈ t`. The image of the whole type has its own name, `Set.range f`.
 
-`Set` is a {ref "functor-typeclass"}[functor], and the image is its
-`map`: `f <$> s` is `f '' s` by `rfl`. The two functor laws are
-`Set.image_id` and `Set.image_comp`.
-
-```lean
-example (f : ℕ → ℕ) (s : Set ℕ) : f <$> s = f '' s := rfl
-```
-
 The basic fact relating the two: `f '' s ⊆ t` holds exactly when
 `s ⊆ f ⁻¹' t`.
 
@@ -403,7 +395,7 @@ example : ∑ i ∈ Finset.range 4, i = 6 := by decide
 example : ∏ i ∈ Finset.Icc 1 4, i = 24 := by decide
 ```
 
-The image of a finset is `s.image f`, the finset version of {ref "functor-typeclass"}[`map`]. It needs `DecidableEq β`, because duplicates among the values `f a` are removed. For `ℕ` the instance exists. For an arbitrary type `β` it is a hypothesis `[DecidableEq β]`, or it comes from the {ref "classical-tactic"}[`classical` tactic].
+The image of a finset is `s.image f`, the finset version of `f '' s`. It needs `DecidableEq β`, because duplicates among the values `f a` are removed. For `ℕ` the instance exists. For an arbitrary type `β` it is a hypothesis `[DecidableEq β]`, or it comes from the {ref "classical-tactic"}[`classical` tactic].
 
 ```lean
 example : ({1, 2, 3} : Finset ℕ).image (· % 2) = {0, 1} := by

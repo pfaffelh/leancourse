@@ -3417,3 +3417,45 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   (Test 5).
 - Geprueft: alle Blaetter fehlerfrei, 39 Zeugen sorry-frei,
   `strip_unreleased.py --check` ok, `lake build Leancourse` ok.
+
+## 2026-11-27 -- Funktoren und Monaden gestrichen, Koerzionen ausgebaut
+
+- **Funktoren und Monaden sind aus der Vorlesung raus** (Autor: die
+  Mathematik braucht nur `map`/`bind` auf konkreten Typen). Kapitel
+  und Deck 1.7 heissen *Coercions and hierarchies*; Dateinamen,
+  Tag `functors-monads` und URL `slides/1-7-functors-monads/` sind
+  unveraendert. Blatt `1.7-a` samt Zeuge geloescht, `1.7-b` behaelt
+  seinen Namen. Das Thema steht in `SEMINAR.md`.
+- Verweise entschaerft: 2.2 und 2.6 (Kapitel und Decks) nennen `Set`
+  und `Filter` nicht mehr Funktoren; 2.8 erklaert `pure`/`map`/`bind`
+  ohne Rueckverweis. `2.8-a` *Monads in mathematics* bleibt bis zur
+  Ueberarbeitung des PMF-Kapitels.
+- Koerzionen in 1.7: Unterabschnitte `Coe` (tag `coe-class`), Ketten
+  (`coercion-chains`: `CoeT` = `CoeHead? CoeOut* Coe* CoeTail? |
+  CoeDep`), `CoeSort`, `CoeFun` mit `DFunLike`, Fallen. In 1.8 neu
+  *How `(n : ℤ)` calls the coercion* (tag `coercion-elaboration`):
+  Typzuschreibung -> `ensureHasType` -> Suche `CoeT ℕ n ℤ` ueber
+  `CoeTail ℕ ℤ` aus `NatCast ℤ` -> aufgefaltet zu `Nat.cast n` ->
+  `@[coe]` druckt `↑n`. Je Folien in den Decks 1-7 und 1-8.
+- Gemessen (v4.34): Teilmengen-Koerzion ist `CoeOut`, `ℕ → R` ist
+  `CoeTail` (aus `NatCast`), nicht `Coe`. `Continuous` ist eine
+  `structure`, keine Klasse; `IsCompact` ein `def`, `CompactSpace`
+  eine Klasse.
+- **Blatt `1.7-b`** hat drei neue Teile am Ende (Aufgaben 14-22):
+  Ketten (`posToInt`, `(n : ℤ) = Nat.cast n` per `rfl`), `CoeDep`
+  (`isSmall n := n < 5` ist `decide (n < 5)`; Aufgabe 19 verlangt
+  `[Decidable p]` in der Aussage) und *Where the arrow goes*
+  (`5 - 7` in ℕ gegen ℤ, `7 / 2` in ℕ gegen ℚ, `omega` braucht
+  `1 ≤ n`). **`decide` bleibt bei `((7 : ℕ) / 2 : ℚ) = 7 / 2`
+  stecken** (Division in ℚ), `rfl` geht.
+- **1.7 *Classes from analysis*** (tag `analysis-classes`, vor
+  *Managing instances*, im Deck vier Folien plus die Teilung von
+  `MetricSpace`): `TopologicalSpace` (Klasse mit Daten),
+  `PseudoMetricSpace`/`MetricSpace` (Topologie als Feld mit
+  Voreinstellung; `#synth TopologicalSpace ℚ` =
+  `PseudoMetricSpace.toUniformSpace.toTopologicalSpace`; beim Produkt
+  ist die Topologie der Max-Metrik selbst unter
+  `with_reducible_and_instances rfl` gleich `instTopologicalSpaceProd`),
+  `CompleteSpace` (Prop-Klasse, `#synth CompleteSpace ℚ` scheitert;
+  einen Mathlib-Satz `¬ CompleteSpace ℚ` gibt es nicht), `Continuous`
+  als Gegenbeispiel mit Tabelle "class or not".

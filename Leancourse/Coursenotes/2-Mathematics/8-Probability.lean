@@ -17,7 +17,7 @@ htmlSplit := .never
 tag := "probability-pmf"
 %%%
 
-`PMF α` is Mathlib's type of discrete probability distributions on `α`. It is a monad in the sense of chapter {ref "type-constructor-classes"}[1.7], and the monad structure is how one builds distributions from others. The chapter first collects the `map` and `bind` operations that have already appeared for sets, finite sets and filters.
+`PMF α` is Mathlib's type of discrete probability distributions on `α`. It is a *monad*: it has operations `pure`, `map` and `bind`, and these are how one builds distributions from others. The chapter first collects the `map` and `bind` operations that have already appeared for sets, finite sets and filters.
 
 The [slides](slides/2-8-probability/) for this chapter follow it section by section.
 
@@ -26,7 +26,7 @@ The [slides](slides/2-8-probability/) for this chapter follow it section by sect
 tag := "monads"
 %%%
 
-Chapter {ref "type-constructor-classes"}[1.7] introduced `map`, `pure` and `bind` for `Option` and `List`. The same three operations occur in mathematics, and so far they have appeared under other names:
+The three operations `pure`, `map` and `bind` occur in mathematics, and so far they have appeared under other names:
 
 :::table (align := left) +header
 * + type
@@ -280,9 +280,8 @@ measurability is needed:
 
 {docstring PMF.bind_bind}
 
-These are the two identity laws and the associativity law introduced
-in chapter {ref "type-constructor-classes"}[1.7] (`pure_bind`,
-`bind_pure`, `bind_assoc`), here for `PMF`.
+These are the two identity laws and the associativity law of a monad
+(`pure_bind`, `bind_pure`, `bind_assoc`), here for `PMF`.
 
 ## `map`: pushing a distribution along a function
 %%%

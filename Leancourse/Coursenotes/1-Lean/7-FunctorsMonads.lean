@@ -9,280 +9,32 @@ open MyDef
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Functors, monads, coercions, hierarchies" =>
+#doc (Manual) "Coercions and hierarchies" =>
 %%%
 htmlSplit := .never
 tag := "functors-monads"
 %%%
 
-This chapter continues {ref "typeclasses"}[chapter 1.6]. Its classes take a type constructor instead of a type (`Functor`, `Monad`), turn structures into functions (coercions), and build on each other (`extends`).
+This chapter continues {ref "typeclasses"}[chapter 1.6] with two uses of typeclasses: coercions, which convert terms between types, and hierarchies of classes built with `extends`, with examples from algebra and analysis.
 
 The [slides](slides/1-7-functors-monads/) for this chapter follow it section by section.
-
-# Classes over type constructors
-%%%
-tag := "type-constructor-classes"
-%%%
-
-The classes so far take a type: `Add ℕ`, `Decidable (2 + 3 = 5)`. A class can also take a *type constructor*, a function `Type → Type` such as `Option` or `List`. The two most important are `Functor` and `Monad`. Both live in `Type 1`, because they quantify over all `α : Type`.
-
-```lean
-#check (Functor : (Type → Type) → Type 1)
-#check (Monad : (Type → Type) → Type 1)
-```
-
-## Functor
-%%%
-number := false
-tag := "functor-typeclass"
-%%%
-
-Many type constructors come with a way to apply a function to what they contain. `List.map` applies `g` to every element of a list, `List.map g [a, b] = [g a, g b]`; `Option.map` applies it to the value if there is one, `Option.map g (some a) = some (g a)`. In part 2 the image `f '' s` of a set (chapter 2.2) and `Filter.map` (chapter 2.6) follow the same pattern. A *functor* is a type constructor `f` together with such a map. The class has one field that matters (a second one, `mapConst`, has a default):
-
-```
-class Functor (f : Type u → Type v) where
-  map : {α β : Type u} → (α → β) → f α → f β
-```
-
-`g <$> x` is notation for `Functor.map g x`. For a type constructor of one's own, the instance is written by hand:
-
-```lean
-structure Twice (α : Type) where
-  fst : α
-  snd : α
-  deriving Repr
-
-instance : Functor Twice where
-  map g p := ⟨g p.fst, g p.snd⟩
-
-#eval (· + 1) <$> (⟨1, 2⟩ : Twice ℕ)
--- { fst := 2, snd := 3 }
-```
-
-For `Option` and `List` the instances are in Lean's library, and `<$>` is `Option.map` and `List.map`:
-
-```lean
-example (g : ℕ → ℕ) (x : Option ℕ) :
-    g <$> x = Option.map g x := rfl
-example (g : ℕ → ℕ) (xs : List ℕ) :
-    g <$> xs = List.map g xs := rfl
-```
-
-`map` applies a function to what is inside, without changing the shape around it:
-
-```lean
-#eval (· + 10) <$> (some 5 : Option ℕ)   -- some 15
-#eval (· + 10) <$> (none : Option ℕ)     -- none
-#eval (· * 2) <$> [1, 2, 3]              -- [2, 4, 6]
-```
-
-`map` cannot turn `none` into `some`, and it cannot shorten a list. Two laws say so: mapping the identity changes nothing, and mapping a composition is mapping twice. Here `h ∘ g` is the composition `fun x => h (g x)`. The laws are fields of the class `LawfulFunctor`:
-
-```lean
-example (x : Option ℕ) : id <$> x = x := id_map x
-
-example (g h : ℕ → ℕ) (xs : List ℕ) :
-    (h ∘ g) <$> xs = h <$> g <$> xs :=
-  comp_map g h xs
-```
-
-`LawfulFunctor` is a class in `Prop` next to `Functor`. Besides the two laws it has a third field, `map_const`, which says that `mapConst` is `map ∘ Function.const β`. Here `mapConst a x` replaces every entry of `x` by `a` (`mapConst 0 [1, 2, 3] = [0, 0, 0]`), and `Function.const β a` is the constant function `fun _ : β => a`. With the default `mapConst`, `map_const` holds by `rfl`. For `Twice` all three are `rfl`:
-
-```lean
-instance : LawfulFunctor Twice where
-  map_const := rfl
-  id_map _ := rfl
-  comp_map _ _ _ := rfl
-```
-
-`Functor` itself does not demand the laws. A `map` on lists that also reverses is a valid instance, and it breaks `id_map`. In the example, `local` makes the instance active only until `end`, and `priority := high` makes instance search try it before the library instance ({ref "managing-instances"}[Managing instances] below):
-
-```lean
-section
-local instance (priority := high) : Functor List where
-  map g xs := (xs.map g).reverse
-#eval id <$> [1, 2, 3]   -- [3, 2, 1]
-end
-```
-
-## Monad
-%%%
-number := false
-tag := "monad-typeclass"
-%%%
-
-`Option α` is the type of a computation that may fail. Division by zero is the standard case:
-
-```lean
-def safeDivide (a b : ℕ) : Option ℕ :=
-  if b = 0 then none else some (a / b)
-```
-
-To divide twice, the second division must run on the result of the first, and only if there is one. A `Monad m` provides exactly this. The class is built from smaller ones; the two fields without a default are
-
-```
-class Monad (m : Type u → Type v)
-    extends Applicative m, Bind m
-  pure : α → m α
-  bind : m α → (α → m β) → m β
-```
-
-* `pure : α → m α` turns a value into a computation that returns it;
-* `bind : m α → (α → m β) → m β`, written `x >>= f`, runs `x` and passes its result to `f`.
-
-Compared with `Functor`, these two are new. Between the two classes sits `Applicative`, a functor with `pure` and `<*>` (apply a function inside `m` to a value inside `m`); it is not used in this course. `Monad` inherits its fields from six small classes, and all except `pure` and `bind` have a default built from these two:
-
-:::table (align := left) +header
-* + Class
-  + Field
-  + Notation
-  + Default in `Monad`
-* + `Functor`
-  + `map`
-  + `<$>`
-  + `x >>= pure ∘ g`
-* + `Pure`
-  + `pure`
-  + —
-  + none
-* + `Seq`
-  + `seq`
-  + `<*>`
-  + from `bind` and `map`
-* + `SeqLeft`, `SeqRight`
-  + `seqLeft`, `seqRight`
-  + `<*`, `*>`
-  + from `bind`
-* + `Bind`
-  + `bind`
-  + `>>=`
-  + none
-:::
-
-`x <* y` runs both `x` and `y` and keeps the result of `x`; `x *> y` keeps the result of `y`. Neither is used here. `Applicative` extends `Functor`, `Pure`, `Seq`, `SeqLeft` and `SeqRight`; `Monad` extends `Applicative` and `Bind`. So every monad is a functor, and an instance of `Monad` only has to give `pure` and `bind`. `#print Monad` lists all fields with their defaults.
-
-For `Option`, `pure` is `some`, and `bind` passes the failure on:
-
-```lean
-def optionBind {α β : Type} (x : Option α)
-    (f : α → Option β) : Option β :=
-  match x with
-  | none => none
-  | some a => f a
-
-def divideTwice (a b c : ℕ) : Option ℕ :=
-  safeDivide a b >>= fun r => safeDivide r c
-
-#eval divideTwice 100 5 4    -- some 5
-#eval divideTwice 100 0 4    -- none
-```
-
-For `Option` the default `map` agrees with `Option.map`:
-
-```lean
-example (g : ℕ → ℕ) (x : Option ℕ) :
-    g <$> x = x >>= fun a => pure (g a) := by
-  cases x <;> rfl
-```
-
-## The `do`-notation
-%%%
-number := false
-tag := "do-notation"
-%%%
-
-A chain of `>>=` and `fun` is hard to read. The `do`-notation writes it as a sequence of steps:
-
-```lean
-def divideThrice (a b c d : ℕ) : Option ℕ := do
-  let r ← safeDivide a b
-  let s ← safeDivide r c
-  safeDivide s d
-
-#eval divideThrice 1000 10 5 4    -- some 5
-#eval divideThrice 1000 10 0 4    -- none
-```
-
-`let r ← e` runs `e` and names its result `r`; Lean translates each `let … ←` line into a `>>=`, with the rest of the block as the function. `return a` is `pure a`.
-
-## Lists as a monad
-%%%
-number := false
-tag := "list-monad"
-%%%
-
-A list is a computation with several results. `pure a` is `[a]`, and `xs >>= f` applies `f` to each element and concatenates the lists:
-
-```lean
-#eval [1, 2] >>= fun x => [x, x * 10]   -- [1, 10, 2, 20]
-
-def pairs : List (ℕ × ℕ) := do
-  let x ← [1, 2, 3]
-  let y ← [10, 20]
-  return (x, y)
-
-#eval pairs
--- [(1, 10), (1, 20), (2, 10), (2, 20), (3, 10), (3, 20)]
-```
-
-`let x ← [1, 2, 3]` reads "for each `x` in `[1, 2, 3]`". The result is the list version of `{(x, y) | x ∈ {1, 2, 3}, y ∈ {10, 20}}`. The instance comes from Mathlib (`#synth Monad List` names it).
-
-## The monad laws
-%%%
-number := false
-tag := "monad-laws"
-%%%
-
-Three laws make the `do`-notation behave as expected. `pure_bind` and `bind_assoc` are fields of `LawfulMonad`; `bind_pure` is a theorem derived from the other fields:
-
-:::table (align := left) +header
-* + law
-  + statement
-  + Lean
-* + left identity
-  + `pure a >>= f = f a`
-  + `pure_bind`
-* + right identity
-  + `x >>= pure = x`
-  + `bind_pure`
-* + associativity
-  + `x >>= f >>= g = x >>= fun a => f a >>= g`
-  + `bind_assoc`
-:::
-
-For `Option` each law is a computation, by cases on `x`:
-
-```lean
-example (a : ℕ) (f : ℕ → Option ℕ) :
-    (pure a >>= f) = f a := rfl
-
-example (x : Option ℕ) : (x >>= pure) = x := by
-  cases x <;> rfl
-```
-
-The name comes from category theory. A monad there is a functor `T` with natural transformations `η : Id → T` (here `pure`) and `μ : T ∘ T → T` (here `join`, which is `bind` with the identity: `join x = x >>= id`, in Lean `joinM`), and for the category of types and functions the three laws are equivalent to its axioms.
 
 # Coercions
 %%%
 tag := "coercions"
 %%%
 
-A *coercion* is a conversion Lean inserts automatically when a term of one type appears where another is expected, such as a `ℕ` where a `ℤ` is wanted. Coercions are instances of classes such as `Coe`, so instance resolution drives them too: on a mismatch Lean finds the instance and inserts the conversion, written `↑`.
+A *coercion* is a conversion Lean inserts automatically when a term of one type appears where another is expected, such as a `ℕ` where a `ℤ` is wanted. Mathematically there is nothing to it; in Lean it is a frequent source of goals that look right and do not close. Coercions are instances of a handful of classes, so instance resolution drives them: on a mismatch Lean searches an instance and inserts its function, written `↑`. How exactly `(n : ℤ)` triggers the search is in {ref "coercion-elaboration"}[chapter 1.8].
 
-```lean
-example (n : ℕ) : ℤ := n    -- inserted silently
-example (n : ℕ) : ℤ := ↑n   -- the same, explicitly
-```
-
-There are three flavours, according to *what* the target is:
+There are three kinds, according to *what* the target is:
 
 :::table (align := left) +header
 * + Class
   + Converts a term into ...
   + Example
-* + `Coe`
+* + `Coe` and its variants
   + ... a term of another type
-  + a subtype into its base type; `ℕ → ℤ` via `NatCast` (`Nat.cast`, chapter 2.1)
+  + `ℕ → ℤ`; a subtype into its base type
 * + `CoeSort`
   + ... a *type* (where a `Sort` is expected)
   + a set as a type; `b : Bool` as the type `b = true`
@@ -291,29 +43,203 @@ There are three flavours, according to *what* the target is:
   + a bundled morphism `f` applied as `f x`
 :::
 
-`Coe` is the ordinary case — one value becomes another:
+The term Lean builds does not contain `Coe.coe`. The instance is unfolded at once, and what remains is the function inside it: `Nat.cast n`, `x.val`, `Set.Elem s`, `DFunLike.coe f`. These functions carry the attribute `@[coe]`, and Lean prints them as `↑n`, `↑x`, `↥s` and `⇑f`.
 
-```lean
--- the subtype's `.val`:
-example (s : {n : ℕ // n > 0}) : ℕ := s
+## `Coe`
+%%%
+number := false
+tag := "coe-class"
+%%%
+
+```
+class Coe (α : semiOutParam (Sort u)) (β : Sort v) where
+  coe : α → β
 ```
 
-`CoeSort` lets a term stand in for a *type*. It turns `b : Bool` into the proposition `b = true` where a type is expected, and it is how a `Set α` may be written as a type:
+`Coe α β` turns a term of `α` into a term of `β`. It is the class to use for coercions between one's own types:
 
 ```lean
--- b used as a type:
+structure PosNat where
+  val : ℕ
+  pos : 0 < val
+
+instance : Coe PosNat ℕ := ⟨PosNat.val⟩
+
+def doublePos (p : PosNat) : ℕ := p + p
+#print doublePos
+-- fun p => p.val + p.val
+example (p : PosNat) : (p : ℕ) = Coe.coe p := rfl
+```
+
+In `p + p` Lean expects a natural number, finds `p : PosNat`, finds the instance and inserts `PosNat.val`. `#print` shows no trace of `Coe.coe`.
+
+## Chains of coercions
+%%%
+number := false
+tag := "coercion-chains"
+%%%
+
+`Coe` has four relatives. They have the same single field `coe : α → β` and differ in how they may be chained:
+
+```
+class Coe     (α : semiOutParam (Sort u)) (β : Sort v)
+class CoeTail (α : semiOutParam (Sort u)) (β : Sort v)
+class CoeOut  (α : Sort u) (β : semiOutParam (Sort v))
+class CoeHead (α : Sort u) (β : semiOutParam (Sort v))
+class CoeDep  (α : Sort u) (x : α) (β : Sort v)
+```
+
+For a coercion from `α` to `β`, Lean searches an instance of `CoeT α x β`. Such an instance is either one `CoeDep`, or a chain `CoeHead? CoeOut* Coe* CoeTail?`: at most one `CoeHead` at the start, any number of `CoeOut` and then of `Coe`, at most one `CoeTail` at the end.
+
+:::table (align := left) +header
+* + class
+  + in a chain
+  + example
+* + `Coe`
+  + any number
+  + one's own types
+* + `CoeOut`
+  + any number
+  + `subtypeCoe : CoeOut (Subtype p) α`
+* + `CoeTail`
+  + once, at the end
+  + `[NatCast R] → CoeTail ℕ R`
+* + `CoeHead`
+  + once, at the start
+  + rare
+* + `CoeDep`
+  + alone
+  + `[Decidable p] → CoeDep Prop p Bool`
+:::
+
+`semiOutParam` marks the side that the search finds: `Coe` and `CoeTail` work back from the target `β`, `CoeOut` and `CoeHead` forward from the source `α`. `CoeTail ℕ R` exists for every `R` with a `NatCast R` (chapter 2.1); applied twice it would loop, so it may only end a chain. A chain of two steps:
+
+```lean
+def posToInt (p : PosNat) : ℤ := p
+#print posToInt
+-- fun p => ↑p.val
+```
+
+First `Coe PosNat ℕ`, then `CoeTail ℕ ℤ`.
+
+`CoeDep` differs from the others: whether there is an instance depends on the term `x`, not only on its type. A proposition becomes a `Bool` only if it is decidable:
+
+```
+class CoeDep (α : Sort u) (x : α) (β : Sort v) where
+  coe : β
+
+instance decPropToBool (p : Prop) [Decidable p] :
+    CoeDep Prop p Bool := ⟨decide p⟩
+```
+
+```lean
+def isSmallNat (n : ℕ) : Bool := n < 5
+#print isSmallNat
+-- fun n => decide (n < 5)
+```
+
+## `CoeSort`
+%%%
+number := false
+tag := "coesort-class"
+%%%
+
+```
+class CoeSort (α : Sort u) (β : outParam (Sort v)) where
+  coe : α → β
+```
+
+`CoeSort` lets a term stand in for a *type*. It is used where a type is expected, after a colon or around an arrow. A structure that carries a type as a field is the typical case:
+
+```lean
+structure PointedType where
+  carrier : Type
+  pt : carrier
+
+instance : CoeSort PointedType Type :=
+  ⟨PointedType.carrier⟩
+
+example (X : PointedType) : X := X.pt
+```
+
+In `(X : PointedType) : X`, Lean needs a type after the colon and inserts `X.carrier`. The same happens for a set `s : Set α`, which becomes the subtype of its members, and for `b : Bool`, which becomes the proposition `b = true`:
+
+```lean
+example (s : Set ℕ) : (s : Type) = {x // x ∈ s} := rfl
 example (b : Bool) (h : b) : b = true := h
--- the subtype ↥s of its members:
-example (s : Set ℕ) : Type := s
 ```
 
-`CoeFun` lets a *bundled* object be applied like a plain function — so an additive monoid homomorphism `f : ℕ →+ ℕ` can be written `f x` even though `f` is really a structure carrying that function together with its properties:
+## `CoeFun`
+%%%
+number := false
+tag := "coefun-class"
+%%%
+
+```
+class CoeFun (α : Sort u) (γ : outParam (α → Sort v)) where
+  coe : (f : α) → γ f
+```
+
+`CoeFun` lets a term be applied like a function. The type of the function, `γ f`, may depend on `f`. An affine map `x ↦ a x + b`, stored as its two coefficients:
 
 ```lean
-example (f : ℕ →+ ℕ) (n : ℕ) : ℕ := f n
+structure AffineFn where
+  a : ℝ
+  b : ℝ
+
+instance : CoeFun AffineFn (fun _ => ℝ → ℝ) :=
+  ⟨fun f x => f.a * x + f.b⟩
+
+example : (⟨3, 1⟩ : AffineFn) 2 = 7 := by
+  show (3 : ℝ) * 2 + 1 = 7
+  norm_num
 ```
 
-Mathlib does not write a `CoeFun` instance for each kind of map. Each kind of map registers an instance of the class `DFunLike`, and one generic `CoeFun` instance serves them all ({ref "representation-pitfalls"}[How an object is represented]).
+In Mathlib, a homomorphism `f : ℕ →+ ℕ` is a structure carrying the function together with the proofs that it preserves `0` and `+`; it is still written `f n`. Mathlib does not write a `CoeFun` instance for each kind of map. Each kind of map registers an instance of the class `DFunLike`, and one generic `CoeFun` instance serves them all ({ref "representation-pitfalls"}[How an object is represented]):
+
+```
+class DFunLike (F : Sort*) (α : outParam (Sort*))
+    (β : outParam (α → Sort*)) where
+  coe : F → (a : α) → β a
+  coe_injective : Function.Injective coe
+
+instance DFunLike.toCoeFun [DFunLike F α β] :
+    CoeFun F (fun _ => (a : α) → β a) := ⟨DFunLike.coe⟩
+```
+
+The field `coe_injective` says that a map is determined by its function.
+
+```lean
+example (f : ℕ →+ ℕ) (n : ℕ) : f n = DFunLike.coe f n := rfl
+```
+
+## Pitfalls
+%%%
+number := false
+tag := "coercion-pitfalls"
+%%%
+
+Lean elaborates from the outside in. In `(n - 1 : ℤ)` it first sees `_ - _ : ℤ`, so the subtraction is in `ℤ`, and only then needs `n : ℤ`; the result is `↑n - 1`. In `((n - 1 : ℕ) : ℤ)` the subtraction is in `ℕ` and the coercion comes last: `↑(n - 1)`, which is `0` for `n = 0`. Division behaves the same way:
+
+```lean
+def predInt (n : ℕ) : ℤ := (n - 1 : ℤ)
+def predInt' (n : ℕ) : ℤ := ((n - 1 : ℕ) : ℤ)
+#eval (predInt 0, predInt' 0)     -- (-1, 0)
+def ratDiv (a b : ℕ) : ℚ := (a / b : ℚ)
+def ratDiv' (a b : ℕ) : ℚ := ((a / b : ℕ) : ℚ)
+#eval (ratDiv 7 2, ratDiv' 7 2)   -- (7/2, 3)
+```
+
+The infoview shows where the `↑` sits. Three further traps:
+
+* `↑n` without a target type does nothing: `def noTarget (n : ℕ) := ↑n` has type `ℕ → ℕ`.
+* A hypothesis `h : n < 5` does not prove `(n : ℤ) < 5` by `exact h`: the two statements differ by a `↑`. `exact_mod_cast h` does ({ref "number-casts"}[chapter 2.1]).
+* `ring` and `linarith` treat `↑(n - 1)` as an unknown; `push_cast` moves the `↑` inwards first.
+
+```lean
+example (n : ℕ) (h : n < 5) : (n : ℤ) < 5 := by
+  exact_mod_cast h
+```
 
 Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean reads it as `↑n + r`. Coercions between number types along `ℕ → ℤ → ℚ → ℝ → ℂ` are called *casts*. A goal can fill with `↑`s that block tactics like `ring` or `linarith`. Which casts there are, the lemmas that move them, and the tactics `push_cast`, `norm_cast` and `exact_mod_cast` are in {ref "number-casts"}[Casts] in chapter 2.1, once the number types are built.
 
@@ -342,6 +268,106 @@ example (α : Type) [CommRing α] : AddCommGroup α :=
 That is what lets `mul_comm` be stated once, for `CommMagma`, and hold for `ℕ`, `ℝ`, polynomial rings and matrix rings alike. When two paths lead to the same class, they must give the same instance; when they do not, the result is a *diamond* ({ref "typeclass-diamonds"}[Typeclass diamonds] in the appendix).
 
 Which structures there are and how to move between them is {ref "algebraic-hierarchy-mathlib"}[a chapter of its own] in the Mathematics part.
+
+# Classes from analysis
+%%%
+tag := "analysis-classes"
+%%%
+
+The classes of topology and analysis follow the same patterns as the algebraic ones. They come in chapters {ref "filters"}[2.6] and {ref "topology"}[2.7]; here only their declarations matter. `Filter`, `Cauchy` and `nhds` in them are explained there.
+
+*A class with data.* A topology on `X` is the set of open sets, together with three axioms:
+
+```
+class TopologicalSpace (X : Type u) where
+  IsOpen : Set X → Prop
+  isOpen_univ : IsOpen Set.univ
+  isOpen_inter : ∀ s t : Set X,
+    IsOpen s → IsOpen t → IsOpen (s ∩ t)
+  isOpen_sUnion : ∀ S : Set (Set X),
+    (∀ t ∈ S, IsOpen t) → IsOpen (⋃₀ S)
+```
+
+This is the textbook definition. A hypothesis `[TopologicalSpace X]` reads "`X` with a topology", and the instance fixes which topology.
+
+*A hierarchy with defaults.* A metric space is built in two steps (simplified; Mathlib has further fields with default values):
+
+```
+class PseudoMetricSpace (α : Type u) extends Dist α where
+  dist_self : ∀ x : α, dist x x = 0
+  dist_comm : ∀ x y : α, dist x y = dist y x
+  dist_triangle : ∀ x y z : α,
+    dist x z ≤ dist x y + dist y z
+  toUniformSpace : UniformSpace α := .ofDist dist …
+class MetricSpace (α : Type u)
+    extends PseudoMetricSpace α where
+  eq_of_dist_eq_zero : ∀ {x y : α}, dist x y = 0 → x = y
+```
+
+In a *pseudo*metric space, `dist x y = 0` is allowed for `x ≠ y`. `UniformSpace` extends `TopologicalSpace`, so instance search reaches the topology of `ℚ` along the `extends` chain:
+
+```lean
+/--
+info: PseudoMetricSpace.toUniformSpace.toTopologicalSpace
+-/
+#guard_msgs in
+#synth TopologicalSpace ℚ
+```
+
+The uniform structure, and with it the topology, is a *field* of `PseudoMetricSpace` with a default value. It is not a function of `dist` computed afterwards. An instance may therefore set the field to a structure that already exists. On `α × β`, the product metric (the maximum of the two distances) and the product topology give the same open sets, but they are not equal by definition. Mathlib's product metric takes the product structure as its field, so both paths give the same instance. Without this there would be a {ref "typeclass-diamonds"}[diamond].
+
+*A property as a class.* Completeness is a class in `Prop`, like {ref "fact"}[`Fact`]. It carries no data and sits on top of a uniform structure:
+
+```
+class CompleteSpace (α : Type u) [UniformSpace α] : Prop where
+  complete : ∀ {f : Filter α}, Cauchy f → ∃ x, f ≤ nhds x
+```
+
+It is stated with Cauchy filters. For a metric space this is the same as "every Cauchy sequence converges" (`Metric.complete_of_cauchySeq_tendsto`). Instance search finds it for `ℝ`, not for `ℚ`:
+
+```lean
+#synth CompleteSpace ℝ
+
+example (u : ℕ → ℝ) (hu : CauchySeq u) :
+    ∃ x, Filter.Tendsto u Filter.atTop (nhds x) :=
+  cauchySeq_tendsto_of_complete hu
+```
+
+```lean +error
+#synth CompleteSpace ℚ
+```
+
+*Not a class.* Continuity is a structure in `Prop`:
+
+```
+structure Continuous [TopologicalSpace X]
+    [TopologicalSpace Y] (f : X → Y) : Prop where
+  isOpen_preimage : ∀ s, IsOpen s → IsOpen (f ⁻¹' s)
+```
+
+A class is for what follows from the type alone. `Continuous f` depends on the function `f`, so it is proved for each `f`, not found by instance search:
+
+```lean
+example : Continuous (fun x : ℝ => x) := continuous_id
+```
+
+:::table (align := left) +header
+* + declaration
+  + kind
+  + how Lean gets it
+* + `TopologicalSpace X`, `MetricSpace X`
+  + class with data
+  + instance search, from the type
+* + `CompleteSpace X`, `CompactSpace X`
+  + class in `Prop`
+  + instance search, from the type
+* + `Continuous f`
+  + structure in `Prop`
+  + a proof, for each `f`
+* + `IsCompact s`
+  + `def`
+  + a proof, for each `s`
+:::
 
 # Managing instances
 %%%

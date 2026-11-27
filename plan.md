@@ -35,8 +35,8 @@ Kontext, ohne Lean.
 | 5 | 16.11. | 18.11. | Σ, Subtypen, Typfamilien, Quotienten | 1.4 | L-e, L-g, 1.2-b · *extra:* X-a | |
 | 6 | 23.11. | 25.11. | Regeln zum Bau von Typen, `Prop` | 1.5 | 1.3-a, 1.4-b | |
 | 7 | 30.11. | 02.12. | Typklassen: Instanzen, Suche, `Decidable`, `classical` | 1.6 | 1.4-a, 1.4-c, 1.5-a | **Test 2** |
-| 8 | 07.12. | 09.12. | Funktoren und Monaden, Koerzionen, Hierarchien | 1.7 | 1.6-a, 1.6-b | |
-| 9 | 14.12. | 16.12. | Notation | 1.8 | 1.7-a, 1.7-b | **Test 3** |
+| 8 | 07.12. | 09.12. | Koerzionen, Hierarchien | 1.7 | 1.6-a, 1.6-b | |
+| 9 | 14.12. | 16.12. | Notation | 1.8 | 1.7-b | **Test 3** |
 | 10 | 21.12. | -- | Zahlen | 2.1 | 1.8-a, 2.0-a, 2.1-a | |
 | | | | *Pause 23.12. -- 06.01.* | | | |
 | 11 | 11.01. | 13.01. | Mengen und Typen | 2.2 | 2.2-a, 2.2-b, 2.2-c | |
@@ -65,6 +65,11 @@ coercions, hierarchies* (Deck `1-7-functors-monads`). Notation ist
 damit 1.8. Blätter umbenannt: `1.6-d` (Trool) -> `1.6-b`, `1.6-c`
 (Monaden) -> `1.7-a`, `1.6-b` (Koerzionen) -> `1.7-b`, `1.7-a`
 (Notation) -> `1.8-a`.
+Seit dem 27.11.2026 gibt es keine Funktoren und Monaden mehr in der
+Vorlesung: Kapitel und Deck 1.7 heißen *Coercions and hierarchies*,
+das Blatt `1.7-a` (Funktoren und Monaden) ist gelöscht, das Thema
+steht in `SEMINAR.md`. `2.8-a` (*Monads in mathematics*) bleibt bis
+zur Überarbeitung des PMF-Kapitels.
 Davor, seit dem 30.10.2026, bekamen die Typklassen (1.6) zwei Vorlesungen:
 W7 Instanzen, Instanzsuche, `Decidable` und die Taktik `classical`;
 W8 Klassen über Typkonstruktoren (`Functor`, `Monad` mit `Option` und

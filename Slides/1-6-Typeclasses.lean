@@ -9,8 +9,8 @@ set_option pp.rawOnError true
 /-
 Deck for the chapter "Typeclasses" (part "Lean and its type theory"),
 up to `Decidable` and the `classical` tactic. The next chapter, with
-its own deck `1-7-FunctorsMonads`, continues with functors, monads,
-coercions and hierarchies. Small sections are merged (square brackets
+its own deck `1-7-FunctorsMonads`, continues with coercions and
+hierarchies. Small sections are merged (square brackets
 with `@`).
 -/
 
@@ -314,6 +314,25 @@ def f' (n : ℕ) (z : ℤ) := Times'.times n z  -- : ℤ
 Input parameters select the instance; an output parameter is read off it.
 :::
 
+# The problem `Fact` solves
+
+`ZMod p` is a field if `p` is prime: an instance with a condition.
+
+```lean +error -panel -stretch
+noncomputable instance (p : ℕ) (hp : p.Prime) :
+    Field (ZMod p) :=
+  @ZMod.instField p ⟨hp⟩
+```
+
+`This instance has 1 argument that cannot be inferred using typeclass synthesis`: `hp`.
+
+- instance search fills each argument by unification or by search again; `hp` by neither
+- `[hp : p.Prime]` is rejected: `Nat.Prime` is a `def`, not a class
+
+:::class "key"
+`Fact p`: a class with one field `out : p`. The condition becomes an instance argument.
+:::
+
 # Propositions as instances
 
 ```lean -panel -stretch
@@ -323,10 +342,9 @@ example (p : ℕ) (hp : p.Prime) (a : ZMod p)
   exact mul_inv_cancel₀ ha
 ```
 
-- `hp : p.Prime` is invisible to instance search: `Nat.Prime` is not a class
-- `Fact p`: a class with one field `out : p`
+- `ZMod.instField : [Fact (Nat.Prime p)] → Field (ZMod p)`
 - `mul_inv_cancel₀ : a ≠ 0 → a * a⁻¹ = 1` needs `[GroupWithZero (ZMod p)]`
-- `Nat.Prime` is a `def`; only a structure or inductive type can be a class
+- only a structure or inductive type can be a class; `Fact` is the smallest such
 
 # The search, step by step
 

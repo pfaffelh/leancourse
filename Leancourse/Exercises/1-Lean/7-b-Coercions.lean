@@ -25,6 +25,7 @@ through a class, are on sheet `1.8-a`. Casts between number types,
 | `Coe`             | a value becomes a value of another type      |
 | `CoeSort`         | a value becomes a *type*                     |
 | `CoeFun`          | a bundled object is applied like a function  |
+| `CoeDep`          | a coercion that exists only for some terms   |
 | `instance : Coe`  | a coercion for your own structure            |
 | `extends`         | a class that contains other classes          |
 
@@ -33,7 +34,8 @@ through a class, are on sheet `1.8-a`. Casts between number types,
 | sheet   | tactics                                        |
 |---------|------------------------------------------------|
 | `L-a`   | `exact`                                        |
-| `1.1-a` | `rw`, `show`                                   |
+| `1.1-a` | `rfl`, `rw`, `show`                            |
+| `1.1-b` | `decide`                                       |
 | `L-f`   | `have`                                         |
 | `1.1-c` | `ring`, `omega`, `calc`, `exact?`              |
 -/
@@ -171,4 +173,93 @@ instance : MyMonoid ℕ :=
 -- `a` is `1`. Apply `h` to `1`.
 theorem MyMonoid.one_unique {α : Type} [MyMonoid α] (e : α)
     (h : ∀ a : α, e * a = a) : e = 1 := by
+  sorry
+
+/-
+## Part 7: Chains of coercions
+
+Lean may insert several coercions in a row. Your instance from
+Exercise 8 gives `Pos → ℕ`, and Lean has `ℕ → ℤ`; together they give
+`Pos → ℤ`. The term Lean builds contains the functions inside the
+instances, not `Coe.coe`: for `ℕ → ℤ` this is `Nat.cast`, for a
+subtype it is `.val`.
+-/
+
+-- Exercise 14: Return `p` itself. Then `#print posToInt` and find the
+-- two arrows.
+def posToInt (p : Pos) : ℤ :=
+  sorry
+
+-- Exercise 15: Positive after both coercions. `have` the proof
+-- `p.pos`, then `omega`.
+example (p : Pos) : (0 : ℤ) < p := by
+  sorry
+
+-- Exercise 16: What the arrows unfold to. Both hold by definition.
+example (n : ℕ) : (n : ℤ) = Nat.cast n := by
+  sorry
+
+example (s : {n : ℕ // n > 0}) : (s : ℕ) = s.val := by
+  sorry
+
+/-
+## Part 8: `CoeDep` -- a coercion for some terms only
+
+A `Prop` may stand where a `Bool` is expected, but only if it is
+decidable: the coercion is `decide p`, and it needs an instance
+`Decidable p`. Whether the coercion exists depends on the term `p`,
+not only on its type `Prop`. This is the class `CoeDep`.
+-/
+
+-- Exercise 17: Write `n < 5` on the right. Lean inserts `decide`.
+def isSmall (n : ℕ) : Bool :=
+  sorry
+
+example : isSmall 3 = true := by
+  sorry
+
+example : isSmall 7 = false := by
+  sorry
+
+-- Exercise 18: What Lean inserted.
+example (n : ℕ) : isSmall n = decide (n < 5) := by
+  sorry
+
+-- Exercise 19: Writing `p` on the right fails for an arbitrary
+-- `p : Prop`. Add one hypothesis in square brackets to the statement,
+-- then write `p`.
+example (p : Prop) : Bool :=
+  sorry
+
+/-
+## Part 9: Where the arrow goes
+
+Lean elaborates from the outside in. In `(a - b : ℤ)` with
+`a b : ℕ`, the subtraction is already in `ℤ` and both arguments get
+an arrow: `↑a - ↑b`. In `((a - b : ℕ) : ℤ)` the subtraction happens
+in `ℕ`, and only the result is cast: `↑(a - b)`.
+-/
+
+-- Exercise 20: Replace each `sorry` on the right by an integer, then
+-- prove the equation with `decide`.
+example : ((5 - 7 : ℕ) : ℤ) = sorry := by
+  sorry
+
+example : ((5 : ℕ) - 7 : ℤ) = sorry := by
+  sorry
+
+-- Exercise 21: The same for division. Replace each `sorry` on the
+-- right by a rational number, then `rfl`. (`decide` gets stuck on
+-- the division in `ℚ`.)
+example : ((7 / 2 : ℕ) : ℚ) = sorry := by
+  sorry
+
+example : ((7 : ℕ) / 2 : ℚ) = sorry := by
+  sorry
+
+-- Exercise 22: With `h`, the two positions of the arrow agree. Prove
+-- it with `omega`. Then delete `h`: for which `n` is the statement
+-- false?
+example (n : ℕ) (h : 1 ≤ n) :
+    ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
   sorry

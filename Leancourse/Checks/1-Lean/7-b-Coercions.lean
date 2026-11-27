@@ -73,3 +73,57 @@ theorem MyMonoid.one_unique {α : Type} [MyMonoid α] (e : α)
     (h : ∀ a : α, e * a = a) : e = 1 := by
   calc e = e * 1 := by rw [MyMonoid.mul_one]
     _ = 1 := h 1
+
+/- ## Part 7: Chains of coercions -/
+
+def posToInt (p : Pos) : ℤ :=
+  p
+
+#print posToInt   -- fun p => ↑p.val
+
+example (p : Pos) : (0 : ℤ) < p := by
+  have := p.pos
+  omega
+
+example (n : ℕ) : (n : ℤ) = Nat.cast n := by
+  rfl
+
+example (s : {n : ℕ // n > 0}) : (s : ℕ) = s.val := by
+  rfl
+
+/- ## Part 8: `CoeDep` -/
+
+def isSmall (n : ℕ) : Bool :=
+  n < 5
+
+example : isSmall 3 = true := by
+  rfl
+
+example : isSmall 7 = false := by
+  rfl
+
+example (n : ℕ) : isSmall n = decide (n < 5) := by
+  rfl
+
+-- Exercise 19 changes the statement as the sheet asks.
+example (p : Prop) [Decidable p] : Bool :=
+  p
+
+/- ## Part 9: Where the arrow goes -/
+
+example : ((5 - 7 : ℕ) : ℤ) = 0 := by
+  decide
+
+example : ((5 : ℕ) - 7 : ℤ) = -2 := by
+  decide
+
+example : ((7 / 2 : ℕ) : ℚ) = 3 := by
+  rfl
+
+example : ((7 : ℕ) / 2 : ℚ) = 7 / 2 := by
+  rfl
+
+-- Without `h` the statement fails at `n = 0`: `0` against `-1`.
+example (n : ℕ) (h : 1 ≤ n) :
+    ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1 := by
+  omega

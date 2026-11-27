@@ -226,13 +226,10 @@ example {α β : Type*} (m : α → β) (F : Filter α)
     (s : Set β) : s ∈ map m F ↔ m ⁻¹' s ∈ F := Iff.rfl
 example {α β : Type*} (m : α → β) (s : Set α) :
     map m (𝓟 s) = 𝓟 (m '' s) := map_principal
--- Functor needs α, β in one universe
-example {α β : Type} (m : α → β) (F : Filter α) :
-    m <$> F = map m F := rfl
 ```
 
 :::class "key"
-`Filter` is a functor with `map`, as `Set` is with the image.
+`map m (𝓟 s) = 𝓟 (m '' s)`: the pushforward of a principal filter is the principal filter of the image.
 :::
 
 # `Filter.comap`: the pullback

@@ -174,12 +174,11 @@ example (f : ℕ → ℕ) (s : Set ℕ) (y : ℕ) :
     y ∈ f '' s ↔ ∃ x, x ∈ s ∧ f x = y := Iff.rfl
 example (f : ℕ → ℕ) (t : Set ℕ) (x : ℕ) :
     x ∈ f ⁻¹' t ↔ f x ∈ t := Iff.rfl
-example (f : ℕ → ℕ) (s : Set ℕ) : f <$> s = f '' s := rfl
 ```
 
 A hypothesis `h : y ∈ f '' s` is a triple: `obtain ⟨x, hx, rfl⟩ := h` gives `x`, a proof of `x ∈ s`, and replaces `y` by `f x`. To prove `y ∈ f '' s`, name the point: `⟨x, hx, rfl⟩` or `use x`.
 
-A hypothesis `x ∈ f ⁻¹' t` needs no unpacking. The image of the whole type is `Set.range f`. `f '' s` is `f <$> s`: `Set` is a functor (1.7).
+A hypothesis `x ∈ f ⁻¹' t` needs no unpacking. The image of the whole type is `Set.range f`.
 
 :::class "key"
 Membership in the image is an `∃`; membership in the preimage is `f x ∈ t`.

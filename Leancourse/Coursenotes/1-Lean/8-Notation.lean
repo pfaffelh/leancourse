@@ -382,6 +382,46 @@ set_option pp.notation false in
 
 The body of `∫` is parsed with precedence 60, so `∫ x in 0..1, x + 1` integrates `x + 1`. When in doubt, use brackets.
 
+# How `(n : ℤ)` calls the coercion
+%%%
+tag := "coercion-elaboration"
+%%%
+
+`(e : T)` is not a function but syntax, a *type ascription*. Its elaborator in Lean's source (`elabTypeAscription`) does three things, simplified:
+
+```
+let type ← elabType T       -- ℤ
+let e ← elabTerm e type     -- n, with expected type ℤ
+ensureHasType type e        -- ℕ is not ℤ: coercion
+```
+
+`ensureHasType` checks whether the type of `e` is `T`, up to definitional unfolding. If not, it searches an instance of `CoeT ℕ n ℤ` ({ref "coercion-chains"}[chapter 1.7]). Without one, the result is the error `Type mismatch`. For `(n : ℤ)` with `n : ℕ` the steps are:
+
+1. Elaborate `n` against `ℤ`. Its type is `ℕ`, a mismatch.
+2. Search `CoeT ℕ n ℤ`. It is found via `CoeTail ℕ ℤ`, which comes from `NatCast ℤ`. Lean inserts `CoeT.coe ℕ n ℤ inst`.
+3. Unfold every coercion function in this term until `Nat.cast n` is left.
+4. Display: `Nat.cast` has the attribute `@[coe]`, so Lean prints `↑n`.
+
+```lean
+def natToInt (n : ℕ) : ℤ := (n : ℤ)
+example (n : ℕ) : (n : ℤ) = @CoeT.coe ℕ n ℤ _ := rfl
+set_option pp.coercions false in
+set_option pp.fieldNotation false in
+#print natToInt
+-- fun n => Nat.cast n
+```
+
+The arrows are notation too. `↑e` elaborates `e` and then calls `ensureHasType` with the expected type; if there is none, `↑` does nothing. `⇑f` searches a `CoeFun` instance, `↥s` a `CoeSort` instance. `set_option pp.coercions false` shows the functions behind the arrows:
+
+```lean
+example (n : ℕ) : ℤ := ↑n
+example (f : ℕ →+ ℕ) : ℕ → ℕ := ⇑f
+example (s : Set ℕ) : Type := ↥s
+set_option pp.coercions false in
+#check fun (f : ℕ →+ ℕ) (s : Set ℕ) (x : s) => (f x : ℤ)
+-- fun f s x => (DFunLike.coe f x.val).cast
+```
+
 # Where numerals come from (`OfNat`)
 %%%
 tag := "ofnat"

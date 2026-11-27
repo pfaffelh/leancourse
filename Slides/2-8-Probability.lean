@@ -40,7 +40,7 @@ Mathematics — chapter 8
 A discrete distribution is built from others with `pure`, `map` and `bind`. In Mathlib, `PMF` is a monad.
 :::
 
-# Monads, from chapter 1.7
+# Monads
 
 :::table +colHeaders +rowSeps
 *
@@ -241,7 +241,7 @@ end
 ```
 
 :::class "key"
-The laws of chapter 1.7, for `PMF`. No measurability appears.
+The monad laws, for `PMF`. No measurability appears.
 :::
 
 # `map`: the image distribution

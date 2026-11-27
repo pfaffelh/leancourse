@@ -76,7 +76,6 @@ The tree mirrors `../Exercises/` file for file. As of October 2026:
 | `1-Lean/5-a-Rules` | 1.5 | 7 | yes |
 | `1-Lean/6-a-Typeclasses` | 1.6 | 8 | yes |
 | `1-Lean/6-b-Trool` | 1.6 | 8 | yes |
-| `1-Lean/7-a-Monads` | 1.7 | 9 | yes |
 | `1-Lean/7-b-Coercions` | 1.7 | 9 | yes |
 | `1-Lean/8-a-Notation` | 1.8 | 10 | yes |
 | `2-Mathematics/0-a-Search` | — | 10 | yes |

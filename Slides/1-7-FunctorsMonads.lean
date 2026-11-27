@@ -351,6 +351,52 @@ structure Continuous [TopologicalSpace X] [TopologicalSpace Y]
 A class is for what follows from the type alone. `Continuous f` depends on the term `f`, so it is proved, not searched.
 :::
 
+# New type, class, or structure?
+
+:::table +colHeaders
+*
+  * situation
+  * means
+  * examples
+*
+  * new elements
+  * new type
+  * `PosNat`, `ℚ`, `ℂ`
+*
+  * one canonical structure per type
+  * class
+  * `Group`, `TopologicalSpace`
+*
+  * many at once on one type
+  * `structure`, objects are terms
+  * `Filter α`, `Subgroup G`, `Measure α`
+*
+  * same elements, second structure
+  * type synonym, own instance
+  * `Lex α`, `αᵒᵈ`, `WithLp p V`
+*
+  * property of a term
+  * `structure`/`def` in `Prop`
+  * `Continuous f`, `IsCompact s`
+:::
+
+:::class "key"
+The question: how many such structures are needed on the same type at the same time?
+:::
+
+# `Filter` is a structure
+
+```lean -panel -stretch
+#check (Filter.atTop : Filter ℕ)
+#check (Filter.cofinite : Filter ℕ)
+example : (⊥ : TopologicalSpace ℕ) ≤ ⊤ := bot_le
+```
+
+- several filters on `ℕ` at once; `Tendsto u atTop (𝓝 x)` uses two
+- a class would mean: the type determines the filter
+- `TopologicalSpace` is a class, since a type usually has one topology; to compare topologies, the class is an ordinary type
+- a second instance on the same elements needs a type synonym: `Lex α` (1.6), `αᵒᵈ`
+
 # Managing instances
 
 - `instance (priority := 2000)`: tried before the default `1000`
@@ -365,3 +411,4 @@ A class is for what follows from the type alone. `Continuous f` depends on the t
 - coercions are instances of `Coe`, `CoeSort`, `CoeFun`
 - the algebraic hierarchy is a chain of `extends`
 - `TopologicalSpace`, `MetricSpace`: classes with data; `CompleteSpace`: a class in `Prop`; `Continuous`: no class
+- class if the type determines the structure; `structure` if many are needed at once (`Filter`)

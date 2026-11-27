@@ -369,6 +369,51 @@ example : Continuous (fun x : ℝ => x) := continuous_id
   + a proof, for each `s`
 :::
 
+# New type, class, or structure?
+%%%
+tag := "type-or-class"
+%%%
+
+A new mathematical notion can enter Lean in several ways. Which one fits depends on one question: how many such structures are needed on the same type at the same time?
+
+:::table (align := left) +header
+* + situation
+  + means
+  + examples
+* + new elements
+  + new type (`structure`, `inductive`)
+  + `PosNat`, `ℚ`, `ℂ`
+* + one canonical structure per type, found by Lean
+  + class
+  + `Add`, `Group`, `TopologicalSpace`, `MetricSpace`
+* + many at once on the same type
+  + `structure`; the objects are terms
+  + `Filter α`, `Subgroup G`, `Measure α`
+* + the same elements with a second structure
+  + type synonym with its own instance
+  + `Lex α`, `αᵒᵈ`, `WithLp p V`
+* + a property of a term
+  + `structure` or `def` in `Prop`
+  + `Continuous f`, `IsCompact s`
+:::
+
+A class means that the type determines the structure. Two instances on the same type lead to {ref "typeclass-diamonds"}[diamonds] or to ambiguity. This is why `Filter` is a structure and not a class: on `ℕ` alone there are `atTop` and `cofinite`, and `Tendsto u atTop (𝓝 x)` uses two filters at once. `Subgroup G` and `Measure α` are structures for the same reason.
+
+```lean
+open Filter in
+#check (atTop : Filter ℕ)
+open Filter in
+#check (cofinite : Filter ℕ)
+```
+
+`TopologicalSpace` is a class, since a type usually carries one topology. To compare topologies, the class is used as an ordinary type, and its terms are topologies:
+
+```lean
+example : (⊥ : TopologicalSpace ℕ) ≤ ⊤ := bot_le
+```
+
+A second structure on the same elements as an instance needs a new type with the same elements, as `Lex` in {ref "class-universe"}[chapter 1.6] and `αᵒᵈ` (the reversed order) are. `WithLp p V` gives a product `V` the `ℓᵖ`-norm in place of its own; on `Fin n → ℝ` the norm is the maximum norm, for `EuclideanSpace ℝ (Fin n)` the Euclidean norm ({ref "representation-pitfalls"}[How an object is represented]).
+
 # Managing instances
 %%%
 tag := "managing-instances"

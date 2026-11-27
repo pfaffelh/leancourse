@@ -121,12 +121,23 @@ instance [LT α] [LE β] : LE (α ×ₗ β) where
 
 # One type, two orders
 
+Lean picks the instance by the _type_: `(1, 5) : ℕ × ℕ` gives the componentwise order, `toLex (1, 5) : ℕ ×ₗ ℕ` the lexicographic one. `toLex` changes only the type.
+
 ```lean -panel -stretch
+-- componentwise: 5 ≤ 0 fails
 example : ¬ (1, 5) ≤ ((2, 0) : ℕ × ℕ) := by decide
+-- componentwise: 2 ≤ 1 fails
 example : ¬ (2, 0) ≤ ((1, 5) : ℕ × ℕ) := by decide
+-- lexicographic: 1 < 2 decides
 example : toLex ((1, 5) : ℕ × ℕ) ≤ toLex (2, 0) := by
   decide
 ```
+
+:::class "key"
+Componentwise, `(1, 5)` and `(2, 0)` are incomparable: the order on `ℕ × ℕ` is partial. On `ℕ ×ₗ ℕ` it is linear.
+:::
+
+# Instances with hypotheses
 
 Both instances have hypotheses. For `ℕ × ℕ` the search first finds `LE ℕ` and `LT ℕ`, then builds the instance for the pair (`pp.explicit`):
 
@@ -136,10 +147,6 @@ Both instances have hypotheses. For `ℕ × ℕ` the search first finds `LE ℕ`
 ```
 
 Without `LE` on a factor: no `≤` on the pair, `failed to synthesize LE (…)`.
-
-:::class "key"
-The instance decides what `≤` means: partial order on `ℕ × ℕ`, linear order on `ℕ ×ₗ ℕ`.
-:::
 
 # Creating instances
 

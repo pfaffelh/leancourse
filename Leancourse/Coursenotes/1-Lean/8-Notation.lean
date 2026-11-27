@@ -149,11 +149,57 @@ a name, a numeral, or something in brackets. The final `: term` makes
 the whole expression a term again. The `local` in front works as for
 `notation`.
 
-This is the same as `notation "twice " x:max => x + x`. The two
-commands are needed when one rule is not enough: the list literal `[1, 2, 3]`
-in {ref "pattern-matching"}[Pattern matching] is one `syntax` line
-and three `macro_rules`, one for `[]`, one for a single element and
+This is the same as `notation "twice " x:max => x + x`. `notation`
+describes one fixed shape with one replacement. The two separate
+commands solve three problems that `notation` cannot:
+
+1. *Any number of arguments.* `term,*` in a `syntax` line accepts a
+   comma-separated list of terms of any length, including none.
+2. *Cases on the input.* `macro_rules` may have several rules, like a
+   `match` on syntax; the first that fits is used. A rule may use the
+   new syntax again, so the replacement can be recursive.
+3. *Extension later.* Another `macro_rules` for the same syntax may
+   follow, also in another file. For a tactic, Lean tries all rules,
+   the most recent first, until one succeeds.
+
+An example for 1 and 2, a sum of any length:
+
+```lean
+section SumDemo
+local syntax "sum⟪" term,* "⟫" : term
+local macro_rules
+  | `(sum⟪⟫) => `(0)
+  | `(sum⟪$x⟫) => `($x)
+  | `(sum⟪$x, $xs,*⟫) => `($x + sum⟪$xs,*⟫)
+#eval sum⟪1, 2, 3⟫   -- 6
+end SumDemo
+```
+
+`$xs,*` is the rest of the list. The list literal `[1, 2, 3]` in
+{ref "pattern-matching"}[Pattern matching] is built the same way:
+one `syntax` line, one rule for `[]`, one for a single element, and
 one that peels off the first element.
+
+An example for 3: the tactic `trivial` is declared in Lean's core as
+`syntax "trivial" : tactic`, followed by one `macro_rules` each for
+`rfl`, `assumption`, `contradiction`, `decide` and others. Its
+documentation invites you to add more. The same in small:
+
+```lean
+section TacticDemo
+local syntax "easy" : tactic
+local macro_rules
+  | `(tactic| easy) => `(tactic| rfl)
+local macro_rules
+  | `(tactic| easy) => `(tactic| assumption)
+
+example : 2 + 2 = 4 := by easy
+example (p : Prop) (h : p) : p := by easy
+end TacticDemo
+```
+
+In the first example the newer rule (`assumption`) fails, and Lean
+falls back to `rfl`.
 
 `notation3` is Mathlib's extension of `notation` for notation that
 binds a variable. Mathlib declares `∀ᶠ` with it:
@@ -485,6 +531,28 @@ If you have `h : x = y` and `hx : P x` (with `P x : Prop`), you can prove `P y` 
 example (P : ℕ → Prop) (x y : ℕ) (h : x = y) (hx : P x) :
     P y := by
   exact h ▸ hx
+```
+
+`h ▸ hx` is similar to the tactic `subst h`. If `y` is a variable,
+`subst h` replaces `y` by `x` everywhere, in the goal and in all
+hypotheses, and removes `y` and `h`. Then `hx` proves the goal:
+
+```lean
+example (P : ℕ → Prop) (x y : ℕ) (h : x = y) (hx : P x) :
+    P y := by
+  subst h
+  exact hx
+```
+
+There are two differences. `subst` needs one side of the equation to
+be a variable; `▸` does not, it works for `h : f x = 3` as well. And
+`▸` changes only the one term `hx` and the goal, `subst` the whole
+context.
+
+```lean
+example (P : ℕ → Prop) (f : ℕ → ℕ) (x : ℕ)
+    (h : f x = 3) (hx : P (f x)) : P 3 :=
+  h ▸ hx
 ```
 
 Long terms often have the form `f (g (h x))`, and the closing brackets end up far from their opening counterparts. `f <| g <| h x` means the same and needs no closing symbol: everything to the right of `<|` is the argument.

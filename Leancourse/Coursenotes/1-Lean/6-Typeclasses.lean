@@ -150,7 +150,9 @@ protected inductive Lex : α × β → α × β → Prop where
       Prod.Lex (a, b₁) (a, b₂)
 ```
 
-`left`: the first components are strictly ordered, the second ones are arbitrary. `right`: the first components are equal, the second ones decide. In summary:
+`left`: the first components are strictly ordered, the second ones are arbitrary. `right`: the first components are equal, the second ones decide.
+
+Lean chooses between the two orders by the *type* of the terms. For `(1, 5) : ℕ × ℕ`, instance search sees only the componentwise instance; for `toLex (1, 5) : Lex (ℕ × ℕ)`, only the lexicographic one. There is no priority and nothing to choose: each of the two types has one `LE` instance, and `toLex` changes the type, not the element. In summary:
 
 :::table (align := left) +header
 * + type
@@ -167,8 +169,11 @@ protected inductive Lex : α × β → α × β → Prop where
 So `(1, 5)` and `(2, 0)` are incomparable in `ℕ × ℕ`, and `(1, 5)` is the smaller one in `Lex (ℕ × ℕ)`:
 
 ```lean
+-- componentwise: 5 ≤ 0 fails
 example : ¬ ((1, 5) ≤ ((2, 0) : ℕ × ℕ)) := by decide
+-- componentwise: 2 ≤ 1 fails
 example : ¬ ((2, 0) ≤ ((1, 5) : ℕ × ℕ)) := by decide
+-- lexicographic: 1 < 2 decides
 example : toLex (1, 5) ≤ (toLex (2, 0) : Lex (ℕ × ℕ)) := by
   decide
 ```

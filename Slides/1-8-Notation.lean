@@ -121,8 +121,23 @@ local macro_rules
 - `syntax`: what may be written, a new rule for the parser
 - `term:max`: the argument is a term of maximal precedence (a name, a numeral, or something in brackets); `: term` makes the whole a term again
 - `macro_rules`: what it is replaced by; `` `(…) `` is syntax with holes `$x`
-- `notation` does both at once; several rules: the list literal `[1, 2, 3]` (1.3)
+- `notation` does both at once, for one fixed shape
 - `notation3`: Mathlib's `notation` for symbols that bind a variable
+
+# What `notation` cannot do
+
+```lean -panel -stretch
+local syntax "sum⟪" term,* "⟫" : term
+local macro_rules
+  | `(sum⟪⟫) => `(0)
+  | `(sum⟪$x⟫) => `($x)
+  | `(sum⟪$x, $xs,*⟫) => `($x + sum⟪$xs,*⟫)
+#eval sum⟪1, 2, 3⟫   -- 6
+```
+
+- *any number of arguments*: `term,*`; so is the list literal `[1, 2, 3]` (1.3)
+- *cases on the input*: several rules, like a `match`; recursion allowed
+- *extension later*: another `macro_rules` for the same syntax, also in another file. The tactic `trivial` is `syntax "trivial" : tactic` plus one rule each for `rfl`, `assumption`, `contradiction`, `decide`, …; Lean tries them, newest first, until one succeeds
 
 # Are `∀` and `∃` notation?
 
@@ -424,16 +439,19 @@ instance (n : Nat) : OfNat Countdown n where
 
 A bare `2` is a natural number: the instance `OfNat ℕ n` is marked `@[default_instance]`, used when nothing else fixes the type.
 
-# Rewriting a hypothesis with `▸`
+# Rewriting with `▸`
 
-From `h : x = y` and `hx : P x`, the term `h ▸ hx` proves `P y`: it rewrites `hx` with `h`.
-Type `▸` as `\t`.
+From `h : x = y` and `hx : P x`, the term `h ▸ hx` proves `P y`. Type `▸` as `\t`.
 
 ```lean -panel -stretch
-example (P : ℕ → Prop) (x y : ℕ)
-    (h : x = y) (hx : P x) : P y := by
-  exact h ▸ hx
+example (P : ℕ → Prop) (x y : ℕ) (h : x = y)
+    (hx : P x) : P y := h ▸ hx
+example (P : ℕ → Prop) (x y : ℕ) (h : x = y)
+    (hx : P x) : P y := by subst h; exact hx
 ```
+
+- similar to the tactic `subst h`: it replaces the variable `y` by `x` everywhere and removes `y` and `h`
+- `subst` needs a variable on one side, `▸` does not (`h : f x = 3` works); `▸` changes one term and the goal, `subst` the whole context
 
 # Brackets with `<|`
 

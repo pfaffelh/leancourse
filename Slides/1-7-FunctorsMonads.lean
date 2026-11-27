@@ -258,6 +258,39 @@ example (n : ℕ) (h : n < 5) : (n : ℤ) < 5 := by
 - `ring` and `linarith` treat `↑(n - 1)` as an unknown; `push_cast` moves `↑` inwards (2.1)
 - how `(n : ℤ)` calls the coercion: chapter 1.8
 
+# Casts: from `ℕ` to `ℝ`
+
+```lean -panel -stretch
+example : ((0 - 1 : ℕ) : ℝ) = 0 := by norm_num
+example : ((0 : ℕ) : ℝ) - 1 = -1 := by norm_num
+example (n : ℕ) :
+    ((n + 1 : ℕ) : ℝ) ^ 2 = (n : ℝ) ^ 2 + 2 * n + 1 := by
+  push_cast
+  ring
+```
+
+- the cast is `Nat.cast`, from `NatCast ℝ` via `CoeTail`; casts: coercions along `ℕ → ℤ → ℚ → ℝ → ℂ`
+- `((n - 1 : ℕ) : ℝ)` subtracts in `ℕ`, `(n : ℝ) - 1` in `ℝ`
+- `↑(n + 1) = ↑n + 1` is not `rfl`; `ring` fails, `push_cast` moves the `↑` inwards
+- `#eval` does not work on `ℝ`
+
+# Casts go only one way
+
+```lean -panel -stretch
+open NNReal in
+example (x : ℝ≥0) : (x : ℝ) = x.val := rfl
+example : ⌊(-2.5 : ℝ)⌋₊ = 0 := by norm_num
+example : (-3 : ℝ).toNNReal = 0 := by simp
+```
+
+- a cast exists where no value is lost: `ℕ → ℝ`; `ℝ≥0 → ℝ` forgets the proof of `0 ≤ x`
+- `(x : ℕ)` for `x : ℝ` is a type error
+- the way back is a function with a junk value: `⌊x⌋₊`, `x.toNNReal`
+
+:::class "key"
+All casts, including `ℝ≥0∞`, and the tactics: chapter 2.1.
+:::
+
 # Hierarchies with `extends`
 
 ```

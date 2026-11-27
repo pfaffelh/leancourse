@@ -257,7 +257,55 @@ example (n : ℕ) (h : n < 5) : (n : ℤ) < 5 := by
   exact_mod_cast h
 ```
 
-Coercions keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean reads it as `↑n + r`. Coercions between number types along `ℕ → ℤ → ℚ → ℝ → ℂ` are called *casts*. A goal can fill with `↑`s that block tactics like `ring` or `linarith`. Which casts there are, the lemmas that move them, and the tactics `push_cast`, `norm_cast` and `exact_mod_cast` are in {ref "number-casts"}[Casts] in chapter 2.1, once the number types are built.
+## Casts: from `ℕ` to `ℝ`
+%%%
+number := false
+tag := "nat-real-cast"
+%%%
+
+Coercions between number types along `ℕ → ℤ → ℚ → ℝ → ℂ` are called *casts*. They keep statements readable: you write `n + r` for `n : ℕ` and `r : ℝ`, and Lean reads it as `↑n + r`. The cast from `ℕ` to `ℝ` shows everything that can go wrong with them.
+
+*What Lean inserts.* The function is `Nat.cast`. It comes from the instance `NatCast ℝ`, through `CoeTail` as in {ref "coercion-chains"}[Chains of coercions], not from a `Coe` instance:
+
+```lean
+section
+set_option pp.coercions false
+#check fun (n : ℕ) => (n : ℝ)
+-- fun n => n.cast : ℕ → ℝ
+end
+```
+
+*Where the arrow goes.* As in the pitfalls above, `((n - 1 : ℕ) : ℝ)` subtracts in `ℕ` and casts afterwards, `(n : ℝ) - 1` casts first. For `n = 0` the results differ; division behaves the same way:
+
+```lean
+example : ((0 - 1 : ℕ) : ℝ) = 0 := by norm_num
+example : ((0 : ℕ) : ℝ) - 1 = -1 := by norm_num
+example : ((7 / 2 : ℕ) : ℝ) = 3 := by norm_num
+example : ((7 : ℕ) : ℝ) / 2 = 7 / 2 := by norm_num
+```
+
+`#eval` cannot show these values, since `ℝ` has no computable arithmetic; with `ℤ` and `ℚ` it can (see above).
+
+*The arrow does not move by itself.* `((n + 1 : ℕ) : ℝ)` and `↑n + 1` are equal, but not by `rfl`: `Nat.cast` on `ℝ` does not compute. `ring` sees `↑(n + 1)` as an unknown and fails. `push_cast` first rewrites it to `↑n + 1`:
+
+```lean
+example (n : ℕ) :
+    ((n + 1 : ℕ) : ℝ) ^ 2 = (n : ℝ) ^ 2 + 2 * n + 1 := by
+  push_cast
+  ring
+```
+
+*Casts go only one way.* There is a cast where no value is lost: `ℕ → ℝ`, and `ℝ≥0 → ℝ`, where `ℝ≥0` (with `open NNReal`) is the subtype `{x : ℝ // 0 ≤ x}` and the cast forgets the proof. In the other direction `(x : ℕ)` for `x : ℝ` is a type error. One writes a function instead, and it has a junk value: `⌊x⌋₊` (floor) gives `0` for negative `x`, and `x.toNNReal` does too.
+
+```lean
+open NNReal in
+example (x : ℝ≥0) : (x : ℝ) = x.val := rfl
+example : ⌊(2.5 : ℝ)⌋₊ = 2 := by norm_num
+example : ⌊(-2.5 : ℝ)⌋₊ = 0 := by norm_num
+example : (-3 : ℝ).toNNReal = 0 := by simp
+```
+
+All casts and the functions back, including `ℝ≥0∞`, the lemmas that move casts, and the tactics `push_cast`, `norm_cast` and `exact_mod_cast` are in {ref "number-casts"}[Casts] in chapter 2.1, once the number types are built.
 
 # Hierarchies with `extends`
 %%%

@@ -3483,3 +3483,16 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   ist das nur wegen `semiOutParam`, und jede Instanz muss das Argument
   festlegen (`instance {α} : Coe α ℕ` scheitert mit "instance does
   not provide concrete values for (semi-)out-params").
+
+## 2026-11-27 (3) -- Casts in 1.7 am Beispiel ℕ → ℝ
+
+- Neuer Unterabschnitt *Casts: from `ℕ` to `ℝ`* (tag `nat-real-cast`)
+  am Ende von *Coercions* in 1.7, zwei Folien im Deck 1-7: der Cast ist
+  `Nat.cast` (aus `NatCast ℝ` ueber `CoeTail`), `((0 - 1 : ℕ) : ℝ) = 0`
+  gegen `(0 : ℝ) - 1`, `push_cast` vor `ring`, und *Casts go only one
+  way* (`ℝ≥0 → ℝ` vergisst den Beweis; zurueck `⌊x⌋₊`, `toNNReal` mit
+  Muellwert). Volle Tabelle mit `ℝ≥0∞` bleibt in 2.1.
+- Gemessen: `((n + 1 : ℕ) : ℝ) = ↑n + 1` ist nicht `rfl`; ein blosses
+  `push_cast` laesst dabei `↑n + 1 = ↑n + 1` offen (zwei verschiedene
+  `1`), `push_cast; ring` schliesst es. `ring` allein scheitert an
+  `((n + 1 : ℕ) : ℝ) ^ 2`.

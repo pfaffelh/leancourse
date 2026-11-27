@@ -13,7 +13,7 @@ section: commands for terms, the universe hierarchy, function types
 with their terms, inductive types, structures.
 -/
 
-namespace SlidesTypes
+-- no namespace: `#print` shows the full name of a declaration
 #doc (Slides) "Functions, inductive types, structures" =>
 
 ```css

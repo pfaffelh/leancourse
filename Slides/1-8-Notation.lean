@@ -396,11 +396,10 @@ ensureHasType type e        -- ℕ is not ℤ: coercion
 # `(n : ℤ)` step by step
 
 ```lean -panel -stretch
-def toInt (n : ℕ) : ℤ := (n : ℤ)
 example (n : ℕ) : (n : ℤ) = @CoeT.coe ℕ n ℤ _ := rfl
 set_option pp.coercions false in
 set_option pp.fieldNotation false in
-#print toInt
+#check fun (n : ℕ) => (n : ℤ)
 ```
 
 1. elaborate `n` against `ℤ`: type `ℕ`, mismatch

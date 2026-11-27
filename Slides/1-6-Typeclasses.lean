@@ -14,7 +14,7 @@ hierarchies. Small sections are merged (square brackets
 with `@`).
 -/
 
-namespace SlidesTypeclasses
+-- no namespace: `#print` shows the full name of a declaration
 #doc (Slides) "Typeclasses" =>
 
 ```css

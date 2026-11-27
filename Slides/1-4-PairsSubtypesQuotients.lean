@@ -14,7 +14,7 @@ connectives as types, quotient types (integers mod 2, reals), the
 table of the four steps, and some history.
 -/
 
-namespace SlidesTypeFormers
+-- no namespace: `#print` shows the full name of a declaration
 #doc (Slides) "Pairs, subtypes, families, quotients" =>
 
 ```css

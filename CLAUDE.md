@@ -3459,3 +3459,27 @@ gleichen Namens im Deck 1-3, mit Con-Leche in der Schlusszeile.
   `CompleteSpace` (Prop-Klasse, `#synth CompleteSpace ℚ` scheitert;
   einen Mathlib-Satz `¬ CompleteSpace ℚ` gibt es nicht), `Continuous`
   als Gegenbeispiel mit Tabelle "class or not".
+
+## 2026-11-27 (2) -- Namespaces der Decks, `semiOutParam`
+
+- **`#print` druckt immer den vollen Namen** (`Lean/Elab/Print.lean`,
+  `mkHeader`; keine Option). In einem Deck mit `namespace SlidesX`
+  stand deshalb `def SlidesFunctorsMonads.double` auf der Folie. Ein
+  `end SlidesX` in einem versteckten Block (`lean -show`) geht nicht:
+  jeder Block hat seinen eigenen Scope ("no current scope to end").
+- Abhilfe: Decks 1-2, 1-3, 1-4, 1-5, 1-6 und 2-3 haben **keinen
+  Namespace mehr** (Kommentarzeile an seiner Stelle); `lake build
+  slides` zeigt, dass nichts kollidiert. In 1-7 und 1-8 zeigt
+  `#check fun (p : PosNat) => (p : ℤ)` statt `#print` den
+  eingefuegten Pfeil, ohne Namen. Die anderen Decks behalten ihren
+  Namespace, er taucht nur noch in Hover-Texten auf. Pruefung:
+  sichtbare Ausgaben (`<code class="verso-message ...">`) der
+  gerenderten Decks auf `Slides[A-Z]\w*\.` durchsuchen. **Wer ein
+  neues Deck ohne Namespace anlegt, muss die Slides-Binary bauen**:
+  Kollisionen zeigen sich erst beim gemeinsamen Import.
+- `semiOutParam` erklaert (1.7, *Chains of coercions*, zwei Folien):
+  die Kettenregel `[CoeTail β γ] [CoeHTC α β] : CoeHTCT α γ` aus
+  `Init/Coe.lean` fragt `CoeTail ?β ℤ` mit unbekanntem `β`; erlaubt
+  ist das nur wegen `semiOutParam`, und jede Instanz muss das Argument
+  festlegen (`instance {α} : Coe α ℕ` scheitert mit "instance does
+  not provide concrete values for (semi-)out-params").

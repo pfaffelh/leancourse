@@ -112,7 +112,23 @@ For a coercion from `α` to `β`, Lean searches an instance of `CoeT α x β`. S
   + `[Decidable p] → CoeDep Prop p Bool`
 :::
 
-`semiOutParam` marks the side that the search finds: `Coe` and `CoeTail` work back from the target `β`, `CoeOut` and `CoeHead` forward from the source `α`. `CoeTail ℕ R` exists for every `R` with a `NatCast R` (chapter 2.1); applied twice it would loop, so it may only end a chain. A chain of two steps:
+*What `semiOutParam` does.* Lean's core builds the chains with instances such as
+
+```
+instance [CoeTail β γ] [CoeHTC α β] : CoeHTCT α γ
+```
+
+(`Init/Coe.lean`). For a coercion from `PosNat` to `ℤ`, the middle type `β` is not known yet. Instance search normally refuses such a subgoal, because any type could fit; for this reason Lean rejects an instance like `[Mul β] : Add α`. The mark `semiOutParam` on the first argument of `CoeTail` allows it: the subgoal `CoeTail ?β ℤ` may be searched with `?β` unknown, and each `CoeTail` instance with target `ℤ` supplies its own `β`. The instance from `NatCast ℤ` gives `β = ℕ`, and the search continues with `CoeHTC PosNat ℕ`, which `Coe PosNat ℕ` solves. So `Coe` and `CoeTail` are found backwards from the target, `CoeOut` and `CoeHead` forwards from the source.
+
+The condition is that every instance gives the marked argument a concrete value. Lean rejects an instance that leaves it open:
+
+```lean +error
+instance {α : Type} : Coe α ℕ := ⟨fun _ => 0⟩
+```
+
+The difference to an {ref "outparam"}[output parameter]: an `outParam` is always found by the search, as the result type `γ` of `HMul α β γ`. A `semiOutParam` may be known in advance, as in `Coe PosNat ℕ`, or found, as in `CoeTail ?β ℤ`.
+
+`CoeTail ℕ R` exists for every `R` with a `NatCast R` (chapter 2.1); applied twice it would loop, so it may only end a chain. A chain of two steps:
 
 ```lean
 def posToInt (p : PosNat) : ℤ := p

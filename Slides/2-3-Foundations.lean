@@ -15,7 +15,7 @@ other type theories. Material lectured in part 1 (chapters 1.3 and
 1.5) is only recalled.
 -/
 
-namespace SlidesFoundations
+-- no namespace: `#print` shows the full name of a declaration
 
 #doc (Slides) "Foundations: universes, axioms, well-foundedness" =>
 

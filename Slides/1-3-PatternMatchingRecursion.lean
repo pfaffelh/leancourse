@@ -12,11 +12,11 @@ Deck for the chapter "Pattern matching and recursion" of part 1 (Lean
 and its type theory). It follows the chapter section by section:
 pattern matching, structural and well-founded recursion, proofs about
 recursive definitions, the recursor (with figures), `casesOn`,
-course-of-values recursion, strict positivity. It reopens the
-namespace of the deck for chapter 1.2, whose `MyNat` it uses.
+course-of-values recursion, strict positivity. It uses `MyNat` from
+the deck for chapter 1.2. Neither deck has a namespace, so that
+`#print` shows short names.
 -/
 
-namespace SlidesTypes
 #doc (Slides) "Pattern matching and recursion" =>
 
 ```css

@@ -69,8 +69,7 @@ structure PosNat where
   val : ℕ
   pos : 0 < val
 instance : Coe PosNat ℕ := ⟨PosNat.val⟩
-def double (p : PosNat) : ℕ := p + p
-#print double
+#check fun (p : PosNat) => (p + p : ℕ)
 example (p : PosNat) : (p : ℕ) = Coe.coe p := rfl
 ```
 
@@ -119,13 +118,37 @@ class CoeHead (α : Sort u) (β : semiOutParam (Sort v))
 Lean searches the class `CoeT α x β`: a chain `CoeHead? CoeOut* Coe* CoeTail?`, or one `CoeDep`.
 
 ```lean -panel -stretch
-def toInt (p : PosNat) : ℤ := p
-#print toInt
+#check fun (p : PosNat) => (p : ℤ)
 ```
 
 - `PosNat → ℕ` by `Coe`, then `ℕ → ℤ` by `CoeTail` (from `NatCast ℤ`, chapter 2.1)
-- `semiOutParam` marks the side found by the search: `Coe` works back from the target `β`, `CoeOut` forward from the source `α`
 - `CoeTail ℕ R` for every `R` with `NatCast R`: applied twice it would loop, so it may only end a chain
+
+# `semiOutParam`
+
+```
+class CoeTail (α : semiOutParam (Sort u)) (β : Sort v)
+instance [CoeTail β γ] [CoeHTC α β] : CoeHTCT α γ
+```
+
+- the instance builds chains (Lean's core, `Init/Coe.lean`); for `PosNat → ℤ` the middle type `β` is unknown
+- normally the search refuses a subgoal with an unknown argument
+- `semiOutParam` allows `CoeTail ?β ℤ`: each instance supplies its `β`; from `NatCast ℤ` comes `β = ℕ`, then `Coe PosNat ℕ`
+- so `Coe`, `CoeTail` are found backwards from the target, `CoeOut`, `CoeHead` forwards from the source
+
+# The condition of `semiOutParam`
+
+Every instance must fix the marked argument:
+
+```
+instance {α : Type} : Coe α ℕ := ⟨fun _ => 0⟩
+-- error: instance does not provide concrete values
+--   for (semi-)out-params
+--   Coe ?α ℕ
+```
+
+- `outParam` (1.6): always found by the search, as `γ` in `HMul α β γ`
+- `semiOutParam`: given, as in `Coe PosNat ℕ`, or found, as in `CoeTail ?β ℤ`
 
 # `CoeDep`
 
@@ -137,8 +160,7 @@ instance decPropToBool (p : Prop) [Decidable p] :
 ```
 
 ```lean -panel -stretch
-def isSmall (n : ℕ) : Bool := n < 5
-#print isSmall
+#check fun (n : ℕ) => (n < 5 : Bool)
 ```
 
 - whether there is an instance depends on the term `x`, not only on its type: a `Prop` becomes a `Bool` only if it is decidable, so the instance needs `p` itself
@@ -225,14 +247,13 @@ def q' (a b : ℕ) : ℚ := ((a / b : ℕ) : ℚ)
 # More pitfalls
 
 ```lean -panel -stretch
-def noTarget (n : ℕ) := ↑n
-#check noTarget
+#check fun (n : ℕ) => ↑n
 
 example (n : ℕ) (h : n < 5) : (n : ℤ) < 5 := by
   exact_mod_cast h
 ```
 
-- `↑n` without a target type does nothing: `noTarget : ℕ → ℕ`
+- `↑n` without a target type does nothing: `fun n => n : ℕ → ℕ`
 - `exact h` fails: `n < 5` is not `↑n < 5`; `exact_mod_cast` (chapter 2.1)
 - `ring` and `linarith` treat `↑(n - 1)` as an unknown; `push_cast` moves `↑` inwards (2.1)
 - how `(n : ℤ)` calls the coercion: chapter 1.8

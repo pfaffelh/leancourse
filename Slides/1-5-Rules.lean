@@ -13,7 +13,7 @@ of Lean's type theory and
 why `Prop` is special.
 -/
 
-namespace SlidesRules
+-- no namespace: `#print` shows the full name of a declaration
 #doc (Slides) "Rules for building types" =>
 
 ```css
